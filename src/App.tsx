@@ -1,6 +1,6 @@
-import reactLogo from '@/assets/react.svg';
+import reactLogo from './assets/react.svg';
 import './App.css';
-import { Button } from '@/components';
+import { Button } from './components';
 
 function App() {
   return (
@@ -30,14 +30,10 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <Button label='test' />
       <div className='card'>
         <p>
-          <Button label="test" />
-          Edit <code>src/App.tsx</code> and save to test HMR{' '}
-          <a href='#test'>test</a> Edit <code>src/App.tsx</code> and save to
-          test HMR <a href='#test'>test</a> Edit <code>src/App.tsx</code> and
-          save to test HMR <a href='#test'>test</a> Edit{' '}
-          <code>src/App.tsx</code> and save to test HMR <a href='#test'>test</a>
+          Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
     </div>
