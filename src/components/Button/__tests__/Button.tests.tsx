@@ -7,7 +7,7 @@ import Button from '../Button';
  */
 
 test('1', () => {
-  render(<Button />);
-  const h = screen.queryByRole('button', { name: 'ok' });
+  render(<Button label='test' />);
+  const h = screen.queryByRole('button', { name: 'test' });
   expect(h).toBeInTheDocument();
 });

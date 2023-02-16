@@ -11,6 +11,7 @@
     "lint:fix": "eslint --fix src/**/*.{js,jsx,ts,tsx,json}",
     "prettier-format": "prettier --write src/**/*.{js,jsx,ts,tsx,json} --config ./.prettierrc.json",
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
+    "storybook_win": "SET NODE_OPTIONS=--openssl-legacy-provider && start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
