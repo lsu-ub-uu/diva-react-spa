@@ -24,6 +24,8 @@
     ],
     "rules": {
         "react/react-in-jsx-scope": "off",
-        "react/jsx-one-expression-per-line": "off"
+        "react/jsx-one-expression-per-line": "off",
+        "react/destructuring-assignment": "off",
+        "unused-vars": "off"
     }
 }
