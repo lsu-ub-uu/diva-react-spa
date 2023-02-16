@@ -26,6 +26,8 @@
         "react/react-in-jsx-scope": "off",
         "react/jsx-one-expression-per-line": "off",
         "react/destructuring-assignment": "off",
-        "unused-vars": "off"
+        "unused-vars": "off",
+        "import/prefer-default-export": "off",
+        "react/function-component-definition": "off"
     }
 }
