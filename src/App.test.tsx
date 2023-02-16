@@ -9,7 +9,7 @@ import App from './App';
 test('1', () => {
   render(<App />);
   const h = screen.queryByRole('heading', { name: 'Vite + React' });
-  expect(h).toBeInTheDocument()
+  expect(h).toBeInTheDocument();
 });
 
 test('2', () => {
