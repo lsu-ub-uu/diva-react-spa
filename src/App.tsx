@@ -1,43 +1,30 @@
-import reactLogo from './assets/react.svg';
-import './App.css';
-import { Button } from './components';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Layout } from './components';
 
-function App() {
+const App = () => {
   return (
-    <div className='App'>
-      <div>
-        <a
-          href='https://vitejs.dev'
-          target='_blank'
-          rel='noreferrer'
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path='/'
+          element={<Layout />}
         >
-          <img
-            src='/vite.svg'
-            className='logo'
-            alt='Vite logo'
+          <Route
+            index
+            element={<p>home page</p>}
           />
-        </a>
-        <a
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noreferrer'
-        >
-          <img
-            src={reactLogo}
-            className='logo react'
-            alt='React logo'
+          <Route
+            path='about'
+            element={<p>about page</p>}
           />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <Button label='test' />
-      <div className='card'>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-    </div>
+          <Route
+            path='*'
+            element={<p>404 not found</p>}
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
