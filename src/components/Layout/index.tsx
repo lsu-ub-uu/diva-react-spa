@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link as RouterLink } from 'react-router-dom';
 import { Button, Link } from '@mui/material';
 
 export const Layout = () => {
@@ -8,14 +8,20 @@ export const Layout = () => {
         <ul>
           <li>
             <Button
-              href='/'
+              component={RouterLink}
+              to='/'
               variant='contained'
             >
               Home
             </Button>
           </li>
           <li>
-            <Link href='/about'>About</Link>
+            <Link
+              component={RouterLink}
+              to='/about'
+            >
+              About
+            </Link>
           </li>
         </ul>
       </nav>
