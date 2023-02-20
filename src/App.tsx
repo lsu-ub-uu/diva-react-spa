@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { Layout } from './components';
 
 const App = () => {
@@ -15,8 +15,18 @@ const App = () => {
           />
           <Route
             path='about'
-            element={<p>about page</p>}
-          />
+            element={
+              <p>
+                about page <br />
+                <Outlet />
+              </p>
+            }
+          >
+            <Route
+              path='tech'
+              element={<p>sub about tech page</p>}
+            />
+          </Route>
           <Route
             path='*'
             element={<p>404 not found</p>}
