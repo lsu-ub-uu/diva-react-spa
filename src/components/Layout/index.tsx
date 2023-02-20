@@ -22,7 +22,7 @@ export const Layout = () => {
           <Grid
             item
             xs={12}
-            sx={{ pt: 1, pb: 2 }}
+            sx={{ pt: 2, pb: 4 }}
           >
             <Breadcrumbs aria-label='breadcrumb'>
               <Link
@@ -55,7 +55,7 @@ export const Layout = () => {
         </Grid>
         <Grid
           container
-          spacing={4}
+          columnSpacing={{ md: 4 }}
         >
           <Grid
             item
