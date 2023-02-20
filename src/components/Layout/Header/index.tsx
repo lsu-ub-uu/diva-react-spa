@@ -1,5 +1,5 @@
 import AppBar from '@mui/material/AppBar';
-import { Container } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import logo from './divaLogo.svg';
 
 export const Header = () => {
@@ -10,12 +10,28 @@ export const Header = () => {
       sx={{ py: 2, borderBottom: '1px solid #eee' }}
     >
       <Container maxWidth='lg'>
-        <img
-          src={logo}
-          className='logo'
-          alt='logo'
-          style={{ width: 160 }}
-        />
+        <Grid
+          container
+          spacing={2}
+          direction='row'
+          justifyContent='space-between'
+          alignItems='flex-start'
+        >
+          <Grid item>
+            <img
+              src={logo}
+              className='logo'
+              alt='logo'
+              style={{ width: 160 }}
+            />
+          </Grid>
+          <Grid
+            item
+            xs
+          />
+          <Grid item>language select</Grid>
+          <Grid item>some name - login</Grid>
+        </Grid>
       </Container>
     </AppBar>
   );
