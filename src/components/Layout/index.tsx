@@ -22,7 +22,7 @@ export const Layout = () => {
           <Grid
             item
             xs={12}
-            sx={{ pt: 1, pb: 4 }}
+            sx={{ pt: 1, pb: 2 }}
           >
             <Breadcrumbs aria-label='breadcrumb'>
               <Link
@@ -52,19 +52,32 @@ export const Layout = () => {
               </Link>
             </Breadcrumbs>
           </Grid>
+        </Grid>
+        <Grid
+          container
+          spacing={2}
+        >
           <Grid
             item
-            style={{ width: '300px', backgroundColor: '#eee' }}
-            display={{ xs: 'none', sm: 'block' }}
+            style={{ width: '300px' }}
+            display={{ xs: 'none', sm: 'none', md: 'block' }}
           >
-            <aside>side</aside>
+            <aside style={{ backgroundColor: '#eee' }}>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur.
+              </p>
+            </aside>
           </Grid>
           <Grid
             item
             xs
-            style={{ backgroundColor: 'yellow' }}
           >
-            <main>
+            <main style={{ backgroundColor: 'yellow' }}>
               <Outlet />
             </main>
           </Grid>
