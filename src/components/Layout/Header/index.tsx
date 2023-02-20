@@ -1,6 +1,6 @@
 import AppBar from '@mui/material/AppBar';
 import { Container } from '@mui/material';
-import logo from './react.svg';
+import logo from './divaLogo.svg';
 
 export const Header = () => {
   return (
@@ -14,7 +14,7 @@ export const Header = () => {
           src={logo}
           className='logo'
           alt='logo'
-          style={{ width: 80, height: 80 }}
+          style={{ width: 160 }}
         />
       </Container>
     </AppBar>
