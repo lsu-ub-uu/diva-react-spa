@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link as RouterLink } from 'react-router-dom';
 import { Breadcrumbs, Container, Grid, Link, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { Header } from './Header';
@@ -22,30 +22,49 @@ export const Layout = () => {
           <Grid
             item
             xs={12}
+            sx={{ pt: 1, pb: 4 }}
           >
             <Breadcrumbs aria-label='breadcrumb'>
               <Link
                 underline='hover'
                 color='inherit'
-                href='/'
+                component={RouterLink}
+                to='/'
               >
                 Start
               </Link>
               <Link
                 underline='hover'
                 color='inherit'
-                href='/material-ui/getting-started/installation/'
+                component={RouterLink}
+                to='/about'
               >
-                Undersida
+                About
               </Link>
-              <Typography color='text.primary'>en sida till</Typography>
+              <Link
+                underline='hover'
+                color='text.primary'
+                component={RouterLink}
+                to='/about/tech'
+                aria-current='page'
+              >
+                Tech
+              </Link>
             </Breadcrumbs>
           </Grid>
           <Grid
             item
-            xs={12}
+            style={{ width: '300px', backgroundColor: '#eee' }}
+            display={{ xs: 'none', sm: 'block' }}
           >
-            <main style={{ backgroundColor: 'yellow' }}>
+            <aside>side</aside>
+          </Grid>
+          <Grid
+            item
+            xs
+            style={{ backgroundColor: 'yellow' }}
+          >
+            <main>
               <Outlet />
             </main>
           </Grid>
