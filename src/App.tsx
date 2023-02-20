@@ -1,5 +1,5 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
-import { Layout } from './components';
+import { Layout, Section } from './components';
 
 const App = () => {
   return (
@@ -17,8 +17,10 @@ const App = () => {
             path='about'
             element={
               <p>
-                about page <br />
-                <Outlet />
+                about page <br /> <br /> <br />
+                <Section title='Test'>
+                  <Outlet />
+                </Section>
               </p>
             }
           >
