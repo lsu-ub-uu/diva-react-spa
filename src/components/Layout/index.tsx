@@ -62,7 +62,7 @@ export const Layout = () => {
             style={{ width: '300px' }}
             display={{ xs: 'none', sm: 'none', md: 'block' }}
           >
-            <aside style={{ backgroundColor: '#fff' }}>
+            <aside>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -77,7 +77,7 @@ export const Layout = () => {
             item
             xs
           >
-            <main style={{ backgroundColor: '#ececec' }}>
+            <main>
               <Outlet />
             </main>
           </Grid>
