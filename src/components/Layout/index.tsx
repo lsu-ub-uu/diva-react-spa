@@ -1,5 +1,5 @@
 import { Outlet, Link as RouterLink } from 'react-router-dom';
-import { Breadcrumbs, Container, Grid, Link, Typography } from '@mui/material';
+import { Breadcrumbs, Container, Grid, Link } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { Header } from './Header';
 
@@ -55,14 +55,14 @@ export const Layout = () => {
         </Grid>
         <Grid
           container
-          spacing={2}
+          spacing={4}
         >
           <Grid
             item
             style={{ width: '300px' }}
             display={{ xs: 'none', sm: 'none', md: 'block' }}
           >
-            <aside style={{ backgroundColor: '#eee' }}>
+            <aside style={{ backgroundColor: '#fff' }}>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -77,7 +77,7 @@ export const Layout = () => {
             item
             xs
           >
-            <main style={{ backgroundColor: 'yellow' }}>
+            <main style={{ backgroundColor: '#ececec' }}>
               <Outlet />
             </main>
           </Grid>
