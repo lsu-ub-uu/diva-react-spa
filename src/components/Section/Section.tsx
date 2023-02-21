@@ -21,9 +21,10 @@ const Content = styled(Box)(({ theme }) => {
 const Header = styled(Box)(({ theme }) => ({
   borderTopLeftRadius: theme.shape.borderRadius,
   borderTopRightRadius: theme.shape.borderRadius,
-  backgroundColor: '#eee',
+  backgroundColor: '#d6e7f3',
+  padding: theme.spacing(0),
   minHeight: theme.spacing(1 / 2),
-  borderBottom: '2px solid black',
+  borderBottom: '2px solid #5388c0',
 }));
 
 const Title = styled(Typography)(({ theme }) => ({
