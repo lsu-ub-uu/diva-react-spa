@@ -19,6 +19,8 @@ const Content = styled(Box)(({ theme }) => {
 });
 
 const Header = styled(Box)(({ theme }) => ({
+  borderTopLeftRadius: theme.shape.borderRadius,
+  borderTopRightRadius: theme.shape.borderRadius,
   backgroundColor: '#eee',
   minHeight: theme.spacing(1 / 2),
   borderBottom: '2px solid black',

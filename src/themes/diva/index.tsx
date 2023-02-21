@@ -28,6 +28,9 @@ export const divaTheme = createTheme({
   transitions: {
     create: () => 'none',
   },
+  shape: {
+    borderRadius: 12,
+  },
   palette: {
     primary: {
       main: '#010101',
