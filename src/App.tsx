@@ -1,5 +1,6 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { Layout, Section } from './components';
+import { HomePage } from './pages';
 
 const App = () => {
   return (
@@ -11,7 +12,7 @@ const App = () => {
         >
           <Route
             index
-            element={<p>home page</p>}
+            element={<HomePage />}
           />
           <Route
             path='about'

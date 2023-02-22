@@ -1,5 +1,5 @@
 import AppBar from '@mui/material/AppBar';
-import { Container, Grid } from '@mui/material';
+import { Avatar, Container, Grid } from '@mui/material';
 import logo from './divaLogo.svg';
 
 export const Header = () => {
@@ -29,8 +29,10 @@ export const Header = () => {
             item
             xs
           />
-          <Grid item>language select</Grid>
-          <Grid item>some name - login</Grid>
+          <Grid item>language select long</Grid>
+          <Grid item>
+            <Avatar>EL</Avatar>
+          </Grid>
         </Grid>
       </Container>
     </AppBar>

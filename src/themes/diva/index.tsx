@@ -28,12 +28,17 @@ export const divaTheme = createTheme({
   transitions: {
     create: () => 'none',
   },
+  typography: {
+    button: {
+      textTransform: 'none',
+    },
+  },
   shape: {
-    borderRadius: 12,
+    borderRadius: 4,
   },
   palette: {
     primary: {
-      main: '#010101',
+      main: '#333333',
     },
     secondary: {
       main: '#010101',
