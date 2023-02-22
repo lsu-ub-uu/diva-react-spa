@@ -11,6 +11,7 @@ import {
   Stack,
   Tooltip,
 } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const HomePage = () => {
   return (
@@ -26,6 +27,8 @@ export const HomePage = () => {
         >
           <Button
             variant='contained'
+            component={RouterLink}
+            to='/about/tech'
             endIcon={<ArrowForwardIcon />}
           >
             Contained Button with icon
