@@ -10,12 +10,22 @@ import {
   IconButton,
   Stack,
   Tooltip,
+  Typography,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const HomePage = () => {
+  const { t } = useTranslation();
+
   return (
     <div>
+      <Typography
+        variant='h3'
+        gutterBottom
+      >
+        {t('Welcome')}
+      </Typography>
       <Divider>Buttons</Divider>
       <Grid
         container
