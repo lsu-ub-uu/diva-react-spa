@@ -12,10 +12,12 @@ import {
   Tooltip,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 
 export const HomePage = () => {
   return (
     <div>
+      <TabsMenu />
       <Divider>Buttons</Divider>
       <Grid
         container
