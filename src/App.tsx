@@ -1,6 +1,7 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { Layout, Section } from './components';
 import { HomePage } from './pages';
+import './app/i18n';
 
 const App = () => {
   return (
@@ -17,14 +18,13 @@ const App = () => {
           <Route
             path='about'
             element={
-              <p>
-                about page <br /> <br />
-                test <br />
-                test <br />
-                <Section title='Test'>
-                  <Outlet />
-                </Section>
-              </p>
+              <div>
+                <p>
+                  <Section title='Test'>
+                    <Outlet />
+                  </Section>
+                </p>
+              </div>
             }
           >
             <Route

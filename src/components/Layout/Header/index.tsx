@@ -1,8 +1,11 @@
 import AppBar from '@mui/material/AppBar';
-import { Avatar, Container, Grid } from '@mui/material';
+import { Avatar, Button, Container, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import logo from './divaLogo.svg';
 
 export const Header = () => {
+  const { i18n } = useTranslation();
+
   return (
     <AppBar
       position='static'
@@ -29,7 +32,10 @@ export const Header = () => {
             item
             xs
           />
-          <Grid item>language select long</Grid>
+          <Grid item>
+            <Button onClick={() => i18n.changeLanguage('sv')}>Svenska</Button>
+            <Button onClick={() => i18n.changeLanguage('en')}>English</Button>
+          </Grid>
           <Grid item>
             <Avatar>EL</Avatar>
           </Grid>
