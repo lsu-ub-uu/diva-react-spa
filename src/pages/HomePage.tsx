@@ -36,12 +36,13 @@ export const HomePage = () => {
           xs={12}
         >
           <Button
+            disableRipple
             variant='contained'
             component={RouterLink}
-            to='/about/tech'
+            to='/users'
             endIcon={<ArrowForwardIcon />}
           >
-            Contained Button with icon
+            List dummy users
           </Button>
         </Grid>
         <Grid

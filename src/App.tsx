@@ -1,6 +1,6 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { Layout, Section } from './components';
-import { HomePage } from './pages';
+import { HomePage, ListUsersPage } from './pages';
 import './app/i18n';
 
 const App = () => {
@@ -32,6 +32,10 @@ const App = () => {
               element={<p>sub about tech page</p>}
             />
           </Route>
+          <Route
+            path='users'
+            element={<ListUsersPage />}
+          />
           <Route
             path='*'
             element={<p>404 not found</p>}
