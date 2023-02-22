@@ -18,7 +18,8 @@ const App = () => {
             path='about'
             element={
               <p>
-                about page <br /> <br /> <br />
+                about page <br /> <br />
+                test <br />
                 <Section title='Test'>
                   <Outlet />
                 </Section>
