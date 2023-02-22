@@ -16,8 +16,8 @@ i18n
         },
       },
     },
-    lng: 'en',
-    fallbackLng: 'sv',
+    lng: 'sv',
+    fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
     },

@@ -29,6 +29,7 @@
         "unused-vars": "off",
         "import/prefer-default-export": "off",
         "react/function-component-definition": "off",
-        "react/jsx-props-no-spreading": "off"
+        "react/jsx-props-no-spreading": "off",
+        "no-param-reassign": "off"
     }
 }
