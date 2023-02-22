@@ -1,5 +1,6 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Layout } from './components';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { Layout, Section } from './components';
+import { HomePage } from './pages';
 
 const App = () => {
   return (
@@ -11,12 +12,24 @@ const App = () => {
         >
           <Route
             index
-            element={<p>home page</p>}
+            element={<HomePage />}
           />
           <Route
             path='about'
-            element={<p>about page</p>}
-          />
+            element={
+              <p>
+                about page <br /> <br /> <br />
+                <Section title='Test'>
+                  <Outlet />
+                </Section>
+              </p>
+            }
+          >
+            <Route
+              path='tech'
+              element={<p>sub about tech page</p>}
+            />
+          </Route>
           <Route
             path='*'
             element={<p>404 not found</p>}
