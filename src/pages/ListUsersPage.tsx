@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { AsidePortal } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loadDummyDataAsync } from '../features/dummy/actions';
 import { dummySelector } from '../features/dummy/selectors';
@@ -22,6 +23,9 @@ export const ListUsersPage = () => {
 
   return (
     <Box sx={{ height: '100vh', width: '100%' }}>
+      <AsidePortal>
+        <p>list # users {dummyState.users.length}</p>
+      </AsidePortal>
       <DataGrid<User>
         sx={{
           border: 0,
