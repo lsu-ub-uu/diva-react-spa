@@ -14,13 +14,21 @@ import {
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
+import { AsidePortal } from '../components';
 
 export const HomePage = () => {
   const { t } = useTranslation();
 
   return (
     <div>
+      <AsidePortal>
+        <p>
+          this is the homepage show some messages here perhaps - this was sent
+          via the AsidePortal component
+        </p>
+      </AsidePortal>
       <Typography
         variant='h3'
         gutterBottom

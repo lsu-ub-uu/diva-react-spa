@@ -19,17 +19,15 @@ const App = () => {
             path='about'
             element={
               <div>
-                <p>
-                  <Section title='Test'>
-                    <Outlet />
-                  </Section>
-                </p>
+                <Section title='Test'>
+                  <Outlet />
+                </Section>
               </div>
             }
           >
             <Route
               path='tech'
-              element={<p>sub about tech page</p>}
+              element={<div>sub about tech page</div>}
             />
           </Route>
           <Route
