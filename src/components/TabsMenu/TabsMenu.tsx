@@ -19,6 +19,15 @@ function TabPanel(props: TabsMenuProps) {
   );
 }
 
+/* const CustomTabs = styled(Tabs)(({ theme }) => ({
+  indicator: {
+    backgroundColor: '#613985',
+    height: '4px',
+    width: '30%',
+    borderRadius: '4px 4px 0 0',
+  },
+})); */
+
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -44,6 +53,7 @@ export const TabsMenu = () => {
             style: {
               backgroundColor: '#613985',
               height: '4px',
+              width: '30%',
               borderRadius: '4px 4px 0 0',
             },
           }}
@@ -83,3 +93,6 @@ export const TabsMenu = () => {
     </Box>
   );
 };
+
+/* MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1h9z7r5-MuiButtonBase-root-MuiTab-root
+MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1h9z7r5-MuiButtonBase-root-MuiTab-root */
