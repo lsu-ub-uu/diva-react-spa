@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { styled, Tabs, Tab, Typography, Box } from '@mui/material';
+import { Tabs, Tab, Typography, Box } from '@mui/material';
 
 interface TabsMenuProps {
   children?: React.ReactNode;
@@ -7,7 +7,7 @@ interface TabsMenuProps {
   index: number;
 }
 
-function TabPanel(props: TabsMenuProps) {
+const TabPanel = (props: TabsMenuProps) => {
   return (
     <div>
       {props.value === props.index && (
@@ -17,23 +17,14 @@ function TabPanel(props: TabsMenuProps) {
       )}
     </div>
   );
-}
+};
 
-/* const CustomTabs = styled(Tabs)(({ theme }) => ({
-  indicator: {
-    backgroundColor: '#613985',
-    height: '4px',
-    width: '30%',
-    borderRadius: '4px 4px 0 0',
-  },
-})); */
-
-function a11yProps(index: number) {
+const a11yProps = (index: number) => {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
   };
-}
+};
 
 export const TabsMenu = () => {
   const [value, setValue] = useState(0);
@@ -46,6 +37,7 @@ export const TabsMenu = () => {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
+          value={value}
           aria-label='Tab menu for DiVA'
           onChange={handleChange}
           variant='fullWidth'
@@ -53,7 +45,7 @@ export const TabsMenu = () => {
             style: {
               backgroundColor: '#613985',
               height: '4px',
-              width: '30%',
+              width: '33.33%',
               borderRadius: '4px 4px 0 0',
             },
           }}
@@ -93,6 +85,3 @@ export const TabsMenu = () => {
     </Box>
   );
 };
-
-/* MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1h9z7r5-MuiButtonBase-root-MuiTab-root
-MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1h9z7r5-MuiButtonBase-root-MuiTab-root */
