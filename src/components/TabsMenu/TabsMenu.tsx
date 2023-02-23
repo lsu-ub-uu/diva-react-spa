@@ -19,10 +19,10 @@ const TabPanel = (props: TabsMenuProps) => {
   );
 };
 
-const a11yProps = (index: number) => {
+const a11yProps = (name: string) => {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `${name}`,
+    'aria-controls': `${name}`,
   };
 };
 
@@ -52,15 +52,15 @@ export const TabsMenu = () => {
         >
           <Tab
             label='Registrera & hantera'
-            {...a11yProps(0)}
+            {...a11yProps('Registrera & hantera')}
           />
           <Tab
             label='Administrera'
-            {...a11yProps(1)}
+            {...a11yProps('Administrera')}
           />
           <Tab
             label='Mina publikationer & projekt'
-            {...a11yProps(2)}
+            {...a11yProps('Mina publikationer & projekt')}
           />
         </Tabs>
       </Box>
