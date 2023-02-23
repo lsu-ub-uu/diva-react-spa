@@ -6,6 +6,11 @@ import { Provider as StateProvider } from 'react-redux';
 import store from './app/store';
 import { divaTheme } from './themes/diva';
 import App from './App';
+import { worker } from './__mocks__/browser';
+
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
