@@ -26,7 +26,7 @@ export const HomePage = () => {
       >
         {t('Welcome')}
       </Typography>
-      <Divider>Buttons</Divider>
+      <Divider>{t('Buttons')}</Divider>
       <Grid
         container
         spacing={2}
