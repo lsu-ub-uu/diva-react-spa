@@ -1,14 +1,16 @@
-import {
-  Box,
-  CircularProgress,
-  List,
-  ListItem,
-  ListItemText,
-} from '@mui/material';
+import { Box } from '@mui/material';
 import { useEffect } from 'react';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loadDummyDataAsync } from '../features/dummy/actions';
 import { dummySelector } from '../features/dummy/selectors';
+import { User } from '../features/dummy/dummySlice';
+
+const columns: GridColDef[] = [
+  { field: 'id', headerName: 'Id', width: 250 },
+  { field: 'firstname', headerName: 'Firstname', width: 250 },
+  { field: 'lastname', headerName: 'Lastname', width: 250 },
+];
 
 export const ListUsersPage = () => {
   const dispatch = useAppDispatch();
@@ -18,30 +20,45 @@ export const ListUsersPage = () => {
     dispatch(loadDummyDataAsync());
   }, [dispatch]);
 
-  if (dummyState.isLoading)
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
-
   return (
-    <List>
-      {dummyState.users.map((user) => {
-        const labelId = `user-${user.id}`;
-        return (
-          <ListItem
-            key={user.id}
-            disablePadding
-          >
-            <ListItemText
-              id={labelId}
-              primary={user.lastname}
-              secondary={user.firstname}
-            />
-          </ListItem>
-        );
-      })}
-    </List>
+    <Box sx={{ height: '100vh', width: '100%' }}>
+      <DataGrid<User>
+        sx={{
+          border: 0,
+          width: '100%',
+          boxShadow: 0,
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '&.MuiDataGrid-root .MuiDataGrid-cell:focus': {
+            outline: 'none',
+          },
+          '&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus': {
+            outline: 'none',
+          },
+          '.MuiDataGrid-columnSeparator': {
+            display: 'none',
+          },
+          '.MuiDataGrid-columnHeaders': {
+            background: '#eee',
+            borderBottom: '1px solid #222',
+          },
+          '&.MuiDataGrid-root .MuiIconButton-root': {
+            color: '#000',
+          },
+          '.MuiDataGrid-columnHeader': {
+            background: '#eee',
+            color: '#000',
+          },
+        }}
+        checkboxSelection
+        disableSelectionOnClick
+        autoHeight
+        pageSize={25}
+        loading={dummyState.isLoading}
+        rows={dummyState.users}
+        columns={columns}
+      />
+    </Box>
   );
 };
