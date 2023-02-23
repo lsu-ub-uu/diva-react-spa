@@ -1,7 +1,9 @@
 import { rest } from 'msw';
 
+/* const URL = 'http://localhost:3030'; */
+
 export const handlers = [
-  rest.get('/fake-persons', (req, res, ctx) => {
+  rest.get('http://localhost:5174/fake-persons', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json([
