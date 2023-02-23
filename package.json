@@ -21,6 +21,7 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.9",
+    "@mui/x-data-grid": "^5.17.24",
     "@reduxjs/toolkit": "^1.9.3",
     "@types/react-router-dom": "^5.3.3",
     "i18next": "^22.4.10",

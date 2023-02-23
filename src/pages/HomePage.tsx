@@ -27,6 +27,7 @@ export const HomePage = () => {
       >
         {t('Welcome')}
       </Typography>
+      <Divider>{t('Tabs')}</Divider>
       <TabsMenu />
       <Divider>Buttons</Divider>
       <Grid
