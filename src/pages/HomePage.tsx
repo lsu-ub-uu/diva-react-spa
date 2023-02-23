@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -26,6 +27,7 @@ export const HomePage = () => {
       >
         {t('Welcome')}
       </Typography>
+      <TabsMenu />
       <Divider>Buttons</Divider>
       <Grid
         container
