@@ -68,13 +68,13 @@ export const TabsMenu = () => {
         value={value}
         index={0}
       >
-        Registrera & hantera
+        Registrera & hantera puplikationer
       </TabPanel>
       <TabPanel
         value={value}
         index={1}
       >
-        Administrera
+        Administrera publikationer
       </TabPanel>
       <TabPanel
         value={value}
