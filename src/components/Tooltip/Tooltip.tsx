@@ -53,13 +53,18 @@ interface ContentProps extends CustomTooltipProps {
 const Content = (props: ContentProps) => {
   return (
     <Box>
-      <CloseIcon
+      <IconButton
+        aria-label='close'
+        onClick={props.onClose}
         sx={{
-          float: 'right',
+          position: 'absolute',
+          right: 8,
+          top: 8,
           color: (theme: Theme) => theme.palette.info.main,
         }}
-        onClick={props.onClose}
-      />
+      >
+        <CloseIcon />
+      </IconButton>
       <Typography
         variant='h6'
         sx={{ fontWeight: 700 }}
