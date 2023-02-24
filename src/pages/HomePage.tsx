@@ -7,7 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
-import { AsidePortal, CustomTooltip } from '../components';
+import { AsidePortal, CustomTooltip, DivaDialog } from '../components';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -84,6 +84,7 @@ export const HomePage = () => {
         />
       </Stack>
       <Divider>Message Alerts</Divider>
+      <DivaDialog />
       <Stack spacing={2}>
         <Alert severity='error'>This is an error alert</Alert>
         <Alert severity='warning'>This is a warning alert</Alert>

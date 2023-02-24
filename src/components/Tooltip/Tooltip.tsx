@@ -3,6 +3,7 @@ import {
   Box,
   ClickAwayListener,
   IconButton,
+  Theme,
   Tooltip,
   tooltipClasses,
   TooltipProps,
@@ -53,7 +54,10 @@ const Content = (props: ContentProps) => {
   return (
     <Box>
       <CloseIcon
-        sx={{ float: 'right' }}
+        sx={{
+          float: 'right',
+          color: (theme: Theme) => theme.palette.info.main,
+        }}
         onClick={props.onClose}
       />
       <Typography
