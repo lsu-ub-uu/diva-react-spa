@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs, Tab, Typography, Box } from '@mui/material';
 
 interface TabsMenuProps {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   value: number;
   index: number;
 }
