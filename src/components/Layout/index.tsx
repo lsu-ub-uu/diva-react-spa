@@ -1,7 +1,8 @@
-import { Outlet, Link as RouterLink } from 'react-router-dom';
-import { Breadcrumbs, Container, Grid, Link } from '@mui/material';
+import { Outlet } from 'react-router-dom';
+import { Container, Grid } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { Header } from './Header';
+import { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 
 export const Layout = () => {
   return (
@@ -24,33 +25,7 @@ export const Layout = () => {
             xs={12}
             sx={{ pt: 2, pb: 4 }}
           >
-            <Breadcrumbs aria-label='breadcrumb'>
-              <Link
-                underline='hover'
-                color='inherit'
-                component={RouterLink}
-                to='/'
-              >
-                Start
-              </Link>
-              <Link
-                underline='hover'
-                color='inherit'
-                component={RouterLink}
-                to='/about'
-              >
-                About
-              </Link>
-              <Link
-                underline='hover'
-                color='text.primary'
-                component={RouterLink}
-                to='/about/tech'
-                aria-current='page'
-              >
-                Tech
-              </Link>
-            </Breadcrumbs>
+            <Breadcrumbs />
           </Grid>
         </Grid>
         <Grid

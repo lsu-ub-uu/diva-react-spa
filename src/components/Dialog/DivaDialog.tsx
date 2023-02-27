@@ -33,12 +33,7 @@ const DivaDialogTitle = (props: DivaDialogTitleProps) => {
       sx={{ m: 0, pl: 4 }}
       {...other}
     >
-      <Typography
-        variant='h6'
-        sx={{ fontWeight: 700 }}
-      >
-        {children}
-      </Typography>
+      {children}
       {onClose ? (
         <IconButton
           aria-label='close'
