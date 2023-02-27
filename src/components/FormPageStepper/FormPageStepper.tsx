@@ -23,7 +23,7 @@ const CustomStepConnector = styled(StepConnector)(({ theme }) => ({
     backgroundColor:
       theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#613985',
     borderRadius: 1,
-    margin: '20px',
+    margin: '15px',
   },
 }));
 
@@ -37,6 +37,7 @@ const CustomStepIconRoot = styled('div')<{
   color: '#613985',
   width: 50,
   height: 50,
+  fontVariantNumeric: 'tabular-nums',
   display: 'flex',
   borderRadius: '50%',
   justifyContent: 'center',
@@ -56,9 +57,39 @@ const CustomStepIconRoot = styled('div')<{
 const CustomStepIcon = (props: StepIconProps) => {
   const { active, completed, className } = props;
   const icons = {
-    1: <Typography>1</Typography>,
-    2: <Typography>2</Typography>,
-    3: <Typography>3</Typography>,
+    1: (
+      <Typography
+        sx={{
+          lineHeight: 1,
+          height: 12,
+          width: 10,
+        }}
+      >
+        1
+      </Typography>
+    ),
+    2: (
+      <Typography
+        sx={{
+          lineHeight: 1,
+          height: 12,
+          width: 10,
+        }}
+      >
+        2
+      </Typography>
+    ),
+    3: (
+      <Typography
+        sx={{
+          lineHeight: 1,
+          height: 12,
+          width: 10,
+        }}
+      >
+        3
+      </Typography>
+    ),
   };
 
   return (
