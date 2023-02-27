@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 import { AsidePortal, CustomTooltip } from '../components';
+import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -28,6 +29,8 @@ export const HomePage = () => {
       </Typography>
       <Divider>{t('Tabs')}</Divider>
       <TabsMenu />
+      <Divider>{t('Steppers')}</Divider>
+      <FormPageStepper />
       <Divider>Buttons</Divider>
       <Grid
         container
