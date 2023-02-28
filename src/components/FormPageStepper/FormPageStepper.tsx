@@ -122,7 +122,7 @@ export const FormPageStepper = () => {
         variant='contained'
         onClick={() => setActiveStep(activeStep > 0 ? activeStep - 1 : 0)}
       >
-        -
+        Tillbaka
       </Button>
       <Button
         disableRipple
@@ -131,11 +131,11 @@ export const FormPageStepper = () => {
           setActiveStep(activeStep < 2 ? activeStep + 1 : activeStep)
         }
       >
-        +
+        Gå till nästa steg
       </Button>
-      <div>
+      {/*       <div>
         <Typography>Step {activeStep + 1}</Typography>
-      </div>
+      </div> */}
     </>
   );
 };
