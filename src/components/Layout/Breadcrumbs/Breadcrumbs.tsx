@@ -1,7 +1,29 @@
 import { Breadcrumbs as MuiBreadcrumbs, Link } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 export const Breadcrumbs = () => {
+  const location = useLocation();
+
+  let currentLink = '';
+
+  const crumbs = location.pathname
+    ?.split('/')
+    .filter((crumb: string) => crumb !== '')
+    .map((crumb) => {
+      currentLink += `/${crumb}`;
+      return (
+        <Link
+          key={crumb}
+          underline='hover'
+          color='inherit'
+          component={RouterLink}
+          to={currentLink}
+        >
+          {crumb}
+        </Link>
+      );
+    });
+
   return (
     <MuiBreadcrumbs aria-label='breadcrumb'>
       <Link
@@ -12,23 +34,7 @@ export const Breadcrumbs = () => {
       >
         Start
       </Link>
-      <Link
-        underline='hover'
-        color='inherit'
-        component={RouterLink}
-        to='/about'
-      >
-        About
-      </Link>
-      <Link
-        underline='hover'
-        color='text.primary'
-        component={RouterLink}
-        to='/about/tech'
-        aria-current='page'
-      >
-        Tech
-      </Link>
+      {crumbs}
     </MuiBreadcrumbs>
   );
 };
