@@ -8,11 +8,15 @@ i18n
       en: {
         translation: {
           Welcome: 'Welcome to DiVA',
+          start: 'Start',
+          users: 'List Users',
         },
       },
       sv: {
         translation: {
           Welcome: 'Välkommen till DiVA',
+          start: 'Startsidan',
+          users: 'Lista Användare',
         },
       },
     },
