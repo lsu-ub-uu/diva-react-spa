@@ -1,7 +1,15 @@
-import { Breadcrumbs as MuiBreadcrumbs, Link } from '@mui/material';
+import {
+  Breadcrumbs as MuiBreadcrumbs,
+  createSvgIcon,
+  Link,
+} from '@mui/material';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import HomeIcon from '@mui/icons-material/Home';
 import { useTranslation } from 'react-i18next';
+
+const TestIcon = createSvgIcon(
+  <path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z' />,
+  'Test',
+);
 
 export const Breadcrumbs = () => {
   const location = useLocation();
@@ -17,7 +25,7 @@ export const Breadcrumbs = () => {
       return (
         <Link
           key={crumb}
-          underline='hover'
+          underline='always'
           color='inherit'
           sx={{ display: 'flex', alignItems: 'center' }}
           component={RouterLink}
@@ -31,14 +39,15 @@ export const Breadcrumbs = () => {
   return (
     <MuiBreadcrumbs aria-label='breadcrumb'>
       <Link
-        underline='hover'
+        underline='always'
         color='inherit'
         sx={{ display: 'flex', alignItems: 'center' }}
         component={RouterLink}
         to='/'
       >
-        <HomeIcon
+        <TestIcon
           sx={{ mr: 0.5 }}
+          color='inherit'
           fontSize='inherit'
         />
         {t('start')}
