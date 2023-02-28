@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "lint": "eslint src/**/*.{ts,tsx}",
     "lint:fix": "eslint --fix src/**/*.{ts,tsx}",
-    "prettier-format": "prettier --write src/**/*.{ts,tsx,json} --config ./.prettierrc.json",
+    "prettier-format": "prettier --write \"src/**/*.{ts,tsx,json}\" --config ./.prettierrc.json",
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
     "storybook_win": "SET NODE_OPTIONS=--openssl-legacy-provider && start-storybook -p 6006",
     "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook",
