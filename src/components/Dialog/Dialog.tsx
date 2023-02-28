@@ -1,16 +1,18 @@
-import * as React from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import {
+  Dialog as MuiDialog,
+  DialogTitle as MuiDialogTitle,
+  Theme,
+} from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import { Theme } from '@mui/material';
 
-const StyledDialog = styled(Dialog)(({ theme }) => ({
+const StyledDialog = styled(MuiDialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(4),
   },
@@ -19,17 +21,17 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export interface DivaDialogTitleProps {
+export interface DialogTitleProps {
   id: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   onClose: () => void;
 }
 
-const DivaDialogTitle = (props: DivaDialogTitleProps) => {
+const DialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle
+    <MuiDialogTitle
       sx={{ m: 0, pl: 4 }}
       {...other}
     >
@@ -48,12 +50,20 @@ const DivaDialogTitle = (props: DivaDialogTitleProps) => {
           <CloseIcon />
         </IconButton>
       ) : null}
-    </DialogTitle>
+    </MuiDialogTitle>
   );
 };
 
-export const DivaDialog = () => {
-  const [open, setOpen] = React.useState(false);
+interface DialogProps {
+  open: boolean;
+}
+
+export const Dialog = (props: DialogProps) => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(props.open);
+  }, [props.open]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -75,12 +85,12 @@ export const DivaDialog = () => {
         aria-labelledby='customized-dialog-title'
         open={open}
       >
-        <DivaDialogTitle
+        <DialogTitle
           id='customized-dialog-title'
           onClose={handleClose}
         >
           Modal title goes here
-        </DivaDialogTitle>
+        </DialogTitle>
         <DialogContent>
           <Typography gutterBottom>
             Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
