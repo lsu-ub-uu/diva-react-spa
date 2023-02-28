@@ -1,8 +1,11 @@
 import { Breadcrumbs as MuiBreadcrumbs, Link } from '@mui/material';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
+import { useTranslation } from 'react-i18next';
 
 export const Breadcrumbs = () => {
   const location = useLocation();
+  const { t } = useTranslation();
 
   let currentLink = '';
 
@@ -16,10 +19,11 @@ export const Breadcrumbs = () => {
           key={crumb}
           underline='hover'
           color='inherit'
+          sx={{ display: 'flex', alignItems: 'center' }}
           component={RouterLink}
           to={currentLink}
         >
-          {crumb}
+          {t(crumb)}
         </Link>
       );
     });
@@ -29,10 +33,15 @@ export const Breadcrumbs = () => {
       <Link
         underline='hover'
         color='inherit'
+        sx={{ display: 'flex', alignItems: 'center' }}
         component={RouterLink}
         to='/'
       >
-        Start
+        <HomeIcon
+          sx={{ mr: 0.5 }}
+          fontSize='inherit'
+        />
+        {t('start')}
       </Link>
       {crumbs}
     </MuiBreadcrumbs>
