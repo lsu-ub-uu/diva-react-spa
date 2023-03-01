@@ -18,6 +18,7 @@ import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 import { AsidePortal, Backdrop, Dialog, Tooltip } from '../components';
 import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
+import { FileUpload } from '../components/FileUpload/FileUpload';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -45,6 +46,12 @@ export const HomePage = () => {
         container
         spacing={2}
       >
+        <Grid
+          item
+          xs={12}
+        >
+          <FileUpload />
+        </Grid>
         <Grid
           item
           xs={12}
