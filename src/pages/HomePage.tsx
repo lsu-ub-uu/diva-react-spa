@@ -84,7 +84,24 @@ export const HomePage = () => {
         />
       </Stack>
       <Divider>Message Alerts</Divider>
-      <Dialog open={false} />
+      <Dialog
+        closeButton
+        open={false}
+        title='Test dialog title'
+        actions={[
+          <Button
+            to='/users'
+            component={RouterLink}
+            variant='outlined'
+            key='test-button'
+            endIcon={<ArrowForwardIcon />}
+          >
+            Goto homepage
+          </Button>,
+        ]}
+      >
+        this is the content
+      </Dialog>
       <Stack spacing={2}>
         <Alert severity='error'>This is an error alert</Alert>
         <Alert severity='warning'>This is a warning alert</Alert>

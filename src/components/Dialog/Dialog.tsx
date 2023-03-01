@@ -4,13 +4,14 @@ import { styled } from '@mui/material/styles';
 import {
   Dialog as MuiDialog,
   DialogTitle as MuiDialogTitle,
+  Stack,
   Theme,
 } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 
 const StyledDialog = styled(MuiDialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -56,10 +57,16 @@ const DialogTitle = (props: DialogTitleProps) => {
 
 interface DialogProps {
   open: boolean;
+  title: ReactNode;
+  children?: ReactNode;
+  closeButton: boolean;
+  closeAction?: () => void;
+  actions?: ReactNode[]; // TODO: maybe another type
 }
 
 export const Dialog = (props: DialogProps) => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setOpen(props.open);
@@ -69,6 +76,7 @@ export const Dialog = (props: DialogProps) => {
     setOpen(true);
   };
   const handleClose = () => {
+    if (props.closeAction) props.closeAction();
     setOpen(false);
   };
 
@@ -89,23 +97,24 @@ export const Dialog = (props: DialogProps) => {
           id='customized-dialog-title'
           onClose={handleClose}
         >
-          Modal title goes here
+          {props.title}
         </DialogTitle>
-        <DialogContent>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </Typography>
-        </DialogContent>
+        <DialogContent>{props.children}</DialogContent>
         <DialogActions>
-          <Button
-            variant='contained'
-            autoFocus
-            onClick={handleClose}
+          <Stack
+            direction='row'
+            spacing={1}
           >
-            Cancel
-          </Button>
+            {props.actions?.map((action) => action)}
+            {props.closeButton && (
+              <Button
+                variant='contained'
+                onClick={handleClose}
+              >
+                {t('common.close')}
+              </Button>
+            )}
+          </Stack>
         </DialogActions>
       </StyledDialog>
     </div>
