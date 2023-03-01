@@ -2,14 +2,21 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Alert, Divider, Grid, Stack, Typography } from '@mui/material';
+import {
+  Alert,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
+import InfoIcon from '@mui/icons-material/Info';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
-import { AsidePortal, CustomTooltip, Dialog } from '../components';
+import { AsidePortal, Dialog, Tooltip } from '../components';
 import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
-
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -82,10 +89,17 @@ export const HomePage = () => {
         direction='row'
         spacing={2}
       >
-        <CustomTooltip
+        <Tooltip
           title='A title for the tooltip'
-          body='Content of tooltip help content of tooltip help content of tooltip p help content of tooltip help content of this component'
-        />
+          body='Content of tooltip help Content help content of this component'
+        >
+          <IconButton
+            color='info'
+            aria-label='info'
+          >
+            <InfoIcon />
+          </IconButton>
+        </Tooltip>
       </Stack>
       <Divider>Message Alerts</Divider>
       <Dialog

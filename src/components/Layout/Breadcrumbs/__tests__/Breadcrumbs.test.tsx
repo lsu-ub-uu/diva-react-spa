@@ -7,8 +7,8 @@ import { Breadcrumbs } from '../Breadcrumbs';
  * @vitest-environment jsdom
  */
 
-describe('Breadcrumbs', () => {
-  test('Breadcrumbs renders', () => {
+describe('<Breadcrumbs />', () => {
+  test('Renders', () => {
     render(
       <MemoryRouter initialEntries={['/page1/page1_1']}>
         <Breadcrumbs />
@@ -18,7 +18,7 @@ describe('Breadcrumbs', () => {
     const breads = screen.getByText('page1_1');
     expect(breads).toBeInTheDocument();
   });
-  test('Breadcrumbs can take the user back to home page', () => {
+  test('can take the user back to home page', () => {
     render(
       <MemoryRouter initialEntries={['/home/page1/page1_1']}>
         <Breadcrumbs />
