@@ -1,7 +1,7 @@
 import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Breadcrumbs } from '../Breadcrumbs';
 import { MemoryRouter } from 'react-router-dom';
+import { Breadcrumbs } from '../Breadcrumbs';
 
 /**
  * @vitest-environment jsdom

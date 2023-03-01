@@ -30,6 +30,7 @@
         "import/prefer-default-export": "off",
         "react/function-component-definition": "off",
         "react/jsx-props-no-spreading": "off",
-        "no-param-reassign": "off"
+        "no-param-reassign": "off",
+        "react/require-default-props": "off"
     }
 }
