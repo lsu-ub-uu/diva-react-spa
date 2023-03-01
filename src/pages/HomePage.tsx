@@ -10,7 +10,6 @@ import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 import { AsidePortal, CustomTooltip, Dialog } from '../components';
 import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
 
-
 export const HomePage = () => {
   const { t } = useTranslation();
 
