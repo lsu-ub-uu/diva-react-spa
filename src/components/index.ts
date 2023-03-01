@@ -4,3 +4,4 @@ export { Section } from './Section/Section';
 export { AsidePortal } from './AsidePortal/AsidePortal';
 export { Tooltip } from './Tooltip/Tooltip';
 export { Dialog } from './Dialog/Dialog';
+export { Backdrop } from './Backdrop/Backdrop';
