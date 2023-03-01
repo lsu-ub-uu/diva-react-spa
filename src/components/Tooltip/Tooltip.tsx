@@ -9,8 +9,7 @@ import {
   TooltipProps as MuiTooltipProps,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
-import InfoIcon from '@mui/icons-material/Info';
+import React, { ReactElement, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
@@ -22,7 +21,7 @@ const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
 ))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
     padding: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
     color: 'rgba(0, 0, 0, 1)',
     minhHeight: 200,
     minWidth: 200,
@@ -41,12 +40,15 @@ const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
   },
 }));
 
-interface CustomTooltipProps {
+interface TooltipProps {
   title: string;
   body: string;
+  children: ReactElement;
 }
 
-interface ContentProps extends CustomTooltipProps {
+interface ContentProps {
+  title: string;
+  body: string;
   onClose: () => void;
 }
 
@@ -81,7 +83,7 @@ const Content = (props: ContentProps) => {
   );
 };
 
-export const Tooltip = (props: CustomTooltipProps) => {
+export const Tooltip = (props: TooltipProps) => {
   const [open, setOpen] = useState(false);
 
   const handleTooltipClose = () => {
@@ -101,6 +103,7 @@ export const Tooltip = (props: CustomTooltipProps) => {
             disablePortal: true,
           }}
           onClose={handleTooltipClose}
+          onClick={handleTooltipToggle}
           open={open}
           disableFocusListener
           disableHoverListener
@@ -112,13 +115,7 @@ export const Tooltip = (props: CustomTooltipProps) => {
             />
           }
         >
-          <IconButton
-            color='info'
-            aria-label='todo aria label'
-            onClick={handleTooltipToggle}
-          >
-            <InfoIcon />
-          </IconButton>
+          {props.children}
         </StyledTooltip>
       </div>
     </ClickAwayListener>
