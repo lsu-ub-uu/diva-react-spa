@@ -7,7 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
-import { AsidePortal, CustomTooltip, Dialog } from '../components';
+import { AsidePortal, Dialog, Tooltip } from '../components';
 import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
 
 export const HomePage = () => {
@@ -81,9 +81,9 @@ export const HomePage = () => {
         direction='row'
         spacing={2}
       >
-        <CustomTooltip
+        <Tooltip
           title='A title for the tooltip'
-          body='Content of tooltip help content of tooltip help content of tooltip p help content of tooltip help content of this component'
+          body='Content of tooltip help content of tooltip help content of  content of tooltip help content of  Content  Content  content of tooltip help content of  Content  of tooltip help content of tooltip help content of  Content of tooltip help content of tooltip help content of  Content of tooltip help content of tooltip help content of Content of tooltip help content of tooltip help content of tooltip p help content of tooltip help content of this component'
         />
       </Stack>
       <Divider>Message Alerts</Divider>

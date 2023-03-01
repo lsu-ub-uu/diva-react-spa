@@ -4,17 +4,17 @@ import {
   ClickAwayListener,
   IconButton,
   Theme,
-  Tooltip,
+  Tooltip as MuiTooltip,
   tooltipClasses,
-  TooltipProps,
+  TooltipProps as MuiTooltipProps,
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 
-const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip
+const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
+  <MuiTooltip
     arrow
     {...props}
     classes={{ popper: className }}
@@ -24,9 +24,9 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
     padding: 16,
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     color: 'rgba(0, 0, 0, 1)',
-    height: 200,
-    width: 400,
-    maxWidth: 600,
+    minhHeight: 200,
+    minWidth: 200,
+    maxWidth: 400,
     fontSize: 16,
     border: '2px solid #2988D1',
     borderRadius: 8,
@@ -81,7 +81,7 @@ const Content = (props: ContentProps) => {
   );
 };
 
-export const CustomTooltip = (props: CustomTooltipProps) => {
+export const Tooltip = (props: CustomTooltipProps) => {
   const [open, setOpen] = useState(false);
 
   const handleTooltipClose = () => {
