@@ -1,6 +1,26 @@
-import { Box, Button, LinearProgress, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  LinearProgress,
+  linearProgressClasses,
+  Stack,
+  styled,
+  Typography,
+} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
+const StyledLinearProgress = styled(LinearProgress)(() => ({
+  height: 10,
+  borderRadius: 5,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: '#eee',
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 5,
+    backgroundColor: '#1a90ff',
+  },
+}));
 
 const UploadProgress = () => {
   const [progress, setProgress] = useState<number>(0);
@@ -14,7 +34,7 @@ const UploadProgress = () => {
         const diff = Math.random() * 10;
         return Math.min(oldProgress + diff, 100);
       });
-    }, 500);
+    }, 600);
 
     return () => {
       clearInterval(timer);
@@ -24,9 +44,9 @@ const UploadProgress = () => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Box sx={{ width: '100%', mr: 1 }}>
-        <LinearProgress
+        <StyledLinearProgress
           variant='determinate'
-          color='info'
+          color='primary'
           value={progress}
         />
       </Box>
