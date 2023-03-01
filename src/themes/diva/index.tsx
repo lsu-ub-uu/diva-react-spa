@@ -33,5 +33,16 @@ export const divaTheme = createTheme({
         disableRipple: true,
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          borderColor: '#000',
+          borderWidth: 3,
+          '&:hover': {
+            borderWidth: 3,
+          },
+        },
+      },
+    },
   },
 });
