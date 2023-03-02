@@ -26,7 +26,7 @@ export const Backdrop = () => {
         variant='contained'
         onClick={handleToggle}
       >
-        spinner loader backdrop
+        Show the loader backdrop
       </Button>
       <MuiBackdrop
         sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
