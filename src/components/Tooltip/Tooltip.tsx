@@ -3,6 +3,7 @@ import {
   Box,
   ClickAwayListener,
   IconButton,
+  Theme,
   Tooltip,
   tooltipClasses,
   TooltipProps,
@@ -52,10 +53,18 @@ interface ContentProps extends CustomTooltipProps {
 const Content = (props: ContentProps) => {
   return (
     <Box>
-      <CloseIcon
-        sx={{ float: 'right' }}
+      <IconButton
+        aria-label='close'
         onClick={props.onClose}
-      />
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme: Theme) => theme.palette.info.main,
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
       <Typography
         variant='h6'
         sx={{ fontWeight: 700 }}
