@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-const URL = 'http://localhost:5174';
+const URL = `${window.location.protocol}//${window.location.host}`;
 
 export const handlers = [
   rest.get(`${URL}/fake-persons`, (req, res, ctx) => {
