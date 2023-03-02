@@ -41,7 +41,6 @@ beforeAll(async () => {
   await setupI18nEnvironment();
 });
 
-
 describe('I18n', () => {
   test('Can render a component with translation hook', () => {
     render(
@@ -54,7 +53,7 @@ describe('I18n', () => {
     expect(translatedText).toHaveTextContent('Welcome to the DiVA tests');
   });
   test('Can change language to swedish', async () => {
-    await i18n.changeLanguage('sv')
+    await i18n.changeLanguage('sv');
     render(
       <I18nextProvider i18n={i18n}>
         <ComponentWithTranslation />
