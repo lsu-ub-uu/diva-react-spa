@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   LinearProgress,
@@ -7,8 +8,9 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import axios from 'axios';
 
 const StyledLinearProgress = styled(LinearProgress)(() => ({
   height: 10,
@@ -22,24 +24,20 @@ const StyledLinearProgress = styled(LinearProgress)(() => ({
   },
 }));
 
-const UploadProgress = () => {
+interface UploadProgressProps {
+  currentProgress: number;
+}
+
+const axiosInstance = axios.create({
+  baseURL: `${window.location.protocol}//${window.location.host}`,
+});
+
+const UploadProgress = (props: UploadProgressProps) => {
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0;
-        }
-        const diff = Math.random() * 10;
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 600);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+    setProgress(props.currentProgress);
+  }, [props.currentProgress]);
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -62,26 +60,59 @@ const UploadProgress = () => {
 
 export const FileUpload = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [progress, setProgress] = useState<number>(0);
+  const [filename, setFilename] = useState<string>('');
+
+  const handleSubmit = async (files: FileList) => {
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    setFilename(files[0].name);
+    setProgress(75);
+    await axiosInstance.post('/upload-file', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: (data) => {
+        setProgress(Math.round((100 * data.loaded) / (data.total ?? 100)));
+      },
+    });
+    setProgress(100);
+  };
 
   return (
-    <Stack spacing={2}>
-      <input
-        type='file'
-        ref={inputRef}
-        /* onChange={(event) => console.log(event)} */
-        multiple={false}
-        style={{ display: 'none' }}
-      />
-      <Button
-        disableRipple
-        color='primary'
-        variant='contained'
-        endIcon={<AddCircleOutlineIcon />}
-        onClick={(): void => inputRef.current?.click()}
-      >
-        Choose file to upload
-      </Button>
-      <UploadProgress />
-    </Stack>
+    <Box sx={{ marginBottom: 10 }}>
+      <Stack spacing={2}>
+        <input
+          type='file'
+          ref={inputRef}
+          accept='application/zip, application/pdf'
+          onChange={async (event) => {
+            const files = event.currentTarget?.files;
+            if (files !== null && files.length > 0) {
+              await handleSubmit(files);
+            }
+          }}
+          multiple={false}
+          style={{ display: 'none' }}
+        />
+        <Button
+          disabled={progress > 0 && progress < 100}
+          disableRipple
+          color='primary'
+          variant='contained'
+          endIcon={<AddCircleOutlineIcon />}
+          onClick={(): void => inputRef.current?.click()}
+        >
+          Choose file to upload
+        </Button>
+        {progress === 100 ? (
+          <Alert severity='info'>
+            File <i>{filename}</i> was successfully uploaded
+          </Alert>
+        ) : (
+          <UploadProgress currentProgress={progress} />
+        )}
+      </Stack>
+    </Box>
   );
 };

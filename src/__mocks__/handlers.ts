@@ -510,6 +510,9 @@ export const handlers = [
       ]),
     );
   }),
+  rest.post('/upload-file', (_req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
   rest.get(`${URL}/*`, (req) => {
     return req.passthrough();
   }),
