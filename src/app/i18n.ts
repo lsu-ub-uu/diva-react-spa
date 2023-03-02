@@ -28,3 +28,5 @@ i18n
     },
   })
   .then();
+
+export default i18n;
