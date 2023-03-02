@@ -11,13 +11,18 @@ import {
   IconButton,
   Stack,
   Typography,
+  Step,
+  StepLabel,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 import { AsidePortal, Backdrop, Dialog, Tooltip } from '../components';
-import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
+import {
+  HorizontalStepper,
+  StepIcon,
+} from '../components/HorizontalStepper/HorizontalStepper';
 import { FileUpload } from '../components/FileUpload/FileUpload';
 import { FormStepper } from '../components/FormStepper/FormStepper';
 
@@ -41,7 +46,22 @@ export const HomePage = () => {
       <Divider>{t('Tabs')}</Divider>
       <TabsMenu />
       <Divider>{t('Steppers')}</Divider>
-      <FormPageStepper />
+      <HorizontalStepper activeStep={1}>
+        <Step key='Fyll i uppgifter'>
+          <StepLabel StepIconComponent={StepIcon}>Fyll i uppgifter</StepLabel>
+        </Step>
+        <Step key='Ladda upp filer'>
+          <StepLabel StepIconComponent={StepIcon}>Ladda upp filer</StepLabel>
+        </Step>
+        <Step key='Granska & publicera'>
+          <StepLabel StepIconComponent={StepIcon}>
+            Granska & publicera
+          </StepLabel>
+        </Step>
+        <Step key='Granska & publicera2'>
+          <StepLabel StepIconComponent={StepIcon}>Preview</StepLabel>
+        </Step>
+      </HorizontalStepper>
       <FormStepper
         steps={[
           'Publikationstyp',
