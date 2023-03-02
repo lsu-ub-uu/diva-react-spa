@@ -25,6 +25,7 @@
     "@reduxjs/toolkit": "^1.9.3",
     "@types/react-router-dom": "^5.3.3",
     "i18next": "^22.4.10",
+    "i18next-browser-languagedetector": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.1.5",
