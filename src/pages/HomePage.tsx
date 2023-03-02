@@ -19,6 +19,7 @@ import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 import { AsidePortal, Backdrop, Dialog, Tooltip } from '../components';
 import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
 import { FileUpload } from '../components/FileUpload/FileUpload';
+import { FormStepper } from '../components/FormStepper/FormStepper';
 
 export const HomePage = () => {
   const { t } = useTranslation();
