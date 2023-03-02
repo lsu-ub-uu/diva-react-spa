@@ -1,10 +1,12 @@
 import { AppThunk } from '../../app/store';
 import { hasError, update, updating } from './dummySlice';
 
+const URL = `${window.location.protocol}//${window.location.host}`;
+
 export const loadDummyDataAsync = (): AppThunk => async (dispatch) => {
   try {
     dispatch(updating());
-    const url = 'http://localhost:5174/fake-persons';
+    const url = `${URL}/fake-persons`;
     const response = await fetch(url);
     const data = await response.json();
     dispatch(update(data));
