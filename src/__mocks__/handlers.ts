@@ -510,7 +510,7 @@ export const handlers = [
       ]),
     );
   }),
-  rest.get(`${URL}/*`, (req, res, ctx) => {
+  rest.get(`${URL}/*`, (req) => {
     return req.passthrough();
   }),
 ];
