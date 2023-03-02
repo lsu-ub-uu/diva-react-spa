@@ -4,17 +4,16 @@ import {
   ClickAwayListener,
   IconButton,
   Theme,
-  Tooltip,
+  Tooltip as MuiTooltip,
   tooltipClasses,
-  TooltipProps,
+  TooltipProps as MuiTooltipProps,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
-import InfoIcon from '@mui/icons-material/Info';
+import React, { ReactElement, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
-const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip
+const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
+  <MuiTooltip
     arrow
     {...props}
     classes={{ popper: className }}
@@ -22,11 +21,11 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
 ))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
     padding: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
     color: 'rgba(0, 0, 0, 1)',
-    height: 200,
-    width: 400,
-    maxWidth: 600,
+    minhHeight: 200,
+    minWidth: 200,
+    maxWidth: 400,
     fontSize: 16,
     border: '2px solid #2988D1',
     borderRadius: 8,
@@ -41,12 +40,15 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
-interface CustomTooltipProps {
+interface TooltipProps {
   title: string;
   body: string;
+  children: ReactElement;
 }
 
-interface ContentProps extends CustomTooltipProps {
+interface ContentProps {
+  title: string;
+  body: string;
   onClose: () => void;
 }
 
@@ -81,7 +83,7 @@ const Content = (props: ContentProps) => {
   );
 };
 
-export const CustomTooltip = (props: CustomTooltipProps) => {
+export const Tooltip = (props: TooltipProps) => {
   const [open, setOpen] = useState(false);
 
   const handleTooltipClose = () => {
@@ -101,6 +103,7 @@ export const CustomTooltip = (props: CustomTooltipProps) => {
             disablePortal: true,
           }}
           onClose={handleTooltipClose}
+          onClick={handleTooltipToggle}
           open={open}
           disableFocusListener
           disableHoverListener
@@ -112,13 +115,7 @@ export const CustomTooltip = (props: CustomTooltipProps) => {
             />
           }
         >
-          <IconButton
-            color='info'
-            aria-label='todo aria label'
-            onClick={handleTooltipToggle}
-          >
-            <InfoIcon />
-          </IconButton>
+          {props.children}
         </StyledTooltip>
       </div>
     </ClickAwayListener>

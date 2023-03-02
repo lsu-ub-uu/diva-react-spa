@@ -1,15 +1,24 @@
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Alert, Divider, Grid, Stack, Typography } from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import InfoIcon from '@mui/icons-material/Info';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import {
+  Alert,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
-import { AsidePortal, CustomTooltip, DivaDialog } from '../components';
+import { AsidePortal, Backdrop, Dialog, Tooltip } from '../components';
 import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
-import { FormStepper } from '../components/FormStepper/FormStepper';
+import { FileUpload } from '../components/FileUpload/FileUpload';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -53,6 +62,12 @@ export const HomePage = () => {
           item
           xs={12}
         >
+          <FileUpload />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+        >
           <Button
             disableRipple
             variant='contained'
@@ -68,8 +83,9 @@ export const HomePage = () => {
           xs={12}
         >
           <Button
+            disableRipple
             variant='outlined'
-            startIcon={<DeleteIcon />}
+            startIcon={<ContentCopyIcon />}
           >
             Outline Button with prefix icon
           </Button>
@@ -78,13 +94,33 @@ export const HomePage = () => {
           item
           xs={12}
         >
-          <Button variant='outlined'>Outlined Button</Button>
+          <Button
+            disableRipple
+            variant='outlined'
+            endIcon={<PersonAddIcon />}
+          >
+            Fetch user data
+          </Button>
         </Grid>
         <Grid
           item
           xs={12}
         >
-          <Button endIcon={<AddCircleOutlineIcon />}>
+          <Button
+            disableRipple
+            variant='outlined'
+          >
+            Outlined Button
+          </Button>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+        >
+          <Button
+            disableRipple
+            endIcon={<AddCircleOutlineIcon />}
+          >
             Link action with icon
           </Button>
         </Grid>
@@ -94,14 +130,41 @@ export const HomePage = () => {
         direction='row'
         spacing={2}
       >
-        <CustomTooltip
+        <Tooltip
           title='A title for the tooltip'
-          body='Content of tooltip help content of tooltip help content of tooltip p help content of tooltip help content of this component'
-        />
+          body='Content of tooltip help Content help content of this component'
+        >
+          <IconButton
+            disableRipple
+            color='info'
+            aria-label='info'
+          >
+            <InfoIcon />
+          </IconButton>
+        </Tooltip>
       </Stack>
       <Divider>Message Alerts</Divider>
-      <DivaDialog />
+
       <Stack spacing={2}>
+        <Dialog
+          closeButton
+          open={false}
+          title='Test dialog title'
+          actions={[
+            <Button
+              to='/users'
+              component={RouterLink}
+              variant='outlined'
+              key='test-button'
+              endIcon={<ArrowForwardIcon />}
+            >
+              Goto homepage
+            </Button>,
+          ]}
+        >
+          this is the content
+        </Dialog>
+        <Backdrop />
         <Alert severity='error'>This is an error alert</Alert>
         <Alert severity='warning'>This is a warning alert</Alert>
         <Alert severity='info'>This is an info alert</Alert>
@@ -109,12 +172,6 @@ export const HomePage = () => {
       </Stack>
       <Divider>Typography - (Helvetica)</Divider>
       <Stack spacing={2}>
-        <Typography
-          variant='h1'
-          gutterBottom
-        >
-          h1. Heading
-        </Typography>
         <Typography
           variant='h2'
           gutterBottom
