@@ -74,17 +74,13 @@ export const HomePage = () => {
           'Anmärkning',
         ]}
       />
+      <Divider>File uploader</Divider>
+      <FileUpload />
       <Divider>Buttons</Divider>
       <Grid
         container
-        spacing={2}
+        spacing={3}
       >
-        <Grid
-          item
-          xs={12}
-        >
-          <FileUpload />
-        </Grid>
         <Grid
           item
           xs={12}
@@ -96,7 +92,7 @@ export const HomePage = () => {
             to='/users'
             endIcon={<ArrowForwardIcon />}
           >
-            List dummy users
+            List persons
           </Button>
         </Grid>
         <Grid
@@ -142,7 +138,7 @@ export const HomePage = () => {
             disableRipple
             endIcon={<AddCircleOutlineIcon />}
           >
-            Link action with icon
+            Link with icon at the end
           </Button>
         </Grid>
       </Grid>
@@ -165,7 +161,6 @@ export const HomePage = () => {
         </Tooltip>
       </Stack>
       <Divider>Message Alerts</Divider>
-
       <Stack spacing={2}>
         <Dialog
           closeButton

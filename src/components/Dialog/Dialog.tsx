@@ -83,6 +83,7 @@ export const Dialog = (props: DialogProps) => {
   return (
     <div>
       <Button
+        disableRipple
         variant='outlined'
         onClick={handleClickOpen}
       >
