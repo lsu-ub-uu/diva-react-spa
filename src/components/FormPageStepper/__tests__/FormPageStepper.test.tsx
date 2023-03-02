@@ -6,7 +6,7 @@ import { FormPageStepper } from '../FormPageStepper';
 /**
  * @vitest-environment jsdom
  */
-describe('FormPageStepper', () => {
+describe('<FormPageStepper />', () => {
   test('It renders the steps of the form', () => {
     render(<FormPageStepper />);
 
