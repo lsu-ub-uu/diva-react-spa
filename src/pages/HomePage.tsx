@@ -9,6 +9,7 @@ import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 import { AsidePortal, CustomTooltip } from '../components';
 import { FormPageStepper } from '../components/FormPageStepper/FormPageStepper';
+import { FormStepper } from '../components/FormStepper/FormStepper';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -31,6 +32,18 @@ export const HomePage = () => {
       <TabsMenu />
       <Divider>{t('Steppers')}</Divider>
       <FormPageStepper />
+      <FormStepper
+        steps={[
+          'Publikationstyp',
+          'Författare',
+          'Konferens',
+          'Identifikationer',
+          'Ingår i projekt',
+          'Nyckelord',
+          'Abstrakt',
+          'Anmärkning',
+        ]}
+      />
       <Divider>Buttons</Divider>
       <Grid
         container

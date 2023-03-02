@@ -133,9 +133,6 @@ export const FormPageStepper = () => {
       >
         Gå till nästa steg
       </Button>
-      {/*       <div>
-        <Typography>Step {activeStep + 1}</Typography>
-      </div> */}
     </>
   );
 };
