@@ -58,9 +58,6 @@ export const HomePage = () => {
             Granska & publicera
           </StepLabel>
         </Step>
-        <Step key='Granska & publicera2'>
-          <StepLabel StepIconComponent={StepIcon}>Preview</StepLabel>
-        </Step>
       </HorizontalStepper>
       <FormStepper
         steps={[
