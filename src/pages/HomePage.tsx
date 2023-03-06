@@ -18,7 +18,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
-import { AsidePortal, Backdrop, Dialog, Tooltip } from '../components';
+import { AsidePortal, Dialog, Tooltip, useBackdrop } from '../components';
 import {
   HorizontalStepper,
   StepIcon,
@@ -28,6 +28,7 @@ import { VerticalStepper } from '../components/VerticalStepper/VerticalStepper';
 
 export const HomePage = () => {
   const { t } = useTranslation();
+  const { setBackdrop } = useBackdrop();
 
   return (
     <div>
@@ -178,7 +179,17 @@ export const HomePage = () => {
         >
           this is the content
         </Dialog>
-        <Backdrop />
+        <Button
+          onClick={() => {
+            setBackdrop(true);
+            setTimeout(() => {
+              setBackdrop(false);
+            }, 5000);
+          }}
+          variant='outlined'
+        >
+          Show backdrop for 5 seconds
+        </Button>
         <Alert severity='error'>This is an error alert</Alert>
         <Alert severity='warning'>This is a warning alert</Alert>
         <Alert severity='info'>This is an info alert</Alert>
