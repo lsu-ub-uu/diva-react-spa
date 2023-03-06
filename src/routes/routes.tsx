@@ -1,6 +1,6 @@
 import { useRoutes } from 'react-router-dom';
 import { Layout } from '../components';
-import { HomePage, ListUsersPage } from '../pages';
+import { HomePage, ListUsersPage, FormPage } from '../pages';
 
 export const routes = [
   {
@@ -16,6 +16,10 @@ export const routes = [
         element: <ListUsersPage />,
       },
       { path: '/users/about', element: <div>show about user</div> },
+      {
+        path: '/form',
+        element: <FormPage />,
+      },
       { path: '*', element: <div>404 not found</div> },
     ],
   },
