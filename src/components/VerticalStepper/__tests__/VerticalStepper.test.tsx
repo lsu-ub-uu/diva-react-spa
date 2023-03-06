@@ -1,12 +1,12 @@
 import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FormStepper } from '../FormStepper';
+import { VerticalStepper } from '../VerticalStepper';
 
 /**
  * @vitest-environment jsdom
  */
-describe('<FormPageStepper />', () => {
+describe('<VerticalStepper />', () => {
   test('The component renders with steps', () => {
     const steps = [
       'Publikationstyp',
@@ -18,13 +18,13 @@ describe('<FormPageStepper />', () => {
       'Abstrakt',
       'Anmärkning',
     ];
-    render(<FormStepper steps={steps} />);
+    render(<VerticalStepper steps={steps} />);
     const foundSteps = screen.getAllByRole('button');
     expect(foundSteps).toHaveLength(8 + 3); // TODO: remove + 3 when implemented.
   });
   test('The component renders with 3 steps', () => {
     const steps = ['Publikationstyp', 'Författare', 'Konferens'];
-    render(<FormStepper steps={steps} />);
+    render(<VerticalStepper steps={steps} />);
     const foundSteps = screen.getAllByRole('button');
 
     expect(foundSteps).toHaveLength(3 + 3); // TODO: remove + 3 when implemented.
@@ -40,7 +40,7 @@ describe('<FormPageStepper />', () => {
       'Abstrakt',
       'Anmärkning',
     ];
-    render(<FormStepper steps={steps} />);
+    render(<VerticalStepper steps={steps} />);
     const user = userEvent.setup();
     const completeStepButton = screen.getByRole('button', {
       name: 'Complete Step',

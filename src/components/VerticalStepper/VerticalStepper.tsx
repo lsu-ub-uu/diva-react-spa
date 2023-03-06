@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import {
   Box,
   Stepper,
@@ -8,23 +8,13 @@ import {
   Typography,
 } from '@mui/material';
 
-interface FormStepperProps {
+interface VerticalStepperProps {
   steps: string[];
 }
-/* const steps = [
-  'Publikationstyp',
-  'Författare',
-  'Konferens',
-  'Identifikationer',
-  'Ingår i projekt',
-  'Nyckelord',
-  'Abstrakt',
-  'Anmärkning',
-]; */
 
-export const FormStepper = (props: FormStepperProps) => {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState<{
+export const VerticalStepper = (props: VerticalStepperProps) => {
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
 

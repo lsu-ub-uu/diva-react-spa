@@ -98,7 +98,6 @@ describe('<HorizontalStepper />', () => {
         </Step>
       </HorizontalStepper>,
     );
-    screen.debug();
 
     const completedSteps = screen.getAllByTestId('CheckIcon');
     expect(completedSteps).toHaveLength(2);

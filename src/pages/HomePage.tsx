@@ -24,7 +24,7 @@ import {
   StepIcon,
 } from '../components/HorizontalStepper/HorizontalStepper';
 import { FileUpload } from '../components/FileUpload/FileUpload';
-import { FormStepper } from '../components/FormStepper/FormStepper';
+import { VerticalStepper } from '../components/VerticalStepper/VerticalStepper';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -59,7 +59,8 @@ export const HomePage = () => {
           </StepLabel>
         </Step>
       </HorizontalStepper>
-      <FormStepper
+      <VerticalStepper
+        activeStep={0}
         steps={[
           'Publikationstyp',
           'Författare',
