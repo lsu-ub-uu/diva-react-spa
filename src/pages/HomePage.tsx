@@ -25,6 +25,7 @@ import {
 } from '../components/HorizontalStepper/HorizontalStepper';
 import { FileUpload } from '../components/FileUpload/FileUpload';
 import { VerticalStepper } from '../components/VerticalStepper/VerticalStepper';
+import CardDemo from '../components/Card/Card';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -159,6 +160,8 @@ export const HomePage = () => {
           </IconButton>
         </Tooltip>
       </Stack>
+      <Divider>Cards</Divider>
+      <CardDemo />
       <Divider>Message Alerts</Divider>
       <Stack spacing={2}>
         <Dialog
