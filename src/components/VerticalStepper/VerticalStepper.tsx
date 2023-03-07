@@ -1,8 +1,7 @@
-import { ReactNode, useState, cloneElement } from 'react';
+import { ReactNode, useState, cloneElement, ReactElement } from 'react';
 import { Box, Stepper, Button, Typography } from '@mui/material';
 
 interface VerticalStepperProps {
-  steps: string[];
   children: ReactNode[];
 }
 
@@ -14,7 +13,7 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
   console.log(completed);
 
   const totalSteps = () => {
-    return props.steps.length;
+    return props.children.length;
   };
 
   const completedSteps = () => {
@@ -34,7 +33,7 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
           // find the first step that has been completed
-          props.steps.findIndex((step, i) => !(i in completed))
+          props.children.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };
@@ -45,7 +44,6 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
 
   const handleStep = (step: number) => () => {
     setActiveStep(step);
-    console.log(step);
   };
 
   const handleComplete = () => {
@@ -65,13 +63,13 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
       <Stepper
         sx={{
           '& .MuiStepIcon-root': {
-            color: '#613985',
+            color: '#a52727',
           },
           '& .MuiStepLabel-root .Mui-completed': {
-            color: '#ff8800',
+            color: '#c1b3ce',
           },
           '& .MuiStepLabel-root .Mui-active': {
-            color: '#e90e20',
+            color: '#613985',
           },
         }}
         orientation='vertical'
@@ -79,7 +77,11 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
         activeStep={activeStep}
       >
         {props.children?.map((step, i) => {
-          return cloneElement(step, { onClick: handleStep(i) });
+          return cloneElement(step as ReactElement, {
+            onClick: handleStep(i),
+            completed: completed[i],
+            key: `step-${i}`,
+          });
         })}
       </Stepper>
 
@@ -104,7 +106,7 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
             >
               Next
             </Button>
-            {activeStep !== props.steps.length &&
+            {activeStep !== props.children.length &&
               (completed[activeStep] ? (
                 <Typography
                   variant='caption'
