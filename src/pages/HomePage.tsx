@@ -18,7 +18,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
-import { AsidePortal, Dialog, Tooltip, useBackdrop } from '../components';
+import { AsidePortal, Card, Dialog, Tooltip, useBackdrop } from '../components';
 import {
   HorizontalStepper,
   StepIcon,
@@ -159,6 +159,15 @@ export const HomePage = () => {
           </IconButton>
         </Tooltip>
       </Stack>
+      <Divider>Cards</Divider>
+      <Card
+        title='Publications and other stuff'
+        variant='variant1'
+        tooltipTitle='Publications help'
+        tooltipBody='Publications help body text tooltip'
+      >
+        Lorem ipsum dolor sit amet
+      </Card>
       <Divider>Message Alerts</Divider>
       <Stack spacing={2}>
         <Dialog

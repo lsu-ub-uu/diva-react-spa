@@ -5,5 +5,6 @@ export { AsidePortal } from './AsidePortal/AsidePortal';
 export { Tooltip } from './Tooltip/Tooltip';
 export { Dialog } from './Dialog/Dialog';
 export { Backdrop } from './Backdrop/Backdrop';
+export { Card } from './Card/Card';
 export { BackdropProvider, useBackdrop } from './Backdrop/BackdropContext';
 export { VerticalStepper } from './VerticalStepper/VerticalStepper';
