@@ -3,9 +3,13 @@ import CardContent from '@mui/material/CardContent';
 import {
   Card as MuiCard,
   CardHeader,
+  Grid,
+  IconButton,
   styled,
 } from '@mui/material';
 import { ReactNode } from 'react';
+import InfoIcon from '@mui/icons-material/Info';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   borderTopLeftRadius: 8,
@@ -22,7 +26,7 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
 
 const StyledCardContent = styled(CardContent)(({ theme }) => {
   return {
-    backgroundColor: '#ececec',
+    backgroundColor: '#fff',
     padding: theme.spacing(4),
     borderRadius: 0,
 
@@ -37,7 +41,31 @@ export interface CardProps {
   title?: string;
   action?: ReactNode;
   variant: 'variant1' | 'variant2';
+  tooltipTitle: string;
+  tooltipBody: string;
 }
+
+export interface InfoButtonProps {
+  title: string;
+  body: string;
+}
+
+const InfoButton = (props: InfoButtonProps) => {
+  return (
+    <Tooltip
+      title={props.title}
+      body={props.body}
+    >
+      <IconButton
+        disableRipple
+        color='info'
+        aria-label='info'
+      >
+        <InfoIcon />
+      </IconButton>
+    </Tooltip>
+  );
+};
 
 export const Card = (props: CardProps) => {
   return (
@@ -49,7 +77,22 @@ export const Card = (props: CardProps) => {
           fontSize: '1.1rem',
           fontWeight: 600,
         }}
-        title={props.title}
+        title={
+          <Grid
+            container
+            direction='row'
+            justifyContent='flex-start'
+            alignItems='center'
+          >
+            <Grid item>{props.title}</Grid>
+            <Grid item>
+              <InfoButton
+                title={props.tooltipTitle}
+                body={props.tooltipBody}
+              />
+            </Grid>
+          </Grid>
+        }
       />
       <StyledCardContent>{props.children}</StyledCardContent>
     </MuiCard>
