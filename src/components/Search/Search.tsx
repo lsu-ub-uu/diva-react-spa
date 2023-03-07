@@ -5,16 +5,12 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 export interface SearchFieldProps {
   placeholderText: string;
-  buttonText: string;
   searchText: string;
   onSubmit?: (value: string) => void;
   onSearchUpdated?: (value: string) => void;
 }
 
 const SearchTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
-  'label + &': {
-    marginTop: theme.spacing(4),
-  },
   backgroundColor: '#fff',
   height: '2rem',
   width: '100%',
@@ -25,10 +21,6 @@ const SearchTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
 }));
 
 const SearchBox = styled(Box)<TextFieldProps>(({ theme }) => ({
-  display: 'flex',
-  flexWrap: 'nowrap',
-  m: 0,
-  p: 1,
   width: '100%',
   [theme.breakpoints.down('sm')]: {
     width: '100%',

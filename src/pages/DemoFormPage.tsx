@@ -51,6 +51,7 @@ export const DemoFormPage = () => {
         <FormControl
           variant='standard'
           fullWidth
+          sx={{ m: 1 }}
         >
           <StyledInputLabel
             size='normal'
@@ -70,9 +71,14 @@ export const DemoFormPage = () => {
             defaultValue='default'
             id='some-input'
           />
+        </FormControl>
+        <FormControl
+          variant='standard'
+          fullWidth
+          sx={{ m: 1 }}
+        >
           <Search
             onSubmit={(search) => console.log(search)}
-            buttonText='btn'
             placeholderText='Search here'
             searchText='search text'
           />
