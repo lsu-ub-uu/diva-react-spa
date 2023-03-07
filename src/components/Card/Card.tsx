@@ -1,9 +1,16 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { CardHeader, IconButton, styled } from '@mui/material';
+import {
+  Card as MuiCard,
+  CardHeader,
+  IconButton,
+  styled,
+  SxProps,
+  Theme,
+} from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
+import { ReactNode } from 'react';
 
 const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   borderTopLeftRadius: 8,
@@ -11,8 +18,9 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   borderBottomLeftRadius: 0,
   borderBottomRightRadius: 0,
   backgroundColor: '#d6e7f3',
-  mx: theme.spacing(4),
-  py: theme.spacing(1),
+  paddingTop: theme.spacing(1),
+  paddingLeft: theme.spacing(4),
+  paddingBottom: theme.spacing(1),
   minHeight: theme.spacing(1 / 2),
   borderBottom: '2px solid #5388c0',
 }));
@@ -29,20 +37,28 @@ const StyledCardContent = styled(CardContent)(({ theme }) => {
   };
 });
 
-export default function CardDemo() {
+export interface CardProps {
+  children?: ReactNode;
+  title?: string;
+}
+
+export const Card = (props: CardProps) => {
   return (
-    <Card sx={{ maxWidth: '100%', borderRadius: 0 }}>
+    <MuiCard sx={{ maxWidth: '100%', borderRadius: 0 }}>
       <StyledCardHeader
         action={
           <IconButton aria-label='settings'>
             <ShareIcon />
           </IconButton>
         }
-        title={<Typography variant='h5'>Card header</Typography>}
+        titleTypographyProps={{
+          variant: 'h5',
+          fontSize: '1.1rem',
+          fontWeight: 600,
+        }}
+        title={props.title}
       />
-      <StyledCardContent>
-        <Typography variant='body1'>Card content can be anything</Typography>
-      </StyledCardContent>
-    </Card>
+      <StyledCardContent>{props.children}</StyledCardContent>
+    </MuiCard>
   );
-}
+};

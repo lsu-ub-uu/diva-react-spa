@@ -18,14 +18,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
-import { AsidePortal, Dialog, Tooltip, useBackdrop } from '../components';
+import { AsidePortal, Card, Dialog, Tooltip, useBackdrop } from '../components';
 import {
   HorizontalStepper,
   StepIcon,
 } from '../components/HorizontalStepper/HorizontalStepper';
 import { FileUpload } from '../components/FileUpload/FileUpload';
 import { VerticalStepper } from '../components/VerticalStepper/VerticalStepper';
-import CardDemo from '../components/Card/Card';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -161,7 +160,7 @@ export const HomePage = () => {
         </Tooltip>
       </Stack>
       <Divider>Cards</Divider>
-      <CardDemo />
+      <Card title='Publications'>the content goes here</Card>
       <Divider>Message Alerts</Divider>
       <Stack spacing={2}>
         <Dialog
