@@ -160,7 +160,13 @@ export const HomePage = () => {
         </Tooltip>
       </Stack>
       <Divider>Cards</Divider>
-      <Card title='Publications'>the content goes here</Card>
+      <Card
+        title='Publications'
+        variant="variant1"
+        action={<span>test</span>}
+      >
+        the content goes here
+      </Card>
       <Divider>Message Alerts</Divider>
       <Stack spacing={2}>
         <Dialog
