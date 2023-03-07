@@ -1,15 +1,9 @@
-import { useState } from 'react';
-import {
-  Box,
-  Stepper,
-  Step,
-  StepButton,
-  Button,
-  Typography,
-} from '@mui/material';
+import { ReactNode, useState, cloneElement } from 'react';
+import { Box, Stepper, Button, Typography } from '@mui/material';
 
 interface VerticalStepperProps {
   steps: string[];
+  children: ReactNode[];
 }
 
 export const VerticalStepper = (props: VerticalStepperProps) => {
@@ -17,6 +11,7 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
+  console.log(completed);
 
   const totalSteps = () => {
     return props.steps.length;
@@ -50,6 +45,7 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
 
   const handleStep = (step: number) => () => {
     setActiveStep(step);
+    console.log(step);
   };
 
   const handleComplete = () => {
@@ -72,30 +68,19 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
             color: '#613985',
           },
           '& .MuiStepLabel-root .Mui-completed': {
-            color: '#613985',
+            color: '#ff8800',
           },
           '& .MuiStepLabel-root .Mui-active': {
-            color: '#613985',
+            color: '#e90e20',
           },
         }}
         orientation='vertical'
         nonLinear
         activeStep={activeStep}
       >
-        {props.steps.map((label, index) => (
-          <Step
-            sx={{}}
-            key={label}
-            completed={completed[index]}
-          >
-            <StepButton
-              color='inherit'
-              onClick={handleStep(index)}
-            >
-              {label}
-            </StepButton>
-          </Step>
-        ))}
+        {props.children?.map((step, i) => {
+          return cloneElement(step, { onClick: handleStep(i) });
+        })}
       </Stepper>
 
       <div>

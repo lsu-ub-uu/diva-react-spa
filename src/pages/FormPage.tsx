@@ -1,6 +1,7 @@
-import { Box } from '@mui/material';
+import { Box, Step, StepButton } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { AsidePortal, VerticalStepper } from '../components';
+import { handleStep } from '../components/VerticalStepper/VerticalStepper';
 
 export const FormPage = () => {
   const [headingsList, setHeadingsList] = useState<string[]>([]);
@@ -17,7 +18,32 @@ export const FormPage = () => {
   return (
     <Box sx={{ height: '100vh', width: '100%' }}>
       <AsidePortal>
-        <VerticalStepper steps={headingsList} />
+        <VerticalStepper steps={headingsList}>
+          <Step key='Publikationstyp'>
+            <StepButton>Publikationstyp</StepButton>
+          </Step>
+          <Step key='FTest'>
+            <StepButton>Test</StepButton>
+          </Step>
+          <Step key='Konferens'>
+            <StepButton>Konferens</StepButton>
+          </Step>
+          <Step key='Identifikationer'>
+            <StepButton>Identifikationer</StepButton>
+          </Step>
+          <Step key='Ingår i projekt'>
+            <StepButton>Ingår i projekt</StepButton>
+          </Step>
+          <Step key='Nyckelord'>
+            <StepButton>Nyckelord</StepButton>
+          </Step>
+          <Step key='Abstrakt'>
+            <StepButton>Abstrakt</StepButton>
+          </Step>
+          <Step key='Anmärkning'>
+            <StepButton>Anmärkning</StepButton>
+          </Step>
+        </VerticalStepper>
       </AsidePortal>
       <div>
         <h2>Publikationstyp</h2>
