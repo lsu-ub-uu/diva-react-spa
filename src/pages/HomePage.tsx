@@ -60,8 +60,7 @@ export const HomePage = () => {
           </StepLabel>
         </Step>
       </HorizontalStepper>
-      <VerticalStepper
-        activeStep={0}
+      {/* <VerticalStepper
         steps={[
           'Publikationstyp',
           'Författare',
@@ -72,7 +71,7 @@ export const HomePage = () => {
           'Abstrakt',
           'Anmärkning',
         ]}
-      />
+      /> */}
       <Divider>File uploader</Divider>
       <FileUpload />
       <Divider>Buttons</Divider>

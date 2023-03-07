@@ -1,15 +1,11 @@
-import { useState } from 'react';
-import {
-  Box,
-  Stepper,
-  Step,
-  StepButton,
-  Button,
-  Typography,
-} from '@mui/material';
+import { ReactNode, useState, cloneElement, ReactElement, useRef } from 'react';
+import { Box, Stepper, Button, Typography, styled } from '@mui/material';
+import { StepIconProps } from '@mui/material/StepIcon';
+import CircleIcon from '@mui/icons-material/Circle';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 
 interface VerticalStepperProps {
-  steps: string[];
+  children: ReactNode[];
 }
 
 export const VerticalStepper = (props: VerticalStepperProps) => {
@@ -19,7 +15,7 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
   }>({});
 
   const totalSteps = () => {
-    return props.steps.length;
+    return props.children.length;
   };
 
   const completedSteps = () => {
@@ -39,7 +35,7 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
           // find the first step that has been completed
-          props.steps.findIndex((step, i) => !(i in completed))
+          props.children.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };
@@ -68,34 +64,44 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
     <Box sx={{ width: '100%' }}>
       <Stepper
         sx={{
-          '& .MuiStepIcon-root': {
-            color: '#613985',
+          '.MuiSvgIcon-root': {
+            margin: '-1px',
+            borderRadius: '50%',
+            border: '3px solid #613985',
           },
-          '& .MuiStepLabel-root .Mui-completed': {
-            color: '#613985',
+          '.MuiSvgIcon-root:not(.Mui-completed)': {
+            color: 'white',
           },
-          '& .MuiStepLabel-root .Mui-active': {
+          '.MuiStepIcon-text': {
+            fill: '#613985',
+            display: 'none',
+          },
+          '.MuiSvgIcon-root.Mui-active': {
             color: '#613985',
+
+            borderRadius: '50%',
+            border: '3px solid #613985',
+          },
+          '.Mui-active .MuiStepIcon-text': {
+            fill: 'white',
+          },
+          '.MuiSvgIcon-root.Mui-completed': {
+            color: '#c1b3ce',
+            borderRadius: '50%',
+            border: '3px solid #c1b3ce',
           },
         }}
         orientation='vertical'
         nonLinear
         activeStep={activeStep}
       >
-        {props.steps.map((label, index) => (
-          <Step
-            sx={{}}
-            key={label}
-            completed={completed[index]}
-          >
-            <StepButton
-              color='inherit'
-              onClick={handleStep(index)}
-            >
-              {label}
-            </StepButton>
-          </Step>
-        ))}
+        {props.children?.map((step, i) => {
+          return cloneElement(step as ReactElement, {
+            onClick: handleStep(i),
+            completed: completed[i],
+            key: `step-${i}`,
+          });
+        })}
       </Stepper>
 
       <div>
@@ -119,7 +125,7 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
             >
               Next
             </Button>
-            {activeStep !== props.steps.length &&
+            {activeStep !== props.children.length &&
               (completed[activeStep] ? (
                 <Typography
                   variant='caption'
