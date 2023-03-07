@@ -1,7 +1,10 @@
 import {
   FormControl,
+  FormControlLabel,
   FormLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   TextField,
 } from '@mui/material';
@@ -49,7 +52,10 @@ export const DemoFormPage = () => {
             searchText='search text'
           />
         </FormControl>
-        <FormControl fullWidth>
+        <FormControl
+          fullWidth
+          sx={{ mb: 2 }}
+        >
           <FormLabel>Choose something</FormLabel>
           {/* eslint-disable-next-line react/no-unstable-nested-components */}
           <Select IconComponent={(props) => <ExpandMoreIcon {...props} />}>
@@ -72,6 +78,32 @@ export const DemoFormPage = () => {
               Test
             </MenuItem>
           </Select>
+        </FormControl>
+        <FormControl>
+          <FormLabel id='demo-radio-buttons-group-label'>
+            Radio options
+          </FormLabel>
+          <RadioGroup
+            aria-labelledby='demo-radio-buttons-group-label'
+            defaultValue='female'
+            name='radio-buttons-group'
+          >
+            <FormControlLabel
+              value='female'
+              control={<Radio disableRipple />}
+              label='Female'
+            />
+            <FormControlLabel
+              value='male'
+              control={<Radio disableRipple />}
+              label='Male'
+            />
+            <FormControlLabel
+              value='other'
+              control={<Radio disableRipple />}
+              label='Other'
+            />
+          </RadioGroup>
         </FormControl>
       </Card>
     </div>
