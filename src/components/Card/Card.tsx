@@ -26,7 +26,7 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
 
 const StyledCardContent = styled(CardContent)(({ theme }) => {
   return {
-    backgroundColor: '#fff',
+    backgroundColor: '#eee',
     padding: theme.spacing(4),
     borderRadius: 0,
 

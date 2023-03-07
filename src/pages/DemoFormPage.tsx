@@ -30,6 +30,7 @@ export const DemoFormPage = () => {
             Label for input
           </FormLabel>
           <TextField
+            variant='outlined'
             error
             required
             placeholder='placeholder'
