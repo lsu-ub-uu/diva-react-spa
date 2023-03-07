@@ -1,5 +1,8 @@
-import { ReactNode, useState, cloneElement, ReactElement } from 'react';
-import { Box, Stepper, Button, Typography } from '@mui/material';
+import { ReactNode, useState, cloneElement, ReactElement, useRef } from 'react';
+import { Box, Stepper, Button, Typography, styled } from '@mui/material';
+import { StepIconProps } from '@mui/material/StepIcon';
+import CircleIcon from '@mui/icons-material/Circle';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 
 interface VerticalStepperProps {
   children: ReactNode[];
@@ -10,7 +13,6 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
-  console.log(completed);
 
   const totalSteps = () => {
     return props.children.length;
@@ -62,14 +64,31 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
     <Box sx={{ width: '100%' }}>
       <Stepper
         sx={{
-          '& .MuiStepIcon-root': {
-            color: '#a52727',
+          '.MuiSvgIcon-root': {
+            margin: '-1px',
+            borderRadius: '50%',
+            border: '3px solid #613985',
           },
-          '& .MuiStepLabel-root .Mui-completed': {
-            color: '#c1b3ce',
+          '.MuiSvgIcon-root:not(.Mui-completed)': {
+            color: 'white',
           },
-          '& .MuiStepLabel-root .Mui-active': {
+          '.MuiStepIcon-text': {
+            fill: '#613985',
+            display: 'none',
+          },
+          '.MuiSvgIcon-root.Mui-active': {
             color: '#613985',
+
+            borderRadius: '50%',
+            border: '3px solid #613985',
+          },
+          '.Mui-active .MuiStepIcon-text': {
+            fill: 'white',
+          },
+          '.MuiSvgIcon-root.Mui-completed': {
+            color: '#c1b3ce',
+            borderRadius: '50%',
+            border: '3px solid #c1b3ce',
           },
         }}
         orientation='vertical'
