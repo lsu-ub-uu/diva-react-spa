@@ -1,43 +1,13 @@
 import {
   FormControl,
-  IconButton,
-  InputBase,
-  InputLabel as MuiInputLabel,
-  styled,
+  FormLabel,
+  MenuItem,
+  Select,
+  TextField,
 } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
 import React from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Card, Search } from '../components';
-
-const StyledInputLabel = styled(MuiInputLabel)(() => ({
-  '&.MuiInputLabel-root': {
-    fontSize: '1.2rem',
-  },
-}));
-
-const StyledInput = styled(InputBase)(({ theme }) => ({
-  'label + &': {
-    marginTop: theme.spacing(4),
-  },
-  '& .MuiInputBase-input': {
-    width: '100%',
-    borderRadius: 4,
-    position: 'relative',
-    backgroundColor: '#fcfcfb',
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 12px',
-    transition: theme.transitions.create([
-      'border-color',
-      'background-color',
-      'box-shadow',
-    ]),
-    fontFamily: ['Roboto', 'Arial', 'sans-serif'].join(','),
-    '&:focus': {
-      borderColor: theme.palette.primary.main,
-    },
-  },
-}));
 
 export const DemoFormPage = () => {
   return (
@@ -49,39 +19,43 @@ export const DemoFormPage = () => {
         tooltipBody='Publications help body text tooltip'
       >
         <FormControl
-          variant='standard'
           fullWidth
-          sx={{ m: 1 }}
+          sx={{ mb: 2 }}
+          size='small'
         >
-          <StyledInputLabel
-            size='normal'
-            htmlFor='some-input'
+          <FormLabel
+            error
+            required
           >
-            Choose publication
-            <IconButton
-              disableRipple
-              color='info'
-              aria-label='info'
-            >
-              <InfoIcon />
-            </IconButton>
-          </StyledInputLabel>
-          <StyledInput
-            fullWidth
-            defaultValue='default'
-            id='some-input'
+            Label for input
+          </FormLabel>
+          <TextField
+            error
+            required
+            placeholder='placeholder'
+            id='some-id'
+            defaultValue='Hello World'
           />
         </FormControl>
         <FormControl
-          variant='standard'
           fullWidth
-          sx={{ m: 1 }}
+          sx={{ mb: 2 }}
         >
+          <FormLabel>Search</FormLabel>
           <Search
             onSubmit={(search) => console.log(search)}
             placeholderText='Search here'
             searchText='search text'
           />
+        </FormControl>
+        <FormControl fullWidth>
+          <FormLabel>Choose something</FormLabel>
+          {/* eslint-disable-next-line react/no-unstable-nested-components */}
+          <Select IconComponent={(props) => <ExpandMoreIcon {...props} />}>
+            <MenuItem value={10}>Stockholms Universitet</MenuItem>
+            <MenuItem value={20}>Uppsala</MenuItem>
+            <MenuItem value={30}>Test</MenuItem>
+          </Select>
         </FormControl>
       </Card>
     </div>

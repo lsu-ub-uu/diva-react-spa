@@ -21,6 +21,7 @@ const SearchTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
 }));
 
 const SearchBox = styled(Box)<TextFieldProps>(({ theme }) => ({
+  m: 0,
   width: '100%',
   [theme.breakpoints.down('sm')]: {
     width: '100%',
