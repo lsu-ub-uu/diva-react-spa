@@ -100,12 +100,12 @@ export const HorizontalStepper = (props: HorizontalStepperProps) => {
     setActiveStep(props.activeStep);
   }, [props.activeStep]);
 
-  const prev = () => setActiveStep(activeStep > 0 ? activeStep - 1 : 0);
+  // const prev = () => setActiveStep(activeStep > 0 ? activeStep - 1 : 0);
 
-  const next = () =>
+  /* const next = () =>
     setActiveStep(
       activeStep < props.children.length - 1 ? activeStep + 1 : activeStep,
-    );
+    ); */
 
   return (
     <Stepper

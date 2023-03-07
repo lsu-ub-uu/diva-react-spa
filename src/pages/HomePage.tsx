@@ -24,7 +24,6 @@ import {
   StepIcon,
 } from '../components/HorizontalStepper/HorizontalStepper';
 import { FileUpload } from '../components/FileUpload/FileUpload';
-import { VerticalStepper } from '../components/VerticalStepper/VerticalStepper';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -60,18 +59,6 @@ export const HomePage = () => {
           </StepLabel>
         </Step>
       </HorizontalStepper>
-      {/* <VerticalStepper
-        steps={[
-          'Publikationstyp',
-          'Författare',
-          'Konferens',
-          'Identifikationer',
-          'Ingår i projekt',
-          'Nyckelord',
-          'Abstrakt',
-          'Anmärkning',
-        ]}
-      /> */}
       <Divider>File uploader</Divider>
       <FileUpload />
       <Divider>Buttons</Divider>
