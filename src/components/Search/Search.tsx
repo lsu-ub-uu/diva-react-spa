@@ -1,5 +1,5 @@
 import { useEffect, FunctionComponent, ChangeEvent, useState } from 'react';
-import { Box, IconButton, TextField, TextFieldProps } from '@mui/material';
+import { IconButton, TextField, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -11,17 +11,6 @@ export interface SearchFieldProps {
 }
 
 const SearchTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
-  backgroundColor: '#fff',
-  height: '2rem',
-  width: '100%',
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    maxWidth: 'none',
-  },
-}));
-
-const SearchBox = styled(Box)<TextFieldProps>(({ theme }) => ({
-  m: 0,
   width: '100%',
   [theme.breakpoints.down('sm')]: {
     width: '100%',
@@ -61,34 +50,27 @@ export const Search: FunctionComponent<SearchFieldProps> = (
   }, [props.searchText]);
 
   return (
-    <SearchBox>
-      <Box sx={{ width: '100%' }}>
-        <SearchTextField
-          onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
-          autoComplete='off'
-          fullWidth
-          id='search-field'
-          variant='outlined'
-          placeholder={props.placeholderText}
-          value={searchText}
-          onChange={handleChange}
-          InputProps={{
-            endAdornment: (
-              <IconButton
-                sx={{
-                  visibility: searchText.length > 0 ? 'visible' : 'hidden',
-                }}
-                onClick={clear}
-              >
-                <ClearIcon />
-              </IconButton>
-            ),
-            sx: {
-              height: '3rem',
-            },
-          }}
-        />
-      </Box>
-    </SearchBox>
+    <SearchTextField
+      onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
+      autoComplete='off'
+      fullWidth
+      id='search-field'
+      variant='outlined'
+      placeholder={props.placeholderText}
+      value={searchText}
+      onChange={handleChange}
+      InputProps={{
+        endAdornment: (
+          <IconButton
+            sx={{
+              visibility: searchText.length > 0 ? 'visible' : 'hidden',
+            }}
+            onClick={clear}
+          >
+            <ClearIcon />
+          </IconButton>
+        ),
+      }}
+    />
   );
 };
