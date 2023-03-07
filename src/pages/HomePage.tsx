@@ -37,6 +37,15 @@ export const HomePage = () => {
           this is the homepage show some messages here perhaps - this was sent
           via the AsidePortal component
         </p>
+        <Button
+          disableRipple
+          variant='contained'
+          component={RouterLink}
+          to='/demo-form'
+          endIcon={<ArrowForwardIcon />}
+        >
+          Demo forms
+        </Button>
       </AsidePortal>
       <Typography
         variant='h3'
