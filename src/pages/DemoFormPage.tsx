@@ -5,18 +5,70 @@ import {
   MenuItem,
   Radio,
   RadioGroup,
+  RadioProps,
   Select,
+  styled,
   TextField,
 } from '@mui/material';
 import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ErrorIcon from '@mui/icons-material/Error';
 import { Card, Search } from '../components';
+
+const StyledRadioIcon = styled('span')(() => ({
+  borderRadius: '50%',
+  width: 16,
+  height: 16,
+  boxShadow:
+    'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
+  backgroundColor: '#fff',
+  backgroundImage:
+    'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
+  '.Mui-focusVisible &': {
+    outline: '2px auto rgba(19,124,189,.6)',
+    outlineOffset: 2,
+  },
+  'input:hover ~ &': {
+    backgroundColor: '#ebf1f5',
+  },
+  'input:disabled ~ &': {
+    boxShadow: 'none',
+    background: 'rgba(206,217,224,.5)',
+  },
+}));
+
+const StyledCheckedRadioIcon = styled(StyledRadioIcon)({
+  backgroundColor: '#137cbd',
+  backgroundImage:
+    'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
+  '&:before': {
+    display: 'block',
+    width: 16,
+    height: 16,
+    backgroundImage: 'radial-gradient(#fff,#fff 28%,transparent 32%)',
+    content: '""',
+  },
+  'input:hover ~ &': {
+    backgroundColor: '#106ba3',
+  },
+});
+
+const CustomRadioTestButton = ({ ...props }: RadioProps) => {
+  return (
+    <Radio
+      {...props}
+      icon={<StyledRadioIcon />}
+      checkedIcon={<StyledCheckedRadioIcon />}
+      disableRipple
+    />
+  );
+};
 
 export const DemoFormPage = () => {
   return (
     <div>
       <Card
-        title='Publications and other stuff'
+        title='Publications'
         variant='variant1'
         tooltipTitle='Publications help'
         tooltipBody='Publications help body text tooltip'
@@ -39,6 +91,16 @@ export const DemoFormPage = () => {
             placeholder='placeholder'
             id='some-id'
             defaultValue='Hello World'
+            InputProps={{
+              endAdornment: (
+                <ErrorIcon
+                  sx={{
+                    color: 'red',
+                    visibility: 'visible',
+                  }}
+                />
+              ),
+            }}
           />
         </FormControl>
         <FormControl
@@ -93,18 +155,18 @@ export const DemoFormPage = () => {
           >
             <FormControlLabel
               value='female'
-              control={<Radio disableRipple />}
-              label='Female'
+              control={<CustomRadioTestButton />}
+              label='Publish now'
             />
             <FormControlLabel
               value='male'
-              control={<Radio disableRipple />}
-              label='Male'
+              control={<CustomRadioTestButton />}
+              label='Publish a later time'
             />
             <FormControlLabel
               value='other'
-              control={<Radio disableRipple />}
-              label='Other'
+              control={<CustomRadioTestButton />}
+              label='Some third option available'
             />
           </RadioGroup>
         </FormControl>
