@@ -58,7 +58,10 @@ export const DemoFormPage = () => {
         >
           <FormLabel>Choose something</FormLabel>
           {/* eslint-disable-next-line react/no-unstable-nested-components */}
-          <Select IconComponent={(props) => <ExpandMoreIcon {...props} />}>
+          <Select
+            value={20}
+            IconComponent={(props) => <ExpandMoreIcon {...props} />}
+          >
             <MenuItem
               disableRipple
               value={10}
