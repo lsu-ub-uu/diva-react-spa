@@ -8,3 +8,4 @@ export { Backdrop } from './Backdrop/Backdrop';
 export { Card } from './Card/Card';
 export { BackdropProvider, useBackdrop } from './Backdrop/BackdropContext';
 export { VerticalStepper } from './VerticalStepper/VerticalStepper';
+export { HorizontalStepper } from './HorizontalStepper/HorizontalStepper';
