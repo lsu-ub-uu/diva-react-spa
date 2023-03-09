@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:prod": "tsc && vite build --base=$BASENAME",
     "preview": "vite preview",
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
