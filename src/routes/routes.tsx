@@ -1,6 +1,12 @@
 import { useRoutes } from 'react-router-dom';
 import { Layout } from '../components';
-import { HomePage, ListUsersPage, FormPage, DemoFormPage } from '../pages';
+import {
+  HomePage,
+  ListUsersPage,
+  FormPage,
+  DemoFormPage,
+  ReactHookFormTestPage,
+} from '../pages';
 
 export const routes = [
   {
@@ -23,6 +29,10 @@ export const routes = [
       {
         path: '/demo-form',
         element: <DemoFormPage />,
+      },
+      {
+        path: '/author-form',
+        element: <ReactHookFormTestPage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],

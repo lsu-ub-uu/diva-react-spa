@@ -76,7 +76,6 @@ export const DemoFormPage = () => {
         <FormControl
           fullWidth
           sx={{ mb: 2 }}
-          size='small'
         >
           <FormLabel
             error
@@ -91,6 +90,7 @@ export const DemoFormPage = () => {
             placeholder='placeholder'
             id='some-id'
             defaultValue='Hello World'
+            helperText='Some error text'
             InputProps={{
               endAdornment: (
                 <ErrorIcon
