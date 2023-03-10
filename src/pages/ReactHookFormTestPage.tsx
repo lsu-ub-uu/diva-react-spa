@@ -140,14 +140,20 @@ export const ReactHookFormTestPage = () => {
             xs={12}
             sm={4}
           >
-            <Button
-              variant='outlined'
-              type='submit'
-              disableRipple
-              endIcon={<ExitToAppIcon />}
+            <FormControl
+              fullWidth
+              sx={{ mb: 2 }}
             >
-              Skapa ORCID-ID
-            </Button>
+              <FormLabel>&nbsp;</FormLabel>
+              <Button
+                variant='outlined'
+                type='submit'
+                disableRipple
+                endIcon={<ExitToAppIcon />}
+              >
+                Skapa ORCID-ID
+              </Button>
+            </FormControl>
           </Grid>
           <Grid
             item
