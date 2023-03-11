@@ -86,19 +86,6 @@ export const HomePage = () => {
           </StepLabel>
         </Step>
       </HorizontalStepper>
-      <VerticalStepper
-        activeStep={0}
-        steps={[
-          'Publikationstyp',
-          'Författare',
-          'Konferens',
-          'Identifikationer',
-          'Ingår i projekt',
-          'Nyckelord',
-          'Abstrakt',
-          'Anmärkning',
-        ]}
-      />
       <Divider>File uploader</Divider>
       <FileUpload />
       <Divider>Buttons</Divider>

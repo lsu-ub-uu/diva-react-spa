@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface AsidePortalProps {
@@ -7,8 +7,15 @@ interface AsidePortalProps {
 }
 
 export const AsidePortal = (props: AsidePortalProps) => {
-  const attachElement = props.element
-    ? props.element
-    : document.querySelector('#sidebar-content');
-  return attachElement ? createPortal(props.children, attachElement) : null;
+  const [element, setElement] = useState<Element | null>(null);
+
+  useEffect(() => {
+    const attachElement = props.element
+      ? props.element
+      : document.querySelector('#sidebar-content');
+
+    setElement(attachElement);
+  }, []);
+
+  return element ? createPortal(props.children, element) : <p>Error portal</p>;
 };
