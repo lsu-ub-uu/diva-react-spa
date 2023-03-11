@@ -6,6 +6,8 @@ export { Tooltip } from './Tooltip/Tooltip';
 export { Dialog } from './Dialog/Dialog';
 export { Backdrop } from './Backdrop/Backdrop';
 export { Card } from './Card/Card';
+export { Search } from './Search/Search';
 export { BackdropProvider, useBackdrop } from './Backdrop/BackdropContext';
+export { FileUpload } from './FileUpload/FileUpload';
 export { VerticalStepper } from './VerticalStepper/VerticalStepper';
 export { HorizontalStepper } from './HorizontalStepper/HorizontalStepper';

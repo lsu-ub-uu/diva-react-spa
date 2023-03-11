@@ -16,17 +16,17 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   borderTopRightRadius: 8,
   borderBottomLeftRadius: 0,
   borderBottomRightRadius: 0,
-  backgroundColor: '#d6e7f3',
+  backgroundColor: '#e6f0f7',
   paddingTop: theme.spacing(1.5),
   paddingBottom: theme.spacing(1.5),
   paddingLeft: theme.spacing(4),
   minHeight: theme.spacing(1 / 2),
-  borderBottom: '2px solid #5388c0',
+  // borderBottom: '2px solid #5388c0',
 }));
 
 const StyledCardContent = styled(CardContent)(({ theme }) => {
   return {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgb(247,250,253)',
     padding: theme.spacing(4),
     borderRadius: 0,
 

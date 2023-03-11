@@ -27,7 +27,23 @@ export const divaTheme = createTheme({
   },
   components: {
     MuiCssBaseline: {},
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#fff',
+        },
+      },
+    },
     MuiLink: {},
+    MuiList: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#fff',
+          border: '2px solid black',
+          borderRadius: 0,
+        },
+      },
+    },
     MuiButtonBase: {
       defaultProps: {
         disableRipple: true,

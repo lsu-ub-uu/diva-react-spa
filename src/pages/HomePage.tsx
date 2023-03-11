@@ -18,12 +18,19 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { TabsMenu } from '../components/TabsMenu/TabsMenu';
-import { AsidePortal, Card, Dialog, Tooltip, useBackdrop } from '../components';
+import {
+  AsidePortal,
+  Card,
+  Dialog,
+  Tooltip,
+  useBackdrop,
+  FileUpload,
+} from '../components';
 import {
   HorizontalStepper,
   StepIcon,
 } from '../components/HorizontalStepper/HorizontalStepper';
-import { FileUpload } from '../components/FileUpload/FileUpload';
+import { VerticalStepper } from '../components/VerticalStepper/VerticalStepper';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -36,6 +43,26 @@ export const HomePage = () => {
           this is the homepage show some messages here perhaps - this was sent
           via the AsidePortal component
         </p>
+        <Stack spacing={2}>
+          <Button
+            disableRipple
+            variant='contained'
+            component={RouterLink}
+            to='/demo-form'
+            endIcon={<ArrowForwardIcon />}
+          >
+            Demo forms
+          </Button>
+          <Button
+            disableRipple
+            variant='contained'
+            component={RouterLink}
+            to='/author-form'
+            endIcon={<ArrowForwardIcon />}
+          >
+            Author form with hooks and yup
+          </Button>
+        </Stack>
       </AsidePortal>
       <Typography
         variant='h3'
