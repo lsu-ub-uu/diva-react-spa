@@ -70,24 +70,24 @@ export const ReactHookFormTestPage = () => {
               sx={{ mb: 2 }}
             >
               <FormLabel>Publikationstyp</FormLabel>
+              <Select
+                fullWidth
+                value=''
+                IconComponent={(props) => <ExpandMoreIcon {...props} />}
+              >
+                {publicationTypeState.publicationTypes.map((item) => {
+                  return (
+                    <MenuItem
+                      key={`publication-type-${item.value}`}
+                      disableRipple
+                      value={item.value}
+                    >
+                      {item.label}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
             </FormControl>
-            <Select
-              fullWidth
-              value=''
-              IconComponent={(props) => <ExpandMoreIcon {...props} />}
-            >
-              {publicationTypeState.publicationTypes.map((item) => {
-                return (
-                  <MenuItem
-                    key={`publication-type-${item.value}`}
-                    disableRipple
-                    value={item.value}
-                  >
-                    {item.label}
-                  </MenuItem>
-                );
-              })}
-            </Select>
           </Grid>
         </Grid>
       </Card>
