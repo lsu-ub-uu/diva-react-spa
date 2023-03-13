@@ -16,8 +16,6 @@ import {
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import React from 'react';
-import { TabsMenu } from '../components/TabsMenu/TabsMenu';
 import {
   AsidePortal,
   Card,
@@ -25,12 +23,10 @@ import {
   Tooltip,
   useBackdrop,
   FileUpload,
-} from '../components';
-import {
+  TabsMenu,
   HorizontalStepper,
   StepIcon,
-} from '../components/HorizontalStepper/HorizontalStepper';
-import { VerticalStepper } from '../components/VerticalStepper/VerticalStepper';
+} from '../components';
 
 export const HomePage = () => {
   const { t } = useTranslation();

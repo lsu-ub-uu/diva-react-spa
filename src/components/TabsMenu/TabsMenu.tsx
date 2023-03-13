@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Typography, Box } from '@mui/material';
+import { Tabs, Tab, Typography, Box, styled } from '@mui/material';
 
 interface TabsMenuProps {
   children: React.ReactNode;
   value: number;
   index: number;
 }
-
+const StyledTab = styled(Tab)({
+  color: '#666666',
+  '&.Mui-selected': {
+    color: '#ffffff',
+    fontWeight: '700',
+  },
+});
 const TabPanel = (props: TabsMenuProps) => {
   return (
     <div>
@@ -35,30 +41,33 @@ export const TabsMenu = () => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: '#613985', borderWidth: '2px' }}>
         <Tabs
           value={value}
           aria-label='Tab menu for DiVA'
           onChange={handleChange}
           variant='fullWidth'
+          sx={{ color: '#ffffff' }}
           TabIndicatorProps={{
             style: {
               backgroundColor: '#613985',
-              height: '4px',
+              height: '100%',
               width: '33.33%',
-              borderRadius: '4px 4px 0 0',
+              borderRadius: '8px 8px 0 0',
+              zIndex: '-1',
+              // transition: 'all 400ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
             },
           }}
         >
-          <Tab
+          <StyledTab
             label='Registrera & hantera'
             {...a11yProps('Registrera & hantera')}
           />
-          <Tab
+          <StyledTab
             label='Administrera'
             {...a11yProps('Administrera')}
           />
-          <Tab
+          <StyledTab
             label='Mina publikationer & projekt'
             {...a11yProps('Mina publikationer & projekt')}
           />
