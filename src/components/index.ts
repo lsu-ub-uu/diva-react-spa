@@ -15,3 +15,4 @@ export {
   StepIcon,
 } from './HorizontalStepper/HorizontalStepper';
 export { TabsMenu } from './TabsMenu/TabsMenu';
+export { Select } from './Form/Select/Select';

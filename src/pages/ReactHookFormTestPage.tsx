@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FormControl,
   FormLabel,
   Grid,
   IconButton,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -13,9 +11,11 @@ import {
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CheckIcon from '@mui/icons-material/Check';
 import Button from '@mui/material/Button';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoIcon from '@mui/icons-material/Info';
-import { Card, Tooltip } from '../components';
+import { Card, Select, Tooltip } from '../components';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { publicationTypeSelector } from '../features/publicationTypes/selectors';
+import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
 
 const TooltipHelperIcon = () => {
   return (
@@ -36,8 +36,41 @@ const TooltipHelperIcon = () => {
 };
 
 export const ReactHookFormTestPage = () => {
+  const dispatch = useAppDispatch();
+  const publicationTypeState = useAppSelector(publicationTypeSelector);
+
+  useEffect(() => {
+    dispatch(loadPublicationTypesAsync());
+  }, [dispatch]);
+
   return (
     <div>
+      <Card
+        title='Publikationstyp'
+        variant='variant1'
+        tooltipTitle='Choose publication type help'
+        tooltipBody='Here goes some text about how choose publ type'
+      >
+        <Grid
+          container
+          spacing={2}
+          justifyContent='space-between'
+          alignItems='flex-start'
+        >
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
+            <Select
+              loading={publicationTypeState.isLoading}
+              value='article'
+              label='Publikationstyp'
+              items={publicationTypeState.publicationTypes}
+            />
+          </Grid>
+        </Grid>
+      </Card>
       <Card
         title='Författare 1'
         variant='variant1'
@@ -175,36 +208,7 @@ export const ReactHookFormTestPage = () => {
             xs={12}
             sm={6}
           >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
-            >
-              <FormLabel>Institution, avdelning eller program</FormLabel>
-              {/* eslint-disable-next-line react/no-unstable-nested-components */}
-              <Select
-                value={20}
-                IconComponent={(props) => <ExpandMoreIcon {...props} />}
-              >
-                <MenuItem
-                  disableRipple
-                  value={10}
-                >
-                  Stockholms Universitet
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  value={20}
-                >
-                  Uppsala
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  value={30}
-                >
-                  Test
-                </MenuItem>
-              </Select>
-            </FormControl>
+            todo
           </Grid>
           <Grid
             item
