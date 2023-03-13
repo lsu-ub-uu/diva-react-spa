@@ -1,10 +1,17 @@
-import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import {
+  Action,
+  configureStore,
+  ThunkAction,
+  combineReducers,
+} from '@reduxjs/toolkit';
 import dummyReducer from '../features/dummy/dummySlice';
 
+const combinedReducer = combineReducers({
+  dummy: dummyReducer,
+});
+
 const store = configureStore({
-  reducer: {
-    dummy: dummyReducer,
-  },
+  reducer: combinedReducer,
   devTools: true,
 });
 
