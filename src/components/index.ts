@@ -11,3 +11,4 @@ export { BackdropProvider, useBackdrop } from './Backdrop/BackdropContext';
 export { FileUpload } from './FileUpload/FileUpload';
 export { VerticalStepper } from './VerticalStepper/VerticalStepper';
 export { HorizontalStepper } from './HorizontalStepper/HorizontalStepper';
+export { Select } from './Form/Select/Select';

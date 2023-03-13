@@ -4,8 +4,6 @@ import {
   FormLabel,
   Grid,
   IconButton,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -13,9 +11,8 @@ import {
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CheckIcon from '@mui/icons-material/Check';
 import Button from '@mui/material/Button';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoIcon from '@mui/icons-material/Info';
-import { Card, Tooltip } from '../components';
+import { Card, Select, Tooltip } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { publicationTypeSelector } from '../features/publicationTypes/selectors';
 import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
@@ -65,29 +62,12 @@ export const ReactHookFormTestPage = () => {
             xs={12}
             sm={6}
           >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
-            >
-              <FormLabel>Publikationstyp</FormLabel>
-              <Select
-                fullWidth
-                value=''
-                IconComponent={(props) => <ExpandMoreIcon {...props} />}
-              >
-                {publicationTypeState.publicationTypes.map((item) => {
-                  return (
-                    <MenuItem
-                      key={`publication-type-${item.value}`}
-                      disableRipple
-                      value={item.value}
-                    >
-                      {item.label}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+            <Select
+              loading={publicationTypeState.isLoading}
+              value='article'
+              label='Publikationstyp'
+              items={publicationTypeState.publicationTypes}
+            />
           </Grid>
         </Grid>
       </Card>
@@ -228,36 +208,7 @@ export const ReactHookFormTestPage = () => {
             xs={12}
             sm={6}
           >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
-            >
-              <FormLabel>Institution, avdelning eller program</FormLabel>
-              {/* eslint-disable-next-line react/no-unstable-nested-components */}
-              <Select
-                value={20}
-                IconComponent={(props) => <ExpandMoreIcon {...props} />}
-              >
-                <MenuItem
-                  disableRipple
-                  value={10}
-                >
-                  Stockholms Universitet
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  value={20}
-                >
-                  Uppsala
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  value={30}
-                >
-                  Test
-                </MenuItem>
-              </Select>
-            </FormControl>
+            todo
           </Grid>
           <Grid
             item
