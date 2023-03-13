@@ -5,9 +5,11 @@ import {
   combineReducers,
 } from '@reduxjs/toolkit';
 import dummyReducer from '../features/dummy/dummySlice';
+import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
 
 const combinedReducer = combineReducers({
   dummy: dummyReducer,
+  publicationType: publicationTypeReducer,
 });
 
 const store = configureStore({

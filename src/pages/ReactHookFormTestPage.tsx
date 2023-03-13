@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -16,6 +16,9 @@ import Button from '@mui/material/Button';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoIcon from '@mui/icons-material/Info';
 import { Card, Tooltip } from '../components';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { publicationTypeSelector } from '../features/publicationTypes/selectors';
+import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
 
 const TooltipHelperIcon = () => {
   return (
@@ -36,6 +39,13 @@ const TooltipHelperIcon = () => {
 };
 
 export const ReactHookFormTestPage = () => {
+  const dispatch = useAppDispatch();
+  const publicationTypeState = useAppSelector(publicationTypeSelector);
+
+  useEffect(() => {
+    dispatch(loadPublicationTypesAsync());
+  }, [dispatch]);
+
   return (
     <div>
       <Card
@@ -44,6 +54,9 @@ export const ReactHookFormTestPage = () => {
         tooltipTitle='Add author help'
         tooltipBody='Here goes some text about how to add author'
       >
+        <pre>
+          {JSON.stringify(publicationTypeState.publicationTypes, null, 1)}
+        </pre>
         <Grid
           container
           spacing={2}
