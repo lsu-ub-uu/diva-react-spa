@@ -10,5 +10,9 @@ export { Search } from './Search/Search';
 export { BackdropProvider, useBackdrop } from './Backdrop/BackdropContext';
 export { FileUpload } from './FileUpload/FileUpload';
 export { VerticalStepper } from './VerticalStepper/VerticalStepper';
-export { HorizontalStepper } from './HorizontalStepper/HorizontalStepper';
+export {
+  HorizontalStepper,
+  StepIcon,
+} from './HorizontalStepper/HorizontalStepper';
+export { TabsMenu } from './TabsMenu/TabsMenu';
 export { Select } from './Form/Select/Select';
