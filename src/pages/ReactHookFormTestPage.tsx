@@ -49,14 +49,54 @@ export const ReactHookFormTestPage = () => {
   return (
     <div>
       <Card
+        title='Publikationstyp'
+        variant='variant1'
+        tooltipTitle='Choose publication type help'
+        tooltipBody='Here goes some text about how choose publ type'
+      >
+        <Grid
+          container
+          spacing={2}
+          justifyContent='space-between'
+          alignItems='flex-start'
+        >
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
+            <FormControl
+              fullWidth
+              sx={{ mb: 2 }}
+            >
+              <FormLabel>Publikationstyp</FormLabel>
+            </FormControl>
+            <Select
+              fullWidth
+              value=''
+              IconComponent={(props) => <ExpandMoreIcon {...props} />}
+            >
+              {publicationTypeState.publicationTypes.map((item) => {
+                return (
+                  <MenuItem
+                    key={`publication-type-${item.value}`}
+                    disableRipple
+                    value={item.value}
+                  >
+                    {item.label}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </Grid>
+        </Grid>
+      </Card>
+      <Card
         title='Författare 1'
         variant='variant1'
         tooltipTitle='Add author help'
         tooltipBody='Here goes some text about how to add author'
       >
-        <pre>
-          {JSON.stringify(publicationTypeState.publicationTypes, null, 1)}
-        </pre>
         <Grid
           container
           spacing={2}
