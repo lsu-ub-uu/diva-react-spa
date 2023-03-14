@@ -1,41 +1,37 @@
 import React, { useEffect } from 'react';
 import {
+  Box,
   FormControl,
   FormLabel,
   Grid,
-  IconButton,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import CheckIcon from '@mui/icons-material/Check';
 import Button from '@mui/material/Button';
-import InfoIcon from '@mui/icons-material/Info';
-import { Card, Select, Tooltip } from '../components';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { publicationTypeSelector } from '../features/publicationTypes/selectors';
 import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
+import { Card, Select, ErrorMessage } from '../components';
 
-const TooltipHelperIcon = () => {
-  return (
-    <Tooltip
-      title='A title for the tooltip'
-      body='Content of tooltip help Content help content of this component'
-    >
-      <IconButton
-        sx={{ p: 0 }}
-        disableRipple
-        color='info'
-        aria-label='info'
-      >
-        <InfoIcon />
-      </IconButton>
-    </Tooltip>
-  );
-};
+
+const validationSchema = yup.object().shape({
+  firstname: yup.string().required('Firstname is required'),
+  lastname: yup.string().required('Lastname is required'),
+});
 
 export const ReactHookFormTestPage = () => {
+  const methods = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
   const dispatch = useAppDispatch();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
 
@@ -43,241 +39,115 @@ export const ReactHookFormTestPage = () => {
     dispatch(loadPublicationTypesAsync());
   }, [dispatch]);
 
+  const handleOnSubmit = (data: unknown) => {
+    console.log(data);
+  };
+
   return (
     <Stack spacing={2}>
       <Card
         title='Publikationstyp'
         variant='variant1'
         tooltipTitle='Choose publication type help'
-        tooltipBody='Here goes some text about how choose publ type'
+        tooltipBody='Here goes some text about how choose type'
       >
-        <Grid
-          container
-          spacing={2}
-          justifyContent='space-between'
-          alignItems='flex-start'
+        <ErrorMessage errors={errors} />
+        <Box
+          component='form'
+          onSubmit={handleSubmit(handleOnSubmit)}
         >
           <Grid
-            item
-            xs={12}
-            sm={6}
+            container
+            spacing={2}
+            justifyContent='space-between'
+            alignItems='flex-start'
           >
-            <Select
-              loading={publicationTypeState.isLoading}
-              value='article'
-              label='Publikationstyp'
-              items={publicationTypeState.publicationTypes}
-            />
-          </Grid>
-        </Grid>
-      </Card>
-      <Card
-        title='Författare 1'
-        variant='variant1'
-        tooltipTitle='Add author help'
-        tooltipBody='Here goes some text about how to add author'
-      >
-        <Grid
-          container
-          spacing={2}
-          justifyContent='space-between'
-          alignItems='flex-start'
-        >
-          <Grid
-            item
-            xs={12}
-            sm={6}
-          >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
+            <Grid
+              item
+              xs={12}
+              sm={6}
             >
-              <FormLabel required>Förnamn</FormLabel>
-              <TextField
-                variant='outlined'
-                required
-                placeholder='Skriv in förnamn'
+              <Controller
+                control={control}
                 name='firstname'
-                id='firstname'
+                defaultValue=''
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl fullWidth>
+                    <FormLabel
+                      required
+                      error={error !== undefined}
+                    >
+                      Firstname
+                    </FormLabel>
+                    <TextField
+                      error={error !== undefined}
+                      {...field}
+                      autoComplete='off'
+                      placeholder='firstname'
+                      fullWidth
+                      variant='outlined'
+                      helperText={error !== undefined ? error.message : ' '}
+                    />
+                  </FormControl>
+                )}
               />
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-          >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
             >
-              <FormLabel required>Efternamn</FormLabel>
-              <TextField
-                variant='outlined'
-                required
-                placeholder='Skriv in efternamn'
+              <Controller
+                control={control}
                 name='lastname'
-                id='lastname'
+                defaultValue=''
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl fullWidth>
+                    <FormLabel
+                      required
+                      error={error !== undefined}
+                    >
+                      Lastname
+                    </FormLabel>
+                    <TextField
+                      error={error !== undefined}
+                      {...field}
+                      autoComplete='off'
+                      placeholder='Lastname Placeholder'
+                      fullWidth
+                      variant='outlined'
+                      helperText={error !== undefined ? error.message : ' '}
+                    />
+                  </FormControl>
+                )}
               />
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={4}
-          >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
+            </Grid>
+            <Grid
+              item
+              xs={12}
             >
-              <FormLabel error>
-                <Stack
-                  spacing={1}
-                  direction='row'
-                  alignItems='center'
-                >
-                  <Typography>Lokal användaridentitet</Typography>
-                  <TooltipHelperIcon />
-                </Stack>
-              </FormLabel>
-              <TextField
-                variant='outlined'
-                error
-                value='erik.m.lundin@ub.uu.se'
-                name='localUserId'
-                id='localUserId'
-                helperText='Some error text'
+              <Select
+                loading={publicationTypeState.isLoading}
+                value='article'
+                label='Publikationstyp'
+                items={publicationTypeState.publicationTypes}
               />
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={4}
-          >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
+            </Grid>
+            <Grid
+              item
+              xs={12}
             >
-              <FormLabel>ORCID-identitet</FormLabel>
-              <TextField
-                placeholder='XXXX-XXXX-XXXX-XXXX'
-                variant='outlined'
-                name='localUserId'
-                id='localUserId'
-              />
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={4}
-          >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
-            >
-              <FormLabel>&nbsp;</FormLabel>
               <Button
-                variant='outlined'
                 type='submit'
                 disableRipple
-                endIcon={<ExitToAppIcon />}
+                variant='contained'
+                endIcon={<ArrowForwardIcon />}
               >
-                Skapa ORCID-ID
+                Continue
               </Button>
-            </FormControl>
+            </Grid>
           </Grid>
-          <Grid
-            item
-            xs={12}
-          >
-            <FormControl sx={{ mb: 2, width: '100px' }}>
-              <FormLabel>Födelseår</FormLabel>
-              <TextField
-                type='number'
-                placeholder='ÅÅÅÅ'
-                variant='outlined'
-                name='birthYear'
-                id='birthYear'
-              />
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-          >
-            todo
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-          >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
-            >
-              <FormLabel>Forskargrupp</FormLabel>
-              <TextField
-                placeholder=''
-                variant='outlined'
-                name='researchGroup'
-                id='researchGroup'
-              />
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-          >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
-            >
-              <FormLabel>E-postadress</FormLabel>
-              <TextField
-                type='email'
-                placeholder=''
-                variant='outlined'
-                name='researchGroup'
-                id='researchGroup'
-              />
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-          >
-            <FormControl
-              fullWidth
-              sx={{ mb: 2 }}
-            >
-              <FormLabel>Annan organisation</FormLabel>
-              <TextField
-                placeholder=''
-                variant='outlined'
-                name='otherOrganisation'
-                id='otherOrganisation'
-              />
-            </FormControl>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-          >
-            <Button
-              type='submit'
-              disableRipple
-              endIcon={<CheckIcon />}
-            >
-              Spara personuppgifter
-            </Button>
-          </Grid>
-        </Grid>
+        </Box>
       </Card>
     </Stack>
   );
