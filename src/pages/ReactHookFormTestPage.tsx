@@ -17,7 +17,6 @@ import { publicationTypeSelector } from '../features/publicationTypes/selectors'
 import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
 import { Card, Select, ErrorMessage } from '../components';
 
-
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('Firstname is required'),
   lastname: yup.string().required('Lastname is required'),
