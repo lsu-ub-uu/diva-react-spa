@@ -24,6 +24,7 @@ const validationSchema = yup.object().shape({
 
 export const ReactHookFormTestPage = () => {
   const methods = useForm({
+    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   });
   const {
