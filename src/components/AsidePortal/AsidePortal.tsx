@@ -15,7 +15,7 @@ export const AsidePortal = (props: AsidePortalProps) => {
       : document.querySelector('#sidebar-content');
 
     setElement(attachElement);
-  }, []);
+  }, [props.element]);
 
   return element ? createPortal(props.children, element) : <p>Error portal</p>;
 };

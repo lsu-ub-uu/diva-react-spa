@@ -14,6 +14,7 @@ export interface SelectionItem {
 }
 
 export interface SelectProps {
+  disabled?: boolean;
   loading?: boolean;
   label: string;
   items: SelectionItem[];
@@ -42,6 +43,7 @@ export const Select = (props: SelectProps) => {
     >
       <FormLabel>{props.label}</FormLabel>
       <MuiSelect
+        disabled={props.disabled}
         fullWidth
         value={value}
         onChange={handleChange}

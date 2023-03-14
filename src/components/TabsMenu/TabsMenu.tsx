@@ -43,7 +43,6 @@ export const TabsMenu = () => {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: '#613985', borderWidth: '2px' }}>
         <Tabs
-          disableRipple
           value={value}
           aria-label='Tab menu for DiVA'
           onChange={handleChange}
