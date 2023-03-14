@@ -6,6 +6,8 @@ import {
   Grid,
   IconButton,
   styled,
+  SxProps,
+  Theme,
 } from '@mui/material';
 import { ReactNode } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
@@ -43,6 +45,7 @@ export interface CardProps {
   variant: 'variant1' | 'variant2';
   tooltipTitle: string;
   tooltipBody: string;
+  sx?: SxProps<Theme>;
 }
 
 export interface InfoButtonProps {
@@ -69,7 +72,15 @@ const InfoButton = (props: InfoButtonProps) => {
 
 export const Card = (props: CardProps) => {
   return (
-    <MuiCard sx={{ maxWidth: '100%', borderRadius: 0 }}>
+    <MuiCard
+      sx={[
+        {
+          maxWidth: '100%',
+          borderRadius: 0,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <StyledCardHeader
         action={props.action}
         titleTypographyProps={{

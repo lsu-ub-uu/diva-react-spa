@@ -44,7 +44,7 @@ export const ReactHookFormTestPage = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <Stack spacing={2}>
       <Card
         title='Publikationstyp'
         variant='variant1'
@@ -279,6 +279,6 @@ export const ReactHookFormTestPage = () => {
           </Grid>
         </Grid>
       </Card>
-    </div>
+    </Stack>
   );
 };
