@@ -1,8 +1,5 @@
-import { ReactNode, useState, cloneElement, ReactElement, useRef } from 'react';
-import { Box, Stepper, Button, Typography, styled } from '@mui/material';
-import { StepIconProps } from '@mui/material/StepIcon';
-import CircleIcon from '@mui/icons-material/Circle';
-import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import { ReactNode, useState, cloneElement, ReactElement } from 'react';
+import { Box, Stepper, Button, Typography } from '@mui/material';
 
 interface VerticalStepperProps {
   children: ReactNode[];

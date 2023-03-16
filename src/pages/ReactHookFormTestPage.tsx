@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import {
   Box,
   FormControl,
+  FormControlLabel,
   FormLabel,
   Grid,
+  RadioGroup,
   Stack,
   TextField,
 } from '@mui/material';
@@ -15,16 +17,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { publicationTypeSelector } from '../features/publicationTypes/selectors';
 import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
-import { Card, Select, ErrorMessage } from '../components';
+import { Card, Select, ErrorMessage, Radio } from '../components';
 
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('Firstname is required'),
   lastname: yup.string().required('Lastname is required'),
+  gender: yup.string().required('Gender is required'),
 });
 
 export const ReactHookFormTestPage = () => {
   const methods = useForm({
-    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   });
   const {
@@ -118,6 +120,43 @@ export const ReactHookFormTestPage = () => {
                       variant='outlined'
                       helperText={error !== undefined ? error.message : ' '}
                     />
+                  </FormControl>
+                )}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <Controller
+                control={control}
+                name='gender'
+                defaultValue=''
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl fullWidth>
+                    <FormLabel
+                      required
+                      error={error !== undefined}
+                    >
+                      Gender
+                    </FormLabel>
+                    <RadioGroup {...field}>
+                      <FormControlLabel
+                        value='female'
+                        control={<Radio />}
+                        label='Female'
+                      />
+                      <FormControlLabel
+                        value='male'
+                        control={<Radio />}
+                        label='Male'
+                      />
+                      <FormControlLabel
+                        value='other'
+                        control={<Radio />}
+                        label='Other'
+                      />
+                    </RadioGroup>
                   </FormControl>
                 )}
               />
