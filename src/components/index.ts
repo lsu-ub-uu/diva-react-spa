@@ -16,4 +16,5 @@ export {
 } from './HorizontalStepper/HorizontalStepper';
 export { TabsMenu } from './TabsMenu/TabsMenu';
 export { Select } from './Form/Select/Select';
+export { Radio } from './Form/Radio/Radio';
 export { ErrorMessage } from './Form/ErrorMessage/ErrorMessage';
