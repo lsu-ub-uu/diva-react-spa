@@ -27,6 +27,7 @@ const validationSchema = yup.object().shape({
   lastname: yup.string().required('Lastname is required'),
   gender: yup.string().required('Gender is required'),
   publicationType: yup.string().required('Publication type is required'),
+  testCheck: yup.bool().oneOf([true], 'You need to tick testCheck'),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -235,20 +236,19 @@ export const ReactHookFormTestPage = () => {
             >
               <Controller
                 control={control}
-                name='agree'
+                name='testCheck'
                 defaultValue
                 render={({ field: { value, onChange, ...field } }) => (
                   <FormControlLabel
                     control={
                       <Checkbox
-                        required
                         disableRipple
                         onChange={onChange}
                         checked={value}
                         {...field}
                       />
                     }
-                    label='Agree'
+                    label='testCheck'
                   />
                 )}
               />
