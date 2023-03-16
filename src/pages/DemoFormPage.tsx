@@ -19,7 +19,7 @@ export const DemoFormPage = () => {
           <Search
             onSubmit={(search) => console.log(search)}
             placeholderText='Search here'
-            searchText='Enter search phrase'
+            searchText=''
           />
         </FormControl>
       </Card>
