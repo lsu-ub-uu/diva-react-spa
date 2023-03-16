@@ -20,13 +20,14 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { publicationTypeSelector } from '../features/publicationTypes/selectors';
 import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
-import { Card, Select, ErrorMessage, Radio } from '../components';
+import { Card, Select, ErrorMessage, Radio, Checkbox } from '../components';
 
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('Firstname is required'),
   lastname: yup.string().required('Lastname is required'),
   gender: yup.string().required('Gender is required'),
   publicationType: yup.string().required('Publication type is required'),
+  testCheck: yup.bool().oneOf([true], 'You need to tick testCheck'),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -226,6 +227,29 @@ export const ReactHookFormTestPage = () => {
                       {error !== undefined ? error.message : ' '}
                     </FormHelperText>
                   </FormControl>
+                )}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <Controller
+                control={control}
+                name='testCheck'
+                defaultValue
+                render={({ field: { value, onChange, ...field } }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        disableRipple
+                        onChange={onChange}
+                        checked={value}
+                        {...field}
+                      />
+                    }
+                    label='testCheck'
+                  />
                 )}
               />
             </Grid>
