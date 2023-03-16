@@ -3,8 +3,10 @@ import {
   Box,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   Grid,
+  MenuItem,
   RadioGroup,
   Stack,
   TextField,
@@ -14,6 +16,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import ErrorIcon from '@mui/icons-material/Error';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { publicationTypeSelector } from '../features/publicationTypes/selectors';
 import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
@@ -23,6 +26,7 @@ const validationSchema = yup.object().shape({
   firstname: yup.string().required('Firstname is required'),
   lastname: yup.string().required('Lastname is required'),
   gender: yup.string().required('Gender is required'),
+  publicationType: yup.string().required('Publication type is required'),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -50,7 +54,7 @@ export const ReactHookFormTestPage = () => {
       <Card
         title='Publikationstyp'
         variant='variant1'
-        tooltipTitle='Choose publication type help'
+        tooltipTitle='Title'
         tooltipBody='Here goes some text about how choose type'
       >
         <ErrorMessage errors={errors} />
@@ -89,6 +93,17 @@ export const ReactHookFormTestPage = () => {
                       fullWidth
                       variant='outlined'
                       helperText={error !== undefined ? error.message : ' '}
+                      InputProps={{
+                        endAdornment: (
+                          <ErrorIcon
+                            sx={{
+                              color: 'red',
+                              visibility:
+                                error !== undefined ? 'visible' : 'hidden',
+                            }}
+                          />
+                        ),
+                      }}
                     />
                   </FormControl>
                 )}
@@ -119,6 +134,17 @@ export const ReactHookFormTestPage = () => {
                       fullWidth
                       variant='outlined'
                       helperText={error !== undefined ? error.message : ' '}
+                      InputProps={{
+                        endAdornment: (
+                          <ErrorIcon
+                            sx={{
+                              color: 'red',
+                              visibility:
+                                error !== undefined ? 'visible' : 'hidden',
+                            }}
+                          />
+                        ),
+                      }}
                     />
                   </FormControl>
                 )}
@@ -165,11 +191,42 @@ export const ReactHookFormTestPage = () => {
               item
               xs={12}
             >
-              <Select
-                loading={publicationTypeState.isLoading}
-                value='article'
-                label='Publikationstyp'
-                items={publicationTypeState.publicationTypes}
+              <Controller
+                control={control}
+                defaultValue=''
+                name='publicationType'
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl fullWidth>
+                    <FormLabel
+                      required
+                      error={error !== undefined}
+                    >
+                      Publication type
+                    </FormLabel>
+                    <Select
+                      fullWidth
+                      error={error !== undefined}
+                      {...field}
+                      loading={publicationTypeState.isLoading}
+                    >
+                      {publicationTypeState.publicationTypes &&
+                        publicationTypeState.publicationTypes.map((item) => {
+                          return (
+                            <MenuItem
+                              key={`publication-type-${item.value}`}
+                              disableRipple
+                              value={item.value}
+                            >
+                              {item.label}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                    <FormHelperText error={error !== undefined}>
+                      {error !== undefined ? error.message : ' '}
+                    </FormHelperText>
+                  </FormControl>
+                )}
               />
             </Grid>
             <Grid
