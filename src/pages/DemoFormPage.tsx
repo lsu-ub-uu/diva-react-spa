@@ -4,7 +4,6 @@ import {
   FormGroup,
   FormLabel,
   Stack,
-  Typography,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { AsidePortal, Card, Checkbox, Search } from '../components';
@@ -15,35 +14,42 @@ export const DemoFormPage = () => {
   return (
     <div>
       <AsidePortal>
-        <Stack spacing={1}>
-          <Typography sx={{ fontWeight: 'bold' }}>Publication types</Typography>
+        <Stack spacing={2}>
           <Controller
             control={control}
             name='facet-demo-1'
             defaultValue=''
             render={({ field }) => (
-              <FormGroup {...field}>
-                <FormControlLabel
-                  value='choice-1'
-                  control={<Checkbox />}
-                  label='Articles (4500)'
-                />
-                <FormControlLabel
-                  value='choice-2'
-                  control={<Checkbox />}
-                  label='Bok (234)'
-                />
-                <FormControlLabel
-                  value='choice-3'
-                  control={<Checkbox />}
-                  label='Tidskrifter (34)'
-                />
-                <FormControlLabel
-                  value='choice-4'
-                  control={<Checkbox />}
-                  label='Patent (10)'
-                />
-              </FormGroup>
+              <>
+                <FormLabel
+                  sx={{ fontWeight: 'bold' }}
+                  component='span'
+                >
+                  Publication type
+                </FormLabel>
+                <FormGroup {...field}>
+                  <FormControlLabel
+                    value='choice-1'
+                    control={<Checkbox />}
+                    label='Articles (4500)'
+                  />
+                  <FormControlLabel
+                    value='choice-2'
+                    control={<Checkbox />}
+                    label='Bok (234)'
+                  />
+                  <FormControlLabel
+                    value='choice-3'
+                    control={<Checkbox />}
+                    label='Tidskrifter (34)'
+                  />
+                  <FormControlLabel
+                    value='choice-4'
+                    control={<Checkbox />}
+                    label='Patent (10)'
+                  />
+                </FormGroup>
+              </>
             )}
           />
         </Stack>
