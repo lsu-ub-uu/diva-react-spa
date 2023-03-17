@@ -24,7 +24,7 @@ const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
     backgroundColor: 'rgba(255, 255, 255, 1)',
     color: 'rgba(0, 0, 0, 1)',
     minhHeight: 200,
-    minWidth: 200,
+    minWidth: 300,
     maxWidth: 400,
     fontSize: 16,
     border: '2px solid #2988D1',
@@ -68,8 +68,7 @@ const Content = (props: ContentProps) => {
         <CloseIcon />
       </IconButton>
       <Typography
-        variant='h6'
-        sx={{ fontWeight: 700 }}
+        sx={{ fontWeight: 'bold' }}
       >
         {props.title}
       </Typography>
