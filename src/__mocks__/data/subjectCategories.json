@@ -1,0 +1,1578 @@
+[
+  {
+    "id": "1689334377",
+    "name": "Nationella ämneskategorier",
+    "children": [
+      {
+        "id": "-1154698463",
+        "name": "Humaniora och konst",
+        "children": [
+          {
+            "id": "-1349160816",
+            "name": "Annan humaniora",
+            "children": [
+              {
+                "id": "2095952268",
+                "name": "Antikvetenskap",
+                "children": []
+              },
+              {
+                "id": "-1173881739",
+                "name": "Etnologi",
+                "children": []
+              },
+              {
+                "id": "2078371479",
+                "name": "Kulturstudier",
+                "children": []
+              },
+              {
+                "id": "331487040",
+                "name": "Övrig annan humaniora",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1109332333",
+            "name": "Filosofi, etik och religion",
+            "children": [
+              {
+                "id": "2170417",
+                "name": "Etik",
+                "children": []
+              },
+              {
+                "id": "-660727099",
+                "name": "Filosofi",
+                "children": []
+              },
+              {
+                "id": "-1024572549",
+                "name": "Idé- och lärdomshistoria",
+                "children": []
+              },
+              {
+                "id": "1380271007",
+                "name": "Religionshistoria",
+                "children": []
+              },
+              {
+                "id": "-1914929773",
+                "name": "Religionsvetenskap",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-595072582",
+            "name": "Historia och arkeologi",
+            "children": [
+              {
+                "id": "-1232511991",
+                "name": "Arkeologi",
+                "children": []
+              },
+              {
+                "id": "-1265168259",
+                "name": "Historia",
+                "children": []
+              },
+              {
+                "id": "1131617843",
+                "name": "Teknikhistoria",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "72680267",
+            "name": "Konst",
+            "children": [
+              {
+                "id": "-161543706",
+                "name": "Arkitektur",
+                "children": []
+              },
+              {
+                "id": "-690121044",
+                "name": "Bildkonst",
+                "children": []
+              },
+              {
+                "id": "2043588062",
+                "name": "Design",
+                "children": []
+              },
+              {
+                "id": "834886513",
+                "name": "Filmvetenskap",
+                "children": []
+              },
+              {
+                "id": "2004135338",
+                "name": "Konstvetenskap",
+                "children": []
+              },
+              {
+                "id": "-700867338",
+                "name": "Litterär gestaltning",
+                "children": []
+              },
+              {
+                "id": "74710541",
+                "name": "Musik",
+                "children": []
+              },
+              {
+                "id": "-1858687704",
+                "name": "Musikvetenskap",
+                "children": []
+              },
+              {
+                "id": "-555302926",
+                "name": "Scenkonst",
+                "children": []
+              },
+              {
+                "id": "-102440572",
+                "name": "Teatervetenskap",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-853524469",
+            "name": "Språk och litteratur",
+            "children": [
+              {
+                "id": "1137613543",
+                "name": "Jämförande språkvetenskap och allmän lingvistik",
+                "children": []
+              },
+              {
+                "id": "-1082858612",
+                "name": "Litteraturstudier",
+                "children": []
+              },
+              {
+                "id": "696335995",
+                "name": "Litteraturvetenskap",
+                "children": []
+              },
+              {
+                "id": "-528203123",
+                "name": "Studier av enskilda språk",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1075060655",
+        "name": "Lantbruksvetenskap och veterinärmedicin",
+        "children": [
+          {
+            "id": "-128972971",
+            "name": "Annan lantbruksvetenskap",
+            "children": [
+              {
+                "id": "-673288595",
+                "name": "Förnyelsebar bioenergi",
+                "children": []
+              },
+              {
+                "id": "-1396053808",
+                "name": "Lantbrukets arbetsmiljö och säkerhet",
+                "children": []
+              },
+              {
+                "id": "-1936259994",
+                "name": "Miljö- och naturvårdsvetenskap",
+                "children": []
+              },
+              {
+                "id": "-1764771559",
+                "name": "Vilt- och fiskeförvaltning",
+                "children": []
+              },
+              {
+                "id": "393995941",
+                "name": "Övrig annan lantbruksvetenskap",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "960835348",
+            "name": "Bioteknologi med applikationer på växter och djur",
+            "children": [
+              {
+                "id": "-1261132563",
+                "name": "Genetik och förädling inom lantbruksvetenskap",
+                "children": []
+              },
+              {
+                "id": "-1166075070",
+                "name": "Växtbioteknologi",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1354944053",
+            "name": "Husdjursvetenskap",
+            "children": []
+          },
+          {
+            "id": "-780331056",
+            "name": "Lantbruksvetenskap, skogsbruk och fiske",
+            "children": [
+              {
+                "id": "-2062983081",
+                "name": "Fisk- och akvakulturforskning",
+                "children": []
+              },
+              {
+                "id": "-2133570817",
+                "name": "Jordbruksvetenskap",
+                "children": []
+              },
+              {
+                "id": "884936231",
+                "name": "Landskapsarkitektur",
+                "children": []
+              },
+              {
+                "id": "1346026715",
+                "name": "Livsmedelsvetenskap",
+                "children": []
+              },
+              {
+                "id": "244624456",
+                "name": "Markvetenskap",
+                "children": []
+              },
+              {
+                "id": "-452545582",
+                "name": "Skogsvetenskap",
+                "children": []
+              },
+              {
+                "id": "-518651088",
+                "name": "Trädgårdsvetenskap/hortikultur",
+                "children": []
+              },
+              {
+                "id": "1675413839",
+                "name": "Trävetenskap",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1434065402",
+            "name": "Veterinärmedicin",
+            "children": [
+              {
+                "id": "1869845016",
+                "name": "Annan veterinärmedicin",
+                "children": []
+              },
+              {
+                "id": "-1086662896",
+                "name": "Klinisk vetenskap",
+                "children": []
+              },
+              {
+                "id": "-821210486",
+                "name": "Medicinsk biovetenskap",
+                "children": []
+              },
+              {
+                "id": "1250883809",
+                "name": "Patobiologi",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "-2014344022",
+        "name": "Medicin och hälsovetenskap",
+        "children": [
+          {
+            "id": "-389363140",
+            "name": "Annan medicin och hälsovetenskap",
+            "children": [
+              {
+                "id": "-143691029",
+                "name": "Gerontologi, medicinsk/hälsovetenskaplig inriktning",
+                "children": []
+              },
+              {
+                "id": "-719716726",
+                "name": "Rättsmedicin",
+                "children": []
+              },
+              {
+                "id": "-1626711668",
+                "name": "Övrig annan medicin och hälsovetenskap",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-279044138",
+            "name": "Hälsovetenskaper",
+            "children": [
+              {
+                "id": "-1726459397",
+                "name": "Annan hälsovetenskap",
+                "children": []
+              },
+              {
+                "id": "1358592067",
+                "name": "Arbetsmedicin och miljömedicin",
+                "children": []
+              },
+              {
+                "id": "-432316948",
+                "name": "Arbetsterapi",
+                "children": []
+              },
+              {
+                "id": "865351153",
+                "name": "Beroendelära",
+                "children": []
+              },
+              {
+                "id": "432679169",
+                "name": "Folkhälsovetenskap, global hälsa, socialmedicin och epidemiologi",
+                "children": []
+              },
+              {
+                "id": "75491568",
+                "name": "Hälso- och sjukvårdsorganisation, hälsopolitik och hälsoekonomi",
+                "children": []
+              },
+              {
+                "id": "458312890",
+                "name": "Idrottsvetenskap",
+                "children": []
+              },
+              {
+                "id": "-2084015858",
+                "name": "Medicinsk etik",
+                "children": []
+              },
+              {
+                "id": "36026196",
+                "name": "Näringslära",
+                "children": []
+              },
+              {
+                "id": "-346486766",
+                "name": "Omvårdnad",
+                "children": []
+              },
+              {
+                "id": "-1283347388",
+                "name": "Sjukgymnastik",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1165350714",
+            "name": "Klinisk medicin",
+            "children": [
+              {
+                "id": "-1984020811",
+                "name": "Allmänmedicin",
+                "children": []
+              },
+              {
+                "id": "1348914643",
+                "name": "Anestesi och intensivvård",
+                "children": []
+              },
+              {
+                "id": "1712173684",
+                "name": "Annan klinisk medicin",
+                "children": []
+              },
+              {
+                "id": "1061883572",
+                "name": "Cancer och onkologi",
+                "children": []
+              },
+              {
+                "id": "152150484",
+                "name": "Dermatologi och venereologi",
+                "children": []
+              },
+              {
+                "id": "1848600443",
+                "name": "Endokrinologi och diabetes",
+                "children": []
+              },
+              {
+                "id": "-235672300",
+                "name": "Gastroenterologi",
+                "children": []
+              },
+              {
+                "id": "1645352300",
+                "name": "Geriatrik",
+                "children": []
+              },
+              {
+                "id": "1174751569",
+                "name": "Hematologi",
+                "children": []
+              },
+              {
+                "id": "-1718321037",
+                "name": "Infektionsmedicin",
+                "children": []
+              },
+              {
+                "id": "1696801779",
+                "name": "Kardiologi",
+                "children": []
+              },
+              {
+                "id": "958239987",
+                "name": "Kirurgi",
+                "children": []
+              },
+              {
+                "id": "-2094801906",
+                "name": "Klinisk laboratoriemedicin",
+                "children": []
+              },
+              {
+                "id": "594980589",
+                "name": "Lungmedicin och allergi",
+                "children": []
+              },
+              {
+                "id": "515967072",
+                "name": "Neurologi",
+                "children": []
+              },
+              {
+                "id": "-550089164",
+                "name": "Odontologi",
+                "children": []
+              },
+              {
+                "id": "-459621745",
+                "name": "Oftalmologi",
+                "children": []
+              },
+              {
+                "id": "1766196728",
+                "name": "Ortopedi",
+                "children": []
+              },
+              {
+                "id": "650308301",
+                "name": "Oto-rino-laryngologi",
+                "children": []
+              },
+              {
+                "id": "-1276985625",
+                "name": "Pediatrik",
+                "children": []
+              },
+              {
+                "id": "-1125653954",
+                "name": "Psykiatri",
+                "children": []
+              },
+              {
+                "id": "2063052819",
+                "name": "Radiologi och bildbehandling",
+                "children": []
+              },
+              {
+                "id": "627576466",
+                "name": "Reproduktionsmedicin och gynekologi",
+                "children": []
+              },
+              {
+                "id": "1257297461",
+                "name": "Reumatologi och inflammation",
+                "children": []
+              },
+              {
+                "id": "-860038435",
+                "name": "Urologi och njurmedicin",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-640486027",
+            "name": "Medicinsk bioteknologi",
+            "children": [
+              {
+                "id": "-520107001",
+                "name": "Annan medicinsk bioteknologi",
+                "children": []
+              },
+              {
+                "id": "-930280602",
+                "name": "Biomaterialvetenskap",
+                "children": []
+              },
+              {
+                "id": "1563331497",
+                "name": "Biomedicinsk laboratorievetenskap/teknologi",
+                "children": []
+              },
+              {
+                "id": "-226497646",
+                "name": "Medicinsk bioteknologi (med inriktning mot cellbiologi (inklusive stamcellsbiologi), molekylärbiologi, mikrobiologi, biokemi eller biofarmaci)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "154339780",
+            "name": "Medicinska och farmaceutiska grundvetenskaper",
+            "children": [
+              {
+                "id": "-583258812",
+                "name": "Annan medicinsk grundvetenskap",
+                "children": []
+              },
+              {
+                "id": "-1251950179",
+                "name": "Cell- och molekylärbiologi",
+                "children": []
+              },
+              {
+                "id": "648470446",
+                "name": "Farmaceutiska vetenskaper",
+                "children": []
+              },
+              {
+                "id": "1266131789",
+                "name": "Farmakologi och toxikologi",
+                "children": []
+              },
+              {
+                "id": "554499499",
+                "name": "Fysiologi",
+                "children": []
+              },
+              {
+                "id": "2054668732",
+                "name": "Immunologi inom det medicinska området",
+                "children": []
+              },
+              {
+                "id": "602293960",
+                "name": "Läkemedelskemi",
+                "children": []
+              },
+              {
+                "id": "185961796",
+                "name": "Medicinsk genetik",
+                "children": []
+              },
+              {
+                "id": "-2081952277",
+                "name": "Mikrobiologi inom det medicinska området",
+                "children": []
+              },
+              {
+                "id": "-1489457945",
+                "name": "Neurovetenskaper",
+                "children": []
+              },
+              {
+                "id": "-1996670407",
+                "name": "Samhällsfarmaci och klinisk farmaci",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "-2126245129",
+        "name": "Naturvetenskap",
+        "children": [
+          {
+            "id": "460430217",
+            "name": "Annan naturvetenskap",
+            "children": []
+          },
+          {
+            "id": "239659326",
+            "name": "Biologiska vetenskaper",
+            "children": [
+              {
+                "id": "316550715",
+                "name": "Annan biologi",
+                "children": []
+              },
+              {
+                "id": "1035724602",
+                "name": "Biofysik",
+                "children": []
+              },
+              {
+                "id": "292826200",
+                "name": "Bioinformatik och systembiologi",
+                "children": []
+              },
+              {
+                "id": "-1518400246",
+                "name": "Biokemi och molekylärbiologi",
+                "children": []
+              },
+              {
+                "id": "235844767",
+                "name": "Biologisk systematik",
+                "children": []
+              },
+              {
+                "id": "1733663798",
+                "name": "Botanik",
+                "children": []
+              },
+              {
+                "id": "-1303336213",
+                "name": "Cellbiologi",
+                "children": []
+              },
+              {
+                "id": "-17598066",
+                "name": "Ekologi",
+                "children": []
+              },
+              {
+                "id": "240064293",
+                "name": "Etologi",
+                "children": []
+              },
+              {
+                "id": "-873669835",
+                "name": "Evolutionsbiologi",
+                "children": []
+              },
+              {
+                "id": "1584507201",
+                "name": "Genetik",
+                "children": []
+              },
+              {
+                "id": "-198066222",
+                "name": "Immunologi",
+                "children": []
+              },
+              {
+                "id": "-2018985855",
+                "name": "Mikrobiologi",
+                "children": []
+              },
+              {
+                "id": "557152035",
+                "name": "Strukturbiologi",
+                "children": []
+              },
+              {
+                "id": "-614822298",
+                "name": "Utvecklingsbiologi",
+                "children": []
+              },
+              {
+                "id": "1554626655",
+                "name": "Zoologi",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-375125659",
+            "name": "Data- och informationsvetenskap",
+            "children": [
+              {
+                "id": "-362121453",
+                "name": "Annan data- och informationsvetenskap",
+                "children": []
+              },
+              {
+                "id": "-1563303245",
+                "name": "Bioinformatik (beräkningsbiologi)",
+                "children": []
+              },
+              {
+                "id": "-1205965369",
+                "name": "Datavetenskap (datalogi)",
+                "children": []
+              },
+              {
+                "id": "517625020",
+                "name": "Datorseende och robotik (autonoma system)",
+                "children": []
+              },
+              {
+                "id": "-1334691888",
+                "name": "Datorteknik",
+                "children": []
+              },
+              {
+                "id": "1516455294",
+                "name": "Medieteknik",
+                "children": []
+              },
+              {
+                "id": "-1887790924",
+                "name": "Människa-datorinteraktion (interaktionsdesign)",
+                "children": []
+              },
+              {
+                "id": "124586184",
+                "name": "Programvaruteknik",
+                "children": []
+              },
+              {
+                "id": "-22533030",
+                "name": "Språkteknologi (språkvetenskaplig databehandling)",
+                "children": []
+              },
+              {
+                "id": "678208986",
+                "name": "Systemvetenskap, informationssystem och informatik",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "68365058",
+            "name": "Fysik",
+            "children": [
+              {
+                "id": "-775850087",
+                "name": "Acceleratorfysik och instrumentering",
+                "children": []
+              },
+              {
+                "id": "-826780112",
+                "name": "Annan fysik",
+                "children": []
+              },
+              {
+                "id": "-1917899363",
+                "name": "Astronomi, astrofysik och kosmologi",
+                "children": []
+              },
+              {
+                "id": "-557989576",
+                "name": "Atom- och molekylfysik och optik",
+                "children": []
+              },
+              {
+                "id": "-61788312",
+                "name": "Den kondenserade materiens fysik",
+                "children": []
+              },
+              {
+                "id": "-704928270",
+                "name": "Fusion, plasma och rymdfysik",
+                "children": []
+              },
+              {
+                "id": "1763219201",
+                "name": "Subatomär fysik",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "728637857",
+            "name": "Geovetenskap och miljövetenskap",
+            "children": [
+              {
+                "id": "741642063",
+                "name": "Annan geovetenskap och miljövetenskap",
+                "children": []
+              },
+              {
+                "id": "1904794257",
+                "name": "Geofysik",
+                "children": []
+              },
+              {
+                "id": "1585595175",
+                "name": "Geokemi",
+                "children": []
+              },
+              {
+                "id": "1585634390",
+                "name": "Geologi",
+                "children": []
+              },
+              {
+                "id": "1240141501",
+                "name": "Klimatforskning",
+                "children": []
+              },
+              {
+                "id": "1105774523",
+                "name": "Meteorologi och atmosfärforskning",
+                "children": []
+              },
+              {
+                "id": "1711011865",
+                "name": "Miljövetenskap",
+                "children": []
+              },
+              {
+                "id": "-25700070",
+                "name": "Multidisciplinär geovetenskap",
+                "children": []
+              },
+              {
+                "id": "664789190",
+                "name": "Naturgeografi",
+                "children": []
+              },
+              {
+                "id": "1914638122",
+                "name": "Oceanografi, hydrologi och vattenresurser",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "2334870",
+            "name": "Kemi",
+            "children": [
+              {
+                "id": "1299480584",
+                "name": "Analytisk kemi",
+                "children": []
+              },
+              {
+                "id": "666195880",
+                "name": "Annan kemi",
+                "children": []
+              },
+              {
+                "id": "271134306",
+                "name": "Fysikalisk kemi",
+                "children": []
+              },
+              {
+                "id": "-1950614979",
+                "name": "Materialkemi",
+                "children": []
+              },
+              {
+                "id": "-806365737",
+                "name": "Oorganisk kemi",
+                "children": []
+              },
+              {
+                "id": "1277021606",
+                "name": "Organisk kemi",
+                "children": []
+              },
+              {
+                "id": "1383483364",
+                "name": "Polymerkemi",
+                "children": []
+              },
+              {
+                "id": "-2119851624",
+                "name": "Teoretisk kemi",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1614705027",
+            "name": "Matematik",
+            "children": [
+              {
+                "id": "-946416062",
+                "name": "Algebra och logik",
+                "children": []
+              },
+              {
+                "id": "-262049109",
+                "name": "Annan matematik",
+                "children": []
+              },
+              {
+                "id": "-261107340",
+                "name": "Beräkningsmatematik",
+                "children": []
+              },
+              {
+                "id": "532983617",
+                "name": "Diskret matematik",
+                "children": []
+              },
+              {
+                "id": "1910664322",
+                "name": "Geometri",
+                "children": []
+              },
+              {
+                "id": "-7844596",
+                "name": "Matematisk analys",
+                "children": []
+              },
+              {
+                "id": "-1679509128",
+                "name": "Sannolikhetsteori och statistik",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "-615700483",
+        "name": "Samhällsvetenskap",
+        "children": [
+          {
+            "id": "-1273692629",
+            "name": "Annan samhällsvetenskap",
+            "children": [
+              {
+                "id": "-1928506823",
+                "name": "Arbetslivsstudier",
+                "children": []
+              },
+              {
+                "id": "-713395560",
+                "name": "Genusstudier",
+                "children": []
+              },
+              {
+                "id": "1459966538",
+                "name": "Internationell Migration och Etniska Relationer (IMER)",
+                "children": []
+              },
+              {
+                "id": "1200188382",
+                "name": "Tvärvetenskapliga studier inom samhällsvetenskap",
+                "children": []
+              },
+              {
+                "id": "2068313307",
+                "name": "Övrig annan samhällsvetenskap",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "1268081298",
+            "name": "Ekonomi och näringsliv",
+            "children": [
+              {
+                "id": "-127746465",
+                "name": "Ekonomisk historia",
+                "children": []
+              },
+              {
+                "id": "-781293206",
+                "name": "Företagsekonomi",
+                "children": []
+              },
+              {
+                "id": "1417703700",
+                "name": "Nationalekonomi",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "413915236",
+            "name": "Juridik",
+            "children": [
+              {
+                "id": "1165562481",
+                "name": "Juridik (exklusive juridik och samhälle)",
+                "children": []
+              },
+              {
+                "id": "-390525134",
+                "name": "Juridik och samhälle",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1606825071",
+            "name": "Medie- och kommunikationsvetenskap",
+            "children": [
+              {
+                "id": "-455452289",
+                "name": "Biblioteks- och informationsvetenskap",
+                "children": []
+              },
+              {
+                "id": "616172216",
+                "name": "Kommunikationsvetenskap",
+                "children": []
+              },
+              {
+                "id": "2078600653",
+                "name": "Medievetenskap",
+                "children": []
+              },
+              {
+                "id": "-2037063181",
+                "name": "Mänsklig interaktion med IKT",
+                "children": []
+              },
+              {
+                "id": "-1121749550",
+                "name": "Systemvetenskap, informationssystem och informatik med samhällsvetenskaplig inriktning",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1119790273",
+            "name": "Psykologi",
+            "children": [
+              {
+                "id": "44167126",
+                "name": "Psykologi (exklusive tillämpad psykologi)",
+                "children": []
+              },
+              {
+                "id": "-1145027788",
+                "name": "Tillämpad psykologi",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1292365367",
+            "name": "Social och ekonomisk geografi",
+            "children": [
+              {
+                "id": "-1252053654",
+                "name": "Ekonomisk geografi",
+                "children": []
+              },
+              {
+                "id": "-30274793",
+                "name": "Kulturgeografi",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "1264004082",
+            "name": "Sociologi",
+            "children": [
+              {
+                "id": "-2139406885",
+                "name": "Socialantropologi",
+                "children": []
+              },
+              {
+                "id": "893970034",
+                "name": "Socialpsykologi",
+                "children": []
+              },
+              {
+                "id": "682984798",
+                "name": "Socialt arbete",
+                "children": []
+              },
+              {
+                "id": "1098320718",
+                "name": "Sociologi (exklusive socialt arbete, socialpsykologi och socialantropologi)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "1804072694",
+            "name": "Statsvetenskap",
+            "children": [
+              {
+                "id": "550100059",
+                "name": "Globaliseringsstudier",
+                "children": []
+              },
+              {
+                "id": "1334924572",
+                "name": "Statsvetenskap (exklusive studier av offentlig förvaltning och globaliseringsstudier)",
+                "children": []
+              },
+              {
+                "id": "-1412405306",
+                "name": "Studier av offentlig förvaltning",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-2056816652",
+            "name": "Utbildningsvetenskap",
+            "children": [
+              {
+                "id": "-93576403",
+                "name": "Didaktik",
+                "children": []
+              },
+              {
+                "id": "1071562184",
+                "name": "Lärande",
+                "children": []
+              },
+              {
+                "id": "-1500637233",
+                "name": "Pedagogik",
+                "children": []
+              },
+              {
+                "id": "-277967291",
+                "name": "Pedagogiskt arbete",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "568282839",
+        "name": "Teknik och teknologier",
+        "children": [
+          {
+            "id": "521724520",
+            "name": "Annan teknik",
+            "children": [
+              {
+                "id": "-1321739601",
+                "name": "Interaktionsteknik",
+                "children": []
+              },
+              {
+                "id": "1712357680",
+                "name": "Livsmedelsteknik",
+                "children": []
+              },
+              {
+                "id": "-2033559430",
+                "name": "Mediateknik",
+                "children": []
+              },
+              {
+                "id": "-1810024008",
+                "name": "Övrig annan teknik",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "2035088478",
+            "name": "Elektroteknik och elektronik",
+            "children": [
+              {
+                "id": "273620336",
+                "name": "Annan elektroteknik och elektronik",
+                "children": []
+              },
+              {
+                "id": "-1344606647",
+                "name": "Datorsystem",
+                "children": []
+              },
+              {
+                "id": "-1321028325",
+                "name": "Inbäddad systemteknik",
+                "children": []
+              },
+              {
+                "id": "728694508",
+                "name": "Kommunikationssystem",
+                "children": []
+              },
+              {
+                "id": "1637722395",
+                "name": "Reglerteknik",
+                "children": []
+              },
+              {
+                "id": "-1669583549",
+                "name": "Robotteknik och automation",
+                "children": []
+              },
+              {
+                "id": "400177904",
+                "name": "Signalbehandling",
+                "children": []
+              },
+              {
+                "id": "-1083930292",
+                "name": "Telekommunikation",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "836313557",
+            "name": "Industriell bioteknik",
+            "children": [
+              {
+                "id": "424554755",
+                "name": "Annan industriell bioteknik",
+                "children": []
+              },
+              {
+                "id": "2003495264",
+                "name": "Bioenergi",
+                "children": []
+              },
+              {
+                "id": "2060604938",
+                "name": "Biokatalys och enzymteknik",
+                "children": []
+              },
+              {
+                "id": "2012127262",
+                "name": "Biokemikalier",
+                "children": []
+              },
+              {
+                "id": "-258670065",
+                "name": "Biomaterial",
+                "children": []
+              },
+              {
+                "id": "2013937405",
+                "name": "Bioprocessteknik",
+                "children": []
+              },
+              {
+                "id": "209497952",
+                "name": "Bioteknisk apparatteknik",
+                "children": []
+              },
+              {
+                "id": "265214892",
+                "name": "Läkemedelsbioteknik",
+                "children": []
+              },
+              {
+                "id": "-1547542047",
+                "name": "Medicinsk bioteknik",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-913959988",
+            "name": "Kemiteknik",
+            "children": [
+              {
+                "id": "-1931299490",
+                "name": "Annan kemiteknik",
+                "children": []
+              },
+              {
+                "id": "-833976421",
+                "name": "Farmaceutisk synteskemi",
+                "children": []
+              },
+              {
+                "id": "-1788495825",
+                "name": "Kemiska processer",
+                "children": []
+              },
+              {
+                "id": "-1117001079",
+                "name": "Korrosionsteknik",
+                "children": []
+              },
+              {
+                "id": "1340188882",
+                "name": "Polymerteknologi",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1834268633",
+            "name": "Maskinteknik",
+            "children": [
+              {
+                "id": "-244986567",
+                "name": "Annan maskinteknik",
+                "children": []
+              },
+              {
+                "id": "-1101756338",
+                "name": "Energiteknik",
+                "children": []
+              },
+              {
+                "id": "1116156146",
+                "name": "Farkostteknik",
+                "children": []
+              },
+              {
+                "id": "815422200",
+                "name": "Produktionsteknik, arbetsvetenskap och ergonomi",
+                "children": []
+              },
+              {
+                "id": "1986350119",
+                "name": "Rymd- och flygteknik",
+                "children": []
+              },
+              {
+                "id": "-93767955",
+                "name": "Strömningsmekanik och akustik",
+                "children": []
+              },
+              {
+                "id": "-1818912369",
+                "name": "Teknisk mekanik",
+                "children": []
+              },
+              {
+                "id": "-1311823426",
+                "name": "Tillförlitlighets- och kvalitetsteknik",
+                "children": []
+              },
+              {
+                "id": "1255614546",
+                "name": "Tribologi (ytteknik omfattande friktion, nötning och smörjning)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1677642819",
+            "name": "Materialteknik",
+            "children": [
+              {
+                "id": "909032527",
+                "name": "Annan materialteknik",
+                "children": []
+              },
+              {
+                "id": "-1381872656",
+                "name": "Bearbetnings-, yt- och fogningsteknik",
+                "children": []
+              },
+              {
+                "id": "-1266653926",
+                "name": "Keramteknik",
+                "children": []
+              },
+              {
+                "id": "-1008156844",
+                "name": "Kompositmaterial och -teknik",
+                "children": []
+              },
+              {
+                "id": "-1245456870",
+                "name": "Metallurgi och metalliska material",
+                "children": []
+              },
+              {
+                "id": "726156706",
+                "name": "Pappers-, massa- och fiberteknik",
+                "children": []
+              },
+              {
+                "id": "703252460",
+                "name": "Textil-, gummi- och polymermaterial",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1704463647",
+            "name": "Medicinteknik",
+            "children": [
+              {
+                "id": "318640143",
+                "name": "Annan medicinteknik",
+                "children": []
+              },
+              {
+                "id": "-645092514",
+                "name": "Medicinsk apparatteknik",
+                "children": []
+              },
+              {
+                "id": "-1543038428",
+                "name": "Medicinsk bildbehandling",
+                "children": []
+              },
+              {
+                "id": "740499311",
+                "name": "Medicinsk ergonomi",
+                "children": []
+              },
+              {
+                "id": "-1145289137",
+                "name": "Medicinsk laboratorie- och mätteknik",
+                "children": []
+              },
+              {
+                "id": "806497230",
+                "name": "Medicinska material och protesteknik",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-2134958526",
+            "name": "Miljöbioteknik",
+            "children": [
+              {
+                "id": "451716820",
+                "name": "Annan miljöbioteknik",
+                "children": []
+              },
+              {
+                "id": "1436482845",
+                "name": "Biosanering",
+                "children": []
+              },
+              {
+                "id": "1534952140",
+                "name": "Bioteknisk etik",
+                "children": []
+              },
+              {
+                "id": "186336420",
+                "name": "Diagnostisk bioteknologi",
+                "children": []
+              },
+              {
+                "id": "1167712668",
+                "name": "Vattenbehandling",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-90752118",
+            "name": "Nanoteknik",
+            "children": []
+          },
+          {
+            "id": "-1322651030",
+            "name": "Naturresursteknik",
+            "children": [
+              {
+                "id": "-1980643176",
+                "name": "Annan naturresursteknik",
+                "children": []
+              },
+              {
+                "id": "-1111671097",
+                "name": "Energisystem",
+                "children": []
+              },
+              {
+                "id": "-248145112",
+                "name": "Fjärranalysteknik",
+                "children": []
+              },
+              {
+                "id": "546182820",
+                "name": "Geofysisk teknik",
+                "children": []
+              },
+              {
+                "id": "-1826837684",
+                "name": "Havs- och vattendragsteknik",
+                "children": []
+              },
+              {
+                "id": "1595460499",
+                "name": "Marin teknik",
+                "children": []
+              },
+              {
+                "id": "-1424090685",
+                "name": "Miljöledning",
+                "children": []
+              },
+              {
+                "id": "630378795",
+                "name": "Mineral- och gruvteknik",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "-1392039929",
+            "name": "Samhällsbyggnadsteknik",
+            "children": [
+              {
+                "id": "-1271660903",
+                "name": "Annan samhällsbyggnadsteknik",
+                "children": []
+              },
+              {
+                "id": "-574537444",
+                "name": "Arkitekturteknik",
+                "children": []
+              },
+              {
+                "id": "1619472280",
+                "name": "Byggproduktion",
+                "children": []
+              },
+              {
+                "id": "-698815961",
+                "name": "Geoteknik",
+                "children": []
+              },
+              {
+                "id": "915322516",
+                "name": "Husbyggnad",
+                "children": []
+              },
+              {
+                "id": "-528114160",
+                "name": "Infrastrukturteknik",
+                "children": []
+              },
+              {
+                "id": "1125641650",
+                "name": "Miljöanalys och bygginformationsteknik",
+                "children": []
+              },
+              {
+                "id": "965704309",
+                "name": "Transportteknik och logistik",
+                "children": []
+              },
+              {
+                "id": "1662434602",
+                "name": "Vattenteknik",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
