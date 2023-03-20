@@ -56,7 +56,7 @@ export const DemoFormPage = () => {
       </AsidePortal>
       <Card
         title='Search'
-        variant='variant1'
+        variant='variant6'
         tooltipTitle='Search'
         tooltipBody='Search help body text tooltip'
       >

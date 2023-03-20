@@ -54,7 +54,7 @@ export const ReactHookFormTestPage = () => {
     <Stack spacing={2}>
       <Card
         title='Publikationstyp'
-        variant='variant1'
+        variant='variant6'
         tooltipTitle='Title'
         tooltipBody='Here goes some text about how choose type'
       >
