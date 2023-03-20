@@ -13,22 +13,20 @@ import { ReactNode } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import { Tooltip } from '../Tooltip/Tooltip';
 
-const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
+const StyledCardHeader = styled(CardHeader)((props) => ({
   borderTopLeftRadius: 8,
   borderTopRightRadius: 8,
   borderBottomLeftRadius: 0,
   borderBottomRightRadius: 0,
   backgroundColor: '#e6f0f7',
-  paddingTop: theme.spacing(1.5),
-  paddingBottom: theme.spacing(1.5),
-  paddingLeft: theme.spacing(4),
-  minHeight: theme.spacing(1 / 2),
-  // borderBottom: '2px solid #5388c0',
+  paddingTop: props.theme.spacing(1.5),
+  paddingBottom: props.theme.spacing(1.5),
+  paddingLeft: props.theme.spacing(4),
+  minHeight: props.theme.spacing(1 / 2),
 }));
 
 const StyledCardContent = styled(CardContent)(({ theme }) => {
   return {
-    backgroundColor: 'rgb(247,250,253)',
     padding: theme.spacing(4),
     borderRadius: 0,
 
@@ -42,7 +40,13 @@ export interface CardProps {
   children?: ReactNode;
   title?: string;
   action?: ReactNode;
-  variant: 'variant1' | 'variant2';
+  variant:
+    | 'variant1'
+    | 'variant2'
+    | 'variant3'
+    | 'variant4'
+    | 'variant5'
+    | 'variant6';
   tooltipTitle: string;
   tooltipBody: string;
   sx?: SxProps<Theme>;
@@ -83,6 +87,32 @@ export const Card = (props: CardProps) => {
     >
       <StyledCardHeader
         action={props.action}
+        sx={{
+          ...(props.variant === 'variant1' && {
+            backgroundColor: '#d6e7f3;',
+            borderBottom: '2px solid #5389c0',
+          }),
+          ...(props.variant === 'variant2' && {
+            backgroundColor: '#eedcdb;',
+            borderBottom: '2px solid #cc908c',
+          }),
+          ...(props.variant === 'variant3' && {
+            backgroundColor: '#d9eadb;',
+            borderBottom: '2px solid #a6c9a4',
+          }),
+          ...(props.variant === 'variant4' && {
+            backgroundColor: '#ded5e7;',
+            borderBottom: '2px solid #8566a1',
+          }),
+          ...(props.variant === 'variant5' && {
+            backgroundColor: '#f8e7d8;',
+            borderBottom: '2px solid #e09b60',
+          }),
+          ...(props.variant === 'variant6' && {
+            backgroundColor: '#e6f0f7;',
+            border: 'none',
+          }),
+        }}
         titleTypographyProps={{
           variant: 'h5',
           fontSize: '1.1rem',
@@ -105,7 +135,18 @@ export const Card = (props: CardProps) => {
           </Grid>
         }
       />
-      <StyledCardContent>{props.children}</StyledCardContent>
+      <StyledCardContent
+        sx={{
+          ...(props.variant !== 'variant6' && {
+            backgroundColor: '#fff;',
+          }),
+          ...(props.variant === 'variant6' && {
+            backgroundColor: 'f7fafd;',
+          }),
+        }}
+      >
+        {props.children}
+      </StyledCardContent>
     </MuiCard>
   );
 };
