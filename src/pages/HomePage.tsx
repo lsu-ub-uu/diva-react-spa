@@ -5,6 +5,7 @@ import { Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AsidePortal, Card, TabsMenu } from '../components';
+import { RichTree } from '../components/RichTree/RichTree';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -54,7 +55,7 @@ export const HomePage = () => {
           tooltipTitle='Publication'
           tooltipBody='Publications help body text tooltip'
         >
-          {t('Welcome')}
+          <RichTree />
         </Card>
         <Card
           title='Variant2'
