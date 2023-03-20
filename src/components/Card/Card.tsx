@@ -141,7 +141,7 @@ export const Card = (props: CardProps) => {
             backgroundColor: '#fff;',
           }),
           ...(props.variant === 'variant6' && {
-            backgroundColor: 'f7fafd;',
+            backgroundColor: '#f7fafd;',
           }),
         }}
       >

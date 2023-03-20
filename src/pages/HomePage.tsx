@@ -47,14 +47,56 @@ export const HomePage = () => {
         </Stack>
       </AsidePortal>
       <TabsMenu />
-      <Card
-        title='Publications'
-        variant='variant1'
-        tooltipTitle='Publication'
-        tooltipBody='Publications help body text tooltip'
-      >
-        {t('Welcome')}
-      </Card>
+      <Stack spacing={2}>
+        <Card
+          title='Variant1'
+          variant='variant1'
+          tooltipTitle='Publication'
+          tooltipBody='Publications help body text tooltip'
+        >
+          {t('Welcome')}
+        </Card>
+        <Card
+          title='Variant2'
+          variant='variant2'
+          tooltipTitle='Publication'
+          tooltipBody='Publications help body text tooltip'
+        >
+          {t('Welcome')}
+        </Card>
+        <Card
+          title='Variant3'
+          variant='variant3'
+          tooltipTitle='Publication'
+          tooltipBody='Publications help body text tooltip'
+        >
+          {t('Welcome')}
+        </Card>
+        <Card
+          title='Variant4'
+          variant='variant4'
+          tooltipTitle='Publication'
+          tooltipBody='Publications help body text tooltip'
+        >
+          {t('Welcome')}
+        </Card>
+        <Card
+          title='Variant5'
+          variant='variant5'
+          tooltipTitle='Publication'
+          tooltipBody='Publications help body text tooltip'
+        >
+          {t('Welcome')}
+        </Card>
+        <Card
+          title='Variant6'
+          variant='variant6'
+          tooltipTitle='Publication'
+          tooltipBody='Publications help body text tooltip'
+        >
+          {t('Welcome')}
+        </Card>
+      </Stack>
     </div>
   );
 };
