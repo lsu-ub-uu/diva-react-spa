@@ -20,7 +20,14 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { publicationTypeSelector } from '../features/publicationTypes/selectors';
 import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
-import { Card, Select, ErrorMessage, Radio, Checkbox } from '../components';
+import {
+  Card,
+  Select,
+  ErrorMessage,
+  Radio,
+  Checkbox,
+  DatePicker,
+} from '../components';
 
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('Firstname is required'),
@@ -28,6 +35,7 @@ const validationSchema = yup.object().shape({
   gender: yup.string().required('Gender is required'),
   publicationType: yup.string().required('Publication type is required'),
   testCheck: yup.bool().oneOf([true], 'You need to tick testCheck'),
+  pubDate: yup.date().required('Pub date is required'),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -250,6 +258,30 @@ export const ReactHookFormTestPage = () => {
                     }
                     label='testCheck'
                   />
+                )}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <Controller
+                control={control}
+                name='pubDate'
+                defaultValue=''
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl fullWidth>
+                    <FormLabel
+                      required
+                      error={error !== undefined}
+                    >
+                      Publication date
+                    </FormLabel>
+                    <DatePicker
+                      error={error !== undefined}
+                      {...field}
+                    />
+                  </FormControl>
                 )}
               />
             </Grid>
