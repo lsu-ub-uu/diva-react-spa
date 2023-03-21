@@ -1,9 +1,8 @@
 import { test } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 import { DatePicker } from '../DatePicker';
-import { DoDisturb } from '@mui/icons-material';
 
 /**
  * @vitest-environment jsdom
@@ -22,23 +21,52 @@ describe('<DatePicker />', () => {
     const dateInput = screen.getByRole('textbox');
 
     await user.type(dateInput, '2023-10-10');
-    //expect(dateInput).toHaveValue('2023-10-10');
+
     expect(dateInput).toBeValid();
   });
-
-  test.skip('It handels button inputs', async () => {
-    const today = dayjs().format('YYYY-MM-DD');
-    console.log(today);
+  test.each([
+    '2023-10-10',
+    '2023-04-11',
+    '2023-04-12',
+    '2023-04-17',
+    '2023-04-25',
+    '2023-06-05',
+    '2023-06-27',
+    '2023-07-26',
+    '2023-09-13',
+    '2023-10-04',
+  ])('It handels inputs %s', async (a) => {
     render(<DatePicker />);
     const user = userEvent.setup();
     const dateInput = screen.getByRole('textbox');
+
+    await user.type(dateInput, a);
+
+    expect(dateInput).toBeValid();
+  });
+
+  test('Today button click gives todays date', async () => {
+    const today = dayjs().format('YYYY-MM-DD');
+    render(<DatePicker />);
+    const user = userEvent.setup();
     const button = screen.getByRole('button', { name: 'Choose date' });
     await user.click(button);
-    const todayButton = screen.getAllByRole('button', { name: 'Today' });
-    screen.debug(todayButton);
-    expect(todayButton).toBeDisabled();
-    //await user.click(todayButton);
+    const todayButton = screen.getByRole('button', { name: 'Today' });
+    await user.click(todayButton);
 
-    //expect(dateInput).toHaveValue(today);
+    const dateInput = screen.getByRole('textbox');
+    await user.type(dateInput, today);
+  });
+  test('Picking a date gives that date', async () => {
+    /* const today = dayjs().format('YYYY-MM-DD');
+    render(<DatePicker />);
+    const user = userEvent.setup();
+    const button = screen.getByRole('button', { name: 'Choose date' });
+    await user.click(button);
+    const todayButton = screen.getByRole('button', { name: 'Today' });
+    await user.click(todayButton);
+
+    const dateInput = screen.getByRole('textbox');
+    await user.type(dateInput, today); */
   });
 });
