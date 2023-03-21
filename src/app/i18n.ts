@@ -12,6 +12,9 @@ i18n
           Welcome: 'Welcome to DiVA',
           start: 'Start',
           users: 'List Users',
+          common: {
+            close: 'Close'
+          }
         },
       },
       sv: {
@@ -19,6 +22,9 @@ i18n
           Welcome: 'Välkommen till DiVA',
           start: 'Startsidan',
           users: 'Lista Användare',
+          common: {
+            close: 'Stäng'
+          }
         },
       },
     },

@@ -61,7 +61,7 @@ interface DialogProps {
   children?: ReactNode;
   closeButton: boolean;
   closeAction?: () => void;
-  actions?: ReactNode[]; // TODO: maybe another type
+  actions?: ReactNode[];
 }
 
 export const Dialog = (props: DialogProps) => {
@@ -72,52 +72,40 @@ export const Dialog = (props: DialogProps) => {
     setOpen(props.open);
   }, [props.open]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     if (props.closeAction) props.closeAction();
     setOpen(false);
   };
 
   return (
-    <div>
-      <Button
-        disableRipple
-        variant='outlined'
-        onClick={handleClickOpen}
-      >
-        Open test dialog
-      </Button>
-      <StyledDialog
+    <StyledDialog
+      onClose={handleClose}
+      aria-labelledby='customized-dialog-title'
+      open={open}
+    >
+      <DialogTitle
+        id='customized-dialog-title'
         onClose={handleClose}
-        aria-labelledby='customized-dialog-title'
-        open={open}
       >
-        <DialogTitle
-          id='customized-dialog-title'
-          onClose={handleClose}
+        {props.title}
+      </DialogTitle>
+      <DialogContent>{props.children}</DialogContent>
+      <DialogActions>
+        <Stack
+          direction='row'
+          spacing={1}
         >
-          {props.title}
-        </DialogTitle>
-        <DialogContent>{props.children}</DialogContent>
-        <DialogActions>
-          <Stack
-            direction='row'
-            spacing={1}
-          >
-            {props.actions?.map((action) => action)}
-            {props.closeButton && (
-              <Button
-                variant='contained'
-                onClick={handleClose}
-              >
-                {t('common.close')}
-              </Button>
-            )}
-          </Stack>
-        </DialogActions>
-      </StyledDialog>
-    </div>
+          {props.actions?.map((action) => action)}
+          {props.closeButton && (
+            <Button
+              variant='contained'
+              onClick={handleClose}
+            >
+              {t('common.close')}
+            </Button>
+          )}
+        </Stack>
+      </DialogActions>
+    </StyledDialog>
   );
 };
