@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import {
   Dialog as MuiDialog,
   DialogTitle as MuiDialogTitle,
+  Paper,
   Stack,
   Theme,
 } from '@mui/material';
@@ -25,7 +26,7 @@ const StyledDialog = styled(MuiDialog)(({ theme }) => ({
 export interface DialogTitleProps {
   id: string;
   children?: ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const DialogTitle = (props: DialogTitleProps) => {
@@ -58,11 +59,16 @@ const DialogTitle = (props: DialogTitleProps) => {
 interface DialogProps {
   open: boolean;
   title: ReactNode;
+  fixedHeader?: ReactNode;
   children?: ReactNode;
   closeButton: boolean;
   closeAction?: () => void;
   actions?: ReactNode[];
 }
+const StyledDialogPaper = styled(Paper)(() => ({
+  width: '900px',
+  height: '800px',
+}));
 
 export const Dialog = (props: DialogProps) => {
   const [open, setOpen] = useState(false);
@@ -79,6 +85,7 @@ export const Dialog = (props: DialogProps) => {
 
   return (
     <StyledDialog
+      PaperComponent={StyledDialogPaper}
       onClose={handleClose}
       aria-labelledby='customized-dialog-title'
       open={open}
@@ -89,7 +96,10 @@ export const Dialog = (props: DialogProps) => {
       >
         {props.title}
       </DialogTitle>
-      <DialogContent>{props.children}</DialogContent>
+      {props.fixedHeader && (
+        <DialogTitle id='extra-dialog-title'>{props.fixedHeader}</DialogTitle>
+      )}
+      <DialogContent dividers>{props.children}</DialogContent>
       <DialogActions>
         <Stack
           direction='row'

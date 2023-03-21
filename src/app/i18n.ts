@@ -13,8 +13,8 @@ i18n
           start: 'Start',
           users: 'List Users',
           common: {
-            close: 'Close'
-          }
+            close: 'Close',
+          },
         },
       },
       sv: {
@@ -23,8 +23,8 @@ i18n
           start: 'Startsidan',
           users: 'Lista Användare',
           common: {
-            close: 'Stäng'
-          }
+            close: 'Stäng',
+          },
         },
       },
     },

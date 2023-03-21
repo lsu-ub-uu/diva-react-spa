@@ -4,7 +4,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AsidePortal, Card, TabsMenu, SubjectCategoryPicker } from '../components';
+import {
+  AsidePortal,
+  Card,
+  TabsMenu,
+  SubjectCategoryPicker,
+} from '../components';
 
 export const HomePage = () => {
   const { t } = useTranslation();

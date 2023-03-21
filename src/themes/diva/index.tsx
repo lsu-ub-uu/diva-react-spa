@@ -27,6 +27,20 @@ export const divaTheme = createTheme({
   },
   components: {
     MuiCssBaseline: {},
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#efefef',
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#efefef',
+        },
+      },
+    },
     MuiInputBase: {
       styleOverrides: {
         root: {

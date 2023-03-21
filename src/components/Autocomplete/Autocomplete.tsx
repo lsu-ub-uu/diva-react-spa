@@ -4,7 +4,11 @@ import { Autocomplete as MuiAutocomplete } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { SelectItem } from 'components/RichTree/RichTree';
+
+export interface SelectItem {
+  id: string;
+  name: string;
+}
 
 interface AutoCompleteProps {
   options: SelectItem[];
@@ -17,6 +21,7 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
       onChange={(event: React.SyntheticEvent, value: SelectItem | null) => {
         alert(JSON.stringify(value));
       }}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
       id='autocomplete-test'
       sx={{ width: '100%' }}
       options={props.options}
