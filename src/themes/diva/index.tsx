@@ -39,7 +39,16 @@ export const divaTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#fff',
-          border: '2px solid black',
+          border: '1px solid #000',
+          borderRadius: 0,
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#fff',
+          border: '1px solid #000',
           borderRadius: 0,
         },
       },

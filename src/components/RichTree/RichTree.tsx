@@ -2,6 +2,7 @@ import * as React from 'react';
 import { TreeView, TreeItem } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Autocomplete } from '../Autocomplete/Autocomplete';
 
 interface RenderTree {
   id: string;
@@ -9,7 +10,7 @@ interface RenderTree {
   children?: readonly RenderTree[];
 }
 
-interface SelectItem {
+export interface SelectItem {
   id: string;
   name: string;
 }
@@ -1611,14 +1612,24 @@ export const RichTree = () => {
   );
 
   return (
-    <TreeView
-      aria-label='subject tree view'
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpanded={['root']}
-      defaultExpandIcon={<ChevronRightIcon />}
-      sx={{ minHeight: 100, flexGrow: 1, maxWidth: '100%', overflowY: 'auto' }}
-    >
-      {renderTree(data)}
-    </TreeView>
+    <>
+      <Autocomplete
+        options={getFlat(data).sort((a, b) => a.name.localeCompare(b.name))}
+      />
+      <TreeView
+        aria-label='subject tree view'
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpanded={['root']}
+        defaultExpandIcon={<ChevronRightIcon />}
+        sx={{
+          minHeight: 100,
+          flexGrow: 1,
+          maxWidth: '100%',
+          overflowY: 'auto',
+        }}
+      >
+        {renderTree(data)}
+      </TreeView>
+    </>
   );
 };

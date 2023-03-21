@@ -4,8 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AsidePortal, Card, TabsMenu } from '../components';
-import { RichTree } from '../components/RichTree/RichTree';
+import { AsidePortal, RichTree, Card, TabsMenu } from '../components';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -55,7 +54,9 @@ export const HomePage = () => {
           tooltipTitle='Publication'
           tooltipBody='Publications help body text tooltip'
         >
-          <RichTree />
+          <Stack spacing={2}>
+            <RichTree />
+          </Stack>
         </Card>
         <Card
           title='Variant2'

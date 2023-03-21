@@ -19,3 +19,5 @@ export { Select } from './Form/Select/Select';
 export { Checkbox } from './Form/Checkbox/Checkbox';
 export { Radio } from './Form/Radio/Radio';
 export { ErrorMessage } from './Form/ErrorMessage/ErrorMessage';
+export { RichTree } from './RichTree/RichTree';
+export { Autocomplete } from './Autocomplete/Autocomplete';
