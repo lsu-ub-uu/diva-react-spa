@@ -11,6 +11,7 @@ export interface SelectItem {
 }
 
 interface AutoCompleteProps {
+  placeholder?: string;
   options: SelectItem[];
   onSelected?: (id: string) => void;
 }
@@ -30,7 +31,7 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder='Sök'
+          placeholder={props.placeholder ?? 'Search'}
           margin='normal'
         />
       )}

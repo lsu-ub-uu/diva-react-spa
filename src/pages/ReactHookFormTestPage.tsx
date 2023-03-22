@@ -22,7 +22,14 @@ import {
   publicationTypeSelector,
   loadPublicationTypesAsync,
 } from '../features/publicationTypes';
-import { Card, Select, ErrorMessage, Radio, Checkbox } from '../components';
+import {
+  Card,
+  Select,
+  ErrorMessage,
+  Radio,
+  Checkbox,
+  useBackdrop,
+} from '../components';
 
 interface TestModel {
   firstname: string;
@@ -50,11 +57,13 @@ export const ReactHookFormTestPage = () => {
     formState: { errors },
   } = methods;
   const dispatch = useAppDispatch();
+  const { setBackdrop } = useBackdrop();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
 
   useEffect(() => {
-    dispatch(loadPublicationTypesAsync());
-  }, [dispatch]);
+    setBackdrop(true);
+    dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
+  }, [dispatch, setBackdrop]);
 
   const handleOnSubmit = (data: TestModel) => {
     console.log(data);
@@ -168,7 +177,7 @@ export const ReactHookFormTestPage = () => {
               <Controller
                 control={control}
                 name='gender'
-                defaultValue=''
+                defaultValue='female'
                 render={({ field, fieldState: { error } }) => (
                   <FormControl fullWidth>
                     <FormLabel
