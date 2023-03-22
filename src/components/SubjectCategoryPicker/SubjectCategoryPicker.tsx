@@ -1,7 +1,15 @@
 import * as React from 'react';
-import { Button } from '@mui/material';
+import {
+  Button,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Stack,
+} from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Autocomplete, SelectItem } from '../Autocomplete/Autocomplete';
 import { RenderTree, RichTree } from '../RichTree/RichTree';
 import { Dialog } from '../Dialog/Dialog';
@@ -1597,6 +1605,7 @@ export const SubjectCategoryPicker = (
   props: SubjectCategoryPickerProps,
 ): JSX.Element => {
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
   const { t } = useTranslation();
 
   const handleClickOpen = () => {
@@ -1605,17 +1614,42 @@ export const SubjectCategoryPicker = (
 
   const handleSelected = (id: string) => {
     if (props.onSelect) props.onSelect(id);
-    // should it be closed?
+    if (!selected.includes(id)) {
+      setSelected((prevState) => [...prevState, id]);
+      setOpen(false);
+    }
+  };
+
+  const remove = (removeId: string) => {
+    setSelected((prevState) => prevState.filter((id) => id !== removeId));
   };
 
   return (
-    <>
+    <Stack spacing={2}>
+      <List dense>
+        {selected.map((id) => (
+          <ListItem
+            key={id}
+            secondaryAction={
+              <IconButton
+                edge='end'
+                aria-label='delete'
+                onClick={() => remove(id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            }
+          >
+            <ListItemText primary={id} />
+          </ListItem>
+        ))}
+      </List>
       <Button
         disableRipple
-        variant='outlined'
+        variant='contained'
         onClick={handleClickOpen}
       >
-        {t('Select national subject category')}
+        {t('Add national subject category')}
       </Button>
       <Dialog
         title={t('Select national subject category')}
@@ -1634,6 +1668,6 @@ export const SubjectCategoryPicker = (
           onSelected={handleSelected}
         />
       </Dialog>
-    </>
+    </Stack>
   );
 };

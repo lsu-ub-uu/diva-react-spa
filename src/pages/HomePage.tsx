@@ -59,7 +59,7 @@ export const HomePage = () => {
           tooltipTitle='Publication'
           tooltipBody='Publications help body text tooltip'
         >
-          <SubjectCategoryPicker />
+          <SubjectCategoryPicker onSelect={(id) => console.log(id)} />
         </Card>
         <Card
           title='Variant2'
