@@ -45,6 +45,7 @@ export const DatePicker = React.forwardRef(
                   border: '1px solid #613985',
                 },
                 '.MuiPickersDay-root.Mui-selected': {
+                  color: '#ffffff',
                   backgroundColor: '#613985',
                 },
               },
