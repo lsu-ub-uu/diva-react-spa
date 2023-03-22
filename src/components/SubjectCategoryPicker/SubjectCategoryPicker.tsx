@@ -1584,7 +1584,7 @@ const data: RenderTree = {
 };
 
 interface SubjectCategoryPickerProps {
-  onSelect?: () => void;
+  onSelect?: (id: string) => void;
 }
 
 function getFlat(node: RenderTree): SelectItem[] {
@@ -1603,6 +1603,11 @@ export const SubjectCategoryPicker = (
     setOpen(true);
   };
 
+  const handleSelected = (id: string) => {
+    if (props.onSelect) props.onSelect(id);
+    // should it be closed?
+  };
+
   return (
     <>
       <Button
@@ -1619,11 +1624,15 @@ export const SubjectCategoryPicker = (
         fixedHeader={
           <Autocomplete
             options={getFlat(data).sort((a, b) => a.name.localeCompare(b.name))}
+            onSelected={handleSelected}
           />
         }
         closeAction={() => setOpen(false)}
       >
-        <RichTree tree={data} />
+        <RichTree
+          tree={data}
+          onSelected={handleSelected}
+        />
       </Dialog>
     </>
   );

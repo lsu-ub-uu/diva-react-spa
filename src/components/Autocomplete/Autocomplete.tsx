@@ -12,6 +12,7 @@ export interface SelectItem {
 
 interface AutoCompleteProps {
   options: SelectItem[];
+  onSelected?: (id: string) => void;
 }
 
 export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
@@ -19,7 +20,7 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
     <MuiAutocomplete
       popupIcon={<ExpandMoreIcon />}
       onChange={(event: React.SyntheticEvent, value: SelectItem | null) => {
-        alert(JSON.stringify(value));
+        if (props.onSelected && value != null) props.onSelected(value.id);
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       id='autocomplete-test'
