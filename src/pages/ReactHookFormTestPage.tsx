@@ -18,9 +18,19 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorIcon from '@mui/icons-material/Error';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { publicationTypeSelector } from '../features/publicationTypes/selectors';
-import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
+import {
+  publicationTypeSelector,
+  loadPublicationTypesAsync,
+} from '../features/publicationTypes';
 import { Card, Select, ErrorMessage, Radio, Checkbox } from '../components';
+
+interface TestModel {
+  firstname: string;
+  lastname: string;
+  gender: string;
+  publicationType: string;
+  testCheck: boolean;
+}
 
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('Firstname is required'),
@@ -31,7 +41,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const ReactHookFormTestPage = () => {
-  const methods = useForm({
+  const methods = useForm<TestModel>({
     resolver: yupResolver(validationSchema),
   });
   const {
@@ -46,7 +56,7 @@ export const ReactHookFormTestPage = () => {
     dispatch(loadPublicationTypesAsync());
   }, [dispatch]);
 
-  const handleOnSubmit = (data: unknown) => {
+  const handleOnSubmit = (data: TestModel) => {
     console.log(data);
   };
 
