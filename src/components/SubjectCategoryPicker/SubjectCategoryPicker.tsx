@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { Autocomplete, SelectItem } from '../Autocomplete/Autocomplete';
 import { RenderTree, RichTree } from '../RichTree/RichTree';
 import { Dialog } from '../Dialog/Dialog';
@@ -1614,7 +1615,7 @@ export const SubjectCategoryPicker = (
 
   const handleSelected = (id: string) => {
     if (props.onSelect) props.onSelect(id);
-    if (!selected.includes(id)) {
+    if (!selected.includes(id) && id !== 'root') {
       setSelected((prevState) => [...prevState, id]);
       setOpen(false);
     }
@@ -1627,6 +1628,11 @@ export const SubjectCategoryPicker = (
   return (
     <Stack spacing={2}>
       <List dense>
+        {selected.length === 0 && (
+          <ListItem key='no-records'>
+            <ListItemText primary='No records' />
+          </ListItem>
+        )}
         {selected.map((id) => (
           <ListItem
             key={id}
@@ -1646,8 +1652,9 @@ export const SubjectCategoryPicker = (
       </List>
       <Button
         disableRipple
-        variant='contained'
+        variant='outlined'
         onClick={handleClickOpen}
+        endIcon={<ControlPointIcon />}
       >
         {t('Add national subject category')}
       </Button>
@@ -1657,7 +1664,9 @@ export const SubjectCategoryPicker = (
         open={open}
         fixedHeader={
           <Autocomplete
-            options={getFlat(data).sort((a, b) => a.name.localeCompare(b.name))}
+            options={getFlat(data).sort((a, b) =>
+              a.name.localeCompare(b.name, 'sv'),
+            )}
             onSelected={handleSelected}
           />
         }
