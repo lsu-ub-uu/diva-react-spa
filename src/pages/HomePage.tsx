@@ -54,12 +54,20 @@ export const HomePage = () => {
       <TabsMenu />
       <Stack spacing={2}>
         <Card
+          title='National subject category'
+          variant='variant6'
+          tooltipTitle='Publication'
+          tooltipBody='Publications help body text tooltip'
+        >
+          <SubjectCategoryPicker onSelect={(id) => console.log(id)} />
+        </Card>
+        <Card
           title='Variant1'
           variant='variant1'
           tooltipTitle='Publication'
           tooltipBody='Publications help body text tooltip'
         >
-          <SubjectCategoryPicker onSelect={(id) => console.log(id)} />
+          {t('Welcome')}
         </Card>
         <Card
           title='Variant2'
