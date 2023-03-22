@@ -38,7 +38,19 @@ export const DatePicker = React.forwardRef(
           inputRef={ref}
           slotProps={{
             actionBar: { actions: ['today', 'clear'] },
+            desktopPaper: {
+              sx: {
+                border: '2px solid #000000',
+                '.MuiPickersDay-root.MuiPickersDay-today': {
+                  border: '1px solid #613985',
+                },
+                '.MuiPickersDay-root.Mui-selected': {
+                  backgroundColor: '#613985',
+                },
+              },
+            },
           }}
+
           /* value={value}
           onChange={(newValue) => setValue(newValue)} */
         />
