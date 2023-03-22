@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  Typography,
 } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -1664,6 +1665,7 @@ export const SubjectCategoryPicker = (
         open={open}
         fixedHeader={
           <Autocomplete
+            placeholder='Sök ämneskategori'
             options={getFlat(data).sort((a, b) =>
               a.name.localeCompare(b.name, 'sv'),
             )}
@@ -1672,6 +1674,11 @@ export const SubjectCategoryPicker = (
         }
         closeAction={() => setOpen(false)}
       >
+        <Typography sx={{ mb: 2 }}>
+          Välj nationell ämneskategori genom att klicka på namnet. Överordnad
+          kategori följer automatiskt med. Bläddra i listan genom att klicka på
+          pilarna.
+        </Typography>
         <RichTree
           tree={data}
           onSelected={handleSelected}
