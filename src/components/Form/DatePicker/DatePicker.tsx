@@ -26,6 +26,20 @@ export const DatePicker = React.forwardRef(
         <MuiDatePicker
           {...props}
           ref={ref}
+          PopperProps={{
+            sx: {
+              '& .MuiPaper-root': { border: '2px solid #000000' },
+              /* '& .MuiPickersDay-root.MuiPickersDay-today': {
+                border: '1px solid #613985',
+              },
+              '& .MuiPickersDay-root.Mui-selected': {
+                backgroundColor: '#613985',
+              },
+              '& .MuiPickersDay-root.Mui-selected:hover': {
+                backgroundColor: '#613985',
+              }, */
+            },
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -34,6 +48,11 @@ export const DatePicker = React.forwardRef(
               error={props.error !== undefined}
             />
           )}
+          componentsProps={{
+            actionBar: {
+              actions: ['today', 'clear'],
+            },
+          }}
         />
       </LocalizationProvider>
     );
