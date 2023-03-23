@@ -268,7 +268,6 @@ export const ReactHookFormTestPage = () => {
               <Controller
                 control={control}
                 name='pubDate'
-                defaultValue=''
                 render={({ field, fieldState: { error } }) => (
                   <FormControl fullWidth>
                     <FormLabel
@@ -278,7 +277,7 @@ export const ReactHookFormTestPage = () => {
                       Publication date
                     </FormLabel>
                     <DatePicker
-                      error={error !== undefined}
+                      error={error}
                       {...field}
                     />
                   </FormControl>

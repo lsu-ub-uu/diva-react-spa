@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
@@ -8,52 +6,34 @@ import {
 } from '@mui/x-date-pickers/DatePicker';
 import 'dayjs/locale/sv';
 import 'dayjs/locale/en-gb';
+import { TextField } from '@mui/material';
+import { Dayjs } from 'dayjs';
+import React from 'react';
+import { FieldError } from 'react-hook-form';
 
-interface ExtendedDatePickerProps extends DatePickerProps<Date> {
-  locale?: string;
+interface ExtendedDatePickerProps
+  extends Omit<DatePickerProps<Dayjs, Dayjs>, 'renderInput'> {
+  error?: FieldError;
 }
 
 export const DatePicker = React.forwardRef(
-  (
-    props: ExtendedDatePickerProps,
-    ref: React.ForwardedRef<HTMLInputElement>,
-  ) => {
-    const { locale, ...other } = props;
-
-    const [dateLocale, setDateLocale] = useState<string>(
-      props.locale ? props.locale : 'sv',
-    );
-    const [value, setValue] = useState<Date | null>(null);
-    useEffect(() => {
-      setDateLocale(locale ?? 'sv');
-    }, [locale]);
-
+  (props: ExtendedDatePickerProps, ref: React.ForwardedRef<HTMLDivElement>) => {
     return (
       <LocalizationProvider
         dateAdapter={AdapterDayjs}
-        adapterLocale={dateLocale}
+        adapterLocale='sv'
       >
         <MuiDatePicker
-          {...other}
-          inputRef={ref}
-          slotProps={{
-            actionBar: { actions: ['today', 'clear'] },
-            desktopPaper: {
-              sx: {
-                border: '2px solid #000000',
-                '.MuiPickersDay-root.MuiPickersDay-today': {
-                  border: '1px solid #613985',
-                },
-                '.MuiPickersDay-root.Mui-selected': {
-                  color: '#ffffff',
-                  backgroundColor: '#613985',
-                },
-              },
-            },
-          }}
-
-          /* value={value}
-          onChange={(newValue) => setValue(newValue)} */
+          {...props}
+          ref={ref}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              onChange={params.onChange}
+              helperText={props.error !== undefined ? props.error.message : ' '}
+              error={props.error !== undefined}
+            />
+          )}
         />
       </LocalizationProvider>
     );
