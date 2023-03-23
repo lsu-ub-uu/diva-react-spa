@@ -56,8 +56,8 @@ export const ReactHookFormTestPage = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
-  const dispatch = useAppDispatch();
   const { setBackdrop } = useBackdrop();
+  const dispatch = useAppDispatch();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
 
   useEffect(() => {
