@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   loadSubjectCategoriesAsync,
   subjectCategorySelector,
+  getSubjectCategoryDetails,
 } from '../../features/subjectCategory';
 import subjectCategories from '../../__mocks__/data/subjectCategories.json';
 
@@ -34,6 +35,9 @@ export const SubjectCategoryPicker = (
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const subjectCategoryState = useAppSelector(subjectCategorySelector);
+  const subjectCategoriesWithNames = useAppSelector(
+    getSubjectCategoryDetails(selected),
+  );
 
   useEffect(() => {
     dispatch(loadSubjectCategoriesAsync());
@@ -65,20 +69,20 @@ export const SubjectCategoryPicker = (
             <ListItemText primary='No records' />
           </ListItem>
         )}
-        {selected.map((id) => (
+        {subjectCategoriesWithNames.map((subjectCategory) => (
           <ListItem
-            key={id}
+            key={subjectCategory.id}
             secondaryAction={
               <IconButton
                 edge='end'
                 aria-label='delete'
-                onClick={() => remove(id)}
+                onClick={() => remove(subjectCategory.id)}
               >
                 <DeleteIcon />
               </IconButton>
             }
           >
-            <ListItemText primary={id} />
+            <ListItemText primary={subjectCategory.name} />
           </ListItem>
         ))}
       </List>
