@@ -66,7 +66,10 @@ export const SubjectCategoryPicker = (
       <List dense>
         {selected.length === 0 && (
           <ListItem key='no-records'>
-            <ListItemText primary='No records' />
+            <ListItemText
+              primary='Add subject category'
+              secondary='this is secondary text to help the user further'
+            />
           </ListItem>
         )}
         {subjectCategoriesWithNames.map((subjectCategory) => (
@@ -82,7 +85,9 @@ export const SubjectCategoryPicker = (
               </IconButton>
             }
           >
-            <ListItemText primary={subjectCategory.name} />
+            <ListItemText
+              primary={`${subjectCategory.name} (${subjectCategory.id})`}
+            />
           </ListItem>
         ))}
       </List>
