@@ -1,36 +1,57 @@
-import React, { useState } from 'react';
-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
   DatePicker as MuiDatePicker,
   DatePickerProps,
 } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
 import 'dayjs/locale/sv';
 import 'dayjs/locale/en-gb';
+import { TextField } from '@mui/material';
+import { Dayjs } from 'dayjs';
+import React from 'react';
+import { FieldError } from 'react-hook-form';
 
-interface ExtendedDatePickerProps extends DatePickerProps {
-  defaultValue?: string;
-  locale?: string;
+interface ExtendedDatePickerProps
+  extends Omit<DatePickerProps<Dayjs, Dayjs>, 'renderInput'> {
+  error?: FieldError;
 }
 
 export const DatePicker = React.forwardRef(
-  (props: ExtendedDatePickerProps, ref) => {
-    const [locale, setLocale] = useState<string>(
-      props.locale ? props.locale : 'sv',
-    );
-
+  (props: ExtendedDatePickerProps, ref: React.ForwardedRef<HTMLDivElement>) => {
     return (
       <LocalizationProvider
         dateAdapter={AdapterDayjs}
-        adapterLocale={locale}
+        adapterLocale='sv'
       >
         <MuiDatePicker
+          {...props}
           ref={ref}
-          defaultValue={props.defaultValue ? dayjs(props.defaultValue) : null}
-          slotProps={{
-            actionBar: { actions: ['today', 'clear'] },
+          PopperProps={{
+            sx: {
+              '& .MuiPaper-root': { border: '2px solid #000000' },
+              /* '& .MuiPickersDay-root.MuiPickersDay-today': {
+                border: '1px solid #613985',
+              },
+              '& .MuiPickersDay-root.Mui-selected': {
+                backgroundColor: '#613985',
+              },
+              '& .MuiPickersDay-root.Mui-selected:hover': {
+                backgroundColor: '#613985',
+              }, */
+            },
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              onChange={params.onChange}
+              helperText={props.error !== undefined ? props.error.message : ' '}
+              error={props.error !== undefined}
+            />
+          )}
+          componentsProps={{
+            actionBar: {
+              actions: ['today', 'clear'],
+            },
           }}
         />
       </LocalizationProvider>

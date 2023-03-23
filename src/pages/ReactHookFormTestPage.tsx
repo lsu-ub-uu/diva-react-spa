@@ -28,6 +28,7 @@ import {
   ErrorMessage,
   Radio,
   Checkbox,
+  DatePicker,
   useBackdrop,
 } from '../components';
 
@@ -37,6 +38,7 @@ interface TestModel {
   gender: string;
   publicationType: string;
   testCheck: boolean;
+  pubdate: string; // Should be DajJs or Date
 }
 
 const validationSchema = yup.object().shape({
@@ -45,6 +47,7 @@ const validationSchema = yup.object().shape({
   gender: yup.string().required('Gender is required'),
   publicationType: yup.string().required('Publication type is required'),
   testCheck: yup.bool().oneOf([true], 'You need to tick testCheck'),
+  pubDate: yup.date().required('Pub date is required'),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -269,6 +272,29 @@ export const ReactHookFormTestPage = () => {
                     }
                     label='testCheck'
                   />
+                )}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <Controller
+                control={control}
+                name='pubdate'
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl fullWidth>
+                    <FormLabel
+                      required
+                      error={error !== undefined}
+                    >
+                      Publication date
+                    </FormLabel>
+                    <DatePicker
+                      error={error}
+                      {...field}
+                    />
+                  </FormControl>
                 )}
               />
             </Grid>
