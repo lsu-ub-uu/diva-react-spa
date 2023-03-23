@@ -6,15 +6,17 @@ import {
 } from '@reduxjs/toolkit';
 import dummyReducer from '../features/dummy/dummySlice';
 import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
+import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
 
 const combinedReducer = combineReducers({
   dummy: dummyReducer,
   publicationType: publicationTypeReducer,
+  subjectCategory: subjectCategoryReducer,
 });
 
 const store = configureStore({
   reducer: combinedReducer,
-  devTools: true,
+  devTools: true, // todo change to env node env.
 });
 
 export type RootState = ReturnType<typeof store.getState>;
