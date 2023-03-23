@@ -33,12 +33,10 @@ const BackdropProvider = (props: BackdropProviderProps) => {
   );
 
   return (
-    <div>
-      <BackdropContext.Provider value={value}>
-        <Backdrop open={backdrop} />
-        {props.children}
-      </BackdropContext.Provider>
-    </div>
+    <BackdropContext.Provider value={value}>
+      <Backdrop open={backdrop} />
+      {props.children}
+    </BackdropContext.Provider>
   );
 };
 

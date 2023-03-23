@@ -18,8 +18,10 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorIcon from '@mui/icons-material/Error';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { publicationTypeSelector } from '../features/publicationTypes/selectors';
-import { loadPublicationTypesAsync } from '../features/publicationTypes/actions';
+import {
+  publicationTypeSelector,
+  loadPublicationTypesAsync,
+} from '../features/publicationTypes';
 import {
   Card,
   Select,
@@ -27,7 +29,17 @@ import {
   Radio,
   Checkbox,
   DatePicker,
+  useBackdrop,
 } from '../components';
+
+interface TestModel {
+  firstname: string;
+  lastname: string;
+  gender: string;
+  publicationType: string;
+  testCheck: boolean;
+  pubdate: string; // Should be DajJs or Date
+}
 
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('Firstname is required'),
@@ -39,7 +51,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const ReactHookFormTestPage = () => {
-  const methods = useForm({
+  const methods = useForm<TestModel>({
     resolver: yupResolver(validationSchema),
   });
   const {
@@ -47,14 +59,16 @@ export const ReactHookFormTestPage = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
+  const { setBackdrop } = useBackdrop();
   const dispatch = useAppDispatch();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
 
   useEffect(() => {
-    dispatch(loadPublicationTypesAsync());
-  }, [dispatch]);
+    setBackdrop(true);
+    dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
+  }, [dispatch, setBackdrop]);
 
-  const handleOnSubmit = (data: unknown) => {
+  const handleOnSubmit = (data: TestModel) => {
     console.log(data);
   };
 
@@ -62,7 +76,7 @@ export const ReactHookFormTestPage = () => {
     <Stack spacing={2}>
       <Card
         title='Publikationstyp'
-        variant='variant1'
+        variant='variant6'
         tooltipTitle='Title'
         tooltipBody='Here goes some text about how choose type'
       >
@@ -166,7 +180,7 @@ export const ReactHookFormTestPage = () => {
               <Controller
                 control={control}
                 name='gender'
-                defaultValue=''
+                defaultValue='female'
                 render={({ field, fieldState: { error } }) => (
                   <FormControl fullWidth>
                     <FormLabel
@@ -267,7 +281,7 @@ export const ReactHookFormTestPage = () => {
             >
               <Controller
                 control={control}
-                name='pubDate'
+                name='pubdate'
                 render={({ field, fieldState: { error } }) => (
                   <FormControl fullWidth>
                     <FormLabel

@@ -1,14 +1,13 @@
 import { Box } from '@mui/material';
 import React, { useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { AsidePortal } from '../components';
+import { AsidePortal, Checkbox } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loadDummyDataAsync } from '../features/dummy/actions';
 import { dummySelector } from '../features/dummy/selectors';
 import { User } from '../features/dummy/dummySlice';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'Id', width: 250 },
   { field: 'firstname', headerName: 'Firstname', width: 250 },
   { field: 'lastname', headerName: 'Lastname', width: 250 },
 ];
@@ -24,6 +23,18 @@ export const ListUsersPage = () => {
   return (
     <Box sx={{ height: '100vh', width: '100%' }}>
       <AsidePortal>
+        <p>
+          Nunc faucibus mauris bibendum, vulputate erat sed, viverra enim. Nam
+          vitae dui velit. Donec pretium finibus neque, tempus fermentum elit
+          cursus a. Ut ac posuere est, non dapibus justo. In nisi odio, gravida
+          at diam ac, porta feugiat quam. Pellentesque in dapibus ex. Sed
+          tincidunt massa auctor, consectetur massa sed, bibendum dolor.
+          Phasellus odio lacus, bibendum id nisl eu, faucibus pulvinar sapien.
+          Aenean leo libero, hendrerit sit amet elementum vitae, lacinia vitae
+          sem. Mauris at lacus erat. Donec felis ligula, finibus in varius at,
+          scelerisque ut mauris. Phasellus a consectetur erat. Fusce tempor
+          mauris non tempus faucibus. Aliquam erat volutpat.
+        </p>
         <p>list # users {dummyState.users.length}</p>
       </AsidePortal>
       <DataGrid<User>
@@ -62,6 +73,9 @@ export const ListUsersPage = () => {
         loading={dummyState.isLoading}
         rows={dummyState.users}
         columns={columns}
+        components={{
+          BaseCheckbox: Checkbox,
+        }}
       />
     </Box>
   );
