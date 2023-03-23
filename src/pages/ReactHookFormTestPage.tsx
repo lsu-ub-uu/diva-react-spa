@@ -17,6 +17,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorIcon from '@mui/icons-material/Error';
+import { Dayjs } from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   publicationTypeSelector,
@@ -38,7 +39,7 @@ interface TestModel {
   gender: string;
   publicationType: string;
   testCheck: boolean;
-  pubdate: string; // Should be DajJs or Date
+  pubDate: Dayjs; // Should be DajJs or Date
 }
 
 const validationSchema = yup.object().shape({
@@ -281,8 +282,11 @@ export const ReactHookFormTestPage = () => {
             >
               <Controller
                 control={control}
-                name='pubdate'
-                render={({ field, fieldState: { error } }) => (
+                name='pubDate'
+                render={({
+                  field: { value, onChange, ...field },
+                  fieldState: { error },
+                }) => (
                   <FormControl fullWidth>
                     <FormLabel
                       required
@@ -291,6 +295,8 @@ export const ReactHookFormTestPage = () => {
                       Publication date
                     </FormLabel>
                     <DatePicker
+                      value={value}
+                      onChange={onChange}
                       error={error}
                       {...field}
                     />
