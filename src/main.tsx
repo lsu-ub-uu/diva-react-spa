@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
 import { Provider as StateProvider } from 'react-redux';
 import store from './app/store';
 import { divaTheme } from './themes/diva';
@@ -19,7 +20,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <StateProvider store={store}>
         <ThemeProvider theme={divaTheme}>
           <CssBaseline />
-          <App />
+          <SnackbarProvider maxSnack={5}>
+            <App />
+          </SnackbarProvider>
         </ThemeProvider>
       </StateProvider>
     </BackdropProvider>

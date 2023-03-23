@@ -4,6 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useSnackbar } from 'notistack';
 import {
   AsidePortal,
   Card,
@@ -13,6 +14,7 @@ import {
 
 export const HomePage = () => {
   const { t } = useTranslation();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <div>
@@ -59,7 +61,14 @@ export const HomePage = () => {
           tooltipTitle='Publication'
           tooltipBody='Publications help body text tooltip'
         >
-          <SubjectCategoryPicker onSelect={(id) => console.log(id)} />
+          <SubjectCategoryPicker
+            onSelect={(id) =>
+              enqueueSnackbar(`Subject ${id} was successfully added`, {
+                variant: 'success',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+              })
+            }
+          />
         </Card>
         <Card
           title='Variant1'

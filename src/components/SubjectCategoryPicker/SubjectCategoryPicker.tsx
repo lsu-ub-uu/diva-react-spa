@@ -48,8 +48,8 @@ export const SubjectCategoryPicker = (
   };
 
   const handleSelected = (id: string) => {
-    if (props.onSelect) props.onSelect(id);
     if (!selected.includes(id) && id !== 'root') {
+      if (props.onSelect) props.onSelect(id);
       setSelected((prevState) => [...prevState, id]);
       setOpen(false);
     }
