@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Alert,
   Button,
   IconButton,
   List,
@@ -60,6 +61,8 @@ export const SubjectCategoryPicker = (
   };
 
   if (subjectCategoryState.isLoading) return <span>Loading...</span>;
+  if (subjectCategoryState.isError)
+    return <Alert severity='error'>{subjectCategoryState.message}</Alert>;
 
   return (
     <Stack spacing={2}>

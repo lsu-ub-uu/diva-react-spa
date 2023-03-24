@@ -25,7 +25,7 @@ export const loadSubjectCategoriesAsync =
       );
       dispatch(update(flatten));
     } catch (e) {
-      dispatch(hasError('error occurred subject categories'));
+      dispatch(hasError('Error occurred fetching subject categories'));
     } finally {
       if (callback) callback();
     }
