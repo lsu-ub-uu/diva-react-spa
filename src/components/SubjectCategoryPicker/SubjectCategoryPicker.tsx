@@ -21,6 +21,7 @@ import {
   loadSubjectCategoriesAsync,
   subjectCategorySelector,
   getSubjectCategoryDetails,
+  subjectCategoryWithIdSelector,
 } from '../../features/subjectCategory';
 import subjectCategories from '../../__mocks__/data/subjectCategories.json';
 
@@ -36,6 +37,7 @@ export const SubjectCategoryPicker = (
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const subjectCategoryState = useAppSelector(subjectCategorySelector);
+  const subjectCategoriesWithId = useAppSelector(subjectCategoryWithIdSelector);
   const subjectCategoriesWithNames = useAppSelector(
     getSubjectCategoryDetails(selected),
   );
@@ -109,7 +111,7 @@ export const SubjectCategoryPicker = (
         fixedHeader={
           <Autocomplete
             placeholder='Sök ämneskategori'
-            options={subjectCategoryState.subjectCategories}
+            options={subjectCategoriesWithId}
             onSelected={handleSelected}
           />
         }
