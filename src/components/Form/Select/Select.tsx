@@ -11,7 +11,8 @@ export const Select = React.forwardRef((props: ExtendedSelectProps, ref) => {
   const { loading, loadingError, ...remainingProps } = props;
 
   if (loading) return <span>Loading...</span>;
-  if (loadingError) return <Alert severity='error'>Loading error</Alert>;
+  if (loadingError)
+    return <Alert severity='error'>Loading error occurred</Alert>;
 
   return (
     <MuiSelect
