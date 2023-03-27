@@ -9,6 +9,7 @@ import {
   styled,
   SxProps,
   Theme,
+  IconButtonProps,
 } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
@@ -76,6 +77,21 @@ const InfoButton = (props: InfoButtonProps) => {
   );
 };
 
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
 export const Card = (props: CardProps) => {
   const [expand, setExpand] = useState(true);
 
@@ -130,12 +146,15 @@ export const Card = (props: CardProps) => {
             alignItems='center'
           >
             <Grid item>
-              <IconButton
+              <ExpandMore
                 disableRipple
+                expand={expand}
                 onClick={() => setExpand((prev) => !prev)}
+                aria-expanded={expand}
+                aria-label='expand'
               >
                 <ExpandMoreIcon />
-              </IconButton>
+              </ExpandMore>
             </Grid>
             <Grid item>{props.title}</Grid>
             <Grid item>
