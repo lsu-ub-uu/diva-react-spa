@@ -229,6 +229,7 @@ export const ReactHookFormTestPage = () => {
                     </FormLabel>
                     <Select
                       fullWidth
+                      loadingError={publicationTypeState.isError}
                       error={error !== undefined}
                       {...field}
                       loading={publicationTypeState.isLoading}
