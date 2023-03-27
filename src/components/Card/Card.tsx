@@ -2,15 +2,18 @@ import * as React from 'react';
 import CardContent from '@mui/material/CardContent';
 import {
   Card as MuiCard,
+  Collapse,
   CardHeader,
   Grid,
   IconButton,
   styled,
   SxProps,
   Theme,
+  IconButtonProps,
 } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Tooltip } from '../Tooltip/Tooltip';
 
 const StyledCardHeader = styled(CardHeader)((props) => ({
@@ -21,7 +24,7 @@ const StyledCardHeader = styled(CardHeader)((props) => ({
   backgroundColor: '#e6f0f7',
   paddingTop: props.theme.spacing(1.5),
   paddingBottom: props.theme.spacing(1.5),
-  paddingLeft: props.theme.spacing(4),
+  paddingLeft: props.theme.spacing(1),
   minHeight: props.theme.spacing(1 / 2),
 }));
 
@@ -74,7 +77,24 @@ const InfoButton = (props: InfoButtonProps) => {
   );
 };
 
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
 export const Card = (props: CardProps) => {
+  const [expand, setExpand] = useState(true);
+
   return (
     <MuiCard
       sx={[
@@ -125,6 +145,17 @@ export const Card = (props: CardProps) => {
             justifyContent='flex-start'
             alignItems='center'
           >
+            <Grid item>
+              <ExpandMore
+                disableRipple
+                expand={expand}
+                onClick={() => setExpand((prev) => !prev)}
+                aria-expanded={expand}
+                aria-label='expand'
+              >
+                <ExpandMoreIcon />
+              </ExpandMore>
+            </Grid>
             <Grid item>{props.title}</Grid>
             <Grid item>
               <InfoButton
@@ -135,18 +166,20 @@ export const Card = (props: CardProps) => {
           </Grid>
         }
       />
-      <StyledCardContent
-        sx={{
-          ...(props.variant !== 'variant6' && {
-            backgroundColor: '#fff;',
-          }),
-          ...(props.variant === 'variant6' && {
-            backgroundColor: '#f7fafd;',
-          }),
-        }}
-      >
-        {props.children}
-      </StyledCardContent>
+      <Collapse in={expand}>
+        <StyledCardContent
+          sx={{
+            ...(props.variant !== 'variant6' && {
+              backgroundColor: '#fff;',
+            }),
+            ...(props.variant === 'variant6' && {
+              backgroundColor: '#f7fafd;',
+            }),
+          }}
+        >
+          {props.children}
+        </StyledCardContent>
+      </Collapse>
     </MuiCard>
   );
 };
