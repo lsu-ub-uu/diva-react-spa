@@ -1,6 +1,5 @@
 import { Box, Step, StepButton } from '@mui/material';
-import { AsidePortal, VerticalStepper, DatePicker } from '../components';
-// import { DatePicker } from '../components/Form/DatePicker/DatePicker';
+import { AsidePortal, VerticalStepper } from '../components';
 
 export const FormPage = () => {
   return (
@@ -38,7 +37,6 @@ export const FormPage = () => {
         <Box sx={{ height: '500px' }} />
         <h2 id='section-test'>Test</h2>
 
-        <DatePicker />
         <Box sx={{ height: '500px' }} />
         <h2>Konferens</h2>
         <Box sx={{ height: '500px' }} />
