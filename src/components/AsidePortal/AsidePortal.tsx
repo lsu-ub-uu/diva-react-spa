@@ -11,9 +11,10 @@ interface StyledAsidePortalProps {
 }
 
 const StyledAsidePortal = styled('div')((props: StyledAsidePortalProps) => ({
+  width: '270px',
   position: props.fixed === true ? 'fixed' : 'relative',
   transition: 'position 0.5s ease',
-  top: props.fixed === true ? '50px' : '0',
+  top: props.fixed === true ? '60px' : '0',
 }));
 
 export const AsidePortal = (props: AsidePortalProps) => {
@@ -27,9 +28,9 @@ export const AsidePortal = (props: AsidePortalProps) => {
     }
   };
   window.addEventListener('scroll', setFixedSidebar);
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log(fixed);
-  }, [fixed]);
+  }, [fixed]); */
 
   const [element, setElement] = useState<Element | null>(null);
 
