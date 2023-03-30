@@ -76,6 +76,7 @@ export const HomePage = () => {
           variant='variant1'
           tooltipTitle='Publication'
           tooltipBody='Publications help body text tooltip'
+          expanded={false}
         >
           <ResearchSubjectPicker />
         </Card>
