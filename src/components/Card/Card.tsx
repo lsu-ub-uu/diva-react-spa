@@ -1,4 +1,3 @@
-import * as React from 'react';
 import CardContent from '@mui/material/CardContent';
 import {
   Card as MuiCard,
@@ -11,7 +10,7 @@ import {
   Theme,
   IconButtonProps,
 } from '@mui/material';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Tooltip } from '../Tooltip/Tooltip';
@@ -53,6 +52,7 @@ export interface CardProps {
   tooltipTitle: string;
   tooltipBody: string;
   sx?: SxProps<Theme>;
+  expanded?: boolean;
 }
 
 export interface InfoButtonProps {
@@ -94,6 +94,10 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export const Card = (props: CardProps) => {
   const [expand, setExpand] = useState(true);
+
+  useEffect(() => {
+    setExpand(props.expanded ?? true);
+  }, [props.expanded]);
 
   return (
     <MuiCard

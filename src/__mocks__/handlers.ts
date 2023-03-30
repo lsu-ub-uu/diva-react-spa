@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import publicationTypes from './data/publicationTypes.json';
 import subjectCategories from './data/subjectCategories.json';
+import researchSubjects from './data/researchSubjects.json';
 import fakePersons from './data/fakePersons.json';
 
 const URL = `${window.location.protocol}//${window.location.host}`;
@@ -11,6 +12,9 @@ export const handlers = [
   }),
   rest.get(`${URL}/publication-types`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(publicationTypes));
+  }),
+  rest.get(`${URL}/research-subjects`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(researchSubjects));
   }),
   rest.get(`${URL}/subject-categories`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(subjectCategories));

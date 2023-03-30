@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'app/store';
-import { SelectItem } from '../../components/Autocomplete/Autocomplete';
+import { SelectItem } from '../../components';
 
 export const subjectCategorySelector = (state: RootState) => {
   return state.subjectCategory;

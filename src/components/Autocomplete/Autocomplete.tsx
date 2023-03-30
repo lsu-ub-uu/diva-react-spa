@@ -5,11 +5,6 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export interface SelectItem {
-  id: string;
-  name: string;
-}
-
 interface AutoCompleteProps {
   placeholder?: string;
   options: SelectItem[];

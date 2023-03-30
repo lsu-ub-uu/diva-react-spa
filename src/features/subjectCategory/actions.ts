@@ -1,6 +1,6 @@
 import { AppThunk } from 'app/store';
 import { RenderTree } from 'components/RichTree/RichTree';
-import { SelectItem } from 'components/Autocomplete/Autocomplete';
+import { SelectItem } from 'components';
 import { hasError, update, updating } from './subjectCategorySlice';
 
 const URL = `${window.location.protocol}//${window.location.host}`;
