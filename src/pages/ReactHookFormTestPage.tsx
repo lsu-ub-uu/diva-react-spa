@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -40,6 +40,10 @@ interface TestModel {
   publicationType: string;
   testCheck: boolean;
   pubDate: dayjs.Dayjs;
+  authors: {
+    name: string;
+    age: number;
+  }[];
 }
 
 const validationSchema = yup.object().shape({
@@ -60,6 +64,10 @@ export const ReactHookFormTestPage = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
+  const { fields, append, remove, move } = useFieldArray({
+    name: 'authors',
+    control,
+  });
   const { setBackdrop } = useBackdrop();
   const dispatch = useAppDispatch();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
@@ -68,6 +76,10 @@ export const ReactHookFormTestPage = () => {
     setBackdrop(true);
     dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
   }, [dispatch, setBackdrop]);
+
+  const handleMove = (prev: number, next: number) => {
+    move(prev, next);
+  };
 
   const handleOnSubmit = (data: TestModel) => {
     console.log(data);
@@ -305,6 +317,55 @@ export const ReactHookFormTestPage = () => {
                   </FormControl>
                 )}
               />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              {fields.map((field, index) => {
+                return (
+                  <div key={field.id}>
+                    <section
+                      className='section'
+                      key={field.id}
+                    >
+                      <input placeholder='name' />
+                      <input placeholder='age' />
+                      <button
+                        disabled={index === 0}
+                        type='button'
+                        onClick={() => handleMove(index, index - 1)}
+                      >
+                        UP
+                      </button>
+                      <button
+                        disabled={index === fields.length - 1}
+                        type='button'
+                        onClick={() => handleMove(index, index + 1)}
+                      >
+                        DN
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => remove(index)}
+                      >
+                        X
+                      </button>
+                    </section>
+                  </div>
+                );
+              })}
+              <button
+                type='button'
+                onClick={() =>
+                  append({
+                    name: '',
+                    age: 0,
+                  })
+                }
+              >
+                Add Author
+              </button>
             </Grid>
             <Grid
               item
