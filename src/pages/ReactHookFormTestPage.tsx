@@ -53,6 +53,16 @@ const validationSchema = yup.object().shape({
   publicationType: yup.string().required('Publication type is required'),
   testCheck: yup.bool().oneOf([true], 'You need to tick testCheck'),
   pubDate: yup.date().typeError('Invalid Date').required('Date is required'),
+  // eslint-disable-next-line react/forbid-prop-types
+  authors: yup
+    .array(
+      yup.object({
+        name: yup.string().trim().required('Author name is required'),
+        age: yup.number().required('age is req'),
+      }),
+    )
+    .min(1)
+    .max(3),
 });
 
 export const ReactHookFormTestPage = () => {
