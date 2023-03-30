@@ -15,11 +15,10 @@ export const ErrorMessage = (props: ErrorMessageProp): JSX.Element | null => {
       sx={{ mb: 2 }}
     >
       <span>{props.title ?? 'Form validation error(s):'}</span>
-      <pre>{JSON.stringify(props.errors, null, 2)}</pre>
       <ul>
         {props.errors &&
           Object.entries(props.errors).map(([field, err]) => (
-            <li key={field}>{(err?.message ?? `${err}`).toString()}</li>
+            <li key={field}>{(err?.message ?? 'TODO HANDLE SUBFORM ERRORS').toString()}</li>
           ))}
       </ul>
     </Alert>

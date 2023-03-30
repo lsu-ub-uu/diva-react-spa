@@ -55,10 +55,11 @@ const validationSchema = yup.object().shape({
   pubDate: yup.date().typeError('Invalid Date').required('Date is required'),
   // eslint-disable-next-line react/forbid-prop-types
   authors: yup
-    .array(
-      yup.object({
+    .array()
+    .of(
+      yup.object().shape({
         name: yup.string().trim().required('Author name is required'),
-        age: yup.number().required('age is req'),
+        age: yup.number().required('Age is required'),
       }),
     )
     .min(1)
@@ -73,6 +74,7 @@ export const ReactHookFormTestPage = () => {
     control,
     handleSubmit,
     formState: { errors },
+    register,
   } = methods;
   const { fields, append, remove, move } = useFieldArray({
     name: 'authors',
@@ -339,8 +341,14 @@ export const ReactHookFormTestPage = () => {
                       className='section'
                       key={field.id}
                     >
-                      <input placeholder='name' />
-                      <input placeholder='age' />
+                      <input
+                        placeholder='name'
+                        {...register(`authors.${index}.name`)}
+                      />
+                      <input
+                        placeholder='age'
+                        {...register(`authors.${index}.age`)}
+                      />
                       <button
                         disabled={index === 0}
                         type='button'
