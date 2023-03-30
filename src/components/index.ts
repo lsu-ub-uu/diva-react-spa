@@ -22,4 +22,5 @@ export { ErrorMessage } from './Form/ErrorMessage/ErrorMessage';
 export { RichTree } from './RichTree/RichTree';
 export { Autocomplete } from './Autocomplete/Autocomplete';
 export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPicker';
+export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';

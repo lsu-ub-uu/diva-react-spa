@@ -10,6 +10,7 @@ import {
   Card,
   TabsMenu,
   SubjectCategoryPicker,
+  ResearchSubjectPicker,
 } from '../components';
 
 export const HomePage = () => {
@@ -76,7 +77,7 @@ export const HomePage = () => {
           tooltipTitle='Publication'
           tooltipBody='Publications help body text tooltip'
         >
-          {t('Welcome')}
+          <ResearchSubjectPicker />
         </Card>
         <Card
           title='Variant2'
