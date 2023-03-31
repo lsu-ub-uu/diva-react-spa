@@ -20,7 +20,9 @@ export { Checkbox } from './Form/Checkbox/Checkbox';
 export { Radio } from './Form/Radio/Radio';
 export { ErrorMessage } from './Form/ErrorMessage/ErrorMessage';
 export { RichTree } from './RichTree/RichTree';
+// eslint-disable-next-line import/no-cycle
 export { Autocomplete } from './Autocomplete/Autocomplete';
+// eslint-disable-next-line import/no-cycle
 export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPicker';
 export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';
@@ -28,4 +30,5 @@ export { DatePicker } from './Form/DatePicker/DatePicker';
 export interface SelectItem {
   id: string;
   name: string;
+  disabled?: boolean;
 }

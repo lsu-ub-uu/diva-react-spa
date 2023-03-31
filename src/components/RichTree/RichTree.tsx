@@ -15,6 +15,7 @@ export interface RenderTree {
   id: string;
   name: string;
   children?: readonly RenderTree[];
+  disabled?: boolean;
 }
 
 interface RichTreeProps {
@@ -110,11 +111,18 @@ export const RichTree = (props: RichTreeProps) => {
     if (props.onSelected) props.onSelected(nodeId);
   };
 
+  const labelMaker = (nodes: RenderTree): string => {
+    if (nodes.id !== 'root') return `${nodes.name} (kod ${nodes.id})`;
+    else {
+      return nodes.name;
+    }
+  };
+
   const renderTree = (nodes: RenderTree) => (
     <CustomTreeItem
-      key={nodes.id}
+      key={`node-${nodes.id}-${nodes.name}`}
       nodeId={nodes.id}
-      label={`${nodes.name} (${nodes.id})`}
+      label={labelMaker(nodes)}
     >
       {Array.isArray(nodes.children)
         ? nodes.children.map((node) => renderTree(node))

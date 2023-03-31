@@ -5,6 +5,7 @@
     {
       "id": "6",
       "name": "Humaniora och konst",
+      "disabled": false,
       "children": [
         {
           "id": "605",

@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface SubjectCategory {
   id: string;
   name: string;
+  disabled?: boolean;
   // todo parentId;
 }
 

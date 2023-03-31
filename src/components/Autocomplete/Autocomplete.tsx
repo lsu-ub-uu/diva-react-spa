@@ -4,6 +4,7 @@ import { Autocomplete as MuiAutocomplete } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { SelectItem } from '../index';
 
 interface AutoCompleteProps {
   placeholder?: string;
@@ -22,6 +23,7 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
       id='autocomplete-test'
       sx={{ width: '100%' }}
       options={props.options}
+      getOptionDisabled={(option) => option.disabled ?? false}
       getOptionLabel={(option) => option.name}
       renderInput={(params) => (
         <TextField

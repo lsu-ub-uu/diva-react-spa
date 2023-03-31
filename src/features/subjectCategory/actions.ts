@@ -6,9 +6,9 @@ import { hasError, update, updating } from './subjectCategorySlice';
 const URL = `${window.location.protocol}//${window.location.host}`;
 
 function getFlat(node: RenderTree): SelectItem[] {
-  return [{ id: node.id, name: node.name } as SelectItem].concat(
-    ...(node.children?.map(getFlat) ?? []),
-  );
+  return [
+    { id: node.id, name: node.name, disabled: node.disabled } as SelectItem,
+  ].concat(...(node.children?.map(getFlat) ?? []));
 }
 
 export const loadSubjectCategoriesAsync =
