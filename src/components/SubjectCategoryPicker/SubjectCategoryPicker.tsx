@@ -77,9 +77,9 @@ export const SubjectCategoryPicker = (
             />
           </ListItem>
         )}
-        {subjectCategoriesWithNames.map((subjectCategory) => (
+        {subjectCategoriesWithNames.map((subjectCategory, index) => (
           <ListItem
-            key={subjectCategory.id}
+            key={`${subjectCategory.id}-${index}`}
             secondaryAction={
               <IconButton
                 edge='end'
