@@ -15,6 +15,7 @@ export interface RenderTree {
   id: string;
   name: string;
   children?: readonly RenderTree[];
+  disabled?: boolean;
 }
 
 interface RichTreeProps {
@@ -114,6 +115,7 @@ export const RichTree = (props: RichTreeProps) => {
     <CustomTreeItem
       key={nodes.id}
       nodeId={nodes.id}
+      disabled={nodes.disabled}
       label={`${nodes.name} (${nodes.id})`}
     >
       {Array.isArray(nodes.children)
