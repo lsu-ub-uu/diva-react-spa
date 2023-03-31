@@ -91,7 +91,7 @@ export const SubjectCategoryPicker = (
             }
           >
             <ListItemText
-              primary={`${subjectCategory.name} (${subjectCategory.id})`}
+              primary={`${subjectCategory.name} (kod ${subjectCategory.id})`}
             />
           </ListItem>
         ))}

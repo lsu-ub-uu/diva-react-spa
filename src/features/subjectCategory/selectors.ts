@@ -12,7 +12,7 @@ export const subjectCategoryWithIdSelector = (state: RootState) => {
     (item) =>
       ({
         id: item.id,
-        name: `${item.name} ${item.id}`,
+        name: `${item.name} (kod ${item.id})`,
         disabled: item.disabled,
       } as SelectItem),
   );
