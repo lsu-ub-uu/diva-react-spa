@@ -28,4 +28,5 @@ export { DatePicker } from './Form/DatePicker/DatePicker';
 export interface SelectItem {
   id: string;
   name: string;
+  disabled?: boolean;
 }

@@ -113,9 +113,8 @@ export const RichTree = (props: RichTreeProps) => {
 
   const renderTree = (nodes: RenderTree) => (
     <CustomTreeItem
-      key={nodes.id}
+      key={`node-${nodes.id}-${nodes.name}`}
       nodeId={nodes.id}
-      disabled={nodes.disabled}
       label={`${nodes.name} (${nodes.id})`}
     >
       {Array.isArray(nodes.children)
