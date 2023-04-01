@@ -338,6 +338,7 @@ export const ReactHookFormTestPage = () => {
               {fields.map((field, index) => {
                 return (
                   <div key={field.id}>
+                    <h4>Författare {index + 1}</h4>
                     <section
                       className='section'
                       key={field.id}
