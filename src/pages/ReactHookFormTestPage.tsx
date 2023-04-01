@@ -98,17 +98,17 @@ export const ReactHookFormTestPage = () => {
   };
 
   return (
-    <Stack spacing={2}>
-      <Card
-        title='Publikationstyp'
-        variant='variant6'
-        tooltipTitle='Title'
-        tooltipBody='Here goes some text about how choose type'
+    <Stack spacing={1}>
+      <ErrorMessage errors={errors} />
+      <Box
+        component='form'
+        onSubmit={handleSubmit(handleOnSubmit)}
       >
-        <ErrorMessage errors={errors} />
-        <Box
-          component='form'
-          onSubmit={handleSubmit(handleOnSubmit)}
+        <Card
+          title='Publikationstyp'
+          variant='variant6'
+          tooltipTitle='Title'
+          tooltipBody='Here goes some text about how choose type'
         >
           <Grid
             container
@@ -304,6 +304,7 @@ export const ReactHookFormTestPage = () => {
             <Grid
               item
               xs={12}
+              sm={6}
             >
               <Controller
                 control={control}
@@ -399,8 +400,8 @@ export const ReactHookFormTestPage = () => {
               </Button>
             </Grid>
           </Grid>
-        </Box>
-      </Card>
+        </Card>
+      </Box>
     </Stack>
   );
 };
