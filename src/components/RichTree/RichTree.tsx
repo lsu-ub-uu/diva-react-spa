@@ -113,9 +113,7 @@ export const RichTree = (props: RichTreeProps) => {
 
   const labelMaker = (nodes: RenderTree): string => {
     if (nodes.id !== 'root') return `${nodes.name} (kod ${nodes.id})`;
-    else {
-      return nodes.name;
-    }
+    return nodes.name;
   };
 
   const renderTree = (nodes: RenderTree) => (
