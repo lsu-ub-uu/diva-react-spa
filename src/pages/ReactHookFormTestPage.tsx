@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,6 +21,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   publicationTypeSelector,
@@ -146,15 +148,20 @@ export const ReactHookFormTestPage = () => {
             <Grid
               item
               xs={12}
+              sm={6}
             >
-              <Button
-                type='submit'
-                disableRipple
-                variant='outlined'
-                endIcon={<ArrowForwardIcon />}
+              <FormControl
+                fullWidth
+                sx={{ mb: 2 }}
               >
-                Continue
-              </Button>
+                <FormLabel>&nbsp;</FormLabel>
+                <Button
+                  disableRipple
+                  variant='outlined'
+                >
+                  Change Publication Type
+                </Button>
+              </FormControl>
             </Grid>
           </Grid>
         </Card>
@@ -291,16 +298,50 @@ export const ReactHookFormTestPage = () => {
         })}
         <Button
           disableRipple
-          variant='outlined'
           onClick={() =>
             append({
               firstname: '',
               lastname: '',
             })
           }
+          endIcon={<AddCircleOutlineIcon />}
         >
           Add Author
         </Button>
+        <Grid
+          container
+          direction='row'
+          justifyContent='space-between'
+          alignItems='flex-start'
+        >
+          <Grid
+            item
+            xs={6}
+          >
+            <Button
+              disabled
+              disableRipple
+              variant='outlined'
+              startIcon={<ArrowBackIcon />}
+            >
+              Back
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sx={{ textAlign: 'right' }}
+          >
+            <Button
+              type='submit'
+              disableRipple
+              variant='contained'
+              endIcon={<ArrowForwardIcon />}
+            >
+              Continue
+            </Button>
+          </Grid>
+        </Grid>
       </Stack>
     </Box>
   );
