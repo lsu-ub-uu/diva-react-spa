@@ -336,7 +336,10 @@ export const ReactHookFormTestPage = () => {
               <Controller
                 control={control}
                 name='researchSubjects'
-                render={({ field, fieldState: { error } }) => (
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => (
                   <FormControl fullWidth>
                     <FormLabel
                       required
@@ -345,10 +348,13 @@ export const ReactHookFormTestPage = () => {
                       Research subjects
                     </FormLabel>
                     <Autocomplete
-                      {...field}
+                      onChange={(event, item) => {
+                        console.log(item);
+                      }}
+                      value={value}
                       popupIcon={<ExpandMoreIcon />}
                       multiple
-                      isOptionEqualToValue={(option, value) => option === value}
+                      isOptionEqualToValue={(option, val) => option === val}
                       id='multi-research-subjects'
                       options={['Datalogi']}
                       getOptionLabel={(option) => option}
