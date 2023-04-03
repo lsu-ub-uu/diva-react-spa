@@ -9,6 +9,7 @@ import {
   IconButton,
   MenuItem,
   Stack,
+  Autocomplete,
   TextField,
 } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -21,6 +22,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
@@ -35,10 +37,12 @@ interface TestModel {
     firstname: string;
     lastname: string;
   }[];
+  researchSubjects: string[];
 }
 
 const validationSchema = yup.object().shape({
   publicationType: yup.string().required('Publication type is required'),
+  researchSubjects: yup.array().of(yup.string()).min(1).max(5),
   // eslint-disable-next-line react/forbid-prop-types
   authors: yup
     .array()
@@ -56,6 +60,7 @@ export const ReactHookFormTestPage = () => {
   const methods = useForm<TestModel>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      researchSubjects: [],
       authors: [{ firstname: '', lastname: '' }],
     },
   });
@@ -107,7 +112,7 @@ export const ReactHookFormTestPage = () => {
             <Grid
               item
               xs={12}
-              sm={6}
+              sm={8}
             >
               <Controller
                 control={control}
@@ -151,7 +156,7 @@ export const ReactHookFormTestPage = () => {
             <Grid
               item
               xs={12}
-              sm={6}
+              sm={4}
             >
               <FormControl
                 fullWidth
@@ -312,6 +317,67 @@ export const ReactHookFormTestPage = () => {
         >
           Add Author
         </Button>
+        <Card
+          variant='variant6'
+          title='Research Subject'
+          tooltipTitle='Research Subject'
+          tooltipBody='some text'
+        >
+          <Grid
+            container
+            spacing={2}
+            justifyContent='space-between'
+            alignItems='flex-start'
+          >
+            <Grid
+              item
+              xs={12}
+            >
+              <Controller
+                control={control}
+                name='researchSubjects'
+                render={({
+                  field: { onChange, ref, value },
+                  fieldState: { error },
+                }) => (
+                  <FormControl fullWidth>
+                    <FormLabel
+                      required
+                      error={error !== undefined}
+                    >
+                      Research subjects
+                    </FormLabel>
+                    <Autocomplete
+                      onChange={(event, item) => {
+                        console.log(item);
+                        onChange(item);
+                      }}
+                      value={value}
+                      popupIcon={<ExpandMoreIcon />}
+                      multiple
+                      isOptionEqualToValue={(option, val) => option === val}
+                      id='multi-research-subjects'
+                      options={['Datalogi']}
+                      getOptionLabel={(option) => option}
+                      renderInput={(params) => (
+                        <TextField
+                          inputRef={ref}
+                          variant='outlined'
+                          {...params}
+                          error={error !== undefined}
+                          placeholder='Search for subjects'
+                        />
+                      )}
+                    />
+                    <FormHelperText error={error !== undefined}>
+                      {error !== undefined ? error.message : ' '}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              />
+            </Grid>
+          </Grid>
+        </Card>
         <Grid
           container
           direction='row'
