@@ -337,7 +337,7 @@ export const ReactHookFormTestPage = () => {
                 control={control}
                 name='researchSubjects'
                 render={({
-                  field: { onChange, value },
+                  field: { onChange, ref, value },
                   fieldState: { error },
                 }) => (
                   <FormControl fullWidth>
@@ -350,6 +350,7 @@ export const ReactHookFormTestPage = () => {
                     <Autocomplete
                       onChange={(event, item) => {
                         console.log(item);
+                        onChange(item);
                       }}
                       value={value}
                       popupIcon={<ExpandMoreIcon />}
@@ -360,6 +361,7 @@ export const ReactHookFormTestPage = () => {
                       getOptionLabel={(option) => option}
                       renderInput={(params) => (
                         <TextField
+                          inputRef={ref}
                           variant='outlined'
                           {...params}
                           error={error !== undefined}
