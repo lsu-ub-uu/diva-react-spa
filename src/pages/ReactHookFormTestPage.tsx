@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import {
   Box,
+  ButtonGroup,
   FormControl,
   FormHelperText,
   FormLabel,
   Grid,
+  IconButton,
   MenuItem,
   Stack,
   TextField,
@@ -15,6 +17,9 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorIcon from '@mui/icons-material/Error';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   publicationTypeSelector,
@@ -76,12 +81,12 @@ export const ReactHookFormTestPage = () => {
   };
 
   return (
-    <Stack spacing={1}>
-      <ErrorMessage errors={errors} />
-      <Box
-        component='form'
-        onSubmit={handleSubmit(handleOnSubmit)}
-      >
+    <Box
+      component='form'
+      onSubmit={handleSubmit(handleOnSubmit)}
+    >
+      <Stack spacing={1}>
+        <ErrorMessage errors={errors} />
         <Card
           title='Publikationstyp'
           variant='variant6'
@@ -254,26 +259,31 @@ export const ReactHookFormTestPage = () => {
                   item
                   xs={12}
                 >
-                  <button
-                    disabled={index === 0}
-                    type='button'
-                    onClick={() => handleMove(index, index - 1)}
+                  <ButtonGroup
+                    variant='outlined'
+                    aria-label='outlined secondary button group'
                   >
-                    UP
-                  </button>
-                  <button
-                    disabled={index === fields.length - 1}
-                    type='button'
-                    onClick={() => handleMove(index, index + 1)}
-                  >
-                    DN
-                  </button>
-                  <button
-                    type='button'
-                    onClick={() => remove(index)}
-                  >
-                    X
-                  </button>
+                    <IconButton
+                      aria-label='up'
+                      disabled={index === 0}
+                      onClick={() => handleMove(index, index - 1)}
+                    >
+                      <ArrowUpwardIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label='down'
+                      disabled={index === fields.length - 1}
+                      onClick={() => handleMove(index, index + 1)}
+                    >
+                      <ArrowDownwardIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label='delete'
+                      onClick={() => remove(index)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </ButtonGroup>
                 </Grid>
               </Grid>
             </Card>
@@ -291,7 +301,7 @@ export const ReactHookFormTestPage = () => {
         >
           Add Author
         </Button>
-      </Box>
-    </Stack>
+      </Stack>
+    </Box>
   );
 };
