@@ -9,7 +9,7 @@ import { DatePicker } from '../DatePicker';
  */
 
 describe('<DatePicker />', () => {
-  test.skip('Renders', () => {
+  test('Renders', () => {
     render(<DatePicker />);
     const button = screen.getByRole('button', { name: 'Choose date' });
     expect(button).toBeInTheDocument();
