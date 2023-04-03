@@ -55,6 +55,9 @@ const validationSchema = yup.object().shape({
 export const ReactHookFormTestPage = () => {
   const methods = useForm<TestModel>({
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      authors: [{ firstname: '', lastname: '' }],
+    },
   });
   const {
     control,
