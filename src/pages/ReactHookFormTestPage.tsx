@@ -289,6 +289,7 @@ export const ReactHookFormTestPage = () => {
                     </IconButton>
                     <IconButton
                       aria-label='delete'
+                      disabled={fields.length === 1}
                       onClick={() => remove(index)}
                     >
                       <DeleteIcon />
