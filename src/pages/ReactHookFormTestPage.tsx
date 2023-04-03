@@ -112,7 +112,7 @@ export const ReactHookFormTestPage = () => {
             <Grid
               item
               xs={12}
-              sm={6}
+              sm={8}
             >
               <Controller
                 control={control}
@@ -156,7 +156,7 @@ export const ReactHookFormTestPage = () => {
             <Grid
               item
               xs={12}
-              sm={6}
+              sm={4}
             >
               <FormControl
                 fullWidth
