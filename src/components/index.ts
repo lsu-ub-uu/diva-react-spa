@@ -26,6 +26,7 @@ export { Autocomplete } from './Autocomplete/Autocomplete';
 export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPicker';
 export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';
+export { SnackbarProvider } from './Snackbar/SnackbarProvider';
 
 export interface SelectItem {
   id: string;
