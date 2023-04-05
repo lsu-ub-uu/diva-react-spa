@@ -18,7 +18,9 @@ export const ErrorMessage = (props: ErrorMessageProp): JSX.Element | null => {
       <ul>
         {props.errors &&
           Object.entries(props.errors).map(([field, err]) => (
-            <li key={field}>{(err?.message ?? 'TODO HANDLE SUBFORM ERRORS').toString()}</li>
+            <li key={field}>
+              {(err?.message ?? 'TODO HANDLE SUBFORM ERRORS').toString()}
+            </li>
           ))}
       </ul>
     </Alert>
