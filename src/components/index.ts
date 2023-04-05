@@ -18,7 +18,6 @@ export { TabsMenu } from './TabsMenu/TabsMenu';
 export { Select } from './Form/Select/Select';
 export { Checkbox } from './Form/Checkbox/Checkbox';
 export { Radio } from './Form/Radio/Radio';
-export { ErrorMessage } from './Form/ErrorMessage/ErrorMessage';
 export { RichTree } from './RichTree/RichTree';
 // eslint-disable-next-line import/no-cycle
 export { Autocomplete } from './Autocomplete/Autocomplete';
@@ -26,6 +25,7 @@ export { Autocomplete } from './Autocomplete/Autocomplete';
 export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPicker';
 export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';
+export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';
 
 export interface SelectItem {
   id: string;

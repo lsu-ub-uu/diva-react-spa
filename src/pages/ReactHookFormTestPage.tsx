@@ -29,7 +29,7 @@ import {
   publicationTypeSelector,
   loadPublicationTypesAsync,
 } from '../features/publicationTypes';
-import { Card, Select, ErrorMessage, useBackdrop } from '../components';
+import { Card, Select, useBackdrop, ErrorSummary } from '../components';
 
 interface TestModel {
   publicationType: string;
@@ -48,8 +48,11 @@ const validationSchema = yup.object().shape({
     .array()
     .of(
       yup.object().shape({
-        firstname: yup.string().trim().required('Firstname is required'),
-        lastname: yup.string().trim().required('Lastname is required'),
+        firstname: yup
+          .string()
+          .trim()
+          .matches(/[A-Za-z]{3}/),
+        lastname: yup.string().trim().required(),
       }),
     )
     .min(1)
@@ -60,6 +63,7 @@ export const ReactHookFormTestPage = () => {
   const methods = useForm<TestModel>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      publicationType: '',
       researchSubjects: [],
       authors: [{ firstname: '', lastname: '' }],
     },
@@ -96,7 +100,9 @@ export const ReactHookFormTestPage = () => {
       onSubmit={handleSubmit(handleOnSubmit)}
     >
       <Stack spacing={1}>
-        <ErrorMessage errors={errors} />
+        <div>
+          <ErrorSummary errors={errors} />
+        </div>
         <Card
           title='Publikationstyp'
           variant='variant6'
