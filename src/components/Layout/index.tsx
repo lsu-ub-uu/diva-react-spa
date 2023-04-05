@@ -42,6 +42,7 @@ export const Layout = () => {
           <Grid
             item
             xs
+            sx={{ paddingBottom: '64px' }}
           >
             <main>
               <Outlet />

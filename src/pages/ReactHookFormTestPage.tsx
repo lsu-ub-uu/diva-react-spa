@@ -1,65 +1,55 @@
 import React, { useEffect } from 'react';
 import {
   Box,
+  ButtonGroup,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   FormLabel,
   Grid,
+  IconButton,
   MenuItem,
-  RadioGroup,
   Stack,
+  Autocomplete,
   TextField,
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorIcon from '@mui/icons-material/Error';
-import * as dayjs from 'dayjs';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   publicationTypeSelector,
   loadPublicationTypesAsync,
 } from '../features/publicationTypes';
-import {
-  Card,
-  Select,
-  ErrorMessage,
-  Radio,
-  Checkbox,
-  DatePicker,
-  useBackdrop,
-} from '../components';
+import { Card, Select, ErrorMessage, useBackdrop } from '../components';
 
 interface TestModel {
-  firstname: string;
-  lastname: string;
-  gender: string;
   publicationType: string;
-  testCheck: boolean;
-  pubDate: dayjs.Dayjs;
   authors: {
-    name: string;
-    age: number;
+    firstname: string;
+    lastname: string;
   }[];
+  researchSubjects: string[];
 }
 
 const validationSchema = yup.object().shape({
-  firstname: yup.string().required('Firstname is required'),
-  lastname: yup.string().required('Lastname is required'),
-  gender: yup.string().required('Gender is required'),
   publicationType: yup.string().required('Publication type is required'),
-  testCheck: yup.bool().oneOf([true], 'You need to tick testCheck'),
-  pubDate: yup.date().typeError('Invalid Date').required('Date is required'),
+  researchSubjects: yup.array().of(yup.string()).min(1).max(5),
   // eslint-disable-next-line react/forbid-prop-types
   authors: yup
     .array()
     .of(
       yup.object().shape({
-        name: yup.string().trim().required('Author name is required'),
-        age: yup.number().required('Age is required'),
+        firstname: yup.string().trim().required('Firstname is required'),
+        lastname: yup.string().trim().required('Lastname is required'),
       }),
     )
     .min(1)
@@ -69,12 +59,15 @@ const validationSchema = yup.object().shape({
 export const ReactHookFormTestPage = () => {
   const methods = useForm<TestModel>({
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      researchSubjects: [],
+      authors: [{ firstname: '', lastname: '' }],
+    },
   });
   const {
     control,
     handleSubmit,
     formState: { errors },
-    register,
   } = methods;
   const { fields, append, remove, move } = useFieldArray({
     name: 'authors',
@@ -98,12 +91,12 @@ export const ReactHookFormTestPage = () => {
   };
 
   return (
-    <Stack spacing={1}>
-      <ErrorMessage errors={errors} />
-      <Box
-        component='form'
-        onSubmit={handleSubmit(handleOnSubmit)}
-      >
+    <Box
+      component='form'
+      onSubmit={handleSubmit(handleOnSubmit)}
+    >
+      <Stack spacing={1}>
+        <ErrorMessage errors={errors} />
         <Card
           title='Publikationstyp'
           variant='variant6'
@@ -119,125 +112,7 @@ export const ReactHookFormTestPage = () => {
             <Grid
               item
               xs={12}
-              sm={6}
-            >
-              <Controller
-                control={control}
-                name='firstname'
-                defaultValue=''
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth>
-                    <FormLabel
-                      required
-                      error={error !== undefined}
-                    >
-                      Firstname
-                    </FormLabel>
-                    <TextField
-                      error={error !== undefined}
-                      {...field}
-                      autoComplete='off'
-                      placeholder='firstname'
-                      fullWidth
-                      variant='outlined'
-                      helperText={error !== undefined ? error.message : ' '}
-                      InputProps={{
-                        endAdornment: (
-                          <ErrorIcon
-                            sx={{
-                              color: 'red',
-                              visibility:
-                                error !== undefined ? 'visible' : 'hidden',
-                            }}
-                          />
-                        ),
-                      }}
-                    />
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-            >
-              <Controller
-                control={control}
-                name='lastname'
-                defaultValue=''
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth>
-                    <FormLabel
-                      required
-                      error={error !== undefined}
-                    >
-                      Lastname
-                    </FormLabel>
-                    <TextField
-                      error={error !== undefined}
-                      {...field}
-                      autoComplete='off'
-                      placeholder='Lastname Placeholder'
-                      fullWidth
-                      variant='outlined'
-                      helperText={error !== undefined ? error.message : ' '}
-                      InputProps={{
-                        endAdornment: (
-                          <ErrorIcon
-                            sx={{
-                              color: 'red',
-                              visibility:
-                                error !== undefined ? 'visible' : 'hidden',
-                            }}
-                          />
-                        ),
-                      }}
-                    />
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              <Controller
-                control={control}
-                name='gender'
-                defaultValue='female'
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth>
-                    <FormLabel
-                      required
-                      error={error !== undefined}
-                    >
-                      Gender
-                    </FormLabel>
-                    <RadioGroup {...field}>
-                      <FormControlLabel
-                        value='female'
-                        control={<Radio />}
-                        label='Female'
-                      />
-                      <FormControlLabel
-                        value='male'
-                        control={<Radio />}
-                        label='Male'
-                      />
-                      <FormControlLabel
-                        value='other'
-                        control={<Radio />}
-                        label='Other'
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
+              sm={8}
             >
               <Controller
                 control={control}
@@ -281,37 +156,188 @@ export const ReactHookFormTestPage = () => {
             <Grid
               item
               xs={12}
+              sm={4}
             >
-              <Controller
-                control={control}
-                name='testCheck'
-                defaultValue
-                render={({ field: { value, onChange, ...field } }) => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        disableRipple
-                        onChange={onChange}
-                        checked={value}
-                        {...field}
-                      />
-                    }
-                    label='testCheck'
-                  />
-                )}
-              />
+              <FormControl
+                fullWidth
+                sx={{ mb: 2 }}
+              >
+                <FormLabel>&nbsp;</FormLabel>
+                <Button
+                  disableRipple
+                  variant='outlined'
+                >
+                  Change Publication Type
+                </Button>
+              </FormControl>
             </Grid>
+          </Grid>
+        </Card>
+        {fields.map((item, index) => {
+          return (
+            <Card
+              variant='variant6'
+              key={item.id}
+              title={`Author ${index + 1}`}
+              tooltipBody='body'
+              tooltipTitle='title'
+            >
+              <Grid
+                container
+                spacing={2}
+                justifyContent='space-between'
+                alignItems='flex-start'
+              >
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                >
+                  <Controller
+                    control={control}
+                    name={`authors.${index}.firstname`}
+                    defaultValue=''
+                    render={({ field, fieldState: { error } }) => (
+                      <FormControl fullWidth>
+                        <FormLabel
+                          required
+                          error={error !== undefined}
+                        >
+                          Firstname
+                        </FormLabel>
+                        <TextField
+                          error={error !== undefined}
+                          {...field}
+                          autoComplete='off'
+                          placeholder='Firstname'
+                          fullWidth
+                          variant='outlined'
+                          helperText={error !== undefined ? error.message : ' '}
+                          InputProps={{
+                            endAdornment: (
+                              <ErrorIcon
+                                sx={{
+                                  color: 'red',
+                                  visibility:
+                                    error !== undefined ? 'visible' : 'hidden',
+                                }}
+                              />
+                            ),
+                          }}
+                        />
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                >
+                  <Controller
+                    control={control}
+                    name={`authors.${index}.lastname`}
+                    defaultValue=''
+                    render={({ field, fieldState: { error } }) => (
+                      <FormControl fullWidth>
+                        <FormLabel
+                          required
+                          error={error !== undefined}
+                        >
+                          Lastname
+                        </FormLabel>
+                        <TextField
+                          error={error !== undefined}
+                          {...field}
+                          autoComplete='off'
+                          placeholder='Lastname'
+                          fullWidth
+                          variant='outlined'
+                          helperText={error !== undefined ? error.message : ' '}
+                          InputProps={{
+                            endAdornment: (
+                              <ErrorIcon
+                                sx={{
+                                  color: 'red',
+                                  visibility:
+                                    error !== undefined ? 'visible' : 'hidden',
+                                }}
+                              />
+                            ),
+                          }}
+                        />
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                >
+                  <ButtonGroup
+                    variant='outlined'
+                    aria-label='outlined secondary button group'
+                  >
+                    <IconButton
+                      aria-label='up'
+                      disabled={index === 0}
+                      onClick={() => handleMove(index, index - 1)}
+                    >
+                      <ArrowUpwardIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label='down'
+                      disabled={index === fields.length - 1}
+                      onClick={() => handleMove(index, index + 1)}
+                    >
+                      <ArrowDownwardIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label='delete'
+                      disabled={fields.length === 1}
+                      onClick={() => remove(index)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </ButtonGroup>
+                </Grid>
+              </Grid>
+            </Card>
+          );
+        })}
+        <Button
+          disableRipple
+          onClick={() =>
+            append({
+              firstname: '',
+              lastname: '',
+            })
+          }
+          endIcon={<AddCircleOutlineIcon />}
+        >
+          Add Author
+        </Button>
+        <Card
+          variant='variant6'
+          title='Research Subject'
+          tooltipTitle='Research Subject'
+          tooltipBody='some text'
+        >
+          <Grid
+            container
+            spacing={2}
+            justifyContent='space-between'
+            alignItems='flex-start'
+          >
             <Grid
               item
               xs={12}
-              sm={6}
             >
               <Controller
                 control={control}
-                name='pubDate'
-                defaultValue={dayjs()}
+                name='researchSubjects'
                 render={({
-                  field: { value, onChange, ...field },
+                  field: { onChange, ref, value },
                   fieldState: { error },
                 }) => (
                   <FormControl fullWidth>
@@ -319,90 +345,74 @@ export const ReactHookFormTestPage = () => {
                       required
                       error={error !== undefined}
                     >
-                      Publication date
+                      Research subjects
                     </FormLabel>
-                    <DatePicker
+                    <Autocomplete
+                      onChange={(event, item) => {
+                        console.log(item);
+                        onChange(item);
+                      }}
                       value={value}
-                      onChange={onChange}
-                      error={error}
-                      {...field}
+                      popupIcon={<ExpandMoreIcon />}
+                      multiple
+                      isOptionEqualToValue={(option, val) => option === val}
+                      id='multi-research-subjects'
+                      options={['Datalogi']}
+                      getOptionLabel={(option) => option}
+                      renderInput={(params) => (
+                        <TextField
+                          inputRef={ref}
+                          variant='outlined'
+                          {...params}
+                          error={error !== undefined}
+                          placeholder='Search for subjects'
+                        />
+                      )}
                     />
+                    <FormHelperText error={error !== undefined}>
+                      {error !== undefined ? error.message : ' '}
+                    </FormHelperText>
                   </FormControl>
                 )}
               />
             </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              {fields.map((field, index) => {
-                return (
-                  <div key={field.id}>
-                    <h4>Författare {index + 1}</h4>
-                    <section
-                      className='section'
-                      key={field.id}
-                    >
-                      <input
-                        placeholder='name'
-                        {...register(`authors.${index}.name`)}
-                      />
-                      <input
-                        placeholder='age'
-                        {...register(`authors.${index}.age`)}
-                      />
-                      <button
-                        disabled={index === 0}
-                        type='button'
-                        onClick={() => handleMove(index, index - 1)}
-                      >
-                        UP
-                      </button>
-                      <button
-                        disabled={index === fields.length - 1}
-                        type='button'
-                        onClick={() => handleMove(index, index + 1)}
-                      >
-                        DN
-                      </button>
-                      <button
-                        type='button'
-                        onClick={() => remove(index)}
-                      >
-                        X
-                      </button>
-                    </section>
-                  </div>
-                );
-              })}
-              <button
-                type='button'
-                onClick={() =>
-                  append({
-                    name: '',
-                    age: 0,
-                  })
-                }
-              >
-                Add Author
-              </button>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              <Button
-                type='submit'
-                disableRipple
-                variant='contained'
-                endIcon={<ArrowForwardIcon />}
-              >
-                Continue
-              </Button>
-            </Grid>
           </Grid>
         </Card>
-      </Box>
-    </Stack>
+        <Grid
+          container
+          direction='row'
+          justifyContent='space-between'
+          alignItems='flex-start'
+        >
+          <Grid
+            item
+            xs={6}
+          >
+            <Button
+              disabled
+              disableRipple
+              variant='outlined'
+              startIcon={<ArrowBackIcon />}
+            >
+              Back
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sx={{ textAlign: 'right' }}
+          >
+            <Button
+              type='submit'
+              disableRipple
+              variant='contained'
+              endIcon={<ArrowForwardIcon />}
+            >
+              Continue
+            </Button>
+          </Grid>
+        </Grid>
+      </Stack>
+    </Box>
   );
 };
