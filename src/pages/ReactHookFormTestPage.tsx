@@ -366,6 +366,7 @@ export const ReactHookFormTestPage = () => {
                         console.log(item);
                         onChange(item);
                       }}
+                      clearText='Clear all'
                       value={value}
                       popupIcon={<ExpandMoreIcon />}
                       multiple
