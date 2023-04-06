@@ -70,6 +70,7 @@ export const ReactHookFormTestPage = () => {
   });
   const {
     control,
+    trigger,
     handleSubmit,
     formState: { errors },
   } = methods;
@@ -86,8 +87,14 @@ export const ReactHookFormTestPage = () => {
     dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
   }, [dispatch, setBackdrop]);
 
-  const handleMove = (prev: number, next: number) => {
+  const handleMove = async (prev: number, next: number) => {
     move(prev, next);
+    await trigger();
+  };
+
+  const handleRemove = async (index: number) => {
+    remove(index);
+    await trigger();
   };
 
   const handleOnSubmit = (data: TestModel) => {
@@ -170,6 +177,7 @@ export const ReactHookFormTestPage = () => {
               >
                 <FormLabel>&nbsp;</FormLabel>
                 <Button
+                  size='large'
                   disableRipple
                   variant='outlined'
                 >
@@ -301,7 +309,7 @@ export const ReactHookFormTestPage = () => {
                     <IconButton
                       aria-label='delete'
                       disabled={fields.length === 1}
-                      onClick={() => remove(index)}
+                      onClick={() => handleRemove(index)}
                     >
                       <DeleteIcon />
                     </IconButton>
