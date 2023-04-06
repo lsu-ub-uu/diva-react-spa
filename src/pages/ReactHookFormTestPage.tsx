@@ -29,7 +29,7 @@ import {
   publicationTypeSelector,
   loadPublicationTypesAsync,
 } from '../features/publicationTypes';
-import { Card, Select, ErrorMessage, useBackdrop } from '../components';
+import { Card, Select, useBackdrop, ErrorSummary } from '../components';
 
 interface TestModel {
   publicationType: string;
@@ -48,8 +48,11 @@ const validationSchema = yup.object().shape({
     .array()
     .of(
       yup.object().shape({
-        firstname: yup.string().trim().required('Firstname is required'),
-        lastname: yup.string().trim().required('Lastname is required'),
+        firstname: yup
+          .string()
+          .trim()
+          .matches(/[A-Za-z]{3}/),
+        lastname: yup.string().trim().required(),
       }),
     )
     .min(1)
@@ -60,12 +63,14 @@ export const ReactHookFormTestPage = () => {
   const methods = useForm<TestModel>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      publicationType: '',
       researchSubjects: [],
       authors: [{ firstname: '', lastname: '' }],
     },
   });
   const {
     control,
+    trigger,
     handleSubmit,
     formState: { errors },
   } = methods;
@@ -82,8 +87,14 @@ export const ReactHookFormTestPage = () => {
     dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
   }, [dispatch, setBackdrop]);
 
-  const handleMove = (prev: number, next: number) => {
+  const handleMove = async (prev: number, next: number) => {
     move(prev, next);
+    await trigger();
+  };
+
+  const handleRemove = async (index: number) => {
+    remove(index);
+    await trigger();
   };
 
   const handleOnSubmit = (data: TestModel) => {
@@ -96,7 +107,9 @@ export const ReactHookFormTestPage = () => {
       onSubmit={handleSubmit(handleOnSubmit)}
     >
       <Stack spacing={1}>
-        <ErrorMessage errors={errors} />
+        <div>
+          <ErrorSummary errors={errors} />
+        </div>
         <Card
           title='Publikationstyp'
           variant='variant6'
@@ -164,6 +177,7 @@ export const ReactHookFormTestPage = () => {
               >
                 <FormLabel>&nbsp;</FormLabel>
                 <Button
+                  size='large'
                   disableRipple
                   variant='outlined'
                 >
@@ -295,7 +309,7 @@ export const ReactHookFormTestPage = () => {
                     <IconButton
                       aria-label='delete'
                       disabled={fields.length === 1}
-                      onClick={() => remove(index)}
+                      onClick={() => handleRemove(index)}
                     >
                       <DeleteIcon />
                     </IconButton>
