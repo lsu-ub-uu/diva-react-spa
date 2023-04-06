@@ -65,7 +65,7 @@ export const ReactHookFormTestPage = () => {
     defaultValues: {
       publicationType: '',
       researchSubjects: [],
-      authors: [{ firstname: '', lastname: '' }],
+      authors: [{ firstname: 'Egil', lastname: 'Swenning Leyser' }],
     },
   });
   const {
@@ -129,9 +129,11 @@ export const ReactHookFormTestPage = () => {
             >
               <Controller
                 control={control}
-                defaultValue=''
                 name='publicationType'
-                render={({ field, fieldState: { error } }) => (
+                render={({
+                  field: { onChange, ref, value },
+                  fieldState: { error },
+                }) => (
                   <FormControl fullWidth>
                     <FormLabel
                       required
@@ -140,10 +142,16 @@ export const ReactHookFormTestPage = () => {
                       Publication type
                     </FormLabel>
                     <Select
+                      value={
+                        publicationTypeState.publicationTypes.length
+                          ? value
+                          : ''
+                      }
+                      onChange={onChange}
+                      ref={ref}
                       fullWidth
                       loadingError={publicationTypeState.isError}
                       error={error !== undefined}
-                      {...field}
                       loading={publicationTypeState.isLoading}
                     >
                       {publicationTypeState.publicationTypes &&
