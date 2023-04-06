@@ -26,6 +26,7 @@ export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPi
 export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';
 export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';
+export { SnackbarProvider } from './Snackbar/SnackbarProvider';
 
 export interface SelectItem {
   id: string;

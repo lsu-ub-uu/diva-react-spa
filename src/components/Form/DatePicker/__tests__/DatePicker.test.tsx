@@ -1,5 +1,5 @@
 import { test } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 import { DatePicker } from '../DatePicker';
@@ -9,7 +9,7 @@ import { DatePicker } from '../DatePicker';
  */
 
 describe('<DatePicker />', () => {
-  test.skip('Renders', () => {
+  test('Renders', () => {
     render(<DatePicker />);
     const button = screen.getByRole('button', { name: 'Choose date' });
     expect(button).toBeInTheDocument();
@@ -53,9 +53,10 @@ describe('<DatePicker />', () => {
     await user.click(button);
     const todayButton = screen.getByRole('button', { name: 'Today' });
     user.click(todayButton);
-
     const dateInput = screen.getByRole('textbox');
-    expect(dateInput).toHaveValue(today);
-    /*  await user.type(dateInput, today); */
+    await user.type(dateInput, today);
+    waitFor(() => {
+      expect(dateInput).toHaveValue(today.toString());
+    });
   });
 });
