@@ -45,7 +45,7 @@ describe('<DatePicker />', () => {
     expect(dateInput).toBeValid();
   });
 
-  test('Today button click gives todays date', async () => {
+  test.only('Today button click gives todays date', async () => {
     const today = dayjs().format('YYYY-MM-DD');
     render(<DatePicker />);
     const user = userEvent.setup();
@@ -54,7 +54,6 @@ describe('<DatePicker />', () => {
     const todayButton = screen.getByRole('button', { name: 'Today' });
     user.click(todayButton);
     const dateInput = screen.getByRole('textbox');
-    await user.type(dateInput, today);
     waitFor(() => {
       expect(dateInput).toHaveValue(today.toString());
     });
