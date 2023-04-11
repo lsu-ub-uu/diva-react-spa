@@ -449,9 +449,7 @@ export const ReactHookFormTestPage = () => {
                     defaultValue=''
                     render={({ field, fieldState: { error } }) => (
                       <FormControl fullWidth>
-                        <FormLabel
-                          error={error !== undefined}
-                        >
+                        <FormLabel error={error !== undefined}>
                           ORCID-identity
                         </FormLabel>
                         <TextField
@@ -489,9 +487,7 @@ export const ReactHookFormTestPage = () => {
                     defaultValue=''
                     render={({ field, fieldState: { error } }) => (
                       <FormControl fullWidth>
-                        <FormLabel
-                          error={error !== undefined}
-                        >
+                        <FormLabel error={error !== undefined}>
                           E-mail
                         </FormLabel>
                         <TextField
@@ -529,9 +525,7 @@ export const ReactHookFormTestPage = () => {
                     defaultValue=''
                     render={({ field, fieldState: { error } }) => (
                       <FormControl fullWidth>
-                        <FormLabel
-                          error={error !== undefined}
-                        >
+                        <FormLabel error={error !== undefined}>
                           Institution, department or program
                         </FormLabel>
                         <TextField
@@ -569,9 +563,7 @@ export const ReactHookFormTestPage = () => {
                     defaultValue=''
                     render={({ field, fieldState: { error } }) => (
                       <FormControl fullWidth>
-                        <FormLabel
-                          error={error !== undefined}
-                        >
+                        <FormLabel error={error !== undefined}>
                           Research group
                         </FormLabel>
                         <TextField
@@ -608,9 +600,7 @@ export const ReactHookFormTestPage = () => {
                     defaultValue=''
                     render={({ field, fieldState: { error } }) => (
                       <FormControl fullWidth>
-                        <FormLabel
-                          error={error !== undefined}
-                        >
+                        <FormLabel error={error !== undefined}>
                           Other organisation
                         </FormLabel>
                         <TextField
@@ -733,7 +723,13 @@ export const ReactHookFormTestPage = () => {
                       multiple
                       isOptionEqualToValue={(option, val) => option === val}
                       id='multi-research-subjects'
-                      options={['Datalogi', 'AI', 'Informatik', 'Beetendevetenskap', 'Astrofysik']}
+                      options={[
+                        'Datalogi',
+                        'AI',
+                        'Informatik',
+                        'Beetendevetenskap',
+                        'Astrofysik',
+                      ]}
                       getOptionLabel={(option) => option}
                       renderInput={(params) => (
                         <TextField
