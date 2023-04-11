@@ -54,7 +54,6 @@ describe('<DatePicker />', () => {
     const todayButton = screen.getByRole('button', { name: 'Today' });
     user.click(todayButton);
     const dateInput = screen.getByRole('textbox');
-    await user.type(dateInput, today);
     waitFor(() => {
       expect(dateInput).toHaveValue(today.toString());
     });
