@@ -29,14 +29,16 @@ export const DatePicker = React.forwardRef(
           PopperProps={{
             sx: {
               '& .MuiPaper-root': { border: '2px solid #000000' },
-              /* '& .MuiPickersDay-root.MuiPickersDay-today': {
-                border: '1px solid #613985',
+              /*               '& .MuiPickersDay-root.MuiPickersDay-today': {
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: 'purple.main',
               },
               '& .MuiPickersDay-root.Mui-selected': {
-                backgroundColor: '#613985',
+                backgroundColor: 'purple.main',
               },
               '& .MuiPickersDay-root.Mui-selected:hover': {
-                backgroundColor: '#613985',
+                backgroundColor: 'purple.main',
               }, */
             },
           }}
