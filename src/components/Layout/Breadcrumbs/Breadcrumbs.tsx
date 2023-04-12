@@ -25,6 +25,7 @@ export const Breadcrumbs = () => {
     .filter((crumb: string) => crumb !== '')
     .map((crumb) => {
       currentLink += `/${crumb}`;
+
       return (
         <Link
           key={crumb}
@@ -34,7 +35,9 @@ export const Breadcrumbs = () => {
           component={RouterLink}
           to={currentLink}
         >
-          {t(crumb)}
+          {t(crumb) === true
+            ? t(crumb)
+            : crumb.charAt(0).toUpperCase() + crumb.slice(1)}
         </Link>
       );
     });

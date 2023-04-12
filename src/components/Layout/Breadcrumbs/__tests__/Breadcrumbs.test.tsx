@@ -15,7 +15,7 @@ describe('<Breadcrumbs />', () => {
       </MemoryRouter>,
     );
 
-    const breads = screen.getByText('page1_1');
+    const breads = screen.getByText('Page1_1');
     expect(breads).toBeInTheDocument();
   });
   test('can take the user back to home page', () => {
@@ -25,7 +25,7 @@ describe('<Breadcrumbs />', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('home').closest('a')).toHaveAttribute(
+    expect(screen.getByText('Home').closest('a')).toHaveAttribute(
       'href',
       '/home',
     );
