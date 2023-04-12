@@ -3,6 +3,7 @@ import { Layout } from '../components';
 import {
   HomePage,
   ListUsersPage,
+  AboutUsersPage,
   FormPage,
   DemoFormPage,
   ReactHookFormTestPage,
@@ -21,7 +22,7 @@ export const routes = [
         path: '/users',
         element: <ListUsersPage />,
       },
-      { path: '/users/about', element: <div>show about user</div> },
+      { path: '/users/about', element: <AboutUsersPage /> },
       {
         path: '/form',
         element: <FormPage />,
