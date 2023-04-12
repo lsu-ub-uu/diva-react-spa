@@ -15,7 +15,7 @@ const StyledAsidePortal = styled('div')((props: StyledAsidePortalProps) => ({
   position: props.fixed === true ? 'fixed' : 'relative',
   transition: 'position 0.5s ease',
   top: props.fixed === true ? '60px' : '0',
-  overflow: props.fixed === true ? 'scroll' : 'auto',
+  overflow: 'scroll',
   height: '100%',
   // overflow: 'scroll',
 }));
