@@ -29,6 +29,6 @@ describe('<App />', () => {
       </BackdropProvider>,
     );
     const logoImage = screen.getByAltText('logo');
-    screen.debug(logoImage);
+    expect(logoImage).toBeInTheDocument();
   });
 });
