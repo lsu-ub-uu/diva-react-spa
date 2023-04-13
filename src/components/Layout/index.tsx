@@ -1,12 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import { Container, Grid } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
+import { Helmet } from 'react-helmet-async';
 import { Header } from './Header';
 import { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 
 export const Layout = () => {
   return (
     <>
+      <Helmet>
+        <title>DiVA</title>
+      </Helmet>
       <AppBar
         position='static'
         color='default'

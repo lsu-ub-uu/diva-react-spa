@@ -4,5 +4,6 @@
   "users": "List Users",
   "common": {
     "close": "Close"
-  }
+  },
+  "addpub": "Add Publication / Upload files"
 }
