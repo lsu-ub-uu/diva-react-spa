@@ -4,6 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import { Helmet } from 'react-helmet-async';
 import { Header } from './Header';
 import { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
+import { MemberBar } from './MemberBar/MemberBar';
 
 export const Layout = () => {
   return (
@@ -14,11 +15,18 @@ export const Layout = () => {
       <AppBar
         position='static'
         color='default'
-        sx={{ py: 2 }}
       >
-        <Container maxWidth='lg'>app bar</Container>
+        <MemberBar color='#efefef'>
+          <p>AppBar</p>
+        </MemberBar>
+        {/* MemberBar color='#F2D000'>
+          <img
+            src='./kau_logga.png'
+            alt='Logo of Karlstads University'
+          />
+        </MemberBar> */}
+        <Header />
       </AppBar>
-      <Header />
       <Container
         maxWidth='lg'
         sx={{ minHeight: '100vh' }}

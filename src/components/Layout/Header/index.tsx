@@ -1,5 +1,4 @@
-import AppBar from '@mui/material/AppBar';
-import { Avatar, Button, Container, Grid } from '@mui/material';
+import { Avatar, Box, Button, Container, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import logo from './divaLogo.svg';
 
@@ -7,10 +6,8 @@ export const Header = () => {
   const { i18n } = useTranslation();
 
   return (
-    <AppBar
-      position='static'
-      color='transparent'
-      sx={{ py: 2, borderBottom: '1px solid #eee' }}
+    <Box
+      sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
     >
       <Container maxWidth='lg'>
         <Grid
@@ -41,6 +38,6 @@ export const Header = () => {
           </Grid>
         </Grid>
       </Container>
-    </AppBar>
+    </Box>
   );
 };
