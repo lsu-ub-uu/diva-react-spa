@@ -58,34 +58,34 @@ export const VerticalStepper = (props: VerticalStepperProps) => {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', overflow: 'hidden' }}>
       <Stepper
         sx={{
-          '.MuiSvgIcon-root': {
-            margin: '-1px',
-            borderRadius: '50%',
-            border: '3px solid #613985',
+          '& .MuiStepper-root': {
+            width: 'inherit',
+            height: 'inherit',
           },
-          '.MuiSvgIcon-root:not(.Mui-completed)': {
+          '& .MuiSvgIcon-root': {
+            borderRadius: '50%',
+            stroke: '#613985',
+            strokeWidth: '3px',
+          },
+          '& .MuiSvgIcon-root:not(.Mui-completed)': {
             color: 'white',
           },
-          '.MuiStepIcon-text': {
+          '& .MuiStepIcon-text': {
             fill: '#613985',
             display: 'none',
           },
-          '.MuiSvgIcon-root.Mui-active': {
+          '& .MuiSvgIcon-root.Mui-active': {
             color: '#613985',
-
-            borderRadius: '50%',
-            border: '3px solid #613985',
+            stroke: '#613985',
+            strokeWidth: '3px',
           },
-          '.Mui-active .MuiStepIcon-text': {
-            fill: 'white',
-          },
-          '.MuiSvgIcon-root.Mui-completed': {
+          '& .MuiSvgIcon-root.Mui-completed': {
             color: '#c1b3ce',
-            borderRadius: '50%',
-            border: '3px solid #c1b3ce',
+            stroke: '#c1b3ce',
+            strokeWidth: '3px',
           },
         }}
         orientation='vertical'
