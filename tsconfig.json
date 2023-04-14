@@ -10,7 +10,7 @@
     "useDefineForClassFields": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -18,5 +18,7 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true
-  }
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "exclude": ["node_modules", ".vscode"]
 }
