@@ -1,24 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "esModuleInterop": false,
-    "forceConsistentCasingInFileNames": true,
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "allowJs": true,
+    "outDir": "build",
+    "rootDir": "src",
     "strict": true,
+    "esModuleInterop": true,
+    "types": ["node"],
     "skipLibCheck": true,
-    "outDir": "dist",
-    "useDefineForClassFields": true,
-    "allowJs": false,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "nodenext",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "baseUrl": "./src",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
-  "exclude": ["node_modules", ".vscode"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import fakePersons from '../__mocks__/fakePersons.json' assert { type: 'json', integrity: 'sha384-ABC123' };
+import fakePersons from '../__mocks__/fakePersons.json';
 
 // @desc		Get all users
 // @route		GET /api/users/
