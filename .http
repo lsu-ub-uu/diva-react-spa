@@ -6,5 +6,23 @@ GET http://localhost:8080/api/publication/all
 ### Get publication with id 8888888
 GET http://localhost:8080/api/publication/8888883
 
-### GET all Research Subjects
-GET http://localhost:8080/api/researchSubjects
+
+
+### GET recordType recordType w/ BFF
+GET http://localhost:8081/api/recordtype/recordType
+
+### GET recordType example w/ BFF
+GET http://localhost:8081/api/recordtype/example
+
+
+
+# Cora
+### GET recordType recordType from Cora
+GET https://cora.epc.ub.uu.se/systemone/rest/record/recordType/recordType
+
+Accept: application/vnd.uub.record+json
+
+### GET recordType example from Cora
+GET https://cora.epc.ub.uu.se/systemone/rest/record/recordType/example
+
+Accept: application/vnd.uub.record+json

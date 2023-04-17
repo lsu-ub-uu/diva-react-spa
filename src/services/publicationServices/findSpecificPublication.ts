@@ -1,10 +1,9 @@
-/* interface FindSpecificPublicationProps {
-  publicationId: string;
-} */
+interface FindSpecificPublicationProps {
+  id: string;
+}
 
 export const findSpecificPublication = (
-  publicationId: string,
-  /* props: FindSpecificPublicationProps, */
+  props: FindSpecificPublicationProps,
 ) => {
-  return publicationId;
+  return props.id;
 };
