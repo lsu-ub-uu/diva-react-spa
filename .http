@@ -1,7 +1,10 @@
 ### GET all users
 GET http://localhost:8080/api/user/all
 ### GET all Publication Types
-GET http://localhost:8080/api/publicationtypes/
+GET http://localhost:8080/api/publication/all
+
+### Get publication with id 8888888
+GET http://localhost:8080/api/publication/8888883
 
 ### GET all Research Subjects
 GET http://localhost:8080/api/researchSubjects

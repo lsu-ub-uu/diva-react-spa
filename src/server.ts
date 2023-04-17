@@ -1,15 +1,16 @@
 import express, { Application } from 'express';
 import userRoute from './routes/userRoute';
-/* import publicationTypesRoute from './routes/researchSubjectsRoute.js';
-import researchSubjectsRoute from './routes/publicationTypesRoute.js'; */
+import publicationRoute from './routes/publicationRoute';
+// import researchSubjectsRoute from './routes/publicationTypesRoute.js';
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
 
 const app: Application = express();
 
 app.use(express.json());
 
 app.use('/api/user', userRoute);
+app.use('/api/publication', publicationRoute);
 /* app.use('/api/publicationtypes', publicationTypesRoute);
 app.use('/api/researchSubjects', researchSubjectsRoute); */
 
