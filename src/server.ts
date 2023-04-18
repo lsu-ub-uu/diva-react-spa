@@ -5,7 +5,7 @@ import publicationRoute from './routes/publicationRoute';
 import recordTypeRoute from './routes/recordTypeRoute';
 // import researchSubjectsRoute from './routes/publicationTypesRoute.js';
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
 
 const app: Application = express();
 

@@ -9,14 +9,25 @@ GET http://localhost:8080/api/publication/8888883
 
 
 ### GET recordType recordType w/ BFF
-GET http://localhost:8081/api/recordtype/recordType
+GET http://localhost:8080/api/recordtype/recordType
 
-### GET recordType example w/ BFF
-GET http://localhost:8081/api/recordtype/example
+### GET recordType studentThesisText w/ BFF
+GET http://localhost:8080/api/recordtype/studentThesisText
+
+
+
+
+
+
 
 
 
 # Cora
+### GET recordType text from Cora
+GET https://cora.epc.ub.uu.se/diva/rest/record/coraText/studentThesisText
+
+Accept: application/vnd.uub.record+json
+
 ### GET recordType recordType from Cora
 GET https://cora.epc.ub.uu.se/systemone/rest/record/recordType/recordType
 

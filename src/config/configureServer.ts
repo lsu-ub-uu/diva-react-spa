@@ -1,5 +1,6 @@
 /* import compression from 'compression';
 import cors from 'cors'; */
+import 'dotenv/config';
 
 import express, { Application } from 'express';
 
