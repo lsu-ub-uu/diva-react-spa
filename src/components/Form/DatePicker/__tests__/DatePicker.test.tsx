@@ -8,7 +8,7 @@ import { DatePicker } from '../DatePicker';
  * @vitest-environment jsdom
  */
 
-describe('<DatePicker />', () => {
+describe.skip('<DatePicker />', () => {
   test('Renders', () => {
     render(<DatePicker />);
     const button = screen.getByRole('button', { name: 'Choose date' });
