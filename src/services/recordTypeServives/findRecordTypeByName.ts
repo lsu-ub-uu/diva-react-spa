@@ -1,6 +1,6 @@
 
 export const findRecordTypeByName = (responseArray: any) => {
-  let tsUpdatedArray: any[] = [];
+  const tsUpdatedArray: any[] = [];
   const returnObject = {
     id: '',
     tsUpdated: tsUpdatedArray,
