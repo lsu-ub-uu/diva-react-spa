@@ -4,7 +4,7 @@
     "module": "commonjs",
     "lib": ["es6"],
     "allowJs": true,
-    "outDir": "build",
+    "outDir": "dist",
     "rootDir": "src",
     "strict": true,
     "esModuleInterop": true,
@@ -13,5 +13,6 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.spec.ts"]
+  "exclude": ["src/**/*.test.ts"]
+  
 }

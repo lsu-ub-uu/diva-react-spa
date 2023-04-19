@@ -24,6 +24,10 @@ export const getRecordTypeByName = async (
       `${BASEURL}/record/coraText/${recordType}`,
       config,
     );
+    /* const response = await axios.get(
+      `https://cora.epc.ub.uu.se/systemone/rest/record/recordType/${recordType}`,
+      config,
+    ); */
 
     responseArray = response.data.record.data.children;
     // res.status(200).json(responseArray);
