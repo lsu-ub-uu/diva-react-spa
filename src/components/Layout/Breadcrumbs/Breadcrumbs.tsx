@@ -35,9 +35,7 @@ export const Breadcrumbs = () => {
           component={RouterLink}
           to={currentLink}
         >
-          {t(crumb) === true
-            ? t(crumb)
-            : crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+          {t(crumb) ?? crumb.charAt(0).toUpperCase() + crumb.slice(1)}
         </Link>
       );
     });

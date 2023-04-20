@@ -63,7 +63,7 @@ const validationSchema = yup.object().shape({
           .trim()
           .matches(/[A-Za-z]{3}/),
         lastname: yup.string().trim().required(),
-        birthYear: yup.string().matches(new RegExp('^d{4}$')),
+        birthYear: yup.string().matches(/^d{4}$/),
         deathYear: yup.string().matches(/^(?:\d{4}|)$/),
         localUserId: yup.string().trim(),
         organisation: yup.string().trim().required(),
@@ -377,6 +377,14 @@ export const ReactHookFormTestPage = () => {
               append({
                 firstname: '',
                 lastname: '',
+                birthYear: '',
+                deathYear: '',
+                localUserId: '',
+                orcidId: '',
+                organisation: '',
+                researchGroup: '',
+                email: '',
+                otherOrganisation: '',
               })
             }
             endIcon={<AddCircleOutlineIcon />}
