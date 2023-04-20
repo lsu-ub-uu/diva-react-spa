@@ -15,19 +15,16 @@ describe('<Breadcrumbs />', () => {
       </MemoryRouter>,
     );
 
-    const breads = screen.getByText('Page1_1');
+    const breads = screen.getByText('page1_1');
     expect(breads).toBeInTheDocument();
   });
-  test('can take the user back to home page', () => {
+  test('Can take the user back to home page', () => {
     render(
-      <MemoryRouter initialEntries={['/home/page1/page1_1']}>
+      <MemoryRouter initialEntries={['/page1/page1_1']}>
         <Breadcrumbs />
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('Home').closest('a')).toHaveAttribute(
-      'href',
-      '/home',
-    );
+    expect(screen.getByText('start').closest('a')).toHaveAttribute('href', '/');
   });
 });
