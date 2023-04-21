@@ -21,10 +21,10 @@ export const getRecordTypeByName = async (
       },
     };
     const response = await axios.get(
-      `${BASEURL}/record/coraText/${recordType}`,
+      `${BASEURL}/record/recordType/${recordType}`,
       config,
     );
-    /* const response = await axios.get(
+    /*  const response = await axios.get(
       `https://cora.epc.ub.uu.se/systemone/rest/record/recordType/${recordType}`,
       config,
     ); */

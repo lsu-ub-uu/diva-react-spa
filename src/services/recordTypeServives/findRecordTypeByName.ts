@@ -1,4 +1,3 @@
-
 export const findRecordTypeByName = (responseArray: any) => {
   const tsUpdatedArray: any[] = [];
   const returnObject = {
@@ -12,12 +11,10 @@ export const findRecordTypeByName = (responseArray: any) => {
           if (Array.isArray(c)) {
             c.map((d: string) => {
               if (Object.values(d).includes('id')) {
-
                 // Adding to returnObject
                 returnObject.id = Object.values(d)[1];
               }
               if (Object.keys(d).includes('children')) {
-
                 Object.entries(d).map((e) => {
                   if (e.includes('children')) {
                     Object.entries(e).map((f) => {
@@ -26,7 +23,6 @@ export const findRecordTypeByName = (responseArray: any) => {
                           const isArray = Array.isArray(g);
                           if (isArray) {
                             g.map((h) => {
-
                               if (Object.values(h).includes('tsUpdated')) {
                                 Object.entries(h).map((i) => {
                                   if (i.includes('value')) {
@@ -42,14 +38,10 @@ export const findRecordTypeByName = (responseArray: any) => {
                   }
                 });
               }
-              return returnObject;
             });
           }
-          return returnObject;
         });
-        return returnObject;
       }
-      return returnObject;
     });
   });
   return returnObject;
