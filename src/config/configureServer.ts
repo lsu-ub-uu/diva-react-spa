@@ -1,13 +1,13 @@
-/* import compression from 'compression';
-import cors from 'cors'; */
+// import compression from 'compression';
+import cors from 'cors';
 import 'dotenv/config';
 
-import express, { Application } from 'express';
+import express, { Application, Request } from 'express';
 
 export const configureServer = (app: Application) => {
   app.use(express.json());
   // app.use(compression())
-  // app.use(cors())
+  app.use(cors<Request>());
 
   return app;
 };
