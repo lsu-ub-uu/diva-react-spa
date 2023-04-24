@@ -7,7 +7,11 @@ import express, { Application, Request } from 'express';
 export const configureServer = (app: Application) => {
   app.use(express.json());
   // app.use(compression())
-  app.use(cors<Request>());
+  app.use(
+    cors<Request>({
+      origin: '*',
+    }),
+  );
 
   return app;
 };
