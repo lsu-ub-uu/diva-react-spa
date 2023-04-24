@@ -24,6 +24,7 @@ export const getRecordTypeByName = async (
       `${BASEURL}/record/recordType/${recordType}`,
       config,
     );
+
     /*  const response = await axios.get(
       `https://cora.epc.ub.uu.se/systemone/rest/record/recordType/${recordType}`,
       config,
