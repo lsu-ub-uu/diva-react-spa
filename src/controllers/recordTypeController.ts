@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import axios from 'axios';
 import { findRecordTypeByName } from '../services/recordTypeServives';
 
-const { BASENAME } = process.env;
+const { CORA_API_URL } = process.env;
 
 // @desc		Get recordType by id
 // @route		GET /api/publication/:id
@@ -15,7 +15,7 @@ export const getRecordTypeByName = async (
   try {
     const recordType = req.params.name;
     console.log('Check', 'we are here');
-    console.log('URL:', `${BASENAME}/record/recordType/${recordType}`);
+    console.log('URL:', `${CORA_API_URL}/record/recordType/${recordType}`);
     let responseArray = [];
     const config = {
       headers: {
@@ -23,7 +23,7 @@ export const getRecordTypeByName = async (
       },
     };
     const response = await axios.get(
-      `${BASENAME}/record/recordType/${recordType}`,
+      `${CORA_API_URL}/record/recordType/${recordType}`,
       config,
     );
 /* 
