@@ -11,6 +11,9 @@ GET http://localhost:8080/api/publication/8888883
 ### GET recordType recordType w/ BFF
 GET http://localhost:8080/api/recordtype/recordType
 
+### GET recordType recordType w/ BFF
+GET http://localhost:8080/api/recordtype/safdg
+
 
 
 

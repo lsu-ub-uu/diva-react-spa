@@ -10,7 +10,7 @@ const { BASEURL } = process.env;
 export const getRecordTypeByName = async (
   req: Request,
   res: Response,
-  error: unknown,
+  error: any,
 ) => {
   try {
     const recordType = req.params.name;
@@ -34,7 +34,7 @@ export const getRecordTypeByName = async (
     // res.status(200).json(responseArray);
     res.status(200).json(findRecordTypeByName(responseArray));
   } catch {
-    console.log(error);
-    throw new Error(`${error}`);
+    // console.log(error);
+    res.status(500).json({ error: `Error: ${error.message}` });
   }
 };
