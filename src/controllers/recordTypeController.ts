@@ -13,8 +13,9 @@ export const getRecordTypeByName = async (
   error: any,
 ) => {
   try {
-    console.log('Check', 'we are here');
     const recordType = req.params.name;
+    console.log('Check', 'we are here');
+    console.log('URL:', `${BASEURL}/record/recordType/${recordType}`);
     let responseArray = [];
     const config = {
       headers: {
@@ -25,7 +26,6 @@ export const getRecordTypeByName = async (
       `${BASEURL}/record/recordType/${recordType}`,
       config,
     );
-    console.log('URL:', `${BASEURL}/record/recordType/${recordType}`);
 /* 
     const response = await axios.get(
       `https://cora.epc.ub.uu.se/diva/rest/record/recordType/${recordType}`,
