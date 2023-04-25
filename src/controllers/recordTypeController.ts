@@ -17,7 +17,7 @@ export const getRecordTypeByName = async (
     let responseArray = [];
     const config = {
       headers: {
-        Accept: 'application/vnd.uub.recordList+json',
+        Accept: 'application/vnd.uub.record+json',
       },
     };
     const response = await axios.get(
@@ -25,9 +25,9 @@ export const getRecordTypeByName = async (
       config,
     );
     console.log('URL:', `${BASEURL}/record/recordType/${recordType}`);
-
-    /*  const response = await axios.get(
-      `https://cora.epc.ub.uu.se/systemone/rest/record/recordType/${recordType}`,
+/* 
+    const response = await axios.get(
+      `https://cora.epc.ub.uu.se/diva/rest/record/recordType/${recordType}`,
       config,
     ); */
 

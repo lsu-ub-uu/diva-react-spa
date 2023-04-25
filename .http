@@ -9,10 +9,10 @@ GET http://localhost:8080/api/publication/8888883
 
 
 ### GET recordType recordType w/ BFF
-GET http://localhost:8080/api/recordtype/recordType
+GET http://localhost:8081/api/recordtype/recordType
 
 ### GET recordType recordType w/ BFF
-GET http://localhost:8080/api/recordtype/safdg
+GET http://localhost:8081/api/recordtype/safdg
 
 
 
@@ -24,7 +24,7 @@ GET http://localhost:8080/api/recordtype/safdg
 
 # Cora
 ### GET recordType recordType from Cora
-GET https://cora.epc.ub.uu.se/systemone/rest/record/recordType/recordType
+GET https://cora.epc.ub.uu.se/diva/rest/record/recordType/recordType
 
 Accept: application/vnd.uub.record+json
 
