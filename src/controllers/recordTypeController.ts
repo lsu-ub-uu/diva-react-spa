@@ -17,13 +17,14 @@ export const getRecordTypeByName = async (
     let responseArray = [];
     const config = {
       headers: {
-        Accept: 'application/vnd.uub.record+json',
+        Accept: 'application/vnd.uub.recordList+json',
       },
     };
     const response = await axios.get(
       `${BASEURL}/record/recordType/${recordType}`,
       config,
     );
+    console.log('URL:', `${BASEURL}/record/recordType/${recordType}`);
 
     /*  const response = await axios.get(
       `https://cora.epc.ub.uu.se/systemone/rest/record/recordType/${recordType}`,
