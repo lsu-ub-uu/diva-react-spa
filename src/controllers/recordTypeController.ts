@@ -13,6 +13,7 @@ export const getRecordTypeByName = async (
   error: any,
 ) => {
   try {
+    console.log('Check', 'we are here');
     const recordType = req.params.name;
     let responseArray = [];
     const config = {
@@ -36,6 +37,6 @@ export const getRecordTypeByName = async (
     res.status(200).json(findRecordTypeByName(responseArray));
   } catch {
     // console.log(error);
-    res.status(500).json({ error: `Error: ${error.message}` });
+    res.status(500).json({ error: `Error: ${error}` });
   }
 };
