@@ -1,18 +1,34 @@
 ### GET all users
-GET http://localhost:8080/api/user/all
+GET http://localhost:8081/api/user/all
 ### GET all Publication Types
-GET http://localhost:8080/api/publication/all
+GET http://localhost:8081/api/publication/all
 
 ### Get publication with id 8888888
-GET http://localhost:8080/api/publication/8888883
+GET http://localhost:8081/api/publication/8888883
 
 
-
+# GET recortTypes
 ### GET recordType recordType w/ BFF
-GET http://localhost:8080/api/recordtype/recordType
+GET http://localhost:8081/api/recordtype/recordType
 
-### GET recordType recordType w/ BFF
-GET http://localhost:8080/api/recordtype/safdg
+### GET recordType project w/ BFF
+GET http://localhost:8081/api/recordtype/project
+
+### GET recordType studentThesis w/ BFF
+GET http://localhost:8081/api/recordtype/studentThesis
+
+### GET recordType text w/ BFF
+GET http://localhost:8081/api/recordtype/text
+
+### GET recordType coraText w/ BFF
+GET http://localhost:8081/api/recordtype/coraText
+
+### GET recordType coraText w/ BFF
+GET http://localhost:8081/api/recordtype/sound
+
+### GET recordType safdg w/ BFF
+GET http://localhost:8081/api/recordtype/safdg
+
 
 
 
@@ -24,7 +40,22 @@ GET http://localhost:8080/api/recordtype/safdg
 
 # Cora
 ### GET recordType recordType from Cora
+GET https://cora.epc.ub.uu.se/diva/rest/record/recordType/sound
+
+Accept: application/vnd.uub.record+json
+
+### GET recordType recordType from Cora
 GET https://cora.epc.ub.uu.se/diva/rest/record/recordType/recordType
+
+Accept: application/vnd.uub.record+json
+
+### GET recordType coraText/studentThesisDefText from Cora
+GET https://cora.epc.ub.uu.se/diva/rest/record/coraText/
+
+Accept: application/vnd.uub.record+json
+
+### GET recordType coraText/studentThesisDefText from Cora
+GET https://cora.epc.ub.uu.se/diva/rest/record/coraText/studentThesisDefText
 
 Accept: application/vnd.uub.record+json
 
