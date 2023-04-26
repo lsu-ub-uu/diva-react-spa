@@ -14,8 +14,7 @@ export const getRecordTypeByName = async (
 ) => {
   try {
     const recordType = req.params.name;
-    console.log('Check', 'we are here');
-    console.log('URL:', `${CORA_API_URL}/record/recordType/${recordType}`);
+    // console.log('URL:', `${CORA_API_URL}/record/recordType/${recordType}`);
     let responseArray = [];
     const config = {
       headers: {
@@ -26,17 +25,10 @@ export const getRecordTypeByName = async (
       `${CORA_API_URL}/record/recordType/${recordType}`,
       config,
     );
-/* 
-    const response = await axios.get(
-      `https://cora.epc.ub.uu.se/diva/rest/record/recordType/${recordType}`,
-      config,
-    ); */
 
     responseArray = response.data.record.data.children;
-    // res.status(200).json(responseArray);
-    res.status(200).json(findRecordTypeByName(responseArray));
+    res.status(200).json(findRecordTypeByName(responseArray, recordType));
   } catch {
-    // console.log(error);
     res.status(500).json({ error: `Error: ${error}` });
   }
 };

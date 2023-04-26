@@ -1,17 +1,20 @@
-export const findRecordTypeByName = (responseArray: any) => {
+export const findRecordTypeByName = (
+  responseArray: any,
+  recordType: string,
+) => {
   const returnObject = {
     id: '',
   };
+
   responseArray.forEach((data: any) => {
     return Object.entries(data).forEach((children) => {
       if (Array.isArray(children)) {
-        children.forEach((c) => {
-          if (Array.isArray(c)) {
-            c.forEach((d: string) => {
-              if (Object.values(d).includes('id')) {
+        children.forEach((child) => {
+          if (Array.isArray(child)) {
+            child.forEach((name: string) => {
+              if (Object.values(name).includes('id')) {
                 // Adding to returnObject
-                returnObject.id = Object.values(d)[1];
-                /* ({ id: Object.values(d)[1] } = returnObject); */
+                returnObject.id = Object.values(name)[1];
               }
             });
           }
