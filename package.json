@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "npm start --prefix ../diva-react-spa-bff",
+    "both": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "tsc && vite build",
     "build:prod": "tsc && vite build --base=$BASENAME",
     "preview": "vite preview",
@@ -64,6 +66,7 @@
     "@typescript-eslint/parser": "^5.52.0",
     "@vitejs/plugin-react": "^3.1.0",
     "babel-loader": "^8.3.0",
+    "concurrently": "^8.0.1",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",

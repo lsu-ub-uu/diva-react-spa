@@ -8,12 +8,14 @@ import dummyReducer from '../features/dummy/dummySlice';
 import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
 import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
 import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
+import integrationTestReducer from '../features/integrationTest/integrationTestSlice';
 
 const combinedReducer = combineReducers({
   dummy: dummyReducer,
   publicationType: publicationTypeReducer,
   subjectCategory: subjectCategoryReducer,
   researchSubject: researchSubjectReducer,
+  integrationTest: integrationTestReducer,
 });
 
 const store = configureStore({
