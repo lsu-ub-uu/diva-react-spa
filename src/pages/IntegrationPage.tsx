@@ -48,7 +48,6 @@ export const IntegrationPage = () => {
             Change Publication Type
           </Button>
         </form> */}
-        <p>{integrationTestSelectorState.integration.id}</p>
         {integrationTestSelectorState.integration.map((each, i) => {
           return <p key={i}>{each.id}</p>;
         })}
