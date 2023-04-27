@@ -2,6 +2,7 @@ export const findRecordTypeByName = (
   responseArray: any,
   recordType: string,
 ) => {
+  const returnArray: any = [];
   const returnObject = {
     id: '',
   };
@@ -15,6 +16,7 @@ export const findRecordTypeByName = (
               if (Object.values(name).includes('id')) {
                 // Adding to returnObject
                 returnObject.id = Object.values(name)[1];
+                returnArray.push(returnObject);
               }
             });
           }
@@ -22,5 +24,5 @@ export const findRecordTypeByName = (
       }
     });
   });
-  return returnObject;
+  return returnArray;
 };
