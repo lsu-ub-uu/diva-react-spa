@@ -49,8 +49,8 @@ export const IntegrationPage = () => {
           </Button>
         </form> */}
         <p>{integrationTestSelectorState.integration.id}</p>
-        {integrationTestSelectorState.integration.map((each) => {
-          return <p>{each.id}</p>;
+        {integrationTestSelectorState.integration.map((each, i) => {
+          return <p key={i}>{each.id}</p>;
         })}
         {/* <p>{input}</p> */}
         {/* {console.log('aaaaa', integrationTestSelectorState)} */}
