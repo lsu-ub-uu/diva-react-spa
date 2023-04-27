@@ -1,7 +1,8 @@
 import { AppThunk } from '../../app/store';
 import { hasError, update, updating } from './integrationTestSlice';
 
-const BFF_API_URL = `https://cora.epc.ub.uu.se/diva/spaclientbff/api`;
+// const BFF_API_URL = `https://cora.epc.ub.uu.se/diva/spaclientbff/api`;
+const BFF_API_URL = `http://localhost:8081/api`;
 
 export const loadIntegrationTestAsync =
   (callback?: Function): AppThunk =>

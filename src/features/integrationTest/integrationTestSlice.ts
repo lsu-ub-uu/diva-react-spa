@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface IntegrationTestType {
-  value: string;
-  label: string;
+  id: string;
 }
 
 interface IntegrationTestTypeState {
