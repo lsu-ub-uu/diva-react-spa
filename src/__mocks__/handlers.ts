@@ -5,6 +5,7 @@ import researchSubjects from './data/researchSubjects.json';
 import fakePersons from './data/fakePersons.json';
 
 const URL = `${window.location.protocol}//${window.location.host}`;
+const BFF_API_URL = `https://cora.epc.ub.uu.se/diva/spaclientbff/api`;
 
 export const handlers = [
   rest.get(`${URL}/fake-persons`, (req, res, ctx) => {
@@ -23,6 +24,9 @@ export const handlers = [
     return res(ctx.status(200));
   }),
   rest.get(`${URL}/*`, (req) => {
+    return req.passthrough();
+  }),
+  rest.get(`${BFF_API_URL}/recordtype/*`, (req) => {
     return req.passthrough();
   }),
 ];
