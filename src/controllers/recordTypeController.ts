@@ -29,6 +29,6 @@ export const getRecordTypeByName = async (
     responseArray = response.data.record.data.children;
     res.status(200).json(findRecordTypeByName(responseArray, recordType));
   } catch {
-    res.status(500).json({ error: `Error: ${error}` });
+    res.status(404).json({ error: 'RecordType not found' });
   }
 };
