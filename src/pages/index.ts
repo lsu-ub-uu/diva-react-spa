@@ -5,3 +5,4 @@ export { FormPage } from './FormPage';
 export { DemoFormPage } from './DemoFormPage';
 export { ReactHookFormTestPage } from './ReactHookFormTestPage';
 export { IntegrationPage } from './IntegrationPage';
+export { RecordTypePage } from './RecordTypePage';
