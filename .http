@@ -4,7 +4,7 @@ GET http://localhost:8081/api/user/all
 GET http://localhost:8081/api/publication/all
 
 ### Get publication with id 8888888
-GET http://localhost:8081/api/publication/8888883
+GET http://localhost:8081/api/publication/88888834354542425
 
 
 # GET recortTypes
