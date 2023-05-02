@@ -7,10 +7,10 @@ export interface RecordTypeType {
 }
 
 interface RecordTypeTypeState {
-  recordType: RecordTypeType[] | unknown;
+  recordType: RecordTypeType[];
   isLoading: boolean;
   isError: boolean;
-  message: string | unknown;
+  message: any;
 }
 const initialState: RecordTypeTypeState = {
   recordType: [],

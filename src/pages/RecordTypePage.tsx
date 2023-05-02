@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useSelector, useDispatch } from 'react-redux';
-import { AsidePortal, useBackdrop } from '../components';
+import { AsidePortal } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import {
-  getRecordTypeByName,
-  reset,
-} from '../features/recordType/recordTypeSlice';
+import { getRecordTypeByName } from '../features/recordType/recordTypeSlice';
 
 export const RecordTypePage = () => {
-  const { setBackdrop } = useBackdrop();
-  const dispatch = useDispatch();
+  // const { setBackdrop } = useBackdrop();
+  const dispatch = useAppDispatch();
 
-  const { recordType, isLoading, isError, message } = useSelector(
+  const { recordType, isLoading, isError, message } = useAppSelector(
     (state) => state.recordType,
   );
   const [id, setId] = useState('recordType');
@@ -25,8 +21,9 @@ export const RecordTypePage = () => {
     dispatch(getRecordTypeByName(id));
   }, [isError, message, dispatch, id]);
 
-  const handleInput = (e) => {
-    const inputValue = document.getElementById('test').value;
+  const handleInput = (e: React.MouseEvent<HTMLElement>): void => {
+    const inputValue = (document.getElementById('test') as HTMLInputElement)
+      .value;
     e.preventDefault();
     console.log(inputValue);
     if (inputValue !== '' || inputValue !== undefined || inputValue !== null) {
@@ -45,7 +42,6 @@ export const RecordTypePage = () => {
       </AsidePortal>
       <div>
         <h2>recordtype</h2>
-
         {isLoading || message === '' ? (
           Object.values(recordType).map((one: any, i) => {
             return <p key={i}>{one.id}</p>;
