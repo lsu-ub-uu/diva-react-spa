@@ -12,8 +12,8 @@ export const getRecordTypeByName = async (
   res: Response,
   error: any,
 ) => {
+  const recordType = req.params.name;
   try {
-    const recordType = req.params.name;
     // console.log('URL:', `${CORA_API_URL}/record/recordType/${recordType}`);
     let responseArray = [];
     const config = {
@@ -29,6 +29,6 @@ export const getRecordTypeByName = async (
     responseArray = response.data.record.data.children;
     res.status(200).json(findRecordTypeByName(responseArray, recordType));
   } catch {
-    res.status(404).json({ error: 'RecordType not found' });
+    res.status(404).json({ error: `RecordType ${recordType} not found` });
   }
 };
