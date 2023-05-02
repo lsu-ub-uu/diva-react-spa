@@ -19,21 +19,17 @@ export const RecordTypePage = () => {
   const [id, setId] = useState('recordType');
   useEffect(() => {
     if (isError) {
-      console.log(message);
+      console.log('error message', message);
     }
 
     dispatch(getRecordTypeByName(id));
-
-    return () => {
-      dispatch(reset());
-    };
   }, [isError, message, dispatch, id]);
 
   const handleInput = (e) => {
     const inputValue = document.getElementById('test').value;
     e.preventDefault();
     console.log(inputValue);
-    if (inputValue !== '' || inputValue !== undefined) {
+    if (inputValue !== '' || inputValue !== undefined || inputValue !== null) {
       setId(inputValue);
     }
   };
@@ -41,6 +37,7 @@ export const RecordTypePage = () => {
   if (isLoading) {
     // return <Spinner />;
   }
+
   return (
     <Box sx={{ height: '100vh', width: '100%' }}>
       <AsidePortal>
@@ -49,12 +46,12 @@ export const RecordTypePage = () => {
       <div>
         <h2>recordtype</h2>
 
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
+        {isLoading || message === '' ? (
           Object.values(recordType).map((one: any, i) => {
             return <p key={i}>{one.id}</p>;
           })
+        ) : (
+          <p>{message}</p>
         )}
         <form>
           <TextField id='test' />

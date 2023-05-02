@@ -10,7 +10,7 @@ interface RecordTypeTypeState {
   recordType: RecordTypeType[] | unknown;
   isLoading: boolean;
   isError: boolean;
-  message: string;
+  message: string | unknown;
 }
 const initialState: RecordTypeTypeState = {
   recordType: [],
@@ -37,19 +37,6 @@ export const getRecordTypeByName = createAsyncThunk(
   },
 );
 
-/* export const recordTypeSlice = createSlice({
-  name: 'recordType',
-  initialState,
-  reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.message = '';
-    },
-  },
-  extraReducers: () => {},
-}); */
-
 export const recordTypeSlice = createSlice({
   name: 'recordType',
   initialState,
@@ -69,11 +56,12 @@ export const recordTypeSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.recordType = action.payload;
+        state.message = '';
       })
       .addCase(getRecordTypeByName.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.recordType = action.payload;
+        state.message = action.payload;
       });
   },
 });

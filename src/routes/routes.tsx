@@ -7,7 +7,6 @@ import {
   FormPage,
   DemoFormPage,
   ReactHookFormTestPage,
-  IntegrationPage,
   RecordTypePage,
 } from '../pages';
 
@@ -32,10 +31,6 @@ export const routes = [
       {
         path: '/demo-form',
         element: <DemoFormPage />,
-      },
-      {
-        path: '/integration',
-        element: <IntegrationPage />,
       },
       {
         path: '/recordtype',
