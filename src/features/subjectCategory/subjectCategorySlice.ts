@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import subjectCategoryService from './subjectCategoryService';
 
 export interface SubjectCategory {
   id: string;
@@ -11,7 +12,7 @@ interface SubjectCategoryState {
   subjectCategories: SubjectCategory[];
   isLoading: boolean;
   isError: boolean;
-  message: string;
+  message: any;
 }
 const initialState: SubjectCategoryState = {
   subjectCategories: [],
@@ -19,6 +20,24 @@ const initialState: SubjectCategoryState = {
   isError: false,
   message: '',
 };
+
+// Get all subject categories
+export const getAllSubjectCategories = createAsyncThunk(
+  'subjectCategory/getSubjectCategories',
+  async (_, thunkAPI) => {
+    try {
+      return await subjectCategoryService.loadSubjectCategoriesAsync();
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
 export const subjectCategorySlice = createSlice({
   name: 'subjectCategory',
@@ -37,6 +56,23 @@ export const subjectCategorySlice = createSlice({
       state.message = action.payload;
       state.isLoading = false;
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(getAllSubjectCategories.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllSubjectCategories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.subjectCategories = action.payload;
+        state.message = '';
+      })
+      .addCase(getAllSubjectCategories.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      });
   },
 });
 

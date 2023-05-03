@@ -8,7 +8,6 @@ import dummyReducer from '../features/dummy/dummySlice';
 import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
 import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
 import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
-import integrationTestReducer from '../features/integrationTest/integrationTestSlice';
 import recordTypeReducer from '../features/recordType/recordTypeSlice';
 
 const combinedReducer = combineReducers({
@@ -16,7 +15,6 @@ const combinedReducer = combineReducers({
   publicationType: publicationTypeReducer,
   subjectCategory: subjectCategoryReducer,
   researchSubject: researchSubjectReducer,
-  integrationTest: integrationTestReducer,
   recordType: recordTypeReducer,
 });
 
