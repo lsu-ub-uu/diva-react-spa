@@ -18,11 +18,11 @@ import { RichTree } from '../RichTree/RichTree';
 import { Dialog } from '../Dialog/Dialog';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-  loadSubjectCategoriesAsync,
   subjectCategorySelector,
   getSubjectCategoryDetails,
   subjectCategoryWithIdSelector,
 } from '../../features/subjectCategory';
+import { getAllSubjectCategories } from '../../features/subjectCategory/subjectCategorySlice';
 import subjectCategories from '../../__mocks__/data/subjectCategories.json';
 
 interface SubjectCategoryPickerProps {
@@ -43,7 +43,8 @@ export const SubjectCategoryPicker = (
   );
 
   useEffect(() => {
-    dispatch(loadSubjectCategoriesAsync());
+    console.log('here');
+    dispatch(getAllSubjectCategories());
   }, [dispatch]);
 
   const handleClickOpen = () => {
