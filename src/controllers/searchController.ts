@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import axios from 'axios';
 import { returnSearchResults } from '../services/searchServives';
 
-const { CORA_API_URL } = process.env;
+// const { PROD_CORA_API_URL } = process.env;
+const PROD_CORA_API_URL = 'https://cora.diva-portal.org/diva/rest/';
 
 // @desc		Get admin search results
 // @route		GET /api/search/admin/:id
@@ -13,28 +14,27 @@ export const getPublicPersonSearch = async (
   error: any,
 ) => {
   const { searchQuery } = req.params;
-  try {
-    console.log(
-      'SEARCH:',
-      `${CORA_API_URL}/record/searchResult/publicPersonSearch?searchData={"name":"search","children":[{"name":"include","children":[{"name":"includePart","children":[{"name":"personGeneralSearchTerm","value":"${searchQuery}"}]}]}]}`,
-    );
+  // try {
+  console.log(
+    'SEARCH:',
+    `${PROD_CORA_API_URL}/record/searchResult/publicPersonSearch?searchData={"name":"search","children":[{"name":"include","children":[{"name":"includePart","children":[{"name":"personGeneralSearchTerm","value":"${searchQuery}"}]}]}]}`,
+  );
 
-    let responseArray = [];
-    const config = {
-      headers: {
-        Accept: 'application/vnd.uub.recordList+json',
-      },
-    };
-    const response = await axios.get(
-      `${CORA_API_URL}/record/searchResult/publicPersonSearch?searchData={"name":"search","children":[{"name":"include","children":[{"name":"includePart","children":[{"name":"personGeneralSearchTerm","value":"${searchQuery}"}]}]}]}`,
-      config,
-    );
-    console.log(response);
-    responseArray = response.data;
-    res.status(200).json(responseArray);
-  } catch {
-    res.status(404).json({ error: `No results for ${searchQuery} not found` });
-  }
+  const config = {
+    headers: {
+      Accept: 'application/vnd.uub.recordList+json',
+    },
+  };
+  const response = await axios.get(
+    `${PROD_CORA_API_URL}/record/searchResult/publicPersonSearch?searchData={"name":"search","children":[{"name":"include","children":[{"name":"includePart","children":[{"name":"personGeneralSearchTerm","value":"${searchQuery}"}]}]}]}`,
+    config,
+  );
+  //console.log('res', response.data);
+
+  res.status(200).json(returnSearchResults(response.data.dataList));
+  // } catch {
+  //   res.status(404).json({ error: `No results for ${searchQuery} not found` });
+  // }
 };
 
 // @desc		Get public search results

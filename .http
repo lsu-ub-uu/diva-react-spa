@@ -32,7 +32,7 @@ GET http://localhost:8080/api/recordtype/safdg
 
 # GET search results
 ### GET admin search
-GET http://localhost:8080/api/search/admin/kalle
+GET http://localhost:8080/api/search/admin/egil
 
 ### GET public search
 GET http://localhost:8080/api/search/public/b
@@ -43,7 +43,7 @@ GET http://localhost:8080/api/search/public/b
 
 # Cora
 ### GET recordType recordType from Cora
-GET https://cora.diva-portal.org/diva/rest/record/recordType/sound
+GET https://cora.epc.ub.uu.se/diva/rest/record/recordType/sound
 
 Accept: application/vnd.uub.record+json
 
@@ -67,6 +67,6 @@ Accept: application/vnd.uub.record+json
 ### GET recordType example from Cora
 GET https://cora.diva-portal.org/diva/rest/record/searchResult/publicPersonSearch?searchData={"name":"search","children":[{"name":"include","children":[{"name":"includePart","children":[{"name":"personGeneralSearchTerm","value":"kalle"}]}]}]}
 
-Accept: application/vnd.uub.record+json
+Accept: application/vnd.uub.recordList+json
 
 
