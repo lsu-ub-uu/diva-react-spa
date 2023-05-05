@@ -13,7 +13,7 @@ interface PersonInterface {
 }
 export const returnSearchResults = async (responseObject: any) => {
   const returnArray: any = [];
-  const returnObject: any = {};
+  let returnObject: any = {};
   const paramObject: ParamObjectInterface = {
     requestMethod: '',
     rel: '',
@@ -50,8 +50,9 @@ export const returnSearchResults = async (responseObject: any) => {
                           paramObject.rel = param.rel;
                           paramObject.url = param.url;
                           paramObject.accept = param.accept;
-
+                          console.log;
                           fetchPersonData(paramObject);
+                          returnObject = paramObject;
                           // person = fetchPersonData(paramObject);
                         });
                       }
@@ -65,5 +66,6 @@ export const returnSearchResults = async (responseObject: any) => {
       });
     }
   });
+  console.log('retsea', returnObject);
   return returnObject;
 };
