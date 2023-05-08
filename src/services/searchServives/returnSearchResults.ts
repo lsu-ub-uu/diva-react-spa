@@ -12,8 +12,8 @@ interface PersonInterface {
   givenName: string;
   orcid_id: string;
 }
-export const returnSearchResults = async (responseObject: any) => {
-  let returnContainer: any = [];
+
+export const returnSearchResults = async (responseArray: any) => {
   const returnArray: any = [];
   const paramObject: ParamObjectInterface = {
     requestMethod: '',
@@ -21,13 +21,13 @@ export const returnSearchResults = async (responseObject: any) => {
     url: '',
     accept: '',
   };
-  let person: PersonInterface = {
-    familyName: '',
-    givenName: '',
-    orcid_id: '',
+
+  const wrapper = async (param: any) => {
+    returnArray.push(await fetchPersonData(param));
+    console.log('arr', returnArray);
   };
 
-  Object.entries(responseObject).forEach((data: any[]) => {
+  Object.entries(responseArray).forEach((data: any[]) => {
     if (data.includes('data')) {
       data.forEach((record) => {
         Object.entries(record).forEach((item: any | unknown) => {
@@ -43,9 +43,10 @@ export const returnSearchResults = async (responseObject: any) => {
                           paramObject.rel = param.rel;
                           paramObject.url = param.url;
                           paramObject.accept = param.accept;
-                          fetchPersonData(paramObject);
 
-                          // returnArray.push(value)
+                          // console.log('retArr', returnArray);
+                          // return returnArray.push(fetchPersonData(paramObject));
+                          return wrapper(paramObject);
                         });
                       }
                     });
@@ -58,5 +59,36 @@ export const returnSearchResults = async (responseObject: any) => {
       });
     }
   });
+  console.log('array2', returnArray);
   return returnArray;
+  // return [
+  //   {
+  //     givenName: 'Daniel Egil',
+  //     familyName: 'Yencken',
+  //     domain: 'su',
+  //     ORCID_ID: '0000-0002-5282-6424',
+  //     academicTitle: '',
+  //   },
+  //   {
+  //     givenName: 'Egil',
+  //     familyName: 'Asprem',
+  //     domain: 'su',
+  //     ORCID_ID: '0000-0001-9944-1241',
+  //     academicTitle: 'Professor',
+  //   },
+  //   {
+  //     givenName: 'Egil',
+  //     familyName: 'Henriksen',
+  //     domain: 'uu',
+  //     ORCID_ID: '',
+  //     academicTitle: '',
+  //   },
+  //   {
+  //     givenName: 'Egil',
+  //     familyName: 'Andersson',
+  //     domain: 'uu',
+  //     ORCID_ID: '',
+  //     academicTitle: '',
+  //   },
+  // ];
 };

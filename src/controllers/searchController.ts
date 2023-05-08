@@ -13,7 +13,7 @@ export const getPublicPersonSearch = async (
   res: Response,
   error: any,
 ) => {
-  let responseArray: any = [];
+  let responseArray: any;
   const { searchQuery } = req.params;
   try {
     console.log(
@@ -30,8 +30,9 @@ export const getPublicPersonSearch = async (
       `${PROD_CORA_API_URL}/record/searchResult/publicPersonSearch?searchData={"name":"search","children":[{"name":"include","children":[{"name":"includePart","children":[{"name":"personGeneralSearchTerm","value":"${searchQuery}"}]}]}]}`,
       config,
     );
-    responseArray = returnSearchResults(response.data.dataList);
-    res.status(200).json(responseArray);
+    responseArray = response.data.dataList;
+
+    res.status(200).json(returnSearchResults(responseArray));
   } catch {
     res.status(404).json({ error: `No results for ${searchQuery} not found` });
   }
