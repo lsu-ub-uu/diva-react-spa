@@ -32,7 +32,7 @@ export const getPublicPersonSearch = async (
     );
     responseArray = response.data.dataList;
 
-    res.status(200).json(returnSearchResults(responseArray));
+    res.status(200).json(await returnSearchResults(responseArray));
   } catch {
     res.status(404).json({ error: `No results for ${searchQuery} not found` });
   }
