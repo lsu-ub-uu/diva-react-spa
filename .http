@@ -1,38 +1,41 @@
 ### GET all users
-GET http://localhost:8081/api/user/all
+GET http://localhost:8080/api/user/all
 ### GET all Publication Types
-GET http://localhost:8081/api/publication/all
+GET http://localhost:8080/api/publication/all
 
 ### Get publication with id 8888888
-GET http://localhost:8081/api/publication/88888834354542425
+GET http://localhost:8080/api/publication/88888834354542425
 
 
 # GET recortTypes
 ### GET recordType recordType w/ BFF
-GET http://localhost:8081/api/recordtype/recordType
+GET http://localhost:8080/api/recordtype/recordType
 
 ### GET recordType project w/ BFF
-GET http://localhost:8081/api/recordtype/project
+GET http://localhost:8080/api/recordtype/project
 
 ### GET recordType studentThesis w/ BFF
-GET http://localhost:8081/api/recordtype/studentThesis
+GET http://localhost:8080/api/recordtype/studentThesis
 
 ### GET recordType text w/ BFF
-GET http://localhost:8081/api/recordtype/text
+GET http://localhost:8080/api/recordtype/text
 
 ### GET recordType coraText w/ BFF
-GET http://localhost:8081/api/recordtype/coraText
+GET http://localhost:8080/api/recordtype/coraText
 
 ### GET recordType coraText w/ BFF
-GET http://localhost:8081/api/recordtype/sound
+GET http://localhost:8080/api/recordtype/sound
 
 ### GET recordType safdg w/ BFF
-GET http://localhost:8081/api/recordtype/safdg
+GET http://localhost:8080/api/recordtype/safdg
 
 
+# GET search results
+### GET admin search
+GET http://localhost:8080/api/search/admin/egil
 
-
-
+### GET public search
+GET http://localhost:8080/api/search/public/b
 
 
 
@@ -54,12 +57,16 @@ GET https://cora.epc.ub.uu.se/diva/rest/record/coraText/
 
 Accept: application/vnd.uub.record+json
 
-### GET recordType coraText/studentThesisDefText from Cora
-GET https://cora.epc.ub.uu.se/diva/rest/record/coraText/studentThesisDefText
-
-Accept: application/vnd.uub.record+json
-
 ### GET recordType example from Cora
-GET https://cora.epc.ub.uu.se/systemone/rest/record/recordType/example
+GET https://cora.epc.ub.uu.se/diva/rest/record/recordType/example
 
 Accept: application/vnd.uub.record+json
+
+
+# Search
+### GET recordType example from Cora
+GET https://cora.diva-portal.org/diva/rest/record/searchResult/publicPersonSearch?searchData={"name":"search","children":[{"name":"include","children":[{"name":"includePart","children":[{"name":"personGeneralSearchTerm","value":"kalle"}]}]}]}
+
+Accept: application/vnd.uub.recordList+json
+
+

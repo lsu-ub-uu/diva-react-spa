@@ -1,7 +1,4 @@
-export const findRecordTypeByName = (
-  responseArray: any,
-  recordType: string,
-) => {
+export const findRecordTypeByName = (responseArray: any) => {
   const returnArray: any = [];
   const returnObject = {
     id: '',
