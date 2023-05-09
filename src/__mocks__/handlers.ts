@@ -26,10 +26,10 @@ export const handlers = [
   rest.get(`${URL}/*`, (req) => {
     return req.passthrough();
   }),
-  rest.get(`${BFF_API_URL}/recordtype/*`, (req) => {
+  rest.get(`${BFF_API_URL}/*`, (req) => {
     return req.passthrough();
   }),
-  rest.get(`http://localhost:8081/api/recordtype/*`, (req) => {
+  rest.get(`http://localhost:8081/api/*`, (req) => {
     return req.passthrough();
   }),
 ];

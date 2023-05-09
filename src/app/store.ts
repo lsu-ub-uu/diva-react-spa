@@ -9,6 +9,7 @@ import publicationTypeReducer from '../features/publicationTypes/publicationType
 import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
 import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
 import recordTypeReducer from '../features/recordType/recordTypeSlice';
+import searchReducer from '../features/search/searchSlice';
 
 const combinedReducer = combineReducers({
   dummy: dummyReducer,
@@ -16,6 +17,7 @@ const combinedReducer = combineReducers({
   subjectCategory: subjectCategoryReducer,
   researchSubject: researchSubjectReducer,
   recordType: recordTypeReducer,
+  search: searchReducer,
 });
 
 const store = configureStore({

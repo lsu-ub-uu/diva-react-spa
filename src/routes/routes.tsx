@@ -5,9 +5,9 @@ import {
   ListUsersPage,
   AboutUsersPage,
   FormPage,
-  DemoFormPage,
   ReactHookFormTestPage,
   RecordTypePage,
+  AdminSearchPage,
 } from '../pages';
 
 export const routes = [
@@ -29,8 +29,8 @@ export const routes = [
         element: <FormPage />,
       },
       {
-        path: '/demo-form',
-        element: <DemoFormPage />,
+        path: '/admin-search',
+        element: <AdminSearchPage />,
       },
       {
         path: '/recordtype',
@@ -39,6 +39,10 @@ export const routes = [
       {
         path: '/author-form',
         element: <ReactHookFormTestPage />,
+      },
+      {
+        path: '/admin-search',
+        element: <AdminSearchPage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],
