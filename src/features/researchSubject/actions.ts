@@ -1,25 +1,16 @@
-import { AppThunk } from 'app/store';
-import {
-  hasError,
-  ResearchSubject,
-  update,
-  updating,
-} from './researchSubjectSlice';
+import { RenderTree } from 'components/RichTree/RichTree';
+import { SelectItem } from 'components';
 
-const URL = `${window.location.protocol}//${window.location.host}`;
+const MOCK_API_URL = `${window.location.protocol}//${window.location.host}`;
 
-export const loadResearchSubjectsAsync =
-  (callback?: Function): AppThunk =>
-  async (dispatch) => {
-    try {
-      dispatch(updating());
-      const url = `${URL}/research-subjects`;
-      const response = await fetch(url);
-      const data: ResearchSubject[] = await response.json();
-      dispatch(update(data));
-    } catch (e) {
-      dispatch(hasError('Error occurred fetching research subjects'));
-    } finally {
-      if (callback) callback();
-    }
-  };
+function getFlat(node: RenderTree): SelectItem[] {
+  return [
+    { id: node.id, name: node.name, disabled: node.disabled } as SelectItem,
+  ].concat(...(node.children?.map(getFlat) ?? []));
+}
+
+export const loadResearchSubjectsAsync = async () => {
+  const response = await fetch(`${MOCK_API_URL}/research-subjects`);
+  const data: RenderTree = await response.json();
+  return getFlat(data).sort((a, b) => a.name.localeCompare(b.name, 'sv'));
+};

@@ -21,8 +21,8 @@ import {
   subjectCategorySelector,
   getSubjectCategoryDetails,
   subjectCategoryWithIdSelector,
+  getAllSubjectCategories,
 } from '../../features/subjectCategory';
-import { getAllSubjectCategories } from '../../features/subjectCategory/subjectCategorySlice';
 import subjectCategories from '../../__mocks__/data/subjectCategories.json';
 
 interface SubjectCategoryPickerProps {
@@ -43,7 +43,6 @@ export const SubjectCategoryPicker = (
   );
 
   useEffect(() => {
-    console.log('here');
     dispatch(getAllSubjectCategories());
   }, [dispatch]);
 
