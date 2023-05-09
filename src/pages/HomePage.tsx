@@ -33,7 +33,7 @@ export const HomePage = () => {
               disableRipple
               variant='contained'
               component={RouterLink}
-              to='/demo-form'
+              to='/admin-search'
               endIcon={<ArrowForwardIcon />}
             >
               Simple search form
