@@ -129,13 +129,13 @@ export const divaTheme = createTheme({
         },
       },
     },
-    MuiFormControlLabel: {
+    /*     MuiFormControlLabel: {
       styleOverrides: {
         root: {
           marginLeft: '0',
         },
       },
-    },
+    }, */
     MuiCheckbox: {
       styleOverrides: {
         root: {
