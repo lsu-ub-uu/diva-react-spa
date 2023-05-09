@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import subjectCategoryService from './subjectCategoryService';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getAllSubjectCategories } from './actions';
 
 export interface SubjectCategory {
   id: string;
@@ -20,24 +20,6 @@ const initialState: SubjectCategoryState = {
   isError: false,
   message: '',
 };
-
-// Get all subject categories
-export const getAllSubjectCategories = createAsyncThunk(
-  'subjectCategory/getSubjectCategories',
-  async (_, thunkAPI) => {
-    try {
-      return await subjectCategoryService.loadSubjectCategoriesAsync();
-    } catch (error: any) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
 
 export const subjectCategorySlice = createSlice({
   name: 'subjectCategory',

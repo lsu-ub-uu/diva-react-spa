@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SearchIcon from '@mui/icons-material/Search';
@@ -12,22 +11,11 @@ import {
   Card,
   TabsMenu,
   SubjectCategoryPicker,
-  ResearchSubjectPicker,
 } from '../components';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { getAllSubjectCategories } from '../features/subjectCategory/subjectCategorySlice';
 
 export const HomePage = () => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-
-  const dispatch = useAppDispatch();
-
-  const { isError, message } = useAppSelector((state) => state.subjectCategory);
-
-  useEffect(() => {
-    dispatch(getAllSubjectCategories());
-  }, [isError, message, dispatch]);
 
   return (
     <>
@@ -94,7 +82,7 @@ export const HomePage = () => {
             tooltipBody='Publications help body text tooltip'
             expanded={false}
           >
-            <ResearchSubjectPicker />
+            test
           </Card>
           <Card
             title='Variant2'

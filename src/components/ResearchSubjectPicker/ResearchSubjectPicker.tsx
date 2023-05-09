@@ -1,18 +1,10 @@
-import { useEffect } from 'react';
 import { Alert } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  researchSubjectSelector,
-  loadResearchSubjectsAsync,
-} from '../../features/researchSubject';
+import { useAppSelector } from '../../app/hooks';
+import { researchSubjectSelector } from '../../features/researchSubject';
 
 export const ResearchSubjectPicker = () => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const researchSubjectState = useAppSelector(researchSubjectSelector);
-
-  useEffect(() => {
-    dispatch(loadResearchSubjectsAsync());
-  }, [dispatch]);
 
   if (researchSubjectState.isLoading) return <span>Loading...</span>;
   if (researchSubjectState.isError)
