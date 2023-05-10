@@ -32,10 +32,10 @@ GET http://localhost:8080/api/recordtype/safdg
 
 # GET search results
 ### GET admin search
-GET http://localhost:8080/api/search/admin/egil
+GET http://localhost:8080/api/search/admin/person/egil
 
 ### GET public search
-GET http://localhost:8080/api/search/public/b
+GET http://localhost:8080/api/search/public/person/b
 
 
 
