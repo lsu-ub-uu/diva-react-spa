@@ -7,7 +7,7 @@ interface ParamObjectInterface {
   accept: string;
 }
 
-export const returnSearchResults = async (responseArray: any) => {
+export const returnSearchPersonResults = async (responseArray: any) => {
   const returnArray: any = [];
   const paramObject: ParamObjectInterface = {
     requestMethod: '',

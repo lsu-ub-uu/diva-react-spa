@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
-import { returnSearchResults } from '../services/searchServives';
+import { returnSearchPersonResults } from '../services/searchServives';
 
 // const { PROD_CORA_API_URL } = process.env;
 const PROD_CORA_API_URL = 'https://cora.diva-portal.org/diva/rest/';
 
 // @desc		Get admin search results
-// @route		GET /api/search/admin/:id
+// @route		GET /api/search/admin/person/:searchQuery
 // @access	Private
-export const getPublicPersonSearch = async (
+export const getAdminPersonSearch = async (
   req: Request,
   res: Response,
   error: any,
@@ -32,20 +32,20 @@ export const getPublicPersonSearch = async (
     );
     responseArray = response.data.dataList;
 
-    res.status(200).json(await returnSearchResults(responseArray));
+    res.status(200).json(await returnSearchPersonResults(responseArray));
   } catch {
     res.status(404).json({ error: `No results for ${searchQuery} not found` });
   }
 };
 
 // @desc		Get public search results
-// @route		GET /api/search/public/:id
+// @route		GET /api/search/public/person/:searchQuery
 // @access	Public
-export const getPublicSearchData = async (
+export const getPublicPersonSearch = async (
   req: Request,
   res: Response,
   error: any,
 ) => {
-  const recordType = req.params.name;
+  const { searchQuery } = req.params;
   res.status(501).json({ error: 'Public search is not implemented' });
 };

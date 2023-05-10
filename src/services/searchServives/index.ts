@@ -1,2 +1,2 @@
-export { returnSearchResults } from './returnSearchResults';
+export { returnSearchPersonResults } from './returnSearchResults';
 export { fetchPersonData } from './fetchPersonData';
