@@ -7,7 +7,7 @@ import {
   FormPage,
   ReactHookFormTestPage,
   RecordTypePage,
-  AdminSearchPage,
+  PersonSearchPage,
 } from '../pages';
 
 export const routes = [
@@ -29,10 +29,6 @@ export const routes = [
         element: <FormPage />,
       },
       {
-        path: '/admin-search',
-        element: <AdminSearchPage />,
-      },
-      {
         path: '/recordtype',
         element: <RecordTypePage />,
       },
@@ -41,8 +37,8 @@ export const routes = [
         element: <ReactHookFormTestPage />,
       },
       {
-        path: '/admin-search',
-        element: <AdminSearchPage />,
+        path: '/person-search',
+        element: <PersonSearchPage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],

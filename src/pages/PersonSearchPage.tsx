@@ -7,15 +7,27 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { AsidePortal, Card, Checkbox, Search } from '../components';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { AsidePortal, Checkbox, Search } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { getPersonByName } from '../features/search/searchSlice';
+import {
+  getPersonByName,
+  SearchInterface,
+} from '../features/search/searchSlice';
 
-export const AdminSearchPage = () => {
+const columns: GridColDef[] = [
+  { field: 'givenName', headerName: 'Given Name', width: 150 },
+  { field: 'familyName', headerName: 'Family Name', width: 150 },
+  { field: 'domain', headerName: 'Domain', width: 100 },
+  { field: 'academicTitle', headerName: 'Academic Title', width: 150 },
+  { field: 'ORCID_ID', headerName: 'ORCID ID', width: 200 },
+];
+
+export const PersonSearchPage = () => {
   const dispatch = useAppDispatch();
 
   const { search, isLoading, isError, message } = useAppSelector(
-    (state) => state.recordType,
+    (state) => state.search,
   );
   const methods = useForm();
   const { control } = methods;
@@ -36,9 +48,6 @@ export const AdminSearchPage = () => {
       setName(e.toString());
     }
   };
-  useEffect(() => {
-    console.log('search', search);
-  }, [name, setName]);
 
   return (
     <div>
@@ -85,24 +94,57 @@ export const AdminSearchPage = () => {
           />
         </Stack>
       </AsidePortal>
-      <Card
-        title={`Sökresultat – ${8} träffar`}
-        variant='variant6'
-        tooltipTitle='Search'
-        tooltipBody='Search help body text tooltip'
+      <FormControl
+        fullWidth
+        sx={{ mb: 2 }}
       >
-        <FormControl
-          fullWidth
-          sx={{ mb: 2 }}
-        >
-          <FormLabel>Search</FormLabel>
-          <Search
-            onSubmit={(e) => handleInput(e)}
-            placeholderText='Search here'
-            searchText=''
-          />
-        </FormControl>
-      </Card>
+        <FormLabel>Search</FormLabel>
+        <Search
+          onSubmit={(e) => handleInput(e)}
+          placeholderText='Search here'
+          searchText=''
+        />
+      </FormControl>
+      <DataGrid<SearchInterface>
+        sx={{
+          border: 0,
+          width: '100%',
+          boxShadow: 0,
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '&.MuiDataGrid-root .MuiDataGrid-cell:focus': {
+            outline: 'none',
+          },
+          '&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus': {
+            outline: 'none',
+          },
+          '.MuiDataGrid-columnSeparator': {
+            display: 'none',
+          },
+          '.MuiDataGrid-columnHeaders': {
+            background: '#eee',
+            borderBottom: '1px solid #222',
+          },
+          '&.MuiDataGrid-root .MuiIconButton-root': {
+            color: '#000',
+          },
+          '.MuiDataGrid-columnHeader': {
+            background: '#eee',
+            color: '#000',
+          },
+        }}
+        checkboxSelection
+        disableSelectionOnClick
+        autoHeight
+        pageSize={25}
+        loading={isLoading}
+        rows={search}
+        columns={columns}
+        components={{
+          BaseCheckbox: Checkbox,
+        }}
+      />
     </div>
   );
 };
