@@ -12,6 +12,7 @@ import {
   TabsMenu,
   SubjectCategoryPicker,
 } from '../components';
+import React from 'react';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -82,7 +83,27 @@ export const HomePage = () => {
             tooltipBody='Publications help body text tooltip'
             expanded={false}
           >
-            test
+              <Button
+                size='medium'
+                disableRipple
+                variant='outlined'
+              >
+                Medium outlined
+              </Button>
+              <Button
+                size='medium'
+                disableRipple
+                variant='contained'
+              >
+                Med contained
+              </Button>
+              <Button
+                size='large'
+                disableRipple
+                variant='outlined'
+              >
+                large outlined
+              </Button>
           </Card>
           <Card
             title='Variant2'
