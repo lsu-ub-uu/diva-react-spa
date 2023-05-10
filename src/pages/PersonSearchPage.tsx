@@ -49,10 +49,6 @@ export const PersonSearchPage = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('search', search);
-  }, [name, setName]);
-
   return (
     <div>
       <AsidePortal>
