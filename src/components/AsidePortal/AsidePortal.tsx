@@ -15,9 +15,8 @@ const StyledAsidePortal = styled('div')((props: StyledAsidePortalProps) => ({
   position: props.fixed === true ? 'fixed' : 'relative',
   transition: 'position 0.5s ease',
   top: props.fixed === true ? '60px' : '0',
-  overflow: 'scroll',
-  height: '100%',
   // overflow: 'scroll',
+  height: '100%',
 }));
 
 export const AsidePortal = (props: AsidePortalProps) => {
@@ -46,12 +45,7 @@ export const AsidePortal = (props: AsidePortalProps) => {
 
   return element ? (
     createPortal(
-      <StyledAsidePortal
-        fixed={fixed}
-        className='aaaa'
-      >
-        {props.children}
-      </StyledAsidePortal>,
+      <StyledAsidePortal fixed={fixed}>{props.children}</StyledAsidePortal>,
       element,
     )
   ) : (

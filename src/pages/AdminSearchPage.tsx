@@ -5,12 +5,41 @@ import {
   FormLabel,
   Stack,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AsidePortal, Card, Checkbox, Search } from '../components';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { getPersonByName } from '../features/search/searchSlice';
 
-export const DemoFormPage = () => {
+export const AdminSearchPage = () => {
+  const dispatch = useAppDispatch();
+
+  const { search, isLoading, isError, message } = useAppSelector(
+    (state) => state.recordType,
+  );
   const methods = useForm();
   const { control } = methods;
+
+  const [name, setName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isError) {
+      console.log('error message', message);
+    }
+    if (name !== null) {
+      dispatch(getPersonByName(name));
+    }
+  }, [isError, message, dispatch, name]);
+
+  const handleInput = (e: React.MouseEvent<HTMLElement> | string): void => {
+    if (e !== '' || e !== undefined || e !== null) {
+      setName(e.toString());
+    }
+  };
+  useEffect(() => {
+    console.log('search', search);
+  }, [name, setName]);
+
   return (
     <div>
       <AsidePortal>
@@ -22,7 +51,9 @@ export const DemoFormPage = () => {
             render={({ field }) => (
               <>
                 <FormLabel
-                  sx={{ fontWeight: 'bold' }}
+                  sx={{
+                    fontWeight: 'bold',
+                  }}
                   component='span'
                 >
                   Publication type
@@ -55,7 +86,7 @@ export const DemoFormPage = () => {
         </Stack>
       </AsidePortal>
       <Card
-        title='Search'
+        title={`Sökresultat – ${8} träffar`}
         variant='variant6'
         tooltipTitle='Search'
         tooltipBody='Search help body text tooltip'
@@ -66,7 +97,7 @@ export const DemoFormPage = () => {
         >
           <FormLabel>Search</FormLabel>
           <Search
-            onSubmit={(search) => console.log(search)}
+            onSubmit={(e) => handleInput(e)}
             placeholderText='Search here'
             searchText=''
           />
