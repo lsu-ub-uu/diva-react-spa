@@ -13,6 +13,7 @@ interface FetchedPersonObjectInterface {
   alternativeName?: string;
   VIAF_ID?: string;
   academicTitle?: string;
+  id: string;
 }
 
 export const fetchPersonData = async (paramObject: any) => {
@@ -22,6 +23,7 @@ export const fetchPersonData = async (paramObject: any) => {
     domain: '',
     ORCID_ID: '',
     academicTitle: '',
+    id: '',
   };
   const { requestMethod, rel, url, accept } = paramObject;
 
@@ -40,6 +42,17 @@ export const fetchPersonData = async (paramObject: any) => {
         if (Array.isArray(child)) {
           child.forEach((item) => {
             Object.entries(item).forEach(([key, val]) => {
+              if (key === 'name' && val === 'recordInfo') {
+                Object.values(item).forEach((option) => {
+                  if (Array.isArray(option)) {
+                    option.forEach((names) => {
+                      if (names.name === 'id') {
+                        fetchedPersonObject.id = names.value;
+                      }
+                    });
+                  }
+                });
+              }
               if (key === 'name' && val === 'authorisedName') {
                 Object.values(item).forEach((option) => {
                   if (Array.isArray(option)) {
