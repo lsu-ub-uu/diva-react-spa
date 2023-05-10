@@ -771,12 +771,17 @@ export const ReactHookFormTestPage = () => {
                         multiple
                         isOptionEqualToValue={(option, val) => option === val}
                         id='multi-research-subjects'
+                        size='small'
                         options={[
                           'Datalogi',
                           'AI',
                           'Informatik',
                           'Beetendevetenskap',
                           'Astrofysik',
+                          'Astrotest',
+                          'TestAstro',
+                          'Kriminologi',
+                          'Teologi',
                         ]}
                         getOptionLabel={(option) => option}
                         renderInput={(params) => (

@@ -106,7 +106,6 @@ export const divaTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#fff',
-          height: 46,
         },
       },
     },
@@ -139,11 +138,6 @@ export const divaTheme = createTheme({
     MuiButtonBase: {
       defaultProps: {
         disableRipple: true,
-      },
-      styleOverrides: {
-        root: {
-          height: 46,
-        },
       },
     },
     MuiButton: {
