@@ -179,6 +179,7 @@ export const ReactHookFormTestPage = () => {
                         Publication type
                       </FormLabel>
                       <Select
+                        size='small'
                         value={
                           publicationTypeState.publicationTypes.length
                             ? value
@@ -222,7 +223,7 @@ export const ReactHookFormTestPage = () => {
                 >
                   <FormLabel>&nbsp;</FormLabel>
                   <Button
-                    size='large'
+                    size='medium'
                     disableRipple
                     variant='outlined'
                   >
