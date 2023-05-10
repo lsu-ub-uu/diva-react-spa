@@ -22,6 +22,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Helmet } from 'react-helmet-async';
@@ -763,7 +764,6 @@ export const ReactHookFormTestPage = () => {
                       </FormLabel>
                       <Autocomplete
                         onChange={(event, item) => {
-                          console.log(item);
                           onChange(item);
                         }}
                         clearText='Clear all'
@@ -791,7 +791,24 @@ export const ReactHookFormTestPage = () => {
                             variant='outlined'
                             {...params}
                             error={error !== undefined}
-                            placeholder='Search for subjects'
+                            placeholder='Search'
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: (
+                                <>
+                                  <IconButton
+                                    title='Browse research subjects'
+                                    aria-label='browse'
+                                    onClick={() =>
+                                      console.log('open browse dialog')
+                                    }
+                                  >
+                                    <AccountTreeIcon />
+                                  </IconButton>
+                                  {params.InputProps.startAdornment}
+                                </>
+                              ),
+                            }}
                           />
                         )}
                       />
