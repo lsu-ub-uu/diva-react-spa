@@ -32,7 +32,13 @@ import {
   publicationTypeSelector,
   loadPublicationTypesAsync,
 } from '../features/publicationTypes';
-import { Card, Select, useBackdrop, ErrorSummary } from '../components';
+import {
+  Card,
+  Select,
+  useBackdrop,
+  ErrorSummary,
+  ResearchSubjectPicker,
+} from '../components';
 
 interface TestModel {
   publicationType: string;
@@ -744,6 +750,12 @@ export const ReactHookFormTestPage = () => {
               justifyContent='space-between'
               alignItems='flex-start'
             >
+              <Grid
+                item
+                xs={12}
+              >
+                <ResearchSubjectPicker />
+              </Grid>
               <Grid
                 item
                 xs={12}

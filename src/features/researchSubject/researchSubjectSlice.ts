@@ -1,12 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface ResearchSubject {
-  value: string;
-  label: string;
-}
+import { getAllResearchSubjects } from './actions';
+import { SelectItem } from '../../components';
 
 interface ResearchSubjectState {
-  researchSubjects: ResearchSubject[];
+  researchSubjects: SelectItem[];
   isLoading: boolean;
   isError: boolean;
   message: string;
@@ -26,17 +23,29 @@ export const researchSubjectSlice = createSlice({
       state.researchSubjects = [];
       state.isLoading = true;
     },
-    update: (state, action: PayloadAction<ResearchSubject[]>) => {
-      state.researchSubjects = action.payload;
-      state.isLoading = false;
-    },
     hasError: (state, action: PayloadAction<string>) => {
       state.isError = true;
       state.message = action.payload;
       state.isLoading = false;
     },
   },
+  extraReducers(builder) {
+    builder
+      .addCase(getAllResearchSubjects.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllResearchSubjects.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.researchSubjects = action.payload;
+        state.message = '';
+      })
+      .addCase(getAllResearchSubjects.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = 'Error occurred fetching data';
+      });
+  },
 });
 
-export const { update, updating, hasError } = researchSubjectSlice.actions;
 export default researchSubjectSlice.reducer;

@@ -83,27 +83,27 @@ export const HomePage = () => {
             tooltipBody='Publications help body text tooltip'
             expanded={false}
           >
-              <Button
-                size='medium'
-                disableRipple
-                variant='outlined'
-              >
-                Medium outlined
-              </Button>
-              <Button
-                size='medium'
-                disableRipple
-                variant='contained'
-              >
-                Med contained
-              </Button>
-              <Button
-                size='large'
-                disableRipple
-                variant='outlined'
-              >
-                large outlined
-              </Button>
+            <Button
+              size='medium'
+              disableRipple
+              variant='outlined'
+            >
+              Medium outlined
+            </Button>
+            <Button
+              size='medium'
+              disableRipple
+              variant='contained'
+            >
+              Med contained
+            </Button>
+            <Button
+              size='large'
+              disableRipple
+              variant='outlined'
+            >
+              large outlined
+            </Button>
           </Card>
           <Card
             title='Variant2'
