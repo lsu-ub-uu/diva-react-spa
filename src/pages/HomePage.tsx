@@ -33,16 +33,7 @@ export const HomePage = () => {
               disableRipple
               variant='contained'
               component={RouterLink}
-              to='/admin-search'
-              endIcon={<ArrowForwardIcon />}
-            >
-              Simple search form
-            </Button>
-            <Button
-              disableRipple
-              variant='contained'
-              component={RouterLink}
-              to='/author-form'
+              to='/person-form'
               endIcon={<ArrowForwardIcon />}
             >
               Add publication
@@ -51,7 +42,7 @@ export const HomePage = () => {
               disableRipple
               variant='contained'
               component={RouterLink}
-              to='/users'
+              to='/person-search'
               endIcon={<SearchIcon />}
             >
               Find persons

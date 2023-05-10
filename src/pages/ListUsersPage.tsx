@@ -11,6 +11,11 @@ import { User } from '../features/dummy/dummySlice';
 const columns: GridColDef[] = [
   { field: 'firstname', headerName: 'Firstname', width: 250 },
   { field: 'lastname', headerName: 'Lastname', width: 250 },
+  /*   { field: 'givenName', headerName: 'Given Name', width: 250 },
+  { field: 'familyName', headerName: 'Family Name', width: 250 },
+  { field: 'domain', headerName: 'Domain', width: 250 },
+  { field: 'academicTitle', headerName: 'Academic Title', width: 250 },
+  { field: 'ORCID_ID', headerName: 'ORCID ID', width: 250 }, */
 ];
 
 export const ListUsersPage = () => {

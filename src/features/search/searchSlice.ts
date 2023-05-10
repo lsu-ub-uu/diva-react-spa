@@ -1,13 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import searchService from './searchService';
 
-export interface SearchType {
-  value: string;
-  label: string;
+export interface SearchInterface {
+  givenName: string;
+  familyName: string;
+  domain: string;
+  academicTitle: string;
+  ORCID_ID: string;
+  id: string;
 }
 
 interface SearchState {
-  search: SearchType[];
+  search: SearchInterface[];
   isLoading: boolean;
   isError: boolean;
   message: any;
