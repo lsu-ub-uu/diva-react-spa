@@ -14,7 +14,7 @@ import clsx from 'clsx';
 export interface RenderTree {
   id: string;
   name: string;
-  children?: readonly RenderTree[];
+  children?: RenderTree[];
   disabled?: boolean;
 }
 

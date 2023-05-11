@@ -6,13 +6,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet-async';
+import React from 'react';
 import {
   AsidePortal,
   Card,
   TabsMenu,
   SubjectCategoryPicker,
 } from '../components';
-import React from 'react';
 
 export const HomePage = () => {
   const { t } = useTranslation();
