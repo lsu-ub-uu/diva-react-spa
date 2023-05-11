@@ -1,12 +1,12 @@
 import express from 'express';
 import {
-  getPublication,
   getSpecificPublication,
+  getAllPublicationsTypes,
 } from '../controllers/publicationController';
 
 const publicationRouter = express.Router();
 
-publicationRouter.route('/list').get(getPublication);
+publicationRouter.route('/types').get(getAllPublicationsTypes);
 publicationRouter.route('/:id').get(getSpecificPublication);
 
 export default publicationRouter;

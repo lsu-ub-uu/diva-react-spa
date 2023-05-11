@@ -3,10 +3,10 @@
 GET http://localhost:8080/api/user/all
 
 ###
-GET http://localhost:8080/api/publication/list
+GET http://localhost:8080/api/publication/88888834354542425
 
 ###
-GET http://localhost:8080/api/publication/88888834354542425
+GET http://localhost:8080/api/publication/types
 
 ###
 GET http://localhost:8080/api/researchsubjects/list
