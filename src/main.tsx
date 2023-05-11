@@ -8,13 +8,13 @@ import { HelmetProvider } from 'react-helmet-async';
 import store from './app/store';
 import { divaTheme } from './themes/diva';
 import App from './App';
-import { worker } from './__mocks__/browser';
+
 import { BackdropProvider, SnackbarProvider } from './components';
 
-if (process.env.NODE_ENV === 'development') {
+/* if (process.env.NODE_ENV === 'development') {
   worker.start().then();
 }
-
+ */
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BackdropProvider>
