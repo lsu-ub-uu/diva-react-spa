@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import { listResearchSubjects } from '../services/researchSubjectsServices';
+import {
+  listResearchSubjects,
+  listResearchSubjectsAsTree,
+} from '../services/researchSubjectsServices';
 
 // @desc		Get all researchSubjects
 // @route		GET /api/publication/
@@ -9,10 +12,15 @@ export const getAllResearchSubjects = async (
   res: Response,
   error: unknown,
 ) => {
-  try {
-    res.status(200).json(listResearchSubjects());
-  } catch {
-    console.log(error);
-    throw new Error(`${error}`);
+  const { tree } = req.query;
+  if (tree === 'true') {
+    res.status(200).json(listResearchSubjectsAsTree());
+  } else {
+    try {
+      res.status(200).json(listResearchSubjects());
+    } catch {
+      console.log(error);
+      throw new Error(`${error}`);
+    }
   }
 };

@@ -4,6 +4,6 @@ import { getAllResearchSubjects } from '../controllers/researchSubjectsControlle
 const researchSubjectsRoute = express.Router();
 
 // recordTypeRoute.route('/').get(getRecordType);
-researchSubjectsRoute.route('/list').get(getAllResearchSubjects);
+researchSubjectsRoute.route('/list:tree?').get(getAllResearchSubjects);
 
 export default researchSubjectsRoute;
