@@ -10,9 +10,9 @@ export const handlers = [
   // rest.get(`${URL}/fake-persons`, (req, res, ctx) => {
   //   return res(ctx.status(200), ctx.json(fakePersons));
   // }),
-  rest.get(`${URL}/publication-types`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(publicationTypes));
-  }),
+  // rest.get(`${URL}/publication-types`, (req, res, ctx) => {
+  //   return res(ctx.status(200), ctx.json(publicationTypes));
+  // }),
   rest.get(`${URL}/research-subjects`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(researchSubjects));
   }),
