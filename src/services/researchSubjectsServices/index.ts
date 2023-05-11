@@ -1,0 +1,1 @@
+export { listResearchSubjects } from './listResearchSubjects';

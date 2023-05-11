@@ -1,11 +1,18 @@
-### GET all users
+# MOCK ROUTES:
+### 
 GET http://localhost:8080/api/user/all
-### GET all Publication Types
-GET http://localhost:8080/api/publication/all
 
-### Get publication with id 8888888
+###
+GET http://localhost:8080/api/publication/list
+
+###
 GET http://localhost:8080/api/publication/88888834354542425
 
+###
+GET http://localhost:8080/api/researchsubjects/list
+
+###
+GET http://localhost:8080/api/subjectcategories/list
 
 # GET recortTypes
 ### GET recordType recordType w/ BFF
