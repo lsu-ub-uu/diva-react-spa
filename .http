@@ -12,6 +12,9 @@ GET http://localhost:8080/api/publication/88888834354542425
 GET http://localhost:8080/api/researchsubjects/list
 
 ###
+GET http://localhost:8080/api/researchsubjects/list?tree=true
+
+###
 GET http://localhost:8080/api/subjectcategories/list
 
 # GET recortTypes
