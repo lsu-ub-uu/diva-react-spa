@@ -34,7 +34,7 @@ export const HomePage = () => {
               disableRipple
               variant='contained'
               component={RouterLink}
-              to='/person-form'
+              to='/author-form'
               endIcon={<ArrowForwardIcon />}
             >
               Add publication
