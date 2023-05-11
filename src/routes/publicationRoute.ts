@@ -6,7 +6,7 @@ import {
 
 const publicationRouter = express.Router();
 
-publicationRouter.route('/all').get(getPublication);
+publicationRouter.route('/list').get(getPublication);
 publicationRouter.route('/:id').get(getSpecificPublication);
 
 export default publicationRouter;
