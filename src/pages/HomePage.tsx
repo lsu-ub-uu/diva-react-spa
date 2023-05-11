@@ -6,6 +6,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet-async';
+import React from 'react';
 import {
   AsidePortal,
   Card,
@@ -73,7 +74,27 @@ export const HomePage = () => {
             tooltipBody='Publications help body text tooltip'
             expanded={false}
           >
-            test
+            <Button
+              size='medium'
+              disableRipple
+              variant='outlined'
+            >
+              Medium outlined
+            </Button>
+            <Button
+              size='medium'
+              disableRipple
+              variant='contained'
+            >
+              Med contained
+            </Button>
+            <Button
+              size='large'
+              disableRipple
+              variant='outlined'
+            >
+              large outlined
+            </Button>
           </Card>
           <Card
             title='Variant2'

@@ -106,7 +106,6 @@ export const divaTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#fff',
-          height: 46,
         },
       },
     },
@@ -147,19 +146,24 @@ export const divaTheme = createTheme({
       defaultProps: {
         disableRipple: true,
       },
-      styleOverrides: {
-        root: {
-          height: 46,
-        },
-      },
     },
     MuiButton: {
       styleOverrides: {
+        root: {
+          contentBox: 'border-box',
+        },
         outlined: {
-          borderColor: '#000',
+          borderColor: '#333',
           borderWidth: 3,
           '&:hover': {
             borderWidth: 3,
+            borderColor: '#111',
+          },
+        },
+        contained: {
+          border: '3px solid #333',
+          '&:hover': {
+            border: '3px solid #111',
           },
         },
       },

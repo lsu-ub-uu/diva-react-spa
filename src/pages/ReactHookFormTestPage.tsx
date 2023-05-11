@@ -22,6 +22,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Helmet } from 'react-helmet-async';
@@ -31,7 +32,13 @@ import {
   publicationTypeSelector,
   loadPublicationTypesAsync,
 } from '../features/publicationTypes';
-import { Card, Select, useBackdrop, ErrorSummary } from '../components';
+import {
+  Card,
+  Select,
+  useBackdrop,
+  ErrorSummary,
+  ResearchSubjectPicker,
+} from '../components';
 
 interface TestModel {
   publicationType: string;
@@ -179,6 +186,7 @@ export const ReactHookFormTestPage = () => {
                         Publication type
                       </FormLabel>
                       <Select
+                        size='small'
                         value={
                           publicationTypeState.publicationTypes.length
                             ? value
@@ -222,7 +230,7 @@ export const ReactHookFormTestPage = () => {
                 >
                   <FormLabel>&nbsp;</FormLabel>
                   <Button
-                    size='large'
+                    size='medium'
                     disableRipple
                     variant='outlined'
                   >
@@ -746,6 +754,12 @@ export const ReactHookFormTestPage = () => {
                 item
                 xs={12}
               >
+                <ResearchSubjectPicker />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+              >
                 <Controller
                   control={control}
                   name='researchSubjects'
@@ -762,7 +776,6 @@ export const ReactHookFormTestPage = () => {
                       </FormLabel>
                       <Autocomplete
                         onChange={(event, item) => {
-                          console.log(item);
                           onChange(item);
                         }}
                         clearText='Clear all'
@@ -771,12 +784,17 @@ export const ReactHookFormTestPage = () => {
                         multiple
                         isOptionEqualToValue={(option, val) => option === val}
                         id='multi-research-subjects'
+                        size='small'
                         options={[
                           'Datalogi',
                           'AI',
                           'Informatik',
                           'Beetendevetenskap',
                           'Astrofysik',
+                          'Astrotest',
+                          'TestAstro',
+                          'Kriminologi',
+                          'Teologi',
                         ]}
                         getOptionLabel={(option) => option}
                         renderInput={(params) => (
@@ -785,7 +803,24 @@ export const ReactHookFormTestPage = () => {
                             variant='outlined'
                             {...params}
                             error={error !== undefined}
-                            placeholder='Search for subjects'
+                            placeholder='Search'
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: (
+                                <>
+                                  <IconButton
+                                    title='Browse research subjects'
+                                    aria-label='browse'
+                                    onClick={() =>
+                                      console.log('open browse dialog')
+                                    }
+                                  >
+                                    <AccountTreeIcon />
+                                  </IconButton>
+                                  {params.InputProps.startAdornment}
+                                </>
+                              ),
+                            }}
                           />
                         )}
                       />
