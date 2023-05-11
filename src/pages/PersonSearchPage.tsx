@@ -12,7 +12,7 @@ import { AsidePortal, Checkbox, Search } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   getPersonByName,
-  SearchInterface,
+  SearchPersonInterface,
 } from '../features/search/searchSlice';
 
 const columns: GridColDef[] = [
@@ -105,7 +105,7 @@ export const PersonSearchPage = () => {
           searchText=''
         />
       </FormControl>
-      <DataGrid<SearchInterface>
+      <DataGrid<SearchPersonInterface>
         sx={{
           border: 0,
           width: '100%',
