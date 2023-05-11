@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import searchService from './searchService';
 
-export interface SearchInterface {
+export interface SearchPersonInterface {
   givenName: string;
   familyName: string;
   domain: string;
@@ -11,7 +11,7 @@ export interface SearchInterface {
 }
 
 interface SearchState {
-  search: SearchInterface[];
+  search: SearchPersonInterface[];
   isLoading: boolean;
   isError: boolean;
   message: any;

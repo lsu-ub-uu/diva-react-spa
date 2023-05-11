@@ -1,8 +1,6 @@
 import { rest } from 'msw';
 import publicationTypes from './data/publicationTypes.json';
-import subjectCategories from './data/subjectCategories.json';
 import researchSubjects from './data/researchTestTree.json';
-// import fakePersons from './data/fakePersons.json';
 
 const URL = `${window.location.protocol}//${window.location.host}`;
 // const BFF_API_URL = `https://cora.epc.ub.uu.se/diva/spaclientbff/api`;
