@@ -1,7 +1,8 @@
 import { RenderTree } from 'components/RichTree/RichTree';
 import { SelectItem } from 'components';
 
-const MOCK_API_URL = `${window.location.protocol}//${window.location.host}`;
+// const MOCK_API_URL = `${window.location.protocol}//${window.location.host}`;
+const BFF_API_URL = import.meta.env.VITE_BFF_API_URL;
 
 function getFlat(node: RenderTree, parentId: string | null): SelectItem[] {
   return [
@@ -29,7 +30,7 @@ function getTree(items: SelectItem[], id: string | null): RenderTree[] {
 }
 
 export const loadResearchSubjectsAsync = async () => {
-  const response = await fetch(`${MOCK_API_URL}/research-subjects`);
+  const response = await fetch(`${BFF_API_URL}/researchsubjects/list`);
   const data: RenderTree = await response.json();
   return getFlat(data, '-').sort((a, b) => a.name.localeCompare(b.name, 'sv'));
   // const treeData = getTree(flatData, '-');
