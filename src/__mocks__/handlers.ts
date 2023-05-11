@@ -1,6 +1,6 @@
 import { rest } from 'msw';
-import publicationTypes from './data/publicationTypes.json';
-import researchSubjects from './data/researchTestTree.json';
+// import publicationTypes from './data/publicationTypes.json';
+// import researchSubjects from './data/researchTestTree.json';
 
 const URL = `${window.location.protocol}//${window.location.host}`;
 // const BFF_API_URL = `https://cora.epc.ub.uu.se/diva/spaclientbff/api`;
@@ -13,9 +13,9 @@ export const handlers = [
   // rest.get(`${URL}/publication-types`, (req, res, ctx) => {
   //   return res(ctx.status(200), ctx.json(publicationTypes));
   // }),
-  rest.get(`${URL}/research-subjects`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(researchSubjects));
-  }),
+  // rest.get(`${URL}/research-subjects`, (req, res, ctx) => {
+  //   return res(ctx.status(200), ctx.json(researchSubjects));
+  // }),
   // rest.get(`${URL}/subject-categories`, (req, res, ctx) => {
   //   return res(ctx.status(200), ctx.json(subjectCategories));
   // }),
