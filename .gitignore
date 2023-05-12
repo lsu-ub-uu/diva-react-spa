@@ -25,3 +25,6 @@ dist-ssr
 
 # Storybook static
 storybook-static
+
+# Coverage report
+coverage
