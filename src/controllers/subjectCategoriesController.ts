@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { listSubjectCategories } from '../services/SubjectCategoriesServices';
+import { listSubjectCategories } from '../services/subjectCategoriesServices';
 
 // @desc		Get all researchSubjects
 // @route		GET /api/publication/
