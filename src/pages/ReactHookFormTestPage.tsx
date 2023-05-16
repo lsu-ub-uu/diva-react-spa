@@ -39,6 +39,10 @@ import {
   ErrorSummary,
   ResearchSubjectPicker,
 } from '../components';
+import {
+  researchSubjectSelector,
+  researchSubjectSelectItemsSelector,
+} from '../features/researchSubject';
 
 interface TestModel {
   publicationType: string;
@@ -120,6 +124,10 @@ export const ReactHookFormTestPage = () => {
   const { setBackdrop } = useBackdrop();
   const dispatch = useAppDispatch();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
+  const researchSubjectState = useAppSelector(researchSubjectSelector);
+  const researchSubjectSelectItems = useAppSelector(
+    researchSubjectSelectItemsSelector,
+  );
 
   useEffect(() => {
     setBackdrop(true);
@@ -775,28 +783,21 @@ export const ReactHookFormTestPage = () => {
                         Research subjects
                       </FormLabel>
                       <Autocomplete
+                        loading={researchSubjectState.isLoading}
                         onChange={(event, item) => {
                           onChange(item);
                         }}
                         clearText='Clear all'
-                        value={value}
+                        value={[]}
                         popupIcon={<ExpandMoreIcon />}
                         multiple
-                        isOptionEqualToValue={(option, val) => option === val}
+                        isOptionEqualToValue={(option, val) =>
+                          option.id === val.id
+                        }
                         id='multi-research-subjects'
                         size='small'
-                        options={[
-                          'Datalogi',
-                          'AI',
-                          'Informatik',
-                          'Beetendevetenskap',
-                          'Astrofysik',
-                          'Astrotest',
-                          'TestAstro',
-                          'Kriminologi',
-                          'Teologi',
-                        ]}
-                        getOptionLabel={(option) => option}
+                        options={researchSubjectSelectItems}
+                        getOptionLabel={(option) => option.name}
                         renderInput={(params) => (
                           <TextField
                             inputRef={ref}
