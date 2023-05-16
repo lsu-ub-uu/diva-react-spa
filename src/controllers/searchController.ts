@@ -39,18 +39,6 @@ export const getAdminPersonSearch = async (
   }
 };
 
-// @desc		Get public search results
-// @route		GET /api/search/public/person/:searchQuery
-// @access	Public
-export const getPublicPersonSearch = async (
-  req: Request,
-  res: Response,
-  error: any,
-) => {
-  const { searchQuery } = req.params;
-  res.status(501).json({ error: 'Public search is not implemented' });
-};
-
 // @desc		Get admin search results
 // @route		GET /api/search/test/person/:searchQuery
 // @access	Private
@@ -60,13 +48,14 @@ export const getSearchPersonsByGeneralSearch = async (
   error: unknown,
 ) => {
   const { searchQuery } = req.params;
+  const { start, rows } = req.query;
+
   try {
     const searchParam = await searchPersonsByGeneralSearch(
       `${searchQuery}`,
-      0,
-      100,
+      Number(start as string),
+      Number(rows as string),
     );
-    console.log(searchParam);
     res.status(200).json(searchParam);
   } catch {
     res.status(404).json({ error: `No results for ${searchQuery} found` });

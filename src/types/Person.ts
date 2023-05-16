@@ -18,35 +18,20 @@ export type Affiliation = {
 
 export interface Person extends Record {
   public: string;
-
   domains?: string[];
-
   authorisedName?: Name;
-
   academicTitle?: string;
-
   yearOfBirth?: string;
-
   yearOfDeath?: string;
-
   emailAddress?: string;
-
   alternativeNames?: Name[];
-
   externalURLs?: ExternalUrl[];
-
   otherAffiliation?: Affiliation;
-
   orcids?: string[];
-
   viafIDs?: string[];
-
   librisIDs?: string[];
-
   biographyEnglish?: string;
-
   biographySwedish?: string;
-
   personDomainParts: {
     recordId: string;
   }[];
