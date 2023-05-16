@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   FormControl,
   FormControlLabel,
@@ -5,49 +6,66 @@ import {
   FormLabel,
   Stack,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import {
+  PaginationRequest,
+  PersonSearchRequest,
+} from 'types/personSearchResult';
 import { Controller, useForm } from 'react-hook-form';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { AsidePortal, Checkbox, Search } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import {
-  getPersonByName,
-  SearchPersonInterface,
-} from '../features/search/searchSlice';
+import { searchPersonByTerm } from '../features/search/searchSlice';
+import { Person } from '../types/person';
 
 const columns: GridColDef[] = [
-  { field: 'givenName', headerName: 'Given Name', width: 150 },
-  { field: 'familyName', headerName: 'Family Name', width: 150 },
-  { field: 'domain', headerName: 'Domain', width: 100 },
-  { field: 'academicTitle', headerName: 'Academic Title', width: 150 },
-  { field: 'ORCID_ID', headerName: 'ORCID ID', width: 200 },
+  { field: 'id', headerName: 'ID', width: 200 },
+  {
+    field: 'familyName',
+    valueGetter: (params) => {
+      return params.row.authorisedName?.familyName ?? '';
+    },
+  },
+  {
+    field: 'givenName',
+    valueGetter: (params) => {
+      return params.row.authorisedName?.givenName ?? '';
+    },
+  },
+  {
+    field: 'orcids',
+    valueGetter: (params) => {
+      return params.row.orcids?.join(',') ?? '';
+    },
+    width: 400,
+  },
 ];
 
 export const PersonSearchPage = () => {
   const dispatch = useAppDispatch();
 
-  const { search, isLoading, isError, message } = useAppSelector(
-    (state) => state.search,
-  );
+  const { search, isLoading } = useAppSelector((state) => state.search);
   const methods = useForm();
   const { control } = methods;
-
-  const [name, setName] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(25);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    if (isError) {
-      console.log('error message', message);
+    if (searchTerm === '') {
+      return;
     }
-    if (name !== null) {
-      dispatch(getPersonByName(name));
-    }
-  }, [isError, message, dispatch, name]);
+    const start = page * pageSize;
+    const rows = pageSize;
 
-  const handleInput = (e: React.MouseEvent<HTMLElement> | string): void => {
-    if (e !== '' || e !== undefined || e !== null) {
-      setName(e.toString());
-    }
-  };
+    const searchRequest = {
+      searchTerm,
+      paginationRequest: {
+        start,
+        rows,
+      },
+    } as PersonSearchRequest;
+    dispatch(searchPersonByTerm(searchRequest));
+  }, [page, pageSize, searchTerm, dispatch]);
 
   return (
     <div>
@@ -100,12 +118,12 @@ export const PersonSearchPage = () => {
       >
         <FormLabel>Search</FormLabel>
         <Search
-          onSubmit={(e) => handleInput(e)}
+          onSubmit={(searchName) => setSearchTerm(searchName)}
           placeholderText='Search here'
           searchText=''
         />
       </FormControl>
-      <DataGrid<SearchPersonInterface>
+      <DataGrid<Person>
         sx={{
           border: 0,
           width: '100%',
@@ -137,12 +155,18 @@ export const PersonSearchPage = () => {
         checkboxSelection
         disableSelectionOnClick
         autoHeight
-        pageSize={25}
+        pageSize={pageSize}
+        onPageSizeChange={(size) => setPageSize(size)}
         loading={isLoading}
-        rows={search}
+        rows={search.data}
         columns={columns}
         components={{
           BaseCheckbox: Checkbox,
+        }}
+        paginationMode='server'
+        rowCount={100}
+        onPageChange={(newPage) => {
+          setPage(newPage);
         }}
       />
     </div>
