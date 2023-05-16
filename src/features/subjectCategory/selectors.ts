@@ -6,15 +6,17 @@ export const subjectCategorySelector = (state: RootState) => {
   return state.subjectCategory;
 };
 
-export const subjectCategoryWithIdSelector = (state: RootState) => {
-  return state.subjectCategory.subjectCategories.map(
-    (item) =>
-      ({
-        id: item.id,
-        name: `${item.name} (kod ${item.id})`,
-        disabled: item.disabled,
-      } as SelectItem),
-  );
+export const subjectCategorySelectItemsSelector = (state: RootState) => {
+  return state.subjectCategory.subjectCategories
+    .filter((i) => i.id !== 'root')
+    .map(
+      (item) =>
+        ({
+          id: item.id,
+          name: `${item.name} (kod ${item.id})`,
+          disabled: item.disabled,
+        } as SelectItem),
+    );
 };
 
 export const getSubjectCategoryDetails = (ids: string[]) =>

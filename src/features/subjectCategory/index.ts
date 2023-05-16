@@ -1,6 +1,6 @@
 export {
   subjectCategorySelector,
-  subjectCategoryWithIdSelector,
+  subjectCategorySelectItemsSelector,
   getSubjectCategoryDetails,
 } from './selectors';
 

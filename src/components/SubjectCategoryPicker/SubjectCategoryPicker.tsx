@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   subjectCategorySelector,
   getSubjectCategoryDetails,
-  subjectCategoryWithIdSelector,
+  subjectCategorySelectItemsSelector,
   getAllSubjectCategories,
 } from '../../features/subjectCategory';
 import subjectCategories from '../../__mocks__/data/subjectCategories.json';
@@ -37,7 +37,7 @@ export const SubjectCategoryPicker = (
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const subjectCategoryState = useAppSelector(subjectCategorySelector);
-  const subjectCategoriesWithId = useAppSelector(subjectCategoryWithIdSelector);
+  const subjectCategoriesWithId = useAppSelector(subjectCategorySelectItemsSelector);
   const subjectCategoriesWithNames = useAppSelector(
     getSubjectCategoryDetails(selected),
   );
