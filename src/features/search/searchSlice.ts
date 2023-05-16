@@ -1,34 +1,35 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  PaginationRequest,
+  PersonSearchRequest,
+  PersonSearchResult,
+} from 'types/personSearchResult';
 import searchService from './searchService';
 
-export interface SearchPersonInterface {
-  givenName: string;
-  familyName: string;
-  domain: string;
-  academicTitle: string;
-  ORCID_ID: string;
-  id: string;
-}
-
 interface SearchState {
-  search: SearchPersonInterface[];
+  search: PersonSearchResult;
   isLoading: boolean;
   isError: boolean;
   message: any;
 }
 const initialState: SearchState = {
-  search: [],
+  search: {
+    fromNumber: 0,
+    toNumber: 0,
+    totalNumber: 0,
+    data: [],
+  } as PersonSearchResult,
   isLoading: false,
   isError: false,
   message: '',
 };
 
 // Get one recordType
-export const getPersonByName = createAsyncThunk(
-  'search/getPersonByName',
-  async (name: string, thunkAPI) => {
+export const searchPersonByTerm = createAsyncThunk(
+  'search/searchPersonByTerm',
+  async (searchPersonRequest: PersonSearchRequest, thunkAPI) => {
     try {
-      return await searchService.searchPersonsAsAdmin(name);
+      return await searchService.personSearch(searchPersonRequest);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -53,16 +54,16 @@ export const searchSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getPersonByName.pending, (state) => {
+      .addCase(searchPersonByTerm.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getPersonByName.fulfilled, (state, action) => {
+      .addCase(searchPersonByTerm.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.search = action.payload;
         state.message = '';
       })
-      .addCase(getPersonByName.rejected, (state, action) => {
+      .addCase(searchPersonByTerm.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
