@@ -48,7 +48,7 @@ GET http://localhost:8080/api/search/admin/person/egil
 GET http://localhost:8080/api/search/public/person/b
 
 ### GET public search
-GET http://localhost:8080/api/search/test/person/anna
+GET http://localhost:8080/api/search/test/person/anna?start=20&rows=53
 
 
 
