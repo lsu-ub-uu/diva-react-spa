@@ -8,3 +8,6 @@ export * from './PersonDomainPart';
 export * from './Record';
 export * from './LoginUnit';
 export * from './LoginWebRedirect';
+export * from './Repeatable';
+export * from './FormPerson';
+export * from './FormPersonDomainPart';
