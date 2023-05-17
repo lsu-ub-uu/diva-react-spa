@@ -8,11 +8,11 @@
     "rootDir": "src",
     "strict": true,
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "jest.config.js"],
   "exclude": ["src/**/*.test.ts"]
   
 }

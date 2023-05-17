@@ -2,13 +2,14 @@ import { RecordType } from '../../../types/Record';
 import {
   dataListContainingFourPersons,
   dataListContainingOnePerson,
-} from '../../../../testData/searchResults';
-import convertToObjectWithRecordType from '../../../converter/RecordTypeConverter';
-import { DataListWrapper } from '../../../cora-data/CoraData';
+} from '../../../__mocks__/searchResults';
+// } from '../../../../testData/searchResults';
+import convertToObjectWithRecordType from '../../../utils/converter/RecordTypeConverter';
+import { DataListWrapper } from '../../../utils/cora-data/CoraData';
 import extractListFromDataList from '../DataListHandler';
 import { List } from '../../../types/List';
 
-jest.mock('../../../converter/RecordTypeConverter');
+jest.mock('../../../utils/converter/RecordTypeConverter');
 const mockConvertToObjectWithRecordType =
   convertToObjectWithRecordType as jest.MockedFunction<
     typeof convertToObjectWithRecordType

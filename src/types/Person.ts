@@ -5,7 +5,7 @@ export type Name = {
   givenName: string;
 };
 
-type ExternalUrl = {
+export type ExternalUrl = {
   linkTitle: string;
   URL: string;
 };
