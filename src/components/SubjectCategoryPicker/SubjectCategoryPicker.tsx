@@ -37,7 +37,9 @@ export const SubjectCategoryPicker = (
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const subjectCategoryState = useAppSelector(subjectCategorySelector);
-  const subjectCategoriesWithId = useAppSelector(subjectCategorySelectItemsSelector);
+  const subjectCategoriesWithId = useAppSelector(
+    subjectCategorySelectItemsSelector,
+  );
   const subjectCategoriesWithNames = useAppSelector(
     getSubjectCategoryDetails(selected),
   );
