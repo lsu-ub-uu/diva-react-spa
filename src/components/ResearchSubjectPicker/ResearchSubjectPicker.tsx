@@ -8,6 +8,8 @@ import {
 } from '../../features/researchSubject';
 import { MultiAutoComplete } from '../Form/MultiAutoComplete/MultiAutoComplete';
 import { Dialog } from '../Dialog/Dialog';
+import { researchSubjectTreeSelector } from '../../features/researchSubject/selectors';
+import { RichTree } from '../RichTree/RichTree';
 
 export const ResearchSubjectPicker = () => {
   const [open, setOpen] = useState(false);
@@ -16,6 +18,7 @@ export const ResearchSubjectPicker = () => {
   const researchSubjectSelectItems = useAppSelector(
     researchSubjectSelectItemsSelector,
   );
+  const researchSubjectTree = useAppSelector(researchSubjectTreeSelector);
 
   useEffect(() => {
     dispatch(getAllResearchSubjects());
@@ -38,6 +41,10 @@ export const ResearchSubjectPicker = () => {
         closeAction={() => setOpen(false)}
       >
         <Typography sx={{ mb: 2 }}>Lorem ipsum</Typography>
+        <RichTree
+          tree={researchSubjectTree}
+          onSelected={(item) => console.log(item)}
+        />
       </Dialog>
     </div>
   );
