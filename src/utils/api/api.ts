@@ -1,13 +1,10 @@
-import {
-  DataListWrapper,
-  RecordWrapper,
-} from '../../../utils/cora-data/CoraData';
-import httpClient from '../../../utils/http/HttpClient';
-import { IHttpClientRequestParameters } from '../../../utils/http/IHttpClient';
-import convertToObjectWithRecordType from '../../../utils/converter/RecordTypeConverter';
-import { RecordType } from '../../../types/Record';
+import { DataListWrapper, RecordWrapper } from '../cora-data/CoraData';
+import httpClient from '../http/HttpClient';
+import { IHttpClientRequestParameters } from '../http/IHttpClient';
+import convertToObjectWithRecordType from '../converter/RecordTypeConverter';
+import { RecordType } from '../../types/Record';
 import extractListFromDataList from './api/DataListHandler';
-import { List } from '../../../types/List';
+import { List } from '../../types/List';
 
 export function getRecordById<T>(
   recordType: RecordType,
@@ -71,5 +68,7 @@ export function getRecords(
 }
 
 // export { default as SearchPersonsByGeneralSearch2 } from './api/SearchPersonByGeneralSearch2';
-export * from './api/searchPersonByGeneralSearch';
-export * from './api/searchOrganisation';
+export * from '../../services/searchServives/searchPersonByGeneralSearch';
+// export * from './api/searchPersonByGeneralSearch';
+export * from '../../services/searchServives/searchOrganisation';
+// export * from './api/searchOrganisation';

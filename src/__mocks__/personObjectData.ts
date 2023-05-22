@@ -1,5 +1,17 @@
 import { List, Person, FormPerson } from '../types';
 
+export const newCreatedPerson: Person = {
+  dataDivider: '',
+  recordType: 'person', // validationType
+  authorisedName: {
+    familyName: 'Swenning Leyser',
+    givenName: 'Egil',
+  },
+  public: 'yes',
+  personDomainParts: [],
+  id: '2',
+};
+
 export const personWithDomain: Person = {
   id: '2',
   authorisedName: {

@@ -4,9 +4,9 @@ import {
   dataListContainingOnePerson,
 } from '../../../__mocks__/searchResults';
 // } from '../../../../testData/searchResults';
-import convertToObjectWithRecordType from '../../../utils/converter/RecordTypeConverter';
-import { DataListWrapper } from '../../../utils/cora-data/CoraData';
-import extractListFromDataList from '../DataListHandler';
+import convertToObjectWithRecordType from '../../converter/RecordTypeConverter';
+import { DataListWrapper } from '../../cora-data/CoraData';
+import extractListFromDataList from '../api/DataListHandler';
 import { List } from '../../../types/List';
 
 jest.mock('../../../utils/converter/RecordTypeConverter');
