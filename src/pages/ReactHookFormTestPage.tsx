@@ -9,7 +9,6 @@ import {
   IconButton,
   MenuItem,
   Stack,
-  Autocomplete,
   TextField,
 } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -22,8 +21,6 @@ import ErrorIcon from '@mui/icons-material/Error';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -39,10 +36,6 @@ import {
   ErrorSummary,
   ResearchSubjectPicker,
 } from '../components';
-import {
-  researchSubjectSelector,
-  researchSubjectSelectItemsSelector,
-} from '../features/researchSubject';
 
 interface TestModel {
   publicationType: string;
@@ -124,11 +117,6 @@ export const ReactHookFormTestPage = () => {
   const { setBackdrop } = useBackdrop();
   const dispatch = useAppDispatch();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
-  const researchSubjectState = useAppSelector(researchSubjectSelector);
-  const researchSubjectSelectItems = useAppSelector(
-    researchSubjectSelectItemsSelector,
-  );
-
   useEffect(() => {
     setBackdrop(true);
     dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
@@ -748,8 +736,8 @@ export const ReactHookFormTestPage = () => {
           </Button>
           <Card
             variant='variant6'
-            title='Research Subject'
-            tooltipTitle='Research Subject'
+            title='Research Subjects'
+            tooltipTitle='Research Subjects'
             tooltipBody='some text'
           >
             <Grid
@@ -762,19 +750,10 @@ export const ReactHookFormTestPage = () => {
                 item
                 xs={12}
               >
-                <ResearchSubjectPicker />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-              >
                 <Controller
                   control={control}
                   name='researchSubjects'
-                  render={({
-                    field: { onChange, ref, value },
-                    fieldState: { error },
-                  }) => (
+                  render={({ fieldState: { error } }) => (
                     <FormControl fullWidth>
                       <FormLabel
                         required
@@ -782,49 +761,7 @@ export const ReactHookFormTestPage = () => {
                       >
                         Research subjects
                       </FormLabel>
-                      <Autocomplete
-                        loading={researchSubjectState.isLoading}
-                        onChange={(event, item) => {
-                          onChange(item);
-                        }}
-                        clearText='Clear all'
-                        value={[]}
-                        popupIcon={<ExpandMoreIcon />}
-                        multiple
-                        isOptionEqualToValue={(option, val) =>
-                          option.id === val.id
-                        }
-                        id='multi-research-subjects'
-                        size='small'
-                        options={researchSubjectSelectItems}
-                        getOptionLabel={(option) => option.name}
-                        renderInput={(params) => (
-                          <TextField
-                            inputRef={ref}
-                            variant='outlined'
-                            {...params}
-                            error={error !== undefined}
-                            placeholder='Search'
-                            InputProps={{
-                              ...params.InputProps,
-                              startAdornment: (
-                                <>
-                                  <IconButton
-                                    title='Browse research subjects'
-                                    aria-label='browse'
-                                    onClick={() =>
-                                      console.log('open browse dialog')
-                                    }
-                                  >
-                                    <AccountTreeIcon />
-                                  </IconButton>
-                                  {params.InputProps.startAdornment}
-                                </>
-                              ),
-                            }}
-                          />
-                        )}
-                      />
+                      <ResearchSubjectPicker />
                       <FormHelperText error={error !== undefined}>
                         {error !== undefined ? error.message : ' '}
                       </FormHelperText>
