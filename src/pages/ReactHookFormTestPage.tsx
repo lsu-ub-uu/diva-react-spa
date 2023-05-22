@@ -36,11 +36,6 @@ import {
   ErrorSummary,
   ResearchSubjectPicker,
 } from '../components';
-import {
-  researchSubjectSelector,
-  researchSubjectSelectItemsSelector,
-} from '../features/researchSubject';
-import { MultiAutoComplete } from '../components/Form/MultiAutoComplete/MultiAutoComplete';
 
 interface TestModel {
   publicationType: string;
@@ -122,11 +117,6 @@ export const ReactHookFormTestPage = () => {
   const { setBackdrop } = useBackdrop();
   const dispatch = useAppDispatch();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
-  const researchSubjectState = useAppSelector(researchSubjectSelector);
-  const researchSubjectSelectItems = useAppSelector(
-    researchSubjectSelectItemsSelector,
-  );
-
   useEffect(() => {
     setBackdrop(true);
     dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
@@ -760,12 +750,6 @@ export const ReactHookFormTestPage = () => {
                 item
                 xs={12}
               >
-                <ResearchSubjectPicker />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-              >
                 <Controller
                   control={control}
                   name='researchSubjects'
@@ -777,10 +761,7 @@ export const ReactHookFormTestPage = () => {
                       >
                         Research subjects
                       </FormLabel>
-                      <MultiAutoComplete
-                        loading={researchSubjectState.isLoading}
-                        options={researchSubjectSelectItems}
-                      />
+                      <ResearchSubjectPicker />
                       <FormHelperText error={error !== undefined}>
                         {error !== undefined ? error.message : ' '}
                       </FormHelperText>

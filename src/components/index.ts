@@ -22,6 +22,7 @@ export { RichTree } from './RichTree/RichTree';
 export { Autocomplete } from './Autocomplete/Autocomplete';
 // eslint-disable-next-line import/no-cycle
 export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPicker';
+// eslint-disable-next-line import/no-cycle
 export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';
 export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';

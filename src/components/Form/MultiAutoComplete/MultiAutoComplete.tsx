@@ -12,6 +12,7 @@ interface MultiAutoCompleteProps {
   placeholder?: string;
   options: SelectItem[];
   onSelected?: (id: string) => void;
+  onBrowseButtonClicked?: () => void;
 }
 
 export const MultiAutoComplete = (
@@ -46,7 +47,11 @@ export const MultiAutoComplete = (
                 <IconButton
                   title='Browse research subjects'
                   aria-label='browse'
-                  onClick={() => console.log('open browse dialog')}
+                  onClick={() => {
+                    if (props.onBrowseButtonClicked) {
+                      props.onBrowseButtonClicked();
+                    }
+                  }}
                 >
                   <AccountTreeIcon />
                 </IconButton>
