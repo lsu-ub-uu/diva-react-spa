@@ -736,8 +736,8 @@ export const ReactHookFormTestPage = () => {
           </Button>
           <Card
             variant='variant6'
-            title='Research Subject'
-            tooltipTitle='Research Subject'
+            title='Research Subjects'
+            tooltipTitle='Research Subjects'
             tooltipBody='some text'
           >
             <Grid
