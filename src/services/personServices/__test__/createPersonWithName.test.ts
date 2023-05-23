@@ -4,14 +4,14 @@ import { createPersonWithName } from '../createPersonWithName';
 
 jest.mock('../../../utils/http/HttpClient');
 
-const mockHttpClientGet = httpClient.get as jest.MockedFunction<
+const mockHttpClientPost = httpClient.post as jest.MockedFunction<
   typeof httpClient.get
 >;
 
 describe('createPersonWithName', () => {
   beforeAll(() => {
     process.env.REST_API_BASE_URL = 'baseUrl/';
-    mockHttpClientGet.mockResolvedValueOnce({
+    mockHttpClientPost.mockResolvedValueOnce({
       newCreatedPerson,
     });
   });
@@ -29,7 +29,7 @@ describe('createPersonWithName', () => {
       expect(castError.message).toStrictEqual(
         'No newPerson was passed to createPersonWithName',
       );
-      expect(mockHttpClientGet).toHaveBeenCalledTimes(0);
+      expect(mockHttpClientPost).toHaveBeenCalledTimes(0);
     }
   });
   it('should correctly call httpClient with parameters', async () => {
@@ -39,15 +39,15 @@ describe('createPersonWithName', () => {
 
     await createPersonWithName(newCreatedPerson);
 
-    expect(mockHttpClientGet).toHaveBeenCalledTimes(1);
-    expect(mockHttpClientGet).toHaveBeenCalledWith(
+    expect(mockHttpClientPost).toHaveBeenCalledTimes(1);
+    expect(mockHttpClientPost).toHaveBeenCalledWith(
       expect.objectContaining({
         url: expectedUrl,
       }),
     );
   });
   it('should reject with an error if HttpClient throws error', async () => {
-    mockHttpClientGet.mockRejectedValueOnce(
+    mockHttpClientPost.mockRejectedValueOnce(
       new Error('Some error from httpClient'),
     );
 
@@ -59,10 +59,10 @@ describe('createPersonWithName', () => {
       const castError: Error = <Error>error;
       expect(castError).toBeDefined();
       expect(castError.message).toStrictEqual('Some error from httpClient');
-      expect(mockHttpClientGet).toHaveBeenCalledTimes(1);
+      expect(mockHttpClientPost).toHaveBeenCalledTimes(1);
     }
 
-    mockHttpClientGet.mockRejectedValueOnce(
+    mockHttpClientPost.mockRejectedValueOnce(
       new Error('Some other error from httpClient'),
     );
 
@@ -74,7 +74,7 @@ describe('createPersonWithName', () => {
       expect(castError.message).toStrictEqual(
         'Some other error from httpClient',
       );
-      expect(mockHttpClientGet).toHaveBeenCalledTimes(2);
+      expect(mockHttpClientPost).toHaveBeenCalledTimes(2);
     }
   });
 });

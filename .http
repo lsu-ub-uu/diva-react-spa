@@ -53,11 +53,11 @@ POST http://localhost:8080/api/person/create
 
 ### POST new person
 POST http://localhost:8080/api/person/create
-Content-Type: application/json
+Content-Type: application/vnd.uub.record+json
+Authorization: Bearer 2e57eb36-55b9-4820-8c44-8271baab4e8e
 
 {
   "recordInfo": {
-    "dataDivider": "",
     "validationType": "Person"
   },
   "authorisedName": {

@@ -12,12 +12,19 @@ export const getPersons = async (req: Request, res: Response) => {
 // @route		Post /api/users/:newPersonWithName
 // @access	Public
 export const postNewPerson = async (req: Request, res: Response) => {
+  // const contentType = req.header
   const newPerson = req.body;
-  // console.log(req.body);
+  let authToken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    authToken = req.headers.authorization?.split(' ')[1];
+  }
   try {
-    const createdPerson = await createPersonWithName(newPerson);
+    const createdPerson = await createPersonWithName(newPerson, authToken);
     res.status(200).json(createdPerson);
-  } catch {
-    res.status(500).json({ error: `No post created` });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
 };
