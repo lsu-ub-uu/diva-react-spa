@@ -13,6 +13,7 @@ import { RichTree } from '../RichTree/RichTree';
 
 export const ResearchSubjectPicker = () => {
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
   const dispatch = useAppDispatch();
   const researchSubjectState = useAppSelector(researchSubjectSelector);
   const researchSubjectSelectItems = useAppSelector(
@@ -27,9 +28,18 @@ export const ResearchSubjectPicker = () => {
   if (researchSubjectState.isError)
     return <Alert severity='error'>{researchSubjectState.message}</Alert>;
 
+  const handleSelected = (id: string) => {
+    if (!selected.includes(id) && id !== 'root') {
+      setSelected((prevState) => [...prevState, id]);
+      setOpen(false);
+    }
+  };
+
   return (
     <div>
       <MultiAutoComplete
+        values={selected}
+        onChange={(itemsSelected) => setSelected(itemsSelected)}
         onBrowseButtonClicked={() => setOpen(true)}
         loading={researchSubjectState.isLoading}
         options={researchSubjectSelectItems}
@@ -43,7 +53,7 @@ export const ResearchSubjectPicker = () => {
         <Typography sx={{ mb: 2 }}>Lorem ipsum</Typography>
         <RichTree
           tree={researchSubjectTree}
-          onSelected={(item) => console.log(item)}
+          onSelected={handleSelected}
         />
       </Dialog>
     </div>
