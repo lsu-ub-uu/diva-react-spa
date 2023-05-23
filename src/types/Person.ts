@@ -35,4 +35,15 @@ export interface Person extends Record {
   personDomainParts: {
     recordId: string;
   }[];
+  dataDivider?: string;
 }
+// {
+//   "recordInfo": {
+//     "dataDivider": "",
+//     "validationType": "Person"
+//   },
+//   "authorisedName": {
+//     "familyName": "Swenning Leyser",
+//     "givenName": "Egil"
+//   }
+// } Update with new model

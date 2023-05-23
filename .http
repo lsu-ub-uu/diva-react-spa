@@ -1,7 +1,6 @@
 # MOCK ROUTES:
-### 
-GET http://localhost:8080/api/user/all
-
+###
+GET http://localhost:8080/api/person/all
 ###
 GET http://localhost:8080/api/publication/88888834354542425
 
@@ -41,16 +40,31 @@ GET http://localhost:8080/api/recordtype/safdg
 
 
 # GET search results
-### GET admin search
-GET http://localhost:8080/api/search/admin/person/egil
-
 ### GET public search
 GET http://localhost:8080/api/search/public/person/b
 
 ### GET public search
-GET http://localhost:8080/api/search/test/person/anna?start=20&rows=53
+GET http://localhost:8080/api/search/admin/person/kalle?start=20&rows=53
 
 
+# POST
+### POST new person
+POST http://localhost:8080/api/person/create
+
+### POST new person
+POST http://localhost:8080/api/person/create
+Content-Type: application/json
+
+{
+  "recordInfo": {
+    "dataDivider": "",
+    "validationType": "Person"
+  },
+  "authorisedName": {
+    "familyName": "Swenning Leyser",
+    "givenName": "Egil"
+  }
+}
 
 
 

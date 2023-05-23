@@ -1,8 +1,8 @@
-import { RecordType } from '../../../types/Record';
-import { Person } from '../../../types/Person';
+import { RecordType } from '../../types/Record';
+import { Person } from '../../types/Person';
 import { getRecordById } from './api';
-import { PersonDomainPart } from '../../../types/PersonDomainPart';
-import { Organisation } from '../../../types/Organisation';
+import { PersonDomainPart } from '../../types/PersonDomainPart';
+import { Organisation } from '../../types/Organisation';
 
 export type ExtendedPersonReturnType = {
   person: Person;

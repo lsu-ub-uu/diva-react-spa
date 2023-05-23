@@ -1,8 +1,7 @@
-import { RecordType, Record } from '../../types/Record';
-import { DataListWrapper } from '../../utils/cora-data/CoraData';
-import convertToObjectWithRecordType from '../../utils/converter/RecordTypeConverter';
-// import convertToObjectWithRecordType from '../../converter/RecordTypeConverter';
-import { List } from '../../types/List';
+import { RecordType, Record } from '../../../types/Record';
+import { DataListWrapper } from '../../cora-data/CoraData';
+import convertToObjectWithRecordType from '../../converter/RecordTypeConverter';
+import { List } from '../../../types/List';
 
 const extractListFromDataList = (
   dataListWrapper: DataListWrapper,

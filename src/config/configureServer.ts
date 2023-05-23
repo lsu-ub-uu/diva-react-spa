@@ -6,7 +6,7 @@ import express, { Application, Request } from 'express';
 
 export const configureServer = (app: Application) => {
   app.use(express.json());
-  // app.use(compression())
+  app.use(express.urlencoded({ extended: true }));
   app.use(
     cors<Request>({
       origin: '*',

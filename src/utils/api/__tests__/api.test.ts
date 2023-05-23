@@ -2,27 +2,29 @@ import {
   searchPersonsByGeneralSearch as searchPersonsByGeneralSearchExport,
   getRecordById,
   getRecords,
+  // eslint-disable-next-line import/no-duplicates
 } from '../api';
-import { searchPersonsByGeneralSearch } from '../api/searchPersonByGeneralSearch';
+// eslint-disable-next-line import/no-duplicates
+import { searchPersonsByGeneralSearch } from '../api';
 
-import httpClient from '../../../../utils/http/HttpClient';
-import { Person } from '../../../../types/Person';
+import httpClient from '../../http/HttpClient';
+import { Person } from '../../../types/Person';
 import {
   onePerson,
   getDataListContainingFourPersons,
-} from '../../../../__mocks__/searchResults';
-import convertToObjectWithRecordType from '../../../../utils/converter/RecordTypeConverter';
+} from '../../../__mocks__/searchResults';
+import convertToObjectWithRecordType from '../../converter/RecordTypeConverter';
 import {
   createCompletePerson,
   createListWithRecords,
-} from '../../../../__mocks__/personObjectData';
-import { PersonDomainPart } from '../../../../types/PersonDomainPart';
-import { RecordType } from '../../../../types/Record';
+} from '../../../__mocks__/personObjectData';
+import { PersonDomainPart } from '../../../types/PersonDomainPart';
+import { RecordType } from '../../../types/Record';
 import extractListFromDataList from '../api/DataListHandler';
 import {
   dataListWithThreeRecords,
   dataListWithTwoRecords,
-} from '../../../../__mocks__/dataLists';
+} from '../../../__mocks__/dataLists';
 
 jest.mock('../api/DataListHandler');
 const mockExtractListFromDataList =
@@ -30,13 +32,13 @@ const mockExtractListFromDataList =
     typeof extractListFromDataList
   >;
 
-jest.mock('../../../../utils/converter/RecordTypeConverter');
+jest.mock('../../converter/RecordTypeConverter');
 const mockConvertToObjectWithRecordType =
   convertToObjectWithRecordType as jest.MockedFunction<
     typeof convertToObjectWithRecordType
   >;
 
-jest.mock('../../../../utils/http/HttpClient');
+jest.mock('../../http/HttpClient');
 const mockHttpClientGet = httpClient.get as jest.MockedFunction<
   typeof httpClient.get
 >;
