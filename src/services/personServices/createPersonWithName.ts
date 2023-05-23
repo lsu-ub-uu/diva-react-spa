@@ -8,7 +8,6 @@ export const createPersonWithName = async (
   authToken?: string,
   contentType?: string,
 ) => {
-  console.log('create', authToken);
   const urlForNewPersonCreation =
     'https://cora.epc.ub.uu.se/diva/rest/record/person/';
   const bodyForNewPersonCreation = composeNewPersonData(newPerson);
@@ -74,6 +73,5 @@ const composeNewPersonData = (newPerson: Person) => {
       },
     ],
   };
-  // console.log(JSON.stringify(personData));
   return personData;
 };
