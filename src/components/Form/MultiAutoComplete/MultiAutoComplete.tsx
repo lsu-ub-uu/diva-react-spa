@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect, SyntheticEvent } from 'react';
 import TextField from '@mui/material/TextField';
 import { Autocomplete as MuiAutocomplete, IconButton } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
@@ -9,19 +9,34 @@ import { SelectItem } from '../../index';
 
 interface MultiAutoCompleteProps {
   loading: boolean;
+  values: string[];
   placeholder?: string;
   options: SelectItem[];
-  onSelected?: (id: string) => void;
+  onChange?: (id: string[]) => void;
   onBrowseButtonClicked?: () => void;
 }
 
 export const MultiAutoComplete = (
   props: MultiAutoCompleteProps,
 ): JSX.Element => {
-  // store items selected string[]
+  const [selected, setSelected] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelected(props.values);
+  }, [props.values]);
+
+  const getItemsFromIds = () => {
+    return props.options.filter((item) => selected.indexOf(item.id) > -1);
+  };
 
   return (
     <MuiAutocomplete
+      value={getItemsFromIds()}
+      onChange={(event: SyntheticEvent, selectItems: SelectItem[]) => {
+        const ids = selectItems.map((item) => item.id);
+        setSelected(ids);
+        if (props.onChange) props.onChange(ids);
+      }}
       loading={props.loading}
       clearText='Clear all'
       size='small'
