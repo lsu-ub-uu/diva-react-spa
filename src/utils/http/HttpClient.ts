@@ -53,6 +53,7 @@ class HttpClient implements IHttpClient {
             headers: { authToken, 'Content-Type': contentType },
           };
         }
+
         axios
           .post(url, body, axiosRequestConfig)
           .then((response: any) => {

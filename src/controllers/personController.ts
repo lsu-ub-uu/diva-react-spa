@@ -12,8 +12,9 @@ export const getPersons = async (req: Request, res: Response) => {
 // @route		Post /api/users/:newPersonWithName
 // @access	Public
 export const postNewPerson = async (req: Request, res: Response) => {
-  // const contentType = req.header
   const newPerson = req.body;
+
+  console.log(req.headers.authorization);
   let authToken;
   if (
     req.headers.authorization &&
@@ -23,7 +24,7 @@ export const postNewPerson = async (req: Request, res: Response) => {
   }
   try {
     const createdPerson = await createPersonWithName(newPerson, authToken);
-    res.status(200).json(createdPerson);
+    res.status(201).json(createdPerson);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

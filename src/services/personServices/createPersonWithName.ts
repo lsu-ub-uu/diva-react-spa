@@ -6,7 +6,9 @@ import { IHttpClientRequestParameters } from '../../utils/http/IHttpClient';
 export const createPersonWithName = async (
   newPerson: Person,
   authToken?: string,
+  contentType?: string,
 ) => {
+  console.log('create', authToken);
   const urlForNewPersonCreation =
     'https://cora.epc.ub.uu.se/diva/rest/record/person/';
   const bodyForNewPersonCreation = composeNewPersonData(newPerson);
@@ -22,9 +24,41 @@ export const createPersonWithName = async (
 const composeNewPersonData = (newPerson: Person) => {
   const givenName: string | any = newPerson.authorisedName?.givenName;
   const familyName: string | any = newPerson.authorisedName?.familyName;
+
   const personData: DataGroup = {
     name: 'person',
     children: [
+      {
+        name: 'recordInfo',
+        children: [
+          {
+            name: 'dataDivider',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'system',
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'diva',
+              },
+            ],
+          },
+          {
+            name: 'validationType',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'validationType',
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'person',
+              },
+            ],
+          },
+        ],
+      },
       {
         name: 'authorisedName',
         children: [
@@ -38,21 +72,8 @@ const composeNewPersonData = (newPerson: Person) => {
           },
         ],
       },
-      {
-        name: 'recordInfo',
-        children: [
-          {
-            name: 'dataDivider',
-            value: 'diva',
-          },
-          {
-            name: 'validationType',
-            value: 'person',
-          },
-        ],
-      },
     ],
   };
-  console.log(JSON.stringify(personData));
+  // console.log(JSON.stringify(personData));
   return personData;
 };
