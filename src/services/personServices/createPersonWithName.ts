@@ -1,28 +1,63 @@
 import { Person } from '../../types';
-import { DataGroup } from '../../utils/cora-data/CoraData';
+import { DataGroup, DataListWrapper } from '../../utils/cora-data/CoraData';
+import httpClient from '../../utils/http/HttpClient';
+import { IHttpClientRequestParameters } from '../../utils/http/IHttpClient';
 
-export const createPersonWithName = (newPerson: Person, authToken?: string) => {
-  return new Promise((resolve, reject) => {
-    if (newPerson === ('' as any)) {
-      reject(new Error('No newPerson was passed to createPersonWithName'));
-    } else {
-      const urlForNewPersonCreation = composeUrlForNewPersonSearch(newPerson);
-    }
-  });
-};
-const composeUrlForNewPersonSearch = (newPerson: Person) => {
-  const personData = composeNewPersonData(newPerson);
-  console.log('pD', personData);
-  return `https://cora.epc.ub.uu.se/diva/rest/record/person/`;
+export const createPersonWithName = async (
+  newPerson: Person,
+  authToken?: string,
+  contentType?: string,
+) => {
+  const urlForNewPersonCreation =
+    'https://cora.epc.ub.uu.se/diva/rest/record/person/';
+  const bodyForNewPersonCreation = composeNewPersonData(newPerson);
+  const parameters: IHttpClientRequestParameters = {
+    contentType: 'application/vnd.uub.record+json',
+    url: urlForNewPersonCreation,
+    body: JSON.stringify(bodyForNewPersonCreation),
+    authToken,
+  };
+  return httpClient.post(parameters);
 };
 
 const composeNewPersonData = (newPerson: Person) => {
-  console.log('com', newPerson);
   const givenName: string | any = newPerson.authorisedName?.givenName;
   const familyName: string | any = newPerson.authorisedName?.familyName;
+
   const personData: DataGroup = {
     name: 'person',
     children: [
+      {
+        name: 'recordInfo',
+        children: [
+          {
+            name: 'dataDivider',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'system',
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'diva',
+              },
+            ],
+          },
+          {
+            name: 'validationType',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'validationType',
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'person',
+              },
+            ],
+          },
+        ],
+      },
       {
         name: 'authorisedName',
         children: [
@@ -33,19 +68,6 @@ const composeNewPersonData = (newPerson: Person) => {
           {
             name: 'familyName',
             value: familyName,
-          },
-        ],
-      },
-      {
-        name: 'recordInfo',
-        children: [
-          {
-            name: 'dataDivider',
-            value: '',
-          },
-          {
-            name: 'validationType',
-            value: 'Person',
           },
         ],
       },

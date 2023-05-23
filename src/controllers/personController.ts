@@ -13,11 +13,22 @@ export const getPersons = async (req: Request, res: Response) => {
 // @access	Public
 export const postNewPerson = async (req: Request, res: Response) => {
   const newPerson = req.body;
-  // console.log(req.body);
+
+  let authToken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    authToken = req.headers.authorization?.split(' ')[1];
+  }
   try {
-    const createdPerson = await createPersonWithName(newPerson);
-    res.status(200).json(createdPerson);
-  } catch {
-    res.status(500).json({ error: `No post created` });
+    const createdPerson = await createPersonWithName(newPerson, authToken);
+    res.status(201).json(createdPerson);
+  } catch (error: any) {
+    res
+      .status(error.status)
+      .json(
+        `Request returned status code ${error.status} with message '${error.data}'`,
+      );
   }
 };

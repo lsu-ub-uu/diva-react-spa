@@ -54,10 +54,10 @@ POST http://localhost:8080/api/person/create
 ### POST new person
 POST http://localhost:8080/api/person/create
 Content-Type: application/json
+Authorization: Bearer ff8d1c19-e927-4eb9-9d80-e3d7ae6e19c9
 
 {
   "recordInfo": {
-    "dataDivider": "",
     "validationType": "Person"
   },
   "authorisedName": {
