@@ -1,11 +1,19 @@
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useEffect } from 'react';
 import { Avatar, Button, Menu, MenuItem } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import { dummyLoginAsync } from '../../../features/auth/actions';
+import { logout } from '../../../features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useBackdrop } from '../../Backdrop/BackdropContext';
+import { authStateSelector } from '../../../features/auth/selectors';
 
 export const Login = (): JSX.Element => {
-  const [authenticated, setAuthenticated] = useState(false);
-
+  const { setBackdrop } = useBackdrop();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const dispatch = useAppDispatch();
+  const authState = useAppSelector(authStateSelector);
+
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -14,14 +22,26 @@ export const Login = (): JSX.Element => {
     setAnchorEl(null);
   };
 
-  const handleSelection = () => {
-    handleClose()
+  const handleSelection = (event: MouseEvent<HTMLElement>, account: string) => {
+    event.preventDefault();
+    setBackdrop(true);
+    dispatch(dummyLoginAsync(() => setBackdrop(false)));
+    handleClose();
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
     <div>
-      {authenticated ? (
-        <Avatar onClick={() => setAuthenticated(false)}>EL</Avatar>
+      {authState.userSession !== null ? (
+        <Avatar
+          alt='Logout user'
+          onClick={handleLogout}
+        >
+          <PersonIcon />
+        </Avatar>
       ) : (
         <>
           <Button onClick={handleClick}>Log in</Button>
@@ -36,9 +56,9 @@ export const Login = (): JSX.Element => {
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem onClick={handleSelection}>TestUser1</MenuItem>
-            <MenuItem onClick={handleSelection}>TestDivaEverything</MenuItem>
-            <MenuItem onClick={handleSelection}>SomeHardcodedUser</MenuItem>
+            <MenuItem onClick={(event) => handleSelection(event, 'divaEvery')}>
+              TestUser1
+            </MenuItem>
           </Menu>
         </>
       )}

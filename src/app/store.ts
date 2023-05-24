@@ -10,8 +10,10 @@ import subjectCategoryReducer from '../features/subjectCategory/subjectCategoryS
 import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
 import recordTypeReducer from '../features/recordType/recordTypeSlice';
 import searchReducer from '../features/search/searchSlice';
+import authReducer from '../features/auth/authSlice';
 
 const combinedReducer = combineReducers({
+  auth: authReducer,
   dummy: dummyReducer,
   publicationType: publicationTypeReducer,
   subjectCategory: subjectCategoryReducer,

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import logo from './divaLogo.svg';
 import { Login } from './Login';
