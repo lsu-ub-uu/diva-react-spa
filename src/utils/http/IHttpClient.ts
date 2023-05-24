@@ -8,10 +8,4 @@ export interface IHttpClientRequestParameters {
   url: string;
   body?: any;
   authToken?: string;
-} /* 
-
-export interface IHttpClientRequestPostParameters
-  extends IHttpClientRequestParameters {
-  body: {};
 }
- */

@@ -25,10 +25,6 @@ export const postNewPerson = async (req: Request, res: Response) => {
     const createdPerson = await createPersonWithName(newPerson, authToken);
     res.status(201).json(createdPerson);
   } catch (error: any) {
-    res
-      .status(error.status)
-      .json(
-        `Request returned status code ${error.status} with message '${error.data}'`,
-      );
+    res.status(500).json({ error: `No post created` });
   }
 };
