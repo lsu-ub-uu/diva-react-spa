@@ -1,6 +1,7 @@
 import { Avatar, Box, Button, Container, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import logo from './divaLogo.svg';
+import { Login } from './Login';
 
 export const Header = () => {
   const { i18n } = useTranslation();
@@ -34,7 +35,7 @@ export const Header = () => {
             <Button onClick={() => i18n.changeLanguage('en')}>English</Button>
           </Grid>
           <Grid item>
-            <Avatar>EL</Avatar>
+            <Login />
           </Grid>
         </Grid>
       </Container>
