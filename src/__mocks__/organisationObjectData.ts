@@ -1,16 +1,16 @@
-import { Organisation } from 'diva-cora-ts-api-wrapper';
+import { Organisation } from '../types';
 
 const createOrganisationWithNameAndId = (
-	name: string,
-	id: string
+  name: string,
+  id: string,
 ): Organisation => {
-	return {
-		name,
-		alternativeName: `${name}Alternative`,
-		id,
-		recordType: 'organisation',
-		organisationType: 'topOrganisation',
-	};
+  return {
+    name,
+    alternativeName: `${name}Alternative`,
+    id,
+    recordType: 'organisation',
+    organisationType: 'topOrganisation',
+  };
 };
 
 export default createOrganisationWithNameAndId;
