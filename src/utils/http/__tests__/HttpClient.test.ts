@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import httpClient from '../HttpClient';
 import { IHttpClientRequestParameters } from '../IHttpClient';
 
@@ -203,36 +203,19 @@ describe('The HttpClient', () => {
   describe('the post method', () => {
     it('should exist and take IHttpClientRequestParameters', () => {
       const parameters: IHttpClientRequestParameters = {
+        contentType: 'application/vnd.uub.record+json',
         url: 'someUrl',
         authToken: 'someAuthToken',
       };
+
       httpClient.post(parameters);
     });
 
     it('should call axios.post with url', async () => {
       const parameters: IHttpClientRequestParameters = {
         url: 'someUrl',
-      };
-
-      expect.assertions(4);
-
-      await httpClient.post(parameters);
-
-      expect(mockedAxios.post).toHaveBeenCalledTimes(1);
-      expect(mockedAxios.post).toHaveBeenCalledWith(parameters.url, {});
-
-      const parameters2: IHttpClientRequestParameters = {
-        url: 'someOtherUrl',
-      };
-      httpClient.post(parameters2);
-
-      expect(mockedAxios.post).toHaveBeenCalledTimes(2);
-      expect(mockedAxios.post).toHaveBeenCalledWith(parameters2.url, {});
-    });
-
-    it('should call axios.post with authToken if authToken set', async () => {
-      const parameters: IHttpClientRequestParameters = {
-        url: 'someUrl',
+        body: 'someBody',
+        contentType: 'application/vnd.uub.record+json',
         authToken: 'someAuthToken',
       };
 
@@ -241,9 +224,61 @@ describe('The HttpClient', () => {
       await httpClient.post(parameters);
 
       expect(mockedAxios.post).toHaveBeenCalledTimes(1);
-      expect(mockedAxios.post).toHaveBeenCalledWith(parameters.url, {
-        headers: { authToken: 'someAuthToken' },
-      });
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        parameters.url,
+        parameters.body,
+        {
+          headers: {
+            'Content-Type': 'application/vnd.uub.record+json',
+            authToken: 'someAuthToken',
+          },
+        },
+      );
+      const parameters2: IHttpClientRequestParameters = {
+        url: 'someOtherUrl',
+        body: 'someBody',
+        contentType: 'application/vnd.uub.record+json',
+        authToken: 'someAuthToken',
+      };
+
+      await httpClient.post(parameters2);
+
+      expect(mockedAxios.post).toHaveBeenCalledTimes(2);
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        parameters2.url,
+        parameters2.body,
+        {
+          headers: {
+            'Content-Type': 'application/vnd.uub.record+json',
+            authToken: 'someAuthToken',
+          },
+        },
+      );
+    });
+
+    it('should call axios.post with authToken if authToken set', async () => {
+      const parameters: IHttpClientRequestParameters = {
+        url: 'someUrl',
+        body: 'someBody',
+        contentType: 'application/vnd.uub.record+json',
+        authToken: 'someAuthToken',
+      };
+
+      expect.assertions(4);
+
+      await httpClient.post(parameters);
+
+      expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        parameters.url,
+        parameters.body,
+        {
+          headers: {
+            'Content-Type': 'application/vnd.uub.record+json',
+            authToken: 'someAuthToken',
+          },
+        },
+      );
 
       const parameters2: IHttpClientRequestParameters = {
         url: 'someOtherUrl',
@@ -252,9 +287,13 @@ describe('The HttpClient', () => {
       httpClient.post(parameters2);
 
       expect(mockedAxios.post).toHaveBeenCalledTimes(2);
-      expect(mockedAxios.post).toHaveBeenCalledWith(parameters2.url, {
-        headers: { authToken: 'someOtherToken' },
-      });
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        parameters2.url,
+        parameters2.body,
+        {
+          headers: { authToken: 'someOtherToken' },
+        },
+      );
     });
 
     it('should reject with error if url is empty', async () => {
@@ -302,7 +341,7 @@ describe('The HttpClient', () => {
         mockedAxios.post.mockRejectedValueOnce({
           response: {
             data: 'Some error message',
-            status: 404,
+            status: 401,
             headers: {},
           },
           request: 'XMLHttpRequest',
@@ -317,9 +356,11 @@ describe('The HttpClient', () => {
         try {
           await httpClient.post(parameters);
         } catch (error: unknown) {
+          const axiosError: AxiosError = <AxiosError>error;
+          console.log(axiosError);
           const castError: Error = <Error>error;
-          expect(castError.message).toStrictEqual(
-            "Request returned status code 404 with message 'Some error message'",
+          expect(axiosError.message).toStrictEqual(
+            "Request returned status code 401 with message 'Some error message'",
           );
         }
       });
