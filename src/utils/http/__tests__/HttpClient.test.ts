@@ -114,31 +114,72 @@ describe('The HttpClient', () => {
     });
 
     describe('should handle axios errors', () => {
-      it('should reject with error if axios throws with response', async () => {
-        mockedAxios.get.mockRejectedValueOnce({
-          response: {
-            data: 'Some error message',
-            status: 404,
-            headers: {},
-          },
-          request: 'XMLHttpRequest',
-          message: 'Some general error message',
-        });
+      it.each([
+        [400, 'Bad Request'],
+        [401, 'Unauthorized'],
+        [403, 'Forbidden'],
+        [404, 'Not Found'],
+        [405, 'Method Not Allowed'],
+        [406, 'Not Acceptable'],
+        [407, 'Proxy Authentication Required'],
+        [408, 'Request Timeout'],
+        [409, 'Conflict'],
+        [410, 'Gone'],
+        [411, 'Length Required'],
+        [412, 'Precondition Failed'],
+        [413, 'Payload Too Large'],
+        [414, 'URI Too Long'],
+        [415, 'Unsupported Media Type'],
+        [416, 'Range Not Satisfiable'],
+        [417, 'Expectation Failed'],
+        [418, "I'm a teapot"],
+        [421, 'Misdirected Request'],
+        [422, 'Unprocessable Content'],
+        [423, 'Locked'],
+        [424, 'Failed Dependency'],
+        [425, 'Too Early Experimental'],
+        [426, 'Upgrade Required'],
+        [428, 'Precondition Required'],
+        [429, 'Too Many Requests'],
+        [431, 'Request Header Fields Too Large'],
+        [451, 'Unavailable For Legal Reasons'],
+        [500, 'Internal Server Error'],
+        [501, 'Not Implemented'],
+        [502, 'Bad Gateway'],
+        [503, 'Service Unavailable'],
+        [504, 'Gateway Timeout'],
+        [505, 'HTTP Version Not Supported'],
+        [510, 'Not Extended'],
+        [511, 'Network Authentication Required'],
+      ])(
+        'should reject with error code %p if axios throws with response %p',
+        async (errorCode, errorMessage) => {
+          mockedAxios.get.mockRejectedValueOnce({
+            response: {
+              data: errorMessage,
+              status: errorCode,
+              headers: {},
+            },
+            request: 'XMLHttpRequest',
+            message: 'Some general error message',
+          });
 
-        const parameters: IHttpClientRequestParameters = {
-          url: 'someUrl',
-        };
+          const parameters: IHttpClientRequestParameters = {
+            url: 'someUrl',
+          };
 
-        expect.assertions(1);
-        try {
-          await httpClient.get(parameters);
-        } catch (error: unknown) {
-          const castError: Error = <Error>error;
-          expect(castError.message).toStrictEqual(
-            "Request returned status code 404 with message 'Some error message'",
-          );
-        }
-      });
+          expect.assertions(1);
+          try {
+            await httpClient.get(parameters);
+          } catch (error: unknown) {
+            const axiosError: AxiosError = <AxiosError>error;
+            const castError: Error = <Error>error;
+            expect(axiosError.message).toStrictEqual(
+              `Request returned status code ${errorCode} with message '${errorMessage}'`,
+            );
+          }
+        },
+      );
 
       it('should reject with error if axios throws with XMLHttpRequest', async () => {
         mockedAxios.get.mockRejectedValueOnce({
@@ -337,33 +378,73 @@ describe('The HttpClient', () => {
     });
 
     describe('should handle axios errors', () => {
-      it('should reject with error if axios throws with response', async () => {
-        mockedAxios.post.mockRejectedValueOnce({
-          response: {
-            data: 'Some error message',
-            status: 401,
-            headers: {},
-          },
-          request: 'XMLHttpRequest',
-          message: 'Some general error message',
-        });
+      it.each([
+        [400, 'Bad Request'],
+        [401, 'Unauthorized'],
+        [403, 'Forbidden'],
+        [404, 'Not Found'],
+        [405, 'Method Not Allowed'],
+        [406, 'Not Acceptable'],
+        [407, 'Proxy Authentication Required'],
+        [408, 'Request Timeout'],
+        [409, 'Conflict'],
+        [410, 'Gone'],
+        [411, 'Length Required'],
+        [412, 'Precondition Failed'],
+        [413, 'Payload Too Large'],
+        [414, 'URI Too Long'],
+        [415, 'Unsupported Media Type'],
+        [416, 'Range Not Satisfiable'],
+        [417, 'Expectation Failed'],
+        [418, "I'm a teapot"],
+        [421, 'Misdirected Request'],
+        [422, 'Unprocessable Content'],
+        [423, 'Locked'],
+        [424, 'Failed Dependency'],
+        [425, 'Too Early Experimental'],
+        [426, 'Upgrade Required'],
+        [428, 'Precondition Required'],
+        [429, 'Too Many Requests'],
+        [431, 'Request Header Fields Too Large'],
+        [451, 'Unavailable For Legal Reasons'],
+        [500, 'Internal Server Error'],
+        [501, 'Not Implemented'],
+        [502, 'Bad Gateway'],
+        [503, 'Service Unavailable'],
+        [504, 'Gateway Timeout'],
+        [505, 'HTTP Version Not Supported'],
+        [510, 'Not Extended'],
+        [511, 'Network Authentication Required'],
+      ])(
+        'should reject with error code %p if axios throws with response %p',
+        async (errorCode, errorMessage) => {
+          mockedAxios.post.mockRejectedValueOnce({
+            response: {
+              data: errorMessage,
+              status: errorCode,
+              headers: {},
+            },
+            request: 'XMLHttpRequest',
+            message: 'Some general error message',
+          });
 
-        const parameters: IHttpClientRequestParameters = {
-          url: 'someUrl',
-        };
+          const parameters: IHttpClientRequestParameters = {
+            url: 'someUrl',
+          };
 
-        expect.assertions(1);
-        try {
-          await httpClient.post(parameters);
-        } catch (error: unknown) {
-          const axiosError: AxiosError = <AxiosError>error;
-          console.log(axiosError);
-          const castError: Error = <Error>error;
-          expect(axiosError.message).toStrictEqual(
-            "Request returned status code 401 with message 'Some error message'",
-          );
-        }
-      });
+          expect.assertions(1);
+          try {
+            await httpClient.post(parameters);
+          } catch (error: unknown) {
+            const axiosError: AxiosError = <AxiosError>error;
+            console.log(axiosError);
+            const castError: Error = <Error>error;
+            expect(axiosError.message).toStrictEqual(
+              `Request returned status code ${errorCode} with message '${errorMessage}'`,
+            );
+          }
+        },
+      );
 
       it('should reject with error if axios throws with XMLHttpRequest', async () => {
         mockedAxios.post.mockRejectedValueOnce({
