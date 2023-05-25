@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useBackdrop } from '../../Backdrop/BackdropContext';
 import { authStateSelector } from '../../../features/auth/selectors';
 
-interface DummyAccount {
+export interface DummyAccount {
   alias: string;
   userId: string;
   appToken: string;
@@ -40,11 +40,9 @@ export const Login = (): JSX.Element => {
     event: MouseEvent<HTMLElement>,
     account: DummyAccount,
   ) => {
-    console.log(account);
     event.preventDefault();
     setBackdrop(true);
-    // pass DummyAccount
-    dispatch(dummyLoginAsync(() => setBackdrop(false)));
+    dispatch(dummyLoginAsync(account, () => setBackdrop(false)));
     handleClose();
   };
 

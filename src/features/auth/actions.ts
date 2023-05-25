@@ -5,6 +5,7 @@ import {
   authenticating,
   hasError,
 } from './authSlice';
+import { DummyAccount } from '../../components/Layout/Header/Login';
 
 function DelayPromiseResolve(delay: number) {
   return new Promise((resolve) => {
@@ -13,11 +14,13 @@ function DelayPromiseResolve(delay: number) {
 }
 
 export const dummyLoginAsync =
-  (callback?: Function): AppThunk =>
+  (dummyAccount: DummyAccount, callback?: Function): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(authenticating());
-      // replace with API call to BFF to obtain authToken
+      // replace with API call to BFF with userId and appToken to obtain authToken and name info
+      console.log(dummyAccount.userId);
+      console.log(dummyAccount.appToken);
       await DelayPromiseResolve(1000);
       // mocked session
       const tempSession = {
