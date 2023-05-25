@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useEffect } from 'react';
+import { useState, MouseEvent } from 'react';
 import { Avatar, Button, Menu, MenuItem } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { dummyLoginAsync } from '../../../features/auth/actions';
@@ -6,6 +6,20 @@ import { logout } from '../../../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useBackdrop } from '../../Backdrop/BackdropContext';
 import { authStateSelector } from '../../../features/auth/selectors';
+
+export interface DummyAccount {
+  alias: string;
+  userId: string;
+  appToken: string;
+}
+
+const dummyAccounts: DummyAccount[] = [
+  {
+    alias: 'DivaEverything',
+    userId: 'coraUser:490742519075086',
+    appToken: '2e57eb36-55b9-4820-8c44-8271baab4e8e',
+  },
+];
 
 export const Login = (): JSX.Element => {
   const { setBackdrop } = useBackdrop();
@@ -22,10 +36,13 @@ export const Login = (): JSX.Element => {
     setAnchorEl(null);
   };
 
-  const handleSelection = (event: MouseEvent<HTMLElement>, account: string) => {
+  const handleSelection = (
+    event: MouseEvent<HTMLElement>,
+    account: DummyAccount,
+  ) => {
     event.preventDefault();
     setBackdrop(true);
-    dispatch(dummyLoginAsync(() => setBackdrop(false)));
+    dispatch(dummyLoginAsync(account, () => setBackdrop(false)));
     handleClose();
   };
 
@@ -56,9 +73,14 @@ export const Login = (): JSX.Element => {
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem onClick={(event) => handleSelection(event, 'divaEvery')}>
-              TestUser1
-            </MenuItem>
+            {dummyAccounts.map((dummyAccount, index) => (
+              <MenuItem
+                key={index}
+                onClick={(event) => handleSelection(event, dummyAccount)}
+              >
+                {dummyAccount.alias}
+              </MenuItem>
+            ))}
           </Menu>
         </>
       )}

@@ -6,7 +6,7 @@ const SESSION_STORAGE_NAME = 'diva_session';
 export interface UserSession {
   givenName: string;
   familyName: string;
-  token: string;
+  authToken: string;
 }
 export interface AuthState {
   isAuthenticated: boolean;
@@ -44,7 +44,7 @@ const initialState = {
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: initialState,
+  initialState,
   reducers: {
     authenticating: (state) => {
       state.isAuthenticating = true;
@@ -74,8 +74,5 @@ export const authSlice = createSlice({
 
 export const { authenticated, logout, authenticating, hasError } =
   authSlice.actions;
-
-// Move
-// export const authStateSelector = (state: RootState): AuthState => state.auth;
 
 export default authSlice.reducer;
