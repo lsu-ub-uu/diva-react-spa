@@ -6,7 +6,6 @@ import { IHttpClientRequestParameters } from '../../utils/http/IHttpClient';
 export const createPersonWithName = async (
   newPerson: Person,
   authToken?: string,
-  contentType?: string,
 ) => {
   const urlForNewPersonCreation =
     'https://cora.epc.ub.uu.se/diva/rest/record/person/';

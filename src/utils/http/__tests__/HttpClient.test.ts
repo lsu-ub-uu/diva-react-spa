@@ -174,7 +174,9 @@ describe('The HttpClient', () => {
           } catch (error: unknown) {
             const axiosError: AxiosError = <AxiosError>error;
             const castError: Error = <Error>error;
-            expect(axiosError.message).toStrictEqual(
+            console.log(castError);
+            console.log(error);
+            expect(axiosError.message).toEqual(
               `Request returned status code ${errorCode} with message '${errorMessage}'`,
             );
           }

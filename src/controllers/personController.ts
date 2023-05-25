@@ -21,10 +21,13 @@ export const postNewPerson = async (req: Request, res: Response) => {
   ) {
     authToken = req.headers.authorization?.split(' ')[1];
   }
+
   try {
     const createdPerson = await createPersonWithName(newPerson, authToken);
     res.status(201).json(createdPerson);
   } catch (error: any) {
-    res.status(500).json({ error: `No post created` });
+    const errorMessage = error.message;
+    const errorCode = Number(errorMessage.match(/\d+/)[0]);
+    res.status(errorCode).json(errorMessage);
   }
 };
