@@ -6,16 +6,24 @@ import {
   hasError,
 } from './authSlice';
 
+function DelayPromiseResolve(delay: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
+}
+
 export const dummyLoginAsync =
   (callback?: Function): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(authenticating());
+      // replace with API call to BFF to obtain authToken
       await DelayPromiseResolve(1000);
+      // mocked session
       const tempSession = {
         givenName: 'John',
         familyName: 'Doe',
-        token: 'token' + new Date().getMilliseconds(),
+        authToken: new Date().getTime().toString(),
       } as UserSession;
       dispatch(authenticated(tempSession));
     } catch (e) {
@@ -24,9 +32,3 @@ export const dummyLoginAsync =
       if (callback) callback();
     }
   };
-
-function DelayPromiseResolve(delay: number) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, delay);
-  });
-}
