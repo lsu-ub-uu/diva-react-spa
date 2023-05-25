@@ -60,8 +60,14 @@ class HttpClient implements IHttpClient {
             resolve(response.data as T);
           })
           .catch((error: unknown) => {
+            // console.log(error);
             const axiosError: AxiosError = <AxiosError>error;
             if (axiosError.response) {
+              error = {
+                status: axiosError.response.status,
+                data: axiosError.response.data,
+              };
+              // console.log(error);
               reject(
                 new Error(
                   `Request returned status code ${axiosError.response.status} with message '${axiosError.response.data}'`,

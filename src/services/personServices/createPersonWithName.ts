@@ -8,11 +8,12 @@ export const createPersonWithName = async (
   authToken?: string,
   contentType?: string,
 ) => {
+  const contentType2 = 'application/vnd.uub.record+json';
   const urlForNewPersonCreation =
     'https://cora.epc.ub.uu.se/diva/rest/record/person/';
   const bodyForNewPersonCreation = composeNewPersonData(newPerson);
   const parameters: IHttpClientRequestParameters = {
-    contentType: 'application/vnd.uub.record+json',
+    contentType: contentType2,
     url: urlForNewPersonCreation,
     body: JSON.stringify(bodyForNewPersonCreation),
     authToken,

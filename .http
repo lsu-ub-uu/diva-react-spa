@@ -53,8 +53,8 @@ POST http://localhost:8080/api/person/create
 
 ### POST new person
 POST http://localhost:8080/api/person/create
-Content-Type: application/json
-Authorization: Bearer 2dbaa130-7b69-4106-a675-f36f09d928ea
+Content-Type: application/jsonn
+Authorization: Bearer e0e3e248-4ce0-4003-bfb1-4b2eaf17914c
 
 {
   "recordInfo": {
