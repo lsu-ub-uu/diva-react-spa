@@ -14,7 +14,7 @@ const personSearch = async (
   const { start, rows } = searchPersonRequest.paginationRequest;
 
   const response = await axios.get(
-    `${BFF_API_URL}/search/test/person/${searchPersonRequest.searchTerm}?start=${start}&rows=${rows}`,
+    `${BFF_API_URL}/search/admin/person/${searchPersonRequest.searchTerm}?start=${start}&rows=${rows}`,
   );
   return response.data;
 };
