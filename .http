@@ -48,6 +48,9 @@ GET http://localhost:8080/api/search/admin/person/kalle?start=20&rows=53
 
 
 # POST
+### GET authToken
+GET http://localhost:8080/api/auth/coraUser:490742519075086
+
 ### POST new person
 POST http://localhost:8080/api/person/create
 
@@ -96,4 +99,7 @@ GET https://cora.diva-portal.org/diva/rest/record/searchResult/publicPersonSearc
 
 Accept: application/vnd.uub.recordList+json
 
+# Auth
+###
+POST https://cora.epc.ub.uu.se/diva/apptokenverifier/rest/apptoken/coraUser:490742519075086
 

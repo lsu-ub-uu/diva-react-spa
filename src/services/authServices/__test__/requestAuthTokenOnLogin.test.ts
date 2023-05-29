@@ -1,60 +1,64 @@
 import httpClient from '../../../utils/http/HttpClient';
 import { newCreatedPerson } from '../../../__mocks__/personObjectData';
-import { createPersonWithName } from '../createPersonWithName';
+import { authDataForOnePerson } from '../../../__mocks__/authTestData';
+import { requestAuthTokenOnLogin } from '../requestAuthTokenOnLogin';
+import { IHttpClientRequestParameters } from '../../../utils/http/IHttpClient';
 
+// console.log(authDataForOnePerson);
 jest.mock('../../../utils/http/HttpClient');
 
 const mockHttpClientPost = httpClient.post as jest.MockedFunction<
   typeof httpClient.post
 >;
 
-describe('createPersonWithName', () => {
+describe('requestAuthTokenOnLogin', () => {
   beforeAll(() => {
     process.env.REST_API_BASE_URL = 'baseUrl/';
     mockHttpClientPost.mockResolvedValueOnce({
-      newCreatedPerson,
+      authDataForOnePerson,
     });
   });
-  it('should exist and take newPerson and optional authToken', () => {
-    createPersonWithName(newCreatedPerson);
-    createPersonWithName(newCreatedPerson, 'someAuthToken');
+  it('should exist and take a user ID', () => {
+    requestAuthTokenOnLogin('authDataForOnePerson');
   });
   it('should reject with error if newPerson is empty and not call httpClient', async () => {
-    // expect.assertions(2);
+    //expect.assertions(2);
 
     try {
-      await createPersonWithName('' as any);
+      await requestAuthTokenOnLogin('' as any);
     } catch (error: unknown) {
       const castError: Error = <Error>error;
       expect(castError.message).toStrictEqual(
-        'No newPerson was passed to createPersonWithName',
+        'No userId was passed to createPersonWithName',
       );
       expect(mockHttpClientPost).toHaveBeenCalledTimes(0);
     }
   });
   it('should correctly call httpClient with parameters', async () => {
-    const expectedUrl = `https://cora.epc.ub.uu.se/diva/rest/record/person/`;
-
+    const coraUser = 'coraUser:490742519075086';
+    const parameters: IHttpClientRequestParameters = {
+      url: `https://cora.epc.ub.uu.se/diva/apptokenverifier/rest/apptoken/${coraUser}`,
+      contentType: 'text/plain;charset=UTF-8',
+    };
     expect.assertions(2);
 
-    await createPersonWithName(newCreatedPerson);
+    await requestAuthTokenOnLogin(coraUser);
 
     expect(mockHttpClientPost).toHaveBeenCalledTimes(1);
-    expect(mockHttpClientPost).toHaveBeenCalledWith(
-      expect.objectContaining({
-        url: expectedUrl,
-      }),
-    );
+    expect(mockHttpClientPost).toHaveBeenCalledWith({
+      url: parameters.url,
+      contentType: parameters.contentType,
+    });
   });
   it('should reject with an error if HttpClient throws error', async () => {
     mockHttpClientPost.mockRejectedValueOnce(
       new Error('Some error from httpClient'),
     );
 
-    expect.assertions(6);
+    // expect.assertions(6);
 
     try {
-      await createPersonWithName(newCreatedPerson);
+      await requestAuthTokenOnLogin('IdForOnePerson');
     } catch (error: unknown) {
       const castError: Error = <Error>error;
       expect(castError).toBeDefined();
@@ -67,7 +71,7 @@ describe('createPersonWithName', () => {
     );
 
     try {
-      await createPersonWithName(newCreatedPerson);
+      await requestAuthTokenOnLogin('IdForOnePerson');
     } catch (error: unknown) {
       const castError: Error = <Error>error;
       expect(castError).toBeDefined();

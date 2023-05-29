@@ -173,9 +173,7 @@ describe('The HttpClient', () => {
             await httpClient.get(parameters);
           } catch (error: unknown) {
             const axiosError: AxiosError = <AxiosError>error;
-            const castError: Error = <Error>error;
-            console.log(castError);
-            console.log(error);
+
             expect(axiosError.message).toEqual(
               `Request returned status code ${errorCode} with message '${errorMessage}'`,
             );
@@ -439,8 +437,6 @@ describe('The HttpClient', () => {
             await httpClient.post(parameters);
           } catch (error: unknown) {
             const axiosError: AxiosError = <AxiosError>error;
-            console.log(axiosError);
-            const castError: Error = <Error>error;
             expect(axiosError.message).toStrictEqual(
               `Request returned status code ${errorCode} with message '${errorMessage}'`,
             );

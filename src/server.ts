@@ -6,6 +6,7 @@ import recordTypeRoute from './routes/recordTypeRoute';
 import researchSubjectsRoute from './routes/researchSubjectsRoute';
 import subjectCategoriesRoute from './routes/subjectCategoriesRoute';
 import searchRoute from './routes/searchRoute';
+import authRoute from './routes/authRoute';
 
 const PORT = process.env.PORT || 8080;
 
@@ -13,6 +14,7 @@ const app: Application = express();
 
 configureServer(app);
 
+app.use('/api/auth', authRoute);
 app.use('/api/person', personRoute);
 app.use('/api/publication', publicationRoute);
 app.use('/api/recordtype', recordTypeRoute);
