@@ -48,8 +48,8 @@ GET http://localhost:8080/api/search/admin/person/kalle?start=20&rows=53
 
 
 # POST
-### GET authToken
-GET http://localhost:8080/api/auth/coraUser:490742519075086
+### POST request fot authToken as userAdmin
+POST http://localhost:8080/api/auth/coraUser:491055276494310
 
 ### POST new person
 POST http://localhost:8080/api/person/create
@@ -57,7 +57,7 @@ POST http://localhost:8080/api/person/create
 ### POST new person
 POST http://localhost:8080/api/person/create
 Content-Type: application/json
-Authorization: Bearer a1134202-7771-43fd-9a5a-1f2ddf3ff51a
+Authorization: Bearer ad26d834-bd24-4807-b172-46cf65f0fecd
 
 {
   "recordInfo": {
@@ -102,4 +102,3 @@ Accept: application/vnd.uub.recordList+json
 # Auth
 ###
 POST https://cora.epc.ub.uu.se/diva/apptokenverifier/rest/apptoken/coraUser:490742519075086
-

@@ -19,13 +19,19 @@ describe('requestAuthTokenOnLogin', () => {
     });
   });
   it('should exist and take a user ID', () => {
-    requestAuthTokenOnLogin('authDataForOnePerson');
+    requestAuthTokenOnLogin(
+      'authDataForOnePerson',
+      'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+    );
   });
-  it('should reject with error if newPerson is empty and not call httpClient', async () => {
+  it('should reject with error if username is empty and not call httpClient', async () => {
     //expect.assertions(2);
 
     try {
-      await requestAuthTokenOnLogin('' as any);
+      await requestAuthTokenOnLogin(
+        '' as any,
+        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      );
     } catch (error: unknown) {
       const castError: Error = <Error>error;
       expect(castError.message).toStrictEqual(
@@ -39,15 +45,20 @@ describe('requestAuthTokenOnLogin', () => {
     const parameters: IHttpClientRequestParameters = {
       url: `https://cora.epc.ub.uu.se/diva/apptokenverifier/rest/apptoken/${coraUser}`,
       contentType: 'text/plain;charset=UTF-8',
+      body: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     };
     expect.assertions(2);
 
-    await requestAuthTokenOnLogin(coraUser);
+    await requestAuthTokenOnLogin(
+      coraUser,
+      'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+    );
 
     expect(mockHttpClientPost).toHaveBeenCalledTimes(1);
     expect(mockHttpClientPost).toHaveBeenCalledWith({
       url: parameters.url,
       contentType: parameters.contentType,
+      body: parameters.body,
     });
   });
   it('should reject with an error if HttpClient throws error', async () => {
@@ -58,7 +69,10 @@ describe('requestAuthTokenOnLogin', () => {
     // expect.assertions(6);
 
     try {
-      await requestAuthTokenOnLogin('IdForOnePerson');
+      await requestAuthTokenOnLogin(
+        'IdForOnePerson',
+        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      );
     } catch (error: unknown) {
       const castError: Error = <Error>error;
       expect(castError).toBeDefined();
@@ -71,7 +85,10 @@ describe('requestAuthTokenOnLogin', () => {
     );
 
     try {
-      await requestAuthTokenOnLogin('IdForOnePerson');
+      await requestAuthTokenOnLogin(
+        'IdForOnePerson',
+        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      );
     } catch (error: unknown) {
       const castError: Error = <Error>error;
       expect(castError).toBeDefined();
