@@ -10,7 +10,7 @@ export const getAuthToken = async (req: Request, res: Response) => {
 
   try {
     const authToken = await requestAuthTokenOnLogin(user, APP_TOKEN_ADMIN);
-    console.log('authToken', authToken);
+
     res.status(201).json({ authToken });
   } catch (error: any) {
     const errorMessage = error.message;

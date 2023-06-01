@@ -5,7 +5,7 @@ export const authDataForOnePerson: CoraRecord = {
     children: [
       {
         name: 'id',
-        value: '25525fda-8e9f-46b5-83dd-e531b1f7e00b',
+        value: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       },
       {
         name: 'validForNoSeconds',
@@ -13,11 +13,11 @@ export const authDataForOnePerson: CoraRecord = {
       },
       {
         name: 'idInUserStorage',
-        value: 'coraUser:490742519075086',
+        value: 'coraUser:111111111111111',
       },
       {
         name: 'idFromLogin',
-        value: 'coraUser:490742519075086',
+        value: 'coraUser:111111111111111',
       },
       {
         name: 'firstName',
@@ -34,7 +34,7 @@ export const authDataForOnePerson: CoraRecord = {
     delete: {
       requestMethod: 'DELETE',
       rel: 'delete',
-      url: 'https://cora.epc.ub.uu.se/apptokenverifier/rest/apptoken/coraUser:490742519075086',
+      url: 'https://cora.epc.ub.uu.se/apptokenverifier/rest/apptoken/coraUser:111111111111111',
     },
   },
 };

@@ -52,7 +52,7 @@ describe('searchPersonsByGeneralSearch', () => {
   it('should correctly call httpClient with parameters', async () => {
     const generalSearch = `publicPersonSearch?searchData={"name":"search","children":[{"name":"include","children":[{"name":"includePart","children":[{"name":"personGeneralSearchTerm","value":"${searchTerm}"}]}]},{"name":"start","value":"1"},{"name":"rows","value":"2"}]}`;
     const expectedUrl = `https://cora.test.diva-portal.org/diva/rest/${searchEndpoint}${generalSearch}`;
-
+    // aaaa
     expect.assertions(2);
 
     await searchPersonsByGeneralSearch('someSearchTerm', 1, 2);
