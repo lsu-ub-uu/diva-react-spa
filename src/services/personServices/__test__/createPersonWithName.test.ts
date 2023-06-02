@@ -5,7 +5,7 @@ import { createPersonWithName } from '../createPersonWithName';
 jest.mock('../../../utils/http/HttpClient');
 
 const mockHttpClientPost = httpClient.post as jest.MockedFunction<
-  typeof httpClient.get
+  typeof httpClient.post
 >;
 
 describe('createPersonWithName', () => {
