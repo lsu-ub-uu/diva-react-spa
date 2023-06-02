@@ -8,6 +8,8 @@ export const getAuthToken = async (req: Request, res: Response) => {
   const { user } = req.params;
   const { APP_TOKEN_ADMIN } = process.env;
 
+  console.log(req.body.token, APP_TOKEN_ADMIN);
+
   try {
     const authToken = await requestAuthTokenOnLogin(user, APP_TOKEN_ADMIN);
 

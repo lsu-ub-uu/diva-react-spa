@@ -11,7 +11,7 @@ const mockHttpClientPost = httpClient.post as jest.MockedFunction<
   typeof httpClient.post
 >;
 
-beforeAll(() => {
+beforeEach(() => {
   //process.env.REST_API_BASE_URL = 'baseUrl/';
   mockHttpClientPost.mockResolvedValueOnce({
     data: {
@@ -52,6 +52,10 @@ beforeAll(() => {
     },
   });
 });
+// afterAll(() => {
+//   server.resetHandlers();
+//   cleanup();
+// });
 describe('requestAuthTokenOnLogin', () => {
   it('should exist and take a user ID', () => {
     requestAuthTokenOnLogin(
@@ -59,7 +63,7 @@ describe('requestAuthTokenOnLogin', () => {
       'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     );
   });
-  it.skip('should reject with error if username is empty and not call httpClient', async () => {
+  it('should reject with error if username is empty and not call httpClient', async () => {
     //expect.assertions(2);
 
     try {
@@ -75,11 +79,11 @@ describe('requestAuthTokenOnLogin', () => {
       expect(mockHttpClientPost).toHaveBeenCalledTimes(0);
     }
   });
-  it.skip('should reject with error if apptoken is empty and not call httpClient', async () => {
+  it('should reject with error if apptoken is empty and not call httpClient', async () => {
     //expect.assertions(2);
     const coraUser = 'coraUser:490742519075086';
     try {
-      await requestAuthTokenOnLogin(coraUser, '' as any);
+      await requestAuthTokenOnLogin(coraUser, '');
     } catch (error: unknown) {
       const castError: Error = <Error>error;
       expect(castError.message).toStrictEqual(
@@ -96,14 +100,13 @@ describe('requestAuthTokenOnLogin', () => {
       body: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     };
     // expect.assertions(2);
-    console.log('aSFOP', authDataForOnePerson.data.children);
 
     await requestAuthTokenOnLogin(
       coraUser,
       'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     );
 
-    // expect(mockHttpClientPost).toHaveBeenCalledTimes(1);
+    expect(mockHttpClientPost).toHaveBeenCalledTimes(1);
     expect(mockHttpClientPost).toHaveBeenCalledWith({
       url: parameters.url,
       contentType: parameters.contentType,
@@ -112,7 +115,7 @@ describe('requestAuthTokenOnLogin', () => {
   });
   it('should reject with an error if HttpClient throws error', async () => {
     mockHttpClientPost.mockRejectedValueOnce(
-      new Error('Some error from httpClient'),
+      new Error('Some other error from httpClient'),
     );
 
     // expect.assertions(6);
