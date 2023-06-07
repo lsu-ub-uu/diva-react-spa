@@ -1,6 +1,7 @@
 import { useState, MouseEvent } from 'react';
 import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import { devAccounts } from '../../../utils';
 import { dummyLoginAsync } from '../../../features/auth/actions';
 import { logout } from '../../../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -10,23 +11,12 @@ import { authStateSelector } from '../../../features/auth/selectors';
 export interface Account {
   appToken: string;
   id?: string;
-  validForNoSeconds: string;
-  idInUserStorage: string;
+  validForNoSeconds?: string;
+  idInUserStorage?: string;
   idFromLogin: string;
-  lastName: string;
-  firstName: string;
+  lastName?: string;
+  firstName?: string;
 }
-
-const dummyAccounts: Account[] = [
-  {
-    appToken: '0c240296-0315-4e48-a991-4e6350e73413',
-    validForNoSeconds: '600',
-    idInUserStorage: 'coraUser:491055276494310',
-    idFromLogin: 'coraUser:491055276494310',
-    lastName: 'Admin',
-    firstName: 'System',
-  },
-];
 
 export const Login = (): JSX.Element => {
   const { setBackdrop } = useBackdrop();
@@ -57,6 +47,16 @@ export const Login = (): JSX.Element => {
     dispatch(logout());
   };
 
+  const addDivaToLoginName = (idFromLogin: string) => {
+    if (
+      idFromLogin === 'coraUser:491055276494310' ||
+      idFromLogin === 'coraUser:491144693381458' ||
+      idFromLogin === 'coraUser:491201365536105'
+    ) {
+      return 'diva';
+    }
+  };
+
   return (
     <div>
       {authState.userSession !== null ? (
@@ -66,6 +66,7 @@ export const Login = (): JSX.Element => {
           alignItems='center'
         >
           <Box>
+            {addDivaToLoginName(authState.userSession.idFromLogin)}
             {authState.userSession.firstName}
             {authState.userSession.lastName}
           </Box>
@@ -90,13 +91,13 @@ export const Login = (): JSX.Element => {
               'aria-labelledby': 'basic-button',
             }}
           >
-            {dummyAccounts.map((dummyAccount, index) => (
+            {devAccounts.map((devAccount, index) => (
               <MenuItem
                 key={index}
-                onClick={(event) => handleSelection(event, dummyAccount)}
+                onClick={(event) => handleSelection(event, devAccount)}
               >
-                diva{dummyAccount.firstName}
-                {dummyAccount.lastName}
+                diva{devAccount.firstName}
+                {devAccount.lastName}
               </MenuItem>
             ))}
           </Menu>

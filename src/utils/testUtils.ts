@@ -1,11 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { render } from '@testing-library/react';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { SnackbarProvider } from 'notistack';
 
-const renderWithSnackbarProvider = (ui) =>
+const renderWithSnackbarProvider = (ui: JSX.Element) =>
   render(ui, { wrapper: SnackbarProvider });
 
-// re-export everything
 export * from '@testing-library/react';
 
-// override render method
 export { renderWithSnackbarProvider as render };
