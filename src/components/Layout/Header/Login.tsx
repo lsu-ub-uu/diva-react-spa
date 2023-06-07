@@ -1,25 +1,22 @@
 import { useState, MouseEvent } from 'react';
-import { Avatar, Button, Menu, MenuItem } from '@mui/material';
+import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import { devAccounts } from '../../../utils';
 import { dummyLoginAsync } from '../../../features/auth/actions';
 import { logout } from '../../../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useBackdrop } from '../../Backdrop/BackdropContext';
 import { authStateSelector } from '../../../features/auth/selectors';
 
-export interface DummyAccount {
-  alias: string;
-  userId: string;
+export interface Account {
   appToken: string;
+  id?: string;
+  validForNoSeconds?: string;
+  idInUserStorage?: string;
+  idFromLogin: string;
+  lastName?: string;
+  firstName?: string;
 }
-
-const dummyAccounts: DummyAccount[] = [
-  {
-    alias: 'DivaEverything',
-    userId: 'coraUser:490742519075086',
-    appToken: '2e57eb36-55b9-4820-8c44-8271baab4e8e',
-  },
-];
 
 export const Login = (): JSX.Element => {
   const { setBackdrop } = useBackdrop();
@@ -38,7 +35,7 @@ export const Login = (): JSX.Element => {
 
   const handleSelection = (
     event: MouseEvent<HTMLElement>,
-    account: DummyAccount,
+    account: Account,
   ) => {
     event.preventDefault();
     setBackdrop(true);
@@ -50,17 +47,38 @@ export const Login = (): JSX.Element => {
     dispatch(logout());
   };
 
+  const addDivaToLoginName = (idFromLogin: string) => {
+    if (
+      idFromLogin === 'coraUser:491055276494310' ||
+      idFromLogin === 'coraUser:491144693381458' ||
+      idFromLogin === 'coraUser:491201365536105'
+    ) {
+      return 'diva';
+    }
+  };
+
   return (
     <div>
       {authState.userSession !== null ? (
-        <Avatar
-          alt='Logout user'
-          onClick={handleLogout}
+        <Stack
+          direction='row'
+          spacing={2}
+          alignItems='center'
         >
-          <PersonIcon />
-        </Avatar>
+          <Box>
+            {addDivaToLoginName(authState.userSession.idFromLogin)}
+            {authState.userSession.firstName}
+            {authState.userSession.lastName}
+          </Box>
+          <Avatar
+            alt='Logout user'
+            onClick={handleLogout}
+          >
+            <PersonIcon />
+          </Avatar>
+        </Stack>
       ) : (
-        <>
+        <Stack>
           <Button onClick={handleClick}>Log in</Button>
           <Menu
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -73,16 +91,17 @@ export const Login = (): JSX.Element => {
               'aria-labelledby': 'basic-button',
             }}
           >
-            {dummyAccounts.map((dummyAccount, index) => (
+            {devAccounts.map((devAccount, index) => (
               <MenuItem
                 key={index}
-                onClick={(event) => handleSelection(event, dummyAccount)}
+                onClick={(event) => handleSelection(event, devAccount)}
               >
-                {dummyAccount.alias}
+                diva{devAccount.firstName}
+                {devAccount.lastName}
               </MenuItem>
             ))}
           </Menu>
-        </>
+        </Stack>
       )}
     </div>
   );

@@ -7,7 +7,7 @@ import {
   Stack,
 } from '@mui/material';
 import {
-  PaginationRequest,
+  // PaginationRequest,
   PersonSearchRequest,
 } from 'types/personSearchResult';
 import { Controller, useForm } from 'react-hook-form';
