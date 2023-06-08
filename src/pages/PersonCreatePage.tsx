@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -17,28 +17,54 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+
 import { useAppDispatch } from '../app/hooks';
 import { loadPublicationTypesAsync } from '../features/publicationTypes';
 import { Card, useBackdrop, ErrorSummary } from '../components';
+import { postOnePerson } from '../features/createPerson/createPersonSlice';
 
-interface PersonCreateModel {
-  firstname: string;
-  lastname: string;
-  id: string;
+export interface PersonCreateModel {
+  authorisedName: {
+    firstname: string;
+    lastname: string;
+  };
+  recordInfo: {
+    validationType: string;
+  };
 }
 
 const validationSchema = yup.object().shape({
-  firstname: yup.string().required('First name is required'),
-  lastname: yup.string().required('Last name is required'),
+  authorisedName: yup.object().shape({
+    firstname: yup
+      .string()
+      .trim()
+      .matches(/[A-Za-z]/),
+    lastname: yup
+      .string()
+      .trim()
+      .matches(/[A-Za-z]/),
+  }),
 });
 
 export const PersonCreatePage = () => {
+  const [formData, setFormData] = useState<PersonCreateModel>({
+    authorisedName: {
+      firstname: '',
+      lastname: '',
+    },
+    recordInfo: {
+      validationType: '',
+    },
+  });
+
   const { t } = useTranslation();
   const methods = useForm<PersonCreateModel>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      firstname: '',
-      lastname: '',
+      authorisedName: {
+        firstname: '',
+        lastname: '',
+      },
     },
   });
   const {
@@ -49,23 +75,29 @@ export const PersonCreatePage = () => {
   const { setBackdrop } = useBackdrop();
   const dispatch = useAppDispatch();
   useEffect(() => {
+    console.log('d', formData);
     setBackdrop(true);
+    dispatch(postOnePerson(formData));
     dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
-  }, [dispatch, setBackdrop]);
+  }, [dispatch, setBackdrop, setFormData, formData]);
 
-  const handleOnSubmit = (data: PersonCreateModel) => {
-    const idInLocalStorageObj = JSON.parse(
-      localStorage.getItem('diva_session') as string,
-    );
-    data.id = idInLocalStorageObj.id;
-    console.log('id', idInLocalStorageObj.id);
+  const handleOnSubmit = async (data: PersonCreateModel) => {
+    // const idInLocalStorageObj = JSON.parse(
+    //   localStorage.getItem('diva_session') as string,
+    // );
+    // const { id } = idInLocalStorageObj;
+    // console.log('id', id);
+    data.recordInfo = {
+      validationType: 'Person',
+    };
+    setFormData(data);
     console.log(data);
   };
 
   return (
     <>
       <Helmet>
-        <title>{t('addpub')} | DiVA</title>
+        <title>Add person | DiVA</title>
       </Helmet>
 
       <Box
@@ -95,7 +127,7 @@ export const PersonCreatePage = () => {
               >
                 <Controller
                   control={control}
-                  name='firstname'
+                  name='authorisedName.firstname'
                   defaultValue=''
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth>
@@ -136,7 +168,7 @@ export const PersonCreatePage = () => {
               >
                 <Controller
                   control={control}
-                  name='lastname'
+                  name='authorisedName.lastname'
                   defaultValue=''
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth>
