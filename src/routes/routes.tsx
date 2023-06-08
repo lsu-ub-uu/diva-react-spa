@@ -8,6 +8,7 @@ import {
   ReactHookFormTestPage,
   RecordTypePage,
   PersonSearchPage,
+  PersonCreatePage,
 } from '../pages';
 
 export const routes = [
@@ -39,6 +40,10 @@ export const routes = [
       {
         path: '/person-search',
         element: <PersonSearchPage />,
+      },
+      {
+        path: '/person-create',
+        element: <PersonCreatePage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],
