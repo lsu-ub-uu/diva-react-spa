@@ -73,12 +73,9 @@ POST http://localhost:8080/api/person/create
 ### POST new person
 POST http://localhost:8080/api/person/create
 Content-Type: application/json
-Authorization: Bearer e4417221-bfeb-4294-bc74-8fb9536ec1ae
+Authorization: Bearer e9c77c4c-b16d-4fa7-a0d2-76ec4c56438f
 
 {
-  "recordInfo": {
-    "validationType": "Person"
-  },
   "authorisedName": {
     "familyName": "Swenning Leyser",
     "givenName": "Egil"
