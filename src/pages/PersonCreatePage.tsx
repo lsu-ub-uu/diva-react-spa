@@ -28,9 +28,6 @@ export interface PersonCreateModel {
     firstname: string;
     lastname: string;
   };
-  recordInfo: {
-    validationType: string;
-  };
 }
 
 const validationSchema = yup.object().shape({
@@ -52,9 +49,6 @@ export const PersonCreatePage = () => {
       firstname: '',
       lastname: '',
     },
-    recordInfo: {
-      validationType: '',
-    },
   });
 
   const { t } = useTranslation();
@@ -75,23 +69,19 @@ export const PersonCreatePage = () => {
   const { setBackdrop } = useBackdrop();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    console.log('d', formData);
+    // console.log('d', formData);
     setBackdrop(true);
-    dispatch(postOnePerson(formData));
+    if (
+      formData.authorisedName.firstname !== '' &&
+      formData.authorisedName.lastname !== ''
+    ) {
+      dispatch(postOnePerson(formData));
+    }
     dispatch(loadPublicationTypesAsync(() => setBackdrop(false)));
   }, [dispatch, setBackdrop, setFormData, formData]);
 
   const handleOnSubmit = async (data: PersonCreateModel) => {
-    // const idInLocalStorageObj = JSON.parse(
-    //   localStorage.getItem('diva_session') as string,
-    // );
-    // const { id } = idInLocalStorageObj;
-    // console.log('id', id);
-    data.recordInfo = {
-      validationType: 'Person',
-    };
     setFormData(data);
-    console.log(data);
   };
 
   return (

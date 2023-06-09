@@ -20,7 +20,7 @@ const createOnePerson = async (person: PersonCreateModel) => {
   };
 
   const response = await axios.post(
-    `${BFF_API_URL}person/create`,
+    `${BFF_API_URL}/person/create`,
     person,
     config,
   );
