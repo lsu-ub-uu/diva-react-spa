@@ -20,7 +20,7 @@ const StyledCardHeader = styled(CardHeader)((props) => ({
   borderTopRightRadius: 8,
   borderBottomLeftRadius: 0,
   borderBottomRightRadius: 0,
-  backgroundColor: '#e6f0f7',
+  backgroundColor: 'main',
   paddingTop: props.theme.spacing(1.5),
   paddingBottom: props.theme.spacing(1.5),
   paddingLeft: props.theme.spacing(1),
