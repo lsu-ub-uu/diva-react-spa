@@ -24,17 +24,6 @@ const Button = ({ maxSnack }: { maxSnack?: number }) => {
   );
 };
 describe('Snackbars', () => {
-  it.skip('It renders a snackbars from <Button /> on select', async () => {
-    const user = userEvent.setup();
-    render(<Button />);
-    const button = screen.getByRole('button', {
-      name: 'Test Button',
-    });
-    await user.click(button);
-    const snackbar = screen.queryByText('Subject was successfully added');
-
-    expect(snackbar).toBeInTheDocument();
-  });
   // it.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])(
   // look into why it doeasn't goes higher than 3
   it.each([1, 2, 3])(
