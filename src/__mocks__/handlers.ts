@@ -59,6 +59,29 @@ export const handlers = [
       ]),
     );
   }),
+  rest.get(`${BFF_API_URL}/auth/coraUser:111111111111111`, (req, res, ctx) => {
+    return res(
+      ctx.set({
+        'Content-Type': 'application/json',
+      }),
+      ctx.body(
+        JSON.stringify({ token: '89ad2b42-785a-4421-a647-f959cdb85f4a' }),
+      ),
+      ctx.status(200),
+      ctx.json([
+        {
+          authToken: {
+            id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+            validForNoSeconds: '600',
+            idInUserStorage: 'coraUser:491201365536105',
+            idFromLogin: 'coraUser:491201365536105',
+            lastName: 'KTH',
+            firstName: 'domainAdmin',
+          },
+        },
+      ]),
+    );
+  }),
   rest.post('/upload-file', (_req, res, ctx) => {
     return res(ctx.status(200));
   }),

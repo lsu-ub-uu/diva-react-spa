@@ -6,6 +6,13 @@ import { configureStore, PreloadedState } from '@reduxjs/toolkit';
 import { PropsWithChildren } from 'react';
 import type { RenderOptions } from '@testing-library/react';
 import { AppStore, RootState } from '../app/store';
+
+import dummyReducer from '../features/dummy/dummySlice';
+import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
+import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
+import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
+import recordTypeReducer from '../features/recordType/recordTypeSlice';
+import searchReducer from '../features/search/searchSlice';
 import authReducer from '../features/auth/authSlice';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
@@ -20,7 +27,18 @@ const renderWithReduxProvider = (
   ui: React.ReactElement,
   {
     preloadedState = {},
-    store = configureStore({ reducer: { auth: authReducer }, preloadedState }),
+    store = configureStore({
+      reducer: {
+        auth: authReducer,
+        dummy: dummyReducer,
+        publicationType: publicationTypeReducer,
+        subjectCategory: subjectCategoryReducer,
+        researchSubject: researchSubjectReducer,
+        recordType: recordTypeReducer,
+        search: searchReducer,
+      },
+      preloadedState,
+    }),
     ...renderOptions
   }: ExtendedRenderOptions = {},
 ) => {
@@ -30,6 +48,8 @@ const renderWithReduxProvider = (
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 };
+
+
 
 export * from '@testing-library/react';
 
