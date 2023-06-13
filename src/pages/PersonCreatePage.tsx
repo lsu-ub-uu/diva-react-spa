@@ -25,8 +25,8 @@ import { postOnePerson } from '../features/createPerson/createPersonSlice';
 
 export interface PersonCreateModel {
   authorisedName: {
-    firstname: string;
-    lastname: string;
+    givenName: string;
+    familyName: string;
   };
   recordInfo?: {
     validationType: string;
@@ -35,11 +35,11 @@ export interface PersonCreateModel {
 
 const validationSchema = yup.object().shape({
   authorisedName: yup.object().shape({
-    firstname: yup
+    givenName: yup
       .string()
       .trim()
       .matches(/[A-Za-z]/),
-    lastname: yup
+    familyName: yup
       .string()
       .trim()
       .matches(/[A-Za-z]/),
@@ -49,8 +49,8 @@ const validationSchema = yup.object().shape({
 export const PersonCreatePage = () => {
   const [formData, setFormData] = useState<PersonCreateModel>({
     authorisedName: {
-      firstname: '',
-      lastname: '',
+      givenName: '',
+      familyName: '',
     },
   });
 
@@ -59,8 +59,8 @@ export const PersonCreatePage = () => {
     resolver: yupResolver(validationSchema),
     defaultValues: {
       authorisedName: {
-        firstname: '',
-        lastname: '',
+        givenName: '',
+        familyName: '',
       },
     },
   });
@@ -75,8 +75,8 @@ export const PersonCreatePage = () => {
     // console.log('d', formData);
     setBackdrop(true);
     if (
-      formData.authorisedName.firstname !== '' &&
-      formData.authorisedName.lastname !== ''
+      formData.authorisedName.givenName !== '' &&
+      formData.authorisedName.familyName !== ''
     ) {
       dispatch(postOnePerson(formData));
     }
@@ -120,7 +120,7 @@ export const PersonCreatePage = () => {
               >
                 <Controller
                   control={control}
-                  name='authorisedName.firstname'
+                  name='authorisedName.givenName'
                   defaultValue=''
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth>
@@ -128,13 +128,13 @@ export const PersonCreatePage = () => {
                         required
                         error={error !== undefined}
                       >
-                        Firstname
+                        Givenname
                       </FormLabel>
                       <TextField
                         error={error !== undefined}
                         {...field}
                         autoComplete='off'
-                        placeholder='Firstname'
+                        placeholder='GivenName'
                         fullWidth
                         variant='outlined'
                         helperText={error !== undefined ? error.message : ' '}
@@ -161,7 +161,7 @@ export const PersonCreatePage = () => {
               >
                 <Controller
                   control={control}
-                  name='authorisedName.lastname'
+                  name='authorisedName.familyName'
                   defaultValue=''
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth>
@@ -169,13 +169,13 @@ export const PersonCreatePage = () => {
                         required
                         error={error !== undefined}
                       >
-                        Lastname
+                        Familyname
                       </FormLabel>
                       <TextField
                         error={error !== undefined}
                         {...field}
                         autoComplete='off'
-                        placeholder='Lastname'
+                        placeholder='Familyname'
                         fullWidth
                         variant='outlined'
                         helperText={error !== undefined ? error.message : ' '}

@@ -11,8 +11,8 @@ interface RecordTypeTypeState {
 const initialState: RecordTypeTypeState = {
   person: {
     authorisedName: {
-      firstname: '',
-      lastname: '',
+      givenName: '',
+      familyName: '',
     },
     recordInfo: {
       validationType: '',
@@ -28,6 +28,7 @@ export const postOnePerson = createAsyncThunk(
   'person/postOnePerson',
   async (data: PersonCreateModel, thunkAPI) => {
     try {
+      console.log(data);
       return await personService.createOnePerson(data);
     } catch (error: any) {
       const message =
