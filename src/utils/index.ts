@@ -28,6 +28,13 @@ function getTree(items: SelectItem[], id: string | null): RenderTree[] {
 
 const devAccounts: Account[] = [
   {
+    appToken: '2e57eb36-55b9-4820-8c44-8271baab4e8e',
+    idInUserStorage: 'coraUser:490742519075086',
+    idFromLogin: 'coraUser:490742519075086',
+    lastName: 'DiVA',
+    firstName: 'Everything',
+  },
+  {
     appToken: '0c240296-0315-4e48-a991-4e6350e73413',
     idInUserStorage: 'coraUser:491055276494310',
     idFromLogin: 'coraUser:491055276494310',
