@@ -28,6 +28,9 @@ export interface PersonCreateModel {
     firstname: string;
     lastname: string;
   };
+  recordInfo?: {
+    validationType: string;
+  };
 }
 
 const validationSchema = yup.object().shape({

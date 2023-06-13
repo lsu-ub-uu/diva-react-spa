@@ -28,7 +28,7 @@ export const dummyLoginAsync =
         { token: account.appToken },
         options,
       );
-      console.log(response);
+      // console.log(response);
 
       dispatch(authenticated(response.data.authToken));
     } catch (e) {
