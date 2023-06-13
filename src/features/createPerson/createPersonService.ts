@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { vi } from 'vitest';
 import { PersonCreateModel } from '../../pages/PersonCreatePage';
 
 // const BFF_API_URL = 'https://cora.epc.ub.uu.se/diva/spaclientbff/api';
@@ -18,12 +19,12 @@ const createOnePerson = async (person: PersonCreateModel) => {
       Authorization: `Bearer ${id}`,
     },
   };
-
   const response = await axios.post(
     `${BFF_API_URL}/person/create`,
     person,
     config,
   );
+  console.log('res', response);
   return response.data;
 };
 

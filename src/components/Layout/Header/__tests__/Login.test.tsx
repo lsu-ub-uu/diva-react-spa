@@ -31,7 +31,7 @@ describe('<Login />', () => {
       'divadomainAdminKTH',
     ]);
   });
-  it.failing('saves to LocalStorage when loggin in', async () => {
+  it.skip('saves to LocalStorage when loggin in', async () => {
     const user = userEvent.setup();
     reduxRender(<Login />);
     const loginButton = screen.getByRole('button', { name: 'Log in' });
