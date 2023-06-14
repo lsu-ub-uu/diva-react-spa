@@ -82,12 +82,283 @@ export const handlers = [
       ]),
     );
   }),
+  rest.get(`${BFF_API_URL}/person/create`, (req, res, ctx) => {
+    return res(
+      ctx.set({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa`,
+      }),
+      ctx.body(
+        JSON.stringify({
+          authorisedName: {
+            familyName: 'Swenning Leyser',
+            givenName: 'Egil',
+          },
+        }),
+      ),
+      ctx.status(201),
+      ctx.json([
+        {
+          record: {
+            data: {
+              children: [
+                {
+                  children: [
+                    {
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'system',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'diva',
+                        },
+                      ],
+                      actionLinks: {
+                        read: {
+                          requestMethod: 'GET',
+                          rel: 'read',
+                          url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
+                          accept: 'application/vnd.uub.record+json',
+                        },
+                      },
+                      name: 'dataDivider',
+                    },
+                    {
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'validationType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'person',
+                        },
+                      ],
+                      actionLinks: {
+                        read: {
+                          requestMethod: 'GET',
+                          rel: 'read',
+                          url: 'https://cora.epc.ub.uu.se/diva/rest/record/validationType/person',
+                          accept: 'application/vnd.uub.record+json',
+                        },
+                      },
+                      name: 'validationType',
+                    },
+                    {
+                      name: 'id',
+                      value: 'person:4593103303210736',
+                    },
+                    {
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'person',
+                        },
+                      ],
+                      actionLinks: {
+                        read: {
+                          requestMethod: 'GET',
+                          rel: 'read',
+                          url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
+                          accept: 'application/vnd.uub.record+json',
+                        },
+                      },
+                      name: 'type',
+                    },
+                    {
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'user',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'coraUser:490742519075086',
+                        },
+                      ],
+                      actionLinks: {
+                        read: {
+                          requestMethod: 'GET',
+                          rel: 'read',
+                          url: 'https://cora.epc.ub.uu.se/diva/rest/record/user/coraUser:490742519075086',
+                          accept: 'application/vnd.uub.record+json',
+                        },
+                      },
+                      name: 'createdBy',
+                    },
+                    {
+                      name: 'tsCreated',
+                      value: '2023-06-13T12:53:40.128404Z',
+                    },
+                    {
+                      repeatId: '0',
+                      children: [
+                        {
+                          children: [
+                            {
+                              name: 'linkedRecordType',
+                              value: 'user',
+                            },
+                            {
+                              name: 'linkedRecordId',
+                              value: 'coraUser:490742519075086',
+                            },
+                          ],
+                          actionLinks: {
+                            read: {
+                              requestMethod: 'GET',
+                              rel: 'read',
+                              url: 'https://cora.epc.ub.uu.se/diva/rest/record/user/coraUser:490742519075086',
+                              accept: 'application/vnd.uub.record+json',
+                            },
+                          },
+                          name: 'updatedBy',
+                        },
+                        {
+                          name: 'tsUpdated',
+                          value: '2023-06-13T12:53:40.128404Z',
+                        },
+                      ],
+                      name: 'updated',
+                    },
+                  ],
+                  name: 'recordInfo',
+                },
+                {
+                  children: [
+                    {
+                      name: 'givenName',
+                      value: 'Egil',
+                    },
+                    {
+                      name: 'familyName',
+                      value: 'Swenning Leyser',
+                    },
+                  ],
+                  name: 'authorisedName',
+                },
+              ],
+              name: 'person',
+            },
+            permissions: {
+              read: [
+                'externalURL',
+                'otherAffiliation',
+                'biographySwedish',
+                'biographyEnglish',
+                'ORCID_ID',
+                'type',
+                'dataDivider',
+                'academicTitle',
+                'yearOfDeath',
+                'emailAddress',
+                'personDomainPart',
+                'public',
+                'createdBy',
+                'domain',
+                'Libris_ID',
+                'tsCreated',
+                'id',
+                'alternativeName',
+                'VIAF_ID',
+                'updated',
+                'yearOfBirth',
+              ],
+              write: [
+                'externalURL',
+                'otherAffiliation',
+                'biographySwedish',
+                'biographyEnglish',
+                'ORCID_ID',
+                'type',
+                'dataDivider',
+                'academicTitle',
+                'yearOfDeath',
+                'emailAddress',
+                'public',
+                'createdBy',
+                'Libris_ID',
+                'tsCreated',
+                'id',
+                'alternativeName',
+                'VIAF_ID',
+                'updated',
+                'yearOfBirth',
+              ],
+            },
+            actionLinks: {
+              read: {
+                requestMethod: 'GET',
+                rel: 'read',
+                url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/person:4593103303210736',
+                accept: 'application/vnd.uub.record+json',
+              },
+              update: {
+                requestMethod: 'POST',
+                rel: 'update',
+                contentType: 'application/vnd.uub.record+json',
+                url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/person:4593103303210736',
+                accept: 'application/vnd.uub.record+json',
+              },
+              index: {
+                requestMethod: 'POST',
+                rel: 'index',
+                body: {
+                  children: [
+                    {
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'recordType',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'person',
+                        },
+                      ],
+                      name: 'recordType',
+                    },
+                    {
+                      name: 'recordId',
+                      value: 'person:4593103303210736',
+                    },
+                    {
+                      name: 'type',
+                      value: 'index',
+                    },
+                  ],
+                  name: 'workOrder',
+                },
+                contentType: 'application/vnd.uub.record+json',
+                url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
+                accept: 'application/vnd.uub.record+json',
+              },
+              delete: {
+                requestMethod: 'DELETE',
+                rel: 'delete',
+                url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/person:4593103303210736',
+              },
+            },
+          },
+        },
+      ]),
+    );
+  }),
   rest.post('/upload-file', (_req, res, ctx) => {
     return res(ctx.status(200));
   }),
-  // rest.get(`${URL}/*`, (req) => {
-  //   return req.passthrough();
-  // }),
+  rest.get(`${URL}/*`, (req) => {
+    return req.passthrough();
+  }),
+  rest.post(`${URL}/*`, (req) => {
+    return req.passthrough();
+  }),
   // rest.get(`${BFF_API_URL}/*`, (req) => {
   //   return req.passthrough();
   // }),
