@@ -6,6 +6,7 @@ import {
   researchSubjectSelector,
   researchSubjectSelectItemsSelector,
 } from '../../features/researchSubject';
+import { loadResearchSubjectsAsync } from '../../features/researchSubject/researchSubjectService';
 import { MultiAutoComplete } from '../Form/MultiAutoComplete/MultiAutoComplete';
 import { Dialog } from '../Dialog/Dialog';
 import { researchSubjectTreeSelector } from '../../features/researchSubject/selectors';
