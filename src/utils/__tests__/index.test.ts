@@ -14,6 +14,8 @@ describe('Utilities', () => {
       { id: 'level2', name: 'Level 2', parentId: 'root' },
     ];
     const treeData = getTree(items, '-');
-    expect(treeData.length).eq(1);
+    expect(JSON.stringify(treeData)).eq(
+      '[{"id":"root","name":"Root","children":[{"id":"level1","name":"Level 1","children":[{"id":"level12","name":"Level 1_2","children":[]}]},{"id":"level2","name":"Level 2","children":[]}]}]',
+    );
   });
 });
