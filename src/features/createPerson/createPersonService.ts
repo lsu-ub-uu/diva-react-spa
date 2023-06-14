@@ -24,7 +24,7 @@ const createOnePerson = async (person: PersonCreateModel) => {
     person,
     config,
   );
-  console.log('res', response);
+  console.log('res', response.data);
   return response.data;
 };
 
