@@ -4,7 +4,7 @@ import { server } from '../../../__mocks__/server';
 import searchService from '../searchService';
 
 describe('searchPersonsAsAdmin', () => {
-  test.skip('Returning search data', async () => {
+  test.todo('Returning search data', async () => {
     const response = await axios.get(
       `https://cora.epc.ub.uu.se/diva/spaclientbff/api/search/admin/person/egil`,
     );
