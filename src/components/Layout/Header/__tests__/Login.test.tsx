@@ -14,7 +14,7 @@ afterEach(() => {
 });
 
 describe('<Login />', () => {
-  it.skip('shows the account in a list', async () => {
+  it('shows the account in a list', async () => {
     const user = userEvent.setup();
     reduxRender(<Login />);
     const loginButton = screen.getByRole('button', { name: 'Log in' });
@@ -24,14 +24,15 @@ describe('<Login />', () => {
     const listItems = userNameList.map((item) => item.textContent);
 
     expect.assertions(2);
-    expect(listItems).toHaveLength(3);
+    expect(listItems).toHaveLength(4);
     expect(listItems).toEqual([
+      'divaEverythingDiVA',
       'divaSystemAdmin',
       'divadomainAdminUU',
       'divadomainAdminKTH',
     ]);
   });
-  it.skip('saves to LocalStorage when loggin in', async () => {
+  it.todo('saves to LocalStorage when loggin in', async () => {
     const user = userEvent.setup();
     reduxRender(<Login />);
     const loginButton = screen.getByRole('button', { name: 'Log in' });
@@ -44,5 +45,5 @@ describe('<Login />', () => {
     // screen.debug(userAvatar);
     // const avatar = screen.getByAltText('Logout user');
   });
-  it.skip('deletes from LocalStorage when loggin out', () => {});
+  it.todo('deletes from LocalStorage when loggin out', () => {});
 });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { vi } from 'vitest';
 // import { writeState, deleteState, createInitialState } from '../authSlice';
-import personService from '../createPersonService';
+import personService, { createOnePerson } from '../createPersonService';
 import { PersonCreateModel } from '../../../pages/PersonCreatePage';
 
 /**
@@ -20,46 +20,42 @@ afterEach(() => {
   localStorage.clear();
 });
 describe('createPersonService', () => {
-  // it.only('createPersonService calls the api correctly', async () => {
-  //   const userSession = JSON.stringify({
-  //     id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-  //   });
-  //   localStorage.setItem(
-  //     'diva_session',
-  //     JSON.stringify({
-  //       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-  //     }),
-  //   );
-  //   const getLocalStorage = localStorage.getItem('diva_session');
-  //   expect(getLocalStorage).toEqual(userSession);
-  //   // const config = {
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json',
-  //   //     Authorization: `Bearer aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa`,
-  //   //   },
-  //   // };
-  //   const createdUserData: PersonCreateModel = {
-  //     authorisedName: {
-  //       givenName: 'Egil',
-  //       familyName: 'Swenning Leyser',
-  //     },
-  //   };
-  //   mockedAxios.post.mockResolvedValue({
-  //     data: {
-  //       authorisedName: {
-  //         givenName: 'Egil',
-  //         familyName: 'Swenning Leyser',
-  //       },
-  //     },
-  //   });
-  //   vi.mocked(mockedCreateOnePerson);
-  //   await personService.createOnePerson(createdUserData);
-  //   expect(mockedAxios).toHaveBeenCalledTimes(1);
-  //   // expect(result).toBeCalledWith({
-  //   //   url: 'https://cora.epc.ub.uu.se/diva/spaclientbff/api/person/create',
-  //   //   headers: config,
-  //   //   data: createdUserData,
-  //   // });
-  //   // expect(mockedCreateOnePerson).toHaveBeenCalled();
-  // });
+  it.only('createPersonService calls the api correctly', async () => {
+    localStorage.setItem(
+      'diva_session',
+      JSON.stringify({
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      }),
+    );
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa`,
+      },
+    };
+    const createdUserData: PersonCreateModel = {
+      authorisedName: {
+        givenName: 'Egil',
+        familyName: 'Swenning Leyser',
+      },
+    };
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        authorisedName: {
+          givenName: 'Egil',
+          familyName: 'Swenning Leyser',
+        },
+      },
+    });
+    // vi.mocked(mockedCreateOnePerson);
+    await createOnePerson(createdUserData);
+    expect.assertions(2);
+    expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+    expect(mockedAxios.post).toBeCalledWith(
+      'https://cora.epc.ub.uu.se/diva/spaclientbff/api/person/create',
+      createdUserData,
+      config,
+    );
+  });
 });

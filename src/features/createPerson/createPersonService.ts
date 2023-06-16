@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { vi } from 'vitest';
 import { PersonCreateModel } from '../../pages/PersonCreatePage';
 
 // const BFF_API_URL = 'https://cora.epc.ub.uu.se/diva/spaclientbff/api';
 const BFF_API_URL = import.meta.env.VITE_BFF_API_URL;
 
 // Get one recordType
-const createOnePerson = async (person: PersonCreateModel) => {
+export const createOnePerson = async (person: PersonCreateModel) => {
   const idInLocalStorageObj = JSON.parse(
     localStorage.getItem('diva_session') as string,
   );
