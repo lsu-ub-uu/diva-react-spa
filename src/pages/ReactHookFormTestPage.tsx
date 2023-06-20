@@ -9,7 +9,6 @@ import {
   IconButton,
   MenuItem,
   Stack,
-  TextField,
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -17,7 +16,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import ErrorIcon from '@mui/icons-material/Error';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -36,6 +34,7 @@ import {
   ErrorSummary,
   ResearchSubjectPicker,
 } from '../components';
+import { ControlledTextField } from '../components/Controlled';
 
 interface TestModel {
   publicationType: string;
@@ -56,7 +55,6 @@ interface TestModel {
 
 const validationSchema = yup.object().shape({
   publicationType: yup.string().required('Publication type is required'),
-  researchSubjects: yup.array().of(yup.string()).min(1).max(4),
   // eslint-disable-next-line react/forbid-prop-types
   authors: yup
     .array()
@@ -67,8 +65,8 @@ const validationSchema = yup.object().shape({
           .trim()
           .matches(/[A-Za-z]{3}/),
         lastname: yup.string().trim().required(),
-        birthYear: yup.string().matches(/^d{4}$/),
-        deathYear: yup.string().matches(/^(?:\d{4}|)$/),
+        birthYear: yup.string().matches(/^(?:\d{4})?$/),
+        deathYear: yup.string().matches(/^(?:\d{4})?$/),
         localUserId: yup.string().trim(),
         organisation: yup.string().trim().required(),
         orcidId: yup.string().trim(),
@@ -79,11 +77,12 @@ const validationSchema = yup.object().shape({
     )
     .min(1)
     .max(3),
+  researchSubjects: yup.array().of(yup.string()).min(1).max(4),
 });
 
 export const ReactHookFormTestPage = () => {
   const { t } = useTranslation();
-  const methods = useForm<TestModel>({
+  const methods = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       publicationType: '',
@@ -256,44 +255,11 @@ export const ReactHookFormTestPage = () => {
                     xs={12}
                     sm={6}
                   >
-                    <Controller
+                    <ControlledTextField
+                      placeHolder='First name'
                       control={control}
                       name={`authors.${index}.firstname`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel
-                            required
-                            error={error !== undefined}
-                          >
-                            Firstname
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder='Firstname'
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='First name'
                     />
                   </Grid>
                   <Grid
@@ -301,44 +267,11 @@ export const ReactHookFormTestPage = () => {
                     xs={12}
                     sm={6}
                   >
-                    <Controller
+                    <ControlledTextField
+                      placeHolder='Last name'
                       control={control}
                       name={`authors.${index}.lastname`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel
-                            required
-                            error={error !== undefined}
-                          >
-                            Lastname
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder='Lastname'
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='Last name'
                     />
                   </Grid>
                   <Grid
@@ -346,44 +279,11 @@ export const ReactHookFormTestPage = () => {
                     xs={6}
                     sm={3}
                   >
-                    <Controller
+                    <ControlledTextField
+                      placeHolder='enter birth year'
                       control={control}
                       name={`authors.${index}.birthYear`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel
-                            required
-                            error={error !== undefined}
-                          >
-                            Birth year
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder='Birth year'
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='Birth year'
                     />
                   </Grid>
                   <Grid
@@ -391,41 +291,10 @@ export const ReactHookFormTestPage = () => {
                     xs={6}
                     sm={3}
                   >
-                    <Controller
+                    <ControlledTextField
                       control={control}
                       name={`authors.${index}.deathYear`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel error={error !== undefined}>
-                            Death year
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder='Death year'
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='Death year'
                     />
                   </Grid>
                   <Grid
@@ -433,41 +302,10 @@ export const ReactHookFormTestPage = () => {
                     xs={12}
                     sm={6}
                   >
-                    <Controller
+                    <ControlledTextField
                       control={control}
                       name={`authors.${index}.localUserId`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel error={error !== undefined}>
-                            Local User id
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder=''
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='Local user id'
                     />
                   </Grid>
                   <Grid
@@ -475,41 +313,10 @@ export const ReactHookFormTestPage = () => {
                     xs={12}
                     sm={6}
                   >
-                    <Controller
+                    <ControlledTextField
                       control={control}
                       name={`authors.${index}.orcidId`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel error={error !== undefined}>
-                            ORCID-identity
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder=''
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='ORCID-identity'
                     />
                   </Grid>
                   <Grid
@@ -517,41 +324,10 @@ export const ReactHookFormTestPage = () => {
                     xs={12}
                     sm={6}
                   >
-                    <Controller
+                    <ControlledTextField
                       control={control}
                       name={`authors.${index}.email`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel error={error !== undefined}>
-                            E-mail
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder=''
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='Email'
                     />
                   </Grid>
                   <Grid
@@ -559,41 +335,10 @@ export const ReactHookFormTestPage = () => {
                     xs={12}
                     sm={6}
                   >
-                    <Controller
+                    <ControlledTextField
                       control={control}
                       name={`authors.${index}.organisation`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel error={error !== undefined}>
-                            Institution, department or program
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder='Choose organisation...'
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='Organisation'
                     />
                   </Grid>
                   <Grid
@@ -601,82 +346,20 @@ export const ReactHookFormTestPage = () => {
                     xs={12}
                     sm={6}
                   >
-                    <Controller
+                    <ControlledTextField
                       control={control}
                       name={`authors.${index}.researchGroup`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel error={error !== undefined}>
-                            Research group
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder='Placeholder text'
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='Research group'
                     />
                   </Grid>
                   <Grid
                     item
                     xs={12}
                   >
-                    <Controller
+                    <ControlledTextField
                       control={control}
                       name={`authors.${index}.otherOrganisation`}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl fullWidth>
-                          <FormLabel error={error !== undefined}>
-                            Other organisation
-                          </FormLabel>
-                          <TextField
-                            error={error !== undefined}
-                            {...field}
-                            autoComplete='off'
-                            placeholder='Other organisation placeholder'
-                            fullWidth
-                            variant='outlined'
-                            helperText={
-                              error !== undefined ? error.message : ' '
-                            }
-                            InputProps={{
-                              endAdornment: (
-                                <ErrorIcon
-                                  sx={{
-                                    color: 'red',
-                                    visibility:
-                                      error !== undefined
-                                        ? 'visible'
-                                        : 'hidden',
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        </FormControl>
-                      )}
+                      label='Other organisation'
                     />
                   </Grid>
                   <Grid
