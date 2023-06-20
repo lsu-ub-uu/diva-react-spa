@@ -35,6 +35,20 @@ export const createInitialState = (): UserSession | null => {
     localStorage.getItem(LOCAL_STORAGE_NAME) as string,
   ) as UserSession;
 };
+export const validforTime = () => {
+  const { validForNoSeconds } = JSON.parse(
+    localStorage.getItem('diva_session'),
+  );
+  console.log('org', typeof Number(validForNoSeconds));
+
+  let validForNoSecondsAsNumber = Number(validForNoSeconds);
+  const decrementValidforTime = () => {
+    // validForNoSecondsAsNumber -= 1;
+    console.log('a');
+  };
+  setInterval(decrementValidforTime, 1000);
+  console.log('count', validForNoSecondsAsNumber);
+};
 
 const initialState = {
   isAuthenticated: false,

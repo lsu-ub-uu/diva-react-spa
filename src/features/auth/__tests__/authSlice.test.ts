@@ -1,11 +1,18 @@
 import { vi } from 'vitest';
-import { writeState, deleteState, createInitialState } from '../authSlice';
+import {
+  writeState,
+  deleteState,
+  createInitialState,
+  validforTime,
+} from '../authSlice';
 
 /**
  * @vitest-environment jsdom
  */
 const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
-
+beforeEach(() => {
+  vi.useFakeTimers();
+});
 afterEach(() => {
   localStorage.clear();
 });
@@ -61,5 +68,31 @@ describe('authSlice', () => {
   });
   it('createInitialState returns null from localStorage', () => {
     expect(createInitialState()).toStrictEqual(null);
+  });
+  it('deletes localStorage when validForNoSeconds reaches 0', () => {
+    const userSession = {
+      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      validForNoSeconds: '600',
+      idInUserStorage: 'coraUser:111111111111111',
+      idFromLogin: 'coraUser:111111111111111',
+      firstName: 'Everything',
+      lastName: 'DiVA',
+    };
+    localStorage.setItem('diva_session', JSON.stringify(userSession));
+
+    const { validForNoSeconds } = JSON.parse(
+      localStorage.getItem('diva_session') as string,
+    );
+    // console.log(validForNoSeconds);
+
+    vi.advanceTimersByTime(Number(validForNoSeconds));
+
+    validforTime();
+
+    const getLocalStorage = JSON.parse(
+      localStorage.getItem('diva_session') as string,
+    ).validForNoSeconds;
+
+    expect(getLocalStorage).toEqual(0);
   });
 });
