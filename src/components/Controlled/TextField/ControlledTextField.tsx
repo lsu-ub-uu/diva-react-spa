@@ -7,6 +7,7 @@ interface ControlledTextFieldProps {
   control?: Control<any>;
   label: string;
   placeHolder?: string;
+  required?: boolean;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
@@ -18,7 +19,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
       render={({ field, fieldState: { error } }) => (
         <FormControl fullWidth>
           <FormLabel
-            required={false}
+            required={props.required}
             error={error !== undefined}
           >
             {props.label}
