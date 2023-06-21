@@ -38,6 +38,9 @@ GET http://localhost:8080/api/recordtype/sound
 ### GET recordType safdg w/ BFF
 GET http://localhost:8080/api/recordtype/safdg
 
+# GET forms
+### GET article
+GET http://localhost:8080/api/publish/article
 
 # GET search results
 ### GET public search
@@ -73,7 +76,7 @@ POST http://localhost:8080/api/person/create
 ### POST new person
 POST http://localhost:8080/api/person/create
 Content-Type: application/json
-Authorization: Bearer e9c77c4c-b16d-4fa7-a0d2-76ec4c56438f
+Authorization: Bearer 0c240296-0315-4e48-a991-4e6350e73413
 
 {
   "authorisedName": {

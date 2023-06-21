@@ -7,6 +7,7 @@ import researchSubjectsRoute from './routes/researchSubjectsRoute';
 import subjectCategoriesRoute from './routes/subjectCategoriesRoute';
 import searchRoute from './routes/searchRoute';
 import authRoute from './routes/authRoute';
+import publishRoute from './routes/publishRoute';
 
 const PORT = process.env.PORT || 8080;
 
@@ -21,6 +22,7 @@ app.use('/api/recordtype', recordTypeRoute);
 app.use('/api/researchsubjects', researchSubjectsRoute);
 app.use('/api/subjectcategories', subjectCategoriesRoute);
 app.use('/api/search', searchRoute);
+app.use('/api/publish', publishRoute);
 
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
