@@ -9,6 +9,7 @@ import {
   RecordTypePage,
   PersonSearchPage,
   PersonCreatePage,
+  FormGenPage,
 } from '../pages';
 
 export const routes = [
@@ -44,6 +45,10 @@ export const routes = [
       {
         path: '/person-create',
         element: <PersonCreatePage />,
+      },
+      {
+        path: '/form-gen',
+        element: <FormGenPage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],

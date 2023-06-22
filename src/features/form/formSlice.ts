@@ -2,13 +2,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import formService from './formService';
 
 interface FormTypeState {
-  form: {};
+  form: {
+    name: string;
+    cards: {};
+  };
   isLoading: boolean;
   isError: boolean;
   message: any;
 }
 const initialState: FormTypeState = {
-  form: {},
+  form: {
+    name: '',
+    cards: {},
+  },
   isLoading: false,
   isError: false,
   message: '',
