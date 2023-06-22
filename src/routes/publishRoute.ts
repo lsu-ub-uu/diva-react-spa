@@ -1,8 +1,8 @@
 import express from 'express';
-import { postPublication } from '../controllers/publishController';
+import { getPublicationForm } from '../controllers/publishController';
 
 const searchRoute = express.Router();
 
-searchRoute.route('/:publicationType').get(postPublication);
+searchRoute.route('/:publicationType').get(getPublicationForm);
 
 export default searchRoute;

@@ -1,7 +1,7 @@
 {
   "name": "article",
-  "cards": {
-    "subcategory": {
+  "cards": [
+    {
       "name": {
         "en": "subcategory",
         "sv": "Underkategori"
@@ -67,7 +67,7 @@
         }
       ]
     },
-    "author": {
+    {
       "name": {
         "en": "Author",
         "sv": "Författare"
@@ -196,7 +196,7 @@
         }
       ]
     },
-    "contributor": {
+    {
       "name": {
         "en": "Other contributor",
         "sv": "Annan upphovsperson"
@@ -215,7 +215,7 @@
         }
       ]
     },
-    "title": {
+    {
       "name": {
         "en": "Title",
         "sv": "Titel"
@@ -776,5 +776,5 @@
         }
       ]
     }
-  }
+  ]
 }
