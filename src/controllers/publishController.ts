@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { addNewPublication } from '../services/publishServices/addNewPublication';
+import { findFormInCora } from '../services/publishServices/findFormInCora';
 
 // @desc		Post new person with name
 // @route		Post /api/users/:newPersonWithName
-// @access	Public
-export const postPublication = async (req: Request, res: Response) => {
+// @access	Private
+export const getPublicationForm = async (req: Request, res: Response) => {
   const { validationType } = req.params;
 
   let authToken;
@@ -16,7 +16,7 @@ export const postPublication = async (req: Request, res: Response) => {
   }
 
   try {
-    const createdPerson = await addNewPublication(validationType, authToken);
+    const createdPerson = await findFormInCora(validationType, authToken);
     res.status(201).json(createdPerson);
   } catch (error: any) {
     const errorMessage = error.message;
