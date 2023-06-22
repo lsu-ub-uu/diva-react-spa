@@ -25,6 +25,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             {props.label}
           </FormLabel>
           <TextField
+            size='small'
             error={error !== undefined}
             {...field}
             autoComplete='off'
