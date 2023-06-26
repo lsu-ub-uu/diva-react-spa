@@ -15,56 +15,6 @@ afterEach(() => {
   localStorage.clear();
 });
 describe('formService', () => {
-  // it.each([
-  //   'studentThesis',
-  //   'project',
-  //   'artisticOutput',
-  //   'comprehensiveLicentiateThesis',
-  //   'conferencePaper',
-  //   'contribution',
-  //   'comprehensiveDoctoralThesis',
-  //   'article',
-  //   'other',
-  //   'patent',
-  //   'monographDoctoralThesis',
-  //   'book',
-  //   'dissertation',
-  //   'conferenceProceedingsEditor',
-  //   'monographLicentiateThesis',
-  //   'collectionEditor',
-  //   'manuscriptPreprint',
-  //   'report',
-  //   'dataset',
-  // ])('formService calls the api correctly for %s', async (validationType) => {
-  //   localStorage.setItem(
-  //     'diva_session',
-  //     JSON.stringify({
-  //       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-  //     }),
-  //   );
-
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa`,
-  //     },
-  //   };
-  //   mockedAxios.post.mockResolvedValue({
-  //     data: {
-  //       authorisedName: {
-  //         givenName: 'Egil',
-  //         familyName: 'Swenning Leyser',
-  //       },
-  //     },
-  //   });
-  //   await getForm(validationType);
-
-  //   expect(mockedAxios.post).toBeCalledWith(
-  //     `https://cora.epc.ub.uu.se/diva/spaclientbff/api/publish/${validationType}`,
-  //     config,
-  //   );
-  // });
-
   it.each([
     'studentThesis',
     'project',

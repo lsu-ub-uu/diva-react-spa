@@ -1,17 +1,9 @@
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { AsidePortal } from '../components';
+import { AsidePortal, Card } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { getRecordTypeByName } from '../features/recordType/recordTypeSlice';
 import { getOneForm } from '../features/form/formSlice';
-import {
-  Card,
-  Select,
-  useBackdrop,
-  ErrorSummary,
-  ResearchSubjectPicker,
-} from '../components';
 
 export const FormGenPage = () => {
   // const { setBackdrop } = useBackdrop();
@@ -35,17 +27,16 @@ export const FormGenPage = () => {
       document.getElementById('formGetter') as HTMLInputElement
     ).value;
     e.preventDefault();
-    console.log(inputValue);
+    // console.log(inputValue);
     if (inputValue !== '' || inputValue !== undefined || inputValue !== null) {
       setId(inputValue);
     }
   };
 
-  const inputType = (type: {}) => {
-    console.log('iT', type);
-  };
+  // const inputType = (child: { type: string }) => {
+  // };
 
-  console.log('aa', form);
+  // console.log('aa', form);
   return (
     <Box sx={{ height: '100vh', width: '100%' }}>
       <AsidePortal>
@@ -80,9 +71,47 @@ export const FormGenPage = () => {
                   tooltipTitle='Title'
                   tooltipBody='Here goes some text about how choose type'
                 >
-                  Cards
-                  {formPart.children.forEach((child: any) => {
-                    inputType(child);
+                  {formPart.children.map((child: any) => {
+                    switch (child.type) {
+                      case 'select':
+                        return (
+                          <>
+                            <label htmlFor={child.name}>
+                              {child.label?.sv}
+                            </label>
+                            <select>
+                              {child.children.map(
+                                (options: any, j: Key | null | undefined) => {
+                                  return (
+                                    <option
+                                      value={options.value}
+                                      key={j}
+                                    >
+                                      {options.name?.sv}
+                                    </option>
+                                  );
+                                },
+                              )}
+                            </select>
+                          </>
+                        );
+                      case 'input':
+                        return (
+                          <>
+                            <label htmlFor={child.name}>
+                              {child.label?.sv}
+                            </label>
+                            <input
+                              pattern={child.regex}
+                              id={child.name}
+                            />
+                          </>
+                        );
+                      case 'button':
+                        return <button type='button'>{child.label?.sv}</button>;
+                      default:
+                        return null;
+                    }
                   })}
                 </Card>
               );
