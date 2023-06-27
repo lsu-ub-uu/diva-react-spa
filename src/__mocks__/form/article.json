@@ -791,7 +791,7 @@
             "sv": "Typ av innehåll obligatorisk uppgift Refereegranskat: publikationens vetenskapliga innehåll har granskats av oberoende referenter och accepterats för presentation och/eller publicering Övrigt vetenskapligt: publikationens innehåll är av vetenskaplig karaktär och riktar sig mot vetenskapssamhället men har inte genomgått refereegranskning. Övrigt (populärvetenskap, debatt): publikationens innehåll är av populärvetenskaplig karaktär och riktar sig mot allmänheten. Även debattinlägg räknas hit."
           },
           "children": [
-            [
+            
               {
                 "value": "refereed",
                 "name": {
@@ -810,7 +810,7 @@
                   "sv": "Övrig (populärvetenskap, debatt, mm)"
                 }
               }
-            ]
+            
           ]
         }
       ]
