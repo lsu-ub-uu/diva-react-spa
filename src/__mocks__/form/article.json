@@ -6,6 +6,9 @@
         "en": "subcategory",
         "sv": "Underkategori"
       },
+      "deftext": {
+        "sv": "Listar underkategorierna till publikationstypen artikel"
+      },
       "children": [
         {
           "type": "select",
@@ -71,6 +74,9 @@
       "name": {
         "en": "Author",
         "sv": "Författare"
+      },
+      "deftext": {
+        "sv": "Metadatagruppen samlar bibliografiska metadata om författaren"
       },
       "children": [
         {
@@ -209,9 +215,12 @@
         "en": "Title",
         "sv": "Titel"
       },
+      "deftext": {
+        "sv": "Grupp för huvudtitel, undertitel och språk"
+      },
       "children": [
         {
-          "type": "input",
+          "type": "textarea",
           "regex": ".+",
           "name": "mainTitle",
           "label": {
@@ -222,7 +231,7 @@
           }
         },
         {
-          "type": "input",
+          "type": "textarea",
           "regex": ".+",
           "name": "subTitle",
           "label": {
@@ -762,6 +771,76 @@
           ]
         }
       ]
+    },
+
+    {
+      "name": {
+        "en": "Content Type",
+        "sv": "Typ av innehåll"
+      },
+      "children": [
+        {
+          "type": "radio",
+          "name": "contentType",
+          "label": {
+            "sv": "Typ av innehåll"
+          },
+          "deftext": {
+            "sv": "Typ av innehåll obligatorisk uppgift Refereegranskat: publikationens vetenskapliga innehåll har granskats av oberoende referenter och accepterats för presentation och/eller publicering Övrigt vetenskapligt: publikationens innehåll är av vetenskaplig karaktär och riktar sig mot vetenskapssamhället men har inte genomgått refereegranskning. Övrigt (populärvetenskap, debatt): publikationens innehåll är av populärvetenskaplig karaktär och riktar sig mot allmänheten. Även debattinlägg räknas hit."
+          },
+          "children": [
+            [
+              {
+                "value": "refereed",
+                "name": {
+                  "sv": "Refereegranskat"  
+                }
+              },
+              {
+                "value": "otherAcademic",
+                "name": {
+                  "sv": "Övrigt vetenskapligt"
+                }
+              },
+              {
+                "value": "other",
+                "name": {
+                  "sv": "Övrig (populärvetenskap, debatt, mm)"
+                }
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Content category",
+        "sv": "Innehållskategori"
+      },
+      "children": [
+        {
+          "type": "checkbox",
+          "name": "artisticWork",
+          "label": {
+            "sv": "Forskning på konstnärlig grund"
+          },
+          "deftext": {
+            "sv": "Kryssa i rutan om arbetet utgör forskning på konstnärlig grund"
+          },
+          "children": [
+            [
+              {
+                "value": "true",
+                "name": {
+                  "sv": "Forskning på konstnärlig grund"  
+                }
+              }
+            ]
+          ]
+        }
+      ]
     }
+    
   ]
 }
