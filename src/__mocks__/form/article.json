@@ -218,6 +218,7 @@
         "en": "Title",
         "sv": "Titel"
       },
+      "id": "title",
       "deftext": {
         "sv": "Grupp för huvudtitel, undertitel och språk"
       },
