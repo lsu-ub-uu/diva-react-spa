@@ -6,6 +6,7 @@
         "en": "subcategory",
         "sv": "Underkategori"
       },
+      "id": "subcategory",
       "deftext": {
         "sv": "Listar underkategorierna till publikationstypen artikel"
       },
@@ -75,6 +76,7 @@
         "en": "Author",
         "sv": "Författare"
       },
+      "id": "author",
       "deftext": {
         "sv": "Metadatagruppen samlar bibliografiska metadata om författaren"
       },
@@ -196,6 +198,7 @@
         "en": "Other contributor",
         "sv": "Annan upphovsperson"
       },
+      "id": "otherContributor",
       "children": [
         {
           "type": "button",
@@ -778,6 +781,7 @@
         "en": "Content Type",
         "sv": "Typ av innehåll"
       },
+      "id": "contentType",
       "deftext": {
         "sv": "Typ av innehåll obligatorisk uppgift Refereegranskat: publikationens vetenskapliga innehåll har granskats av oberoende referenter och accepterats för presentation och/eller publicering Övrigt vetenskapligt: publikationens innehåll är av vetenskaplig karaktär och riktar sig mot vetenskapssamhället men har inte genomgått refereegranskning. Övrigt (populärvetenskap, debatt): publikationens innehåll är av populärvetenskaplig karaktär och riktar sig mot allmänheten. Även debattinlägg räknas hit."
       },
@@ -818,6 +822,7 @@
         "en": "Content category",
         "sv": "Innehållskategori"
       },
+      "id": "artisticWork",
       "children": [
         {
           "type": "checkbox",
