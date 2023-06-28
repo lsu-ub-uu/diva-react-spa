@@ -1,9 +1,33 @@
-import { Key, useEffect, useState } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import React, { Key, useEffect, useState } from 'react';
+import { Box, Button, TextField, IconButton } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import InfoIcon from '@mui/icons-material/Info';
 import { AsidePortal, Card } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { getOneForm } from '../features/form/formSlice';
+import { Tooltip } from '../components/Tooltip/Tooltip';
+
+export interface InfoButtonProps {
+  title: string;
+  body: string;
+}
+
+const InfoButton = (props: InfoButtonProps) => {
+  return (
+    <Tooltip
+      title={props.title}
+      body={props.body}
+    >
+      <IconButton
+        disableRipple
+        color='info'
+        aria-label='info'
+      >
+        <InfoIcon />
+      </IconButton>
+    </Tooltip>
+  );
+};
 
 export const FormGenPage = () => {
   // const { setBackdrop } = useBackdrop();
@@ -33,9 +57,6 @@ export const FormGenPage = () => {
     }
   };
 
-  // const inputType = (child: { type: string }) => {
-  // };
-
   // console.log('aa', form);
   return (
     <Box sx={{ height: '100vh', width: '100%' }}>
@@ -46,19 +67,26 @@ export const FormGenPage = () => {
         <h2>Lägg till publikation – Fyll i uppgifter</h2>
 
         <form>
-          <TextField id='formGetter' />
-          <Button
-            size='small'
-            type='submit'
-            disableRipple
-            variant='contained'
-            endIcon={<ArrowForwardIcon />}
-            onClick={(e) => {
-              handleInput(e);
-            }}
+          <Card
+            title='Change Publication Type'
+            variant='variant6'
+            tooltipTitle='Title'
+            tooltipBody=''
           >
-            Change Publication Type
-          </Button>
+            <TextField id='formGetter' />
+            <Button
+              size='small'
+              type='submit'
+              disableRipple
+              variant='contained'
+              endIcon={<ArrowForwardIcon />}
+              onClick={(e) => {
+                handleInput(e);
+              }}
+            >
+              Change Publication Type
+            </Button>
+          </Card>
           {isLoading || message === '' ? (
             Object.values(form.cards).map((formPart: any, i) => {
               // console.log(formPart);
@@ -69,13 +97,13 @@ export const FormGenPage = () => {
                   title={formPart.name.sv}
                   variant='variant6'
                   tooltipTitle='Title'
-                  tooltipBody='Here goes some text about how choose type'
+                  tooltipBody={formPart?.deftext?.sv}
                 >
                   {formPart.children.map((child: any) => {
                     switch (child.type) {
                       case 'select':
                         return (
-                          <>
+                          <React.Fragment key={child.name}>
                             <label htmlFor={child.name}>
                               {child.label?.sv}
                             </label>
@@ -93,11 +121,11 @@ export const FormGenPage = () => {
                                 },
                               )}
                             </select>
-                          </>
+                          </React.Fragment>
                         );
                       case 'input':
                         return (
-                          <>
+                          <React.Fragment key={child.name}>
                             <label htmlFor={child.name}>
                               {child.label?.sv}
                             </label>
@@ -105,10 +133,92 @@ export const FormGenPage = () => {
                               pattern={child.regex}
                               id={child.name}
                             />
-                          </>
+                            {child.deftext?.sv ? (
+                              <InfoButton
+                                title=''
+                                body={child?.deftext?.sv}
+                              />
+                            ) : null}
+                          </React.Fragment>
+                        );
+                      case 'textarea':
+                        return (
+                          <React.Fragment key={child.name}>
+                            <label htmlFor={child.name}>
+                              {child.label?.sv}
+                            </label>
+                            <textarea
+                              // pattern={child.regex}
+                              id={child.name}
+                            />
+                            {child.deftext?.sv ? (
+                              <InfoButton
+                                title=''
+                                body={child?.deftext?.sv}
+                              />
+                            ) : null}
+                          </React.Fragment>
                         );
                       case 'button':
-                        return <button type='button'>{child.label?.sv}</button>;
+                        return (
+                          <React.Fragment key={child.name}>
+                            <button type='button'>{child.label?.sv}</button>
+                            {child.deftext?.sv ? (
+                              <InfoButton
+                                title=''
+                                body={child?.deftext?.sv}
+                              />
+                            ) : null}
+                          </React.Fragment>
+                        );
+                      case 'radio':
+                        return (
+                          <React.Fragment key={child.name}>
+                            {child.deftext?.sv ? (
+                              <i>{child.deftext?.sv}</i>
+                            ) : null}
+                            {child.children.map((options: any) => {
+                              console.log(child);
+
+                              return (
+                                <React.Fragment key={options.value}>
+                                  <input
+                                    type='radio'
+                                    id={options.value}
+                                    name={child.name}
+                                  />
+                                  <label htmlFor={options.value}>
+                                    {options.name?.sv}
+                                  </label>
+                                  {child.deftext?.sv ? (
+                                    <InfoButton
+                                      title=''
+                                      body={child?.deftext?.sv}
+                                    />
+                                  ) : null}
+                                </React.Fragment>
+                              );
+                            })}
+                          </React.Fragment>
+                        );
+                      case 'checkbox':
+                        return (
+                          <React.Fragment key={child.name}>
+                            <input
+                              id={child.name}
+                              type='checkbox'
+                            />
+                            <label htmlFor={child.name}>
+                              {child.label?.sv}
+                            </label>
+                            {child.deftext?.sv ? (
+                              <InfoButton
+                                title=''
+                                body={child?.deftext?.sv}
+                              />
+                            ) : null}
+                          </React.Fragment>
+                        );
                       default:
                         return null;
                     }
