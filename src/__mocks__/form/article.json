@@ -256,6 +256,13 @@
           },
           "children": [
             {
+              "value": "",
+              "name": {
+                "sv": "-- Gör ett val ur listan --",
+                "en": "-- Pick an item from the list --"
+              }
+            },
+            {
               "value": "eng",
               "name": {
                 "sv": "Engelska",
@@ -284,24 +291,10 @@
               }
             },
             {
-              "value": "amh",
-              "name": {
-                "sv": "Amhariska",
-                "en": "Amharic"
-              }
-            },
-            {
               "value": "ara",
               "name": {
                 "sv": "Arabiska",
                 "en": "Arabic"
-              }
-            },
-            {
-              "value": "aze",
-              "name": {
-                "sv": "Azerbajdzjanska",
-                "en": "Azerbaijani"
               }
             },
             {
@@ -312,17 +305,10 @@
               }
             },
             {
-              "value": "ben",
-              "name": {
-                "sv": "Bengali",
-                "en": "Bengali"
-              }
-            },
-            {
               "value": "nob",
               "name": {
                 "sv": "Bokmål",
-                "en": "Bokmål, Norwegian; Norwegian Bokmål"
+                "en": "Bokmål - Norwegian; Norwegian Bokmål"
               }
             },
             {
@@ -344,13 +330,6 @@
               "name": {
                 "sv": "Danska",
                 "en": "Danish"
-              }
-            },
-            {
-              "value": "eng",
-              "name": {
-                "sv": "Engelska",
-                "en": "English"
               }
             },
             {
@@ -385,7 +364,7 @@
               "value": "fry",
               "name": {
                 "sv": "Frisiska",
-                "en": "Dutch; Flemish"
+                "en": "Western Frisian"
               }
             },
             {
@@ -398,8 +377,8 @@
             {
               "value": "grc",
               "name": {
-                "sv": "Grekiska, klassisk (-1453)",
-                "en": "Greek, Ancient (to 1453)"
+                "sv": "Grekiska - klassisk (-1453)",
+                "en": "Greek - Ancient (to 1453)"
               }
             },
             {
@@ -466,13 +445,6 @@
               }
             },
             {
-              "value": "kan",
-              "name": {
-                "sv": "Kanaresiska (Kannada)",
-                "en": "Kannada"
-              }
-            },
-            {
               "value": "cat",
               "name": {
                 "sv": "Katalanska",
@@ -494,7 +466,7 @@
               }
             },
             {
-              "value": "scr",
+              "value": "hrv",
               "name": {
                 "sv": "Kroatiska",
                 "en": "Croatian"
@@ -546,7 +518,7 @@
               "value": "fit",
               "name": {
                 "sv": "Meänkieli",
-                "en": "Western Frisian"
+                "en": "Tornedalen Finnish"
               }
             },
             {
@@ -559,28 +531,22 @@
             {
               "value": "dut",
               "name": {
-                "sv": "Nederländska"
-              }
-            },
-            {
-              "value": "nor",
-              "name": {
-                "sv": "Norska",
-                "en": "Norwegian"
+                "sv": "Nederländska",
+                "en": "Dutch; Flemish"
               }
             },
             {
               "value": "gre",
               "name": {
                 "sv": "Nygrekiska (1453-)",
-                "en": "Greek, Modern (1453-)"
+                "en": "Greek - Modern (1453-)"
               }
             },
             {
               "value": "nno",
               "name": {
                 "sv": "Nynorsk",
-                "en": "Norwegian Nynorsk; Nynorsk, Norwegian"
+                "en": "Norwegian Nynorsk; Nynorsk"
               }
             },
             {
@@ -647,7 +613,7 @@
               }
             },
             {
-              "value": "scc",
+              "value": "srp",
               "name": {
                 "sv": "Serbiska",
                 "en": "Serbian"
@@ -668,24 +634,10 @@
               }
             },
             {
-              "value": "som",
-              "name": {
-                "sv": "Somali",
-                "en": "Somali"
-              }
-            },
-            {
               "value": "spa",
               "name": {
                 "sv": "Spanska",
                 "en": "Spanish"
-              }
-            },
-            {
-              "value": "swe",
-              "name": {
-                "sv": "Svenska",
-                "en": "Swedish"
               }
             },
             {
@@ -724,13 +676,6 @@
               }
             },
             {
-              "value": "ger",
-              "name": {
-                "sv": "Tyska",
-                "en": "German"
-              }
-            },
-            {
               "value": "ukr",
               "name": {
                 "sv": "Ukrainska",
@@ -764,19 +709,11 @@
                 "sv": "Vitryska",
                 "en": "Belarusian"
               }
-            },
-            {
-              "value": "zul",
-              "name": {
-                "sv": "Zulu",
-                "en": "Zulu"
-              }
             }
           ]
         }
       ]
     },
-
     {
       "name": {
         "en": "Content Type",
@@ -794,26 +731,24 @@
             "sv": "Typ av innehåll"
           },
           "children": [
-            
-              {
-                "value": "refereed",
-                "name": {
-                  "sv": "Refereegranskat"  
-                }
-              },
-              {
-                "value": "otherAcademic",
-                "name": {
-                  "sv": "Övrigt vetenskapligt"
-                }
-              },
-              {
-                "value": "other",
-                "name": {
-                  "sv": "Övrig (populärvetenskap, debatt, mm)"
-                }
+            {
+              "value": "refereed",
+              "name": {
+                "sv": "Refereegranskat"
               }
-            
+            },
+            {
+              "value": "otherAcademic",
+              "name": {
+                "sv": "Övrigt vetenskapligt"
+              }
+            },
+            {
+              "value": "other",
+              "name": {
+                "sv": "Övrig (populärvetenskap, debatt, mm)"
+              }
+            }
           ]
         }
       ]
@@ -839,7 +774,7 @@
               {
                 "value": "true",
                 "name": {
-                  "sv": "Forskning på konstnärlig grund"  
+                  "sv": "Forskning på konstnärlig grund"
                 }
               }
             ]
@@ -847,6 +782,5 @@
         }
       ]
     }
-    
   ]
 }
