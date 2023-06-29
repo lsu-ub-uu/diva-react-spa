@@ -2,9 +2,11 @@ import React, { Key, useEffect, useState } from 'react';
 import { Box, Button, TextField, IconButton } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import InfoIcon from '@mui/icons-material/Info';
-import { AsidePortal, Card } from '../components';
+import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { getOneForm } from '../features/form/formSlice';
+import { AsidePortal, Card } from '../components';
 import { Tooltip } from '../components/Tooltip/Tooltip';
 
 export interface InfoButtonProps {
@@ -30,6 +32,8 @@ const InfoButton = (props: InfoButtonProps) => {
 };
 
 export const FormGenPage = () => {
+  const { t } = useTranslation();
+
   // const { setBackdrop } = useBackdrop();
   const dispatch = useAppDispatch();
 
@@ -56,8 +60,10 @@ export const FormGenPage = () => {
       setId(inputValue);
     }
   };
-
-  // console.log('aa', form);
+  console.log('aa', form);
+  const translationsEN: any = {};
+  const translationsSV: any = {};
+  const translationsEnFn = () => {};
   return (
     <Box sx={{ height: '100vh', width: '100%' }}>
       <AsidePortal>
@@ -90,11 +96,18 @@ export const FormGenPage = () => {
           {isLoading || message === '' ? (
             Object.values(form.cards).map((formPart: any, i) => {
               // console.log(formPart);
+              translationsEN[`${formPart.id}`] = formPart.name.en;
+              translationsSV[`${formPart.id}`] = formPart.name.sv;
+              console.log(translationsEN, translationsSV);
 
+              i18n.addResources('en', 'form', translationsEN);
+              i18n.addResources('sv', 'form', translationsSV);
+              // console.log('i', i18n.store.data);
               return (
                 <Card
                   key={i}
-                  title={formPart.name.sv}
+                  title={t(formPart.id as string, { ns: 'form' })}
+                  // title={t(`${formPart.name.sv}`, 'aaa')}
                   variant='variant6'
                   tooltipTitle='Title'
                   tooltipBody={formPart?.deftext?.sv}
@@ -108,26 +121,39 @@ export const FormGenPage = () => {
                               {child.label?.sv}
                             </label>
                             <select>
-                              {child.children.map(
-                                (options: any, j: Key | null | undefined) => {
-                                  return (
-                                    <option
-                                      value={options.value}
-                                      key={j}
-                                    >
-                                      {options.name?.sv}
-                                    </option>
-                                  );
-                                },
-                              )}
+                              {child &&
+                                child.children.map(
+                                  (options: any, j: Key | null | undefined) => {
+                                    if (options.value !== '') {
+                                      translationsEN[`${options.value}`] =
+                                        options.name?.en;
+                                      translationsSV[`${options.value}`] =
+                                        options.name?.sv;
+                                    }
+
+                                    return (
+                                      <option
+                                        value={options.value}
+                                        key={j}
+                                      >
+                                        {/* {options.name.sv} */}
+                                        {t(options.value as string, {
+                                          ns: 'form',
+                                        })}
+                                      </option>
+                                    );
+                                  },
+                                )}
                             </select>
                           </React.Fragment>
                         );
                       case 'input':
+                        translationsEN[`${child.name}`] = child.label?.en;
+                        translationsSV[`${child.name}`] = child.label?.sv;
                         return (
                           <React.Fragment key={child.name}>
                             <label htmlFor={child.name}>
-                              {child.label?.sv}
+                              {t(child.name as string, { ns: 'form' })}
                             </label>
                             <input
                               pattern={child.regex}
@@ -178,8 +204,6 @@ export const FormGenPage = () => {
                               <i>{child.deftext?.sv}</i>
                             ) : null}
                             {child.children.map((options: any) => {
-                              console.log(child);
-
                               return (
                                 <React.Fragment key={options.value}>
                                   <input
