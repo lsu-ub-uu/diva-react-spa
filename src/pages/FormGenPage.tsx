@@ -63,7 +63,7 @@ export const FormGenPage = () => {
   console.log('aa', form);
   const translationsEN: any = {};
   const translationsSV: any = {};
-  const translationsEnFn = () => {};
+
   return (
     <Box sx={{ height: '100vh', width: '100%' }}>
       <AsidePortal>
@@ -96,8 +96,8 @@ export const FormGenPage = () => {
           {isLoading || message === '' ? (
             Object.values(form.cards).map((formPart: any, i) => {
               // console.log(formPart);
-              translationsEN[`${formPart.id}`] = formPart.name.en;
-              translationsSV[`${formPart.id}`] = formPart.name.sv;
+              translationsEN[formPart.name] = formPart.label.en;
+              translationsSV[formPart.name] = formPart.label.sv;
               console.log(translationsEN, translationsSV);
 
               i18n.addResources('en', 'form', translationsEN);
@@ -106,7 +106,7 @@ export const FormGenPage = () => {
               return (
                 <Card
                   key={i}
-                  title={t(formPart.id as string, { ns: 'form' })}
+                  title={t(formPart.name, { ns: 'form' }) as string}
                   // title={t(`${formPart.name.sv}`, 'aaa')}
                   variant='variant6'
                   tooltipTitle='Title'
@@ -125,9 +125,9 @@ export const FormGenPage = () => {
                                 child.children.map(
                                   (options: any, j: Key | null | undefined) => {
                                     if (options.value !== '') {
-                                      translationsEN[`${options.value}`] =
+                                      translationsEN[options.value] =
                                         options.name?.en;
-                                      translationsSV[`${options.value}`] =
+                                      translationsSV[options.value] =
                                         options.name?.sv;
                                     }
 
@@ -148,8 +148,8 @@ export const FormGenPage = () => {
                           </React.Fragment>
                         );
                       case 'input':
-                        translationsEN[`${child.name}`] = child.label?.en;
-                        translationsSV[`${child.name}`] = child.label?.sv;
+                        translationsEN[child.name] = child.label?.en;
+                        translationsSV[child.name] = child.label?.sv;
                         return (
                           <React.Fragment key={child.name}>
                             <label htmlFor={child.name}>
@@ -168,10 +168,12 @@ export const FormGenPage = () => {
                           </React.Fragment>
                         );
                       case 'textarea':
+                        translationsEN[child.name] = child.label?.en;
+                        translationsSV[child.name] = child.label?.sv;
                         return (
                           <React.Fragment key={child.name}>
                             <label htmlFor={child.name}>
-                              {child.label?.sv}
+                              {t(child.name as string, { ns: 'form' })}
                             </label>
                             <textarea
                               // pattern={child.regex}
@@ -186,9 +188,13 @@ export const FormGenPage = () => {
                           </React.Fragment>
                         );
                       case 'button':
+                        translationsEN[child.name] = child.label?.en;
+                        translationsSV[child.name] = child.label?.sv;
                         return (
                           <React.Fragment key={child.name}>
-                            <button type='button'>{child.label?.sv}</button>
+                            <button type='button'>
+                              {t(child.name as string, { ns: 'form' })}
+                            </button>
                             {child.deftext?.sv ? (
                               <InfoButton
                                 title=''
@@ -198,6 +204,8 @@ export const FormGenPage = () => {
                           </React.Fragment>
                         );
                       case 'radio':
+                        translationsEN[child.name] = child.label?.en;
+                        translationsSV[child.name] = child.label?.sv;
                         return (
                           <React.Fragment key={child.name}>
                             {child.deftext?.sv ? (
@@ -212,7 +220,7 @@ export const FormGenPage = () => {
                                     name={child.name}
                                   />
                                   <label htmlFor={options.value}>
-                                    {options.name?.sv}
+                                    {t(child.name as string, { ns: 'form' })}
                                   </label>
                                   {child.deftext?.sv ? (
                                     <InfoButton
@@ -226,6 +234,8 @@ export const FormGenPage = () => {
                           </React.Fragment>
                         );
                       case 'checkbox':
+                        translationsEN[child.name] = child.label?.en;
+                        translationsSV[child.name] = child.label?.sv;
                         return (
                           <React.Fragment key={child.name}>
                             <input
@@ -233,7 +243,7 @@ export const FormGenPage = () => {
                               type='checkbox'
                             />
                             <label htmlFor={child.name}>
-                              {child.label?.sv}
+                              {t(child.name as string, { ns: 'form' })}
                             </label>
                             {child.deftext?.sv ? (
                               <InfoButton
@@ -243,6 +253,29 @@ export const FormGenPage = () => {
                             ) : null}
                           </React.Fragment>
                         );
+                      case 'date':
+                      case 'time':
+                        translationsEN[child.name] = child.label?.en;
+                        translationsSV[child.name] = child.label?.sv;
+                        return (
+                          <React.Fragment key={child.name}>
+                            <label htmlFor={child.name}>
+                              {t(child.name as string, { ns: 'form' })}
+                            </label>
+                            <input
+                              pattern={child.regex}
+                              id={child.name}
+                              type={child.type}
+                            />
+                            {child.deftext?.sv ? (
+                              <InfoButton
+                                title=''
+                                body={child?.deftext?.sv}
+                              />
+                            ) : null}
+                          </React.Fragment>
+                        );
+
                       default:
                         return null;
                     }
