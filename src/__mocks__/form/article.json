@@ -2,11 +2,11 @@
   "name": "article",
   "cards": [
     {
-      "name": {
+      "label": {
         "en": "subcategory",
         "sv": "Underkategori"
       },
-      "id": "subcategory",
+      "name": "subcategory",
       "deftext": {
         "sv": "Listar underkategorierna till publikationstypen artikel"
       },
@@ -72,11 +72,11 @@
       ]
     },
     {
-      "name": {
+      "label": {
         "en": "Author",
         "sv": "Författare"
       },
-      "id": "author",
+      "name": "author",
       "deftext": {
         "sv": "Metadatagruppen samlar bibliografiska metadata om författaren"
       },
@@ -194,11 +194,11 @@
       ]
     },
     {
-      "name": {
+      "label": {
         "en": "Other contributor",
         "sv": "Annan upphovsperson"
       },
-      "id": "otherContributor",
+      "name": "otherContributor",
       "children": [
         {
           "type": "button",
@@ -214,11 +214,11 @@
       ]
     },
     {
-      "name": {
+      "label": {
         "en": "Title",
         "sv": "Titel"
       },
-      "id": "title",
+      "name": "title",
       "deftext": {
         "sv": "Grupp för huvudtitel, undertitel och språk"
       },
@@ -715,11 +715,11 @@
       ]
     },
     {
-      "name": {
+      "label": {
         "en": "Content Type",
         "sv": "Typ av innehåll"
       },
-      "id": "contentType",
+      "name": "contentType",
       "deftext": {
         "sv": "Typ av innehåll obligatorisk uppgift Refereegranskat: publikationens vetenskapliga innehåll har granskats av oberoende referenter och accepterats för presentation och/eller publicering Övrigt vetenskapligt: publikationens innehåll är av vetenskaplig karaktär och riktar sig mot vetenskapssamhället men har inte genomgått refereegranskning. Övrigt (populärvetenskap, debatt): publikationens innehåll är av populärvetenskaplig karaktär och riktar sig mot allmänheten. Även debattinlägg räknas hit."
       },
@@ -754,11 +754,11 @@
       ]
     },
     {
-      "name": {
+      "label": {
         "en": "Content category",
         "sv": "Innehållskategori"
       },
-      "id": "artisticWork",
+      "name": "artisticWork",
       "children": [
         {
           "type": "checkbox",
@@ -783,11 +783,11 @@
       ]
     },
     {
-      "name": {
+      "label": {
         "sv": "Parallellpublicering",
         "en": "ParallellPublishing"
       },
-      "id": "publishing",
+      "name": "publishing",
       "children": [
         {
           "type": "text",
@@ -831,11 +831,11 @@
       ]
     },
     {
-      "name": {
+      "label": {
         "sv": "När ska filen göras fritt tillgänglig?",
         "en": "When will the file be made freely available?"
       },
-      "id": "available",
+      "name": "available",
       "children": [
         {
           "type": "date",
@@ -864,11 +864,11 @@
       ]
     },
     {
-      "name": {
+      "label": {
         "sv": "Ladda upp fil",
         "en": "Upload file"
       },
-      "id": "fileUpload",
+      "name": "fileUpload",
       "children": [
         {
           "type": "file",
