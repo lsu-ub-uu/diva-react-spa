@@ -770,17 +770,120 @@
             "sv": "Kryssa i rutan om arbetet utgör forskning på konstnärlig grund"
           },
           "children": [
-            [
+
               {
                 "value": "true",
                 "name": {
                   "sv": "Forskning på konstnärlig grund"
                 }
               }
-            ]
+
           ]
         }
       ]
+    },
+    {
+      "name": {
+        "sv": "Parallellpublicering",
+        "en": "ParallellPublishing"
+      },
+      "id": "publishing",
+      "children": [
+        {
+          "type": "text",
+          "regex": "",
+          "name": "ParallellPublishingText",
+          "deftext": {
+            "sv": ""
+          },
+          "children": {
+            "en": [
+              "\\begin{document}",
+              "",
+              "\\hypertarget{titel}{%",
+              "\\section{Titel:}label{titel}}",
+              "",
+              "Publication name will be shown herer",
+              "",
+              "Most scientific journals and publishers allow you to parallel publish a copy of your article in an open archive, \"open access\". Check the publisher's policy in SHERPA/RoMEO",
+              "",
+              "\\url{www.sherpa.ac.uk/romeo}.",
+              "",
+              "\\end{document}"
+            ],
+            "sv": [
+              "\\begin{document}",
+              "",
+              "\\hypertarget{titel}{%",
+              "\\section{Titel:}label{titel}}",
+              "",
+              "Publikationens namn visas här",
+              "",
+              "De flesta vetenskapliga tidskrifter och förlag tillåter att du parallellpublicerarar en kopia av din artikel i ett öppet arkiv, \"open access\". Kontrollera förlagets policy i SHERPA/RoMEO",
+              "",
+              "\\url{www.sherpa.ac.uk/romeo}.",
+              "",
+              "\\end{document}"
+            ]
+          }
+          
+        }
+      ]
+    },
+    {
+      "name": {
+        "sv": "När ska filen göras fritt tillgänglig?",
+        "en": "When will the file be made freely available?"
+      },
+      "id": "available",
+      "children": [
+        {
+          "type": "date",
+          "regex": "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$",
+          "name": "publicationDate",
+          "label": {
+            "sv": "Välj datum",
+            "en": "Pick date"
+          },
+          "deftext": {
+            "sv": "Avser datum"
+          }
+        },
+        {
+          "type": "time",
+          "regex": "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
+          "name": "publicationTime",
+          "label": {
+            "sv": "Välj tid",
+            "en": "Pick date"
+          },
+          "deftext": {
+            "sv": "Avser datum"
+          }
+        }
+      ]
+    },
+    {
+      "name": {
+        "sv": "Ladda upp fil",
+        "en": "Upload file"
+      },
+      "id": "fileUpload",
+      "children": [
+        {
+          "type": "file",
+          "accept": "application/pdf",
+          "name": "fileUploadInput",
+          "label": {
+            "sv": "Välj fil att ladda upp",
+            "en": "Select file to upload"
+          },
+          "deftext": {
+            "sv": "Avser uppladdning av fil"
+          }
+        }
+      ]
     }
+    
   ]
 }
