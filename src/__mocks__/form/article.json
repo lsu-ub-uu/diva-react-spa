@@ -15,7 +15,7 @@
           "type": "select",
           "children": [
             {
-              "value": "",
+              "value": "--",
               "name": {
                 "en": "-- Pick an item from the list --",
                 "sv": "-- Gör ett val ur listan --"
@@ -256,7 +256,7 @@
           },
           "children": [
             {
-              "value": "",
+              "value": "--",
               "name": {
                 "sv": "-- Gör ett val ur listan --",
                 "en": "-- Pick an item from the list --"
