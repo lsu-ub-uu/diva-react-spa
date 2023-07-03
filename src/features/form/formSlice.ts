@@ -22,7 +22,7 @@ const initialState: FormTypeState = {
 
 // Get one recordType
 export const getOneForm = createAsyncThunk(
-  'person/getForm',
+  'form/getForm',
   async (data: string, thunkAPI) => {
     try {
       // console.log(data);

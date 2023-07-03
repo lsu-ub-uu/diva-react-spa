@@ -10,6 +10,7 @@ import {
   PersonSearchPage,
   PersonCreatePage,
   FormGenPage,
+  ReactHookFormGenPage,
 } from '../pages';
 
 export const routes = [
@@ -49,6 +50,10 @@ export const routes = [
       {
         path: '/form-gen',
         element: <FormGenPage />,
+      },
+      {
+        path: '/hook-gen',
+        element: <ReactHookFormGenPage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],

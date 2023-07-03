@@ -40,27 +40,26 @@ export const FormGenPage = () => {
   const { form, isLoading, isError, message } = useAppSelector(
     (state) => state.form,
   );
-  const [id, setId] = useState('');
+  // const [id, setId] = useState('');
   useEffect(() => {
     if (isError) {
       console.log('error message', message);
     }
-    if (id !== '') {
-      dispatch(getOneForm(id));
-    }
-  }, [isError, message, dispatch, id]);
+    dispatch(getOneForm('article'));
+  }, [isError, message, dispatch]);
+  // }, [isError, message, dispatch, id]);
 
-  const handleInput = (e: React.MouseEvent<HTMLElement>): void => {
-    const inputValue = (
-      document.getElementById('formGetter') as HTMLInputElement
-    ).value;
-    e.preventDefault();
-    // console.log(inputValue);
-    if (inputValue !== '' || inputValue !== undefined || inputValue !== null) {
-      setId(inputValue);
-    }
-  };
-  console.log('aa', form);
+  // const handleInput = (e: React.MouseEvent<HTMLElement>): void => {
+  //   const inputValue = (
+  //     document.getElementById('formGetter') as HTMLInputElement
+  //   ).value;
+  //   e.preventDefault();
+  //   // console.log(inputValue);
+  //   if (inputValue !== '' || inputValue !== undefined || inputValue !== null) {
+  //     setId(inputValue);
+  //   }
+  // };
+  // console.log('aa', form);
   const translationsEN: any = {};
   const translationsSV: any = {};
 
@@ -73,7 +72,7 @@ export const FormGenPage = () => {
         <h2>Lägg till publikation – Fyll i uppgifter</h2>
 
         <form>
-          <Card
+          {/* <Card
             title='Change Publication Type'
             variant='variant6'
             tooltipTitle='Title'
@@ -92,7 +91,7 @@ export const FormGenPage = () => {
             >
               Change Publication Type
             </Button>
-          </Card>
+          </Card> */}
           {isLoading || message === '' ? (
             Object.values(form.cards).map((formPart: any, i) => {
               // console.log(formPart);
