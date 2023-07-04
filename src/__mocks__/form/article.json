@@ -80,8 +80,11 @@
       "deftext": {
         "sv": "Metadatagruppen samlar bibliografiska metadata om författaren"
       },
+      "max": 3,
+      "min": 0,
       "children": [
         {
+          "required": true,
           "type": "input",
           "regex": ".+",
           "name": "lastName",
@@ -93,6 +96,7 @@
           }
         },
         {
+          "required": true,
           "type": "input",
           "regex": ".+",
           "name": "givenName",
@@ -104,6 +108,7 @@
           }
         },
         {
+          "required": true,
           "type": "input",
           "regex": "^[0-9]{4}$",
           "name": "yearOfBirth",
@@ -126,6 +131,7 @@
           }
         },
         {
+          "required": true,
           "type": "input",
           "regex": ".+",
           "name": "localID",
@@ -137,6 +143,7 @@
           }
         },
         {
+          "required": true,
           "type": "input",
           "regex": "^(\\d{4})-(\\d{4})-(\\d{4})-(\\d{3}[0-9X])$",
           "name": "ORCID",
