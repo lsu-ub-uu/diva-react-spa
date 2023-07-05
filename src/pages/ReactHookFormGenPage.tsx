@@ -101,54 +101,145 @@ export const ReactHookFormGenPage = () => {
     dispatch(getOneForm('article'));
   }, [dispatch, setBackdrop]);
 
-  const valFunc = () => {
-    let validation = {};
+  const validationCreator = () => {
     console.log('form', form);
-    Object.values(form.cards).map((child: any) => {
-      console.log('chi', child);
+    const validation: any = {};
+    Object.values(form.cards).forEach((child: any) => {
+      const validationChild: any = {};
+      Object.values(child.children).forEach((childNode: any) => {
+        switch (childNode.type) {
+          case 'select':
+            // eslint-disable-next-line no-case-declarations
+            const options: any = [];
+            childNode.children.map((value: any) => {
+              return options.push(value.value);
+            });
+            validationChild[childNode.name] = yup
+              .string()
+              .oneOf(options)
+              .required(`${child.name} is required`);
+            break;
+          case 'input':
+            if (childNode.name === 'email') {
+              // console.log('email');
+              validationChild[childNode.name] = yup
+                .string()
+                .email()
+                .matches(childNode.regex);
+            }
+            validationChild[childNode.name] = yup
+              .string()
+              // .required()
+              .matches(childNode.regex)
+              .min(childNode?.min)
+              .max(childNode?.max);
+            break;
+          case 'textarea':
+            if (childNode.name === 'email') {
+              validationChild[childNode.name] = yup
+                .string()
+                .email()
+                .matches(childNode.regex);
+            }
+            validationChild[childNode.name] = yup
+              .string()
+              .required()
+              .matches(childNode.regex)
+              .min(childNode?.min)
+              .max(childNode?.max);
+
+            break;
+          case 'button':
+            break;
+          case 'radio':
+          case 'checkbox':
+            validationChild[childNode.name] = yup.string();
+            break;
+
+          case 'date':
+            validationChild[childNode.name] = yup
+              .string()
+              .matches(childNode.regex);
+            break;
+
+          case 'time':
+            validationChild[childNode.name] = yup
+              .string()
+              .matches(childNode.regex);
+            break;
+
+          default:
+            return null;
+        }
+      });
       validation[child.name] = yup
-        .string()
-        .required('Publication type is required');
-      console.log('val', validation);
+        .array()
+        .min(child?.min)
+        .max(child?.max)
+        .of(yup.object().shape(validationChild));
     });
-    const a = {
-      a: yup.string().required('Publication type is required'),
-      b: yup.string().required('Publication type is required'),
-    };
     return validation;
-    // return a;
   };
 
-  const validationSchemaGen = yup.object().shape(valFunc());
-  const validationSchema = yup.object().shape({
-    publicationType: yup.string().required('Publication type is required'),
-    // eslint-disable-next-line react/forbid-prop-types
-    authors: yup
-      .array()
-      .of(
-        yup.object().shape({
-          firstname: yup
-            .string()
-            .trim()
-            .matches(/[A-Za-z]{3}/),
-          lastname: yup.string().trim().required(),
-          birthYear: yup.string().matches(/^(?:\d{4})?$/),
-          deathYear: yup.string().matches(/^(?:\d{4})?$/),
-          localUserId: yup.string().trim(),
-          organisation: yup.string().trim().required(),
-          orcidId: yup.string().trim(),
-          researchGroup: yup.string().trim().required(),
-          email: yup.string().email(),
-          otherOrganisation: yup.string().trim(),
-        }),
-      )
-      .min(1)
-      .max(3),
-    researchSubjects: yup.array().of(yup.string()).min(1).max(4),
-  });
+  const generatedValidationSchema = yup.object().shape(validationCreator());
+  // const validationSchema = yup.object().shape({
+  //   publicationType: yup.string().required('Publication type is required'),
+  //   // eslint-disable-next-line react/forbid-prop-types
+  //   authors: yup
+  //     .array()
+  //     .of(
+  //       yup.object().shape({
+  //         firstname: yup
+  //           .string()
+  //           .trim()
+  //           .matches(/[A-Za-z]{3}/),
+  //         lastname: yup.string().trim().required(),
+  //         birthYear: yup.string().matches(/^(?:\d{4})?$/),
+  //         deathYear: yup.string().matches(/^(?:\d{4})?$/),
+  //         localUserId: yup.string().trim(),
+  //         organisation: yup.string().trim().required(),
+  //         orcidId: yup.string().trim(),
+  //         researchGroup: yup.string().trim().required(),
+  //         email: yup.string().email(),
+  //         otherOrganisation: yup.string().trim(),
+  //       }),
+  //     )
+  //     .min(1)
+  //     .max(3),
+  //   researchSubjects: yup.array().of(yup.string()).min(1).max(4),
+  // });
 
-  console.log('gen', validationSchemaGen, 'sch', validationSchema);
-  console.log(form);
+  console.log('gen', generatedValidationSchema);
+  // console.log('sch', validationSchema);
+
+  const generatedDefaultValues = {};
+  const defaultValuesCreator = () => {
+    const defaultValues: any = {};
+    Object.values(form.cards).forEach((child: any) => {
+      // console.log(child);
+      defaultValues[child.name] = [];
+      if (child.max > 1) {
+        defaultValues[child.name] = [];
+        const childObject = {};
+        Object.values(child.children).forEach((childNode: any) => {
+          childObject[childNode.name] = '';
+        });
+        defaultValues[child.name].push(childObject);
+        // console.log('cO', childObject);
+      } else {
+        defaultValues[child.name] = {};
+        const childObject = {};
+        Object.values(child.children).forEach((childNode: any) => {
+          childObject[childNode.name] = '';
+        });
+        defaultValues[child.name] = childObject;
+        console.log('cO', childObject);
+      }
+      Object.values(child.children).forEach((childNode: any) => {});
+    });
+    return defaultValues;
+  };
+  console.log('dVC', defaultValuesCreator());
 
   const methods = useForm({
     resolver: yupResolver(validationSchema),
@@ -171,7 +262,7 @@ export const ReactHookFormGenPage = () => {
       ],
     },
   });
-  // console.log('methods', methods);
+  console.log('met', methods);
   const {
     control,
     trigger,
@@ -597,38 +688,6 @@ export const ReactHookFormGenPage = () => {
                                 {isError !== undefined ? isError : ' '}
                               </FormHelperText>
                             </FormControl>
-
-                            <label htmlFor={child.name}>
-                              {child.label?.sv}
-                            </label>
-                            <select>
-                              {child &&
-                                child.children.map(
-                                  (
-                                    options: any,
-                                    j: React.Key | null | undefined,
-                                  ) => {
-                                    if (options.value !== '') {
-                                      translationsEN[options.value] =
-                                        options.name?.en;
-                                      translationsSV[options.value] =
-                                        options.name?.sv;
-                                    }
-
-                                    return (
-                                      <option
-                                        value={options.value}
-                                        key={j}
-                                      >
-                                        {/* {options.name.sv} */}
-                                        {t(options.value as string, {
-                                          ns: 'form',
-                                        })}
-                                      </option>
-                                    );
-                                  },
-                                )}
-                            </select>
                           </React.Fragment>
                         );
                       case 'input':
