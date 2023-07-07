@@ -514,6 +514,57 @@ export const ReactHookFormGenPage = () => {
                       case 'select':
                         return (
                           <React.Fragment key={child.name}>
+                            <Controller
+                              control={control}
+                              name='publicationType'
+                              render={({
+                                field: { onChange, ref, value },
+                                fieldState: { error },
+                              }) => (
+                                <FormControl fullWidth>
+                                  <FormLabel
+                                    required
+                                    error={error !== undefined}
+                                  >
+                                    Publication type
+                                  </FormLabel>
+                                  <Select
+                                    size='small'
+                                    value={
+                                      publicationTypeState.publicationTypes
+                                        .length
+                                        ? value
+                                        : ''
+                                    }
+                                    onChange={onChange}
+                                    ref={ref}
+                                    fullWidth
+                                    loadingError={publicationTypeState.isError}
+                                    error={error !== undefined}
+                                    loading={isLoading}
+                                  >
+                                    {publicationTypeState.publicationTypes &&
+                                      publicationTypeState.publicationTypes.map(
+                                        (item) => {
+                                          return (
+                                            <MenuItem
+                                              key={`publication-type-${item.value}`}
+                                              disableRipple
+                                              value={item.value}
+                                            >
+                                              {item.label}
+                                            </MenuItem>
+                                          );
+                                        },
+                                      )}
+                                  </Select>
+                                  <FormHelperText error={error !== undefined}>
+                                    {error !== undefined ? error.message : ' '}
+                                  </FormHelperText>
+                                </FormControl>
+                              )}
+                            />
+
                             <FormControl fullWidth>
                               <FormLabel
                                 required
@@ -573,7 +624,6 @@ export const ReactHookFormGenPage = () => {
                         return (
                           <React.Fragment key={child.name}>
                             <ControlledTextField
-                              size='small'
                               control={control}
                               placeHolder={
                                 t(child.name as string, {
