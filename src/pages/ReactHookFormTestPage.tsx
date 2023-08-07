@@ -7,7 +7,6 @@ import {
   FormLabel,
   Grid,
   IconButton,
-  MenuItem,
   Stack,
 } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -29,12 +28,12 @@ import {
 } from '../features/publicationTypes';
 import {
   Card,
-  Select,
   useBackdrop,
   ErrorSummary,
   ResearchSubjectPicker,
 } from '../components';
 import { ControlledTextField } from '../components/Controlled';
+import { ControlledSelectField } from '../components/Controlled/SelectField/ControlledSelectField';
 
 interface TestModel {
   publicationType: string;
@@ -166,52 +165,15 @@ export const ReactHookFormTestPage = () => {
                 xs={12}
                 sm={8}
               >
-                <Controller
+                <ControlledSelectField
                   control={control}
                   name='publicationType'
-                  render={({
-                    field: { onChange, ref, value },
-                    fieldState: { error },
-                  }) => (
-                    <FormControl fullWidth>
-                      <FormLabel
-                        required
-                        error={error !== undefined}
-                      >
-                        Publication type
-                      </FormLabel>
-                      <Select
-                        size='small'
-                        value={
-                          publicationTypeState.publicationTypes.length
-                            ? value
-                            : ''
-                        }
-                        onChange={onChange}
-                        ref={ref}
-                        fullWidth
-                        loadingError={publicationTypeState.isError}
-                        error={error !== undefined}
-                        loading={publicationTypeState.isLoading}
-                      >
-                        {publicationTypeState.publicationTypes &&
-                          publicationTypeState.publicationTypes.map((item) => {
-                            return (
-                              <MenuItem
-                                key={`publication-type-${item.value}`}
-                                disableRipple
-                                value={item.value}
-                              >
-                                {item.label}
-                              </MenuItem>
-                            );
-                          })}
-                      </Select>
-                      <FormHelperText error={error !== undefined}>
-                        {error !== undefined ? error.message : ' '}
-                      </FormHelperText>
-                    </FormControl>
+                  label='Publication type'
+                  options={publicationTypeState.publicationTypes.map(
+                    (item) => ({ label: item.label, value: item.value }),
                   )}
+                  loadingError={publicationTypeState.isError}
+                  isLoading={publicationTypeState.isLoading}
                 />
               </Grid>
               <Grid
