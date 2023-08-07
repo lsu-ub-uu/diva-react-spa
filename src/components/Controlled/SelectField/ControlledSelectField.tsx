@@ -10,6 +10,7 @@ import { Option } from '../../index';
 
 interface ControlledSelectFieldProps {
   name: string;
+  label: string;
   control?: Control<any>;
   options?: Option[];
   isLoading: boolean;
@@ -27,7 +28,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             required
             error={error !== undefined}
           >
-            Publication type
+            {props.label}
           </FormLabel>
           <Select
             size='small'
