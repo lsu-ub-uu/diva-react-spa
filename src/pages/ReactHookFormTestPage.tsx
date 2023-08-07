@@ -32,8 +32,10 @@ import {
   ErrorSummary,
   ResearchSubjectPicker,
 } from '../components';
-import { ControlledTextField } from '../components/Controlled';
-import { ControlledSelectField } from '../components/Controlled/SelectField/ControlledSelectField';
+import {
+  ControlledTextField,
+  ControlledSelectField,
+} from '../components/Controlled';
 
 interface TestModel {
   publicationType: string;
