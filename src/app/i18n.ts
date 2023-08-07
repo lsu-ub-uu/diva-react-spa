@@ -20,7 +20,15 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+  });
+i18n
+  .addResourceBundle('en', 'form', {
+    key: '',
   })
-  .then();
+  .addResourceBundle('sv', 'form', {
+    key: '',
+  });
+
+// .then();
 
 export default i18n;

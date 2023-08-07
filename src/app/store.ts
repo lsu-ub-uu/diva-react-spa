@@ -11,6 +11,7 @@ import researchSubjectReducer from '../features/researchSubject/researchSubjectS
 import recordTypeReducer from '../features/recordType/recordTypeSlice';
 import searchReducer from '../features/search/searchSlice';
 import authReducer from '../features/auth/authSlice';
+import formReducer from '../features/form/formSlice';
 
 const combinedReducer = combineReducers({
   auth: authReducer,
@@ -20,6 +21,7 @@ const combinedReducer = combineReducers({
   researchSubject: researchSubjectReducer,
   recordType: recordTypeReducer,
   search: searchReducer,
+  form: formReducer,
 });
 
 const store = configureStore({
