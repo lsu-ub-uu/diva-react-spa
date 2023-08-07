@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import { findFormInCora } from '../services/publishServices/findFormInCora';
 
 // @desc		Post new person with name
-// @route		Post /api/users/:newPersonWithName
+
+// @route		POST /api/publish/:validationType
 // @access	Private
 export const getPublicationForm = async (req: Request, res: Response) => {
   const { validationType } = req.params;
