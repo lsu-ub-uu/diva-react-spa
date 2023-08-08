@@ -1,4 +1,9 @@
-import { FormControl, FormControlLabel, FormLabel } from '@mui/material';
+import {
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+} from '@mui/material';
 import { Control, Controller, useController, useWatch } from 'react-hook-form';
 import { Checkbox, Option } from '../../index';
 
@@ -14,6 +19,7 @@ export const ControlledMultiCheckboxField = (
 ) => {
   const {
     field: { ref, value, onChange },
+    formState: { errors },
   } = useController({
     name: props.name,
     control: props.control,
@@ -74,6 +80,12 @@ export const ControlledMultiCheckboxField = (
           );
         })}
       </div>
+      <FormHelperText
+        error
+        variant='outlined'
+      >
+        &nbsp;
+      </FormHelperText>
     </FormControl>
   );
 };
