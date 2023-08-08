@@ -220,7 +220,7 @@ export const ReactHookFormTestPage = () => {
                     sm={6}
                   >
                     <ControlledTextField
-                      placeHolder='First name'
+                      placeholder='First name'
                       control={control}
                       name={`authors.${index}.firstname`}
                       label='First name'
@@ -232,7 +232,7 @@ export const ReactHookFormTestPage = () => {
                     sm={6}
                   >
                     <ControlledTextField
-                      placeHolder='Last name'
+                      placeholder='Last name'
                       control={control}
                       name={`authors.${index}.lastname`}
                       label='Last name'
@@ -244,7 +244,7 @@ export const ReactHookFormTestPage = () => {
                     sm={3}
                   >
                     <ControlledTextField
-                      placeHolder='enter birth year'
+                      placeholder='enter birth year'
                       control={control}
                       name={`authors.${index}.birthYear`}
                       label='Birth year'

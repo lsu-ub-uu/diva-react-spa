@@ -6,7 +6,7 @@ interface ControlledTextFieldProps {
   name: string;
   control?: Control<any>;
   label: string;
-  placeHolder?: string;
+  placeholder?: string;
   required?: boolean;
 }
 
@@ -29,7 +29,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             error={error !== undefined}
             {...field}
             autoComplete='off'
-            placeholder={props.placeHolder}
+            placeholder={props.placeholder}
             fullWidth
             variant='outlined'
             helperText={error !== undefined ? error.message : ' '}
