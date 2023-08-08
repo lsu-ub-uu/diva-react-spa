@@ -1,8 +1,8 @@
 import { test } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { FormControlLabel } from '@mui/material';
-import { Radio } from '../Radio';
 import userEvent from '@testing-library/user-event';
+import { Radio } from '../Radio';
 
 /**
  * @vitest-environment jsdom
