@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   FormControl,
   FormControlLabel,
@@ -5,6 +6,7 @@ import {
   FormLabel,
 } from '@mui/material';
 import { Control, Controller, useController, useWatch } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { Checkbox, Option } from '../../index';
 
 interface ControlledMultiCheckboxFieldProps {
@@ -84,7 +86,12 @@ export const ControlledMultiCheckboxField = (
         error
         variant='outlined'
       >
-        &nbsp;
+        <ErrorMessage
+          errors={errors}
+          name={props.name}
+          as='span'
+          key={props.name}
+        />
       </FormHelperText>
     </FormControl>
   );
