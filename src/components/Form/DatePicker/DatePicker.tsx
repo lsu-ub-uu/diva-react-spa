@@ -29,17 +29,6 @@ export const DatePicker = React.forwardRef(
           PopperProps={{
             sx: {
               '& .MuiPaper-root': { border: '2px solid #000000' },
-              /*               '& .MuiPickersDay-root.MuiPickersDay-today': {
-                borderWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: 'purple.main',
-              },
-              '& .MuiPickersDay-root.Mui-selected': {
-                backgroundColor: 'purple.main',
-              },
-              '& .MuiPickersDay-root.Mui-selected:hover': {
-                backgroundColor: 'purple.main',
-              }, */
             },
           }}
           renderInput={(params) => (

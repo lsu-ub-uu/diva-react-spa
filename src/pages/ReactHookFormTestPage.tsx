@@ -31,10 +31,12 @@ import {
   useBackdrop,
   ErrorSummary,
   ResearchSubjectPicker,
+  Option,
 } from '../components';
 import {
   ControlledTextField,
   ControlledSelectField,
+  ControlledMultiCheckboxField,
 } from '../components/Controlled';
 
 interface TestModel {
@@ -55,6 +57,7 @@ interface TestModel {
 }
 
 const validationSchema = yup.object().shape({
+  checkboxValues: yup.array().of(yup.string()).min(1).max(2),
   publicationType: yup.string().required('Publication type is required'),
   // eslint-disable-next-line react/forbid-prop-types
   authors: yup
@@ -86,6 +89,7 @@ export const ReactHookFormTestPage = () => {
   const methods = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      checkboxValues: ['1', '2'],
       publicationType: '',
       researchSubjects: [],
       authors: [
@@ -136,6 +140,25 @@ export const ReactHookFormTestPage = () => {
     console.log(data);
   };
 
+  const optionsTest: Option[] = [
+    {
+      label: 'Option 1',
+      value: '1',
+    },
+    {
+      label: 'Option 2',
+      value: '2',
+    },
+    {
+      label: 'Option 3',
+      value: '3',
+    },
+    {
+      label: 'Option 4',
+      value: '4',
+    },
+  ];
+
   return (
     <>
       <Helmet>
@@ -162,6 +185,18 @@ export const ReactHookFormTestPage = () => {
               justifyContent='space-between'
               alignItems='flex-start'
             >
+              <Grid
+                item
+                xs={12}
+                sm={8}
+              >
+                <ControlledMultiCheckboxField
+                  options={optionsTest}
+                  control={control}
+                  name='checkboxValues'
+                  label='Checkbox Input'
+                />
+              </Grid>
               <Grid
                 item
                 xs={12}
@@ -220,7 +255,7 @@ export const ReactHookFormTestPage = () => {
                     sm={6}
                   >
                     <ControlledTextField
-                      placeHolder='First name'
+                      placeholder='First name'
                       control={control}
                       name={`authors.${index}.firstname`}
                       label='First name'
@@ -232,7 +267,7 @@ export const ReactHookFormTestPage = () => {
                     sm={6}
                   >
                     <ControlledTextField
-                      placeHolder='Last name'
+                      placeholder='Last name'
                       control={control}
                       name={`authors.${index}.lastname`}
                       label='Last name'
@@ -244,7 +279,7 @@ export const ReactHookFormTestPage = () => {
                     sm={3}
                   >
                     <ControlledTextField
-                      placeHolder='enter birth year'
+                      placeholder='enter birth year'
                       control={control}
                       name={`authors.${index}.birthYear`}
                       label='Birth year'
