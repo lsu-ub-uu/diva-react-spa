@@ -2,6 +2,7 @@ import React from 'react';
 import {
   FormControl,
   FormControlLabel,
+  FormGroup,
   FormHelperText,
   FormLabel,
 } from '@mui/material';
@@ -55,7 +56,7 @@ export const ControlledMultiCheckboxField = (
       variant='outlined'
     >
       <FormLabel component='legend'>{props.label}</FormLabel>
-      <div>
+      <FormGroup>
         {props.options.map((option: Option) => {
           return (
             <FormControlLabel
@@ -81,7 +82,7 @@ export const ControlledMultiCheckboxField = (
             />
           );
         })}
-      </div>
+      </FormGroup>
       <FormHelperText
         error
         variant='outlined'
