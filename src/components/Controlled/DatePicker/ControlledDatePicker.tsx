@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, FormLabel } from '@mui/material';
+import { FormControl, FormLabel } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import { DatePicker } from '../../index';
 
