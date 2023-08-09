@@ -44,6 +44,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
               props.options.map((item) => {
                 return (
                   <MenuItem
+                    disabled={item.disabled}
                     key={`option-${item.value}`}
                     disableRipple
                     value={item.value}
