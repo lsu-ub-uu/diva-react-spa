@@ -37,6 +37,7 @@ import {
   ControlledTextField,
   ControlledSelectField,
   ControlledMultiCheckboxField,
+  ControlledRadioButtons,
 } from '../components/Controlled';
 
 interface TestModel {
@@ -57,6 +58,7 @@ interface TestModel {
 }
 
 const validationSchema = yup.object().shape({
+  radioValue: yup.string().trim().required(),
   checkboxValues: yup.array().of(yup.string()).min(1).max(2),
   publicationType: yup.string().required('Publication type is required'),
   // eslint-disable-next-line react/forbid-prop-types
@@ -89,7 +91,8 @@ export const ReactHookFormTestPage = () => {
   const methods = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      checkboxValues: ['1', '2'],
+      radioValue: '',
+      checkboxValues: [],
       publicationType: '',
       researchSubjects: [],
       authors: [
@@ -195,6 +198,18 @@ export const ReactHookFormTestPage = () => {
                   control={control}
                   name='checkboxValues'
                   label='Checkbox Input'
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={8}
+              >
+                <ControlledRadioButtons
+                  options={optionsTest}
+                  control={control}
+                  name='radioValue'
+                  label='Radios label'
                 />
               </Grid>
               <Grid
