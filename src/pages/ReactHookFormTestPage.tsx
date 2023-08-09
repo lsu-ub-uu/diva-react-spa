@@ -38,6 +38,7 @@ import {
   ControlledSelectField,
   ControlledMultiCheckboxField,
   ControlledRadioButtons,
+  ControlledDatePicker,
 } from '../components/Controlled';
 
 interface TestModel {
@@ -58,6 +59,7 @@ interface TestModel {
 }
 
 const validationSchema = yup.object().shape({
+  startDate: yup.date().required(),
   radioValue: yup.string().trim().required(),
   checkboxValues: yup.array().of(yup.string()).min(1).max(2),
   publicationType: yup.string().required('Publication type is required'),
@@ -83,7 +85,7 @@ const validationSchema = yup.object().shape({
     )
     .min(1)
     .max(3),
-  researchSubjects: yup.array().of(yup.string()).min(1).max(4),
+  // researchSubjects: yup.array().of(yup.string()).min(1).max(4),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -91,6 +93,7 @@ export const ReactHookFormTestPage = () => {
   const methods = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      startDate: '2001-09-01',
       radioValue: '',
       checkboxValues: [],
       publicationType: '',
@@ -147,6 +150,7 @@ export const ReactHookFormTestPage = () => {
     {
       label: 'Option 1',
       value: '1',
+      disabled: true,
     },
     {
       label: 'Option 2',
@@ -215,15 +219,28 @@ export const ReactHookFormTestPage = () => {
               <Grid
                 item
                 xs={12}
+                sm={6}
+              >
+                <ControlledDatePicker
+                  control={control}
+                  name='startDate'
+                  label='Start date'
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
                 sm={8}
               >
                 <ControlledSelectField
                   control={control}
                   name='publicationType'
                   label='Publication type'
-                  options={publicationTypeState.publicationTypes.map(
-                    (item) => ({ label: item.label, value: item.value }),
-                  )}
+                  options={optionsTest.map((item) => ({
+                    label: item.label,
+                    value: item.value,
+                    disabled: item.disabled,
+                  }))}
                   loadingError={publicationTypeState.isError}
                   isLoading={publicationTypeState.isLoading}
                 />

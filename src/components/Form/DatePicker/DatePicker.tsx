@@ -33,6 +33,7 @@ export const DatePicker = React.forwardRef(
           }}
           renderInput={(params) => (
             <TextField
+              size='small'
               {...params}
               onChange={params.onChange}
               helperText={props.error !== undefined ? props.error.message : ' '}
