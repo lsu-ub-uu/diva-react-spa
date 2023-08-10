@@ -8,6 +8,8 @@ import subjectCategoriesRoute from './routes/subjectCategoriesRoute';
 import searchRoute from './routes/searchRoute';
 import authRoute from './routes/authRoute';
 import publishRoute from './routes/publishRoute';
+import httpClient from './utils/http/HttpClient';
+import { IHttpClientRequestParameters } from './utils/http/IHttpClient';
 
 const PORT = process.env.PORT || 8080;
 

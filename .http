@@ -42,6 +42,9 @@ GET http://localhost:8080/api/recordtype/safdg
 ### GET article
 GET http://localhost:8080/api/publish/article
 
+### GET new article
+GET http://localhost:8080/api/publish/article/new
+
 # GET search results
 ### GET public search
 GET http://localhost:8080/api/search/public/person/b
