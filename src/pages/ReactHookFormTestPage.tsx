@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Box,
   ButtonGroup,
@@ -21,6 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { Editor } from '@tinymce/tinymce-react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   publicationTypeSelector,
@@ -89,6 +90,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const ReactHookFormTestPage = () => {
+  const editorRef = useRef<Editor | null>(null);
   const { t } = useTranslation();
   const methods = useForm({
     resolver: yupResolver(validationSchema),
@@ -166,6 +168,7 @@ export const ReactHookFormTestPage = () => {
     },
   ];
 
+  // @ts-ignore
   return (
     <>
       <Helmet>
@@ -192,6 +195,29 @@ export const ReactHookFormTestPage = () => {
               justifyContent='space-between'
               alignItems='flex-start'
             >
+              <Grid
+                item
+                xs={12}
+              >
+                <Editor
+                  tinymceScriptSrc='/tinymce/tinymce.min.js'
+                  onInit={(evt, editor) => {
+                    editorRef.current = editor;
+                  }}
+                  onChange={(val, editor) => console.log(val.level?.content)}
+                  initialValue='<p>This is the initial content of the editor.</p>'
+                  init={{
+                    statusbar: false,
+                    height: 200,
+                    width: '100%',
+                    menubar: false,
+                    plugins: [],
+                    toolbar: 'bold italic | alignleft aligncenter alignright',
+                    content_style:
+                      'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                  }}
+                />
+              </Grid>
               <Grid
                 item
                 xs={12}
