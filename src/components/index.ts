@@ -25,6 +25,7 @@ export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPi
 // eslint-disable-next-line import/no-cycle
 export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';
+export { DateTimePicker } from './Form/DateTimePicker/DateTimePicker';
 export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';
 export { SnackbarProvider } from './Snackbar/SnackbarProvider';
 
