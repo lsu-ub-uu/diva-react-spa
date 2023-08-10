@@ -6,6 +6,7 @@ import {
 } from '@mui/x-date-pickers/DatePicker';
 import 'dayjs/locale/sv';
 import 'dayjs/locale/en-gb';
+import { svSE } from '@mui/x-date-pickers/locales';
 import { TextField } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import React from 'react';
@@ -16,12 +17,16 @@ interface ExtendedDatePickerProps
   error?: FieldError;
 }
 
+const swedenLocale =
+  svSE.components.MuiLocalizationProvider.defaultProps.localeText;
+
 export const DatePicker = React.forwardRef(
   (props: ExtendedDatePickerProps, ref: React.ForwardedRef<HTMLDivElement>) => {
     return (
       <LocalizationProvider
         dateAdapter={AdapterDayjs}
         adapterLocale='sv'
+        localeText={swedenLocale}
       >
         <MuiDatePicker
           {...props}
