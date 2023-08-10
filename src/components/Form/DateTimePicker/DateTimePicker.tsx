@@ -1,9 +1,9 @@
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
-  DatePicker as MuiDatePicker,
-  DatePickerProps,
-} from '@mui/x-date-pickers/DatePicker';
+  DateTimePicker as MuiDateTimePicker,
+  DateTimePickerProps,
+} from '@mui/x-date-pickers/DateTimePicker';
 import 'dayjs/locale/sv';
 import 'dayjs/locale/en-gb';
 import { svSE } from '@mui/x-date-pickers/locales';
@@ -12,23 +12,26 @@ import { Dayjs } from 'dayjs';
 import React from 'react';
 import { FieldError } from 'react-hook-form';
 
-interface ExtendedDatePickerProps
-  extends Omit<DatePickerProps<Dayjs, Dayjs>, 'renderInput'> {
+interface ExtendedDateTimePickerProps
+  extends Omit<DateTimePickerProps<Dayjs, Dayjs>, 'renderInput'> {
   error?: FieldError;
 }
 
 const swedenLocale =
   svSE.components.MuiLocalizationProvider.defaultProps.localeText;
 
-export const DatePicker = React.forwardRef(
-  (props: ExtendedDatePickerProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+export const DateTimePicker = React.forwardRef(
+  (
+    props: ExtendedDateTimePickerProps,
+    ref: React.ForwardedRef<HTMLDivElement>,
+  ) => {
     return (
       <LocalizationProvider
         dateAdapter={AdapterDayjs}
         adapterLocale='sv'
         localeText={swedenLocale}
       >
-        <MuiDatePicker
+        <MuiDateTimePicker
           {...props}
           ref={ref}
           PopperProps={{

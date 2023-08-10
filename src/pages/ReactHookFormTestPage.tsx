@@ -38,7 +38,7 @@ import {
   ControlledSelectField,
   ControlledMultiCheckboxField,
   ControlledRadioButtons,
-  ControlledDatePicker,
+  ControlledDateTimePicker,
 } from '../components/Controlled';
 
 interface TestModel {
@@ -59,7 +59,7 @@ interface TestModel {
 }
 
 const validationSchema = yup.object().shape({
-  startDate: yup.date().required(),
+  startDateTime: yup.date().typeError('Invalid Date!'),
   radioValue: yup.string().trim().required(),
   checkboxValues: yup.array().of(yup.string()).min(1).max(2),
   publicationType: yup.string().required('Publication type is required'),
@@ -93,7 +93,7 @@ export const ReactHookFormTestPage = () => {
   const methods = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      startDate: '2001-09-01',
+      startDateTime: '2001-09-01 16:30',
       radioValue: '',
       checkboxValues: [],
       publicationType: '',
@@ -221,10 +221,10 @@ export const ReactHookFormTestPage = () => {
                 xs={12}
                 sm={6}
               >
-                <ControlledDatePicker
+                <ControlledDateTimePicker
                   control={control}
-                  name='startDate'
-                  label='Start date'
+                  name='startDateTime'
+                  label='Start datetime'
                 />
               </Grid>
               <Grid
