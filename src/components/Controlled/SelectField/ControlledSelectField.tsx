@@ -15,6 +15,7 @@ interface ControlledSelectFieldProps {
   options?: Option[];
   isLoading: boolean;
   loadingError: boolean;
+  placeholder?: string;
 }
 
 export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
@@ -31,6 +32,14 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             {props.label}
           </FormLabel>
           <Select
+            sx={{
+              '& .MuiSelect-select .notranslate::after': props.placeholder
+                ? {
+                    content: `"${props.placeholder}"`,
+                    opacity: 0.42,
+                  }
+                : {},
+            }}
             size='small'
             value={props.options?.length ? value : ''}
             onChange={onChange}
@@ -41,11 +50,11 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             loading={props.isLoading}
           >
             {props.options &&
-              props.options.map((item) => {
+              props.options.map((item, index) => {
                 return (
                   <MenuItem
                     disabled={item.disabled}
-                    key={`option-${item.value}`}
+                    key={`option-${index}`}
                     disableRipple
                     value={item.value}
                   >
