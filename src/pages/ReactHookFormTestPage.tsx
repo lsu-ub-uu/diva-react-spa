@@ -59,7 +59,7 @@ interface TestModel {
 }
 
 const validationSchema = yup.object().shape({
-  startDateTime: yup.date().required(),
+  startDateTime: yup.date().typeError('Invalid Date!'),
   radioValue: yup.string().trim().required(),
   checkboxValues: yup.array().of(yup.string()).min(1).max(2),
   publicationType: yup.string().required('Publication type is required'),
