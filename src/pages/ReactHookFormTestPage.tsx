@@ -236,11 +236,10 @@ export const ReactHookFormTestPage = () => {
                   control={control}
                   name='publicationType'
                   label='Publication type'
-                  options={optionsTest.map((item) => ({
-                    label: item.label,
-                    value: item.value,
-                    disabled: item.disabled,
-                  }))}
+                  placeholder='Select publication type'
+                  options={publicationTypeState.publicationTypes.map(
+                    (item) => ({ label: item.label, value: item.value }),
+                  )}
                   loadingError={publicationTypeState.isError}
                   isLoading={publicationTypeState.isLoading}
                 />
