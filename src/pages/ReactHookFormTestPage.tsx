@@ -211,9 +211,9 @@ export const ReactHookFormTestPage = () => {
                     height: 200,
                     width: '100%',
                     menubar: false,
-                    plugins: ['code fullscreen'],
+                    plugins: ['code fullscreen paste'],
                     toolbar:
-                      'bold italic | alignleft aligncenter alignright | fullscreen | code',
+                      'bold italic | alignleft aligncenter alignright | fullscreen | code paste',
                     content_style:
                       'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                   }}
