@@ -41,6 +41,7 @@ import {
   ControlledRadioButtons,
   ControlledDateTimePicker,
 } from '../components/Controlled';
+import { EventHandler } from '@tinymce/tinymce-react/lib/cjs/main/ts/Events';
 
 interface TestModel {
   publicationType: string;
@@ -202,18 +203,19 @@ export const ReactHookFormTestPage = () => {
                 <Editor
                   tinymceScriptSrc='/tinymce/tinymce.min.js'
                   onInit={(evt, editor) => {
+                    // @ts-ignore
                     editorRef.current = editor;
                   }}
-                  onChange={(val, editor) => console.log(val.level?.content)}
+                  onChange={(evt: any) => console.log(evt.level?.content)}
                   initialValue='<p>This is the initial content of the editor.</p>'
                   init={{
                     statusbar: false,
                     height: 200,
                     width: '100%',
                     menubar: false,
-                    plugins: ['code fullscreen paste'],
+                    plugins: ['code fullscreen paste charmap'],
                     toolbar:
-                      'bold italic | alignleft aligncenter alignright | fullscreen | code paste',
+                      'bold italic | alignleft aligncenter alignright | fullscreen | code paste charmap',
                     content_style:
                       'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                   }}
