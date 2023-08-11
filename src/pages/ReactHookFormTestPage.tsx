@@ -211,8 +211,9 @@ export const ReactHookFormTestPage = () => {
                     height: 200,
                     width: '100%',
                     menubar: false,
-                    plugins: [],
-                    toolbar: 'bold italic | alignleft aligncenter alignright',
+                    plugins: ['code fullscreen'],
+                    toolbar:
+                      'bold italic | alignleft aligncenter alignright | fullscreen | code',
                     content_style:
                       'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                   }}
