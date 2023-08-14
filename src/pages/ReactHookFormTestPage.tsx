@@ -39,6 +39,7 @@ import {
   ControlledMultiCheckboxField,
   ControlledRadioButtons,
   ControlledDateTimePicker,
+  ControlledEditor,
 } from '../components/Controlled';
 
 interface TestModel {
@@ -59,6 +60,7 @@ interface TestModel {
 }
 
 const validationSchema = yup.object().shape({
+  title: yup.string().trim().required(),
   startDateTime: yup.date().typeError('Invalid Date!'),
   radioValue: yup.string().trim().required(),
   checkboxValues: yup.array().of(yup.string()).min(1).max(2),
@@ -91,8 +93,10 @@ const validationSchema = yup.object().shape({
 export const ReactHookFormTestPage = () => {
   const { t } = useTranslation();
   const methods = useForm({
+    shouldFocusError: false,
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      title: '<p>this is the title</p>',
       startDateTime: '2001-09-01 16:30',
       radioValue: '',
       checkboxValues: [],
@@ -166,6 +170,7 @@ export const ReactHookFormTestPage = () => {
     },
   ];
 
+  // @ts-ignore
   return (
     <>
       <Helmet>
@@ -192,6 +197,19 @@ export const ReactHookFormTestPage = () => {
               justifyContent='space-between'
               alignItems='flex-start'
             >
+              <Grid
+                item
+                xs={12}
+              >
+                <ControlledEditor
+                  required
+                  toolbar='italic | alignleft aligncenter alignright | fullscreen | code paste charmap superscript subscript'
+                  control={control}
+                  name='title'
+                  label='Title'
+                  plugins='code fullscreen paste charmap'
+                />
+              </Grid>
               <Grid
                 item
                 xs={12}
