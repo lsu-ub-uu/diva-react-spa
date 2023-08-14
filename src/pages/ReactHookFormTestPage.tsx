@@ -202,6 +202,7 @@ export const ReactHookFormTestPage = () => {
                 xs={12}
               >
                 <ControlledEditor
+                  required={true}
                   toolbar='italic | alignleft aligncenter alignright | fullscreen | code paste charmap superscript subscript'
                   control={control}
                   name='title'
