@@ -7,6 +7,7 @@ interface ControlledEditorProps {
   name: string;
   control?: Control<any>;
   label: string;
+  toolbar: string;
 }
 
 export const ControlledEditor = (props: ControlledEditorProps) => {
@@ -33,8 +34,7 @@ export const ControlledEditor = (props: ControlledEditorProps) => {
               width: '100%',
               menubar: false,
               plugins: ['code fullscreen paste charmap'],
-              toolbar:
-                'italic | alignleft aligncenter alignright | fullscreen | code paste charmap superscript subscript',
+              toolbar: props.toolbar,
               content_style:
                 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
             }}

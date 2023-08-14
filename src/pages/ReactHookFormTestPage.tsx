@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   ButtonGroup,
@@ -202,6 +202,7 @@ export const ReactHookFormTestPage = () => {
                 xs={12}
               >
                 <ControlledEditor
+                  toolbar='italic | alignleft aligncenter alignright | fullscreen | code paste charmap superscript subscript'
                   control={control}
                   name='title'
                   label='Title'
