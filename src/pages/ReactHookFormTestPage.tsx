@@ -202,11 +202,12 @@ export const ReactHookFormTestPage = () => {
                 xs={12}
               >
                 <ControlledEditor
-                  required={true}
+                  required
                   toolbar='italic | alignleft aligncenter alignright | fullscreen | code paste charmap superscript subscript'
                   control={control}
                   name='title'
                   label='Title'
+                  plugins='code fullscreen paste charmap'
                 />
               </Grid>
               <Grid

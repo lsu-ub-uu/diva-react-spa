@@ -9,6 +9,7 @@ interface ControlledEditorProps {
   label: string;
   required: boolean;
   toolbar: string;
+  plugins: string;
 }
 
 export const ControlledEditor = (props: ControlledEditorProps) => {
