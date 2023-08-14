@@ -93,6 +93,7 @@ const validationSchema = yup.object().shape({
 export const ReactHookFormTestPage = () => {
   const { t } = useTranslation();
   const methods = useForm({
+    shouldFocusError: false,
     resolver: yupResolver(validationSchema),
     defaultValues: {
       title: '<p>this is the title</p>',

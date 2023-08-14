@@ -14,7 +14,10 @@ export const ControlledEditor = (props: ControlledEditorProps) => {
     <Controller
       control={props.control}
       name={props.name}
-      render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
+      render={({
+        field: { onChange, onBlur, value, ref },
+        fieldState: { error },
+      }) => (
         <FormControl fullWidth>
           <FormLabel
             required={false}
@@ -25,15 +28,11 @@ export const ControlledEditor = (props: ControlledEditorProps) => {
           <Editor
             tinymceScriptSrc='/tinymce/tinymce.min.js'
             ref={ref}
-            onInit={(evt, editor) => {
-              // @ts-ignore
-              // editorRef.current = editor;
-            }}
             onEditorChange={onChange}
             value={value}
             init={{
               statusbar: false,
-              height: 200,
+              height: 300,
               width: '100%',
               menubar: false,
               plugins: ['code fullscreen paste charmap'],
