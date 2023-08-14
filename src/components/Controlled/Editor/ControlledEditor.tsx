@@ -14,10 +14,7 @@ export const ControlledEditor = (props: ControlledEditorProps) => {
     <Controller
       control={props.control}
       name={props.name}
-      render={({
-        field: { onChange, onBlur, value, ref },
-        fieldState: { error },
-      }) => (
+      render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
         <FormControl fullWidth>
           <FormLabel
             required={false}
