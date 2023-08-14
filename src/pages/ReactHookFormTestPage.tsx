@@ -21,7 +21,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { Editor } from '@tinymce/tinymce-react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   publicationTypeSelector,
@@ -40,6 +39,7 @@ import {
   ControlledMultiCheckboxField,
   ControlledRadioButtons,
   ControlledDateTimePicker,
+  ControlledEditor,
 } from '../components/Controlled';
 
 interface TestModel {
@@ -60,6 +60,7 @@ interface TestModel {
 }
 
 const validationSchema = yup.object().shape({
+  title: yup.string().trim().required(),
   startDateTime: yup.date().typeError('Invalid Date!'),
   radioValue: yup.string().trim().required(),
   checkboxValues: yup.array().of(yup.string()).min(1).max(2),
@@ -90,11 +91,11 @@ const validationSchema = yup.object().shape({
 });
 
 export const ReactHookFormTestPage = () => {
-  const editorRef = useRef<Editor | null>(null);
   const { t } = useTranslation();
   const methods = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      title: '<p>this is the title</p>',
       startDateTime: '2001-09-01 16:30',
       radioValue: '',
       checkboxValues: [],
@@ -199,25 +200,10 @@ export const ReactHookFormTestPage = () => {
                 item
                 xs={12}
               >
-                <Editor
-                  tinymceScriptSrc='/tinymce/tinymce.min.js'
-                  onInit={(evt, editor) => {
-                    // @ts-ignore
-                    editorRef.current = editor;
-                  }}
-                  onChange={(evt: any) => console.log(evt.level?.content)}
-                  initialValue='<p>This is the initial content of the editor.</p>'
-                  init={{
-                    statusbar: false,
-                    height: 200,
-                    width: '100%',
-                    menubar: false,
-                    plugins: ['code fullscreen paste charmap'],
-                    toolbar:
-                      'italic | alignleft aligncenter alignright | fullscreen | code paste charmap superscript subscript',
-                    content_style:
-                      'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                  }}
+                <ControlledEditor
+                  control={control}
+                  name='title'
+                  label='Title'
                 />
               </Grid>
               <Grid
