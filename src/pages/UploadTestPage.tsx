@@ -16,7 +16,7 @@ export const UploadTestPage = () => {
         <Stack spacing={2}>
           <Card
             title='Upload File'
-            variant='variant1'
+            variant='variant6'
             tooltipTitle='File upload instructions'
             tooltipBody='Some body text on how upload works goes here'
           >
