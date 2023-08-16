@@ -67,7 +67,7 @@ export const FileUpload = () => {
     const formData = new FormData();
     formData.append('file', files[0]);
     setFilename(files[0].name);
-    setProgress(75);
+    setProgress(0);
     await axiosInstance.post('/upload-file', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
