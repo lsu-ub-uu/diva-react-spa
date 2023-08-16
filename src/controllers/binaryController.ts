@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-// import { createPersonWithName } from '../services/personServices/createPersonWithName';
+import { createImageBinary } from '../services/binaryServices/createImageBinary';
 
-// @desc		Post new person with name
+// @desc		Post new binary
 // @route		Post /api/binary/
 // @access	Private
 export const postBinary = async (req: Request, res: Response) => {
-  const newPerson = req.body;
+  const newBinary = req.body;
 
   let authToken;
   if (
@@ -16,8 +16,8 @@ export const postBinary = async (req: Request, res: Response) => {
   }
 
   try {
-    const createdPerson = await createPersonWithName(newPerson, authToken);
-    res.status(201).json(createdPerson);
+    const createdBinary = await createImageBinary(newBinary, authToken);
+    res.status(201).json(createdBinary);
   } catch (error: any) {
     const errorMessage = error.message;
     const errorCode = Number(errorMessage.match(/\d+/)[0]);

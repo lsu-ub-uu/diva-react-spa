@@ -14,7 +14,7 @@ export const configureServer = (app: Application) => {
     }),
   );
 
-  findMetadataInCora();
+  // findMetadataInCora();
 
   return app;
 };

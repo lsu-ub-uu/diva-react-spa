@@ -47,3 +47,5 @@ export interface Person extends Record {
 //     "givenName": "Egil"
 //   }
 // } Update with new model
+
+export interface Binary extends Record {}
