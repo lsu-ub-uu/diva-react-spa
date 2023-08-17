@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 // import { searchPersonsByGeneralSearch } from '../services/searchServives/api/api';
-import { searchPersonsByGeneralSearch } from '../services/searchServives/searchPersonByGeneralSearch';
+import { searchPersonsByGeneralSearch } from '../services/searchServices/searchPersonByGeneralSearch';
 
 // const { PROD_CORA_API_URL } = process.env;
 const PROD_CORA_API_URL = 'https://cora.diva-portal.org/diva/rest/';
