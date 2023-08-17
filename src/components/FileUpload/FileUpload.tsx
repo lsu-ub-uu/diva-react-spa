@@ -58,7 +58,11 @@ const UploadProgress = (props: UploadProgressProps) => {
   );
 };
 
-export const FileUpload = () => {
+export interface FileUploadProps {
+  accept: string[];
+}
+
+export const FileUpload = (props: FileUploadProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [progress, setProgress] = useState<number>(0);
   const [filename, setFilename] = useState<string>('');
@@ -85,7 +89,7 @@ export const FileUpload = () => {
         <input
           type='file'
           ref={inputRef}
-          accept='application/zip, application/pdf'
+          accept={props.accept.join(', ')}
           onChange={async (event) => {
             const files = event.currentTarget?.files;
             if (files !== null && files.length > 0) {

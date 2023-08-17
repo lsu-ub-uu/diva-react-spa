@@ -20,7 +20,7 @@ export const UploadTestPage = () => {
             tooltipTitle='File upload instructions'
             tooltipBody='Some body text on how upload works goes here'
           >
-            <FileUpload />
+            <FileUpload accept={['image/png']} />
           </Card>
         </Stack>
       </div>
