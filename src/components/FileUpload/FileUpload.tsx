@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const StyledLinearProgress = styled(LinearProgress)(() => ({
   height: 10,
@@ -58,6 +58,13 @@ const UploadProgress = (props: UploadProgressProps) => {
   );
 };
 
+enum UploadStatus {
+  PENDING,
+  UPLOADING,
+  SUCCESS,
+  FAILED,
+}
+
 export interface FileUploadProps {
   accept: string[];
 }
@@ -65,6 +72,9 @@ export interface FileUploadProps {
 export const FileUpload = (props: FileUploadProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [progress, setProgress] = useState<number>(0);
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>(
+    UploadStatus.PENDING,
+  );
   const [filename, setFilename] = useState<string>('');
 
   const handleSubmit = async (files: FileList) => {
@@ -72,15 +82,21 @@ export const FileUpload = (props: FileUploadProps) => {
     formData.append('file', files[0]);
     setFilename(files[0].name);
     setProgress(0);
-    await axiosInstance.post('/upload-file', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      onUploadProgress: (data) => {
-        setProgress(Math.round((100 * data.loaded) / (data.total ?? 100)));
-      },
-    });
-    setProgress(100);
+    try {
+      setUploadStatus(UploadStatus.UPLOADING);
+      await axiosInstance.post('/upload-file', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        onUploadProgress: (data) => {
+          setProgress(Math.round((100 * data.loaded) / (data.total ?? 100)));
+        },
+      });
+      setProgress(100);
+      setUploadStatus(UploadStatus.SUCCESS);
+    } catch (error: any) {
+      setUploadStatus(UploadStatus.FAILED);
+    }
   };
 
   return (
@@ -105,15 +121,22 @@ export const FileUpload = (props: FileUploadProps) => {
           color='primary'
           variant='contained'
           endIcon={<AddCircleOutlineIcon />}
-          onClick={(): void => inputRef.current?.click()}
+          onClick={() => {
+            setUploadStatus(UploadStatus.PENDING);
+            setProgress(0);
+            inputRef.current?.click();
+          }}
         >
           Choose file to upload
         </Button>
-        {progress === 100 ? (
+        {uploadStatus === UploadStatus.FAILED && <span>Upload failed</span>}
+        {uploadStatus === UploadStatus.SUCCESS && (
           <Alert severity='info'>
             File <i>{filename}</i> was successfully uploaded
           </Alert>
-        ) : (
+        )}
+
+        {uploadStatus === UploadStatus.UPLOADING && (
           <UploadProgress currentProgress={progress} />
         )}
       </Stack>
