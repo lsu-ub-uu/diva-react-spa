@@ -1,5 +1,47 @@
 import { isEqual as _isEqual } from 'lodash';
-import { Attributes, DataAtomic, DataGroup } from './CoraData';
+import {
+  Attributes,
+  DataAtomic,
+  DataElement,
+  DataGroup,
+  RecordLink,
+} from './CoraData';
+import { ClientRecordLink } from '../client-data/ClientData';
+
+export function getAllRecordLinksWithNameInData(
+  dataGroup: DataGroup,
+  nameInData: string,
+): ClientRecordLink[] {
+  const recordLinks = <RecordLink[]>dataGroup.children.filter((child) => {
+    if (Object.prototype.hasOwnProperty.call(child, 'children')) {
+      const dGChild = child as DataGroup;
+      return dGChild.children.filter((grandChild: DataElement) => {
+        return (
+          Object.prototype.hasOwnProperty.call(
+            grandChild,
+            'linkedRecordType',
+          ) &&
+          Object.prototype.hasOwnProperty.call(grandChild, 'linkedRecordId')
+        );
+      });
+    }
+    return false;
+  });
+  const matchingRecordLinks = recordLinks.filter((recordLink) => {
+    return recordLink.name === nameInData;
+  });
+  return matchingRecordLinks.map((recordLink) => {
+    return {
+      name: recordLink.name,
+      recordType: getFirstDataAtomicWithNameInData(
+        recordLink,
+        'linkedRecordType',
+      )?.value,
+      id: getFirstDataAtomicWithNameInData(recordLink, 'linkedRecordId')?.value,
+      readLink: recordLink.actionLinks?.read,
+    };
+  });
+}
 
 export function getFirstChildWithNameInData(
   dataGroup: DataGroup,

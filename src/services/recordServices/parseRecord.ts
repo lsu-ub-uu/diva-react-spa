@@ -1,29 +1,35 @@
+import { DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 import {
-  DataAtomic,
-  DataGroup,
-  RecordWrapper,
-} from '../../utils/cora-data/CoraData';
+  getFirstDataAtomicWithNameInData,
+  getFirstDataGroupWithNameInData,
+} from '../../utils/cora-data/CoraDataUtils';
 
-const findValueByName = (dataGroup: DataGroup, name: string) => {
-  // console.log('dG', dataGroup);
-  const obj = dataGroup.children.find((o) => o.name === name) as DataAtomic;
-  console.log('obj', obj);
-  return obj.value;
+const getIdFromRecordInfo = (recordInfo: DataGroup | undefined) => {
+  let idAtomic;
+  let id;
+  if (recordInfo) {
+    idAtomic = getFirstDataAtomicWithNameInData(recordInfo, 'id');
+    id = idAtomic?.value;
+  }
+  return id;
 };
 
 export const parseRecord = (recordWrapper: RecordWrapper) => {
-  console.log(recordWrapper);
-  const id = findValueByName(
-    recordWrapper.record.data.children[0] as DataGroup,
-    'id',
+  const dataRecordGroup = recordWrapper.record.data;
+  const recordInfo = getFirstDataGroupWithNameInData(
+    dataRecordGroup,
+    'recordInfo',
   );
-  const title = findValueByName(
-    recordWrapper.record.data as DataGroup,
+
+  const titleAtomic = getFirstDataAtomicWithNameInData(
+    dataRecordGroup,
     'title',
   );
+  const title = titleAtomic?.value;
+  const id = getIdFromRecordInfo(recordInfo);
   return {
     id,
     title,
-    binaries: [],
+    images: [],
   };
 };

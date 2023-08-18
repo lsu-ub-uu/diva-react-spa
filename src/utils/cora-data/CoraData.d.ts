@@ -17,8 +17,10 @@ export interface DataAtomic extends DataElement {
   value: string;
 }
 
-export interface RecordLink extends DataGroup {
+export interface RecordLink extends DataElement {
   actionLinks?: ActionLinks;
+  children: DataAtomic[];
+  attributes?: Attributes;
 }
 
 export interface ActionLink {

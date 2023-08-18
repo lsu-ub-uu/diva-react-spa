@@ -4,21 +4,23 @@ import exampleDevOutput2 from '../../../__mocks__/exampleDevOutput2.json';
 import { parseRecord } from '../parseRecord';
 
 describe('parseRecords', () => {
-  it('should parse records 1', () => {
-    const output = parseRecord(exampleDevOutput);
-    expect(output).toStrictEqual({
-      id: 'exampleDevOutput:5538156835926548',
-      title: 'my funny title',
-      binaries: [],
+  describe('binaries', () => {
+    it('should parse exampleDevOutput record', () => {
+      const output = parseRecord(exampleDevOutput);
+      expect(output).toStrictEqual({
+        id: 'exampleDevOutput:5538156835926548',
+        title: 'my funny title',
+        images: [],
+      });
+    });
+    it('should parse exampleDevOutput with other order of children', () => {
+      const output = parseRecord(exampleDevOutput2);
+      expect(output).toStrictEqual({
+        id: 'exampleDevOutput:5538156835926548',
+        title: 'my funny title',
+        images: [],
+      });
     });
   });
-  // it('should parse records 2', () => {
-  //   const output = parseRecord(exampleDevOutput2);
-  //   console.log('output', output);
-  //   expect(output).toStrictEqual({
-  //     id: 'exampleDevOutput:5538156835926548',
-  //     title: 'my funny title',
-  //     binaries: [],
-  //   });
-  // });
+  
 });
