@@ -129,7 +129,11 @@ export const FileUpload = (props: FileUploadProps) => {
         >
           Choose file to upload
         </Button>
-        {uploadStatus === UploadStatus.FAILED && <span>Upload failed</span>}
+        {uploadStatus === UploadStatus.FAILED && (
+          <Alert severity='error'>
+            File <i>{filename}</i> failed to upload
+          </Alert>
+        )}
         {uploadStatus === UploadStatus.SUCCESS && (
           <Alert severity='info'>
             File <i>{filename}</i> was successfully uploaded
