@@ -1,10 +1,38 @@
 import * as cdu from '../CoraDataUtils';
-import { DataGroup, DataElement, DataAtomic } from '../CoraData';
+import { DataGroup, DataElement, DataAtomic, RecordLink } from '../CoraData';
 
 const getAllDataGroupsWithNameInDataAndAttributesSpy = jest.spyOn(
   cdu,
   'getAllDataGroupsWithNameInDataAndAttributes',
 );
+
+const dataGroupWithOneRecordLink: DataGroup = {
+  name: 'someDataGroupName',
+  children: [
+    {
+      name: 'someName',
+      repeatId: '1',
+      children: [
+        {
+          name: 'linkedRecordType',
+          value: 'someRecordType',
+        },
+        {
+          name: 'linkedRecordId',
+          value: 'someId',
+        },
+      ],
+      actionLinks: {
+        read: {
+          requestMethod: 'GET',
+          rel: 'read',
+          url: 'http://localhost:38082/diva/rest/record/someRecordType/someId',
+          accept: 'application/vnd.uub.record+json',
+        },
+      },
+    },
+  ],
+};
 
 const dataGroupWithEmptyChildren: DataGroup = {
   name: 'someName',
@@ -161,6 +189,66 @@ const dataGroupWithSeveralMatchingAtomics: DataGroup = {
     },
   ],
 };
+
+describe.only('getAllRecordLinksWithNameInData', () => {
+  it('should return empty list if there are no children', () => {
+    const children = cdu.getAllRecordLinksWithNameInData(
+      dataGroupWithEmptyChildren,
+      'someChildName',
+    );
+
+    expect(children).toStrictEqual([]);
+    expect(children).toHaveLength(0);
+  });
+  it('should return empty list if no record links exist with correct name', () => {
+    const children = cdu.getAllRecordLinksWithNameInData(
+      dataGroupWithOneRecordLink,
+      'NOTsomeChildName',
+    );
+
+    expect(children).toStrictEqual([]);
+    expect(children).toHaveLength(0);
+  });
+  it('should return empty list if dataAtomic exist with correct name but wrong type', () => {
+    const children = cdu.getAllRecordLinksWithNameInData(
+      dataGroupWithSeveralMatchingAtomics,
+      'someInterestingChildName',
+    );
+
+    expect(children).toStrictEqual([]);
+    expect(children).toHaveLength(0);
+  });
+  it('should return empty list if dataGroup exist with correct name but wrong type', () => {
+    const children = cdu.getAllRecordLinksWithNameInData(
+      dataGroupWithOnlyMatchingAtomics,
+      'someInterestingChildName',
+    );
+
+    expect(children).toStrictEqual([]);
+    expect(children).toHaveLength(0);
+  });
+  it('should return a list with correct recordLink if exist with correct name', () => {
+    const children = cdu.getAllRecordLinksWithNameInData(
+      dataGroupWithOneRecordLink,
+      'someName',
+    );
+
+    expect(children).toStrictEqual([
+      {
+        name: 'someName',
+        recordType: 'someRecordType',
+        id: 'someId',
+        readLink: {
+          requestMethod: 'GET',
+          rel: 'read',
+          url: 'http://localhost:38082/diva/rest/record/someRecordType/someId',
+          accept: 'application/vnd.uub.record+json',
+        },
+      },
+    ]);
+    expect(children).toHaveLength(1);
+  });
+});
 
 describe('getAllChildrenWithNameInData', () => {
   it('should return empty list if there are no children', () => {

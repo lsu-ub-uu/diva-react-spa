@@ -8,6 +8,7 @@ import subjectCategoriesRoute from './routes/subjectCategoriesRoute';
 import searchRoute from './routes/searchRoute';
 import authRoute from './routes/authRoute';
 import publishRoute from './routes/publishRoute';
+import binaryRoute from './routes/binaryRoute';
 
 const PORT = process.env.PORT || 8080;
 
@@ -23,6 +24,7 @@ app.use('/api/researchsubjects', researchSubjectsRoute);
 app.use('/api/subjectcategories', subjectCategoriesRoute);
 app.use('/api/search', searchRoute);
 app.use('/api/publish', publishRoute);
+app.use('/api/binary', binaryRoute);
 
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);

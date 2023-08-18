@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
-import { findRecordTypeByName } from '../services/recordTypeServives';
+import { findRecordTypeByName } from '../services/recordTypeServices';
 
 const { CORA_API_URL } = process.env;
 

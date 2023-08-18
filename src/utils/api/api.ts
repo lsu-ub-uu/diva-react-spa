@@ -68,7 +68,7 @@ export function getRecords(
 }
 
 // export { default as SearchPersonsByGeneralSearch2 } from './api/SearchPersonByGeneralSearch2';
-export * from '../../services/searchServives/searchPersonByGeneralSearch';
+export * from '../../services/searchServices/searchPersonByGeneralSearch';
 // export * from './api/searchPersonByGeneralSearch';
-export * from '../../services/searchServives/searchOrganisation';
+export * from '../../services/searchServices/searchOrganisation';
 // export * from './api/searchOrganisation';
