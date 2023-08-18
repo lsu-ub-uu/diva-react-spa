@@ -5,8 +5,9 @@ import {
 } from '../../utils/cora-data/CoraData';
 
 const findValueByName = (dataGroup: DataGroup, name: string) => {
+  // console.log('dG', dataGroup);
   const obj = dataGroup.children.find((o) => o.name === name) as DataAtomic;
-
+  console.log('obj', obj);
   return obj.value;
 };
 

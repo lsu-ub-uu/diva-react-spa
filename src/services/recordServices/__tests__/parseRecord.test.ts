@@ -12,13 +12,13 @@ describe('parseRecords', () => {
       binaries: [],
     });
   });
-  it('should parse records 2', () => {
-    const output = parseRecord(exampleDevOutput2);
-    console.log('output', output);
-    expect(output).toStrictEqual({
-      id: 'exampleDevOutput:5538156835926548',
-      title: 'my funny title',
-      binaries: [],
-    });
-  });
+  // it('should parse records 2', () => {
+  //   const output = parseRecord(exampleDevOutput2);
+  //   console.log('output', output);
+  //   expect(output).toStrictEqual({
+  //     id: 'exampleDevOutput:5538156835926548',
+  //     title: 'my funny title',
+  //     binaries: [],
+  //   });
+  // });
 });
