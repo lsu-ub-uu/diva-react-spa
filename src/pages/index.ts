@@ -7,3 +7,4 @@ export { PersonCreatePage } from './PersonCreatePage';
 export { ReactHookFormTestPage } from './ReactHookFormTestPage';
 export { RecordTypePage } from './RecordTypePage';
 export { FormGenPage } from './FormGenPage';
+export { UploadTestPage } from './UploadTestPage';

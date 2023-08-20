@@ -1,4 +1,5 @@
 import { useRoutes } from 'react-router-dom';
+
 import { Layout } from '../components';
 import {
   HomePage,
@@ -10,6 +11,7 @@ import {
   PersonSearchPage,
   PersonCreatePage,
   FormGenPage,
+  UploadTestPage,
 } from '../pages';
 
 export const routes = [
@@ -49,6 +51,10 @@ export const routes = [
       {
         path: '/form-gen',
         element: <FormGenPage />,
+      },
+      {
+        path: '/upload',
+        element: <UploadTestPage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],

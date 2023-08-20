@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import SearchIcon from '@mui/icons-material/Search';
 import { Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
@@ -47,6 +48,15 @@ export const HomePage = () => {
               endIcon={<SearchIcon />}
             >
               Find persons
+            </Button>
+            <Button
+              disableRipple
+              variant='contained'
+              component={RouterLink}
+              to='/upload'
+              endIcon={<FileUploadIcon />}
+            >
+              Upload test page
             </Button>
           </Stack>
         </AsidePortal>
