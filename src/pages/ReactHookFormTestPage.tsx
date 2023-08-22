@@ -252,6 +252,7 @@ export const ReactHookFormTestPage = () => {
                 sm={8}
               >
                 <ControlledSelectField
+                  required
                   control={control}
                   name='publicationType'
                   label='Publication type'
@@ -305,6 +306,7 @@ export const ReactHookFormTestPage = () => {
                     sm={6}
                   >
                     <ControlledTextField
+                      required
                       placeholder='First name'
                       control={control}
                       name={`authors.${index}.firstname`}
