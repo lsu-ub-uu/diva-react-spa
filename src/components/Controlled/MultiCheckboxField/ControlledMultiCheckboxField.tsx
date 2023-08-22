@@ -15,6 +15,7 @@ interface ControlledMultiCheckboxFieldProps {
   control?: Control<any>;
   label: string;
   options: Option[];
+  required?: boolean;
 }
 
 export const ControlledMultiCheckboxField = (
@@ -55,7 +56,13 @@ export const ControlledMultiCheckboxField = (
       size='small'
       variant='outlined'
     >
-      <FormLabel component='legend'>{props.label}</FormLabel>
+      <FormLabel
+        required={props.required}
+        component='legend'
+        error={errors[props.name] !== undefined}
+      >
+        {props.label}
+      </FormLabel>
       <FormGroup>
         {props.options.map((option: Option) => {
           return (
