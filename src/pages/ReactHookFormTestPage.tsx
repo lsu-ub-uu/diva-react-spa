@@ -216,6 +216,7 @@ export const ReactHookFormTestPage = () => {
                 sm={8}
               >
                 <ControlledMultiCheckboxField
+                  required
                   options={optionsTest}
                   control={control}
                   name='checkboxValues'
