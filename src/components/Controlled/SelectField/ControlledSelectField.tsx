@@ -16,6 +16,7 @@ interface ControlledSelectFieldProps {
   isLoading: boolean;
   loadingError: boolean;
   placeholder?: string;
+  required?: boolean;
 }
 
 export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
@@ -26,7 +27,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
       render={({ field: { onChange, ref, value }, fieldState: { error } }) => (
         <FormControl fullWidth>
           <FormLabel
-            required
+            required={props.required}
             error={error !== undefined}
           >
             {props.label}
