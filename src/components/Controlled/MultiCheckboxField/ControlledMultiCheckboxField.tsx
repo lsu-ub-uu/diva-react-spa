@@ -2,12 +2,10 @@ import React from 'react';
 import {
   FormControl,
   FormControlLabel,
-  FormGroup,
   FormHelperText,
   FormLabel,
 } from '@mui/material';
-import { Control, Controller, useController, useWatch } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
+import { Control, Controller } from 'react-hook-form';
 import { Checkbox, Option } from '../../index';
 
 interface ControlledMultiCheckboxFieldProps {
@@ -21,86 +19,40 @@ interface ControlledMultiCheckboxFieldProps {
 export const ControlledMultiCheckboxField = (
   props: ControlledMultiCheckboxFieldProps,
 ) => {
-  const {
-    field: { ref, value, onChange },
-    formState: { errors },
-  } = useController({
-    name: props.name,
-    control: props.control,
-    defaultValue: [],
-  });
-
-  const checkboxIds =
-    useWatch({ control: props.control, name: props.name }) || [];
-
-  const handleChange = (val: any) => {
-    const newArray = [...checkboxIds];
-    const item = val;
-
-    if (newArray.length > 0) {
-      const index = newArray.findIndex((x) => x === item);
-      if (index === -1) {
-        newArray.push(item);
-      } else {
-        newArray.splice(index, 1);
-      }
-    } else {
-      newArray.push(item);
-    }
-
-    onChange(newArray);
-  };
-
   return (
-    <FormControl
-      size='small'
-      variant='outlined'
-    >
-      <FormLabel
-        required={props.required}
-        component='legend'
-        error={errors[props.name] !== undefined}
-      >
-        {props.label}
-      </FormLabel>
-      <FormGroup>
-        {props.options.map((option: Option) => {
-          return (
+    <Controller
+      name={props.name}
+      control={props.control}
+      render={({ field: { onChange, value }, fieldState: { error } }) => (
+        <FormControl fullWidth>
+          <FormLabel
+            required={props.required}
+            error={error !== undefined}
+          >
+            {props.label}
+          </FormLabel>
+          {props.options.map((option: Option, idx: number) => (
             <FormControlLabel
+              key={idx}
               control={
-                <Controller
-                  name={props.name}
-                  render={() => {
-                    return (
-                      <Checkbox
-                        inputRef={ref}
-                        checked={value?.some(
-                          (checked: any) => checked === option.value,
-                        )}
-                        onChange={() => handleChange(option.value)}
-                      />
-                    );
+                <Checkbox
+                  onChange={(e) => {
+                    const newValue = e.target.checked
+                      ? [...value, option.value]
+                      : value.filter((item: any) => item !== option.value);
+                    onChange(newValue);
                   }}
-                  control={props.control}
+                  checked={value.includes(option.value)}
                 />
               }
               label={option.label}
-              key={option.value}
             />
-          );
-        })}
-      </FormGroup>
-      <FormHelperText
-        error
-        variant='outlined'
-      >
-        <ErrorMessage
-          errors={errors}
-          name={props.name}
-          as='span'
-          key={props.name}
-        />
-      </FormHelperText>
-    </FormControl>
+          ))}
+          <FormHelperText error={error !== undefined}>
+            {error !== undefined ? error.message : ' '}
+          </FormHelperText>
+        </FormControl>
+      )}
+    />
   );
 };
