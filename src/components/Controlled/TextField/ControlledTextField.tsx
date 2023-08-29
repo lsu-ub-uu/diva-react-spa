@@ -20,6 +20,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
         <FormControl fullWidth>
           <FormLabel
             htmlFor={field.name}
+            aria-label={props.label}
             required={props.required}
             error={error !== undefined}
           >
