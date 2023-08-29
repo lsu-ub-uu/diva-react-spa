@@ -9,7 +9,7 @@ import { ControlledDatePicker } from '../ControlledDatePicker';
  */
 
 export const DummyForm = (): JSX.Element => {
-  const methods = useForm({ defaultValues: { dateField: '' } });
+  const methods = useForm({ defaultValues: { dateField: '2023-08-25' } });
 
   return (
     <ControlledDatePicker
@@ -20,13 +20,11 @@ export const DummyForm = (): JSX.Element => {
   );
 };
 
-describe('<ControlledDatePicker />',() => {
-  it('renders component and selects a date', async () => {
+describe('<ControlledDatePicker />', () => {
+  it('renders component and finds the initial value by placeholder ', async () => {
     render(<DummyForm />);
-    // Simulate selecting a date
-    const user = userEvent.setup();
-    const dateInput = screen.getByRole('textbox');
-    await user.type(dateInput, '2023-08-25');
-    expect(true).toBe(true);
+    const datePickerInput = screen.getByPlaceholderText('yyyy-mm-dd');
+    const dpi = datePickerInput as HTMLInputElement;
+    expect(dpi.value).toBe('2023-08-25');
   });
 });
