@@ -19,6 +19,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
       render={({ field, fieldState: { error } }) => (
         <FormControl fullWidth>
           <FormLabel
+            htmlFor={field.name}
             required={props.required}
             error={error !== undefined}
           >
