@@ -8,7 +8,7 @@ interface ExtendedSelectProps extends SelectProps {
 }
 
 export const Select = React.forwardRef((props: ExtendedSelectProps, ref) => {
-  const { loading, loadingError, ...remainingProps } = props;
+  const { loading, role, loadingError, ...remainingProps } = props;
 
   if (loading) return <span>Loading...</span>;
   if (loadingError)
@@ -16,6 +16,7 @@ export const Select = React.forwardRef((props: ExtendedSelectProps, ref) => {
 
   return (
     <MuiSelect
+      role={role}
       ref={ref}
       {...remainingProps}
       IconComponent={ExpandMoreIcon}

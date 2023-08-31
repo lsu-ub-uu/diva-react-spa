@@ -115,6 +115,18 @@ export const ReactHookFormTestPage = () => {
           email: '',
           otherOrganisation: '',
         },
+        {
+          firstname: '',
+          lastname: '',
+          birthYear: '',
+          deathYear: '',
+          localUserId: '',
+          orcidId: '',
+          organisation: '',
+          researchGroup: '',
+          email: '',
+          otherOrganisation: '',
+        },
       ],
     },
   });

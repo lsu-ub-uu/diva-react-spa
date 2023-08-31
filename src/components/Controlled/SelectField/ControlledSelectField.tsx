@@ -27,12 +27,16 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
       render={({ field: { onChange, ref, value }, fieldState: { error } }) => (
         <FormControl fullWidth>
           <FormLabel
+            htmlFor={props.name}
             required={props.required}
             error={error !== undefined}
           >
             {props.label}
           </FormLabel>
           <Select
+            role='combobox'
+            name={props.name}
+            id={props.name}
             sx={{
               '& .MuiSelect-select .notranslate::after': props.placeholder
                 ? {

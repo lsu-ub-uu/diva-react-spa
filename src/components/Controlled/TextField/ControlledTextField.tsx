@@ -27,6 +27,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             {props.label}
           </FormLabel>
           <TextField
+            id={field.name}
             size='small'
             error={error !== undefined}
             {...field}
