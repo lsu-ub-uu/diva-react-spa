@@ -15,7 +15,7 @@ export const loadCoraData = () => {
   // load definitions
 };
 
-export const transformCoraRecordTypes = (
+export const transformCoraValidationTypes = (
   dataListWrapper: DataListWrapper,
 ): BFFRecordType[] => {
   if (dataListWrapper.dataList.data.length === 0) {

@@ -1,29 +1,28 @@
 import testData from '../../__mocks__/coraDivaRecordTypes.json';
 import testData2 from '../../__mocks__/coraDivaRecordTypes2.json';
 import emptyTestData from '../../__mocks__/emptyDataList.json';
-import { transformCoraData } from '../loadCoraData';
+import { transformCoraRecordTypes } from '../loadCoraData';
 
-beforeEach(() => {});
 describe('loadCoraData', () => {
   // describe('loadCoraData', () => {
   //   it('transform from cora to bff', () => {});
   // });
-  describe('transformCoraData', () => {
+  describe('transformCoraRecordType', () => {
     it('Empty list should return empty list', () => {
-      const transformData = transformCoraData(emptyTestData);
+      const transformData = transformCoraRecordTypes(emptyTestData);
       expect(transformData).toStrictEqual([]);
     });
     it('Returns one entry', () => {
-      const transformData = transformCoraData(testData);
+      const transformData = transformCoraRecordTypes(testData);
       expect(transformData).toHaveLength(1);
     });
     it('Returns one entry with id', () => {
-      const transformData = transformCoraData(testData);
+      const transformData = transformCoraRecordTypes(testData);
       const firstRecordType = transformData[0];
       expect(firstRecordType.id).toEqual('someId');
     });
     it('Returns two entries with id', () => {
-      const transformData = transformCoraData(testData2);
+      const transformData = transformCoraRecordTypes(testData2);
       const firstRecordType = transformData[0];
       expect(firstRecordType.id).toEqual('someOtherId1');
       const secondRecordType = transformData[1];
