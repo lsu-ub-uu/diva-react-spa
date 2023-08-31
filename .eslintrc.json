@@ -27,6 +27,7 @@
     "react/jsx-props-no-spreading": "off",
     "no-param-reassign": "off",
     "react/require-default-props": "off",
-    "react/no-array-index-key": "off"
+    "react/no-array-index-key": "off",
+    "no-use-before-define": "off"
   }
 }
