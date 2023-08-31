@@ -14,7 +14,6 @@ export const getRecordTypeByName = async (
 ) => {
   const recordType = req.params.name;
   try {
-    // console.log('URL:', `${CORA_API_URL}/record/recordType/${recordType}`);
     let responseArray = [];
     const config = {
       headers: {
@@ -25,6 +24,8 @@ export const getRecordTypeByName = async (
       `${CORA_API_URL}/record/recordType/${recordType}`,
       config,
     );
+
+    console.log(response.data);
 
     responseArray = response.data.record.data.children;
     res.status(200).json(findRecordTypeByName(responseArray));

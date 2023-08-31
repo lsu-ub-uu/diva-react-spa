@@ -11,10 +11,12 @@ import publishRoute from './routes/publishRoute';
 import binaryRoute from './routes/binaryRoute';
 
 const PORT = process.env.PORT || 8080;
+const CORA_API_URL = process.env.CORA_API_URL || 'error';
 
 const app: Application = express();
 
 configureServer(app);
+// loadCoraDefinitions()  // keeps them in memory some way... redis, node-cache
 
 app.use('/api/auth', authRoute);
 app.use('/api/person', personRoute);
@@ -28,4 +30,5 @@ app.use('/api/binary', binaryRoute);
 
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
+  console.log(`Cora API-url ${CORA_API_URL}`);
 });
