@@ -10,7 +10,7 @@ interface BFFRecordType {
   id: string;
 }
 
-export const loadCoraData = () => {
+export const transformRecordTypes = () => {
   // load definitions
 };
 
