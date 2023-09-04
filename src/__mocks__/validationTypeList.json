@@ -204,14 +204,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchText"
+                    "value": "someText"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/searchText",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/someText",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },

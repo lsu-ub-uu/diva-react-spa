@@ -13,6 +13,7 @@ interface BFFValidationType {
   metadataGroupId: string;
   newPresentationGroupId: string;
   presentationGroupId: string;
+  nameTextId: string;
 }
 
 export const loadCoraData = () => {
@@ -63,7 +64,12 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
     'presentationFormId',
   );
 
-  return { id, validatesRecordType, newMetadataGroupId, newPresentationGroupId, presentationGroupId, metadataGroupId } as BFFValidationType;
+  const nameTextId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'textId'
+  );
+
+  return { id, validatesRecordType, newMetadataGroupId, newPresentationGroupId, presentationGroupId, metadataGroupId, nameTextId } as BFFValidationType;
 };
 
 const extractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {

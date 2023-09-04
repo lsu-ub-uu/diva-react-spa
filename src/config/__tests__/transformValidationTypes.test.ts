@@ -36,6 +36,7 @@ describe('loadCoraData', () => {
         metadataGroupId:  'someGroup',
         newPresentationGroupId: 'someNewPGroup',
         presentationGroupId: 'somePGroup',
+        nameTextId: 'someText'
       });
     });
   });
