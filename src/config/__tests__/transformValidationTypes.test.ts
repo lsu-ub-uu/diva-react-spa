@@ -33,7 +33,9 @@ describe('loadCoraData', () => {
         id: 'someValidationTypeId',
         validatesRecordType: 'someRecordTypeToValidate',
         newMetadataGroupId: 'someNewGroup',
-        newPresentationFormId: 'someNewPGroup',
+        metadataGroupId:  'someGroup',
+        newPresentationGroupId: 'someNewPGroup',
+        presentationGroupId: 'somePGroup',
       });
     });
   });

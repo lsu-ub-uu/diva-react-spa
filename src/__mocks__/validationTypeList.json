@@ -267,7 +267,7 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchGroup"
+                    "value": "someGroup"
                   }
                 ],
                 "actionLinks": {
@@ -309,7 +309,7 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchPGroup"
+                    "value": "somePGroup"
                   }
                 ],
                 "actionLinks": {
