@@ -7,6 +7,7 @@ import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 
 interface BFFMetadata {
   id: string;
+  type : 'group' | 'numberVariable' | 'resourceLink' | 'collectionItem' | 'recordLink' | 'textVariable' | 'collectionVariable' | 'itemCollection';
 }
 
 export const transformMetadata = (
@@ -17,10 +18,10 @@ export const transformMetadata = (
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(transformCoraRecordToSomething);
+  return coraRecords.map(transformCoraRecordToBFFMetaData);
 };
 
-const transformCoraRecordToSomething = (coraRecordWrapper: RecordWrapper): BFFMetadata => {
+const transformCoraRecordToBFFMetaData = (coraRecordWrapper: RecordWrapper): BFFMetadata => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   return transformRecordGroupToBFF(dataRecordGroup) as BFFMetadata;
@@ -28,5 +29,12 @@ const transformCoraRecordToSomething = (coraRecordWrapper: RecordWrapper): BFFMe
 
 const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  return { id }
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
+  return { id, type }
 };
+
+const extractAttributeValueByName = (dataRecordGroup: DataGroup, attributeName: string): string  => {
+  // @ts-ignore
+  return dataRecordGroup.attributes[attributeName];
+}
+
