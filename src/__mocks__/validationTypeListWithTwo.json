@@ -204,14 +204,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchText"
+                    "value": "someText"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/searchText",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/someText",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -225,14 +225,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchValidationDefText"
+                    "value": "someDefText"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/searchValidationDefText",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/someDefText",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -246,14 +246,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchNewGroup"
+                    "value": "someNewGroup"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/searchNewGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someNewGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -267,7 +267,7 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchGroup"
+                    "value": "someGroup"
                   }
                 ],
                 "actionLinks": {
@@ -288,14 +288,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchNewPGroup"
+                    "value": "someNewPGroup"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/searchNewPGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/someNewPGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -309,7 +309,7 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchPGroup"
+                    "value": "somePGroup"
                   }
                 ],
                 "actionLinks": {
@@ -330,14 +330,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "search"
+                    "value": "someRecordTypeToValidate"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/search",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/someRecordTypeToValidate",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -604,14 +604,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchText"
+                    "value": "someText2"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/searchText",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/someText",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -625,14 +625,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchValidationDefText"
+                    "value": "someDefText2"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/searchValidationDefText",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/someDefText",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -646,14 +646,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchNewGroup"
+                    "value": "someNewGroup2"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/searchNewGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someNewGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -667,7 +667,7 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchGroup"
+                    "value": "someGroup2"
                   }
                 ],
                 "actionLinks": {
@@ -688,14 +688,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchNewPGroup"
+                    "value": "someNewPGroup2"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/searchNewPGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/someNewPGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -709,7 +709,7 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchPGroup"
+                    "value": "somePGroup2"
                   }
                 ],
                 "actionLinks": {
@@ -730,14 +730,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "someRecordTypeToValidate"
+                    "value": "someRecordTypeToValidate2"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/search",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/someRecordTypeToValidate",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
