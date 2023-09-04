@@ -288,14 +288,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchNewPGroup"
+                    "value": "someNewPGroup"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/searchNewPGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/someNewPGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },

@@ -1,9 +1,7 @@
 import {
-  CoraRecord,
   DataGroup,
   DataListWrapper,
   RecordWrapper,
-  RecordLink,
 } from '../utils/cora-data/CoraData';
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
@@ -12,6 +10,7 @@ interface BFFValidationType {
   id: string;
   validatesRecordType: string;
   newMetadataGroupId: string;
+  newPresentationFormId: string;
 }
 
 export const loadCoraData = () => {
@@ -26,10 +25,10 @@ export const transformCoraValidationTypes = (
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(transformCoratoBFF);
+  return coraRecords.map(transformCoraToBFF);
 };
 
-const transformCoratoBFF = (coraRecordWrapper: RecordWrapper) => {
+const transformCoraToBFF = (coraRecordWrapper: RecordWrapper) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
 
@@ -46,7 +45,12 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
     dataRecordGroup,
     'newMetadataId',
   );
-  return { id, validatesRecordType, newMetadataGroupId } as BFFValidationType;
+
+  const newPresentationFormId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'newPresentationFormId',
+  );
+  return { id, validatesRecordType, newMetadataGroupId, newPresentationFormId } as BFFValidationType;
 };
 
 const extractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {
