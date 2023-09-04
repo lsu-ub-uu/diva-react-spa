@@ -5,24 +5,28 @@ import {
 } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 
-interface BFFRecordType {
+interface BFFMetadata {
   id: string;
 }
 
-export const transformCoraRecordTypes = (
+export const transformMetadata = (
   dataListWrapper: DataListWrapper,
-): BFFRecordType[] => {
+): BFFMetadata[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(extractIdFromRecord);
+  return coraRecords.map(transformCoraRecordToSomething);
 };
 
-const extractIdFromRecord = (coraRecordWrapper: RecordWrapper) => {
+const transformCoraRecordToSomething = (coraRecordWrapper: RecordWrapper): BFFMetadata => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
+  return transformRecordGroupToBFF(dataRecordGroup) as BFFMetadata;
+};
+
+const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  return { id } as BFFRecordType;
+  return { id }
 };

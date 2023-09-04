@@ -5,6 +5,7 @@ import {
 } from '../utils/cora-data/CoraData';
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
+import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 
 interface BFFValidationType {
   id: string;
@@ -16,10 +17,6 @@ interface BFFValidationType {
   nameTextId: string;
   defTextId: string;
 }
-
-export const loadCoraData = () => {
-  // load definitions
-};
 
 export const transformCoraValidationTypes = (
   dataListWrapper: DataListWrapper,
@@ -76,14 +73,6 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
   );
 
   return { id, validatesRecordTypeId: validatesRecordType, newMetadataGroupId, newPresentationGroupId, presentationGroupId, metadataGroupId, nameTextId, defTextId } as BFFValidationType;
-};
-
-const extractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {
-  const recordInfo = getFirstDataGroupWithNameInData(
-    coraRecordGroup,
-    'recordInfo',
-  ) as DataGroup;
-  return getFirstDataAtomicValueWithNameInData(recordInfo, 'id');
 };
 
 const extractLinkedRecordIdFromNamedRecordLink = (
