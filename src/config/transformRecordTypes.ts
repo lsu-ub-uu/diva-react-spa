@@ -10,10 +10,6 @@ interface BFFRecordType {
   id: string;
 }
 
-export const transformRecordTypes = () => {
-  // load definitions
-};
-
 export const transformCoraRecordTypes = (
   dataListWrapper: DataListWrapper,
 ): BFFRecordType[] => {
