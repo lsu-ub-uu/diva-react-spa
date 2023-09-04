@@ -8,7 +8,7 @@ import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDa
 
 interface BFFValidationType {
   id: string;
-  validatesRecordType: string;
+  validatesRecordTypeId: string;
   newMetadataGroupId: string;
   metadataGroupId: string;
   newPresentationGroupId: string;
@@ -69,7 +69,7 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
     'textId'
   );
 
-  return { id, validatesRecordType, newMetadataGroupId, newPresentationGroupId, presentationGroupId, metadataGroupId, nameTextId } as BFFValidationType;
+  return { id, validatesRecordTypeId: validatesRecordType, newMetadataGroupId, newPresentationGroupId, presentationGroupId, metadataGroupId, nameTextId } as BFFValidationType;
 };
 
 const extractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {

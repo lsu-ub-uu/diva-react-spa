@@ -31,7 +31,7 @@ describe('loadCoraData', () => {
       const transformData = transformCoraValidationTypes(validationTypeList);
       expect(transformData[0]).toEqual({
         id: 'someValidationTypeId',
-        validatesRecordType: 'someRecordTypeToValidate',
+        validatesRecordTypeId: 'someRecordTypeToValidate',
         newMetadataGroupId: 'someNewGroup',
         metadataGroupId:  'someGroup',
         newPresentationGroupId: 'someNewPGroup',
