@@ -246,14 +246,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchNewGroup"
+                    "value": "someNewGroup"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/searchNewGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someNewGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
@@ -330,14 +330,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "search"
+                    "value": "someRecordTypeToValidate"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/search",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/someRecordTypeToValidate",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },

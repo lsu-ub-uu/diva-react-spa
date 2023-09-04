@@ -1,14 +1,17 @@
 import {
+  CoraRecord,
   DataGroup,
   DataListWrapper,
-  RecordInfo,
   RecordWrapper,
+  RecordLink,
 } from '../utils/cora-data/CoraData';
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
-interface BFFRecordType {
+interface BFFValidationType {
   id: string;
+  validatesRecordType: string;
+  newMetadataGroupId: string;
 }
 
 export const loadCoraData = () => {
@@ -17,26 +20,50 @@ export const loadCoraData = () => {
 
 export const transformCoraValidationTypes = (
   dataListWrapper: DataListWrapper,
-): BFFRecordType[] => {
+): BFFValidationType[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(extractIdFromRecord);
+  return coraRecords.map(transformCoratoBFF);
 };
 
-const extractIdFromRecord = (coraRecordWrapper: RecordWrapper) => {
+const transformCoratoBFF = (coraRecordWrapper: RecordWrapper) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
-  const id = exctractIdFromRecordInfo(dataRecordGroup);
-  return { id } as BFFRecordType;
+
+  return transformRecordGroupToBFF(dataRecordGroup);
 };
 
-const exctractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {
+const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+  const validatesRecordType = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'validatesRecordType',
+  );
+  const newMetadataGroupId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'newMetadataId',
+  );
+  return { id, validatesRecordType, newMetadataGroupId } as BFFValidationType;
+};
+
+const extractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {
   const recordInfo = getFirstDataGroupWithNameInData(
     coraRecordGroup,
     'recordInfo',
-  ) as RecordInfo;
+  ) as DataGroup;
   return getFirstDataAtomicValueWithNameInData(recordInfo, 'id');
+};
+
+const extractLinkedRecordIdFromNamedRecordLink = (
+  coraRecordGroup: DataGroup,
+  linkName: string,
+) => {
+  const recordLink = getFirstDataGroupWithNameInData(
+    coraRecordGroup,
+    linkName,
+  ) as DataGroup;
+  return getFirstDataAtomicValueWithNameInData(recordLink, 'linkedRecordId');
 };

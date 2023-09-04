@@ -27,5 +27,13 @@ describe('loadCoraData', () => {
       const secondRecordType = transformData[1];
       expect(secondRecordType.id).toEqual('someValidationTypeId2');
     });
+    it('Returns one BFFValidationType for one validationType', () => {
+      const transformData = transformCoraValidationTypes(validationTypeList);
+      expect(transformData[0]).toEqual({
+        id: 'someValidationTypeId',
+        validatesRecordType: 'someRecordTypeToValidate',
+        newMetadataGroupId: 'someNewGroup',
+      });
+    });
   });
 });

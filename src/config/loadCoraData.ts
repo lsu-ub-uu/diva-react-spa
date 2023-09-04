@@ -1,7 +1,6 @@
 import {
   DataGroup,
   DataListWrapper,
-  RecordInfo,
   RecordWrapper,
 } from '../utils/cora-data/CoraData';
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
@@ -29,14 +28,14 @@ export const transformCoraRecordTypes = (
 const extractIdFromRecord = (coraRecordWrapper: RecordWrapper) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
-  const id = exctractIdFromRecordInfo(dataRecordGroup);
+  const id = extractIdFromRecordInfo(dataRecordGroup);
   return { id } as BFFRecordType;
 };
 
-const exctractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {
+const extractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {
   const recordInfo = getFirstDataGroupWithNameInData(
     coraRecordGroup,
     'recordInfo',
-  ) as RecordInfo;
+  ) as DataGroup;
   return getFirstDataAtomicValueWithNameInData(recordInfo, 'id');
 };

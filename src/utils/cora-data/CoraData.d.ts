@@ -23,10 +23,6 @@ export interface RecordLink extends DataElement {
   attributes?: Attributes;
 }
 
-export interface RecordInfo extends DataGroup {
-  name: 'recordInfo';
-}
-
 export interface ActionLink {
   requestMethod: string;
   rel: string;

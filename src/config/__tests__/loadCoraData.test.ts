@@ -4,9 +4,6 @@ import emptyTestData from '../../__mocks__/emptyDataList.json';
 import { transformCoraRecordTypes } from '../loadCoraData';
 
 describe('loadCoraData', () => {
-  // describe('loadCoraData', () => {
-  //   it('transform from cora to bff', () => {});
-  // });
   describe('transformCoraRecordType', () => {
     it('Empty list should return empty list', () => {
       const transformData = transformCoraRecordTypes(emptyTestData);
