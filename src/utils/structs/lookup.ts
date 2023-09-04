@@ -1,6 +1,10 @@
+interface KeyValueStorage<K, V> {
+  set(key: K, value: V): void;
+  get(key: K): V | undefined;
+  size(): number;
+}
 
-export class Lookup<K, V> {
-
+export class Lookup<K, V> implements KeyValueStorage<K, V>{
   private map: Map<K, V>;
 
   constructor() {
@@ -18,5 +22,4 @@ export class Lookup<K, V> {
   size() {
     return this.map.size;
   }
-
 }
