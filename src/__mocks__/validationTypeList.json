@@ -225,14 +225,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "searchValidationDefText"
+                    "value": "someDefText"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/searchValidationDefText",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/someDefText",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },

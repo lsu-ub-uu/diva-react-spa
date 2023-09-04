@@ -14,6 +14,7 @@ interface BFFValidationType {
   newPresentationGroupId: string;
   presentationGroupId: string;
   nameTextId: string;
+  defTextId: string;
 }
 
 export const loadCoraData = () => {
@@ -69,7 +70,12 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
     'textId'
   );
 
-  return { id, validatesRecordTypeId: validatesRecordType, newMetadataGroupId, newPresentationGroupId, presentationGroupId, metadataGroupId, nameTextId } as BFFValidationType;
+  const defTextId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'defTextId'
+  );
+
+  return { id, validatesRecordTypeId: validatesRecordType, newMetadataGroupId, newPresentationGroupId, presentationGroupId, metadataGroupId, nameTextId, defTextId } as BFFValidationType;
 };
 
 const extractIdFromRecordInfo = (coraRecordGroup: DataGroup) => {
