@@ -10,7 +10,7 @@ describe('transformMetadata', () => {
   it('Returns one metadata entry', () => {
     const metadataList = transformMetadata(testMetaData);
     expect(metadataList).toHaveLength(1);
-  })
+  });
   it('Returns one metadata entry with id', () => {
     const metadataList = transformMetadata(testMetaData);
     const firstMetadata = metadataList[0];
@@ -26,4 +26,14 @@ describe('transformMetadata', () => {
     const firstMetadata = metadataList[0];
     expect(firstMetadata.type).toEqual('noneExistingName');
   });
-})
+  it('Returns one BFFMetadata', () => {
+    const metadataList = transformMetadata(testMetaData);
+    expect(metadataList).toHaveLength(1);
+    expect(metadataList[0]).toEqual({
+      id: 'someTextVar',
+      type: 'textVariable',
+      textId: 'someTextVarText',
+      defTextId: 'someTextVarDefText',
+    });
+  });
+});

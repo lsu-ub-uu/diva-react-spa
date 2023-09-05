@@ -33,36 +33,37 @@ describe('transformCoraValidationType', () => {
       id: 'someValidationTypeId',
       validatesRecordTypeId: 'someRecordTypeToValidate',
       newMetadataGroupId: 'someNewGroup',
-      metadataGroupId:  'someGroup',
+      metadataGroupId: 'someGroup',
       newPresentationGroupId: 'someNewPGroup',
       presentationGroupId: 'somePGroup',
       nameTextId: 'someText',
-      defTextId: 'someDefText'
+      defTextId: 'someDefText',
     });
   });
   it('Returns two BFFValidationTypes for two validationTypes', () => {
-    const transformData = transformCoraValidationTypes(validationTypeListWithTwo);
+    const transformData = transformCoraValidationTypes(
+      validationTypeListWithTwo,
+    );
     expect(transformData).toHaveLength(2);
     expect(transformData[0]).toEqual({
       id: 'someValidationTypeId1',
       validatesRecordTypeId: 'someRecordTypeToValidate',
       newMetadataGroupId: 'someNewGroup',
-      metadataGroupId:  'someGroup',
+      metadataGroupId: 'someGroup',
       newPresentationGroupId: 'someNewPGroup',
       presentationGroupId: 'somePGroup',
       nameTextId: 'someText',
-      defTextId: 'someDefText'
+      defTextId: 'someDefText',
     });
     expect(transformData[1]).toEqual({
       id: 'someValidationTypeId2',
       validatesRecordTypeId: 'someRecordTypeToValidate2',
       newMetadataGroupId: 'someNewGroup2',
-      metadataGroupId:  'someGroup2',
+      metadataGroupId: 'someGroup2',
       newPresentationGroupId: 'someNewPGroup2',
       presentationGroupId: 'somePGroup2',
       nameTextId: 'someText2',
-      defTextId: 'someDefText2'
+      defTextId: 'someDefText2',
     });
   });
 });
-

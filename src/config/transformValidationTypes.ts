@@ -64,18 +64,28 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
 
   const nameTextId = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'textId'
+    'textId',
   );
 
   const defTextId = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'defTextId'
+    'defTextId',
   );
 
-  return { id, validatesRecordTypeId: validatesRecordType, newMetadataGroupId, newPresentationGroupId, presentationGroupId, metadataGroupId, nameTextId, defTextId } as BFFValidationType;
+  return {
+    id,
+    validatesRecordTypeId: validatesRecordType,
+    newMetadataGroupId,
+    newPresentationGroupId,
+    presentationGroupId,
+    metadataGroupId,
+    nameTextId,
+    defTextId,
+  } as BFFValidationType;
 };
 
-const extractLinkedRecordIdFromNamedRecordLink = (
+// TODO: move to /CoraDataTransform.ts and write tests
+export const extractLinkedRecordIdFromNamedRecordLink = (
   coraRecordGroup: DataGroup,
   linkName: string,
 ) => {
