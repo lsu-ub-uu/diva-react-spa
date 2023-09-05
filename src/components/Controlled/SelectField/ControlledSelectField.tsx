@@ -34,9 +34,6 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             {props.label}
           </FormLabel>
           <Select
-            role='combobox'
-            name={props.name}
-            id={props.name}
             sx={{
               '& .MuiSelect-select .notranslate::after': props.placeholder
                 ? {
@@ -44,6 +41,9 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                     opacity: 0.42,
                   }
                 : {},
+            }}
+            inputProps={{
+              id: props.name,
             }}
             size='small'
             value={props.options?.length ? value : ''}

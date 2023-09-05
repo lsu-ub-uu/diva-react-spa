@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import { ControlledSelectField } from '../ControlledSelectField';
 
@@ -35,5 +35,10 @@ describe('<ControlledSelectField />', () => {
     const { container } = render(<DummyForm />);
     const test = container.getElementsByClassName('MuiSelect-nativeInput');
     expect((test[0] as HTMLInputElement).value).toBe('option2');
+  });
+  it('can get controlled select field by label text', async () => {
+    render(<DummyForm />);
+    const test = screen.getByLabelText('Option label');
+    expect((test as HTMLInputElement).value).toBe('option2');
   });
 });
