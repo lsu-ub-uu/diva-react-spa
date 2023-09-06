@@ -73,6 +73,5 @@ const extactDataFromResult = (newAuthToken: AuthToken) => {
     firstName,
     lastName,
   );
-  console.log('auth', auth);
   return auth;
 };

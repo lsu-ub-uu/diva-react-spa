@@ -1,6 +1,7 @@
 import { transformMetadata } from '../transformMetadata';
 import emptyTestData from '../../__mocks__/emptyDataList.json';
 import testMetaData from '../../__mocks__/coraMetadata.json';
+import testMetaDataWithFinalValue from '../../__mocks__/coraMetadataWithFinalValue.json';
 
 describe('transformMetadata', () => {
   it('Empty list should return empty', () => {
@@ -23,6 +24,7 @@ describe('transformMetadata', () => {
   });
   it('Returns one BFFMetadata for textVariable', () => {
     const metadataList = transformMetadata(testMetaData);
+    console.log(metadataList);
     expect(metadataList).toHaveLength(1);
     expect(metadataList[0]).toEqual({
       id: 'someTextVar',
@@ -31,6 +33,20 @@ describe('transformMetadata', () => {
       textId: 'someTextVarText',
       defTextId: 'someTextVarDefText',
       regEx: '.*',
+    });
+    expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
+  });
+  it('Returns one BFFMetadata for textVariable with finalValue', () => {
+    const metadataList = transformMetadata(testMetaDataWithFinalValue);
+    expect(metadataList).toHaveLength(1);
+    expect(metadataList[0]).toEqual({
+      id: 'someTextVar',
+      nameInData: 'someNameInData',
+      type: 'textVariable',
+      textId: 'someTextVarText',
+      defTextId: 'someTextVarDefText',
+      regEx: '.*',
+      finalValue: 'someFinalValue',
     });
   });
 });
