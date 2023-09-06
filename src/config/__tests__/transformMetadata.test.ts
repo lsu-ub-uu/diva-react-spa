@@ -2,6 +2,7 @@ import { transformMetadata } from '../transformMetadata';
 import emptyTestData from '../../__mocks__/emptyDataList.json';
 import testMetaData from '../../__mocks__/coraMetadata.json';
 import testMetaDataWithFinalValue from '../../__mocks__/coraMetadataWithFinalValue.json';
+import testMetaDataForGroupWithTwoChildren from '../../__mocks__/coraMetadataForGroupWithTwoChildren.json';
 
 describe('transformMetadata', () => {
   it('Empty list should return empty', () => {
@@ -24,7 +25,6 @@ describe('transformMetadata', () => {
   });
   it('Returns one BFFMetadata for textVariable without finalValue', () => {
     const metadataList = transformMetadata(testMetaData);
-    console.log(metadataList);
     expect(metadataList).toHaveLength(1);
     expect(metadataList[0]).toEqual({
       id: 'someTextVar',
@@ -48,5 +48,30 @@ describe('transformMetadata', () => {
       regEx: '.*',
       finalValue: 'someFinalValue',
     });
+  });
+  it('Returns one BFFMetadata for group', () => {
+    const metadataList = transformMetadata(testMetaDataForGroupWithTwoChildren);
+    expect(metadataList).toHaveLength(1);
+    expect(metadataList[0]).toEqual({
+      id: 'someGroup',
+      nameInData: 'someGroupNameInData',
+      type: 'group',
+      textId: 'someGroupText',
+      defTextId: 'someGroupDefText',
+      children: [
+        {
+          childId: 'someChild0',
+          repeatMin: '0',
+          repeatMax: '1',
+        },
+        {
+          childId: 'someChild1',
+          repeatMin: '2',
+          repeatMax: '3',
+        },
+      ],
+    });
+
+    expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
   });
 });

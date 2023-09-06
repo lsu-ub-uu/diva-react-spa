@@ -26,6 +26,10 @@ import {
   extractIdFromRecordInfo,
   extractAttributeValueByName,
 } from '../utils/cora-data/CoraDataTransforms';
+import {
+  getAllDataGroupsWithNameInDataAndAttributes,
+  getFirstDataGroupWithNameInData,
+} from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 
@@ -48,6 +52,11 @@ interface BFFMetadataTextVariable extends BFFMetadata {
   regEx: string;
   finalValue?: string;
 }
+interface BFFMetadataGroup extends BFFMetadata {
+  children: unknown[];
+  repeatMin: string;
+  repeatMax: string;
+}
 
 export const transformMetadata = (
   dataListWrapper: DataListWrapper,
@@ -69,6 +78,61 @@ const transformCoraRecordToBFFMetaData = (
 };
 
 const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
+  let metadata = transformBasicMetadata(dataRecordGroup);
+
+  const finalValue = getFirstDataAtomicValueWithNameInData(
+    dataRecordGroup,
+    'finalValue',
+  );
+
+  if (finalValue) {
+    metadata = { ...metadata, finalValue } as BFFMetadata;
+  }
+
+  switch (metadata.type) {
+    case 'group': {
+      const childReferences = getFirstDataGroupWithNameInData(
+        dataRecordGroup,
+        'childReferences',
+      );
+      const childReferencesList = getAllDataGroupsWithNameInDataAndAttributes(
+        childReferences as DataGroup,
+        'childReference',
+      );
+
+      const children = childReferencesList.map((childReference) => {
+        const childId = extractLinkedRecordIdFromNamedRecordLink(
+          childReference,
+          'ref',
+        );
+        const repeatMin = getFirstDataAtomicValueWithNameInData(
+          childReference as DataGroup,
+          'repeatMin',
+        );
+        const repeatMax = getFirstDataAtomicValueWithNameInData(
+          childReference as DataGroup,
+          'repeatMax',
+        );
+        return { childId, repeatMin, repeatMax };
+      });
+
+      return {
+        ...metadata,
+        children,
+      } as BFFMetadataGroup;
+    }
+    default: {
+      // case 'textVariable': {
+      const regEx = getFirstDataAtomicValueWithNameInData(
+        dataRecordGroup,
+        'regEx',
+      );
+      return { ...metadata, regEx } as BFFMetadataTextVariable;
+    }
+  }
+};
+
+const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const nameInData = getFirstDataAtomicValueWithNameInData(
     dataRecordGroup,
@@ -84,30 +148,11 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
     'defTextId',
   );
 
-  const regEx = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'regEx');
-
-  const finalValue = getFirstDataAtomicValueWithNameInData(
-    dataRecordGroup,
-    'finalValue',
-  );
-
-  let metadata = {
+  return {
     id,
     nameInData,
     type,
     textId,
     defTextId,
   } as BFFMetadata;
-
-  if (finalValue) {
-    metadata = { ...metadata, finalValue } as BFFMetadata;
-  }
-
-  switch (type) {
-    case 'textVariable':
-      return { ...metadata, regEx } as BFFMetadataTextVariable;
-    default:
-      return metadata;
-      break;
-  }
 };
