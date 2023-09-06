@@ -22,7 +22,7 @@ describe('transformMetadata', () => {
     const firstMetadata = metadataList[0];
     expect(firstMetadata.type).toEqual('textVariable');
   });
-  it('Returns one BFFMetadata for textVariable', () => {
+  it('Returns one BFFMetadata for textVariable without finalValue', () => {
     const metadataList = transformMetadata(testMetaData);
     console.log(metadataList);
     expect(metadataList).toHaveLength(1);
