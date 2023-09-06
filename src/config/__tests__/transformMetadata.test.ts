@@ -52,7 +52,7 @@ describe('transformMetadata', () => {
   it('Returns one BFFMetadata for group', () => {
     const metadataList = transformMetadata(testMetaDataForGroupWithTwoChildren);
     expect(metadataList).toHaveLength(1);
-    expect(metadataList[0]).toEqual({
+    expect(metadataList[0]).toStrictEqual({
       id: 'someGroup',
       nameInData: 'someGroupNameInData',
       type: 'group',
@@ -63,11 +63,18 @@ describe('transformMetadata', () => {
           childId: 'someChild0',
           repeatMin: '0',
           repeatMax: '1',
+          recordPartConstraint: 'readWrite',
         },
         {
           childId: 'someChild1',
           repeatMin: '2',
           repeatMax: '3',
+          recordPartConstraint: 'write',
+        },
+        {
+          childId: 'someChild2',
+          repeatMin: '4',
+          repeatMax: '5',
         },
       ],
     });

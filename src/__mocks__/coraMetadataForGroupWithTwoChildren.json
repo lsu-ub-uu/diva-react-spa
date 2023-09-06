@@ -345,6 +345,10 @@
                       "value": "0"
                     },
                     {
+                      "name": "recordPartConstraint",
+                      "value": "readWrite"
+                    },
+                    {
                       "name": "repeatMax",
                       "value": "1"
                     },
@@ -384,6 +388,10 @@
                       "value": "3"
                     },
                     {
+                      "name": "recordPartConstraint",
+                      "value": "write"
+                    },
+                    {
                       "children": [
                         {
                           "name": "linkedRecordType",
@@ -399,6 +407,41 @@
                           "requestMethod": "GET",
                           "rel": "read",
                           "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someChild1",
+                          "accept": "application/vnd.uub.record+json"
+                        }
+                      },
+                      "name": "ref"
+                    }
+                  ],
+                  "name": "childReference"
+                },
+                {
+                  "repeatId": "419",
+                  "children": [
+                    {
+                      "name": "repeatMin",
+                      "value": "4"
+                    },
+                    {
+                      "name": "repeatMax",
+                      "value": "5"
+                    },
+                    {
+                      "children": [
+                        {
+                          "name": "linkedRecordType",
+                          "value": "metadata"
+                        },
+                        {
+                          "name": "linkedRecordId",
+                          "value": "someChild2"
+                        }
+                      ],
+                      "actionLinks": {
+                        "read": {
+                          "requestMethod": "GET",
+                          "rel": "read",
+                          "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someChild2",
                           "accept": "application/vnd.uub.record+json"
                         }
                       },

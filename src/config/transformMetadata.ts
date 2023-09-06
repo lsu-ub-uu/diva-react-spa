@@ -91,35 +91,7 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
 
   switch (metadata.type) {
     case 'group': {
-      const childReferences = getFirstDataGroupWithNameInData(
-        dataRecordGroup,
-        'childReferences',
-      );
-      const childReferencesList = getAllDataGroupsWithNameInDataAndAttributes(
-        childReferences as DataGroup,
-        'childReference',
-      );
-
-      const children = childReferencesList.map((childReference) => {
-        const childId = extractLinkedRecordIdFromNamedRecordLink(
-          childReference,
-          'ref',
-        );
-        const repeatMin = getFirstDataAtomicValueWithNameInData(
-          childReference as DataGroup,
-          'repeatMin',
-        );
-        const repeatMax = getFirstDataAtomicValueWithNameInData(
-          childReference as DataGroup,
-          'repeatMax',
-        );
-        return { childId, repeatMin, repeatMax };
-      });
-
-      return {
-        ...metadata,
-        children,
-      } as BFFMetadataGroup;
+      return transformMetadataGroup(dataRecordGroup, metadata);
     }
     default: {
       // case 'textVariable': {
@@ -155,4 +127,49 @@ const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
     textId,
     defTextId,
   } as BFFMetadata;
+};
+
+const transformMetadataGroup = (
+  dataRecordGroup: DataGroup,
+  metadata: BFFMetadata,
+) => {
+  const childReferences = getFirstDataGroupWithNameInData(
+    dataRecordGroup,
+    'childReferences',
+  );
+  const childReferencesList = getAllDataGroupsWithNameInDataAndAttributes(
+    childReferences as DataGroup,
+    'childReference',
+  );
+
+  const children = childReferencesList.map((childReference) => {
+    const childId = extractLinkedRecordIdFromNamedRecordLink(
+      childReference,
+      'ref',
+    );
+    const repeatMin = getFirstDataAtomicValueWithNameInData(
+      childReference as DataGroup,
+      'repeatMin',
+    );
+    const repeatMax = getFirstDataAtomicValueWithNameInData(
+      childReference as DataGroup,
+      'repeatMax',
+    );
+
+    const recordPartConstraint = getFirstDataAtomicValueWithNameInData(
+      childReference as DataGroup,
+      'recordPartConstraint',
+    );
+
+    if (recordPartConstraint) {
+      return { childId, repeatMin, repeatMax, recordPartConstraint };
+    }
+
+    return { childId, repeatMin, repeatMax };
+  });
+
+  return {
+    ...metadata,
+    children,
+  } as BFFMetadataGroup;
 };
