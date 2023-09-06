@@ -7,10 +7,12 @@ import {
   extractIdFromRecordInfo,
   extractAttributeValueByName,
 } from '../utils/cora-data/CoraDataTransforms';
+import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 
 interface BFFMetadata {
   id: string;
+  nameInData: string;
   type:
     | 'group'
     | 'numberVariable'
@@ -22,6 +24,9 @@ interface BFFMetadata {
     | 'itemCollection';
   textId: string;
   defTextId: string;
+}
+interface BFFMetadataTextVariable extends BFFMetadata {
+  regEx: string;
 }
 
 export const transformMetadata = (
@@ -45,6 +50,10 @@ const transformCoraRecordToBFFMetaData = (
 
 const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
+  const nameInData = getFirstDataAtomicValueWithNameInData(
+    dataRecordGroup,
+    'nameInData',
+  );
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const textId = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
@@ -54,5 +63,15 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
     dataRecordGroup,
     'defTextId',
   );
-  return { id, type, textId, defTextId };
+
+  const regEx = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'regEx');
+
+  return {
+    id,
+    nameInData,
+    type,
+    textId,
+    defTextId,
+    regEx,
+  } as BFFMetadataTextVariable;
 };

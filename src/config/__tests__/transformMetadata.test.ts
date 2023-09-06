@@ -21,19 +21,16 @@ describe('transformMetadata', () => {
     const firstMetadata = metadataList[0];
     expect(firstMetadata.type).toEqual('textVariable');
   });
-  it('Return one metadata throw error on no attribute', () => {
-    const metadataList = transformMetadata(testMetaData);
-    const firstMetadata = metadataList[0];
-    expect(firstMetadata.type).toEqual('noneExistingName');
-  });
-  it('Returns one BFFMetadata', () => {
+  it('Returns one BFFMetadata for textVariable', () => {
     const metadataList = transformMetadata(testMetaData);
     expect(metadataList).toHaveLength(1);
     expect(metadataList[0]).toEqual({
       id: 'someTextVar',
+      nameInData: 'someNameInData',
       type: 'textVariable',
       textId: 'someTextVarText',
       defTextId: 'someTextVarDefText',
+      regEx: '.*',
     });
   });
 });
