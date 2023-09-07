@@ -2,7 +2,6 @@ import cors from 'cors';
 import 'dotenv/config';
 
 import express, { Application, Request } from 'express';
-import { findMetadataInCora } from '../utils/api/metaData/metadata';
 
 export const configureServer = (app: Application) => {
   app.use(express.json());
@@ -12,8 +11,6 @@ export const configureServer = (app: Application) => {
       origin: '*',
     }),
   );
-
-  // findMetadataInCora();
 
   return app;
 };

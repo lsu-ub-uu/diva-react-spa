@@ -1,10 +1,29 @@
+/*
+ * Copyright 2023 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import { DataGroup } from '../CoraData';
 import {
   getAllDataAtomicsWithNameInData,
   getAllDataGroupsWithNameInDataAndAttributes,
   getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
-  getFirstDataGroupWithNameInDataAndAttribues,
+  getFirstDataGroupWithNameInDataAndAttributes,
 } from '../CoraDataUtils';
 import * as cduw from '../CoraDataUtilsWrappers';
 
@@ -21,8 +40,8 @@ const mockGetAllDataAtomicsWithNameInData =
   >;
 
 const mockGetFirstDataGroupWithNameInDataAndAttributes =
-  getFirstDataGroupWithNameInDataAndAttribues as jest.MockedFunction<
-    typeof getFirstDataGroupWithNameInDataAndAttribues
+  getFirstDataGroupWithNameInDataAndAttributes as jest.MockedFunction<
+    typeof getFirstDataGroupWithNameInDataAndAttributes
   >;
 
 const mockGetAllDataGroupsWithNameInDataAndAttributes =
@@ -179,6 +198,7 @@ describe('getAllDataAtomicValuesWithNameInData', () => {
       'someChildName',
     );
   });
+
   it('should call getAllDataAtomicsWithNameInData with dataGroup and nameInData', () => {
     cduw.getAllDataAtomicValuesWithNameInData(
       dataGroupWithEmptyChildren,
@@ -208,6 +228,7 @@ describe('getAllDataAtomicValuesWithNameInData', () => {
       'someOtherChildName',
     );
   });
+
   it('should return empty array, if getAllDataAtomicsWithNameInData returns empty array', () => {
     mockGetAllDataAtomicsWithNameInData.mockReturnValueOnce([]);
     expect(
@@ -217,6 +238,7 @@ describe('getAllDataAtomicValuesWithNameInData', () => {
       ),
     ).toStrictEqual([]);
   });
+
   it('if getAllDataAtomicsWithNameInData returns dataAtomic, should return their string value in an array', () => {
     mockGetAllDataAtomicsWithNameInData.mockReturnValueOnce([
       { name: 'someName', value: 'firstMatch' },
@@ -268,6 +290,7 @@ describe('extractDataGroupFollowingNameInDatas', () => {
       'someOtherInterestingChildDataGroup',
     );
   });
+
   it('passes the dataGroup to getFirstDataGroupWithNameInData', () => {
     cduw.extractDataGroupFollowingNameInDatas(someNonEmptyDataGroup, [
       'someFoo',
@@ -289,6 +312,7 @@ describe('extractDataGroupFollowingNameInDatas', () => {
       expect.any(String),
     );
   });
+
   it('if getFirstDataGroupWithNameInData returns undefined, returns undefined', () => {
     mockGetFirstDataGroupWithNameInData.mockReturnValueOnce(undefined);
 
@@ -299,6 +323,7 @@ describe('extractDataGroupFollowingNameInDatas', () => {
       ]),
     ).toStrictEqual(undefined);
   });
+
   it('does recursively call extractDataGroupFollowingNameInDatas once for each nameInData', () => {
     cduw.extractDataGroupFollowingNameInDatas(someNonEmptyDataGroup, [
       'someNameInData',
@@ -397,6 +422,7 @@ describe('extractDataGroupFollowingNameInDatas', () => {
     ]);
     expect(extractDataGroupFollowingNameInDatasSpy).toHaveBeenCalledTimes(10);
   });
+
   it('returns whatever extractDataGroupFollowingNameInDatas returns last', () => {
     const someFinalDataGroup: DataGroup = {
       name: 'someFinalDataGroup',
@@ -500,6 +526,7 @@ describe('extractFirstDataGroupWithAttributesFollowingNameInDatas', () => {
         ],
       );
     });
+
     it('passes the dataGroup to extractDataGroupFollowingNameInDatas', () => {
       cduw.extractFirstDataGroupWithAttributesFollowingNameInDatas(
         someNonEmptyDataGroup,
@@ -523,6 +550,7 @@ describe('extractFirstDataGroupWithAttributesFollowingNameInDatas', () => {
         expect.any(Array),
       );
     });
+
     it('if extractDataGroupFollowingNameInDatas returns undefined, return undefined', () => {
       mockGetFirstDataGroupWithNameInData.mockReturnValueOnce(undefined);
       const returned =
@@ -568,6 +596,7 @@ describe('extractFirstDataGroupWithAttributesFollowingNameInDatas', () => {
           undefined,
         );
       });
+
       it('call getFirstDataGroupWithNameInDataAndAttributes with the remaining nameInData', () => {
         cduw.extractFirstDataGroupWithAttributesFollowingNameInDatas(
           someTwoLevelDataGroup,
@@ -599,6 +628,7 @@ describe('extractFirstDataGroupWithAttributesFollowingNameInDatas', () => {
           undefined,
         );
       });
+
       it('call getFirstDataGroupWithNameInDataAndAttributes with possible attributes', () => {
         cduw.extractFirstDataGroupWithAttributesFollowingNameInDatas(
           someTwoLevelDataGroup,
@@ -630,6 +660,7 @@ describe('extractFirstDataGroupWithAttributesFollowingNameInDatas', () => {
           bar: 'foo',
         });
       });
+
       it('returns whatever getFirstDataGroupWithNameInDataAndAttributes returns', () => {
         mockGetFirstDataGroupWithNameInDataAndAttributes.mockReturnValueOnce(
           someNestedDataGroup,
@@ -772,6 +803,7 @@ describe('extractAllDataGroupsWithAttributesFollowingNameInDatas', () => {
         ],
       );
     });
+
     it('passes the dataGroup to extractDataGroupFollowingNameInDatas', () => {
       cduw.extractAllDataGroupsWithAttributesFollowingNameInDatas(
         someNonEmptyDataGroup,
@@ -795,6 +827,7 @@ describe('extractAllDataGroupsWithAttributesFollowingNameInDatas', () => {
         expect.any(Array),
       );
     });
+
     it('if extractDataGroupFollowingNameInDatas returns undefined, return undefined', () => {
       mockGetFirstDataGroupWithNameInData.mockReturnValueOnce(undefined);
       const returned =
@@ -841,6 +874,7 @@ describe('extractAllDataGroupsWithAttributesFollowingNameInDatas', () => {
           undefined,
         );
       });
+
       it('call getAllDataGroupsWithNameInDataAndAttributes with the remaining nameInData', () => {
         cduw.extractAllDataGroupsWithAttributesFollowingNameInDatas(
           someTwoLevelDataGroup,
@@ -872,6 +906,7 @@ describe('extractAllDataGroupsWithAttributesFollowingNameInDatas', () => {
           undefined,
         );
       });
+
       it('call getAllDataGroupsWithNameInDataAndAttributes with possible attributes', () => {
         cduw.extractAllDataGroupsWithAttributesFollowingNameInDatas(
           someTwoLevelDataGroup,
@@ -903,6 +938,7 @@ describe('extractAllDataGroupsWithAttributesFollowingNameInDatas', () => {
           bar: 'foo',
         });
       });
+
       it('returns whatever getAllDataGroupsWithNameInDataAndAttributes returns', () => {
         mockGetAllDataGroupsWithNameInDataAndAttributes.mockReturnValueOnce([]);
         let returned =
