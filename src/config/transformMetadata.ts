@@ -133,10 +133,10 @@ const transformMetadataGroup = (
   dataRecordGroup: DataGroup,
   metadata: BFFMetadata,
 ) => {
-  const childReferencesList = getChildRefencesListFromGroup(dataRecordGroup);
+  const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
 
   const children = childReferencesList.map((childReference) => {
-    return tranformChildReference(childReference);
+    return transformChildReference(childReference);
   });
 
   return {
@@ -144,7 +144,7 @@ const transformMetadataGroup = (
     children,
   } as BFFMetadataGroup;
 };
-const getChildRefencesListFromGroup = (dataRecordGroup: DataGroup) => {
+const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
   const childReferences = getFirstDataGroupWithNameInData(
     dataRecordGroup,
     'childReferences',
@@ -157,7 +157,7 @@ const getChildRefencesListFromGroup = (dataRecordGroup: DataGroup) => {
   return childReferencesList;
 };
 
-const tranformChildReference = (childReference: DataGroup) => {
+const transformChildReference = (childReference: DataGroup) => {
   const childId = extractLinkedRecordIdFromNamedRecordLink(
     childReference,
     'ref',
