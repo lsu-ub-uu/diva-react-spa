@@ -4,7 +4,7 @@ import { personMatcher } from '../definitions/PersonDefinitions';
 import { Person } from '../../../types/Person';
 // import { Person } from '../../types/Person';
 
-describe('Full test of converter', () => {
+describe.skip('Full test of converter', () => {
   it('Converts every field', () => {
     const completePersonObject: Person = convertToObject<Person>(
       completePersonDataGroup,

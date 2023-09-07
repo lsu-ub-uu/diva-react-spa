@@ -495,17 +495,6 @@ describe('DataExtractor', () => {
             'someOtherNameInData',
           ]),
         ).toStrictEqual('someFoo');
-
-        mockGetFirstDataAtomicValueWithNameInData.mockReturnValueOnce(
-          undefined,
-        );
-
-        expect(
-          extractOneDataAtomicValueFollowingNameInDatas(someNonEmptyDataGroup, [
-            'someNameInData',
-            'someOtherNameInData',
-          ]),
-        ).toStrictEqual(undefined);
       });
     });
 
@@ -557,15 +546,6 @@ describe('DataExtractor', () => {
             'someNameInData',
           ]),
         ).toStrictEqual('someValue');
-
-        mockGetFirstDataAtomicValueWithNameInData.mockReturnValueOnce(
-          undefined,
-        );
-        expect(
-          extractOneDataAtomicValueFollowingNameInDatas(someNonEmptyDataGroup, [
-            'someNameInData',
-          ]),
-        ).toStrictEqual(undefined);
       });
     });
   });

@@ -65,10 +65,11 @@ export function getAllRecordLinksWithNameInData(
 export function getFirstChildWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
-): DataAtomic | DataGroup | null {
+): DataAtomic | DataGroup {
   if (dataGroup.children.length === 0) {
-    // throw new Error('Error')
-    return null;
+    throw new Error(
+      `DataGroup with name [${dataGroup.name}] does not have any children`,
+    );
   }
 
   const matchingChild = dataGroup.children.find((child) => {
@@ -76,7 +77,7 @@ export function getFirstChildWithNameInData(
   });
 
   if (matchingChild === undefined) {
-    return null;
+    throw new Error(`Child with name [${nameInData}] could not be found`);
   }
 
   return matchingChild;
@@ -92,13 +93,25 @@ export function getAllChildrenWithNameInData(
 
   return childrenToReturn;
 }
+export const containsChildWithNameInData = (
+  dataGroup: DataGroup,
+  nameInData: string,
+): boolean => {
+  return dataGroup.children.some((child) => {
+    return child.name === nameInData;
+  });
+};
+// containsChildWithNameInData
+// containsChildWithTypeAndName
 
 export function getFirstDataAtomicWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
-): DataAtomic | undefined {
+): DataAtomic {
   if (dataGroup.children.length === 0) {
-    return undefined;
+    throw new Error(
+      `DataGroup with name [${dataGroup.name}] does not have any children`,
+    );
   }
 
   const dataAtomics = <DataAtomic[]>dataGroup.children.filter((child) => {
@@ -108,6 +121,12 @@ export function getFirstDataAtomicWithNameInData(
   const firstMatchingDataAtomic = dataAtomics.find((dataAtomic) => {
     return dataAtomic.name === nameInData;
   });
+
+  if (firstMatchingDataAtomic === undefined) {
+    throw new Error(
+      `DataGroup with name [${dataGroup.name}] does not have atomic child with name [${nameInData}]`,
+    );
+  }
 
   return firstMatchingDataAtomic;
 }

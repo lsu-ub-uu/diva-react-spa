@@ -27,6 +27,7 @@ import {
   extractAttributeValueByName,
 } from '../utils/cora-data/CoraDataTransforms';
 import {
+  containsChildWithNameInData,
   getAllDataGroupsWithNameInDataAndAttributes,
   getFirstDataGroupWithNameInData,
 } from '../utils/cora-data/CoraDataUtils';
@@ -74,20 +75,11 @@ const transformCoraRecordToBFFMetaData = (
 ): BFFMetadata => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
-  return transformRecordGroupToBFF(dataRecordGroup) as BFFMetadata;
+  return transformRecordGroupMetadataToBFF(dataRecordGroup) as BFFMetadata;
 };
 
-const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
+const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
   let metadata = transformBasicMetadata(dataRecordGroup);
-
-  const finalValue = getFirstDataAtomicValueWithNameInData(
-    dataRecordGroup,
-    'finalValue',
-  );
-
-  if (finalValue) {
-    metadata = { ...metadata, finalValue } as BFFMetadata;
-  }
 
   switch (metadata.type) {
     case 'group': {
@@ -95,6 +87,16 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
     }
     default: {
       // case 'textVariable': {
+
+      if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
+        const finalValue = getFirstDataAtomicValueWithNameInData(
+          dataRecordGroup,
+          'finalValue',
+        );
+
+        metadata = { ...metadata, finalValue } as BFFMetadata;
+      }
+
       const regEx = getFirstDataAtomicValueWithNameInData(
         dataRecordGroup,
         'regEx',
@@ -163,20 +165,19 @@ const transformChildReference = (childReference: DataGroup) => {
     'ref',
   );
   const repeatMin = getFirstDataAtomicValueWithNameInData(
-    childReference as DataGroup,
+    childReference,
     'repeatMin',
   );
   const repeatMax = getFirstDataAtomicValueWithNameInData(
-    childReference as DataGroup,
+    childReference,
     'repeatMax',
   );
 
-  const recordPartConstraint = getFirstDataAtomicValueWithNameInData(
-    childReference as DataGroup,
-    'recordPartConstraint',
-  );
-
-  if (recordPartConstraint) {
+  if (containsChildWithNameInData(childReference, 'recordPartConstraint')) {
+    const recordPartConstraint = getFirstDataAtomicValueWithNameInData(
+      childReference,
+      'recordPartConstraint',
+    );
     return { childId, repeatMin, repeatMax, recordPartConstraint };
   }
 

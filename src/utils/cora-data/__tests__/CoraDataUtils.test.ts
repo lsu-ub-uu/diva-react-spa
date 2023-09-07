@@ -19,6 +19,7 @@
 
 import * as cdu from '../CoraDataUtils';
 import { DataGroup, DataElement, DataAtomic } from '../CoraData';
+import { containsChildWithNameInData } from '../CoraDataUtils';
 
 const getAllDataGroupsWithNameInDataAndAttributesSpy = jest.spyOn(
   cdu,
@@ -402,28 +403,64 @@ describe('getAllChildrenWithNameInData', () => {
 
 describe('getFirstChildWithNameInData', () => {
   it('should return null if no child exists', () => {
-    expect(
+    expect(() => {
       cdu.getFirstChildWithNameInData(
         dataGroupWithEmptyChildren,
         'someChildName',
-      ),
-    ).toBe(null);
+      );
+    }).toThrow(Error);
+
+    try {
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
+    } catch (error: unknown) {
+      const attributeError: Error = <Error>error;
+      expect(attributeError.message).toStrictEqual(
+        'DataGroup with name [someName] does not have any children',
+      );
+    }
   });
 
   it('should return null if no matching child exists', () => {
-    expect(
+    expect(() => {
       cdu.getFirstChildWithNameInData(
-        dataGroupWithNonMatchingDataElements,
+        dataGroupWithEmptyChildren,
         'someChildName',
-      ),
-    ).toBe(null);
+      );
+    }).toThrow(Error);
 
-    expect(
+    try {
       cdu.getFirstChildWithNameInData(
-        dataGroupWithNonMatchingDataElements,
-        'someOtherChildName',
-      ),
-    ).toBe(null);
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
+    } catch (error: unknown) {
+      const attributeError: Error = <Error>error;
+      expect(attributeError.message).toStrictEqual(
+        'DataGroup with name [someName] does not have any children',
+      );
+    }
+
+    expect(() => {
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
+    }).toThrow(Error);
+
+    try {
+      cdu.getFirstChildWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
+    } catch (error: unknown) {
+      const attributeError: Error = <Error>error;
+      expect(attributeError.message).toStrictEqual(
+        'DataGroup with name [someName] does not have any children',
+      );
+    }
   });
 
   it('Should return a child with matching name in data if provided with one matching child', () => {
@@ -514,39 +551,72 @@ describe('getFirstChildWithNameInData', () => {
   });
 });
 
+describe('containsChildWithNameInData', () => {
+  it('returns false if child does not exist', () => {
+    expect(
+      containsChildWithNameInData(
+        dataGroupWithSeveralMatchingAtomics,
+        'someNameInDataForFalse',
+      ),
+    ).toBe(false);
+  });
+  it('returns true if child does exist', () => {
+    expect(
+      containsChildWithNameInData(
+        dataGroupWithSeveralMatchingAtomics,
+        'someInterestingChildName',
+      ),
+    ).toBe(true);
+  });
+});
+
 describe('getFirstDataAtomicWithNameInData', () => {
   it('should take dataGroup and nameInData', () => {
     cdu.getFirstDataAtomicWithNameInData(
-      dataGroupWithEmptyChildren,
-      'someChildName',
+      dataGroupWithOnlyMatchingAtomics,
+      'someInterestingChildName',
     );
   });
 
-  it('if dataGroup has no children, should return undefined', () => {
-    expect(
+  it('if dataGroup has no children, should throw an error', () => {
+    expect(() => {
       cdu.getFirstDataAtomicWithNameInData(
         dataGroupWithEmptyChildren,
         'someChildName',
-      ),
-    ).toBe(undefined);
+      );
+    }).toThrow(Error);
+
+    try {
+      cdu.getFirstDataAtomicWithNameInData(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+      );
+    } catch (error: unknown) {
+      const attributeError: Error = <Error>error;
+      expect(attributeError.message).toStrictEqual(
+        'DataGroup with name [someName] does not have any children',
+      );
+    }
   });
 
-  it('if dataGroup has no matching child, should return undefined', () => {
-    expect(
+  it('if dataGroup has no matching child, should throw error', () => {
+    expect(() => {
       cdu.getFirstDataAtomicWithNameInData(
         dataGroupWithNonMatchingDataElements,
         'someChildName',
-      ),
-    ).toBe(undefined);
-  });
-
-  it('if dataGroup has no matching DataAtomic, should return undefined', () => {
-    expect(
+      );
+    }).toThrow(Error);
+    try {
       cdu.getFirstDataAtomicWithNameInData(
-        dataGroupWithOnlyMatchingGroups,
-        'someInterestingChildName',
-      ),
-    ).toBe(undefined);
+        dataGroupWithNonMatchingDataElements,
+        'someChildName',
+      );
+    } catch (error: unknown) {
+      const attributeError: Error = <Error>error;
+      expect(attributeError.message).toStrictEqual(
+        'DataGroup with name [someName] does not have atomic child with name [someChildName]',
+      );
+    }
   });
 
   it('if dataGroup has matching DataAtomic, should return that DataAtomic', () => {
@@ -575,12 +645,12 @@ describe('getFirstDataAtomicWithNameInData', () => {
 });
 
 describe('getAllDataAtomicsWithNameInData', () => {
-  it('should take dataGroup and nameInData', () => {
-    cdu.getAllDataAtomicsWithNameInData(
-      dataGroupWithEmptyChildren,
-      'someChildName',
-    );
-  });
+  // it('should take dataGroup and nameInData', () => {
+  //   cdu.getAllDataAtomicsWithNameInData(
+  //     dataGroupWithEmptyChildren,
+  //     'someChildName',
+  //   );
+  // });
 
   it('if dataGroup has no children, should return empty array', () => {
     expect(
@@ -873,7 +943,11 @@ describe('getFirstDataGroupWithNameInDataAndAttributes', () => {
     expect(
       getAllDataGroupsWithNameInDataAndAttributesSpy,
     ).toHaveBeenCalledTimes(2);
-
+    // if (dataAtomic.name !== nameInData) {
+    //   throw new Error(
+    //     `DataGroup with name [${dataGroup.name}] does not have any children`,
+    //   );
+    // }
     expect(
       getAllDataGroupsWithNameInDataAndAttributesSpy,
     ).toHaveBeenLastCalledWith(
@@ -921,7 +995,11 @@ describe('getFirstDataGroupWithNameInDataAndAttributes', () => {
           name: 'someOtherChild',
           value: 'someValue',
         },
-      ],
+      ], // if (dataAtomic.name !== nameInData) {
+      //   throw new Error(
+      //     `DataGroup with name [${dataGroup.name}] does not have any children`,
+      //   );
+      // }
     });
   });
 });

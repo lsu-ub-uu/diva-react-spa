@@ -29,12 +29,8 @@ import {
 export function getFirstDataAtomicValueWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
-): string | undefined {
+): string {
   const dataAtomic = getFirstDataAtomicWithNameInData(dataGroup, nameInData);
-
-  if (dataAtomic === undefined) {
-    return undefined;
-  }
 
   return dataAtomic.value;
 }

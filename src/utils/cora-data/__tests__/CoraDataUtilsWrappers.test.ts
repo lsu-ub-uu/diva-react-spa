@@ -153,18 +153,7 @@ describe('getFirstDataAtomicValueWithNameInData', () => {
     );
   });
 
-  it('should return undefined, if getFirstDataAtomicWithNameInData returns undefined', () => {
-    mockGetFirstDataAtomicWithNameInData.mockReturnValueOnce(undefined);
-
-    expect(
-      cduw.getFirstDataAtomicValueWithNameInData(
-        dataGroupWithEmptyChildren,
-        'someChildName',
-      ),
-    ).toBeUndefined();
-  });
-
-  it("if getFirstDataAtomicWithNameInData returns dataAtomic, should return it's string value", () => {
+  it("getFirstDataAtomicValueWithNameInData returns the dataAtomic's string value", () => {
     mockGetFirstDataAtomicWithNameInData.mockReturnValueOnce({
       name: 'someChildName',
       value: 'someInterestingValue',
