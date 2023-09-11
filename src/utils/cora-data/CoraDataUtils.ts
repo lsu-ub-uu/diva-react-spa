@@ -101,8 +101,6 @@ export const containsChildWithNameInData = (
     return child.name === nameInData;
   });
 };
-// containsChildWithNameInData
-// containsChildWithTypeAndName
 
 export function getFirstDataAtomicWithNameInData(
   dataGroup: DataGroup,
