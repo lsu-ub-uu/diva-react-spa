@@ -86,25 +86,27 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
       return transformMetadataGroup(dataRecordGroup, metadata);
     }
     default: {
-      // case 'textVariable': {
-
-      if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
-        const finalValue = getFirstDataAtomicValueWithNameInData(
-          dataRecordGroup,
-          'finalValue',
-        );
-
-        metadata = { ...metadata, finalValue } as BFFMetadata;
-      }
-
-      const regEx = getFirstDataAtomicValueWithNameInData(
-        dataRecordGroup,
-        'regEx',
-      );
-      return { ...metadata, regEx } as BFFMetadataTextVariable;
+      return transformTextVariable(dataRecordGroup, metadata);
     }
   }
 };
+
+const transformTextVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata): BFFMetadata => {
+  if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
+    const finalValue = getFirstDataAtomicValueWithNameInData(
+      dataRecordGroup,
+      'finalValue',
+    );
+    metadata = { ...metadata, finalValue } as BFFMetadata;
+  }
+
+  const regEx = getFirstDataAtomicValueWithNameInData(
+    dataRecordGroup,
+    'regEx',
+  );
+  return { ...metadata, regEx } as BFFMetadataTextVariable;
+}
+
 
 const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
