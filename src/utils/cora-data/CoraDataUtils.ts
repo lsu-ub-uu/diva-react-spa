@@ -46,9 +46,11 @@ export function getAllRecordLinksWithNameInData(
     }
     return false;
   });
+
   const matchingRecordLinks = recordLinks.filter((recordLink) => {
     return recordLink.name === nameInData;
   });
+  
   return matchingRecordLinks.map((recordLink) => {
     return {
       name: recordLink.name,
@@ -60,6 +62,9 @@ export function getAllRecordLinksWithNameInData(
       readLink: recordLink.actionLinks?.read,
     };
   });
+}
+export function getFirstRecordLinkWithNameInData(dataGroup: DataGroup, nameInData: string) {
+  throw new Error(`RecordLink with name [${nameInData}] does not exist`);
 }
 
 export function getFirstChildWithNameInData(
@@ -207,6 +212,7 @@ export const getAllDataGroupsWithNameInDataAndAttributes = (
 };
 
 export default {
+  getFirstRecordLinkWithNameInData,
   getFirstChildWithNameInData,
   getAllChildrenWithNameInData,
   getFirstDataAtomicWithNameInData,
