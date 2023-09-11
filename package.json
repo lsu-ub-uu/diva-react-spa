@@ -10,6 +10,7 @@
     "prettier-format": "prettier --write \"src/**/*.{ts,json}\" --config ./.prettierrc.json",
     "build": "tsc --build",
     "test": "jest --watch",
+    "test-verbose": "jest --watch --verbose=true",
     "coverage": "jest --coverage /;exit 0"
   },
   "keywords": [],

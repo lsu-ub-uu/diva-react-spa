@@ -571,13 +571,6 @@ describe('containsChildWithNameInData', () => {
 });
 
 describe('getFirstDataAtomicWithNameInData', () => {
-  it('should take dataGroup and nameInData', () => {
-    cdu.getFirstDataAtomicWithNameInData(
-      dataGroupWithOnlyMatchingAtomics,
-      'someInterestingChildName',
-    );
-  });
-
   it('if dataGroup has no children, should throw an error', () => {
     expect(() => {
       cdu.getFirstDataAtomicWithNameInData(
@@ -645,13 +638,6 @@ describe('getFirstDataAtomicWithNameInData', () => {
 });
 
 describe('getAllDataAtomicsWithNameInData', () => {
-  // it('should take dataGroup and nameInData', () => {
-  //   cdu.getAllDataAtomicsWithNameInData(
-  //     dataGroupWithEmptyChildren,
-  //     'someChildName',
-  //   );
-  // });
-
   it('if dataGroup has no children, should return empty array', () => {
     expect(
       cdu.getAllDataAtomicsWithNameInData(
@@ -703,14 +689,7 @@ describe('getAllDataAtomicsWithNameInData', () => {
 });
 
 describe('getFirstDataGroupWithNameInData', () => {
-  it('should take dataGroup and nameInData', () => {
-    cdu.getFirstDataGroupWithNameInData(
-      dataGroupWithEmptyChildren,
-      'someChildName',
-    );
-  });
-
-  it.only('should throw Error with no children', () => {
+  it('should throw Error with no children', () => {
     expect(() => {
       cdu.getFirstDataGroupWithNameInData(
         dataGroupWithEmptyChildren,
