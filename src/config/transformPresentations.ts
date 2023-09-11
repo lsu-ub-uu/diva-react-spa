@@ -17,8 +17,23 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataListWrapper } from '../utils/cora-data/CoraData';
+import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 
-export const transformCoraPresentations = (dataListWrapper: DataListWrapper) => {
-  return [];
+export interface BFFPresentation {
+
+}
+
+export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BFFPresentation[] => {
+  if (dataListWrapper.dataList.data.length === 0) {
+    return [];
+  }
+
+  const coraRecordWrappers = dataListWrapper.dataList.data;
+  return coraRecordWrappers.map(transformCoraPresentationToBFFPresentation);
+
 };
+
+const transformCoraPresentationToBFFPresentation = (coraRecordWrapper: RecordWrapper): BFFPresentation => {
+  return {} as BFFPresentation;
+};
+

@@ -18,7 +18,8 @@
  */
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
-import { transformCoraPresentations } from '../transformPresentations';
+import { BFFPresentation, transformCoraPresentations } from '../transformPresentations';
+import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
 
 describe('transformCoraPresentations', () => {
   it('Empty list should return empty list', () => {
@@ -26,9 +27,9 @@ describe('transformCoraPresentations', () => {
     expect(transformData).toStrictEqual([]);
   });
 
-  it('Returns one entry', () => {
-    const transformData = transformCoraPresentations(emptyDataList);
-    expect(transformData).toHaveLength(1);
+  it('Returns two entries', () => {
+    const transformData: BFFPresentation[] = transformCoraPresentations(presentationListWithTwoPVars);
+    expect(transformData).toHaveLength(2);
   });
 
 })
