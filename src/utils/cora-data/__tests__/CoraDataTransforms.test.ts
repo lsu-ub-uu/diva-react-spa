@@ -2,6 +2,7 @@ import testMetaData from '../../../__mocks__/coraMetadata.json';
 import {
   extractIdFromRecordInfo,
   extractAttributeValueByName,
+  // extractLinkedRecordIdFromNamedRecordLink,
 } from '../CoraDataTransforms';
 
 const someRecordGroup = {
@@ -32,6 +33,25 @@ const someGroupWithAttribute = {
   },
 };
 
+const someGroupWithRecordLink = {
+  name: 'parent',
+  children: [
+    {
+    "children": [
+      {
+        "name": "linkedRecordType",
+        "value": "someLinkedRecordType"
+      },
+      {
+        "name": "linkedRecordId",
+        "value": "someLinkedRecordId"
+      }
+    ],
+    "name": "someLinkName"
+  }
+  ]
+};
+
 describe('CoraDataTransform', () => {
   describe('extractIdFromRecordInfo', () => {
     it('returns id from recordInfo', () => {
@@ -39,6 +59,7 @@ describe('CoraDataTransform', () => {
       expect(id).toEqual('someTextVar');
     });
   });
+
   describe('extractAttributeValueByName', () => {
     it('returns an attribute from DataGroup', () => {
       const attribute = extractAttributeValueByName(
@@ -83,4 +104,24 @@ describe('CoraDataTransform', () => {
       }
     });
   });
+/*   describe.only('extractLinkedRecordIdFromNamedRecordLink', () => {
+    it('Throws error when linkedRecordId does not exist', () => {
+      expect(() => {
+        extractLinkedRecordIdFromNamedRecordLink(someGroupWithRecordLink, 'notSomeLinkName');
+        }).toThrow(Error);
+      
+      try {
+        extractLinkedRecordIdFromNamedRecordLink(someGroupWithRecordLink, 'notSomeLinkName');
+      } catch (error: unknown) {
+        const childMissingError: Error = <Error>error;
+        expect(childMissingError.message).toStrictEqual(
+          'Child with name [notSomeLinkName] does not exist',
+        );
+      }
+    })
+    it('return linkedRecordId from namedRecordLink', () => {
+      const id = extractLinkedRecordIdFromNamedRecordLink(someGroupWithRecordLink, 'linkedRecordId');
+      
+    })
+  }) */
 });

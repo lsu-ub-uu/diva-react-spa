@@ -22,6 +22,7 @@ import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 
 export interface BFFPresentation {
   id: string;
+  presentationOf: string;
 }
 
 export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BFFPresentation[] => {
@@ -30,6 +31,7 @@ export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BF
   }
 
   const coraRecordWrappers = dataListWrapper.dataList.data;
+  
   return coraRecordWrappers.map(transformCoraPresentationToBFFPresentation);
 
 };
@@ -39,6 +41,7 @@ const transformCoraPresentationToBFFPresentation = (coraRecordWrapper: RecordWra
 
   
   const id = extractIdFromRecordInfo(dataRecordGroup);
+  const presentationOf = '' 
   return { id } as BFFPresentation;
 };
 

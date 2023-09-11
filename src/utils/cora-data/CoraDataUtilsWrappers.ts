@@ -80,28 +80,6 @@ const getFinalDataGroup = (dataGroup: DataGroup, nameInDatas: string[]) => {
   return extractDataGroupFollowingNameInDatas(dataGroup, firstNameInDatas);
 };
 
-export const extractAllDataGroupsWithAttributesFollowingNameInDatas = (
-  dataGroup: DataGroup,
-  nameInDatas: string[],
-  attributesToMatch?: Attributes,
-): DataGroup[] | undefined => {
-  if (nameInDatas.length === 0 || dataGroup.children.length === 0) {
-    return undefined;
-  }
-
-  const finalDataGroup = getFinalDataGroup(dataGroup, nameInDatas);
-  if (finalDataGroup === undefined) {
-    return undefined;
-  }
-
-  const lastNameInData = getLastNameInData(nameInDatas);
-  return getAllDataGroupsWithNameInDataAndAttributes(
-    finalDataGroup,
-    lastNameInData,
-    attributesToMatch,
-  );
-};
-
 export const extractDataGroupFollowingNameInDatas = (
   dataGroup: DataGroup,
   nameInDatas: string[],
@@ -128,5 +106,5 @@ export default {
   getAllDataAtomicValuesWithNameInData,
   extractDataGroupFollowingNameInDatas,
   extractFirstDataGroupWithAttributesFollowingNameInDatas,
-  extractAllDataGroupsWithAttributesFollowingNameInDatas,
+  // extractAllDataGroupsWithAttributesFollowingNameInDatas,
 };

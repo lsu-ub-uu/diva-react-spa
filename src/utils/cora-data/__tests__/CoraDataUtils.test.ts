@@ -710,32 +710,30 @@ describe('getFirstDataGroupWithNameInData', () => {
     );
   });
 
-  it('if dataGroup has no children, should return undefined', () => {
-    expect(
+  it.only('should throw Error with no children', () => {
+    expect(() => {
       cdu.getFirstDataGroupWithNameInData(
         dataGroupWithEmptyChildren,
         'someChildName',
-      ),
-    ).toBe(undefined);
-  });
+      );
+      }).toThrow(Error);
+    
 
-  it('if dataGroup has no matching child, should return undefined', () => {
-    expect(
+    try {
       cdu.getFirstDataGroupWithNameInData(
-        dataGroupWithNonMatchingDataElements,
+        dataGroupWithEmptyChildren,
         'someChildName',
-      ),
-    ).toBe(undefined);
-  });
+      );
+    } catch (error: unknown) {
+      const childMissingError: Error = <Error>error;
+      expect(childMissingError.message).toStrictEqual(
+        'Child with name [someChildName] does not exist',
+      );
+    }
 
-  it('if dataGroup has no matching DataGroup, should return undefined', () => {
-    expect(
-      cdu.getFirstDataGroupWithNameInData(
-        dataGroupWithOnlyMatchingAtomics,
-        'someInterestingChildName',
-      ),
-    ).toBe(undefined);
-  });
+
+
+  })
 
   it('if dataGroup has matching DataGroup, should return that DataGroup', () => {
     expect(

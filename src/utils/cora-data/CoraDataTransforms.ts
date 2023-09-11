@@ -23,3 +23,15 @@ export const extractAttributeValueByName = (
 
   return dataRecordGroup.attributes[attributeName];
 };
+
+/* export const extractLinkedRecordIdFromNamedRecordLink2 = (
+  coraRecordGroup: DataGroup,
+  linkName: string,
+) => {
+  throw new Error(`Child with name [${linkName}] does not exist`)
+  /* const recordLink = getFirstDataGroupWithNameInData(
+    coraRecordGroup,
+    linkName,
+  ) as DataGroup;
+  return getFirstDataAtomicValueWithNameInData(recordLink, 'linkedRecordId');
+}; */

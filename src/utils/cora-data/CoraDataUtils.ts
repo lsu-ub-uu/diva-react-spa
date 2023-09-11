@@ -25,12 +25,12 @@ import {
   DataGroup,
   RecordLink,
 } from './CoraData';
-import { ClientRecordLink } from '../client-data/ClientData';
+import { BFFRecordLink } from '../client-data/ClientData';
 
 export function getAllRecordLinksWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
-): ClientRecordLink[] {
+): BFFRecordLink[] {
   const recordLinks = <RecordLink[]>dataGroup.children.filter((child) => {
     if (Object.prototype.hasOwnProperty.call(child, 'children')) {
       const dGChild = child as DataGroup;
@@ -147,7 +147,7 @@ export function getAllDataAtomicsWithNameInData(
 export function getFirstDataGroupWithNameInData(
   dataGroup: DataGroup,
   nameInData: string,
-): DataGroup | undefined {
+): DataGroup {
   const dataGroups = <DataGroup[]>dataGroup.children.filter((child) => {
     return Object.prototype.hasOwnProperty.call(child, 'children');
   });
@@ -155,6 +155,10 @@ export function getFirstDataGroupWithNameInData(
   const firstMatchingDataGroup = dataGroups.find((child) => {
     return child.name === nameInData;
   });
+
+  if (firstMatchingDataGroup === undefined) {
+    throw new Error(`Child with name [${nameInData}] does not exist`)
+  }
 
   return firstMatchingDataGroup;
 }

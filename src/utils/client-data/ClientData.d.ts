@@ -1,6 +1,6 @@
 import { ActionLink } from '../cora-data/CoraData';
 
-export interface ClientRecordLink {
+export interface BFFRecordLink {
   name: string;
   recordType: string | undefined;
   id: string | undefined;

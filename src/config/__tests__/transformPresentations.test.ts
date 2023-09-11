@@ -35,6 +35,7 @@ describe('transformCoraPresentations', () => {
     const transformData: BFFPresentation[] = transformCoraPresentations(presentationListWithTwoPVars);
     expect(transformData[0]).toStrictEqual({
       id: 'someTextVarPVar',
+      // presentationOf: 'someTextVar'
     });
   });
 
