@@ -14,7 +14,6 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
@@ -30,6 +29,13 @@ describe('transformCoraPresentations', () => {
   it('Returns two entries', () => {
     const transformData: BFFPresentation[] = transformCoraPresentations(presentationListWithTwoPVars);
     expect(transformData).toHaveLength(2);
+  });
+
+  it('Returns one BFFPresentation for one entry', () => {
+    const transformData: BFFPresentation[] = transformCoraPresentations(presentationListWithTwoPVars);
+    expect(transformData[0]).toStrictEqual({
+      id: 'someTextVarPVar',
+    });
   });
 
 })

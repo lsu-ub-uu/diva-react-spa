@@ -18,9 +18,10 @@
  */
 
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 
 export interface BFFPresentation {
-
+  id: string;
 }
 
 export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BFFPresentation[] => {
@@ -34,6 +35,10 @@ export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BF
 };
 
 const transformCoraPresentationToBFFPresentation = (coraRecordWrapper: RecordWrapper): BFFPresentation => {
-  return {} as BFFPresentation;
+  const dataRecordGroup = coraRecordWrapper.record.data
+
+  
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+  return { id } as BFFPresentation;
 };
 
