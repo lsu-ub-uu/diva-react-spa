@@ -17,7 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataListWrapper } from '../utils/cora-data/CoraData';
+import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { BFFPresentationGroup } from './bffTypes';
 
 export const transformCoraPresentationGroups = (
@@ -26,5 +27,16 @@ export const transformCoraPresentationGroups = (
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
-  return [];
+
+  const coraRecordWrappers = dataListWrapper.dataList.data;
+  return coraRecordWrappers.map(transformCoraPresentationGroupToBFFPresentationGroup);
+};
+
+const transformCoraPresentationGroupToBFFPresentationGroup = (
+  coraRecordWrapper: RecordWrapper
+): BFFPresentationGroup => {
+  const dataRecordGroup = coraRecordWrapper.record.data;
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+
+  return { id };
 };

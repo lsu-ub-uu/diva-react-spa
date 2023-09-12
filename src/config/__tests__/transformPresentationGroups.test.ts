@@ -18,6 +18,7 @@
  */
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
+import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
 
 import { transformCoraPresentationGroups } from '../transformPresentationGroups';
 
@@ -25,5 +26,15 @@ describe('transformTexts', () => {
   it('Empty list should return empty list', () => {
     const transformData = transformCoraPresentationGroups(emptyDataList);
     expect(transformData).toStrictEqual([]);
+  });
+  it('Should return one BFFPresentationGroup entry', () => {
+    const transformData = transformCoraPresentationGroups(coraPresentationGroup);
+    expect(transformData).toHaveLength(1);
+  });
+  it('Returns one BFFPresentation for one entry', () => {
+    const transformData = transformCoraPresentationGroups(coraPresentationGroup);
+    expect(transformData[0]).toStrictEqual({
+      id: 'someNewPGroup'
+    });
   });
 });

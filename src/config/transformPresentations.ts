@@ -32,26 +32,18 @@ export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BF
   return coraRecordWrappers.map(transformCoraPresentationToBFFPresentation);
 };
 
-const transformCoraPresentationToBFFPresentation = (coraRecordWrapper: RecordWrapper): BFFPresentation => {
-  const dataRecordGroup = coraRecordWrapper.record.data
+const transformCoraPresentationToBFFPresentation = (
+  coraRecordWrapper: RecordWrapper
+): BFFPresentation => {
+  const dataRecordGroup = coraRecordWrapper.record.data;
 
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const presentationOf = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'presentationOf',
+    'presentationOf'
   );
-  const mode = getFirstDataAtomicValueWithNameInData(
-    dataRecordGroup,
-    'mode',
-  );
-  const inputType = getFirstDataAtomicValueWithNameInData(
-    dataRecordGroup,
-    'inputType',
-  );
-  const emptyTextId = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'emptyTextId',
-  );
+  const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  const inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
+  const emptyTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'emptyTextId');
   return { id, presentationOf, mode, inputType, emptyTextId } as BFFPresentation;
 };
-
