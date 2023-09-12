@@ -21,8 +21,7 @@ export interface BFFBase {
   id: string;
 }
 
-export interface BFFRecordType extends BFFBase {
-}
+export interface BFFRecordType extends BFFBase {}
 
 export interface BFFMetadata extends BFFBase {
   nameInData: string;
@@ -48,12 +47,13 @@ export interface BFFMetadataGroup extends BFFMetadata {
   repeatMax: string;
 }
 
-export interface BFFPresentation extends BFFBase{
+export interface BFFPresentation extends BFFBase {
   presentationOf: string;
   mode: 'input' | 'output';
   inputType: string;
   emptyTextId: string;
 }
+export interface BFFPresentationGroup extends BFFBase {}
 
 export interface BFFText extends BFFBase {
   sv: string;
