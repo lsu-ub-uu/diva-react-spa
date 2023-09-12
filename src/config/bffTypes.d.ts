@@ -53,7 +53,10 @@ export interface BFFPresentation extends BFFBase {
   inputType: string;
   emptyTextId: string;
 }
-export interface BFFPresentationGroup extends BFFBase {}
+export interface BFFPresentationGroup extends BFFBase {
+  presentationOf: string;
+  mode: 'input' | 'output';
+}
 
 export interface BFFText extends BFFBase {
   sv: string;

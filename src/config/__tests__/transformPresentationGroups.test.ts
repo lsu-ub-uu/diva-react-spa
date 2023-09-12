@@ -34,7 +34,9 @@ describe('transformTexts', () => {
   it('Returns one BFFPresentation for one entry', () => {
     const transformData = transformCoraPresentationGroups(coraPresentationGroup);
     expect(transformData[0]).toStrictEqual({
-      id: 'someNewPGroup'
+      id: 'someNewPGroup',
+      presentationOf: 'someNewGroup',
+      mode: 'input'
     });
   });
 });

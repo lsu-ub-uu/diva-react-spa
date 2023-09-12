@@ -297,14 +297,14 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "demoNewGroup"
+                    "value": "someNewGroup"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/demoNewGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someNewGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },

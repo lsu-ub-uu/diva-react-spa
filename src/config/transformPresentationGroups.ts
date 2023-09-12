@@ -19,7 +19,9 @@
 
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { BFFPresentationGroup } from './bffTypes';
+import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 
 export const transformCoraPresentationGroups = (
   dataListWrapper: DataListWrapper
@@ -37,6 +39,10 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
 ): BFFPresentationGroup => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
-
-  return { id };
+  const presentationOf = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'presentationOf'
+  );
+  const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  return { id, mode, presentationOf } as BFFPresentationGroup;
 };
