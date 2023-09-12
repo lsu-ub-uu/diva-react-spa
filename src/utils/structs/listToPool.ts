@@ -18,12 +18,12 @@
  */
 
 import { Lookup } from './lookup';
+import { BFFBase } from '../../config/bffTypes';
 
 export const listToPool = <T>(list: T[]): Lookup<string, T> => {
   const pool = new Lookup<string, T>();
   list.forEach((item) => {
-    const obj = (item as T);
-    // @ts-ignore
+    const obj = (item as BFFBase);
     pool.set(obj['id'], item);
   })
   return pool;

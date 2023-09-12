@@ -17,12 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface BFFRecordType {
+export interface BFFBase {
   id: string;
 }
 
-export interface BFFMetadata {
-  id: string;
+export interface BFFRecordType extends BFFBase {
+}
+
+export interface BFFMetadata extends BFFBase {
   nameInData: string;
   type:
     | 'group'
@@ -46,22 +48,19 @@ export interface BFFMetadataGroup extends BFFMetadata {
   repeatMax: string;
 }
 
-export interface BFFPresentation {
-  id: string;
+export interface BFFPresentation extends BFFBase{
   presentationOf: string;
   mode: 'input' | 'output';
   inputType: string;
   emptyTextId: string;
 }
 
-export interface BFFText {
-  id: string;
+export interface BFFText extends BFFBase {
   sv: string;
   en?: string;
 }
 
-export interface BFFValidationType {
-  id: string;
+export interface BFFValidationType extends BFFBase {
   validatesRecordTypeId: string;
   newMetadataGroupId: string;
   metadataGroupId: string;
@@ -70,6 +69,3 @@ export interface BFFValidationType {
   nameTextId: string;
   defTextId: string;
 }
-
-
-

@@ -17,9 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BFFText } from '../../../config/bffTypes';
+import { BFFRecordType, BFFText } from '../../../config/bffTypes';
 import { listToPool } from '../listToPool';
 
+const someListWithThreeRecordTypes: BFFRecordType[] = [{id: '1'}, {id: '2'}, {id: '3'}];
 const someListWithTwoTexts: BFFText[] = [{id: '1', en: 'hello', sv: 'hej'}, {id: '2', en: 'good bye', sv: 'hej då'}];
 
 describe('listToPool', () => {
@@ -33,5 +34,11 @@ describe('listToPool', () => {
     const pool = listToPool<BFFText>(someListWithTwoTexts);
     expect(pool.size()).toBe(2);
   });
+
+  it('should take a list of BFFRecordTypes and populate pool', () => {
+    const pool = listToPool<BFFRecordType>(someListWithThreeRecordTypes);
+    expect(pool.size()).toBe(3);
+  });
+
 
 });
