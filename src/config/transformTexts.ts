@@ -17,23 +17,27 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataListWrapper } from '../utils/cora-data/CoraData';
+import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 
 export interface BFFText {
   id: string;
-  presentationOf: string;
-  mode: 'input' | 'output';
-  inputType: string;
-  emptyTextId: string;
 }
 
 export const transformCoraTexts = (dataListWrapper: DataListWrapper): BFFText[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
-  return [];
 
-  // const coraRecordWrappers = dataListWrapper.dataList.data;
-  // return coraRecordWrappers.map(transformCoraPresentationToBFFPresentation);
+  const coraRecordWrappers = dataListWrapper.dataList.data;
+  return coraRecordWrappers.map(transformCoraTextToBFFText);
+};
+
+const transformCoraTextToBFFText = (coraRecordWrapper: RecordWrapper) => {
+  const coraRecord = coraRecordWrapper.record;
+  const dataRecordGroup = coraRecord.data;
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+
+  return { id } as BFFText;
 };
 

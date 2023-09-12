@@ -18,6 +18,7 @@
  */
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
+import coraTextWithOneChild from '../../__mocks__/coraTextWithOneChild.json';
 import { transformCoraTexts } from '../transformTexts';
 
 describe('transformTexts', () => {
@@ -25,6 +26,17 @@ describe('transformTexts', () => {
   it('Empty list should return empty list', () => {
     const transformData = transformCoraTexts(emptyDataList);
     expect(transformData).toStrictEqual([]);
+  });
+
+  it('Returns one text entry', () => {
+    const textDataList = transformCoraTexts(coraTextWithOneChild);
+    expect(textDataList).toHaveLength(1);
+  });
+
+  it('Returns one text entry with id', () => {
+    const textDataList = transformCoraTexts(coraTextWithOneChild);
+    const firstText = textDataList[0];
+    expect(firstText.id).toEqual('someText');
   });
 
 });
