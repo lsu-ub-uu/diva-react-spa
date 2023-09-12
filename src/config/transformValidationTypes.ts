@@ -6,17 +6,7 @@ import {
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
-
-interface BFFValidationType {
-  id: string;
-  validatesRecordTypeId: string;
-  newMetadataGroupId: string;
-  metadataGroupId: string;
-  newPresentationGroupId: string;
-  presentationGroupId: string;
-  nameTextId: string;
-  defTextId: string;
-}
+import { BFFValidationType } from './bffTypes';
 
 export const transformCoraValidationTypes = (
   dataListWrapper: DataListWrapper,

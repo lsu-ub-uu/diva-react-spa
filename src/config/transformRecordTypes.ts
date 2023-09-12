@@ -1,13 +1,9 @@
 import {
-  DataGroup,
   DataListWrapper,
   RecordWrapper,
 } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
-
-interface BFFRecordType {
-  id: string;
-}
+import { BFFRecordType } from './bffTypes';
 
 export const transformCoraRecordTypes = (
   dataListWrapper: DataListWrapper,

@@ -33,31 +33,7 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
-
-interface BFFMetadata {
-  id: string;
-  nameInData: string;
-  type:
-    | 'group'
-    | 'numberVariable'
-    | 'resourceLink'
-    | 'collectionItem'
-    | 'recordLink'
-    | 'textVariable'
-    | 'collectionVariable'
-    | 'itemCollection';
-  textId: string;
-  defTextId: string;
-}
-interface BFFMetadataTextVariable extends BFFMetadata {
-  regEx: string;
-  finalValue?: string;
-}
-interface BFFMetadataGroup extends BFFMetadata {
-  children: unknown[];
-  repeatMin: string;
-  repeatMax: string;
-}
+import { BFFMetadata, BFFMetadataGroup, BFFMetadataTextVariable } from './bffTypes';
 
 export const transformMetadata = (
   dataListWrapper: DataListWrapper,
@@ -154,11 +130,10 @@ const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
     'childReferences',
   );
 
-  const childReferencesList = getAllDataGroupsWithNameInDataAndAttributes(
+  return getAllDataGroupsWithNameInDataAndAttributes(
     childReferences as DataGroup,
     'childReference',
   );
-  return childReferencesList;
 };
 
 const transformChildReference = (childReference: DataGroup) => {

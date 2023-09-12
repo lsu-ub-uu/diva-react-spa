@@ -21,14 +21,7 @@ import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-
-export interface BFFPresentation {
-  id: string;
-  presentationOf: string;
-  mode: 'input' | 'output';
-  inputType: string;
-  emptyTextId: string;
-}
+import { BFFPresentation } from './bffTypes';
 
 export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BFFPresentation[] => {
   if (dataListWrapper.dataList.data.length === 0) {

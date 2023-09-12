@@ -22,18 +22,10 @@ import {
   extractAttributeValueByName,
   extractIdFromRecordInfo
 } from '../utils/cora-data/CoraDataTransforms';
-import {
-  getAllChildrenWithNameInData,
-  getAllDataGroupsWithNameInDataAndAttributes
-} from '../utils/cora-data/CoraDataUtils';
+import { getAllChildrenWithNameInData } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { removeEmpty } from '../utils/structs/removeEmpty';
-
-export interface BFFText {
-  id: string;
-  sv: string;
-  en?: string;
-}
+import { BFFText } from './bffTypes';
 
 export const transformCoraTexts = (dataListWrapper: DataListWrapper): BFFText[] => {
   if (dataListWrapper.dataList.data.length === 0) {
