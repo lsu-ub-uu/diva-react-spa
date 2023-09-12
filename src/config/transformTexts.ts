@@ -27,6 +27,7 @@ import {
   getAllDataGroupsWithNameInDataAndAttributes
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
+import { removeEmpty } from '../utils/structs/removeEmpty';
 
 export interface BFFText {
   id: string;
@@ -47,12 +48,9 @@ const transformCoraTextToBFFText = (coraRecordWrapper: RecordWrapper) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  let languages: any = extractLanguageTextCombinations(dataRecordGroup);
+  const languages = extractLanguageTextCombinations(dataRecordGroup);
 
-  if (languages.en === undefined) {
-    return { id, sv: languages.sv };
-  }
-  return { id, sv: languages.sv, en: languages.en } as BFFText;
+  return removeEmpty({ id, sv: languages.sv, en: languages.en }) as BFFText;
 };
 
 const extractLanguageTextCombinations = (dataRecordGroup: DataGroup) => {
@@ -64,7 +62,7 @@ const extractLanguageTextCombinations = (dataRecordGroup: DataGroup) => {
 };
 
 const extractLanguageTextCombinationsFromTextParts = (textParts: DataGroup[]) => {
-  let languages: any = {};
+  let languages: { [key: string]: string } = {};
   textParts.map((textPart) => {
     const langText = extractLanguageTextCombinationFromTextPart(textPart);
     languages[langText.lang] = langText.text;
