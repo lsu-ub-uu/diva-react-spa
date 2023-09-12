@@ -19,6 +19,7 @@
 
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 
 export interface BFFPresentation {
   id: string;
@@ -31,17 +32,17 @@ export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BF
   }
 
   const coraRecordWrappers = dataListWrapper.dataList.data;
-  
   return coraRecordWrappers.map(transformCoraPresentationToBFFPresentation);
-
 };
 
 const transformCoraPresentationToBFFPresentation = (coraRecordWrapper: RecordWrapper): BFFPresentation => {
   const dataRecordGroup = coraRecordWrapper.record.data
 
-  
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const presentationOf = '' 
-  return { id } as BFFPresentation;
+  const presentationOf = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'presentationOf',
+  );
+  return { id, presentationOf } as BFFPresentation;
 };
 

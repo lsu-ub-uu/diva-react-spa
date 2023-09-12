@@ -17,7 +17,7 @@
  */
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
-import { BFFPresentation, transformCoraPresentations } from '../transformPresentations';
+import { transformCoraPresentations } from '../transformPresentations';
 import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
 
 describe('transformCoraPresentations', () => {
@@ -27,15 +27,15 @@ describe('transformCoraPresentations', () => {
   });
 
   it('Returns two entries', () => {
-    const transformData: BFFPresentation[] = transformCoraPresentations(presentationListWithTwoPVars);
+    const transformData = transformCoraPresentations(presentationListWithTwoPVars);
     expect(transformData).toHaveLength(2);
   });
 
   it('Returns one BFFPresentation for one entry', () => {
-    const transformData: BFFPresentation[] = transformCoraPresentations(presentationListWithTwoPVars);
+    const transformData = transformCoraPresentations(presentationListWithTwoPVars);
     expect(transformData[0]).toStrictEqual({
       id: 'someTextVarPVar',
-      // presentationOf: 'someTextVar'
+      presentationOf: 'someTextVar'
     });
   });
 

@@ -54,7 +54,7 @@ describe('transformMetadata', () => {
     });
   });
   it('Returns one BFFMetadata for group', () => {
-    const metadataList = transformMetadata(testMetaDataForGroupWithTwoChildren);
+    const metadataList= transformMetadata(testMetaDataForGroupWithTwoChildren);
     expect(metadataList).toHaveLength(1);
     expect(metadataList[0]).toStrictEqual({
       id: 'someGroup',
