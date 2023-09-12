@@ -19,10 +19,11 @@
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
 import coraTextWithOneChild from '../../__mocks__/coraTextWithOneChild.json';
+import coraTextWithOneChildOnlySwedish from '../../__mocks__/coraTextWithOneChildOnlySwedish.json';
+import coraTextWithOneChildThreeLanguages from '../../__mocks__/coraTextWithOneChildThreeLanguages.json';
 import { transformCoraTexts } from '../transformTexts';
 
 describe('transformTexts', () => {
-
   it('Empty list should return empty list', () => {
     const transformData = transformCoraTexts(emptyDataList);
     expect(transformData).toStrictEqual([]);
@@ -39,8 +40,24 @@ describe('transformTexts', () => {
     expect(firstText).toStrictEqual({
       id: 'someText',
       en: 'This is some text in english',
-      sv: 'Det här är nån text på svenska',
+      sv: 'Det här är nån text på svenska'
     });
   });
-
+  it('Returns one text entry with id and sv/en languages for three languages', () => {
+    const textDataList = transformCoraTexts(coraTextWithOneChildThreeLanguages);
+    const firstText = textDataList[0];
+    expect(firstText).toStrictEqual({
+      id: 'someText',
+      en: 'This is some text in english',
+      sv: 'Det här är nån text på svenska'
+    });
+  });
+  it('Returns one text entry with id and only sv language', () => {
+    const textDataList = transformCoraTexts(coraTextWithOneChildOnlySwedish);
+    const firstText = textDataList[0];
+    expect(firstText).toStrictEqual({
+      id: 'someText',
+      sv: 'Det här är nån text på svenska'
+    });
+  });
 });

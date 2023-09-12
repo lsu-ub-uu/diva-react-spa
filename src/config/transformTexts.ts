@@ -18,14 +18,20 @@
  */
 
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { extractAttributeValueByName, extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  extractAttributeValueByName,
+  extractIdFromRecordInfo
+} from '../utils/cora-data/CoraDataTransforms';
 import {
   getAllChildrenWithNameInData,
-  getAllDataGroupsWithNameInDataAndAttributes,
+  getAllDataGroupsWithNameInDataAndAttributes
 } from '../utils/cora-data/CoraDataUtils';
+import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
 export interface BFFText {
   id: string;
+  sv: string;
+  en?: string;
 }
 
 export const transformCoraTexts = (dataListWrapper: DataListWrapper): BFFText[] => {
@@ -41,13 +47,33 @@ const transformCoraTextToBFFText = (coraRecordWrapper: RecordWrapper) => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
+  let languages: any = extractLanguageTextCombinations(dataRecordGroup);
 
-  const textParts = getAllChildrenWithNameInData(dataRecordGroup, 'textPart')
-
-  textParts.map((textPart) => {
-    const dg = textPart as DataGroup;
-  })
-  // const lang = extractAttributeValueByName(textParts[0], 'lang');
-  return { id, test: JSON.stringify(textParts) } as BFFText;
+  if (languages.en === undefined) {
+    return { id, sv: languages.sv };
+  }
+  return { id, sv: languages.sv, en: languages.en } as BFFText;
 };
 
+const extractLanguageTextCombinations = (dataRecordGroup: DataGroup) => {
+  const textParts: DataGroup[] = getAllChildrenWithNameInData(
+    dataRecordGroup,
+    'textPart'
+  ) as DataGroup[];
+  return extractLanguageTextCombinationsFromTextParts(textParts);
+};
+
+const extractLanguageTextCombinationsFromTextParts = (textParts: DataGroup[]) => {
+  let languages: any = {};
+  textParts.map((textPart) => {
+    const langText = extractLanguageTextCombinationFromTextPart(textPart);
+    languages[langText.lang] = langText.text;
+  });
+  return languages;
+};
+
+const extractLanguageTextCombinationFromTextPart = (textPart: DataGroup) => {
+  const lang = extractAttributeValueByName(textPart, 'lang');
+  const text = getFirstDataAtomicValueWithNameInData(textPart, 'text');
+  return { lang: lang, text: text };
+};
