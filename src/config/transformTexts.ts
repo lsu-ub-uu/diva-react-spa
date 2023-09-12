@@ -17,8 +17,12 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { extractAttributeValueByName, extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  getAllChildrenWithNameInData,
+  getAllDataGroupsWithNameInDataAndAttributes,
+} from '../utils/cora-data/CoraDataUtils';
 
 export interface BFFText {
   id: string;
@@ -38,6 +42,12 @@ const transformCoraTextToBFFText = (coraRecordWrapper: RecordWrapper) => {
   const dataRecordGroup = coraRecord.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
 
-  return { id } as BFFText;
+  const textParts = getAllChildrenWithNameInData(dataRecordGroup, 'textPart')
+
+  textParts.map((textPart) => {
+    const dg = textPart as DataGroup;
+  })
+  // const lang = extractAttributeValueByName(textParts[0], 'lang');
+  return { id, test: JSON.stringify(textParts) } as BFFText;
 };
 

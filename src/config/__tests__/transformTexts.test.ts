@@ -33,10 +33,14 @@ describe('transformTexts', () => {
     expect(textDataList).toHaveLength(1);
   });
 
-  it('Returns one text entry with id', () => {
+  it('Returns one text entry with id and sv/en languages', () => {
     const textDataList = transformCoraTexts(coraTextWithOneChild);
     const firstText = textDataList[0];
-    expect(firstText.id).toEqual('someText');
+    expect(firstText).toStrictEqual({
+      id: 'someText',
+      en: 'This is some text in english',
+      sv: 'Det här är nån text på svenska',
+    });
   });
 
 });
