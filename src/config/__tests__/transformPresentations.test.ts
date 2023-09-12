@@ -37,7 +37,8 @@ describe('transformCoraPresentations', () => {
       id: 'someTextVarPVar',
       presentationOf: 'someTextVar',
       mode: 'input',
-      inputType: 'someInputType'
+      inputType: 'someInputType',
+      emptyTextId: 'somePlaceholderText'
     });
   });
 

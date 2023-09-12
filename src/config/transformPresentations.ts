@@ -26,6 +26,8 @@ export interface BFFPresentation {
   id: string;
   presentationOf: string;
   mode: 'input' | 'output';
+  inputType: string;
+  emptyTextId: string;
 }
 
 export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BFFPresentation[] => {
@@ -53,6 +55,10 @@ const transformCoraPresentationToBFFPresentation = (coraRecordWrapper: RecordWra
     dataRecordGroup,
     'inputType',
   );
-  return { id, presentationOf, mode, inputType } as BFFPresentation;
+  const emptyTextId = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'emptyTextId',
+  );
+  return { id, presentationOf, mode, inputType, emptyTextId } as BFFPresentation;
 };
 
