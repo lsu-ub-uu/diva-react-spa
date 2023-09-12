@@ -5,22 +5,33 @@ import { parseRecord } from '../parseRecord';
 
 describe('parseRecords', () => {
   describe('binaries', () => {
-    it('should parse exampleDevOutput record', () => {
-      const output = parseRecord(exampleDevOutput);
-      expect(output).toStrictEqual({
-        id: 'exampleDevOutput:5538156835926548',
-        title: 'my funny title',
-        images: [],
-      });
-    });
-    it('should parse exampleDevOutput with other order of children', () => {
-      const output = parseRecord(exampleDevOutput2);
-      expect(output).toStrictEqual({
-        id: 'exampleDevOutput:5538156835926548',
-        title: 'my funny title',
-        images: [],
-      });
-    });
+    // it('should parse exampleDevOutput record', () => {
+    //   const output = parseRecord(exampleDevOutput);
+    //   expect(output).toStrictEqual({
+    //     id: 'exampleDevOutput:5538156835926548',
+    //     title: 'my funny title',
+    //     images: [],
+    //   });
+    // });
+    // it('should parse exampleDevOutput with other order of children', () => {
+    //   const output = parseRecord(exampleDevOutput2);
+    //   expect(output).toStrictEqual({
+    //     id: 'exampleDevOutput:5538156835926548',
+    //     title: 'my funny title',
+    //     images: [],
+    //   });
+    // });
+    it.each([exampleDevOutput, exampleDevOutput2])(
+      `should parse records %#`,
+      (devOutput) => {
+        const output = parseRecord(devOutput);
+        expect(output).toStrictEqual({
+          id: 'exampleDevOutput:5538156835926548',
+          title: 'my funny title',
+          images: [],
+        });
+      },
+    );
   });
   
 });
