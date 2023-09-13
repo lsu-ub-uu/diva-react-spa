@@ -74,13 +74,20 @@ const transformChildReference = (childReference: DataGroup) => {
   const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
   const type = extractAttributeValueByName(ref as DataGroup, 'type');
 
-  let minNumberOfRepeatingToShow;
-  if (containsChildWithNameInData(childReference, 'minNumberOfRepeatingToShow')) {
-    minNumberOfRepeatingToShow = getFirstDataAtomicValueWithNameInData(
-      childReference,
-      'minNumberOfRepeatingToShow'
-    );
-  }
+  const minNumberOfRepeatingToShow = extractAtomicValueByName(
+    childReference,
+    'minNumberOfRepeatingToShow'
+  );
+  const textStyle = extractAtomicValueByName(childReference, 'textStyle');
+  const presentationSize = extractAtomicValueByName(childReference, 'presentationSize');
 
-  return removeEmpty({ childId, type, minNumberOfRepeatingToShow });
+  return removeEmpty({ childId, type, minNumberOfRepeatingToShow, textStyle, presentationSize });
+};
+
+const extractAtomicValueByName = (childReference: DataGroup, nameInData: string) => {
+  let atomicValue;
+  if (containsChildWithNameInData(childReference, nameInData)) {
+    atomicValue = getFirstDataAtomicValueWithNameInData(childReference, nameInData);
+  }
+  return atomicValue;
 };

@@ -41,7 +41,7 @@ describe('transformTexts', () => {
       presentationOf: 'someNewGroup',
       mode: 'input',
       children: [
-        { childId: 'demoText', type: 'text' },
+        { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle' },
         { childId: 'recordInfoNewPGroup', type: 'presentation' },
         { childId: 'bookTitleTextVarText', type: 'text' },
         { childId: 'bookTitleTextVarPVar', type: 'presentation' }
@@ -58,10 +58,20 @@ describe('transformTexts', () => {
       presentationOf: 'someNewGroup',
       mode: 'input',
       children: [
-        { childId: 'demoText', type: 'text' },
+        {
+          childId: 'demoText',
+          type: 'text',
+          textStyle: 'h1TextStyle',
+          presentationSize: 'firstSmaller'
+        },
         { childId: 'recordInfoNewPGroup', type: 'presentation' },
         { childId: 'bookTitleTextVarText', type: 'text' },
-        { childId: 'bookTitleTextVarPVar', type: 'presentation', minNumberOfRepeatingToShow: '99' }
+        {
+          childId: 'bookTitleTextVarPVar',
+          minNumberOfRepeatingToShow: '99',
+          textStyle: 'h5TextStyle',
+          type: 'presentation'
+        }
       ]
     });
   });

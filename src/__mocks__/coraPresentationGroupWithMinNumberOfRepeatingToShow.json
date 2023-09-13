@@ -320,6 +320,10 @@
                         "value": "h1TextStyle"
                       },
                       {
+                        "name": "presentationSize",
+                        "value": "firstSmaller"
+                      },
+                      {
                         "repeatId": "0",
                         "children": [
                           {
@@ -462,6 +466,15 @@
                       {
                         "name": "minNumberOfRepeatingToShow",
                         "value": "99"
+                      },
+                      {
+                        "name": "textStyle",
+                        "value": "h5TextStyle"
+                      },
+                      {
+                        "name": "childStyle",
+                        "repeatId": "1",
+                        "value": "5"
                       }
                     ],
                     "name": "childReference"
