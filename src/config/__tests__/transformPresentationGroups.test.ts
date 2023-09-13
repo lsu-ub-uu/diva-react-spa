@@ -19,6 +19,7 @@
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
 import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
+import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
 
 import { transformCoraPresentationGroups } from '../transformPresentationGroups';
 
@@ -27,10 +28,12 @@ describe('transformTexts', () => {
     const transformData = transformCoraPresentationGroups(emptyDataList);
     expect(transformData).toStrictEqual([]);
   });
+
   it('Should return one BFFPresentationGroup entry', () => {
     const transformData = transformCoraPresentationGroups(coraPresentationGroup);
     expect(transformData).toHaveLength(1);
   });
+
   it('Returns one BFFPresentation for one entry', () => {
     const transformData = transformCoraPresentationGroups(coraPresentationGroup);
     expect(transformData[0]).toStrictEqual({
@@ -38,10 +41,27 @@ describe('transformTexts', () => {
       presentationOf: 'someNewGroup',
       mode: 'input',
       children: [
-        { childId: 'demoText' },
-        { childId: 'recordInfoNewPGroup' },
-        { childId: 'bookTitleTextVarText' },
-        { childId: 'bookTitleTextVarPVar' }
+        { childId: 'demoText', type: 'text' },
+        { childId: 'recordInfoNewPGroup', type: 'presentation' },
+        { childId: 'bookTitleTextVarText', type: 'text' },
+        { childId: 'bookTitleTextVarPVar', type: 'presentation' }
+      ]
+    });
+  });
+
+  it.skip('Returns one BFFPresentation for one entry with minNumberOfRepeatingToShow', () => {
+    const transformData = transformCoraPresentationGroups(
+      coraPresentationGroupWithMinNumberOfRepeatingToShow
+    );
+    expect(transformData[0]).toStrictEqual({
+      id: 'someNewPGroup',
+      presentationOf: 'someNewGroup',
+      mode: 'input',
+      children: [
+        { childId: 'demoText', type: 'text' },
+        { childId: 'recordInfoNewPGroup', type: 'presentation' },
+        { childId: 'bookTitleTextVarText', type: 'text', minNumberOfRepeatingToShow: '99' },
+        { childId: 'bookTitleTextVarPVar', type: 'presentation' }
       ]
     });
   });

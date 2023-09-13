@@ -54,8 +54,8 @@ const extractLanguageTextCombinations = (dataRecordGroup: DataGroup) => {
 };
 
 const extractLanguageTextCombinationsFromTextParts = (textParts: DataGroup[]) => {
-  let languages: { [key: string]: string } = {};
-  textParts.map((textPart) => {
+  const languages: { [key: string]: string } = {};
+  textParts.forEach((textPart) => {
     const langText = extractLanguageTextCombinationFromTextPart(textPart);
     languages[langText.lang] = langText.text;
   });

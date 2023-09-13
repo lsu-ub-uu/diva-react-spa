@@ -1,15 +1,11 @@
-import {
-  DataGroup,
-  DataListWrapper,
-  RecordWrapper,
-} from '../utils/cora-data/CoraData';
+import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { BFFValidationType } from './bffTypes';
 
 export const transformCoraValidationTypes = (
-  dataListWrapper: DataListWrapper,
+  dataListWrapper: DataListWrapper
 ): BFFValidationType[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
@@ -30,37 +26,28 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const validatesRecordType = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'validatesRecordType',
+    'validatesRecordType'
   );
   const newMetadataGroupId = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'newMetadataId',
+    'newMetadataId'
   );
 
-  const metadataGroupId = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'metadataId',
-  );
+  const metadataGroupId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'metadataId');
 
   const newPresentationGroupId = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'newPresentationFormId',
+    'newPresentationFormId'
   );
 
   const presentationGroupId = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'presentationFormId',
+    'presentationFormId'
   );
 
-  const nameTextId = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'textId',
-  );
+  const nameTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'textId');
 
-  const defTextId = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'defTextId',
-  );
+  const defTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'defTextId');
 
   return {
     id,
@@ -70,18 +57,15 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
     presentationGroupId,
     metadataGroupId,
     nameTextId,
-    defTextId,
+    defTextId
   } as BFFValidationType;
 };
 
 // TODO: move to /CoraDataTransform.ts and write tests
 export const extractLinkedRecordIdFromNamedRecordLink = (
   coraRecordGroup: DataGroup,
-  linkName: string,
+  linkName: string
 ) => {
-  const recordLink = getFirstDataGroupWithNameInData(
-    coraRecordGroup,
-    linkName,
-  ) as DataGroup;
+  const recordLink = getFirstDataGroupWithNameInData(coraRecordGroup, linkName) as DataGroup;
   return getFirstDataAtomicValueWithNameInData(recordLink, 'linkedRecordId');
 };

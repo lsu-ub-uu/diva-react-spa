@@ -18,8 +18,15 @@
  */
 
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
-import { getFirstDataGroupWithNameInDataAndAttributes } from '../utils/cora-data/CoraDataUtils';
+import {
+  extractAttributeValueByName,
+  extractIdFromRecordInfo
+} from '../utils/cora-data/CoraDataTransforms';
+import {
+  getAllChildrenWithNameInData,
+  getFirstChildWithNameInData,
+  getFirstDataGroupWithNameInDataAndAttributes
+} from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { BFFPresentationGroup } from './bffTypes';
 import { getChildReferencesListFromGroup } from './transformMetadata';
@@ -63,7 +70,8 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
 
 const transformChildReference = (childReference: DataGroup) => {
   const refGroup = getFirstDataGroupWithNameInDataAndAttributes(childReference, 'refGroup');
+  const ref = getFirstChildWithNameInData(refGroup, 'ref');
   const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
-
-  return { childId };
+  const type = extractAttributeValueByName(ref as DataGroup, 'type');
+  return { childId, type };
 };
