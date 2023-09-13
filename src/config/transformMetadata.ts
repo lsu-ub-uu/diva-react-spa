@@ -17,27 +17,21 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  DataGroup,
-  DataListWrapper,
-  RecordWrapper,
-} from '../utils/cora-data/CoraData';
+import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   extractIdFromRecordInfo,
-  extractAttributeValueByName,
+  extractAttributeValueByName
 } from '../utils/cora-data/CoraDataTransforms';
 import {
   containsChildWithNameInData,
   getAllDataGroupsWithNameInDataAndAttributes,
-  getFirstDataGroupWithNameInData,
+  getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import { BFFMetadata, BFFMetadataGroup, BFFMetadataTextVariable } from './bffTypes';
 
-export const transformMetadata = (
-  dataListWrapper: DataListWrapper,
-): BFFMetadata[] => {
+export const transformMetadata = (dataListWrapper: DataListWrapper): BFFMetadata[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
@@ -46,9 +40,7 @@ export const transformMetadata = (
   return coraRecords.map(transformCoraRecordToBFFMetaData);
 };
 
-const transformCoraRecordToBFFMetaData = (
-  coraRecordWrapper: RecordWrapper,
-): BFFMetadata => {
+const transformCoraRecordToBFFMetaData = (coraRecordWrapper: RecordWrapper): BFFMetadata => {
   const coraRecord = coraRecordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   return transformRecordGroupMetadataToBFF(dataRecordGroup) as BFFMetadata;
@@ -69,50 +61,31 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
 
 const transformTextVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata): BFFMetadata => {
   if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
-    const finalValue = getFirstDataAtomicValueWithNameInData(
-      dataRecordGroup,
-      'finalValue',
-    );
+    const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
     metadata = { ...metadata, finalValue } as BFFMetadata;
   }
 
-  const regEx = getFirstDataAtomicValueWithNameInData(
-    dataRecordGroup,
-    'regEx',
-  );
+  const regEx = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'regEx');
   return { ...metadata, regEx } as BFFMetadataTextVariable;
-}
-
+};
 
 const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const nameInData = getFirstDataAtomicValueWithNameInData(
-    dataRecordGroup,
-    'nameInData',
-  );
+  const nameInData = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'nameInData');
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
-  const textId = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'textId',
-  );
-  const defTextId = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'defTextId',
-  );
+  const textId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'textId');
+  const defTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'defTextId');
 
   return {
     id,
     nameInData,
     type,
     textId,
-    defTextId,
+    defTextId
   } as BFFMetadata;
 };
 
-const transformMetadataGroup = (
-  dataRecordGroup: DataGroup,
-  metadata: BFFMetadata,
-) => {
+const transformMetadataGroup = (dataRecordGroup: DataGroup, metadata: BFFMetadata) => {
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
 
   const children = childReferencesList.map((childReference) => {
@@ -121,39 +94,24 @@ const transformMetadataGroup = (
 
   return {
     ...metadata,
-    children,
+    children
   } as BFFMetadataGroup;
 };
-const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
-  const childReferences = getFirstDataGroupWithNameInData(
-    dataRecordGroup,
-    'childReferences',
-  );
+export const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
+  const childReferences = getFirstDataGroupWithNameInData(dataRecordGroup, 'childReferences');
 
-  return getAllDataGroupsWithNameInDataAndAttributes(
-    childReferences as DataGroup,
-    'childReference',
-  );
+  return getAllDataGroupsWithNameInDataAndAttributes(childReferences, 'childReference');
 };
 
 const transformChildReference = (childReference: DataGroup) => {
-  const childId = extractLinkedRecordIdFromNamedRecordLink(
-    childReference,
-    'ref',
-  );
-  const repeatMin = getFirstDataAtomicValueWithNameInData(
-    childReference,
-    'repeatMin',
-  );
-  const repeatMax = getFirstDataAtomicValueWithNameInData(
-    childReference,
-    'repeatMax',
-  );
+  const childId = extractLinkedRecordIdFromNamedRecordLink(childReference, 'ref');
+  const repeatMin = getFirstDataAtomicValueWithNameInData(childReference, 'repeatMin');
+  const repeatMax = getFirstDataAtomicValueWithNameInData(childReference, 'repeatMax');
 
   if (containsChildWithNameInData(childReference, 'recordPartConstraint')) {
     const recordPartConstraint = getFirstDataAtomicValueWithNameInData(
       childReference,
-      'recordPartConstraint',
+      'recordPartConstraint'
     );
     return { childId, repeatMin, repeatMax, recordPartConstraint };
   }

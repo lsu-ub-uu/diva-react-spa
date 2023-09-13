@@ -36,7 +36,13 @@ describe('transformTexts', () => {
     expect(transformData[0]).toStrictEqual({
       id: 'someNewPGroup',
       presentationOf: 'someNewGroup',
-      mode: 'input'
+      mode: 'input',
+      children: [
+        { childId: 'demoText' },
+        { childId: 'recordInfoNewPGroup' },
+        { childId: 'bookTitleTextVarText' },
+        { childId: 'bookTitleTextVarPVar' }
+      ]
     });
   });
 });

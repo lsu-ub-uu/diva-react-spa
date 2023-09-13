@@ -17,10 +17,12 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import { getFirstDataGroupWithNameInDataAndAttributes } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { BFFPresentationGroup } from './bffTypes';
+import { getChildReferencesListFromGroup } from './transformMetadata';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 
 export const transformCoraPresentationGroups = (
@@ -44,5 +46,24 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     'presentationOf'
   );
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
-  return { id, mode, presentationOf } as BFFPresentationGroup;
+
+  const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
+  // console.log(childReferencesList);
+  const children = childReferencesList.map((childReference) => {
+    return transformChildReference(childReference);
+  });
+
+  return {
+    id,
+    mode,
+    presentationOf,
+    children
+  } as BFFPresentationGroup;
+};
+
+const transformChildReference = (childReference: DataGroup) => {
+  const refGroup = getFirstDataGroupWithNameInDataAndAttributes(childReference, 'refGroup');
+  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
+
+  return { childId };
 };

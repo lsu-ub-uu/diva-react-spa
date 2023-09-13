@@ -839,54 +839,27 @@ const dataGroupWithMultipleMatchingGroupWithAttributes: DataGroup = {
 };
 
 describe('getFirstDataGroupWithNameInDataAndAttributes', () => {
-  it('should take dataGroup, nameInData and AttributeMatcher', () => {
-    cdu.getFirstDataGroupWithNameInDataAndAttributes(dataGroupWithEmptyChildren, 'someChildName', {
-      someKey: 'someValue'
-    });
-  });
+  it('if getAllDataGroupsWithNameInDataAndAttributes returns empty array, throw error', () => {
+    expect(() => {
+      cdu.getFirstDataGroupWithNameInDataAndAttributes(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+        { someKey: 'someValue' }
+      );
+    }).toThrow(Error);
 
-  it('should call getAllDataGroupsWithNameInDataAndAttributes with dataGroup, nameInData and attributes', () => {
-    cdu.getFirstDataGroupWithNameInDataAndAttributes(dataGroupWithEmptyChildren, 'someChildName', {
-      someKey: 'someValue'
-    });
-
-    expect(getAllDataGroupsWithNameInDataAndAttributesSpy).toHaveBeenCalledTimes(1);
-
-    expect(getAllDataGroupsWithNameInDataAndAttributesSpy).toHaveBeenLastCalledWith(
-      dataGroupWithEmptyChildren,
-      'someChildName',
-      {
-        someKey: 'someValue'
-      }
-    );
-
-    cdu.getFirstDataGroupWithNameInDataAndAttributes(
-      dataGroupWithMultipleMatchingGroupWithAttributes,
-      'someOtherChildName',
-      { someOtherKey: 'someOtherValue' }
-    );
-
-    expect(getAllDataGroupsWithNameInDataAndAttributesSpy).toHaveBeenCalledTimes(2);
-    // if (dataAtomic.name !== nameInData) {
-    //   throw new Error(
-    //     `DataGroup with name [${dataGroup.name}] does not have any children`,
-    //   );
-    // }
-    expect(getAllDataGroupsWithNameInDataAndAttributesSpy).toHaveBeenLastCalledWith(
-      dataGroupWithMultipleMatchingGroupWithAttributes,
-      'someOtherChildName',
-      { someOtherKey: 'someOtherValue' }
-    );
-  });
-
-  it('if getAllDataGroupsWithNameInDataAndAttributes returns empty array, return undefined', () => {
-    const returned = cdu.getFirstDataGroupWithNameInDataAndAttributes(
-      dataGroupWithEmptyChildren,
-      'someChildName',
-      { someKey: 'someValue' }
-    );
-
-    expect(returned).toBeUndefined();
+    try {
+      cdu.getFirstDataGroupWithNameInDataAndAttributes(
+        dataGroupWithEmptyChildren,
+        'someChildName',
+        { someKey: 'someValue' }
+      );
+    } catch (error: unknown) {
+      const childMissingError: Error = <Error>error;
+      expect(childMissingError.message).toStrictEqual(
+        'DataGroup with name [someChildName] does not exist'
+      );
+    }
   });
 
   it('if getAllDataGroupsWithNameInDataAndAttributes returns non-empty array, return first element from array', () => {
@@ -917,11 +890,7 @@ describe('getFirstDataGroupWithNameInDataAndAttributes', () => {
           name: 'someOtherChild',
           value: 'someValue'
         }
-      ] // if (dataAtomic.name !== nameInData) {
-      //   throw new Error(
-      //     `DataGroup with name [${dataGroup.name}] does not have any children`,
-      //   );
-      // }
+      ]
     });
   });
 });

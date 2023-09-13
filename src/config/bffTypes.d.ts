@@ -56,6 +56,7 @@ export interface BFFPresentation extends BFFBase {
 export interface BFFPresentationGroup extends BFFBase {
   presentationOf: string;
   mode: 'input' | 'output';
+  children: unknown[];
 }
 
 export interface BFFText extends BFFBase {
