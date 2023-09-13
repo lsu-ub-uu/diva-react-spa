@@ -419,10 +419,6 @@
                             "attributes": {
                               "type": "text"
                             }
-                          },
-                          {
-                            "name": "minNumberOfRepeatingToShow",
-                            "value": "99"
                           }
                         ],
                         "name": "refGroup"
@@ -462,6 +458,10 @@
                           }
                         ],
                         "name": "refGroup"
+                      },
+                      {
+                        "name": "minNumberOfRepeatingToShow",
+                        "value": "99"
                       }
                     ],
                     "name": "childReference"

@@ -17,13 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { removeEmpty } from '../utils/structs/removeEmpty';
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   extractAttributeValueByName,
   extractIdFromRecordInfo
 } from '../utils/cora-data/CoraDataTransforms';
 import {
-  getAllChildrenWithNameInData,
+  containsChildWithNameInData,
   getFirstChildWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes
 } from '../utils/cora-data/CoraDataUtils';
@@ -55,7 +56,6 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
 
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
-  // console.log(childReferencesList);
   const children = childReferencesList.map((childReference) => {
     return transformChildReference(childReference);
   });
@@ -73,5 +73,14 @@ const transformChildReference = (childReference: DataGroup) => {
   const ref = getFirstChildWithNameInData(refGroup, 'ref');
   const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
   const type = extractAttributeValueByName(ref as DataGroup, 'type');
-  return { childId, type };
+
+  let minNumberOfRepeatingToShow;
+  if (containsChildWithNameInData(childReference, 'minNumberOfRepeatingToShow')) {
+    minNumberOfRepeatingToShow = getFirstDataAtomicValueWithNameInData(
+      childReference,
+      'minNumberOfRepeatingToShow'
+    );
+  }
+
+  return removeEmpty({ childId, type, minNumberOfRepeatingToShow });
 };

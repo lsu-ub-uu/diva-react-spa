@@ -49,7 +49,7 @@ describe('transformTexts', () => {
     });
   });
 
-  it.skip('Returns one BFFPresentation for one entry with minNumberOfRepeatingToShow', () => {
+  it('Returns one BFFPresentation for one entry with minNumberOfRepeatingToShow', () => {
     const transformData = transformCoraPresentationGroups(
       coraPresentationGroupWithMinNumberOfRepeatingToShow
     );
@@ -60,8 +60,8 @@ describe('transformTexts', () => {
       children: [
         { childId: 'demoText', type: 'text' },
         { childId: 'recordInfoNewPGroup', type: 'presentation' },
-        { childId: 'bookTitleTextVarText', type: 'text', minNumberOfRepeatingToShow: '99' },
-        { childId: 'bookTitleTextVarPVar', type: 'presentation' }
+        { childId: 'bookTitleTextVarText', type: 'text' },
+        { childId: 'bookTitleTextVarPVar', type: 'presentation', minNumberOfRepeatingToShow: '99' }
       ]
     });
   });
