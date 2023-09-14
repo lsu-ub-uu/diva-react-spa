@@ -37,11 +37,11 @@ describe('getRecordDataListByType', () => {
     const type = 'someValidType';
     const expectedResponse = {
       data: {
-        test: "someTestValue",
+        test: 'someTestValue'
       },
       headers: {},
       request: {},
-      status: 200,
+      status: 200
     };
     const apiUrl: string = `https://cora.epc.ub.uu.se/diva/rest/record/${type}`;
     mockAxios.onGet(apiUrl).reply(200, expectedResponse);
@@ -63,11 +63,9 @@ describe('getRecordDataListByType', () => {
       expect(castError.response?.status).toBe(404);
     }
   });
-
 });
 
 describe('Cora', () => {
-
   // @ts-ignore
   it.skip('should make a real API call with invalid authToken', async () => {
     try {
@@ -79,5 +77,4 @@ describe('Cora', () => {
       expect(castError.response?.status).toBe(401);
     }
   });
-
-})
+});

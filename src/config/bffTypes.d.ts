@@ -51,6 +51,7 @@ export interface BFFPresentation extends BFFBase {
   presentationOf: string;
   mode: 'input' | 'output';
   inputType: string;
+  // type:
   emptyTextId: string;
 }
 export interface BFFPresentationGroup extends BFFBase {
