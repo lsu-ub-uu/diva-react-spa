@@ -20,6 +20,7 @@
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { getRecordDataListByType } from '../cora';
+import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('getRecordDataListByType', () => {
   let mockAxios: MockAdapter;
@@ -65,16 +66,12 @@ describe('getRecordDataListByType', () => {
   });
 });
 
-describe('Cora', () => {
+describe('real getRecordDataListByType', () => {
   // @ts-ignore
-  it.skip('should make a real API call with invalid authToken', async () => {
-    try {
-      const response = await getRecordDataListByType('metadata', 'invalidToken');
-      expect(response.status).toBe(200);
-    } catch (error) {
-      expect(error).toBeInstanceOf(AxiosError);
-      const castError: AxiosError = <AxiosError>error;
-      expect(castError.response?.status).toBe(401);
-    }
+  it.skip('should make a real API call without authToken', async () => {
+    const response = await getRecordDataListByType<DataListWrapper>('metadata', '');
+    expect(response.status).toBe(200);
+    expect(response.data.dataList.containDataOfType).toBe('metadata');
   });
 });
+

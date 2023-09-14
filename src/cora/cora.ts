@@ -19,16 +19,16 @@
 
 import axios, { AxiosResponse } from 'axios';
 
-export async function getRecordDataListByType(
+export async function getRecordDataListByType<T>(
   type: string,
   authToken: string
-): Promise<AxiosResponse> {
+): Promise<AxiosResponse<T>> {
   // temporary apiURL should fetch from env CORA_API_URL
   const apiUrl: string = `https://cora.epc.ub.uu.se/diva/rest/record/${type}`;
   const headers = {
-    Authtoken: `${authToken}`
+    // Authtoken: `${authToken}`
   };
 
-  const response: AxiosResponse = await axios.get(apiUrl, { headers });
+  const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
   return response;
 }
