@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { getRecordDataListByType } from '../cora';
 
@@ -33,14 +33,51 @@ describe('getRecordDataListByType', () => {
   });
 
   // @ts-ignore
-  it.skip('should fetch data for a valid type', async () => {
+  it('should fetch data for a valid type', async () => {
     const type = 'someValidType';
-    const expectedData = { /* Your expected data object here */ };
+    const expectedResponse = {
+      data: {
+        test: "someTestValue",
+      },
+      headers: {},
+      request: {},
+      status: 200,
+    };
     const apiUrl: string = `https://cora.epc.ub.uu.se/diva/rest/record/${type}`;
-    mockAxios.onGet(apiUrl).reply(200, expectedData);
-    const result = await getRecordDataListByType(type, 'someValidToken');
-    expect(result).toEqual(expectedData);
+    mockAxios.onGet(apiUrl).reply(200, expectedResponse);
+    const response = await getRecordDataListByType(type, 'someValidToken');
+    expect(response.data).toEqual(expect.objectContaining(expectedResponse));
   });
 
+  // @ts-ignore
+  it('should handle an error response with status 404', async () => {
+    const type = 'invalidType';
+    const apiUrl: string = `https://cora.epc.ub.uu.se/diva/rest/record/${type}`;
+    mockAxios.onGet(apiUrl).reply(404);
+
+    try {
+      await getRecordDataListByType(type, 'validToken');
+    } catch (error) {
+      expect(error).toBeInstanceOf(AxiosError);
+      const castError: AxiosError = <AxiosError>error;
+      expect(castError.response?.status).toBe(404);
+    }
+  });
 
 });
+
+describe('Cora', () => {
+
+  // @ts-ignore
+  it.skip('should make a real API call with invalid authToken', async () => {
+    try {
+      const response = await getRecordDataListByType('metadata', 'invalidToken');
+      expect(response.status).toBe(200);
+    } catch (error) {
+      expect(error).toBeInstanceOf(AxiosError);
+      const castError: AxiosError = <AxiosError>error;
+      expect(castError.response?.status).toBe(401);
+    }
+  });
+
+})

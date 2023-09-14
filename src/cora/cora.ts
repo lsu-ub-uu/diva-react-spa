@@ -19,28 +19,13 @@
 
 import axios, { AxiosResponse } from 'axios';
 
-export class CoraApiError extends Error {
-  code: number;
-
-  constructor(message: string, code: number) {
-    super(message);
-    this.name = "CoraApiError";
-    this.code = code;
-  }
-}
-
-export async function getRecordDataListByType(type: string, authToken: string): Promise<unknown> {
+export async function getRecordDataListByType(type: string, authToken: string): Promise<AxiosResponse> {
   // temporary apiURL should fetch from env CORA_API_URL
   const apiUrl: string = `https://cora.epc.ub.uu.se/diva/rest/record/${type}`;
   const headers = {
-    'Authorization': `Bearer ${authToken}`
+    'Authtoken': `${authToken}`
   };
 
   const response: AxiosResponse = await axios.get(apiUrl, { headers });
-
-  if (response.status === 200) {
-    return response.data;
-  } else {
-    throw new CoraApiError(response.statusText, response.status);
-  }
+  return response;
 }
