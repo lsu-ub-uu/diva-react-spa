@@ -20,11 +20,13 @@
 import { BFFRecordType, BFFText } from '../../../config/bffTypes';
 import { listToPool } from '../listToPool';
 
-const someListWithThreeRecordTypes: BFFRecordType[] = [{id: '1'}, {id: '2'}, {id: '3'}];
-const someListWithTwoTexts: BFFText[] = [{id: '1', en: 'hello', sv: 'hej'}, {id: '2', en: 'good bye', sv: 'hej då'}];
+const someListWithThreeRecordTypes: BFFRecordType[] = [{ id: '1' }, { id: '2' }, { id: '3' }];
+const someListWithTwoTexts: BFFText[] = [
+  { id: '1', en: 'hello', sv: 'hej' },
+  { id: '2', en: 'good bye', sv: 'hej då' }
+];
 
 describe('listToPool', () => {
-
   it('should take an empty list and create an empty pool', () => {
     const pool = listToPool<BFFText>([]);
     expect(pool.size()).toBe(0);
@@ -39,6 +41,4 @@ describe('listToPool', () => {
     const pool = listToPool<BFFRecordType>(someListWithThreeRecordTypes);
     expect(pool.size()).toBe(3);
   });
-
-
 });
