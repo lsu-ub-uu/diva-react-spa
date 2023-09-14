@@ -19,12 +19,6 @@
 
 import * as cdu from '../CoraDataUtils';
 import { DataGroup, DataElement, DataAtomic } from '../CoraData';
-import { containsChildWithNameInData } from '../CoraDataUtils';
-
-const getAllDataGroupsWithNameInDataAndAttributesSpy = jest.spyOn(
-  cdu,
-  'getAllDataGroupsWithNameInDataAndAttributes'
-);
 
 const dataGroupWithOneRecordLink: DataGroup = {
   name: 'someDataGroupName',
@@ -542,12 +536,15 @@ describe('getFirstChildWithNameInData', () => {
 describe('containsChildWithNameInData', () => {
   it('returns false if child does not exist', () => {
     expect(
-      containsChildWithNameInData(dataGroupWithSeveralMatchingAtomics, 'someNameInDataForFalse')
+      cdu.containsChildWithNameInData(dataGroupWithSeveralMatchingAtomics, 'someNameInDataForFalse')
     ).toBe(false);
   });
   it('returns true if child does exist', () => {
     expect(
-      containsChildWithNameInData(dataGroupWithSeveralMatchingAtomics, 'someInterestingChildName')
+      cdu.containsChildWithNameInData(
+        dataGroupWithSeveralMatchingAtomics,
+        'someInterestingChildName'
+      )
     ).toBe(true);
   });
 });
