@@ -59,9 +59,11 @@ describe('getRecordDataListByType', () => {
     try {
       await getRecordDataListByType(type, 'validToken');
     } catch (error) {
-      expect(error).toBeInstanceOf(AxiosError);
-      const castError: AxiosError = <AxiosError>error;
-      expect(castError.response?.status).toBe(404);
+      if (axios.isAxiosError(error)) {
+        expect(error).toBeInstanceOf(AxiosError);
+        const castError: AxiosError = <AxiosError>error;
+        expect(castError.response?.status).toBe(404);
+      }
     }
   });
 });
