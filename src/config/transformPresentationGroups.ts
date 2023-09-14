@@ -25,6 +25,7 @@ import {
 } from '../utils/cora-data/CoraDataTransforms';
 import {
   containsChildWithNameInData,
+  getAllDataAtomicsWithNameInData,
   getFirstChildWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes
 } from '../utils/cora-data/CoraDataUtils';
@@ -81,7 +82,17 @@ const transformChildReference = (childReference: DataGroup) => {
   const textStyle = extractAtomicValueByName(childReference, 'textStyle');
   const presentationSize = extractAtomicValueByName(childReference, 'presentationSize');
 
-  return removeEmpty({ childId, type, minNumberOfRepeatingToShow, textStyle, presentationSize });
+  const childStyleAtomics = getAllDataAtomicsWithNameInData(childReference, 'childStyle');
+  const childStyles = childStyleAtomics.map((childStyle) => childStyle.value);
+
+  return removeEmpty({
+    childId,
+    type,
+    minNumberOfRepeatingToShow,
+    textStyle,
+    presentationSize,
+    childStyles
+  });
 };
 
 const extractAtomicValueByName = (childReference: DataGroup, nameInData: string) => {

@@ -22,14 +22,14 @@ export const removeEmpty = (data: any): any => {
     return data
       .filter((value) => value != null)
       .map((value) => (typeof value === 'object' ? removeEmpty(value) : value));
-  } else if (typeof data === 'object' && data !== null) {
+  }
+  if (typeof data === 'object' && data !== null) {
     const entries = Object.entries(data).filter(([, value]) => value != null);
     const clean = entries.map(([key, value]) => {
       const cleanedValue = typeof value === 'object' ? removeEmpty(value) : value;
       return [key, cleanedValue];
     });
     return Object.fromEntries(clean);
-  } else {
-    return data;
   }
+  return data;
 };

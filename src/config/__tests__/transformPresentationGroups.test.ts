@@ -41,10 +41,10 @@ describe('transformTexts', () => {
       presentationOf: 'someNewGroup',
       mode: 'input',
       children: [
-        { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle' },
-        { childId: 'recordInfoNewPGroup', type: 'presentation' },
-        { childId: 'bookTitleTextVarText', type: 'text' },
-        { childId: 'bookTitleTextVarPVar', type: 'presentation' }
+        { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle', childStyles: [] },
+        { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
+        { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
+        { childId: 'bookTitleTextVarPVar', type: 'presentation', childStyles: [] }
       ]
     });
   });
@@ -62,15 +62,17 @@ describe('transformTexts', () => {
           childId: 'demoText',
           type: 'text',
           textStyle: 'h1TextStyle',
-          presentationSize: 'firstSmaller'
+          presentationSize: 'firstSmaller',
+          childStyles: []
         },
-        { childId: 'recordInfoNewPGroup', type: 'presentation' },
-        { childId: 'bookTitleTextVarText', type: 'text' },
+        { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
+        { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
         {
           childId: 'bookTitleTextVarPVar',
           minNumberOfRepeatingToShow: '99',
           textStyle: 'h5TextStyle',
-          type: 'presentation'
+          type: 'presentation',
+          childStyles: ['5', '3']
         }
       ]
     });

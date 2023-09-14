@@ -475,6 +475,11 @@
                         "name": "childStyle",
                         "repeatId": "1",
                         "value": "5"
+                      },
+                      {
+                        "name": "childStyle",
+                        "repeatId": "2",
+                        "value": "3"
                       }
                     ],
                     "name": "childReference"
