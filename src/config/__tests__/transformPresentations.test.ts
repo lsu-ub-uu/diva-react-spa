@@ -35,6 +35,7 @@ describe('transformCoraPresentations', () => {
     const transformData = transformCoraPresentations(presentationListWithTwoPVars);
     expect(transformData[0]).toStrictEqual({
       id: 'someTextVarPVar',
+      type: 'pVar',
       presentationOf: 'someTextVar',
       mode: 'input',
       inputType: 'someInputType',

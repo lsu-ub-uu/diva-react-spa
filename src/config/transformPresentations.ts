@@ -18,7 +18,7 @@
  */
 
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import { extractAttributeValueByName, extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { BFFPresentation } from './bffTypes';
@@ -45,5 +45,7 @@ const transformCoraPresentationToBFFPresentation = (
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
   const inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
   const emptyTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'emptyTextId');
-  return { id, presentationOf, mode, inputType, emptyTextId } as BFFPresentation;
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
+
+  return { id, presentationOf, mode, inputType, emptyTextId, type } as BFFPresentation;
 };

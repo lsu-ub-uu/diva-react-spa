@@ -65,7 +65,8 @@ export interface BFFPresentation extends BFFBase {
   presentationOf: string;
   mode: 'input' | 'output';
   inputType: string;
-  // type:
+  // Types below are a little bit weird, metadata definitions needs to checked up on (attributes)
+  type: 'pGroup' | 'pVar' | 'pNumVar' | 'pCollVar' | 'container' | 'pRecordLink' | 'pResourceLink' | 'presentation';
   emptyTextId: string;
 }
 export interface BFFPresentationGroup extends BFFBase {

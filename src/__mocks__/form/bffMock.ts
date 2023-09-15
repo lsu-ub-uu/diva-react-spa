@@ -2,7 +2,7 @@ import {
   BFFMetadataGroup,
   BFFMetadataChildReference,
   BFFMetadataTextVariable,
-  BFFValidationType,
+  BFFValidationType, BFFPresentation,
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
