@@ -51,12 +51,10 @@ export interface BFFMetadataTextVariable extends BFFMetadata {
   finalValue?: string;
 }
 export interface BFFMetadataGroup extends BFFMetadata {
-  children: BFFMetadataGroupChild[];
-  repeatMin: string;
-  repeatMax: string;
+  children: BFFMetadataChildReference[];
 }
 
-export interface BFFMetadataGroupChild {
+export interface BFFMetadataChildReference {
   childId: string;
   repeatMin: string;
   repeatMax: string;

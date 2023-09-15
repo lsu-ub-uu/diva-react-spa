@@ -18,21 +18,29 @@
  */
 
 import { listToPool } from '../../utils/structs/listToPool';
-import { BFFValidationType } from '../../config/bffTypes';
+import { BFFMetadata, BFFMetadataGroup, BFFValidationType } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
-import { someValidationTypeData } from '../../__mocks__/form/bffMock'
+import {
+  someMetadataTextVariable,
+  someNewMetadataGroup,
+  someRecordInfo,
+  someValidationTypeData,
+} from '../../__mocks__/form/bffMock';
 
-describe('something', () => {
+describe('form', () => {
 
   let validationTypePool: Lookup<string, BFFValidationType>;
+  let metadataPool: Lookup<string, BFFMetadata>;
 
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([someValidationTypeData]);
+    metadataPool = listToPool<BFFMetadata>([someMetadataTextVariable, someNewMetadataGroup, someRecordInfo])
   });
 
   it('should generate something', () => {
-    expect(validationTypePool.size()).toBe(1);
     expect(validationTypePool.get('someValidationTypeId')).toBeDefined();
+    expect(metadataPool.get('someNewMetadataGroupId')).toBeDefined();
+    expect(metadataPool.get('someMetadataTextVariableId')).toBeDefined();
   });
 
 });

@@ -29,7 +29,7 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
-import { BFFMetadata, BFFMetadataGroup, BFFMetadataGroupChild, BFFMetadataTextVariable } from './bffTypes';
+import { BFFMetadata, BFFMetadataGroup, BFFMetadataChildReference, BFFMetadataTextVariable } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
 export const transformMetadata = (dataListWrapper: DataListWrapper): BFFMetadata[] => {
@@ -90,7 +90,7 @@ const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
 const transformMetadataGroup = (dataRecordGroup: DataGroup, metadata: BFFMetadata) => {
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
 
-  const children: BFFMetadataGroupChild[] = childReferencesList.map((childReference) => {
+  const children: BFFMetadataChildReference[] = childReferencesList.map((childReference) => {
     return transformChildReference(childReference);
   });
 
@@ -105,7 +105,7 @@ export const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
   return getAllDataGroupsWithNameInDataAndAttributes(childReferences, 'childReference');
 };
 
-const transformChildReference = (childReference: DataGroup) : BFFMetadataGroupChild => {
+const transformChildReference = (childReference: DataGroup) : BFFMetadataChildReference => {
   const childId = extractLinkedRecordIdFromNamedRecordLink(childReference, 'ref');
   const repeatMin = getFirstDataAtomicValueWithNameInData(childReference, 'repeatMin');
   const repeatMax = getFirstDataAtomicValueWithNameInData(childReference, 'repeatMax');
@@ -118,5 +118,5 @@ const transformChildReference = (childReference: DataGroup) : BFFMetadataGroupCh
     );
   }
 
-  return removeEmpty({ childId, repeatMin, repeatMax, recordPartConstraint }) as BFFMetadataGroupChild;
+  return removeEmpty({ childId, repeatMin, repeatMax, recordPartConstraint }) as BFFMetadataChildReference;
 };
