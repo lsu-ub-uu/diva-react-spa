@@ -34,7 +34,7 @@ import {
   someValidationTypeData
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
-import { Dependencies } from 'formDefinition/formDefinitions';
+import { Dependencies } from '../formDefinitionsDep';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -88,6 +88,8 @@ describe('formDefinition', () => {
   it('should return an object', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition).toEqual({});
+    expect(formDefinition).toEqual({
+      validationTypeId: validationTypeId
+    });
   });
 });
