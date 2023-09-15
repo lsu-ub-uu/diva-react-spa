@@ -1,6 +1,6 @@
 # MOCK ROUTES:
 ###
-GET http://localhost:8080/api/person/all
+GET http://localhost:8080/api/person
 ###
 GET http://localhost:8080/api/publication/88888834354542425
 
