@@ -19,7 +19,7 @@
 
 import { isEqual as _isEqual } from 'lodash';
 import { Attributes, DataAtomic, DataElement, DataGroup, RecordLink } from './CoraData';
-import { BFFRecordLink } from '../client-data/ClientData';
+import { BFFRecordLink } from '../../config/bffTypes';
 
 export function getAllRecordLinksWithNameInData(
   dataGroup: DataGroup,

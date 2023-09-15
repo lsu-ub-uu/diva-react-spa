@@ -17,6 +17,15 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ActionLink } from '../utils/cora-data/CoraData';
+
+export interface BFFRecordLink {
+  name: string;
+  recordType: string | undefined;
+  id: string | undefined;
+  readLink?: ActionLink;
+}
+
 export interface BFFBase {
   id: string;
 }
