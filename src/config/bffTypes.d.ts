@@ -69,6 +69,7 @@ export interface BFFPresentation extends BFFBase {
   type: 'pGroup' | 'pVar' | 'pNumVar' | 'pCollVar' | 'container' | 'pRecordLink' | 'pResourceLink' | 'presentation';
   emptyTextId: string;
 }
+
 export interface BFFPresentationGroup extends BFFBase {
   presentationOf: string;
   mode: 'input' | 'output';

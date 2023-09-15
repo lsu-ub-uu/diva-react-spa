@@ -2,16 +2,18 @@ import {
   BFFMetadataGroup,
   BFFMetadataChildReference,
   BFFMetadataTextVariable,
-  BFFValidationType, BFFPresentation,
+  BFFValidationType, BFFPresentation, BFFPresentationGroup,
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
   id: "someValidationTypeId",
   validatesRecordTypeId: "record123",
+  // New
   newMetadataGroupId: "someNewMetadataGroupId",
-  metadataGroupId: "metadata789",
-  newPresentationGroupId: "presentation123",
-  presentationGroupId: "presentation456",
+  newPresentationGroupId: "pSomeNewMetadataGroupId",
+  // Update/Edit
+  metadataGroupId: "todo",
+  presentationGroupId: "todo",
   nameTextId: "name123",
   defTextId: "defName456",
 };
@@ -31,7 +33,7 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
     {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
-      repeatMax: '10',
+      repeatMax: '1',
     },
   ],
 };
@@ -60,4 +62,33 @@ export const someRecordInfo: BFFMetadataGroup = {
   ],
 };
 
+const pSomeMetadataTextVariable: BFFPresentation =
+{
+  id: 'pSomeMetadataTextVariableId',
+  presentationOf: 'someMetadataTextVariableId',
+  mode: 'input',
+  inputType: 'text',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId',
+};
 
+const pSomeNewMetadataGroup: BFFPresentationGroup = {
+  id: 'pSomeNewMetadataGroupId',
+  presentationOf: 'someNewMetadataGroupId', // metadata
+  mode: 'input',
+  children: [
+    {
+      childId: 'someHeadlineTextId',
+      type: 'text',
+      textStyle: 'bold',
+      childStyle: [],
+    },
+    {
+      childId: 'pSomeMetadataTextVariableId',
+      type: 'presentation',
+      minNumberOfRepeatingToShow: '1', // depends also on metadata repeatMin/Max
+      childStyle: ['style3', 'style4'],
+      // presentationSize: 'firstSmaller', // collapsable/switch view
+    },
+  ],
+};
