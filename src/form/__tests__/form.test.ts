@@ -34,7 +34,7 @@ describe('form', () => {
 
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([someValidationTypeData]);
-    metadataPool = listToPool<BFFMetadata>([someMetadataTextVariable, someNewMetadataGroup, someRecordInfo])
+    metadataPool = listToPool<BFFMetadata>([someMetadataTextVariable, someNewMetadataGroup, someRecordInfo]);
   });
 
   it('should generate something', () => {

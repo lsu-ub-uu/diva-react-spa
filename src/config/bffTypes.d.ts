@@ -72,12 +72,12 @@ export interface BFFPresentation extends BFFBase {
 export interface BFFPresentationGroup extends BFFBase {
   presentationOf: string;
   mode: 'input' | 'output';
-  children: BFFPresentationGroupChild[];
+  children: BFFPresentationChildReference[];
 }
 
-export interface BFFPresentationGroupChild {
+export interface BFFPresentationChildReference {
   childId: string;
-  type: string;
+  type: 'text' | 'presentation' | 'guiElement';
   minNumberOfRepeatingToShow?: string;
   textStyle?: string;
   childStyle?: string[];
