@@ -3,6 +3,7 @@ import emptyTestData from '../../__mocks__/emptyDataList.json';
 import testMetaData from '../../__mocks__/coraMetadata.json';
 import testMetaDataWithFinalValue from '../../__mocks__/coraMetadataWithFinalValue.json';
 import testMetaDataForGroupWithTwoChildren from '../../__mocks__/coraMetadataForGroupWithTwoChildren.json';
+import { BFFMetadataGroup } from '../bffTypes';
 
 describe('transformMetadata', () => {
   it('Empty list should return empty', () => {
@@ -83,6 +84,7 @@ describe('transformMetadata', () => {
       ],
     });
 
+    const bffMetadataGroup = metadataList[0] as BFFMetadataGroup;
     expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
   });
 });

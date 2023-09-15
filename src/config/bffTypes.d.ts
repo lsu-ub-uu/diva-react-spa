@@ -32,7 +32,7 @@ export interface BFFBase {
 
 export interface BFFRecordType extends BFFBase {}
 
-export interface BFFMetadata extends BFFBase {
+export abstract interface BFFMetadata extends BFFBase {
   nameInData: string;
   type:
     | 'group'
@@ -51,9 +51,16 @@ export interface BFFMetadataTextVariable extends BFFMetadata {
   finalValue?: string;
 }
 export interface BFFMetadataGroup extends BFFMetadata {
-  children: unknown[];
+  children: BFFMetadataGroupChild[];
   repeatMin: string;
   repeatMax: string;
+}
+
+export interface BFFMetadataGroupChild {
+  childId: string;
+  repeatMin: string;
+  repeatMax: string;
+  recordPartConstraint?: 'write' | 'readWrite';
 }
 
 export interface BFFPresentation extends BFFBase {
