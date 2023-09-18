@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { StringSchema } from 'yup';
 import { ControlledTextField } from '../Controlled';
 
 interface FormGeneratorProps {
@@ -46,18 +47,27 @@ interface FormValidation {
   pattern: string;
 }
 
-const generateYupSchema = () => {
-  return yup.object().shape({
-    someNameInData: yup
+const generateYupSchema = (components: FormComponent[]) => {
+  const composedShape = components.reduce((accumulator, component) => {
+    // eslint-disable-next-line prefer-regex-literals
+    accumulator[component.name] = yup
       .string()
-      .trim()
-      .matches(/^[a-zA-Z]$/),
-  });
+      .matches(new RegExp(component.validation?.pattern ?? '.+'));
+    return accumulator;
+  }, {} as Record<string, StringSchema>);
+
+  return yup.object().shape(composedShape);
 };
 
 export const FormGenerator = (props: FormGeneratorProps) => {
   const methods = useForm({
-    resolver: yupResolver(generateYupSchema()),
+    resolver: yupResolver(
+      generateYupSchema(
+        props.formSchema.components.filter(
+          (component) => component.type !== 'text',
+        ),
+      ),
+    ),
   });
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
