@@ -53,14 +53,16 @@ describe('<FormGenerator />', () => {
       />,
     );
     const submitButton = screen.getByRole('button', { name: 'Submit' });
+    const inputElement = screen.getByPlaceholderText('someEmptyTextId');
 
     const user = userEvent.setup();
+    await user.type(inputElement, 'a');
     await user.click(submitButton);
 
     expect(mockSubmit).toHaveBeenCalledTimes(1);
   });
 
-  test('Renders a form from a given definition and validates it correctly', async () => {
+  test('Renders a form from a given definition and validates it correctly and does not call the submit', async () => {
     const mockSubmit = vi.fn();
 
     render(
