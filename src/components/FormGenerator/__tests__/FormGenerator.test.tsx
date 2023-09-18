@@ -28,7 +28,7 @@ import { FormGenerator } from '../FormGenerator';
 
 describe('<FormGenerator />', () => {
   test('Renders a form from a given definition', () => {
-    render(<FormGenerator schema={formDef} />);
+    render(<FormGenerator formSchema={formDef} />);
     const inputElement = screen.getByPlaceholderText('someEmptyTextId');
     expect(inputElement).toBeInTheDocument();
 

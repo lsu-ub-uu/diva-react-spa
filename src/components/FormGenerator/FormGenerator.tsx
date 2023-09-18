@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form';
 import { ControlledTextField } from '../Controlled';
 
 interface FormGeneratorProps {
-  schema: FormSchema;
+  formSchema: FormSchema;
 }
 
 interface FormSchema {
@@ -61,7 +61,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
   return (
     <Box component='form'>
-      {props.schema.components.map(generateFormComponent)}
+      {props.formSchema.components.map(generateFormComponent)}
     </Box>
   );
 };
