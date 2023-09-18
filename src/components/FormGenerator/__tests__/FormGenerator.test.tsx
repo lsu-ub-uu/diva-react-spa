@@ -31,5 +31,8 @@ describe('<FormGenerator />', () => {
     render(<FormGenerator schema={formDef} />);
     const inputElement = screen.getByPlaceholderText('someEmptyTextId');
     expect(inputElement).toBeInTheDocument();
+
+    const headerElement = screen.getByText('someHeadlineTextId');
+    expect(headerElement).toBeInTheDocument();
   });
 });

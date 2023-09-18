@@ -17,10 +17,51 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Box } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { ControlledTextField } from '../Controlled';
+
 interface FormGeneratorProps {
-  schema: unknown;
+  schema: FormSchema;
+}
+
+interface FormSchema {
+  validationTypeId: string;
+  components: FormComponent[];
+}
+
+interface FormComponent {
+  type: string;
+  name: string;
+  placeholder?: string;
+  validation?: unknown;
 }
 
 export const FormGenerator = (props: FormGeneratorProps) => {
-  return <div>{JSON.stringify(props.schema)}</div>;
+  const methods = useForm();
+
+  const generateFormComponent = (component: FormComponent, idx: number) => {
+    const reactKey = `${component.name}_${idx}`;
+    switch (component.type) {
+      case 'inputText': {
+        return (
+          <ControlledTextField
+            key={reactKey}
+            label={component.name}
+            name={component.name}
+            placeholder={component.placeholder}
+            control={methods.control}
+          />
+        );
+      }
+      default:
+        return <h1 key={reactKey}>{component.name}</h1>;
+    }
+  };
+
+  return (
+    <Box component='form'>
+      {props.schema.components.map(generateFormComponent)}
+    </Box>
+  );
 };
