@@ -51,7 +51,7 @@ export const someMetadataTextVariable: BFFMetadataTextVariable = {
 
 export const someRecordInfo: BFFMetadataGroup = {
   id: 'someRecordInfoId',
-  nameInData: 'someNameInData',
+  nameInData: 'someRecordInfoNameInData',
   type: 'group',
   textId: 'textId345',
   defTextId: 'defTextId678',

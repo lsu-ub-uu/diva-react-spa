@@ -85,11 +85,27 @@ describe('formDefinition', () => {
     }
   });
 
-  it('should return an object', () => {
+  it('should return a form definition containing a text and a inputText', () => {
     const validationTypeId = 'someValidationTypeId';
-    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formDefinition= createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    expect(formDefinition.components).toHaveLength(2);
     expect(formDefinition).toEqual({
-      validationTypeId: validationTypeId
+      validationTypeId: validationTypeId,
+      components: [
+        {
+          type: 'text',
+          name: 'someHeadlineTextId',
+        },
+        {
+          type: 'inputText',
+          name: 'someNameInData',
+          placeholder: 'someEmptyTextId',
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex'
+          }
+        }
+      ]
     });
   });
 });
