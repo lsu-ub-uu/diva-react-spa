@@ -26,9 +26,7 @@ export const UploadTestPage = () => {
             tooltipBody='Some body text on how upload works goes here'
           >
             <FormGenerator
-              onSubmit={(values) =>
-                alert(JSON.stringify(values, null, 2))
-              }
+              onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
               formSchema={formDef as FormSchema}
             />
           </Card>
