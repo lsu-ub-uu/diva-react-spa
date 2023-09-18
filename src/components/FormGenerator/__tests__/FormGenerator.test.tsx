@@ -17,10 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { test, expect } from 'vitest';
+import { test, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { formDef } from '../../../__mocks__/data/formDef';
-import { FormGenerator } from '../FormGenerator';
+import { FormGenerator, FormSchema } from '../FormGenerator';
 
 /**
  * @vitest-environment jsdom
@@ -28,11 +29,53 @@ import { FormGenerator } from '../FormGenerator';
 
 describe('<FormGenerator />', () => {
   test('Renders a form from a given definition', () => {
-    render(<FormGenerator formSchema={formDef} />);
+    const mockSubmit = vi.fn();
+    render(
+      <FormGenerator
+        formSchema={formDef as FormSchema}
+        onSubmit={mockSubmit}
+      />,
+    );
     const inputElement = screen.getByPlaceholderText('someEmptyTextId');
     expect(inputElement).toBeInTheDocument();
 
     const headerElement = screen.getByText('someHeadlineTextId');
     expect(headerElement).toBeInTheDocument();
+  });
+
+  test('Renders a form from a given definition and submits it', async () => {
+    const mockSubmit = vi.fn();
+
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDef as FormSchema}
+      />,
+    );
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+    const user = userEvent.setup();
+    await user.click(submitButton);
+
+    expect(mockSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  test('Renders a form from a given definition and validates it correctly', async () => {
+    const mockSubmit = vi.fn();
+
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDef as FormSchema}
+      />,
+    );
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+    const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+
+    const user = userEvent.setup();
+    await user.type(inputElement, 'does not validate');
+    await user.click(submitButton);
+
+    expect(mockSubmit).toHaveBeenCalledTimes(0);
   });
 });

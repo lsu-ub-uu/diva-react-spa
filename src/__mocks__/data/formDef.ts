@@ -11,7 +11,7 @@ export const formDef = {
       placeholder: 'someEmptyTextId',
       validation: {
         type: 'regex',
-        pattern: '^[a-zA-Z ]*$',
+        pattern: '^[a-zA-Z]$',
       },
     },
   ],

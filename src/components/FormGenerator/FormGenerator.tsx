@@ -19,13 +19,17 @@
 
 import { Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import Button from '@mui/material/Button';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { ControlledTextField } from '../Controlled';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
+  onSubmit: () => void;
 }
 
-interface FormSchema {
+export interface FormSchema {
   validationTypeId: string;
   components: FormComponent[];
 }
@@ -34,12 +38,27 @@ interface FormComponent {
   type: string;
   name: string;
   placeholder?: string;
-  validation?: unknown;
+  validation?: FormValidation;
 }
 
-export const FormGenerator = (props: FormGeneratorProps) => {
-  const methods = useForm();
+interface FormValidation {
+  type: 'regex';
+  pattern: string;
+}
 
+const generateYupSchema = () => {
+  return yup.object().shape({
+    someNameInData: yup
+      .string()
+      .trim()
+      .matches(/^[a-zA-Z]$/),
+  });
+};
+
+export const FormGenerator = (props: FormGeneratorProps) => {
+  const methods = useForm({
+    resolver: yupResolver(generateYupSchema()),
+  });
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
     switch (component.type) {
@@ -60,8 +79,18 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   };
 
   return (
-    <Box component='form'>
+    <Box
+      component='form'
+      onSubmit={methods.handleSubmit(props.onSubmit)}
+    >
       {props.formSchema.components.map(generateFormComponent)}
+      <Button
+        type='submit'
+        disableRipple
+        variant='contained'
+      >
+        Submit
+      </Button>
     </Box>
   );
 };
