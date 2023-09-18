@@ -18,7 +18,7 @@
  */
 
 import { Box } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from "react-hook-form";
 import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,7 +27,7 @@ import { ControlledTextField } from '../Controlled';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
-  onSubmit: () => void;
+  onSubmit: (formValues: FieldValues) => void;
 }
 
 export interface FormSchema {
@@ -91,7 +91,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   return (
     <Box
       component='form'
-      onSubmit={methods.handleSubmit(props.onSubmit)}
+      onSubmit={methods.handleSubmit((values) => props.onSubmit(values))}
     >
       {props.formSchema.components.map(generateFormComponent)}
       <Button
