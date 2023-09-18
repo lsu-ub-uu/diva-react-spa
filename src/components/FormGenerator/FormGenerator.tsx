@@ -17,19 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { test, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { formDef } from '../../../__mocks__/data/formDef';
-import { FormGenerator } from '../FormGenerator';
+interface FormGeneratorProps {
+  schema: unknown;
+}
 
-/**
- * @vitest-environment jsdom
- */
-
-describe('<FormGenerator />', () => {
-  test('Renders a form from a given definition', () => {
-    render(<FormGenerator schema={formDef} />);
-    const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-    expect(inputElement).toBeInTheDocument();
-  });
-});
+export const FormGenerator = (props: FormGeneratorProps) => {
+  return <div>{JSON.stringify(props.schema)}</div>;
+};
