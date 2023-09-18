@@ -2,7 +2,12 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import React from 'react';
 import { Stack } from '@mui/material';
-import { Card, FileUpload } from '../components';
+import { Card } from '../components';
+import {
+  FormGenerator,
+  FormSchema,
+} from '../components/FormGenerator/FormGenerator';
+import { formDef } from '../__mocks__/data/formDef';
 
 export const UploadTestPage = () => {
   const { t } = useTranslation();
@@ -15,12 +20,17 @@ export const UploadTestPage = () => {
       <div>
         <Stack spacing={2}>
           <Card
-            title='Upload File'
+            title='Form from Cora'
             variant='variant6'
             tooltipTitle='File upload instructions'
             tooltipBody='Some body text on how upload works goes here'
           >
-            <FileUpload accept={['image/png']} />
+            <FormGenerator
+              onSubmit={(values) =>
+                alert(JSON.stringify(values, null, 2))
+              }
+              formSchema={formDef as FormSchema}
+            />
           </Card>
         </Stack>
       </div>
