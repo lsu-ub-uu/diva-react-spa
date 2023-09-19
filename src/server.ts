@@ -3,22 +3,23 @@ import { configureServer } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
 import { listToPool } from './utils/structs/listToPool';
 import { BFFText } from './config/bffTypes';
+import { getRecordDataListByType } from './cora/cora';
+import { DataListWrapper } from './utils/cora-data/CoraData';
+import { transformCoraTexts } from './config/transformTexts';
 
 const PORT = process.env.PORT || 8080;
-const CORA_API_URL = process.env.CORA_API_URL || 'error';
+export const CORA_API_URL = process.env.CORA_API_URL || '';
 
 const app: Application = express();
-
 
 configureServer(app);
 // loadCoraDefinitions()  // keeps them in memory some way... redis, node-cache
 
-app.use('/api/translations/:lang', (req, res, next) => {
+app.use('/api/translations/:lang', async (req, res, next) => {
   try {
-    const textPool = listToPool<BFFText>([
-      {id: 'someTextId', en: 'someEnText', sv: 'someSvText'},
-      {id: 'someText2Id', sv: 'someSv2Text'}
-    ]);
+    const response = await getRecordDataListByType<DataListWrapper>('text', '');
+    const texts = transformCoraTexts(response.data);
+    const textPool = listToPool<BFFText>(texts);
     const dependencies = {
       textPool: textPool
     };

@@ -21,6 +21,10 @@ import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { getRecordDataListByType } from '../cora';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
+import { transformCoraTexts } from '../../config/transformTexts';
+import { listToPool } from '../../utils/structs/listToPool';
+import { BFFText } from '../../config/bffTypes';
+import { createTextDefinition } from '../../textDefinition/textDefinition';
 
 describe('getRecordDataListByType', () => {
   let mockAxios: MockAdapter;
@@ -71,9 +75,12 @@ describe('getRecordDataListByType', () => {
 describe('real getRecordDataListByType', () => {
   // @ts-ignore
   it.skip('should make a real API call without authToken', async () => {
-    const response = await getRecordDataListByType<DataListWrapper>('metadata', '');
+    const response = await getRecordDataListByType<DataListWrapper>('text', '');
     expect(response.status).toBe(200);
-    expect(response.data.dataList.containDataOfType).toBe('metadata');
+    const texts = transformCoraTexts(response.data);
+    const textPool = listToPool<BFFText>(texts);
+    const temp = createTextDefinition({ textPool }, 'en');
+    expect(response.data.dataList.containDataOfType).toBe('text');
   });
 });
 
