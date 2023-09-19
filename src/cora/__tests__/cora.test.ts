@@ -48,7 +48,7 @@ describe('getRecordDataListByType', () => {
       request: {},
       status: 200
     };
-    const apiUrl: string = `https://cora.epc.ub.uu.se/diva/rest/record/${type}`;
+    const apiUrl: string = `/record/${type}`;
     mockAxios.onGet(apiUrl).reply(200, expectedResponse);
     const response = await getRecordDataListByType(type, 'someValidToken');
     expect(response.data).toEqual(expect.objectContaining(expectedResponse));
@@ -57,7 +57,7 @@ describe('getRecordDataListByType', () => {
   // @ts-ignore
   it('should handle an error response with status 404', async () => {
     const type = 'invalidType';
-    const apiUrl: string = `https://cora.epc.ub.uu.se/diva/rest/record/${type}`;
+    const apiUrl: string = `/record/${type}`;
     mockAxios.onGet(apiUrl).reply(404);
 
     try {
