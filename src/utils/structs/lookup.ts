@@ -1,4 +1,5 @@
 import { LookupError } from './error';
+import { KeyValueStorage } from './index';
 
 export class Lookup<K, V> implements KeyValueStorage<K, V> {
   private internalMap: Map<K, V>;

@@ -1,32 +1,33 @@
 import express, { Application } from 'express';
 import { configureServer } from './config/configureServer';
-import personRoute from './routes/personRoute';
-import publicationRoute from './routes/publicationRoute';
-import recordTypeRoute from './routes/recordTypeRoute';
-import researchSubjectsRoute from './routes/researchSubjectsRoute';
-import subjectCategoriesRoute from './routes/subjectCategoriesRoute';
-import searchRoute from './routes/searchRoute';
-import authRoute from './routes/authRoute';
-import publishRoute from './routes/publishRoute';
-import binaryRoute from './routes/binaryRoute';
+import { createTextDefinition } from './textDefinition/textDefinition';
+import { listToPool } from './utils/structs/listToPool';
+import { BFFText } from './config/bffTypes';
 
 const PORT = process.env.PORT || 8080;
 const CORA_API_URL = process.env.CORA_API_URL || 'error';
 
 const app: Application = express();
 
+
 configureServer(app);
 // loadCoraDefinitions()  // keeps them in memory some way... redis, node-cache
 
-app.use('/api/auth', authRoute);
-app.use('/api/person', personRoute);
-app.use('/api/publication', publicationRoute);
-app.use('/api/recordtype', recordTypeRoute);
-app.use('/api/researchsubjects', researchSubjectsRoute);
-app.use('/api/subjectcategories', subjectCategoriesRoute);
-app.use('/api/search', searchRoute);
-app.use('/api/publish', publishRoute);
-app.use('/api/binary', binaryRoute);
+app.use('/api/translations/:lang', (req, res, next) => {
+  try {
+    const textPool = listToPool<BFFText>([
+      {id: 'someTextId', en: 'someEnText', sv: 'someSvText'},
+      {id: 'someText2Id', sv: 'someSv2Text'}
+    ]);
+    const dependencies = {
+      textPool: textPool
+    };
+    const textDefinitions = createTextDefinition(dependencies, req.params.lang);
+    res.status(200).json(textDefinitions);
+  } catch (error: unknown) {
+    res.status(500).json('Internal server error');
+  }
+});
 
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
