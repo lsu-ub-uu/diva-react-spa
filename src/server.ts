@@ -8,9 +8,12 @@ import { DataListWrapper } from './utils/cora-data/CoraData';
 import { transformCoraTexts } from './config/transformTexts';
 import { transformMetadata } from './config/transformMetadata';
 import { transformCoraPresentations } from './config/transformPresentations';
+import axios from 'axios';
 
 const PORT = process.env.PORT || 8080;
 const CORA_API_URL = process.env.CORA_API_URL || '';
+
+axios.defaults.baseURL = CORA_API_URL;
 
 const app: Application = express();
 
