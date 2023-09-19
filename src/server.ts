@@ -15,7 +15,7 @@ const app: Application = express();
 configureServer(app);
 // loadCoraDefinitions()  // keeps them in memory some way... redis, node-cache
 
-app.use('/api/translations/:lang', async (req, res, next) => {
+app.use('/api/translations/:lang', async (req, res) => {
   try {
     const response = await getRecordDataListByType<DataListWrapper>('text', '');
     const texts = transformCoraTexts(response.data);
@@ -25,6 +25,17 @@ app.use('/api/translations/:lang', async (req, res, next) => {
     };
     const textDefinitions = createTextDefinition(dependencies, req.params.lang);
     res.status(200).json(textDefinitions);
+  } catch (error: unknown) {
+    res.status(500).json('Internal server error');
+  }
+});
+
+app.use('/api/form/:validationTypeId', async (req, res) => {
+  try {
+    const types = ['metadata', 'presentation'];
+    const promises = types.map((type) => getRecordDataListByType(type, ''));
+    const result = await Promise.all(promises);
+    console.log(result.length);
   } catch (error: unknown) {
     res.status(500).json('Internal server error');
   }
