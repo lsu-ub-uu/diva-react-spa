@@ -42,19 +42,35 @@ const transformCoraPresentationToBFFPresentation = (
   const dataRecordGroup = coraRecordWrapper.record.data;
 
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const presentationOf = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'presentationOf'
-  );
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
+
+  let presentationOf;
+  try {
+    presentationOf = extractLinkedRecordIdFromNamedRecordLink(
+      dataRecordGroup,
+      'presentationOf'
+    );
+  } catch (error: unknown) {
+    //@ts-ignore
+    console.error('type: ', type,  'id: ', id, 'error: ', error.message);
+  }
+
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
-  const inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
+
+  let inputType;
+  try {
+    inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
+  } catch (error: unknown) {
+    //@ts-ignores
+    console.error('type: ', type,  'id: ', id, 'error: ', error.message);
+  }
   let emptyTextId;
   try {
     emptyTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'emptyTextId');
   } catch (error: unknown) {
     //@ts-ignore
-    console.error('id: ', id, 'error: ', error.message);
+    console.error('type: ', type,  'id: ', id, 'error: ', error.message);
   }
-  const type = extractAttributeValueByName(dataRecordGroup, 'type');
+
   return removeEmpty({ id, presentationOf, mode, inputType, emptyTextId, type } as BFFPresentation);
 };
