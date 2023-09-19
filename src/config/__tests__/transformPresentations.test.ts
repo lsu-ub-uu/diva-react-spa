@@ -19,6 +19,7 @@
 import emptyDataList from '../../__mocks__/emptyDataList.json';
 import { transformCoraPresentations } from '../transformPresentations';
 import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
+import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPresentationGroupWithMissingEmptyTextId.json';
 
 describe('transformCoraPresentations', () => {
   it('Empty list should return empty list', () => {
@@ -42,5 +43,14 @@ describe('transformCoraPresentations', () => {
       emptyTextId: 'somePlaceholderText'
     });
   });
-
-})
+  it('Returns one BFFPresentation with missing emptyTextId', () => {
+    const transformData = transformCoraPresentations(coraPresentationGroupWithMissingEmptyTextId);
+    expect(transformData[0]).toStrictEqual({
+      id: 'someTextVarPVar',
+      type: 'pVar',
+      presentationOf: 'someTextVar',
+      mode: 'input',
+      inputType: 'someInputType'
+    });
+  });
+});

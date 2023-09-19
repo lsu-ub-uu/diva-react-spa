@@ -18,10 +18,14 @@
  */
 
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { extractAttributeValueByName, extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  extractAttributeValueByName,
+  extractIdFromRecordInfo
+} from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { BFFPresentation } from './bffTypes';
+import { removeEmpty } from '../utils/structs/removeEmpty';
 
 export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BFFPresentation[] => {
   if (dataListWrapper.dataList.data.length === 0) {
@@ -44,8 +48,13 @@ const transformCoraPresentationToBFFPresentation = (
   );
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
   const inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
-  const emptyTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'emptyTextId');
+  let emptyTextId;
+  try {
+    emptyTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'emptyTextId');
+  } catch (error: unknown) {
+    //@ts-ignore
+    console.error('id: ', id, 'error: ', error.message);
+  }
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
-
-  return { id, presentationOf, mode, inputType, emptyTextId, type } as BFFPresentation;
+  return removeEmpty({ id, presentationOf, mode, inputType, emptyTextId, type } as BFFPresentation);
 };
