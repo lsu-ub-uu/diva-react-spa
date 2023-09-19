@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   BFFMetadataTextVariable,
   BFFPresentation,
@@ -5,7 +6,6 @@ import {
   BFFValidationType,
 } from 'config/bffTypes';
 import { Dependencies } from './formDefinitionsDep';
-import _ from 'lodash';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
 export const createFormDefinition = (
