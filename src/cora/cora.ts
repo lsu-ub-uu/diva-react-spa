@@ -18,13 +18,14 @@
  */
 
 import axios, { AxiosResponse } from 'axios';
-import { CORA_API_URL } from '../server';
+const CORA_API_URL = process.env.CORA_API_URL || '';
 
 export async function getRecordDataListByType<T>(
   type: string,
   authToken: string
 ): Promise<AxiosResponse<T>> {
-  const apiUrl: string = `${CORA_API_URL}/record/${type}`;
+  const apiUrl: string = `${CORA_API_URL}record/${type}`;
+  console.log(apiUrl);
   const headers = {
     // Authtoken: `${authToken}`
   };

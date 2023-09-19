@@ -29,7 +29,12 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
-import { BFFMetadata, BFFMetadataGroup, BFFMetadataChildReference, BFFMetadataTextVariable } from './bffTypes';
+import {
+  BFFMetadata,
+  BFFMetadataGroup,
+  BFFMetadataChildReference,
+  BFFMetadataTextVariable
+} from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
 export const transformMetadata = (dataListWrapper: DataListWrapper): BFFMetadata[] => {
@@ -38,7 +43,8 @@ export const transformMetadata = (dataListWrapper: DataListWrapper): BFFMetadata
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(transformCoraRecordToBFFMetaData);
+  const temp = coraRecords.map(transformCoraRecordToBFFMetaData);
+  return temp.filter((item) => item !== undefined);
 };
 
 const transformCoraRecordToBFFMetaData = (coraRecordWrapper: RecordWrapper): BFFMetadata => {
@@ -49,14 +55,16 @@ const transformCoraRecordToBFFMetaData = (coraRecordWrapper: RecordWrapper): BFF
 
 const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
   let metadata = transformBasicMetadata(dataRecordGroup);
-
   switch (metadata.type) {
     case 'group': {
       return transformMetadataGroup(dataRecordGroup, metadata);
     }
+    case 'textVariable': {
+      return transformTextVariable(dataRecordGroup, metadata);
+    }
     // TODO add more types
     default: {
-      return transformTextVariable(dataRecordGroup, metadata);
+      return;
     }
   }
 };
@@ -105,7 +113,7 @@ export const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
   return getAllDataGroupsWithNameInDataAndAttributes(childReferences, 'childReference');
 };
 
-const transformChildReference = (childReference: DataGroup) : BFFMetadataChildReference => {
+const transformChildReference = (childReference: DataGroup): BFFMetadataChildReference => {
   const childId = extractLinkedRecordIdFromNamedRecordLink(childReference, 'ref');
   const repeatMin = getFirstDataAtomicValueWithNameInData(childReference, 'repeatMin');
   const repeatMax = getFirstDataAtomicValueWithNameInData(childReference, 'repeatMax');
@@ -118,5 +126,10 @@ const transformChildReference = (childReference: DataGroup) : BFFMetadataChildRe
     );
   }
 
-  return removeEmpty({ childId, repeatMin, repeatMax, recordPartConstraint }) as BFFMetadataChildReference;
+  return removeEmpty({
+    childId,
+    repeatMin,
+    repeatMax,
+    recordPartConstraint
+  }) as BFFMetadataChildReference;
 };

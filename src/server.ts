@@ -2,13 +2,14 @@ import express, { Application } from 'express';
 import { configureServer } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
 import { listToPool } from './utils/structs/listToPool';
-import { BFFText } from './config/bffTypes';
+import { BFFMetadata, BFFText } from './config/bffTypes';
 import { getRecordDataListByType } from './cora/cora';
 import { DataListWrapper } from './utils/cora-data/CoraData';
 import { transformCoraTexts } from './config/transformTexts';
+import { transformMetadata } from './config/transformMetadata';
 
 const PORT = process.env.PORT || 8080;
-export const CORA_API_URL = process.env.CORA_API_URL || '';
+const CORA_API_URL = process.env.CORA_API_URL || '';
 
 const app: Application = express();
 
@@ -33,10 +34,19 @@ app.use('/api/translations/:lang', async (req, res) => {
 app.use('/api/form/:validationTypeId', async (req, res) => {
   try {
     const types = ['metadata', 'presentation'];
-    const promises = types.map((type) => getRecordDataListByType(type, ''));
+    const promises = types.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
     const result = await Promise.all(promises);
-    console.log(result.length);
+
+    const metadata = transformMetadata(result[0].data);
+    const metadataPool = listToPool<BFFMetadata>(metadata);
+    const dependencies = {
+      metadata: metadata
+    };
+    console.log(metadataPool);
+    // console.log(result.length);
   } catch (error: unknown) {
+    //@ts-ignore
+    console.log(error.message);
     res.status(500).json('Internal server error');
   }
 });
