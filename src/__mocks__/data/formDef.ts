@@ -3,7 +3,7 @@ export const formDef = {
   components: [
     {
       type: 'text',
-      name: 'someHeadlineTextId',
+      name: 'presentationTypeTextCollectionVarDefText',
     },
     {
       type: 'inputText',

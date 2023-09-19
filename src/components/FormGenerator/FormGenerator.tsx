@@ -24,6 +24,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StringSchema } from 'yup';
 import { ControlledTextField } from '../Controlled';
+import { useTranslation } from "react-i18next";
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -60,6 +61,7 @@ const generateYupSchema = (components: FormComponent[]) => {
 };
 
 export const FormGenerator = (props: FormGeneratorProps) => {
+  const { t } = useTranslation();
   const methods = useForm({
     resolver: yupResolver(
       generateYupSchema(
@@ -84,7 +86,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         );
       }
       default:
-        return <h1 key={reactKey}>{component.name}</h1>;
+        return <h1 key={reactKey}>{t(component.name)}</h1>;
     }
   };
 
