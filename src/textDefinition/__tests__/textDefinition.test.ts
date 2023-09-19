@@ -51,7 +51,6 @@ describe('textDefinition', () => {
     const lang = 'en';
     const textDefinition = createTextDefinition(dependencies, lang);
     const expectedEn = {someTextId: 'someEnText'};
-    ;
     expect(textDefinition).toStrictEqual(expectedEn);
   });
 
