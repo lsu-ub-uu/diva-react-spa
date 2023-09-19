@@ -37,29 +37,28 @@ describe('textDefinition', () => {
     };
   });
 
-  it('should generate an array with id value pair for swedish', () => {
+  it('should generate an object with id value pair for swedish', () => {
     const lang = 'sv';
     const textDefinition = createTextDefinition(dependencies, lang);
-    const expectedSv = [
-      {id: 'someTextId', value: 'someSvText'},
-      {id: 'someText2Id', value: 'someSv2Text'},
-    ];
+    const expectedSv = {
+      someTextId: 'someSvText',
+      someText2Id : 'someSv2Text'
+    };
     expect(textDefinition).toStrictEqual(expectedSv);
   });
 
-  it('should generate an array with id value pair for english', () => {
+  it('should generate an object with id value pair for english', () => {
     const lang = 'en';
     const textDefinition = createTextDefinition(dependencies, lang);
-    const expectedEn = [
-      {id: 'someTextId', value: 'someEnText'},
-    ];
+    const expectedEn = {someTextId: 'someEnText'};
+    ;
     expect(textDefinition).toStrictEqual(expectedEn);
   });
 
-  it('should NOT generate an array with id value pair for a language does not exist', () => {
+  it('should NOT generate an object with id value pair for a language does not exist', () => {
     const lang = 'jp';
     const textDefinition = createTextDefinition(dependencies, lang);
-    expect(textDefinition).toHaveLength(0);
+    expect(textDefinition).toStrictEqual({});
   });
 
 });
