@@ -20,6 +20,7 @@
 import { Lookup } from '../../utils/structs/lookup';
 import { BFFText } from '../../config/bffTypes';
 import { listToPool } from '../../utils/structs/listToPool';
+import { createTextDefinition } from '../textDefinition';
 
 describe('textDefinition', () => {
 
@@ -27,17 +28,38 @@ describe('textDefinition', () => {
   let dependencies: { textPool: Lookup<string, BFFText> };
 
   beforeEach(() => {
-    textPool = listToPool<BFFText>([]);
+    textPool = listToPool<BFFText>([
+      {id: 'someTextId', en: 'someEnText', sv: 'someSvText'},
+      {id: 'someText2Id', sv: 'someSv2Text'}
+    ]);
     dependencies = {
       textPool: textPool
     };
   });
 
-
-  it('should do something', () => {
-
-
+  it('should generate an array with id value pair for swedish', () => {
+    const lang = 'sv';
+    const textDefinition = createTextDefinition(dependencies, lang);
+    const expectedSv = [
+      {id: 'someTextId', value: 'someSvText'},
+      {id: 'someText2Id', value: 'someSv2Text'},
+    ];
+    expect(textDefinition).toStrictEqual(expectedSv);
   });
 
+  it('should generate an array with id value pair for english', () => {
+    const lang = 'en';
+    const textDefinition = createTextDefinition(dependencies, lang);
+    const expectedEn = [
+      {id: 'someTextId', value: 'someEnText'},
+    ];
+    expect(textDefinition).toStrictEqual(expectedEn);
+  });
+
+  it('should NOT generate an array with id value pair for a language does not exist', () => {
+    const lang = 'jp';
+    const textDefinition = createTextDefinition(dependencies, lang);
+    expect(textDefinition).toHaveLength(0);
+  });
 
 });

@@ -1,30 +1,43 @@
 import { LookupError } from './error';
 
 export class Lookup<K, V> implements KeyValueStorage<K, V> {
-  private map: Map<K, V>;
+  private internalMap: Map<K, V>;
 
   constructor() {
-    this.map = new Map<K, V>();
+    this.internalMap = new Map<K, V>();
   }
 
   set(key: K, value: V) {
-    this.map.set(key, value);
+    this.internalMap.set(key, value);
   }
 
   get(key: K): V {
-    if (!this.map.has(key)) throw new LookupError(`[${key}] does not exist in Lookup pool`);
-    return this.map.get(key) as V;
+    if (!this.internalMap.has(key)) throw new LookupError(`[${key}] does not exist in Lookup pool`);
+    return this.internalMap.get(key) as V;
   }
 
   size() {
-    return this.map.size;
+    return this.internalMap.size;
   }
 
   clear() {
-    this.map.clear();
+    this.internalMap.clear();
   }
 
   has(key: K) {
-    return this.map.has(key);
+    return this.internalMap.has(key);
   }
+
+  keys(): IterableIterator<K> {
+    return this.internalMap.keys();
+  }
+
+  values(): IterableIterator<V> {
+    return this.internalMap.values();
+  }
+
+  entries(): IterableIterator<[K, V]> {
+    return this.internalMap.entries();
+  }
+
 }

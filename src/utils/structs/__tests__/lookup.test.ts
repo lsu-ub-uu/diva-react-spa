@@ -54,4 +54,11 @@ describe('Lookup', () => {
     expect(lookup.has('nonExistingKey')).toBe(false);
   });
 
+  it('should be able to iterate over lookup', () => {
+    lookup.set('testKey1', 'testValue1');
+    lookup.set('testKey2', 'testValue2');
+
+    expect([]).toHaveLength(2);
+  });
+
 })
