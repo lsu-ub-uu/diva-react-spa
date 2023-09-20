@@ -62,15 +62,16 @@ export interface BFFMetadataChildReference {
 }
 
 export interface BFFPresentation extends BFFBase {
-  presentationOf: string;
-  mode: 'input' | 'output';
-  inputType: string;
   // Types below are a little bit weird, metadata definitions needs to checked up on (attributes)
   type: 'pGroup' | 'pVar' | 'pNumVar' | 'pCollVar' | 'container' | 'pRecordLink' | 'pResourceLink' | 'presentation';
+  presentationOf: string;
+  mode: 'input' | 'output';
+  inputType?: string;
   emptyTextId?: string;
 }
 
 export interface BFFPresentationGroup extends BFFBase {
+  // type?
   presentationOf: string;
   mode: 'input' | 'output';
   children: BFFPresentationChildReference[];

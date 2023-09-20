@@ -17,60 +17,131 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   extractAttributeValueByName,
   extractIdFromRecordInfo
 } from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { BFFPresentation } from './bffTypes';
+import { BFFPresentation, BFFPresentationGroup } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
+import { getChildReferencesListFromGroup } from './transformMetadata';
+import {
+  containsChildWithNameInData,
+  getAllDataAtomicsWithNameInData,
+  getFirstChildWithNameInData,
+  getFirstDataGroupWithNameInDataAndAttributes,
+} from '../utils/cora-data/CoraDataUtils';
 
-export const transformCoraPresentations = (dataListWrapper: DataListWrapper): BFFPresentation[] => {
+export const transformCoraPresentations = (dataListWrapper: DataListWrapper): (BFFPresentation | BFFPresentationGroup)[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
 
   const coraRecordWrappers = dataListWrapper.dataList.data;
-  return coraRecordWrappers.map(transformCoraPresentationToBFFPresentation);
+  const presentations = coraRecordWrappers.map(transformCoraPresentationToBFFPresentation);
+  return presentations.filter((item) => item !== undefined) as (BFFPresentation | BFFPresentationGroup)[];
 };
 
 const transformCoraPresentationToBFFPresentation = (
   coraRecordWrapper: RecordWrapper
-): BFFPresentation => {
+): BFFPresentation | BFFPresentationGroup | undefined => {
   const dataRecordGroup = coraRecordWrapper.record.data;
-
-  const id = extractIdFromRecordInfo(dataRecordGroup);
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
 
-  let presentationOf;
-  try {
-    presentationOf = extractLinkedRecordIdFromNamedRecordLink(
-      dataRecordGroup,
-      'presentationOf'
-    );
-  } catch (error: unknown) {
-    //@ts-ignore
-    console.error('type: ', type,  'id: ', id, 'error: ', error.message);
+  switch (type) {
+    case 'pGroup': {
+      return transformCoraPresentationGroupToBFFPresentationGroup(coraRecordWrapper)
+    }
+    case 'pVar': {
+      return transformCoraPresentationPVarToBFFPresentation(coraRecordWrapper);
+    }
+    // TODO add more types here like pNumVar, pCollVar, pRecordLink etc
+    default: {
+      return;
+    }
   }
+};
+
+// Handle pVar
+const transformCoraPresentationPVarToBFFPresentation = (coraRecordWrapper: RecordWrapper): BFFPresentation => {
+  const dataRecordGroup = coraRecordWrapper.record.data;
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
+  const presentationOf = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'presentationOf'
+  );
 
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  const inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
 
-  let inputType;
-  try {
-    inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
-  } catch (error: unknown) {
-    //@ts-ignores
-    console.error('type: ', type,  'id: ', id, 'error: ', error.message);
-  }
   let emptyTextId;
   try {
     emptyTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'emptyTextId');
-  } catch (error: unknown) {
-    //@ts-ignore
-    console.error('type: ', type,  'id: ', id, 'error: ', error.message);
-  }
+  } catch (e) {}
 
   return removeEmpty({ id, presentationOf, mode, inputType, emptyTextId, type } as BFFPresentation);
+}
+
+const transformCoraPresentationGroupToBFFPresentationGroup = (
+  coraRecordWrapper: RecordWrapper
+): BFFPresentationGroup => {
+  const dataRecordGroup = coraRecordWrapper.record.data;
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+  const presentationOf = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'presentationOf'
+  );
+  const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+
+  const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
+  const children = childReferencesList.map((childReference) => {
+    return transformChildReference(childReference);
+  });
+
+  return {
+    id,
+    presentationOf,
+    mode,
+    children
+  } as BFFPresentationGroup;
 };
+
+// Group Child references
+const transformChildReference = (childReference: DataGroup) => {
+  const refGroup = getFirstDataGroupWithNameInDataAndAttributes(childReference, 'refGroup');
+  const ref = getFirstChildWithNameInData(refGroup, 'ref');
+  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
+  const type = extractAttributeValueByName(ref as DataGroup, 'type');
+
+  const minNumberOfRepeatingToShow = extractAtomicValueByName(
+    childReference,
+    'minNumberOfRepeatingToShow'
+  );
+  const textStyle = extractAtomicValueByName(childReference, 'textStyle');
+  const presentationSize = extractAtomicValueByName(childReference, 'presentationSize');
+
+  const childStyleAtomics = getAllDataAtomicsWithNameInData(childReference, 'childStyle');
+  const childStyles = childStyleAtomics.map((childStyle) => childStyle.value);
+
+  return removeEmpty({
+    childId,
+    type,
+    minNumberOfRepeatingToShow,
+    textStyle,
+    presentationSize,
+    childStyles
+  });
+};
+
+const extractAtomicValueByName = (childReference: DataGroup, nameInData: string) => {
+  let atomicValue;
+  if (containsChildWithNameInData(childReference, nameInData)) {
+    atomicValue = getFirstDataAtomicValueWithNameInData(childReference, nameInData);
+  }
+  return atomicValue;
+};
+
+

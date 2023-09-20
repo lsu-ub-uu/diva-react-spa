@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import { configureServer } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
 import { listToPool } from './utils/structs/listToPool';
-import { BFFMetadata, BFFPresentation, BFFText } from './config/bffTypes';
+import { BFFMetadata, BFFPresentation, BFFPresentationGroup, BFFText } from './config/bffTypes';
 import { getRecordDataListByType } from './cora/cora';
 import { DataListWrapper } from './utils/cora-data/CoraData';
 import { transformCoraTexts } from './config/transformTexts';
@@ -44,7 +44,7 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
     const metadata = transformMetadata(result[0].data);
     const metadataPool = listToPool<BFFMetadata>(metadata);
     const presentation = transformCoraPresentations(result[1].data);
-    const presentationPool = listToPool<BFFPresentation>(presentation);
+    const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>(presentation);
 
     const dependencies = {
       metadata: metadataPool,
@@ -52,6 +52,7 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
     };
     console.log(presentationPool.size());
     // console.log(result.length);
+    res.status(200).json({});
   } catch (error: unknown) {
     //@ts-ignore
     console.log(error.message);

@@ -18,12 +18,12 @@
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
 import { transformCoraPresentations } from '../transformPresentations';
-import { transformCoraPresentationGroups } from '../transformPresentationGroups'; // remove this
 import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
 import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
 import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
-
+import coraPresentationWithMiscTypes from '../../__mocks__/coraPresentationWithMiscTypes.json';
+import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
   it('Empty list should return empty list', () => {
@@ -31,7 +31,7 @@ describe('transformCoraPresentations', () => {
     expect(transformData).toStrictEqual([]);
   });
 
-  it('Returns two entries', () => {
+  it('Returns two BFFPresentation of type pVar', () => {
     const transformData = transformCoraPresentations(presentationListWithTwoPVars);
     expect(transformData).toHaveLength(2);
   });
@@ -61,12 +61,12 @@ describe('transformCoraPresentations', () => {
   // Groups testing
 
   it('Should return one BFFPresentationGroup entry', () => {
-    const transformData = transformCoraPresentationGroups(coraPresentationGroup);
+    const transformData = transformCoraPresentations(coraPresentationGroup);
     expect(transformData).toHaveLength(1);
   });
 
-  it('Returns one BFFPresentation for one entry', () => {
-    const transformData = transformCoraPresentationGroups(coraPresentationGroup);
+  it('Returns one BFFPresentationGroup for one entry', () => {
+    const transformData = transformCoraPresentations(coraPresentationGroup);
     expect(transformData[0]).toStrictEqual({
       id: 'someNewPGroup',
       presentationOf: 'someNewGroup',
@@ -80,8 +80,8 @@ describe('transformCoraPresentations', () => {
     });
   });
 
-  it('Returns one BFFPresentation for one entry with minNumberOfRepeatingToShow', () => {
-    const transformData = transformCoraPresentationGroups(
+  it('Returns one BFFPresentationGroup for one entry with minNumberOfRepeatingToShow', () => {
+    const transformData = transformCoraPresentations(
       coraPresentationGroupWithMinNumberOfRepeatingToShow
     );
     expect(transformData[0]).toStrictEqual({
@@ -108,4 +108,12 @@ describe('transformCoraPresentations', () => {
       ]
     });
   });
+
+  it('Returns only BFFPresentationGroup and BFFPresentation (pVar) entries and skips other types', () => {
+    const transformData = transformCoraPresentations(
+      coraPresentationWithMiscTypes as DataListWrapper
+    );
+    expect(transformData).toHaveLength(2);
+  });
+
 });
