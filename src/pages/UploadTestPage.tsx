@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Stack } from '@mui/material';
-import { Card } from '../components';
+import { Card, useBackdrop } from '../components';
 import {
   FormGenerator,
   FormSchema,
@@ -11,8 +11,13 @@ import { useCoraFormSchemaByValidationType } from '../app/hooks';
 
 export const UploadTestPage = () => {
   const { t } = useTranslation();
+  const { setBackdrop } = useBackdrop();
   const { error, isLoading, schema } =
     useCoraFormSchemaByValidationType('demo');
+
+  useEffect(() => {
+    setBackdrop(isLoading);
+  }, [isLoading, setBackdrop]);
 
   if (error) return <span>Error: {error}</span>;
   if (isLoading) return <span>Loading form from cora...</span>;
