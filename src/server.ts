@@ -2,13 +2,16 @@ import express, { Application } from 'express';
 import { configureServer } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
 import { listToPool } from './utils/structs/listToPool';
-import { BFFMetadata, BFFPresentation, BFFPresentationGroup, BFFText } from './config/bffTypes';
+import { BFFMetadata, BFFPresentation, BFFPresentationGroup, BFFText, BFFValidationType } from './config/bffTypes';
 import { getRecordDataListByType } from './cora/cora';
 import { DataListWrapper } from './utils/cora-data/CoraData';
 import { transformCoraTexts } from './config/transformTexts';
 import { transformMetadata } from './config/transformMetadata';
 import { transformCoraPresentations } from './config/transformPresentations';
 import axios from 'axios';
+import { transformCoraValidationTypes } from './config/transformValidationTypes';
+import { Dependencies } from './formDefinition/formDefinitionsDep';
+import { createFormDefinition } from './formDefinition/formDefinition';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -37,22 +40,32 @@ app.use('/api/translations/:lang', async (req, res) => {
 
 app.use('/api/form/:validationTypeId', async (req, res) => {
   try {
-    const types = ['metadata', 'presentation'];
+    const { validationTypeId} = req.params;
+    const types = ['metadata', 'presentation', 'validationType'];
     const promises = types.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
     const result = await Promise.all(promises);
 
     const metadata = transformMetadata(result[0].data);
     const metadataPool = listToPool<BFFMetadata>(metadata);
+
     const presentation = transformCoraPresentations(result[1].data);
     const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>(presentation);
 
+    const validationTypes = transformCoraValidationTypes(result[2].data);
+    const validationTypePool = listToPool<BFFValidationType>(validationTypes);
+
+    if (!validationTypePool.has(req.params.validationTypeId)) {
+      res.status(404).json({});
+    }
+
     const dependencies = {
-      metadata: metadataPool,
-      presentation: presentationPool
-    };
-    console.log(presentationPool.size());
-    // console.log(result.length);
-    res.status(200).json({});
+      validationTypePool: validationTypePool,
+      metadataPool: metadataPool,
+      presentationPool: presentationPool
+    } as Dependencies;
+
+    const formDef = createFormDefinition(dependencies, validationTypeId, 'new');
+    res.status(200).json(formDef);
   } catch (error: unknown) {
     //@ts-ignore
     console.log(error.message);
