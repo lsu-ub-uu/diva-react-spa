@@ -46,7 +46,9 @@ export const createFormDefinition = (
       const textVariable = metadataPool.get(metadataId) as BFFMetadataTextVariable;
       name = textVariable.nameInData;
       const pattern = textVariable.regEx;
-      validation = { type: 'regex', pattern };
+      if (pattern) {
+        validation = { type: 'regex', pattern };
+      }
     }
 
     return removeEmpty({ name, type, placeholder, validation });
