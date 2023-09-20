@@ -8,7 +8,7 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 interface UseFormSchemaByValidationType {
-  schema: unknown;
+  schema: FormSchema | undefined;
   isLoading: boolean;
   error: string | null;
 }
