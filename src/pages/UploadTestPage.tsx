@@ -29,7 +29,6 @@ export const UploadTestPage = () => {
       </Helmet>
       <div>
         <Stack spacing={2}>
-          <pre>{JSON.stringify(schema, null, 2)}</pre>
           <Card
             title='Form from Cora'
             variant='variant6'
@@ -41,6 +40,7 @@ export const UploadTestPage = () => {
               formSchema={schema as FormSchema}
             />
           </Card>
+          <pre>{JSON.stringify(schema, null, 2)}</pre>
         </Stack>
       </div>
     </>
