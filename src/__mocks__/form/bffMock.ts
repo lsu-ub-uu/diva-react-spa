@@ -68,7 +68,7 @@ export const pSomeMetadataTextVariable: BFFPresentation = {
   id: 'pSomeMetadataTextVariableId',
   presentationOf: 'someMetadataTextVariableId',
   mode: 'input',
-  inputType: 'text',
+  inputType: 'input',
   type: 'pVar',
   emptyTextId: 'someEmptyTextId'
 };

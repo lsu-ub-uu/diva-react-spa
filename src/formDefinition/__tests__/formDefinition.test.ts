@@ -97,7 +97,7 @@ describe('formDefinition', () => {
           name: 'someHeadlineTextId',
         },
         {
-          type: 'inputText',
+          type: 'input',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
           validation: {

@@ -40,8 +40,9 @@ export const createFormDefinition = (
 
     if (childType === 'presentation') { // todo handle gui_element
       const presentation: BFFPresentation = presentationPool.get(childId); // pSomeMetadataTextVariableId
+      // presentation.type === "pVar"
+      type = presentation.inputType;
       placeholder = presentation.emptyTextId;
-      type = _.camelCase(`${presentation.mode} ${presentation.inputType}`);
       const metadataId = presentation.presentationOf;
       const textVariable = metadataPool.get(metadataId) as BFFMetadataTextVariable;
       name = textVariable.nameInData;
