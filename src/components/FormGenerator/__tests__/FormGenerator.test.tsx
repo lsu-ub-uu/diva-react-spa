@@ -28,6 +28,14 @@ import { FormGenerator, FormSchema } from '../FormGenerator';
  */
 
 describe('<FormGenerator />', () => {
+  vi.mock('react-i18next', () => ({
+    useTranslation: () => {
+      return {
+        t: (str: string) => str,
+      };
+    },
+  }));
+
   test('Renders a form from a given definition', () => {
     const mockSubmit = vi.fn();
     render(
@@ -39,7 +47,9 @@ describe('<FormGenerator />', () => {
     const inputElement = screen.getByPlaceholderText('someEmptyTextId');
     expect(inputElement).toBeInTheDocument();
 
-    const headerElement = screen.getByText('someHeadlineTextId');
+    const headerElement = screen.getByText(
+      'presentationTypeTextCollectionVarDefText',
+    );
     expect(headerElement).toBeInTheDocument();
   });
 

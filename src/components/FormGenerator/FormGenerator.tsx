@@ -23,8 +23,8 @@ import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StringSchema } from 'yup';
+import { useTranslation } from 'react-i18next';
 import { ControlledTextField } from '../Controlled';
-import { useTranslation } from "react-i18next";
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -74,7 +74,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
     switch (component.type) {
-      case 'inputText': {
+      case 'input': {
         return (
           <ControlledTextField
             key={reactKey}
