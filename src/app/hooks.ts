@@ -1,8 +1,8 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import * as url from 'url';
 import type { RootState, AppDispatch } from './store';
+import { FormSchema } from '../components/FormGenerator/FormGenerator';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -16,7 +16,7 @@ interface UseFormSchemaByValidationType {
 export const useCoraFormSchemaByValidationType = (
   validationType: string,
 ): UseFormSchemaByValidationType => {
-  const [schema, setSchema] = useState<unknown>();
+  const [schema, setSchema] = useState<FormSchema>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,10 +25,10 @@ export const useCoraFormSchemaByValidationType = (
 
     const fetchFormSchema = async () => {
       try {
-        const response = await axios.get(`/form/${validationType}`);
+        const response = await axios.get<FormSchema>(`/form/${validationType}`);
         if (isMounted) {
           setError(null);
-          setSchema(response.data.data);
+          setSchema(response.data);
           setIsLoading(false);
         }
       } catch (err: unknown) {

@@ -7,10 +7,15 @@ import {
   FormGenerator,
   FormSchema,
 } from '../components/FormGenerator/FormGenerator';
-import { formDef } from '../__mocks__/data/formDef';
+import { useCoraFormSchemaByValidationType } from '../app/hooks';
 
 export const UploadTestPage = () => {
   const { t } = useTranslation();
+  const { error, isLoading, schema } =
+    useCoraFormSchemaByValidationType('demo');
+
+  if (error) return <span>Error: {error}</span>;
+  if (isLoading) return <span>Loading form from cora...</span>;
 
   return (
     <>
@@ -19,6 +24,7 @@ export const UploadTestPage = () => {
       </Helmet>
       <div>
         <Stack spacing={2}>
+          <pre>{JSON.stringify(schema, null, 2)}</pre>
           <Card
             title='Form from Cora'
             variant='variant6'
@@ -27,7 +33,7 @@ export const UploadTestPage = () => {
           >
             <FormGenerator
               onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
-              formSchema={formDef as FormSchema}
+              formSchema={schema as FormSchema}
             />
           </Card>
         </Stack>

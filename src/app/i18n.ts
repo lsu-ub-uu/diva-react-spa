@@ -8,7 +8,7 @@ i18n
   .use(LanguageDetector)
   .use(I18NextHttpBackend)
   .init({
-    debug: true,
+    debug: false,
     preload: ['sv', 'en'],
     interpolation: {
       escapeValue: false,
