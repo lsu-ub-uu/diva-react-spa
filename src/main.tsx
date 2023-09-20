@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
-// import { SnackbarProvider } from 'notistack';
 import { Provider as StateProvider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
 import store from './app/store';
@@ -11,10 +10,6 @@ import App from './App';
 
 import { BackdropProvider, SnackbarProvider } from './components';
 
-/* if (process.env.NODE_ENV === 'development') {
-  worker.start().then();
-}
- */
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BackdropProvider>
