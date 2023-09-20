@@ -73,10 +73,11 @@ describe('useCoraFormSchemaByValidationType', () => {
       statusText: '',
     };
 
-    const apiUrl = 'form/someValidationTypeId';
+    const validationType = 'someValidationTypeId';
+    const apiUrl = `form/${validationType}`;
+
     mockAxios.onGet(apiUrl).reply(200, expectedResponse);
 
-    const validationType = 'someValidationTypeId';
     const { result } = renderHook(() =>
       useCoraFormSchemaByValidationType(validationType),
     );
@@ -102,7 +103,8 @@ describe('useCoraFormSchemaByValidationType', () => {
     );
 
     await waitFor(() => {
-      const { error } = result.current;
+      const { error, isLoading } = result.current;
+      expect(isLoading).toBeFalsy();
       expect(error).toEqual('Request failed with status code 500');
     });
   });
