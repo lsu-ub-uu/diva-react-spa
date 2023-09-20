@@ -11,7 +11,7 @@ import { transformCoraPresentations } from './config/transformPresentations';
 import axios from 'axios';
 
 const PORT = process.env.PORT || 8080;
-const CORA_API_URL = process.env.CORA_API_URL || '';
+const { CORA_API_URL } = process.env;
 
 axios.defaults.baseURL = CORA_API_URL;
 

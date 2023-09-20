@@ -18,8 +18,12 @@
 
 import emptyDataList from '../../__mocks__/emptyDataList.json';
 import { transformCoraPresentations } from '../transformPresentations';
+import { transformCoraPresentationGroups } from '../transformPresentationGroups'; // remove this
 import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
 import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPresentationGroupWithMissingEmptyTextId.json';
+import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
+import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
+
 
 describe('transformCoraPresentations', () => {
   it('Empty list should return empty list', () => {
@@ -51,6 +55,57 @@ describe('transformCoraPresentations', () => {
       presentationOf: 'someTextVar',
       mode: 'input',
       inputType: 'someInputType'
+    });
+  });
+
+  // Groups testing
+
+  it('Should return one BFFPresentationGroup entry', () => {
+    const transformData = transformCoraPresentationGroups(coraPresentationGroup);
+    expect(transformData).toHaveLength(1);
+  });
+
+  it('Returns one BFFPresentation for one entry', () => {
+    const transformData = transformCoraPresentationGroups(coraPresentationGroup);
+    expect(transformData[0]).toStrictEqual({
+      id: 'someNewPGroup',
+      presentationOf: 'someNewGroup',
+      mode: 'input',
+      children: [
+        { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle', childStyles: [] },
+        { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
+        { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
+        { childId: 'bookTitleTextVarPVar', type: 'presentation', childStyles: [] }
+      ]
+    });
+  });
+
+  it('Returns one BFFPresentation for one entry with minNumberOfRepeatingToShow', () => {
+    const transformData = transformCoraPresentationGroups(
+      coraPresentationGroupWithMinNumberOfRepeatingToShow
+    );
+    expect(transformData[0]).toStrictEqual({
+      id: 'someNewPGroup',
+      presentationOf: 'someNewGroup',
+      mode: 'input',
+      children: [
+        {
+          childId: 'demoText',
+          type: 'text',
+          textStyle: 'h1TextStyle',
+          presentationSize: 'firstSmaller',
+          childStyles: []
+        },
+        { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
+        { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
+        {
+          childId: 'bookTitleTextVarPVar',
+          minNumberOfRepeatingToShow: '99',
+          textStyle: 'h5TextStyle',
+          type: 'presentation',
+          childStyles: ['5', '3']
+        }
+      ]
     });
   });
 });
