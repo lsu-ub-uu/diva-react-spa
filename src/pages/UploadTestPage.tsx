@@ -22,8 +22,8 @@ export const UploadTestPage = () => {
           <Card
             title='Form from Cora'
             variant='variant6'
-            tooltipTitle='File upload instructions'
-            tooltipBody='Some body text on how upload works goes here'
+            tooltipTitle='Tooltip title'
+            tooltipBody='Some body text on how this form works'
           >
             <FormGenerator
               onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
