@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
+import axios from 'axios';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
-// import { SnackbarProvider } from 'notistack';
 import { Provider as StateProvider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
 import store from './app/store';
@@ -11,10 +11,12 @@ import App from './App';
 
 import { BackdropProvider, SnackbarProvider } from './components';
 
-/* if (process.env.NODE_ENV === 'development') {
-  worker.start().then();
-}
- */
+// Setup axios baseUrl from env variable
+const { VITE_BFF_API_URL } = import.meta.env;
+axios.defaults.baseURL = VITE_BFF_API_URL;
+
+console.log('axios.baseUrl: ', axios.defaults.baseURL);
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BackdropProvider>

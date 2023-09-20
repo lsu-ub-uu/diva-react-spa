@@ -1,11 +1,26 @@
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Stack } from '@mui/material';
-import { Card, FileUpload } from '../components';
+import { Card, useBackdrop } from '../components';
+import {
+  FormGenerator,
+  FormSchema,
+} from '../components/FormGenerator/FormGenerator';
+import { useCoraFormSchemaByValidationType } from '../app/hooks';
 
 export const UploadTestPage = () => {
   const { t } = useTranslation();
+  const { setBackdrop } = useBackdrop();
+  const { error, isLoading, schema } =
+    useCoraFormSchemaByValidationType('demo');
+
+  useEffect(() => {
+    setBackdrop(isLoading);
+  }, [isLoading, setBackdrop]);
+
+  if (error) return <span>Error: {error}</span>;
+  if (isLoading) return <span>Loading form from cora...</span>;
 
   return (
     <>
@@ -14,13 +29,17 @@ export const UploadTestPage = () => {
       </Helmet>
       <div>
         <Stack spacing={2}>
+          <pre>{JSON.stringify(schema, null, 2)}</pre>
           <Card
-            title='Upload File'
+            title='Form from Cora'
             variant='variant6'
-            tooltipTitle='File upload instructions'
-            tooltipBody='Some body text on how upload works goes here'
+            tooltipTitle='Tooltip title'
+            tooltipBody='Some body text on how this form works'
           >
-            <FileUpload accept={['image/png']} />
+            <FormGenerator
+              onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+              formSchema={schema as FormSchema}
+            />
           </Card>
         </Stack>
       </div>
