@@ -25,10 +25,10 @@ export const useCoraFormSchemaByValidationType = (
 
     const fetchFormSchema = async () => {
       try {
-        const response = await axios.get<FormSchema>(`/form/${validationType}`);
+        const response = await axios.get(`/form/${validationType}`);
         if (isMounted) {
           setError(null);
-          setSchema(response.data);
+          setSchema(response.data as FormSchema);
           setIsLoading(false);
         }
       } catch (err: unknown) {
