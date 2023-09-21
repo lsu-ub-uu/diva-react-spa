@@ -28,6 +28,8 @@ export { DatePicker } from './Form/DatePicker/DatePicker';
 export { DateTimePicker } from './Form/DateTimePicker/DateTimePicker';
 export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';
 export { SnackbarProvider } from './Snackbar/SnackbarProvider';
+export { FormGenerator } from './FormGenerator/FormGenerator';
+export type { FormSchema } from './FormGenerator/FormGenerator';
 
 export interface SelectItem {
   id: string;
