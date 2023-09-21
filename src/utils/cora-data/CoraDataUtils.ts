@@ -1,54 +1,66 @@
+/*
+ * Copyright 2023 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import { isEqual as _isEqual } from 'lodash';
-import {
-  Attributes,
-  DataAtomic,
-  DataElement,
-  DataGroup,
-  RecordLink,
-} from './CoraData';
-import { ClientRecordLink } from '../client-data/ClientData';
+import { Attributes, DataAtomic, DataElement, DataGroup, RecordLink } from './CoraData';
+import { BFFRecordLink } from '../../config/bffTypes';
 
 export function getAllRecordLinksWithNameInData(
   dataGroup: DataGroup,
-  nameInData: string,
-): ClientRecordLink[] {
+  nameInData: string
+): BFFRecordLink[] {
   const recordLinks = <RecordLink[]>dataGroup.children.filter((child) => {
     if (Object.prototype.hasOwnProperty.call(child, 'children')) {
       const dGChild = child as DataGroup;
       return dGChild.children.filter((grandChild: DataElement) => {
         return (
-          Object.prototype.hasOwnProperty.call(
-            grandChild,
-            'linkedRecordType',
-          ) &&
+          Object.prototype.hasOwnProperty.call(grandChild, 'linkedRecordType') &&
           Object.prototype.hasOwnProperty.call(grandChild, 'linkedRecordId')
         );
       });
     }
     return false;
   });
+
   const matchingRecordLinks = recordLinks.filter((recordLink) => {
     return recordLink.name === nameInData;
   });
+
   return matchingRecordLinks.map((recordLink) => {
     return {
       name: recordLink.name,
-      recordType: getFirstDataAtomicWithNameInData(
-        recordLink,
-        'linkedRecordType',
-      )?.value,
+      recordType: getFirstDataAtomicWithNameInData(recordLink, 'linkedRecordType')?.value,
       id: getFirstDataAtomicWithNameInData(recordLink, 'linkedRecordId')?.value,
-      readLink: recordLink.actionLinks?.read,
+      readLink: recordLink.actionLinks?.read
     };
   });
+}
+export function getFirstRecordLinkWithNameInData(dataGroup: DataGroup, nameInData: string) {
+  throw new Error(`RecordLink with name [${nameInData}] does not exist`);
 }
 
 export function getFirstChildWithNameInData(
   dataGroup: DataGroup,
-  nameInData: string,
-): DataAtomic | DataGroup | null {
+  nameInData: string
+): DataAtomic | DataGroup {
   if (dataGroup.children.length === 0) {
-    return null;
+    throw new Error(`DataGroup with name [${dataGroup.name}] does not have any children`);
   }
 
   const matchingChild = dataGroup.children.find((child) => {
@@ -56,7 +68,7 @@ export function getFirstChildWithNameInData(
   });
 
   if (matchingChild === undefined) {
-    return null;
+    throw new Error(`Child with name [${nameInData}] could not be found`);
   }
 
   return matchingChild;
@@ -64,7 +76,7 @@ export function getFirstChildWithNameInData(
 
 export function getAllChildrenWithNameInData(
   dataGroup: DataGroup,
-  nameInData: string,
+  nameInData: string
 ): (DataAtomic | DataGroup)[] {
   const childrenToReturn = dataGroup.children.filter((child) => {
     return child.name === nameInData;
@@ -72,13 +84,18 @@ export function getAllChildrenWithNameInData(
 
   return childrenToReturn;
 }
+export const containsChildWithNameInData = (dataGroup: DataGroup, nameInData: string): boolean => {
+  return dataGroup.children.some((child) => {
+    return child.name === nameInData;
+  });
+};
 
 export function getFirstDataAtomicWithNameInData(
   dataGroup: DataGroup,
-  nameInData: string,
-): DataAtomic | undefined {
+  nameInData: string
+): DataAtomic {
   if (dataGroup.children.length === 0) {
-    return undefined;
+    throw new Error(`DataGroup with name [${dataGroup.name}] does not have any children`);
   }
 
   const dataAtomics = <DataAtomic[]>dataGroup.children.filter((child) => {
@@ -89,12 +106,18 @@ export function getFirstDataAtomicWithNameInData(
     return dataAtomic.name === nameInData;
   });
 
+  if (firstMatchingDataAtomic === undefined) {
+    throw new Error(
+      `DataGroup with name [${dataGroup.name}] does not have atomic child with name [${nameInData}]`
+    );
+  }
+
   return firstMatchingDataAtomic;
 }
 
 export function getAllDataAtomicsWithNameInData(
   dataGroup: DataGroup,
-  nameInData: string,
+  nameInData: string
 ): DataAtomic[] {
   const dataAtomics = <DataAtomic[]>dataGroup.children.filter((child) => {
     return Object.prototype.hasOwnProperty.call(child, 'value');
@@ -109,8 +132,8 @@ export function getAllDataAtomicsWithNameInData(
 
 export function getFirstDataGroupWithNameInData(
   dataGroup: DataGroup,
-  nameInData: string,
-): DataGroup | undefined {
+  nameInData: string
+): DataGroup {
   const dataGroups = <DataGroup[]>dataGroup.children.filter((child) => {
     return Object.prototype.hasOwnProperty.call(child, 'children');
   });
@@ -119,22 +142,26 @@ export function getFirstDataGroupWithNameInData(
     return child.name === nameInData;
   });
 
+  if (firstMatchingDataGroup === undefined) {
+    throw new Error(`Child with name [${nameInData}] does not exist`);
+  }
+
   return firstMatchingDataGroup;
 }
 
-export function getFirstDataGroupWithNameInDataAndAttribues(
+export function getFirstDataGroupWithNameInDataAndAttributes(
   dataGroup: DataGroup,
   nameInData: string,
-  attributesToMatch?: Attributes,
-): DataGroup | undefined {
+  attributesToMatch?: Attributes
+): DataGroup {
   const matchingDataGroups = getAllDataGroupsWithNameInDataAndAttributes(
     dataGroup,
     nameInData,
-    attributesToMatch,
+    attributesToMatch
   );
 
   if (matchingDataGroups.length === 0) {
-    return undefined;
+    throw new Error(`DataGroup with name [${nameInData}] does not exist`);
   }
 
   return matchingDataGroups[0];
@@ -143,7 +170,7 @@ export function getFirstDataGroupWithNameInDataAndAttribues(
 export const getAllDataGroupsWithNameInDataAndAttributes = (
   dataGroup: DataGroup,
   nameInData: string,
-  attributesToMatch?: Attributes,
+  attributesToMatch?: Attributes
 ): DataGroup[] => {
   const dataGroups = <DataGroup[]>dataGroup.children.filter((child) => {
     return Object.prototype.hasOwnProperty.call(child, 'children');
@@ -166,11 +193,12 @@ export const getAllDataGroupsWithNameInDataAndAttributes = (
 };
 
 export default {
+  getFirstRecordLinkWithNameInData,
   getFirstChildWithNameInData,
   getAllChildrenWithNameInData,
   getFirstDataAtomicWithNameInData,
   getAllDataAtomicsWithNameInData,
   getFirstDataGroupWithNameInData,
-  getFirstDataGroupWithNameInDataAndAttribues,
-  getAllDataGroupsWithNameInDataAndAttributes,
+  getFirstDataGroupWithNameInDataAndAttributes,
+  getAllDataGroupsWithNameInDataAndAttributes
 };

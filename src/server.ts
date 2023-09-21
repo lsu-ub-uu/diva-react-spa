@@ -1,32 +1,77 @@
 import express, { Application } from 'express';
 import { configureServer } from './config/configureServer';
-import personRoute from './routes/personRoute';
-import publicationRoute from './routes/publicationRoute';
-import recordTypeRoute from './routes/recordTypeRoute';
-import researchSubjectsRoute from './routes/researchSubjectsRoute';
-import subjectCategoriesRoute from './routes/subjectCategoriesRoute';
-import searchRoute from './routes/searchRoute';
-import authRoute from './routes/authRoute';
-import publishRoute from './routes/publishRoute';
-import binaryRoute from './routes/binaryRoute';
+import { createTextDefinition } from './textDefinition/textDefinition';
+import { listToPool } from './utils/structs/listToPool';
+import { BFFMetadata, BFFPresentation, BFFPresentationGroup, BFFText, BFFValidationType } from './config/bffTypes';
+import { getRecordDataListByType } from './cora/cora';
+import { DataListWrapper } from './utils/cora-data/CoraData';
+import { transformCoraTexts } from './config/transformTexts';
+import { transformMetadata } from './config/transformMetadata';
+import { transformCoraPresentations } from './config/transformPresentations';
+import axios from 'axios';
+import { transformCoraValidationTypes } from './config/transformValidationTypes';
+import { Dependencies } from './formDefinition/formDefinitionsDep';
+import { createFormDefinition } from './formDefinition/formDefinition';
 
 const PORT = process.env.PORT || 8080;
-const CORA_API_URL = process.env.CORA_API_URL || 'error';
+const { CORA_API_URL } = process.env;
+
+axios.defaults.baseURL = CORA_API_URL;
 
 const app: Application = express();
 
 configureServer(app);
 // loadCoraDefinitions()  // keeps them in memory some way... redis, node-cache
 
-app.use('/api/auth', authRoute);
-app.use('/api/person', personRoute);
-app.use('/api/publication', publicationRoute);
-app.use('/api/recordtype', recordTypeRoute);
-app.use('/api/researchsubjects', researchSubjectsRoute);
-app.use('/api/subjectcategories', subjectCategoriesRoute);
-app.use('/api/search', searchRoute);
-app.use('/api/publish', publishRoute);
-app.use('/api/binary', binaryRoute);
+app.use('/api/translations/:lang', async (req, res) => {
+  try {
+    const response = await getRecordDataListByType<DataListWrapper>('text', '');
+    const texts = transformCoraTexts(response.data);
+    const textPool = listToPool<BFFText>(texts);
+    const dependencies = {
+      textPool: textPool
+    };
+    const textDefinitions = createTextDefinition(dependencies, req.params.lang);
+    res.status(200).json(textDefinitions);
+  } catch (error: unknown) {
+    res.status(500).json('Internal server error');
+  }
+});
+
+app.use('/api/form/:validationTypeId', async (req, res) => {
+  try {
+    const { validationTypeId} = req.params;
+    const types = ['metadata', 'presentation', 'validationType'];
+    const promises = types.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
+    const result = await Promise.all(promises);
+
+    const metadata = transformMetadata(result[0].data);
+    const metadataPool = listToPool<BFFMetadata>(metadata);
+
+    const presentation = transformCoraPresentations(result[1].data);
+    const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>(presentation);
+
+    const validationTypes = transformCoraValidationTypes(result[2].data);
+    const validationTypePool = listToPool<BFFValidationType>(validationTypes);
+
+    if (!validationTypePool.has(req.params.validationTypeId)) {
+      res.status(404).json({});
+    }
+
+    const dependencies = {
+      validationTypePool: validationTypePool,
+      metadataPool: metadataPool,
+      presentationPool: presentationPool
+    } as Dependencies;
+
+    const formDef = createFormDefinition(dependencies, validationTypeId, 'new');
+    res.status(200).json(formDef);
+  } catch (error: unknown) {
+    //@ts-ignore
+    console.log(error.message);
+    res.status(500).json('Internal server error');
+  }
+});
 
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);

@@ -1,0 +1,285 @@
+{
+  "dataList": {
+    "fromNo": "0",
+    "data": [
+      {
+        "record": {
+          "data": {
+            "children": [
+              {
+                "children": [
+                  {
+                    "name": "id",
+                    "value": "someTextVar"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "cora"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/system/cora",
+                        "accept": "application/vnd.uub.record+json"
+                      }
+                    },
+                    "name": "dataDivider"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "metadata"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/metadata",
+                        "accept": "application/vnd.uub.record+json"
+                      }
+                    },
+                    "name": "type"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "validationType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "metadataTextVariable"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/validationType/metadataTextVariable",
+                        "accept": "application/vnd.uub.record+json"
+                      }
+                    },
+                    "name": "validationType"
+                  },
+                  {
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "141414"
+                          }
+                        ],
+                        "actionLinks": {
+                          "read": {
+                            "requestMethod": "GET",
+                            "rel": "read",
+                            "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
+                            "accept": "application/vnd.uub.record+json"
+                          }
+                        },
+                        "name": "updatedBy"
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2017-11-01T17:54:13.000000Z"
+                      }
+                    ],
+                    "name": "updated"
+                  },
+                  {
+                    "repeatId": "1",
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "141414"
+                          }
+                        ],
+                        "actionLinks": {
+                          "read": {
+                            "requestMethod": "GET",
+                            "rel": "read",
+                            "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
+                            "accept": "application/vnd.uub.record+json"
+                          }
+                        },
+                        "name": "updatedBy"
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2023-03-02T15:30:17.287390Z"
+                      }
+                    ],
+                    "name": "updated"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "user"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "141414"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
+                        "accept": "application/vnd.uub.record+json"
+                      }
+                    },
+                    "name": "createdBy"
+                  },
+                  {
+                    "name": "tsCreated",
+                    "value": "2017-10-01T00:00:00.000000Z"
+                  }
+                ],
+                "name": "recordInfo"
+              },
+              {
+                "name": "nameInData",
+                "value": "someNameInData"
+              },
+              {
+                "name": "regEx",
+                "value": ".*"
+              },
+              {
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "someTextVarText"
+                  }
+                ],
+                "actionLinks": {
+                  "read": {
+                    "requestMethod": "GET",
+                    "rel": "read",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/someTextVarText",
+                    "accept": "application/vnd.uub.record+json"
+                  }
+                },
+                "name": "textId"
+              },
+              {
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "someTextVarDefText"
+                  }
+                ],
+                "actionLinks": {
+                  "read": {
+                    "requestMethod": "GET",
+                    "rel": "read",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/someTextVarDefText",
+                    "accept": "application/vnd.uub.record+json"
+                  }
+                },
+                "name": "defTextId"
+              }
+            ],
+            "name": "metadata",
+            "attributes": {
+              "type": "textVariable"
+            }
+          },
+          "actionLinks": {
+            "read": {
+              "requestMethod": "GET",
+              "rel": "read",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someTextVar",
+              "accept": "application/vnd.uub.record+json"
+            },
+            "read_incoming_links": {
+              "requestMethod": "GET",
+              "rel": "read_incoming_links",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someTextVar/incomingLinks",
+              "accept": "application/vnd.uub.recordList+json"
+            },
+            "update": {
+              "requestMethod": "POST",
+              "rel": "update",
+              "contentType": "application/vnd.uub.record+json",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/someTextVar",
+              "accept": "application/vnd.uub.record+json"
+            },
+            "index": {
+              "requestMethod": "POST",
+              "rel": "index",
+              "body": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "metadata"
+                      }
+                    ],
+                    "name": "recordType"
+                  },
+                  {
+                    "name": "recordId",
+                    "value": "someTextVar"
+                  },
+                  {
+                    "name": "type",
+                    "value": "index"
+                  }
+                ],
+                "name": "workOrder"
+              },
+              "contentType": "application/vnd.uub.record+json",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/workOrder/",
+              "accept": "application/vnd.uub.record+json"
+            }
+          }
+        }
+      }
+    ],
+    "totalNo": "1",
+    "containDataOfType": "metadata",
+    "toNo": "1"
+  }
+}
