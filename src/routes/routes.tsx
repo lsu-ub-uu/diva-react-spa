@@ -10,7 +10,6 @@ import {
   RecordTypePage,
   PersonSearchPage,
   PersonCreatePage,
-  FormGenPage,
   UploadTestPage,
 } from '../pages';
 
@@ -47,10 +46,6 @@ export const routes = [
       {
         path: '/person-create',
         element: <PersonCreatePage />,
-      },
-      {
-        path: '/form-gen',
-        element: <FormGenPage />,
       },
       {
         path: '/upload',
