@@ -36,7 +36,7 @@ describe('transformCoraPresentations', () => {
     expect(transformData).toHaveLength(2);
   });
 
-  it('Returns one BFFPresentation for one entry', () => {
+  it('Returns one BFFPresentation for one pVar entry', () => {
     const transformData = transformCoraPresentations(presentationListWithTwoPVars);
     expect(transformData[0]).toStrictEqual({
       id: 'someTextVarPVar',
@@ -47,7 +47,8 @@ describe('transformCoraPresentations', () => {
       emptyTextId: 'somePlaceholderText'
     });
   });
-  it('Returns one BFFPresentation with missing emptyTextId', () => {
+
+  it('Returns one BFFPresentation for one pVar with missing emptyTextId', () => {
     const transformData = transformCoraPresentations(coraPresentationGroupWithMissingEmptyTextId);
     expect(transformData[0]).toStrictEqual({
       id: 'someTextVarPVar',
