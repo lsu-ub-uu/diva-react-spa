@@ -50,6 +50,15 @@ export interface BFFMetadataTextVariable extends BFFMetadata {
   regEx: string;
   finalValue?: string;
 }
+
+export interface BFFMetadataNumberVariable  extends BFFMetadata  {
+  min: string;
+  max: string;
+  warningMin: string;
+  warningMax: string;
+  numberOfDecimals: string;
+}
+
 export interface BFFMetadataGroup extends BFFMetadata {
   children: BFFMetadataChildReference[];
 }
