@@ -4,6 +4,7 @@ import testMetaData from '../../__mocks__/coraMetadata.json';
 import testMetaDataWithFinalValue from '../../__mocks__/coraMetadataWithFinalValue.json';
 import testMetaDataForGroupWithTwoChildren from '../../__mocks__/coraMetadataForGroupWithTwoChildren.json';
 import testNumberVariableMetaData from '../../__mocks__/coraMetadataNumberVariable.json';
+import testNumberVariableWithFinalValueMetaData from '../../__mocks__/coraMetadataNumberVariableWithFinalValue.json';
 
 
 describe('transformMetadata', () => {
@@ -104,6 +105,25 @@ describe('transformMetadata', () => {
       numberOfDecimals: "3",
     });
     expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
+  });
+
+  it('Returns one BFFMetadata for numberVariable with finalValue', () => {
+    const metadataList = transformMetadata(testNumberVariableWithFinalValueMetaData);
+    expect(metadataList).toHaveLength(1);
+    expect(metadataList[0]).toEqual({
+      id: 'someNumberVar',
+      nameInData: 'someNameInDataNumberVar',
+      type: 'numberVariable',
+      textId: 'someNumberVarText',
+      defTextId: 'someNumberVarDefText',
+      min: "0",
+      max: "20",
+      warningMin: "2",
+      warningMax: "10",
+      numberOfDecimals: "3",
+      finalValue: "50.123"
+    });
+    expect(metadataList[0].hasOwnProperty('finalValue')).toBe(true);
   });
 
 });
