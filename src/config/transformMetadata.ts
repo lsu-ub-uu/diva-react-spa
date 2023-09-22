@@ -33,7 +33,7 @@ import {
   BFFMetadata,
   BFFMetadataGroup,
   BFFMetadataChildReference,
-  BFFMetadataTextVariable
+  BFFMetadataTextVariable, BFFMetadataNumberVariable,
 } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
@@ -62,6 +62,9 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     case 'textVariable': {
       return transformTextVariable(dataRecordGroup, metadata);
     }
+    case 'numberVariable': {
+      return transformNumberVariable(dataRecordGroup, metadata);
+    }
     // TODO add more types
     default: {
       return;
@@ -77,6 +80,21 @@ const transformTextVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata
 
   const regEx = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'regEx');
   return { ...metadata, regEx } as BFFMetadataTextVariable;
+};
+
+const transformNumberVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata): BFFMetadata => {
+  if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
+    const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
+    metadata = { ...metadata, finalValue } as BFFMetadata;
+  }
+
+  const min = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'min');
+  const max = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'max');
+  const warningMin = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'warningMin');
+  const warningMax = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'warningMax');
+  const numberOfDecimals = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'numberOfDecimals');
+
+  return { ...metadata, min, max, warningMin, warningMax, numberOfDecimals } as BFFMetadataNumberVariable;
 };
 
 const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
