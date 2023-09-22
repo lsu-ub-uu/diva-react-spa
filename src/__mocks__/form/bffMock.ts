@@ -4,7 +4,7 @@ import {
   BFFMetadataTextVariable,
   BFFValidationType,
   BFFPresentation,
-  BFFPresentationGroup
+  BFFPresentationGroup, BFFMetadataNumberVariable,
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
@@ -47,6 +47,19 @@ export const someMetadataTextVariable: BFFMetadataTextVariable = {
   textId: 'someTextId',
   defTextId: 'someDefText',
   regEx: 'someRegex'
+};
+
+export const someMetadataNumberVar: BFFMetadataNumberVariable = {
+  id: 'someNumberVarId',
+  nameInData: 'someNameInDataNumberVar',
+  type: 'numberVariable',
+  textId: 'someNumberVarText',
+  defTextId: 'someNumberVarDefText',
+  min: "0",
+  max: "20",
+  warningMin: "2",
+  warningMax: "10",
+  numberOfDecimals: "0"
 };
 
 export const someRecordInfo: BFFMetadataGroup = {
