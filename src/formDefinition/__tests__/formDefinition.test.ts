@@ -29,9 +29,11 @@ import {
   pSomeMetadataTextVariable,
   pSomeNewMetadataGroup,
   someMetadataTextVariable,
-  someNewMetadataGroup, someNewMetadataGroupFaultyChildReference,
+  someNewMetadataGroup,
+  someNewMetadataGroupFaultyChildReference,
   someRecordInfo,
-  someValidationTypeData, someValidationTypeDataFaultyChildReference,
+  someValidationTypeData,
+  someValidationTypeDataFaultyChildReference
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -46,7 +48,7 @@ describe('formDefinition', () => {
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([
       someValidationTypeData,
-      someValidationTypeDataFaultyChildReference,
+      someValidationTypeDataFaultyChildReference
     ]);
     metadataPool = listToPool<BFFMetadata>([
       someMetadataTextVariable,
@@ -118,7 +120,7 @@ describe('formDefinition', () => {
           name: 'someHeadlineTextId'
         },
         {
-          type: 'input',
+          type: 'textVariable',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
           repeat: {
@@ -129,20 +131,24 @@ describe('formDefinition', () => {
           validation: {
             type: 'regex',
             pattern: 'someRegex'
-          }
+          },
+          mode: 'input',
+          inputType: 'input'
         },
         {
-          type: 'input',
+          type: 'textVariable',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
-            repeatMax: 3,
+            repeatMax: 3
           },
           validation: {
             type: 'regex',
             pattern: 'someRegex'
-          }
+          },
+          mode: 'input', // output
+          inputType: 'input' //textarea
         }
       ]
     });
