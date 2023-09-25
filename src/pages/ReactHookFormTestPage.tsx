@@ -67,7 +67,6 @@ export const ReactHookFormTestPage = () => {
   });
   const {
     control,
-    trigger,
     handleSubmit,
     formState: { errors },
   } = methods;
@@ -78,12 +77,10 @@ export const ReactHookFormTestPage = () => {
 
   const handleMove = async (prev: number, next: number) => {
     move(prev, next);
-    await trigger();
   };
 
   const handleRemove = async (index: number) => {
     remove(index);
-    await trigger();
   };
 
   const handleOnSubmit = (data: unknown) => {
@@ -120,9 +117,6 @@ export const ReactHookFormTestPage = () => {
   const getMinRepeatingFromValidation = () => {
     const schemaFieldDescription =
       validationSchema.fields.someTextVariables.describe();
-
-    // @ts-ignore
-    console.log(schemaFieldDescription.tests[0].params.min);
     // @ts-ignore
     return schemaFieldDescription.tests[0].params.min;
   };
@@ -229,7 +223,7 @@ export const ReactHookFormTestPage = () => {
               <Grid
                 key={item.id}
                 container
-                spacing={2}
+                spacing={0}
                 justifyContent='space-between'
                 alignItems='flex-start'
               >
