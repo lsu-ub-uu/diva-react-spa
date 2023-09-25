@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import {
+  BFFMetadataGroup,
   BFFMetadataTextVariable,
   BFFPresentation,
   BFFPresentationGroup,
-  BFFValidationType
+  BFFValidationType,
 } from 'config/bffTypes';
 import { Dependencies } from './formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
@@ -19,14 +20,22 @@ export const createFormDefinition = (
 
   const validationType: BFFValidationType = validationPool.get(validationTypeId);
 
-  const newPresentationGroupId = validationType.newPresentationGroupId;
+  // metadata
+  const newMetadataGroupId = validationType.newMetadataGroupId;
+  const newMetadataGroup = metadataPool.get(newMetadataGroupId) as BFFMetadataGroup;
+  const metadataChildReferences = newMetadataGroup.children;
 
+  // helper method
+  const findMetadataChildReferenceById = (childId: string) => metadataChildReferences.find((reference) => reference.childId === childId);
+
+  // presentation
+  const newPresentationGroupId = validationType.newPresentationGroupId;
   const newPresentationGroup: BFFPresentationGroup = presentationPool.get(newPresentationGroupId);
   const presentationChildReferences = newPresentationGroup.children;
 
-  const components = presentationChildReferences.map((childReference) => {
-    const childId = childReference.childId;
-    const childType = childReference.type;
+  const components = presentationChildReferences.map((presentationChildReference) => {
+    const presentationChildId = presentationChildReference.childId;
+    const presentationChildType = presentationChildReference.type;
 
     let type;
     let placeholder;
@@ -34,26 +43,41 @@ export const createFormDefinition = (
     let validation;
     let repeat;
 
-    if (childReference.minNumberOfRepeatingToShow !== undefined) {
-      repeat = {
-        minNumberOfRepeatingToShow: parseInt(childReference.minNumberOfRepeatingToShow)
-      };
+    if (presentationChildType === 'text') {
+      type = presentationChildType;
+      name = presentationChildId;
     }
 
-    if (childType === 'text') {
-      type = childType;
-      name = childId;
-    }
+    // todo handle gui_element
 
-    if (childType === 'presentation') {
-      // todo handle gui_element
-      const presentation: BFFPresentation = presentationPool.get(childId); // pSomeMetadataTextVariableId
-      // presentation.type === "pVar"
+    if (presentationChildType === 'presentation') {
+      const presentation: BFFPresentation = presentationPool.get(presentationChildId); // pSomeMetadataTextVariableId
       const metadataId = presentation.presentationOf;
+      const metaDataChildRef = findMetadataChildReferenceById(metadataId);
+
+      if (metaDataChildRef === undefined) {
+        throw new Error(`Child reference with childId [${metadataId}] does not exist`);
+      }
+
+      let minNumberOfRepeatingToShow;
+      if (presentationChildReference.minNumberOfRepeatingToShow !== undefined) {
+          minNumberOfRepeatingToShow = parseInt(presentationChildReference.minNumberOfRepeatingToShow);
+      }
+
+      let repeatMax;
+      let repeatMin;
+
+      if (metaDataChildRef !== undefined) {
+        repeatMin = parseInt(metaDataChildRef.repeatMin);
+        repeatMax = parseInt(metaDataChildRef.repeatMax);
+      }
+
+      repeat = { minNumberOfRepeatingToShow, repeatMin, repeatMax}
+
       if (presentation.type === 'pGroup') {
-        console.log(metadataId);
         // TODO: handle pGroup
       }
+
       if (presentation.type === 'pVar') {
         type = presentation.inputType;
         placeholder = presentation.emptyTextId;

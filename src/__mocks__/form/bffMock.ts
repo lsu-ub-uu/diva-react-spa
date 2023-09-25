@@ -1,6 +1,5 @@
 import {
   BFFMetadataGroup,
-  BFFMetadataChildReference,
   BFFMetadataTextVariable,
   BFFValidationType,
   BFFPresentation,
@@ -35,7 +34,7 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
     {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
-      repeatMax: '1'
+      repeatMax: '3'
     }
   ]
 };
@@ -70,7 +69,7 @@ export const someRecordInfo: BFFMetadataGroup = {
   defTextId: 'defTextId678',
   children: [
     {
-      childId: 'someMetadataTextVariableId',
+      childId: 'someMetadataTextVariableId', // change this!
       repeatMin: '1',
       repeatMax: '1'
     }
@@ -100,9 +99,47 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
     {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
-      minNumberOfRepeatingToShow: '1', // depends also on metadata repeatMin/Max
+      minNumberOfRepeatingToShow: "1", // depends also on metadata repeatMin/Max
       childStyle: ['style3', 'style4']
       // presentationSize: 'firstSmaller', // collapsable/switch view
+    },
+    {
+      childId: 'pSomeMetadataTextVariableId',
+      type: 'presentation',
+      childStyle: ['style3', 'style4']
+    }
+  ]
+};
+
+export const someValidationTypeDataFaultyChildReference: BFFValidationType = {
+  id: 'someValidationTypeDataFaultyChildReferenceId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupFaultyChildReferenceId',
+  newPresentationGroupId: 'pSomeNewMetadataGroupId',
+  // Update/Edit
+  metadataGroupId: 'todo',
+  presentationGroupId: 'todo',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupFaultyChildReference: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupFaultyChildReferenceId',
+  nameInData: 'someNameInData',
+  type: 'group',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
+  children: [
+    {
+      childId: 'someRecordInfoId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someFaultyIdNotExistingInMetadataPool',
+      repeatMin: '1',
+      repeatMax: '3'
     }
   ]
 };

@@ -29,9 +29,9 @@ import {
   pSomeMetadataTextVariable,
   pSomeNewMetadataGroup,
   someMetadataTextVariable,
-  someNewMetadataGroup,
+  someNewMetadataGroup, someNewMetadataGroupFaultyChildReference,
   someRecordInfo,
-  someValidationTypeData
+  someValidationTypeData, someValidationTypeDataFaultyChildReference,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -44,11 +44,15 @@ describe('formDefinition', () => {
   let dependencies: Dependencies;
 
   beforeEach(() => {
-    validationTypePool = listToPool<BFFValidationType>([someValidationTypeData]);
+    validationTypePool = listToPool<BFFValidationType>([
+      someValidationTypeData,
+      someValidationTypeDataFaultyChildReference,
+    ]);
     metadataPool = listToPool<BFFMetadata>([
       someMetadataTextVariable,
       someNewMetadataGroup,
-      someRecordInfo
+      someRecordInfo,
+      someNewMetadataGroupFaultyChildReference
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
@@ -85,10 +89,27 @@ describe('formDefinition', () => {
     }
   });
 
-  it('should return a form definition containing a text and a inputText', () => {
+  it('should throw Error on invalid child reference id', () => {
+    const validationTypeId = 'someValidationTypeDataFaultyChildReferenceId';
+
+    expect(() => {
+      createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    }).toThrow(Error);
+
+    try {
+      createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    } catch (error: unknown) {
+      const createFormDefinitionError: Error = <Error>error;
+      expect(createFormDefinitionError.message).toStrictEqual(
+        'Child reference with childId [someMetadataTextVariableId] does not exist'
+      );
+    }
+  });
+
+  it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(2);
+    expect(formDefinition.components).toHaveLength(3);
     expect(formDefinition).toEqual({
       validationTypeId: validationTypeId,
       components: [
@@ -101,35 +122,22 @@ describe('formDefinition', () => {
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
           repeat: {
+            repeatMin: 1,
+            repeatMax: 3,
             minNumberOfRepeatingToShow: 1
           },
           validation: {
             type: 'regex',
             pattern: 'someRegex'
           }
-        }
-      ]
-    });
-  });
-  it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
-    const validationTypeId = 'someValidationTypeId';
-    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(2);
-    expect(formDefinition).toEqual({
-      validationTypeId: validationTypeId,
-      components: [
-        {
-          type: 'text',
-          name: 'someHeadlineTextId'
         },
         {
           type: 'input',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
           repeat: {
-            /* repeatMin: 1,
-            repeatMax: 1, */
-            minNumberOfRepeatingToShow: 1
+            repeatMin: 1,
+            repeatMax: 3,
           },
           validation: {
             type: 'regex',
