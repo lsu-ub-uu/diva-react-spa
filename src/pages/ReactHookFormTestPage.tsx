@@ -21,14 +21,18 @@ const validationSchema = yup.object().shape({
     .array()
     .of(
       yup.object().shape({
-        value: yup.string().matches(/^[A-Za-z åäöÅÄÖ]{3,}$/, {
-          message: 'Field1 must be either empty or 10 digits',
-          excludeEmptyString: true,
-        }),
+        value: yup
+          .string()
+          .test('is-cake', 'must be a cake', (value: string | undefined) => {
+            if (value === 'cake') {
+              return true;
+            }
+            return false;
+          }),
       }),
     )
-    .min(0)
-    .max(5),
+    .min(1)
+    .max(2),
 });
 
 export const ReactHookFormTestPage = () => {
