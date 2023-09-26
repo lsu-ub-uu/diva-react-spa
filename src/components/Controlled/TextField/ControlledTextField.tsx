@@ -18,7 +18,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
     <Controller
       control={props.control}
       name={props.name}
-      defaultValue=''
+      /* defaultValue='' */
       render={({ field, fieldState: { error } }) => (
         <FormControl fullWidth>
           <FormLabel

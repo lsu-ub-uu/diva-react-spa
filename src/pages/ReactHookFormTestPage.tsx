@@ -13,31 +13,37 @@ import { ControlledTextField } from '../components/Controlled';
 
 const validationSchema = yup.object().shape({
   // eslint-disable-next-line react/forbid-prop-types
+  nonRepTextVariable: yup.string().matches(/^[A-Za-z åäöÅÄÖ]{3,}$/, {
+    message: 'Field1 must be either empty or 10 digits',
+    excludeEmptyString: false,
+  }),
   someTextVariable: yup
     .array()
     .of(
       yup.object().shape({
-        value: yup.string().matches(/[A-Za-z]{3}/, 'Input format is invalid'),
+        value: yup.string().matches(/^[A-Za-z åäöÅÄÖ]{3,}$/, {
+          message: 'Field1 must be either empty or 10 digits',
+          excludeEmptyString: true,
+        }),
       }),
     )
-    .min(1)
-    .max(3),
+    .min(0)
+    .max(5),
 });
 
 export const ReactHookFormTestPage = () => {
   const methods = useForm({
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
     shouldFocusError: false,
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      nonRepTextVariable: '',
       someTextVariable: [{ value: '' }, { value: '' }],
     },
   });
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = methods;
+  const { control, handleSubmit } = methods;
 
   // @ts-ignore
   const { fields, append, remove, move } = useFieldArray({
@@ -79,15 +85,18 @@ export const ReactHookFormTestPage = () => {
       onSubmit={handleSubmit(handleOnSubmit)}
     >
       <Stack spacing={1}>
-        <div>
-          <ErrorSummary errors={errors} />
-        </div>
         <Card
           title='Testing'
           variant='variant6'
           tooltipTitle='Title'
           tooltipBody='Here goes some text about how choose type'
         >
+          <ControlledTextField
+            placeholder='some placeholder'
+            control={control}
+            name='nonRepTextVariable'
+            label='nonRepTextVariable'
+          />
           {fields.map((item, index) => {
             return (
               <Grid
