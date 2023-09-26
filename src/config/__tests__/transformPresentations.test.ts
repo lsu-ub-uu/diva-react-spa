@@ -75,9 +75,9 @@ describe('transformCoraPresentations', () => {
   it('Returns one BFFPresentation for one pNumVar with missing emptyTextId', () => {
     const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
     expect(transformData[1]).toStrictEqual({
-      id: 'someTextVarPNumVar',
+      id: 'someTextVarPNumVar2',
       type: 'pNumVar',
-      presentationOf: 'someNumberVar',
+      presentationOf: 'someNumberVar2',
       mode: 'input'
     });
   });
