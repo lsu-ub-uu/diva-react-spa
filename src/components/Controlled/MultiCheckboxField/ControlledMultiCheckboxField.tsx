@@ -42,7 +42,7 @@ export const ControlledMultiCheckboxField = (
                       : value.filter((item: any) => item !== option.value);
                     onChange(newValue);
                   }}
-                  checked={value.includes(option.value)}
+                  checked={Array.isArray(value) && value.includes(option.value)}
                 />
               }
               label={option.label}
