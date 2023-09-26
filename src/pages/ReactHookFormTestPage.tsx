@@ -13,18 +13,7 @@ import { ControlledTextField } from '../components/Controlled';
 
 const validationSchema = yup.object().shape({
   // eslint-disable-next-line react/forbid-prop-types
-  someTextVariable: yup
-    .array()
-    .of(
-      yup.object().shape({
-        someTextVariable: yup
-          .string()
-          .trim()
-          .matches(/[A-Za-z]{3}/),
-      }),
-    )
-    .min(1)
-    .max(3),
+  someTextVariable: yup.array().of(yup.string()).min(1).max(3),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -32,24 +21,20 @@ export const ReactHookFormTestPage = () => {
     shouldFocusError: false,
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      someTextVariable: [
-        {
-          someTextVariable: '1',
-        },
-        {
-          someTextVariable: '2',
-        },
-      ],
+      someTextVariable: ['', ''],
     },
   });
+
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = methods;
+
+  // @ts-ignore
   const { fields, append, remove, move } = useFieldArray({
-    name: 'someTextVariable',
     control,
+    name: 'someTextVariable',
   });
 
   const handleMove = async (prev: number, next: number) => {
@@ -72,7 +57,6 @@ export const ReactHookFormTestPage = () => {
     const fieldRules = validationSchema.fields[fieldName]?.describe();
 
     if (!fieldRules) {
-      console.error(`Validation rules for field "${fieldName}" not found.`);
       return 1;
     }
 
@@ -113,7 +97,7 @@ export const ReactHookFormTestPage = () => {
                   <ControlledTextField
                     placeholder='some placeholder'
                     control={control}
-                    name={`someTextVariable.${index}.someTextVariable`}
+                    name={`someTextVariable.${index}`}
                     label='Somelabel'
                   />
                 </Grid>
@@ -166,7 +150,7 @@ export const ReactHookFormTestPage = () => {
               getFieldValidationPropertyValue('someTextVariable', 'max')
             }
             disableRipple
-            onClick={() => append({ someTextVariable: '' })}
+            onClick={() => append('')}
             endIcon={<AddCircleOutlineIcon />}
           >
             Add
