@@ -53,7 +53,10 @@ const generateYupSchema = (components: FormComponent[]) => {
     // eslint-disable-next-line prefer-regex-literals
     accumulator[component.name] = yup
       .string()
-      .matches(new RegExp(component.validation?.pattern ?? '.+'));
+      .matches(
+        new RegExp(component.validation?.pattern ?? '.+'),
+        'Invalid input format',
+      );
     return accumulator;
   }, {} as Record<string, StringSchema>);
 
