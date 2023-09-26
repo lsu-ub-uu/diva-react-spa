@@ -6,13 +6,14 @@ export const formDef = {
       name: 'presentationTypeTextCollectionVarDefText',
     },
     {
-      type: 'input',
+      type: 'textVariable',
       name: 'someNameInData',
       placeholder: 'someEmptyTextId',
       validation: {
         type: 'regex',
         pattern: '^[a-zA-Z]$',
       },
+      inputType: 'input'
     },
   ],
 };
