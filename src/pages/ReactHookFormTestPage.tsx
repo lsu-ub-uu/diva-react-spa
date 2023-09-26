@@ -13,7 +13,15 @@ import { ControlledTextField } from '../components/Controlled';
 
 const validationSchema = yup.object().shape({
   // eslint-disable-next-line react/forbid-prop-types
-  someTextVariable: yup.array().of(yup.string()).min(1).max(3),
+  someTextVariable: yup
+    .array()
+    .of(
+      yup.object().shape({
+        value: yup.string().matches(/[A-Za-z]{3}/, 'Input format is invalid'),
+      }),
+    )
+    .min(1)
+    .max(3),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -21,7 +29,7 @@ export const ReactHookFormTestPage = () => {
     shouldFocusError: false,
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      someTextVariable: ['', ''],
+      someTextVariable: [{ value: '' }, { value: '' }],
     },
   });
 
@@ -97,7 +105,7 @@ export const ReactHookFormTestPage = () => {
                   <ControlledTextField
                     placeholder='some placeholder'
                     control={control}
-                    name={`someTextVariable.${index}`}
+                    name={`someTextVariable.${index}.value` as const}
                     label='Somelabel'
                   />
                 </Grid>
