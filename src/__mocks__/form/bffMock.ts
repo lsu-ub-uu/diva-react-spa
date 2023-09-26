@@ -3,7 +3,8 @@ import {
   BFFMetadataTextVariable,
   BFFValidationType,
   BFFPresentation,
-  BFFPresentationGroup, BFFMetadataNumberVariable,
+  BFFPresentationGroup,
+  BFFMetadataNumberVariable
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
@@ -35,6 +36,11 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
       repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataNumberVarId',
+      repeatMin: '0',
+      repeatMax: '1'
     }
   ]
 };
@@ -49,16 +55,16 @@ export const someMetadataTextVariable: BFFMetadataTextVariable = {
 };
 
 export const someMetadataNumberVar: BFFMetadataNumberVariable = {
-  id: 'someNumberVarId',
+  id: 'someMetadataNumberVarId',
   nameInData: 'someNameInDataNumberVar',
   type: 'numberVariable',
   textId: 'someNumberVarText',
   defTextId: 'someNumberVarDefText',
-  min: "0",
-  max: "20",
-  warningMin: "2",
-  warningMax: "10",
-  numberOfDecimals: "0"
+  min: '0',
+  max: '20',
+  warningMin: '2',
+  warningMax: '10',
+  numberOfDecimals: '0'
 };
 
 export const someRecordInfo: BFFMetadataGroup = {
@@ -74,6 +80,14 @@ export const someRecordInfo: BFFMetadataGroup = {
       repeatMax: '1'
     }
   ]
+};
+
+export const pSomeMetadataNumberVar: BFFPresentation = {
+  id: 'pSomeMetadataNumberVariableId',
+  presentationOf: 'someMetadataNumberVarId',
+  mode: 'input',
+  type: 'pNumVar',
+  emptyTextId: 'someEmptyTextId'
 };
 
 export const pSomeMetadataTextVariable: BFFPresentation = {
@@ -99,13 +113,19 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
     {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
-      minNumberOfRepeatingToShow: "1", // depends also on metadata repeatMin/Max
+      minNumberOfRepeatingToShow: '1', // depends also on metadata repeatMin/Max
       childStyle: ['style3', 'style4']
       // presentationSize: 'firstSmaller', // collapsable/switch view
     },
     {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
+      childStyle: ['style3', 'style4']
+    },
+    {
+      childId: 'pSomeMetadataNumberVariableId',
+      type: 'presentation',
+      minNumberOfRepeatingToShow: '1',
       childStyle: ['style3', 'style4']
     }
   ]

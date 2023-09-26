@@ -2,6 +2,7 @@ import _ from 'lodash';
 import {
   BFFMetadata,
   BFFMetadataGroup,
+  BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
   BFFPresentation,
   BFFPresentationGroup,
@@ -90,8 +91,22 @@ export const createFormDefinition = (
           validation = { type: 'regex', pattern };
         }
       }
+      if (presentation.type === 'pNumVar') {
+        placeholder = presentation.emptyTextId;
+        const numberVariable = metadata as BFFMetadataNumberVariable;
+        mode = presentation.mode;
+        inputType = presentation.inputType;
+        const min = numberVariable.min;
+        const max = numberVariable.max;
+        const warningMin = numberVariable.warningMin;
+        const warningMax = numberVariable.warningMax;
+        const numberOfDecimals = numberVariable.numberOfDecimals;
+
+        validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
+      }
     }
 
+    //console.log(type, validation);
     return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType });
   });
 

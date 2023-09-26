@@ -28,7 +28,9 @@ import { Lookup } from '../../utils/structs/lookup';
 import {
   pSomeMetadataTextVariable,
   pSomeNewMetadataGroup,
+  pSomeMetadataNumberVar,
   someMetadataTextVariable,
+  someMetadataNumberVar,
   someNewMetadataGroup,
   someNewMetadataGroupFaultyChildReference,
   someRecordInfo,
@@ -52,12 +54,14 @@ describe('formDefinition', () => {
     ]);
     metadataPool = listToPool<BFFMetadata>([
       someMetadataTextVariable,
+      someMetadataNumberVar,
       someNewMetadataGroup,
       someRecordInfo,
       someNewMetadataGroupFaultyChildReference
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
+      pSomeMetadataNumberVar,
       pSomeNewMetadataGroup
     ]);
     dependencies = {
@@ -111,7 +115,7 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(3);
+    expect(formDefinition.components).toHaveLength(4);
     expect(formDefinition).toEqual({
       validationTypeId: validationTypeId,
       components: [
@@ -149,6 +153,25 @@ describe('formDefinition', () => {
           },
           mode: 'input', // output
           inputType: 'input' //textarea
+        },
+        {
+          type: 'numberVariable',
+          name: 'someNameInDataNumberVar',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 1,
+            minNumberOfRepeatingToShow: 1
+          },
+          validation: {
+            type: 'number',
+            min: '0',
+            max: '20',
+            warningMin: '2',
+            warningMax: '10',
+            numberOfDecimals: '0'
+          },
+          mode: 'input'
         }
       ]
     });
