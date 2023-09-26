@@ -2,11 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import React, { useEffect } from 'react';
 import { Stack } from '@mui/material';
-import { Card, useBackdrop } from '../components';
-import {
-  FormGenerator,
-  FormSchema,
-} from '../components/FormGenerator/FormGenerator';
+import { Card, useBackdrop, FormGenerator, FormSchema } from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 
 export const UploadTestPage = () => {

@@ -20,9 +20,9 @@
 import { test } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useCoraFormSchemaByValidationType } from '../hooks';
-import { FormSchema } from '../../components/FormGenerator/FormGenerator';
+import { FormSchema } from '../../components';
 
 /**
  * @vitest-environment jsdom
@@ -38,45 +38,30 @@ describe('useCoraFormSchemaByValidationType', () => {
     mockAxios.restore();
   });
 
-  test.skip('returns schema for validation type', async () => {
-    const expected: ApiWrapper = {
-      data: {
-        validationTypeId: 'someValidationTypeId',
-        components: [
-          {
-            type: 'text',
-            name: 'someText',
+  test('returns schema for validation type', async () => {
+    const expectedFormSchema: FormSchema = {
+      validationTypeId: 'someValidationTypeId',
+      components: [
+        {
+          type: 'text',
+          name: 'someText',
+        },
+        {
+          type: 'input',
+          name: 'someNameInData',
+          placeholder: 'someEmptyTextId',
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex',
           },
-          {
-            type: 'input',
-            name: 'someNameInData',
-            placeholder: 'someEmptyTextId',
-            validation: {
-              type: 'regex',
-              pattern: 'someRegex',
-            },
-          },
-        ],
-      },
-    };
-
-    interface ApiWrapper {
-      data: FormSchema;
-    }
-
-    // @ts-ignore
-    const expectedResponse: AxiosResponse<ApiWrapper> = {
-      data: expected,
-      headers: {},
-      request: {},
-      status: 200,
-      statusText: '',
+        },
+      ],
     };
 
     const validationType = 'someValidationTypeId';
     const apiUrl = `form/${validationType}`;
 
-    mockAxios.onGet(apiUrl).reply(200, expectedResponse);
+    mockAxios.onGet(apiUrl).reply(200, expectedFormSchema);
 
     const { result } = renderHook(() =>
       useCoraFormSchemaByValidationType(validationType),
@@ -84,7 +69,7 @@ describe('useCoraFormSchemaByValidationType', () => {
 
     await waitFor(() => {
       const { schema } = result.current;
-      expect(schema).toEqual(expected);
+      expect(schema).toStrictEqual(expectedFormSchema);
     });
   });
 
