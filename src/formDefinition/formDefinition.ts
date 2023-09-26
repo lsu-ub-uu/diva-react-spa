@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {
+  BFFMetadata,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
   BFFPresentation,
@@ -75,15 +76,13 @@ export const createFormDefinition = (
 
       repeat = { minNumberOfRepeatingToShow, repeatMin, repeatMax };
 
-      if (presentation.type === 'pGroup') {
-        // TODO: handle pGroup
-      }
+      const metadata = metadataPool.get(metadataId) as BFFMetadata;
+      name = metadata.nameInData;
+      type = metadata.type;
 
       if (presentation.type === 'pVar') {
         placeholder = presentation.emptyTextId;
-        const textVariable = metadataPool.get(metadataId) as BFFMetadataTextVariable;
-        name = textVariable.nameInData;
-        type = textVariable.type;
+        const textVariable = metadata as BFFMetadataTextVariable;
         mode = presentation.mode;
         inputType = presentation.inputType;
         const pattern = textVariable.regEx;
