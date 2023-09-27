@@ -20,46 +20,49 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
       control={props.control}
       name={props.name}
       /* defaultValue='' */
-      render={({ field, fieldState: { error } }) => (
-        <FormControl fullWidth>
-          <FormLabel
-            htmlFor={field.name}
-            aria-label={props.label}
-            required={props.required}
-            error={error !== undefined}
-          >
-            {props.label}
-          </FormLabel>
-          <TextField
-            id={field.name}
-            size='small'
-            error={error !== undefined}
-            {...field}
-            inputRef={field.ref}
-            onBlur={field.onBlur}
-            autoComplete='off'
-            placeholder={
-              props.placeholder !== undefined
-                ? (t(props.placeholder) as string)
-                : ''
-            }
-            fullWidth
-            variant='outlined'
-            helperText={error !== undefined ? error.message : ' '}
-            InputProps={{
-              readOnly: props.readOnly,
-              endAdornment: (
-                <ErrorIcon
-                  sx={{
-                    color: '#ff0000',
-                    visibility: error !== undefined ? 'visible' : 'hidden',
-                  }}
-                />
-              ),
-            }}
-          />
-        </FormControl>
-      )}
+      render={({ field, fieldState: { error } }) => {
+        const fieldWithoutRef = { ...field, ref: undefined };
+        return (
+          <FormControl fullWidth>
+            <FormLabel
+              htmlFor={field.name}
+              aria-label={props.label}
+              required={props.required}
+              error={error !== undefined}
+            >
+              {props.label}
+            </FormLabel>
+            <TextField
+              id={field.name}
+              size='small'
+              error={error !== undefined}
+              {...fieldWithoutRef}
+              inputRef={field.ref}
+              onBlur={field.onBlur}
+              autoComplete='off'
+              placeholder={
+                props.placeholder !== undefined
+                  ? (t(props.placeholder) as string)
+                  : ''
+              }
+              fullWidth
+              variant='outlined'
+              helperText={error !== undefined ? error.message : ' '}
+              InputProps={{
+                readOnly: props.readOnly,
+                endAdornment: (
+                  <ErrorIcon
+                    sx={{
+                      color: '#ff0000',
+                      visibility: error !== undefined ? 'visible' : 'hidden',
+                    }}
+                  />
+                ),
+              }}
+            />
+          </FormControl>
+        );
+      }}
     />
   );
 };

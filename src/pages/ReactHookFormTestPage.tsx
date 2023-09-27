@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Box, ButtonGroup, Grid, IconButton, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -47,13 +48,18 @@ export const ReactHookFormTestPage = () => {
     },
   });
 
-  const { control, handleSubmit } = methods;
+  const { setFocus, control, handleSubmit } = methods;
 
   // @ts-ignore
   const { fields, append, remove, move } = useFieldArray({
     control,
     name: 'someTextVariable',
   });
+
+  useEffect(() => {
+    setFocus('nonRepTextVariable');
+    console.log('Mounted form');
+  }, []);
 
   const handleMove = async (prev: number, next: number) => {
     move(prev, next);
