@@ -17,10 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line import/no-cycle
 import { FormSchema } from './FormGenerator';
 
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
-  const defaultValues: Record<string, number | string | unknown[]> = {};
+  const defaultValues: {
+    [x: string]: string | number | ({} | undefined)[] | undefined;
+  } = {};
   // todo handle final value in here
 
   formSchema.components.forEach((component) => {

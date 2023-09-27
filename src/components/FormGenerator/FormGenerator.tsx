@@ -25,6 +25,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { StringSchema } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { ControlledTextField } from '../Controlled';
+// eslint-disable-next-line import/no-cycle
+import { createDefaultValuesFromFormSchema } from './utils';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -66,6 +68,7 @@ const generateYupSchema = (components: FormComponent[]) => {
 export const FormGenerator = (props: FormGeneratorProps) => {
   const { t } = useTranslation();
   const methods = useForm({
+    defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
     resolver: yupResolver(
       generateYupSchema(
         props.formSchema.components.filter(
