@@ -1,5 +1,5 @@
 import { test } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { Provider as StateProvider } from 'react-redux';
@@ -13,7 +13,7 @@ import { BackdropProvider, SnackbarProvider } from '../components';
  * @vitest-environment jsdom
  */
 describe('<App />', () => {
-  test('App Renders', () => {
+  test('App Renders', async () => {
     render(
       <BackdropProvider>
         <StateProvider store={store}>
@@ -28,7 +28,10 @@ describe('<App />', () => {
         </StateProvider>
       </BackdropProvider>,
     );
-    const logoImage = screen.getByAltText('logo');
-    expect(logoImage).toBeInTheDocument();
+
+    await waitFor(() => {
+      const logoImage = screen.getByAltText('logo');
+      expect(logoImage).toBeInTheDocument();
+    });
   });
 });
