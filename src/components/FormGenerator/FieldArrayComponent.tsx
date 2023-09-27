@@ -17,20 +17,32 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { test } from 'vitest';
-import { createDefaultValuesFromFormSchema } from '../utils';
-import { formDef } from '../../../__mocks__/data/formDef';
-import { FormSchema } from '../FormGenerator';
+import { Control, useFieldArray } from 'react-hook-form';
 
-describe('FormGenerator utils', () => {
-  test('should take a formDef and make default values object', () => {
-    const expectedDefaultValues = {
-      someNameInData: '',
-      someNumberVariableNameInData: '',
-    };
-    const actualDefaultValues = createDefaultValuesFromFormSchema(
-      formDef as FormSchema,
-    );
-    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+interface FieldArrayComponentProps {
+  control?: Control<any>;
+  name: string;
+}
+
+export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
+  const { fields } = useFieldArray({
+    control: props.control,
+    name: props.name,
   });
-});
+  return (
+    <div>
+      {fields.map((field, index) => (
+        <div key={field.id}>
+          <input
+            type='text'
+            name={`${props.name}[${index}]`}
+            placeholder='someEmptyTextId'
+          />
+          <button type='button'>Remove</button>
+        </div>
+      ))}
+
+      <button type='button'>Add</button>
+    </div>
+  );
+};

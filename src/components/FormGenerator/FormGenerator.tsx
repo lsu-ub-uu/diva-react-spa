@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next';
 import { ControlledTextField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
 import { createDefaultValuesFromFormSchema } from './utils';
+import { FieldArrayComponent } from './FieldArrayComponent';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -126,21 +127,32 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
-    switch (component.type) {
-      case 'textVariable':
-      case 'numberVariable': {
-        return (
-          <ControlledTextField
-            key={reactKey}
-            label={component.name}
-            name={component.name}
-            placeholder={component.placeholder}
-            control={methods.control}
-          />
-        );
+
+    if (component.repeat.repeatMin > 1) {
+      return (
+        <FieldArrayComponent
+          control={methods.control}
+          name={component.name}
+        />
+      );
+    }
+    if (component.repeat.repeatMin === 1) {
+      switch (component.type) {
+        case 'textVariable':
+        case 'numberVariable': {
+          return (
+            <ControlledTextField
+              key={reactKey}
+              label={component.name}
+              name={component.name}
+              placeholder={component.placeholder}
+              control={methods.control}
+            />
+          );
+        }
+        default:
+          return <h3 key={reactKey}>{t(component.name)}</h3>;
       }
-      default:
-        return <h3 key={reactKey}>{t(component.name)}</h3>;
     }
   };
 
