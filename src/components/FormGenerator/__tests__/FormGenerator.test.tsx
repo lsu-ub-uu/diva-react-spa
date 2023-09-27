@@ -20,7 +20,11 @@
 import { test, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { formDef } from '../../../__mocks__/data/formDef';
+import {
+  formDef,
+  formDefWithOneNumberVariable,
+  formDefWithOneTextVariable,
+} from '../../../__mocks__/data/formDef';
 import { FormGenerator, FormSchema } from '../FormGenerator';
 
 /**
@@ -47,6 +51,11 @@ describe('<FormGenerator />', () => {
     const inputElement = screen.getByPlaceholderText('someEmptyTextId');
     expect(inputElement).toBeInTheDocument();
 
+    const inputNumberElement = screen.getByPlaceholderText(
+      'someNumberPlaceholderTextId',
+    );
+    expect(inputNumberElement).toBeInTheDocument();
+
     const headerElement = screen.getByText(
       'presentationTypeTextCollectionVarDefText',
     );
@@ -59,7 +68,7 @@ describe('<FormGenerator />', () => {
     render(
       <FormGenerator
         onSubmit={mockSubmit}
-        formSchema={formDef as FormSchema}
+        formSchema={formDefWithOneTextVariable as FormSchema}
       />,
     );
     const submitButton = screen.getByRole('button', { name: 'Submit' });
@@ -72,7 +81,7 @@ describe('<FormGenerator />', () => {
     expect(mockSubmit).toHaveBeenCalledTimes(1);
   });
 
-  test('Renders a form from a given definition and validates it correctly and does not call the submit', async () => {
+  test('Renders a form withTextVariable and validates it correctly and does not call the submit', async () => {
     const mockSubmit = vi.fn();
 
     render(
@@ -86,6 +95,50 @@ describe('<FormGenerator />', () => {
 
     const user = userEvent.setup();
     await user.type(inputElement, 'does not validate');
+    await user.click(submitButton);
+
+    expect(mockSubmit).toHaveBeenCalledTimes(0);
+  });
+
+  test('Renders a form with numberVariable and validates it correctly and does not call the submit', async () => {
+    const mockSubmit = vi.fn();
+
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDefWithOneNumberVariable as FormSchema}
+      />,
+    );
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+    const inputNumberElement = screen.getByPlaceholderText(
+      'someNumberPlaceholderTextId',
+    );
+
+    const user = userEvent.setup();
+    await user.type(inputNumberElement, 'does not validate');
+    await user.click(submitButton);
+
+    expect(mockSubmit).toHaveBeenCalledTimes(0);
+  });
+
+  test('Validates numberVariable being in inside the min/max interval', async () => {
+    const mockSubmit = vi.fn();
+
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDef as FormSchema}
+      />,
+    );
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+    const inputNumberElement = screen.getByPlaceholderText(
+      'someNumberPlaceholderTextId',
+    );
+
+    const user = userEvent.setup();
+    await user.type(inputNumberElement, '1');
     await user.click(submitButton);
 
     expect(mockSubmit).toHaveBeenCalledTimes(0);

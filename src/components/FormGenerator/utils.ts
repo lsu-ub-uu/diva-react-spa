@@ -30,6 +30,9 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
     if (component.type === 'textVariable') {
       defaultValues[component.name] = '';
     }
+    if (component.type === 'numberVariable') {
+      defaultValues[component.name] = '';
+    }
   });
 
   return defaultValues;

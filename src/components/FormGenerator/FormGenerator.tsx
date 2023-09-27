@@ -22,7 +22,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { StringSchema } from 'yup';
+import { NumberSchema, StringSchema } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { ControlledTextField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
@@ -38,29 +38,59 @@ export interface FormSchema {
   components: FormComponent[];
 }
 
+interface FormComponentRepeat {
+  repeatMin: number;
+  repeatMax: number;
+  minNumberOfRepeatingToShow?: number;
+}
+
 interface FormComponent {
   type: string;
   name: string;
   placeholder?: string;
-  validation?: FormValidation;
+  validation?: FormRegexValidation | FormNumberValidation;
+  repeat: FormComponentRepeat;
+  inputType?: 'input' | 'textarea'; // really be optional?
 }
 
-interface FormValidation {
+interface FormRegexValidation {
   type: 'regex';
   pattern: string;
+}
+
+interface FormNumberValidation {
+  type: 'number';
+  min: number;
+  max: number;
+  warningMin: number;
+  warningMax: number;
+  numberOfDecimals: number;
 }
 
 const generateYupSchema = (components: FormComponent[]) => {
   const composedShape = components.reduce((accumulator, component) => {
     // eslint-disable-next-line prefer-regex-literals
-    accumulator[component.name] = yup
-      .string()
-      .matches(
-        new RegExp(component.validation?.pattern ?? '.+'),
-        'Invalid input format',
-      );
+    if (component.type === 'textVariable') {
+      const regexpValidation = component.validation as FormRegexValidation;
+      accumulator[component.name] = yup
+        .string()
+        .matches(
+          new RegExp(regexpValidation.pattern ?? '.+'),
+          'Invalid input format',
+        );
+    }
+
+    if (component.type === 'numberVariable') {
+      const numberValidation = component.validation as FormNumberValidation;
+      accumulator[component.name] = yup
+        .number()
+        .min(numberValidation.min)
+        .max(numberValidation.max)
+        .typeError('Invalid number type');
+    }
+
     return accumulator;
-  }, {} as Record<string, StringSchema>);
+  }, {} as Record<string, StringSchema | NumberSchema>);
 
   return yup.object().shape(composedShape);
 };
@@ -68,6 +98,9 @@ const generateYupSchema = (components: FormComponent[]) => {
 export const FormGenerator = (props: FormGeneratorProps) => {
   const { t } = useTranslation();
   const methods = useForm({
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
+    shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
     resolver: yupResolver(
       generateYupSchema(
@@ -82,6 +115,17 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     const reactKey = `${component.name}_${idx}`;
     switch (component.type) {
       case 'textVariable': {
+        return (
+          <ControlledTextField
+            key={reactKey}
+            label={component.name}
+            name={component.name}
+            placeholder={component.placeholder}
+            control={methods.control}
+          />
+        );
+      }
+      case 'numberVariable': {
         return (
           <ControlledTextField
             key={reactKey}
