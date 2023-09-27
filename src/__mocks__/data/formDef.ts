@@ -17,7 +17,7 @@ export const formDef = {
         type: 'regex',
         pattern: '^[a-zA-Z]$',
       },
-      inputType: 'input'
+      inputType: 'input',
     },
   ],
 };
