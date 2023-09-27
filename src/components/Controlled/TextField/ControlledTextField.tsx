@@ -34,6 +34,8 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             size='small'
             error={error !== undefined}
             {...field}
+            inputRef={field.ref}
+            onBlur={field.onBlur}
             autoComplete='off'
             placeholder={
               props.placeholder !== undefined
@@ -47,7 +49,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               endAdornment: (
                 <ErrorIcon
                   sx={{
-                    color: 'red',
+                    color: '#ff0000',
                     visibility: error !== undefined ? 'visible' : 'hidden',
                   }}
                 />
