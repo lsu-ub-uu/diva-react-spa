@@ -96,11 +96,11 @@ export const createFormDefinition = (
         const numberVariable = metadata as BFFMetadataNumberVariable;
         mode = presentation.mode;
         inputType = presentation.inputType;
-        const min = numberVariable.min;
-        const max = numberVariable.max;
-        const warningMin = numberVariable.warningMin;
-        const warningMax = numberVariable.warningMax;
-        const numberOfDecimals = numberVariable.numberOfDecimals;
+        const min = parseInt(numberVariable.min);
+        const max = parseInt(numberVariable.max);
+        const warningMin = parseInt(numberVariable.warningMin);
+        const warningMax = parseInt(numberVariable.warningMax);
+        const numberOfDecimals = parseInt(numberVariable.numberOfDecimals);
 
         validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
       }

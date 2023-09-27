@@ -165,13 +165,13 @@ describe('formDefinition', () => {
           },
           validation: {
             type: 'number',
-            min: '0',
-            max: '20',
-            warningMin: '2',
-            warningMax: '10',
-            numberOfDecimals: '0'
+            min: 0,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0
           },
-          mode: 'input'
+          mode: 'input',
         }
       ]
     });
