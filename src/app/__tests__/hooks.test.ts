@@ -45,6 +45,10 @@ describe('useCoraFormSchemaByValidationType', () => {
         {
           type: 'text',
           name: 'someText',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
         },
         {
           type: 'input',
@@ -53,6 +57,10 @@ describe('useCoraFormSchemaByValidationType', () => {
           validation: {
             type: 'regex',
             pattern: 'someRegex',
+          },
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 10,
           },
         },
       ],
