@@ -23,6 +23,7 @@ import userEvent from '@testing-library/user-event';
 import {
   formDef,
   formDefWithOneNumberVariable,
+  formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneTextVariable,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator, FormSchema } from '../FormGenerator';
@@ -81,7 +82,7 @@ describe('<FormGenerator />', () => {
     expect(mockSubmit).toHaveBeenCalledTimes(1);
   });
 
-  test('Renders a form withTextVariable and validates it correctly and does not call the submit', async () => {
+  test('Renders a form with TextVariable and validates it correctly and does not call the submit', async () => {
     const mockSubmit = vi.fn();
 
     render(
@@ -122,13 +123,13 @@ describe('<FormGenerator />', () => {
     expect(mockSubmit).toHaveBeenCalledTimes(0);
   });
 
-  test('Validates numberVariable being in inside the min/max interval', async () => {
+  test('Validates numberVariable being  outside the min interval', async () => {
     const mockSubmit = vi.fn();
 
     render(
       <FormGenerator
         onSubmit={mockSubmit}
-        formSchema={formDef as FormSchema}
+        formSchema={formDefWithOneNumberVariable as FormSchema}
       />,
     );
     const submitButton = screen.getByRole('button', { name: 'Submit' });
@@ -138,9 +139,75 @@ describe('<FormGenerator />', () => {
     );
 
     const user = userEvent.setup();
-    await user.type(inputNumberElement, '1');
+    await user.type(inputNumberElement, '0');
     await user.click(submitButton);
 
     expect(mockSubmit).toHaveBeenCalledTimes(0);
+  });
+
+  test('Validates numberVariable being outside the max interval', async () => {
+    const mockSubmit = vi.fn();
+
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDefWithOneNumberVariable as FormSchema}
+      />,
+    );
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+    const inputNumberElement = screen.getByPlaceholderText(
+      'someNumberPlaceholderTextId',
+    );
+
+    const user = userEvent.setup();
+    await user.type(inputNumberElement, '21');
+    await user.click(submitButton);
+
+    expect(mockSubmit).toHaveBeenCalledTimes(0);
+  });
+
+  test('Validates numberVariable to have correct number of decimals', async () => {
+    const mockSubmit = vi.fn();
+
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDefWithOneNumberVariableHavingDecimals as FormSchema}
+      />,
+    );
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+    const inputNumberElement = screen.getByPlaceholderText(
+      'someNumberPlaceholderTextId',
+    );
+
+    const user = userEvent.setup();
+    await user.type(inputNumberElement, '12.0123');
+    await user.click(submitButton);
+
+    expect(mockSubmit).toHaveBeenCalledTimes(0);
+  });
+
+  test('Validates numberVariable to have decimals with two zeros', async () => {
+    const mockSubmit = vi.fn();
+
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDefWithOneNumberVariableHavingDecimals as FormSchema}
+      />,
+    );
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+    const inputNumberElement = screen.getByPlaceholderText(
+      'someNumberPlaceholderTextId',
+    );
+
+    const user = userEvent.setup();
+    await user.type(inputNumberElement, '12.00');
+    await user.click(submitButton);
+
+    expect(mockSubmit).toHaveBeenCalledTimes(1);
   });
 });

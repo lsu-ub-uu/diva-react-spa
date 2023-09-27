@@ -83,10 +83,23 @@ const generateYupSchema = (components: FormComponent[]) => {
     if (component.type === 'numberVariable') {
       const numberValidation = component.validation as FormNumberValidation;
       accumulator[component.name] = yup
-        .number()
-        .min(numberValidation.min)
-        .max(numberValidation.max)
-        .typeError('Invalid number type');
+        .string()
+        .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+        .test('decimal-places', 'Invalid number of decimals', (value) => {
+          if (!value) return true;
+          const decimalPlaces = (value.split('.')[1] || []).length;
+          return decimalPlaces === numberValidation.numberOfDecimals;
+        })
+        .test('min', 'Invalid range (min)', (value) => {
+          if (!value) return true;
+          const intValue = parseInt(value, 10);
+          return numberValidation.min <= intValue;
+        })
+        .test('max', 'Invalid range (max)', (value) => {
+          if (!value) return true;
+          const intValue = parseInt(value, 10);
+          return numberValidation.max >= intValue;
+        });
     }
 
     return accumulator;
@@ -114,17 +127,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
     switch (component.type) {
-      case 'textVariable': {
-        return (
-          <ControlledTextField
-            key={reactKey}
-            label={component.name}
-            name={component.name}
-            placeholder={component.placeholder}
-            control={methods.control}
-          />
-        );
-      }
+      case 'textVariable':
       case 'numberVariable': {
         return (
           <ControlledTextField
@@ -137,7 +140,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         );
       }
       default:
-        return <h1 key={reactKey}>{t(component.name)}</h1>;
+        return <h3 key={reactKey}>{t(component.name)}</h3>;
     }
   };
 
@@ -153,7 +156,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         disableRipple
         variant='contained'
       >
-        Submit form
+        Submit
       </Button>
     </Box>
   );

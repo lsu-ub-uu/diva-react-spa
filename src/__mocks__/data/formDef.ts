@@ -74,11 +74,34 @@ export const formDefWithOneNumberVariable: FormSchema = {
       placeholder: 'someNumberPlaceholderTextId',
       validation: {
         type: 'number',
-        min: 0,
+        min: 1,
         max: 20,
         warningMin: 2,
         warningMax: 10,
         numberOfDecimals: 0,
+      },
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+    },
+  ],
+};
+
+export const formDefWithOneNumberVariableHavingDecimals: FormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'numberVariable',
+      name: 'someNumberVariableNameInData',
+      placeholder: 'someNumberPlaceholderTextId',
+      validation: {
+        type: 'number',
+        min: 0,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 2,
       },
       repeat: {
         repeatMin: 1,
