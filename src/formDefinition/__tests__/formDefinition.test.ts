@@ -28,10 +28,14 @@ import { Lookup } from '../../utils/structs/lookup';
 import {
   pSomeMetadataTextVariable,
   pSomeNewMetadataGroup,
+  pSomeMetadataNumberVar,
   someMetadataTextVariable,
+  someMetadataNumberVar,
   someNewMetadataGroup,
+  someNewMetadataGroupFaultyChildReference,
   someRecordInfo,
-  someValidationTypeData
+  someValidationTypeData,
+  someValidationTypeDataFaultyChildReference
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -44,14 +48,20 @@ describe('formDefinition', () => {
   let dependencies: Dependencies;
 
   beforeEach(() => {
-    validationTypePool = listToPool<BFFValidationType>([someValidationTypeData]);
+    validationTypePool = listToPool<BFFValidationType>([
+      someValidationTypeData,
+      someValidationTypeDataFaultyChildReference
+    ]);
     metadataPool = listToPool<BFFMetadata>([
       someMetadataTextVariable,
+      someMetadataNumberVar,
       someNewMetadataGroup,
-      someRecordInfo
+      someRecordInfo,
+      someNewMetadataGroupFaultyChildReference
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
+      pSomeMetadataNumberVar,
       pSomeNewMetadataGroup
     ]);
     dependencies = {
@@ -85,25 +95,83 @@ describe('formDefinition', () => {
     }
   });
 
-  it('should return a form definition containing a text and a inputText', () => {
+  it('should throw Error on invalid child reference id', () => {
+    const validationTypeId = 'someValidationTypeDataFaultyChildReferenceId';
+
+    expect(() => {
+      createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    }).toThrow(Error);
+
+    try {
+      createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    } catch (error: unknown) {
+      const createFormDefinitionError: Error = <Error>error;
+      expect(createFormDefinitionError.message).toStrictEqual(
+        'Child reference with childId [someMetadataTextVariableId] does not exist'
+      );
+    }
+  });
+
+  it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
-    const formDefinition= createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(2);
+    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    expect(formDefinition.components).toHaveLength(4);
     expect(formDefinition).toEqual({
       validationTypeId: validationTypeId,
       components: [
         {
           type: 'text',
-          name: 'someHeadlineTextId',
+          name: 'someHeadlineTextId'
         },
         {
-          type: 'input',
+          type: 'textVariable',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3,
+            minNumberOfRepeatingToShow: 1
+          },
           validation: {
             type: 'regex',
             pattern: 'someRegex'
-          }
+          },
+          mode: 'input',
+          inputType: 'input'
+        },
+        {
+          type: 'textVariable',
+          name: 'someNameInData',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          },
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex'
+          },
+          mode: 'input', // output
+          inputType: 'input' //textarea
+        },
+        {
+          type: 'numberVariable',
+          name: 'someNameInDataNumberVar',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 1,
+            minNumberOfRepeatingToShow: 1
+          },
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0
+          },
+          mode: 'input',
         }
       ]
     });

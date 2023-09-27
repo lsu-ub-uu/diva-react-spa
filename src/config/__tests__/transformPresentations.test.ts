@@ -19,6 +19,7 @@
 import emptyDataList from '../../__mocks__/emptyDataList.json';
 import { transformCoraPresentations } from '../transformPresentations';
 import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
+import presentationListWithTwoPNumVar from '../../__mocks__/coraPresentationWithTwoNumberVariables.json';
 import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
 import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
@@ -36,7 +37,7 @@ describe('transformCoraPresentations', () => {
     expect(transformData).toHaveLength(2);
   });
 
-  it('Returns one BFFPresentation for one entry', () => {
+  it('Returns one BFFPresentation for one pVar entry', () => {
     const transformData = transformCoraPresentations(presentationListWithTwoPVars);
     expect(transformData[0]).toStrictEqual({
       id: 'someTextVarPVar',
@@ -47,7 +48,8 @@ describe('transformCoraPresentations', () => {
       emptyTextId: 'somePlaceholderText'
     });
   });
-  it('Returns one BFFPresentation with missing emptyTextId', () => {
+
+  it('Returns one BFFPresentation for one pVar with missing emptyTextId', () => {
     const transformData = transformCoraPresentations(coraPresentationGroupWithMissingEmptyTextId);
     expect(transformData[0]).toStrictEqual({
       id: 'someTextVarPVar',
@@ -55,6 +57,28 @@ describe('transformCoraPresentations', () => {
       presentationOf: 'someTextVar',
       mode: 'input',
       inputType: 'someInputType'
+    });
+  });
+
+  // pNum
+  it('Returns one BFFPresentation for one pNumVar entry', () => {
+    const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
+    expect(transformData[0]).toStrictEqual({
+      id: 'someTextVarPNumVar',
+      type: 'pNumVar',
+      presentationOf: 'someNumberVar',
+      mode: 'input',
+      emptyTextId: 'somePlaceholderText'
+    });
+  });
+
+  it('Returns one BFFPresentation for one pNumVar with missing emptyTextId', () => {
+    const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
+    expect(transformData[1]).toStrictEqual({
+      id: 'someTextVarPNumVar2',
+      type: 'pNumVar',
+      presentationOf: 'someNumberVar2',
+      mode: 'input'
     });
   });
 
@@ -113,7 +137,7 @@ describe('transformCoraPresentations', () => {
     const transformData = transformCoraPresentations(
       coraPresentationWithMiscTypes as DataListWrapper
     );
-    expect(transformData).toHaveLength(2);
-  });
 
+    expect(transformData).toHaveLength(3);
+  });
 });

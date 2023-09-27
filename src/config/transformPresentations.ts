@@ -31,17 +31,22 @@ import {
   containsChildWithNameInData,
   getAllDataAtomicsWithNameInData,
   getFirstChildWithNameInData,
-  getFirstDataGroupWithNameInDataAndAttributes,
+  getFirstDataGroupWithNameInDataAndAttributes
 } from '../utils/cora-data/CoraDataUtils';
 
-export const transformCoraPresentations = (dataListWrapper: DataListWrapper): (BFFPresentation | BFFPresentationGroup)[] => {
+export const transformCoraPresentations = (
+  dataListWrapper: DataListWrapper
+): (BFFPresentation | BFFPresentationGroup)[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
 
   const coraRecordWrappers = dataListWrapper.dataList.data;
   const presentations = coraRecordWrappers.map(transformCoraPresentationToBFFPresentation);
-  return presentations.filter((item) => item !== undefined) as (BFFPresentation | BFFPresentationGroup)[];
+  return presentations.filter((item) => item !== undefined) as (
+    | BFFPresentation
+    | BFFPresentationGroup
+  )[];
 };
 
 const transformCoraPresentationToBFFPresentation = (
@@ -52,20 +57,25 @@ const transformCoraPresentationToBFFPresentation = (
 
   switch (type) {
     case 'pGroup': {
-      return transformCoraPresentationGroupToBFFPresentationGroup(coraRecordWrapper)
+      return transformCoraPresentationGroupToBFFPresentationGroup(coraRecordWrapper);
+    }
+    case 'pNumVar': {
+      return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
     }
     case 'pVar': {
       return transformCoraPresentationPVarToBFFPresentation(coraRecordWrapper);
     }
-    // TODO add more types here like pNumVar, pCollVar, pRecordLink etc
+    // TODO add more types here like, pCollVar, pRecordLink etc
     default: {
       return;
     }
   }
 };
 
-// Handle pVar
-const transformCoraPresentationPVarToBFFPresentation = (coraRecordWrapper: RecordWrapper): BFFPresentation => {
+// Handle pNumVar
+const transformBasicCoraPresentationVariableToBFFPresentation = (
+  coraRecordWrapper: RecordWrapper
+): BFFPresentation => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
@@ -75,15 +85,25 @@ const transformCoraPresentationPVarToBFFPresentation = (coraRecordWrapper: Recor
   );
 
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
-  const inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
 
   let emptyTextId;
-  try {
+  if (containsChildWithNameInData(dataRecordGroup, 'emptyTextId')) {
     emptyTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'emptyTextId');
-  } catch (e) {}
+  }
 
-  return removeEmpty({ id, presentationOf, mode, inputType, emptyTextId, type } as BFFPresentation);
-}
+  return removeEmpty({ id, presentationOf, mode, emptyTextId, type } as BFFPresentation);
+};
+
+// Handle pVar
+const transformCoraPresentationPVarToBFFPresentation = (
+  coraRecordWrapper: RecordWrapper
+): BFFPresentation => {
+  const dataRecordGroup = coraRecordWrapper.record.data;
+  const basic = transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
+  const inputType = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'inputType');
+
+  return removeEmpty({ ...basic, inputType } as BFFPresentation);
+};
 
 const transformCoraPresentationGroupToBFFPresentationGroup = (
   coraRecordWrapper: RecordWrapper
@@ -143,5 +163,3 @@ const extractAtomicValueByName = (childReference: DataGroup, nameInData: string)
   }
   return atomicValue;
 };
-
-
