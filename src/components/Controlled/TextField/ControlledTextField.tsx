@@ -9,6 +9,7 @@ interface ControlledTextFieldProps {
   label: string;
   placeholder?: string;
   required?: boolean;
+  readOnly?: boolean;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
@@ -46,6 +47,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             variant='outlined'
             helperText={error !== undefined ? error.message : ' '}
             InputProps={{
+              readOnly: props.readOnly,
               endAdornment: (
                 <ErrorIcon
                   sx={{
