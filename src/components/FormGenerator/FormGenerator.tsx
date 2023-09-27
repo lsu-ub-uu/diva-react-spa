@@ -74,6 +74,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       ),
     ),
   });
+
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
     switch (component.type) {

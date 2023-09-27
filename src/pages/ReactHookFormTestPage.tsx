@@ -8,7 +8,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-import { Card, ErrorSummary } from '../components';
+import { Card } from '../components';
 import { ControlledTextField } from '../components/Controlled';
 
 const validationSchema = yup.object().shape({
@@ -171,7 +171,7 @@ export const ReactHookFormTestPage = () => {
               getFieldValidationPropertyValue('someTextVariable', 'max')
             }
             disableRipple
-            onClick={() => append('')}
+            onClick={() => append({ value: '' })}
             endIcon={<AddCircleOutlineIcon />}
           >
             Add
@@ -193,7 +193,7 @@ export const ReactHookFormTestPage = () => {
               disableRipple
               variant='contained'
             >
-              Submit
+              Submit form
             </Button>
           </Grid>
         </Grid>
