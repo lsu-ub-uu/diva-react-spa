@@ -148,11 +148,12 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     >
       {props.formSchema.components.map(generateFormComponent)}
       <Button
+        fullWidth
         type='submit'
         disableRipple
         variant='contained'
       >
-        Submit
+        Submit form
       </Button>
     </Box>
   );
