@@ -22,7 +22,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { NumberSchema, StringSchema } from 'yup';
+import { ArraySchema, NumberSchema, StringSchema } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { ControlledTextField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
@@ -94,6 +94,16 @@ const generateYupSchema = (components: FormComponent[]) => {
       }
 
       if (
+        component.type === 'textVariable' &&
+        isComponentRepeating(component)
+      ) {
+        accumulator[component.name] = yup
+          .array()
+          .min(component.repeat.repeatMin)
+          .max(component.repeat.repeatMax);
+      }
+
+      if (
         component.type === 'numberVariable' &&
         !isComponentRepeating(component)
       ) {
@@ -119,7 +129,7 @@ const generateYupSchema = (components: FormComponent[]) => {
       }
       return accumulator;
     },
-    {} as Record<string, StringSchema | NumberSchema>,
+    {} as Record<string, StringSchema | NumberSchema | ArraySchema<any, any>>,
   );
 
   return yup.object().shape(composedShape);
