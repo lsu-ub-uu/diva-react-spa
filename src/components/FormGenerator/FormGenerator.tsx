@@ -26,7 +26,10 @@ import { NumberSchema, StringSchema } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { ControlledTextField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
-import { createDefaultValuesFromFormSchema } from './utils';
+import {
+  createDefaultValuesFromFormSchema,
+  isComponentRepeating,
+} from './utils';
 import { FieldArrayComponent } from './FieldArrayComponent';
 
 interface FormGeneratorProps {
@@ -118,8 +121,8 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
     resolver: yupResolver(
       generateYupSchema(
-        props.formSchema.components.filter(
-          (component) => component.type !== 'text',
+        props.formSchema.components.filter((component) =>
+          ['numberVariable', 'textVariable'].includes(component.type),
         ),
       ),
     ),
@@ -129,7 +132,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
 
-    if (component.repeat.repeatMin > 1) {
+    if (isComponentRepeating(component)) {
       return (
         <FieldArrayComponent
           key={reactKey}
@@ -137,8 +140,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           name={component.name}
         />
       );
-    }
-    if (component.repeat.repeatMin === 1) {
+    } else {
       switch (component.type) {
         case 'textVariable':
         case 'numberVariable': {

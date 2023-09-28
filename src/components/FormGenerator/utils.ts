@@ -20,8 +20,8 @@
 // eslint-disable-next-line import/no-cycle
 import { FormComponent, FormSchema } from './FormGenerator';
 
-const isComponentRepeating = (component: FormComponent) =>
-  component.repeat.repeatMin > 1;
+export const isComponentRepeating = (component: FormComponent) =>
+  component.repeat?.repeatMin > 1 ?? false;
 
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   const defaultValues: {
