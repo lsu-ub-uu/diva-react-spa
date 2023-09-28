@@ -105,7 +105,6 @@ const generateYupSchema = (components: FormComponent[]) => {
           return numberValidation.max >= intValue;
         });
     }
-
     return accumulator;
   }, {} as Record<string, StringSchema | NumberSchema>);
 
@@ -135,28 +134,28 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     if (isComponentRepeating(component)) {
       return (
         <FieldArrayComponent
+          component={component}
           key={reactKey}
           control={methods.control}
           name={component.name}
         />
       );
-    } else {
-      switch (component.type) {
-        case 'textVariable':
-        case 'numberVariable': {
-          return (
-            <ControlledTextField
-              key={reactKey}
-              label={component.name}
-              name={component.name}
-              placeholder={component.placeholder}
-              control={methods.control}
-            />
-          );
-        }
-        default:
-          return <h3 key={reactKey}>{t(component.name)}</h3>;
+    }
+    switch (component.type) {
+      case 'textVariable':
+      case 'numberVariable': {
+        return (
+          <ControlledTextField
+            key={reactKey}
+            label={component.name}
+            name={component.name}
+            placeholder={component.placeholder}
+            control={methods.control}
+          />
+        );
       }
+      default:
+        return <h3 key={reactKey}>{t(component.name)}</h3>;
     }
   };
 

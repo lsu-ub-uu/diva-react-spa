@@ -18,10 +18,13 @@
  */
 
 import { Control, useFieldArray } from 'react-hook-form';
+import { ControlledTextField } from '../Controlled';
+import { FormComponent } from './FormGenerator';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
+  component: FormComponent;
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
@@ -33,10 +36,11 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     <>
       {fields.map((field, index) => (
         <div key={field.id}>
-          <input
-            type='text'
+          <ControlledTextField
+            placeholder={props.component.placeholder}
+            control={props.control}
             name={`${props.name}.${index}.value` as const}
-            placeholder='someEmptyTextId'
+            label={props.component.name}
           />
           <button type='button'>Remove</button>
         </div>
