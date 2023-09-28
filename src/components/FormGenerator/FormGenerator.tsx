@@ -99,6 +99,11 @@ const generateYupSchema = (components: FormComponent[]) => {
       ) {
         accumulator[component.name] = yup
           .array()
+          .of(
+            yup.object().shape({
+              value: yup.string().required(),
+            }),
+          )
           .min(component.repeat.repeatMin)
           .max(component.repeat.repeatMax);
       }
@@ -129,7 +134,10 @@ const generateYupSchema = (components: FormComponent[]) => {
       }
       return accumulator;
     },
-    {} as Record<string, StringSchema | NumberSchema | ArraySchema<any, any>>,
+    {} as Record<
+      string,
+      StringSchema | NumberSchema | ArraySchema<any, any, any, any>
+    >,
   );
 
   return yup.object().shape(composedShape);
