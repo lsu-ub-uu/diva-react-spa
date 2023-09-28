@@ -1,7 +1,9 @@
-import { FormControl, FormLabel, TextField } from '@mui/material';
+import { FormControl, FormLabel, IconButton, TextField } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import ErrorIcon from '@mui/icons-material/Error';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useTranslation } from 'react-i18next';
+import { Tooltip } from '../..';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -29,8 +31,22 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               aria-label={props.label}
               required={props.required}
               error={error !== undefined}
+              sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
             >
               {props.label}
+              <Tooltip
+                title='title'
+                body='some body'
+              >
+                <IconButton
+                  edge='end'
+                  aria-label='Help'
+                  disableRipple
+                  color='default'
+                >
+                  <HelpOutlineIcon />
+                </IconButton>
+              </Tooltip>
             </FormLabel>
             <TextField
               id={field.name}
