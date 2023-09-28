@@ -30,6 +30,7 @@ import {
   createDefaultValuesFromFormSchema,
   isComponentRepeating,
 } from './utils';
+// eslint-disable-next-line import/no-cycle
 import { FieldArrayComponent } from './FieldArrayComponent';
 
 interface FormGeneratorProps {
@@ -72,41 +73,48 @@ interface FormNumberValidation {
 }
 
 const generateYupSchema = (components: FormComponent[]) => {
-  const composedShape = components.reduce((accumulator, component) => {
-    // eslint-disable-next-line prefer-regex-literals
-    if (component.type === 'textVariable') {
-      const regexpValidation = component.validation as FormRegexValidation;
-      accumulator[component.name] = yup
-        .string()
-        .matches(
-          new RegExp(regexpValidation.pattern ?? '.+'),
-          'Invalid input format',
-        );
-    }
+  const validatableComponents = components.filter((component) =>
+    ['numberVariable', 'textVariable'].includes(component.type),
+  );
 
-    if (component.type === 'numberVariable') {
-      const numberValidation = component.validation as FormNumberValidation;
-      accumulator[component.name] = yup
-        .string()
-        .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-        .test('decimal-places', 'Invalid number of decimals', (value) => {
-          if (!value) return true;
-          const decimalPlaces = (value.split('.')[1] || []).length;
-          return decimalPlaces === numberValidation.numberOfDecimals;
-        })
-        .test('min', 'Invalid range (min)', (value) => {
-          if (!value) return true;
-          const intValue = parseInt(value, 10);
-          return numberValidation.min <= intValue;
-        })
-        .test('max', 'Invalid range (max)', (value) => {
-          if (!value) return true;
-          const intValue = parseInt(value, 10);
-          return numberValidation.max >= intValue;
-        });
-    }
-    return accumulator;
-  }, {} as Record<string, StringSchema | NumberSchema>);
+  const composedShape = validatableComponents.reduce(
+    (accumulator, component) => {
+      // eslint-disable-next-line prefer-regex-literals
+      if (component.type === 'textVariable') {
+        const regexpValidation = component.validation as FormRegexValidation;
+        accumulator[component.name] = yup
+          .string()
+          .matches(
+            new RegExp(regexpValidation.pattern ?? '.+'),
+            'Invalid input format',
+          );
+      }
+
+      if (component.type === 'numberVariable') {
+        const numberValidation = component.validation as FormNumberValidation;
+        accumulator[component.name] = yup
+          .string()
+          .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+          .test('decimal-places', 'Invalid number of decimals', (value) => {
+            if (!value) return true;
+            const decimalPlaces = (value.split('.')[1] || []).length;
+            return decimalPlaces === numberValidation.numberOfDecimals;
+          })
+          .test('min', 'Invalid range (min)', (value) => {
+            if (!value) return true;
+            const intValue = parseInt(value, 10);
+            return numberValidation.min <= intValue;
+          })
+          .test('max', 'Invalid range (max)', (value) => {
+            if (!value) return true;
+            const intValue = parseInt(value, 10);
+            return numberValidation.max >= intValue;
+          });
+      }
+      return accumulator;
+    },
+    {} as Record<string, StringSchema | NumberSchema>,
+  );
 
   return yup.object().shape(composedShape);
 };
@@ -118,13 +126,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
-    resolver: yupResolver(
-      generateYupSchema(
-        props.formSchema.components.filter((component) =>
-          ['numberVariable', 'textVariable'].includes(component.type),
-        ),
-      ),
-    ),
+    resolver: yupResolver(generateYupSchema(props.formSchema.components)),
   });
 
   // eslint-disable-next-line consistent-return

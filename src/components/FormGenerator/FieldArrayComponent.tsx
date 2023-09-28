@@ -19,6 +19,7 @@
 
 import { Control, useFieldArray } from 'react-hook-form';
 import { ControlledTextField } from '../Controlled';
+// eslint-disable-next-line import/no-cycle
 import { FormComponent } from './FormGenerator';
 
 interface FieldArrayComponentProps {
@@ -28,25 +29,50 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
-  const { fields } = useFieldArray({
+  const { fields, remove, append } = useFieldArray({
     control: props.control,
     name: props.name,
   });
+
+  const handleRemove = async (index: number) => {
+    remove(index);
+  };
+
   return (
     <>
       {fields.map((field, index) => (
-        <div key={field.id}>
+        <div
+          key={field.id}
+          style={{
+            borderBottom: '1px dashed black',
+            marginBottom: '10px',
+            padding: '10px',
+          }}
+        >
           <ControlledTextField
             placeholder={props.component.placeholder}
             control={props.control}
             name={`${props.name}.${index}.value` as const}
             label={props.component.name}
           />
-          <button type='button'>Remove</button>
+          <button
+            type='button'
+            disabled={fields.length <= props.component.repeat.repeatMin}
+            onClick={() => handleRemove(index)}
+          >
+            Remove
+          </button>
         </div>
       ))}
 
-      <button type='button'>Add</button>
+      <button
+        style={{ marginBottom: '20px' }}
+        type='button'
+        disabled={fields.length >= props.component.repeat.repeatMax}
+        onClick={() => append({ value: '' })}
+      >
+        Add {props.component.name}
+      </button>
     </>
   );
 };
