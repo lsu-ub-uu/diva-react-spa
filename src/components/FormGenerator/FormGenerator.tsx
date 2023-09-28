@@ -97,11 +97,17 @@ const generateYupSchema = (components: FormComponent[]) => {
         component.type === 'textVariable' &&
         isComponentRepeating(component)
       ) {
+        const regexpValidation = component.validation as FormRegexValidation;
         accumulator[component.name] = yup
           .array()
           .of(
             yup.object().shape({
-              value: yup.string().required(),
+              value: yup
+                .string()
+                .matches(
+                  new RegExp(regexpValidation.pattern ?? '.+'),
+                  'Invalid input format',
+                ),
             }),
           )
           .min(component.repeat.repeatMin)
