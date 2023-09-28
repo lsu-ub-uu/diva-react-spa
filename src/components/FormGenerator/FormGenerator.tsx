@@ -39,13 +39,13 @@ export interface FormSchema {
   components: FormComponent[];
 }
 
-interface FormComponentRepeat {
+export interface FormComponentRepeat {
   repeatMin: number;
   repeatMax: number;
   minNumberOfRepeatingToShow?: number;
 }
 
-interface FormComponent {
+export interface FormComponent {
   type: string;
   name: string;
   placeholder?: string;
@@ -125,12 +125,14 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     ),
   });
 
+  // eslint-disable-next-line consistent-return
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
 
     if (component.repeat.repeatMin > 1) {
       return (
         <FieldArrayComponent
+          key={reactKey}
           control={methods.control}
           name={component.name}
         />

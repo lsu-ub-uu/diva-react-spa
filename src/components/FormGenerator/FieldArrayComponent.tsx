@@ -30,12 +30,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     name: props.name,
   });
   return (
-    <div>
+    <>
       {fields.map((field, index) => (
         <div key={field.id}>
           <input
             type='text'
-            name={`${props.name}[${index}]`}
+            name={`${props.name}.${index}.value` as const}
             placeholder='someEmptyTextId'
           />
           <button type='button'>Remove</button>
@@ -43,6 +43,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       ))}
 
       <button type='button'>Add</button>
-    </div>
+    </>
   );
 };
