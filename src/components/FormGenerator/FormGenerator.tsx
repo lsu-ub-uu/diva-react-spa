@@ -80,7 +80,10 @@ const generateYupSchema = (components: FormComponent[]) => {
   const composedShape = validatableComponents.reduce(
     (accumulator, component) => {
       // eslint-disable-next-line prefer-regex-literals
-      if (component.type === 'textVariable') {
+      if (
+        component.type === 'textVariable' &&
+        !isComponentRepeating(component)
+      ) {
         const regexpValidation = component.validation as FormRegexValidation;
         accumulator[component.name] = yup
           .string()
@@ -90,7 +93,10 @@ const generateYupSchema = (components: FormComponent[]) => {
           );
       }
 
-      if (component.type === 'numberVariable') {
+      if (
+        component.type === 'numberVariable' &&
+        !isComponentRepeating(component)
+      ) {
         const numberValidation = component.validation as FormNumberValidation;
         accumulator[component.name] = yup
           .string()
