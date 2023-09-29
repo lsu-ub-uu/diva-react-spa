@@ -26,7 +26,6 @@ import {
   formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneTextVariable,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
-  formDefWithOneTextVariableWithRepeatMin,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator, FormSchema } from '../FormGenerator';
 
@@ -242,8 +241,8 @@ describe('<FormGenerator />', () => {
       expect(inputElements).toHaveLength(2);
     });
   });
-  describe('repeatMin', () => {
-    it('Add button should NOT be disabled when repeatMin value is below repeatMax value', async () => {
+  describe('repeatMax', () => {
+    it('Add button should be disabled when repeatMax is reached', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -267,14 +266,29 @@ describe('<FormGenerator />', () => {
       const inputElements2 = screen.getAllByPlaceholderText('someEmptyTextId');
       expect(inputElements2).toHaveLength(3);
 
-      const buttonElement2 = screen.getByRole('button', {
-        name: 'Add someNameInData',
-      });
-      expect(buttonElement2).toBeDisabled();
+      expect(buttonElement).toBeDisabled();
     });
   });
-  /*   // describe('repeatMin', () => {
-  // });
-  // describe('repeatMax', () => {
-  // }) */
+
+  describe('repeatMin', () => {
+    it('Remove buttons should be disabled when repeatMin is reached', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneTextVariableWithMinNumberOfRepeatingToShow as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const removeButtonElements = screen.getAllByRole('button', {
+        name: 'Remove',
+      });
+
+      expect(removeButtonElements).toHaveLength(2);
+      expect(removeButtonElements[0]).toBeDisabled();
+      expect(removeButtonElements[1]).toBeDisabled();
+    });
+  });
 });
