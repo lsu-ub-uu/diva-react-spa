@@ -8,6 +8,7 @@ import testNumberVariableWithFinalValueMetaData from '../../__mocks__/coraMetada
 import testCollectionVariableMetaData from '../../__mocks__/coraMetadataCollectionVariable.json';
 import testCollectionVariableMetaDataWithFinalValue from '../../__mocks__/coraMetadataCollectionVariableWithFinalValue.json';
 import testItemCollection from '../../__mocks__/coraMetadataItemCollection.json';
+import testCollectionItem from '../../__mocks__/coraMetadataCollectionItem.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
@@ -185,6 +186,22 @@ describe('transformMetadata', () => {
           { refCollectionItemId: 'examplePinkItem' },
           { refCollectionItemId: 'exampleYellowItem' },
         ]
+      });
+
+    });
+  });
+
+  describe('collectionItem', () => {
+
+    it('Returns one BFFMetadata for collectionItem', () => {
+      const metadataList = transformMetadata(testCollectionItem as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'exampleBlueItem',
+        nameInData: 'blue',
+        type: 'collectionItem',
+        textId: 'exampleBlueItemText',
+        defTextId: 'exampleBlueItemDefText'
       });
 
     });

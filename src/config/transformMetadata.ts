@@ -71,6 +71,10 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     case 'itemCollection': {
       return transformItemCollection(dataRecordGroup, metadata);
     }
+    case 'collectionItem': {
+      // Basic metadata is enough for a collectionItem
+      return metadata;
+    }
     // TODO add more types
     default: {
       return;
