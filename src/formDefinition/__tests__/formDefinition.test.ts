@@ -59,6 +59,9 @@ describe('formDefinition', () => {
       someNewMetadataGroup,
       someRecordInfo,
       someNewMetadataGroupFaultyChildReference
+      // todo add collectionVariable
+      // todo add ItemCollection
+      // todo add collectionItem
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
