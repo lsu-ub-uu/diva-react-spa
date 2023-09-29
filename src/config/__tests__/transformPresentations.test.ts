@@ -134,12 +134,12 @@ describe('transformCoraPresentations', () => {
     });
   });
 
-  it('Returns only BFFPresentationGroup and BFFPresentation (pVar) entries and skips other types', () => {
+  it('Returns only BFFPresentationGroup and BFFPresentation (pGroup, pNumVar, pVar and pCollVar) entries and skips other types', () => {
     const transformData = transformCoraPresentations(
       coraPresentationWithMiscTypes as DataListWrapper
     );
 
-    expect(transformData).toHaveLength(3);
+    expect(transformData).toHaveLength(4);
   });
 
   // pCollVar
