@@ -5,6 +5,9 @@ import testMetaDataWithFinalValue from '../../__mocks__/coraMetadataWithFinalVal
 import testMetaDataForGroupWithTwoChildren from '../../__mocks__/coraMetadataForGroupWithTwoChildren.json';
 import testNumberVariableMetaData from '../../__mocks__/coraMetadataNumberVariable.json';
 import testNumberVariableWithFinalValueMetaData from '../../__mocks__/coraMetadataNumberVariableWithFinalValue.json';
+import testCollectionVariableMetaData from '../../__mocks__/coraMetadataCollectionVariable.json';
+import testCollectionVariableMetaDataWithFinalValue from '../../__mocks__/coraMetadataCollectionVariableWithFinalValue.json';
+import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
   it('Empty list should return empty', () => {
@@ -58,6 +61,7 @@ describe('transformMetadata', () => {
       });
     });
   });
+
   describe('metadataGroup', () => {
     it('Returns one BFFMetadata for group', () => {
       const metadataList = transformMetadata(testMetaDataForGroupWithTwoChildren);
@@ -92,6 +96,7 @@ describe('transformMetadata', () => {
       expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
     });
   });
+
   describe('numberVariable', () => {
     it('Returns one BFFMetadata for numberVariable without finalValue', () => {
       const metadataList = transformMetadata(testNumberVariableMetaData);
@@ -130,4 +135,36 @@ describe('transformMetadata', () => {
       expect(metadataList[0].hasOwnProperty('finalValue')).toBe(true);
     });
   });
+
+  describe('collectionVariable', () => {
+    it('Returns one BFFMetadata for collectionVariable without finalValue', () => {
+      const metadataList = transformMetadata(testCollectionVariableMetaData as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toEqual({
+        id: 'exampleCollectionVar',
+        nameInData: 'colour',
+        type: 'collectionVariable',
+        textId: 'exampleCollectionVarText',
+        defTextId: 'exampleCollectionVarDefText',
+        refCollection: 'exampleCollection',
+      });
+      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
+    });
+
+    it('Returns one BFFMetadata for collectionVariable with finalValue', () => {
+      const metadataList = transformMetadata(testCollectionVariableMetaDataWithFinalValue as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toEqual({
+        id: 'exampleCollectionVar',
+        nameInData: 'colour',
+        type: 'collectionVariable',
+        textId: 'exampleCollectionVarText',
+        defTextId: 'exampleCollectionVarDefText',
+        refCollection: 'exampleCollection',
+        finalValue: 'blue',
+      });
+      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(true);
+    });
+  });
+
 });

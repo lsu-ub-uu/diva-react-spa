@@ -33,7 +33,7 @@ import {
   BFFMetadata,
   BFFMetadataGroup,
   BFFMetadataChildReference,
-  BFFMetadataTextVariable, BFFMetadataNumberVariable,
+  BFFMetadataTextVariable, BFFMetadataNumberVariable, BFFMetadataCollectionVariable,
 } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
@@ -43,8 +43,8 @@ export const transformMetadata = (dataListWrapper: DataListWrapper): BFFMetadata
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  const temp = coraRecords.map(transformCoraRecordToBFFMetaData);
-  return temp.filter((item) => item !== undefined);
+  return coraRecords.map(transformCoraRecordToBFFMetaData)
+    .filter((item) => item !== undefined);
 };
 
 const transformCoraRecordToBFFMetaData = (coraRecordWrapper: RecordWrapper): BFFMetadata => {
@@ -64,6 +64,9 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     }
     case 'numberVariable': {
       return transformNumberVariable(dataRecordGroup, metadata);
+    }
+    case 'collectionVariable': {
+      return transformCollectionVariable(dataRecordGroup, metadata);
     }
     // TODO add more types
     default: {
@@ -95,6 +98,17 @@ const transformNumberVariable = (dataRecordGroup: DataGroup, metadata: BFFMetada
   const numberOfDecimals = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'numberOfDecimals');
 
   return { ...metadata, min, max, warningMin, warningMax, numberOfDecimals } as BFFMetadataNumberVariable;
+};
+
+const transformCollectionVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata): BFFMetadata => {
+  if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
+    const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
+    metadata = { ...metadata, finalValue } as BFFMetadata;
+  }
+
+  const refCollection = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'refCollection');
+
+  return { ...metadata, refCollection } as BFFMetadataCollectionVariable;
 };
 
 const transformBasicMetadata = (dataRecordGroup: DataGroup) => {

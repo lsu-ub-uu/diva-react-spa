@@ -57,6 +57,12 @@ export interface BFFMetadataNumberVariable  extends BFFMetadata  {
   warningMin: string;
   warningMax: string;
   numberOfDecimals: string;
+  finalValue?: string;
+}
+
+export interface BFFMetadataCollectionVariable  extends BFFMetadata  {
+  refCollection: string;
+  finalValue?: string;
 }
 
 export interface BFFMetadataGroup extends BFFMetadata {
