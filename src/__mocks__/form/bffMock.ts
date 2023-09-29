@@ -50,7 +50,7 @@ export const someMetadataTextVariable: BFFMetadataTextVariable = {
   nameInData: 'someNameInData',
   type: 'textVariable',
   textId: 'someTextId',
-  defTextId: 'someDefText',
+  defTextId: 'someDefTextId',
   regEx: 'someRegex'
 };
 
@@ -58,8 +58,8 @@ export const someMetadataNumberVar: BFFMetadataNumberVariable = {
   id: 'someMetadataNumberVarId',
   nameInData: 'someNameInDataNumberVar',
   type: 'numberVariable',
-  textId: 'someNumberVarText',
-  defTextId: 'someNumberVarDefText',
+  textId: 'someNumberVarTextId',
+  defTextId: 'someNumberVarDefTextId',
   min: '0',
   max: '20',
   warningMin: '2',

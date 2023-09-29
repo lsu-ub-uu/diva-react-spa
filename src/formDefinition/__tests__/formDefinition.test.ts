@@ -132,6 +132,10 @@ describe('formDefinition', () => {
             repeatMax: 3,
             minNumberOfRepeatingToShow: 1
           },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId',
+          },
           validation: {
             type: 'regex',
             pattern: 'someRegex'
@@ -146,6 +150,10 @@ describe('formDefinition', () => {
           repeat: {
             repeatMin: 1,
             repeatMax: 3
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId',
           },
           validation: {
             type: 'regex',
@@ -162,6 +170,10 @@ describe('formDefinition', () => {
             repeatMin: 0,
             repeatMax: 1,
             minNumberOfRepeatingToShow: 1
+          },
+          tooltip: {
+            title: 'someNumberVarTextId',
+            body: 'someNumberVarDefTextId',
           },
           validation: {
             type: 'number',

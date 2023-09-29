@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
   BFFMetadata,
   BFFMetadataGroup,
@@ -53,6 +52,7 @@ export const createFormDefinition = (
     let repeat;
     let mode;
     let inputType;
+    let tooltip;
 
     if (presentationChildType === 'text') {
       return { name: presentationChildId, type: presentationChildType };
@@ -80,6 +80,9 @@ export const createFormDefinition = (
       const metadata = metadataPool.get(metadataId) as BFFMetadata;
       name = metadata.nameInData;
       type = metadata.type;
+      // metadata.textId,
+
+      tooltip = { title: metadata.textId, body: metadata.defTextId };
 
       if (presentation.type === 'pVar') {
         placeholder = presentation.emptyTextId;
@@ -106,8 +109,7 @@ export const createFormDefinition = (
       }
     }
 
-    //console.log(type, validation);
-    return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType });
+    return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType, tooltip });
   });
 
   return {
