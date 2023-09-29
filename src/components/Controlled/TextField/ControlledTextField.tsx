@@ -12,6 +12,7 @@ interface ControlledTextFieldProps {
   placeholder?: string;
   required?: boolean;
   readOnly?: boolean;
+  tooltip?: { title: string; body: string };
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
@@ -21,7 +22,6 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
     <Controller
       control={props.control}
       name={props.name}
-      /* defaultValue='' */
       render={({ field, fieldState: { error } }) => {
         const fieldWithoutRef = { ...field, ref: undefined };
         return (
@@ -34,19 +34,21 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
             >
               {props.label}
-              <Tooltip
-                title='title'
-                body='some body'
-              >
-                <IconButton
-                  edge='end'
-                  aria-label='Help'
-                  disableRipple
-                  color='default'
+              {props.tooltip && (
+                <Tooltip
+                  title={t(props.tooltip.title)}
+                  body={t(props.tooltip.body)}
                 >
-                  <HelpOutlineIcon />
-                </IconButton>
-              </Tooltip>
+                  <IconButton
+                    edge='end'
+                    aria-label='Help'
+                    disableRipple
+                    color='default'
+                  >
+                    <HelpOutlineIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
             </FormLabel>
             <TextField
               id={field.name}

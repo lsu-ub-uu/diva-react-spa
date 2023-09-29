@@ -49,12 +49,18 @@ export interface FormComponentRepeat {
   minNumberOfRepeatingToShow?: number;
 }
 
+export interface FormComponentTooltip {
+  title: string;
+  body: string;
+}
+
 export interface FormComponent {
   type: string;
   name: string;
   placeholder?: string;
   validation?: FormRegexValidation | FormNumberValidation;
   repeat: FormComponentRepeat;
+  tooltip?: FormComponentTooltip;
   inputType?: 'input' | 'textarea'; // really be optional?
 }
 
@@ -182,6 +188,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             label={component.name}
             name={component.name}
             placeholder={component.placeholder}
+            tooltip={component.tooltip}
             control={methods.control}
           />
         );

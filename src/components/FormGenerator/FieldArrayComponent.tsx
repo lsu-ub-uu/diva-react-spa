@@ -54,6 +54,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             control={props.control}
             name={`${props.name}.${index}.value` as const}
             label={props.component.name}
+            tooltip={props.component.tooltip}
           />
           <button
             type='button'

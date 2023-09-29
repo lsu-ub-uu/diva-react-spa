@@ -25,7 +25,7 @@ describe('<Tooltip />', () => {
       </Tooltip>,
     );
 
-    const spanBtn = await screen.getByText('click for tooltip');
+    const spanBtn = screen.getByText('click for tooltip');
     expect(spanBtn).toBeInTheDocument();
     await user.click(spanBtn);
 
