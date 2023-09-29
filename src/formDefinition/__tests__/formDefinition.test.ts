@@ -35,7 +35,7 @@ import {
   someNewMetadataGroupFaultyChildReference,
   someRecordInfo,
   someValidationTypeData,
-  someValidationTypeDataFaultyChildReference
+  someValidationTypeDataFaultyChildReference, pSomeMetadataTextVariable2, someMetadataTextVariable2,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -54,6 +54,7 @@ describe('formDefinition', () => {
     ]);
     metadataPool = listToPool<BFFMetadata>([
       someMetadataTextVariable,
+      someMetadataTextVariable2,
       someMetadataNumberVar,
       someNewMetadataGroup,
       someRecordInfo,
@@ -61,6 +62,7 @@ describe('formDefinition', () => {
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
+      pSomeMetadataTextVariable2,
       pSomeMetadataNumberVar,
       pSomeNewMetadataGroup
     ]);
@@ -115,8 +117,8 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(4);
-    expect(formDefinition).toEqual({
+    expect(formDefinition.components).toHaveLength(5);
+    expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       components: [
         {
@@ -149,7 +151,26 @@ describe('formDefinition', () => {
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
-            repeatMax: 3
+            repeatMax: 3,
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId',
+          },
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex'
+          },
+          mode: 'input',
+          inputType: 'input'
+        },
+        {
+          type: 'textVariable',
+          name: 'someNameInData2',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: Number.MAX_VALUE
           },
           tooltip: {
             title: 'someTextId',

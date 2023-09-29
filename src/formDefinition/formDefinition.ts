@@ -72,8 +72,16 @@ export const createFormDefinition = (
         );
       }
 
+      const determineRepeatMax = (value: string) => {
+        // X means infinite in Cora
+        if (value === 'X') {
+          return Number.MAX_VALUE;
+        }
+        return parseInt(value);
+      }
+
       const repeatMin = parseInt(metaDataChildRef.repeatMin);
-      const repeatMax = parseInt(metaDataChildRef.repeatMax);
+      const repeatMax = determineRepeatMax(metaDataChildRef.repeatMax);
 
       repeat = { minNumberOfRepeatingToShow, repeatMin, repeatMax };
 
