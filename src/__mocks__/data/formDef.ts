@@ -6,6 +6,10 @@ export const formDef = {
     {
       type: 'text',
       name: 'presentationTypeTextCollectionVarDefText',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
     },
     {
       type: 'textVariable',
@@ -47,6 +51,10 @@ export const formDefWithOneTextVariable = {
     {
       type: 'text',
       name: 'presentationTypeTextCollectionVarDefText',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
     },
     {
       type: 'textVariable',
@@ -55,6 +63,62 @@ export const formDefWithOneTextVariable = {
       repeat: {
         repeatMin: 1,
         repeatMax: 1,
+      },
+      validation: {
+        type: 'regex',
+        pattern: '^[a-zA-Z]$',
+      },
+      inputType: 'input',
+    },
+  ],
+};
+export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'text',
+      name: 'presentationTypeTextCollectionVarDefText',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+    },
+    {
+      type: 'textVariable',
+      name: 'someNameInData',
+      placeholder: 'someEmptyTextId',
+      repeat: {
+        repeatMin: 2,
+        repeatMax: 3,
+        minNumberOfRepeatingToShow: 2,
+      },
+      validation: {
+        type: 'regex',
+        pattern: '^[a-zA-Z]$',
+      },
+      inputType: 'input',
+    },
+  ],
+};
+export const formDefWithOneTextVariableWithRepeatMin = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'text',
+      name: 'presentationTypeTextCollectionVarDefText',
+      repeat: {
+        minNumberOfRepeatingToShow: 1,
+        repeatMin: 1,
+        repeatMax: 3,
+      },
+    },
+    {
+      type: 'textVariable',
+      name: 'someNameInData',
+      placeholder: 'someEmptyTextId',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 2,
       },
       validation: {
         type: 'regex',

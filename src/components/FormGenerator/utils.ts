@@ -18,7 +18,10 @@
  */
 
 // eslint-disable-next-line import/no-cycle
-import { FormSchema } from './FormGenerator';
+import { FormComponent, FormSchema } from './FormGenerator';
+
+export const isComponentRepeating = (component: FormComponent) =>
+  component.repeat?.repeatMax > 1 ?? false;
 
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   const defaultValues: {
@@ -27,11 +30,27 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   // todo handle final value in here
 
   formSchema.components.forEach((component) => {
-    if (component.type === 'textVariable') {
-      defaultValues[component.name] = '';
-    }
-    if (component.type === 'numberVariable') {
-      defaultValues[component.name] = '';
+    if (isComponentRepeating(component)) {
+      const numberToShowFromStart =
+        component.repeat.minNumberOfRepeatingToShow ?? 0;
+      if (component.type === 'textVariable') {
+        const initialValues = Array.from(
+          { length: numberToShowFromStart },
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          (_) => ({
+            value: '',
+          }),
+        );
+
+        defaultValues[component.name] = initialValues;
+      }
+    } else {
+      if (component.type === 'textVariable') {
+        defaultValues[component.name] = '';
+      }
+      if (component.type === 'numberVariable') {
+        defaultValues[component.name] = '';
+      }
     }
   });
 

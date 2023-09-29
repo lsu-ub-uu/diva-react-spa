@@ -22,11 +22,16 @@ import { FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { NumberSchema, StringSchema } from 'yup';
+import { ArraySchema, NumberSchema, StringSchema } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { ControlledTextField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
-import { createDefaultValuesFromFormSchema } from './utils';
+import {
+  createDefaultValuesFromFormSchema,
+  isComponentRepeating,
+} from './utils';
+// eslint-disable-next-line import/no-cycle
+import { FieldArrayComponent } from './FieldArrayComponent';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -38,18 +43,24 @@ export interface FormSchema {
   components: FormComponent[];
 }
 
-interface FormComponentRepeat {
+export interface FormComponentRepeat {
   repeatMin: number;
   repeatMax: number;
   minNumberOfRepeatingToShow?: number;
 }
 
-interface FormComponent {
+export interface FormComponentTooltip {
+  title: string;
+  body: string;
+}
+
+export interface FormComponent {
   type: string;
   name: string;
   placeholder?: string;
   validation?: FormRegexValidation | FormNumberValidation;
   repeat: FormComponentRepeat;
+  tooltip?: FormComponentTooltip;
   inputType?: 'input' | 'textarea'; // really be optional?
 }
 
@@ -68,42 +79,78 @@ interface FormNumberValidation {
 }
 
 const generateYupSchema = (components: FormComponent[]) => {
-  const composedShape = components.reduce((accumulator, component) => {
-    // eslint-disable-next-line prefer-regex-literals
-    if (component.type === 'textVariable') {
-      const regexpValidation = component.validation as FormRegexValidation;
-      accumulator[component.name] = yup
-        .string()
-        .matches(
-          new RegExp(regexpValidation.pattern ?? '.+'),
-          'Invalid input format',
-        );
-    }
+  const validatableComponents = components.filter((component) =>
+    ['numberVariable', 'textVariable'].includes(component.type),
+  );
 
-    if (component.type === 'numberVariable') {
-      const numberValidation = component.validation as FormNumberValidation;
-      accumulator[component.name] = yup
-        .string()
-        .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-        .test('decimal-places', 'Invalid number of decimals', (value) => {
-          if (!value) return true;
-          const decimalPlaces = (value.split('.')[1] || []).length;
-          return decimalPlaces === numberValidation.numberOfDecimals;
-        })
-        .test('min', 'Invalid range (min)', (value) => {
-          if (!value) return true;
-          const intValue = parseInt(value, 10);
-          return numberValidation.min <= intValue;
-        })
-        .test('max', 'Invalid range (max)', (value) => {
-          if (!value) return true;
-          const intValue = parseInt(value, 10);
-          return numberValidation.max >= intValue;
-        });
-    }
+  const composedShape = validatableComponents.reduce(
+    (accumulator, component) => {
+      // eslint-disable-next-line prefer-regex-literals
+      if (
+        component.type === 'textVariable' &&
+        !isComponentRepeating(component)
+      ) {
+        const regexpValidation = component.validation as FormRegexValidation;
+        accumulator[component.name] = yup
+          .string()
+          .matches(
+            new RegExp(regexpValidation.pattern ?? '.+'),
+            'Invalid input format',
+          );
+      }
 
-    return accumulator;
-  }, {} as Record<string, StringSchema | NumberSchema>);
+      if (
+        component.type === 'textVariable' &&
+        isComponentRepeating(component)
+      ) {
+        const regexpValidation = component.validation as FormRegexValidation;
+        accumulator[component.name] = yup
+          .array()
+          .of(
+            yup.object().shape({
+              value: yup
+                .string()
+                .matches(
+                  new RegExp(regexpValidation.pattern ?? '.+'),
+                  'Invalid input format',
+                ),
+            }),
+          )
+          .min(component.repeat.repeatMin)
+          .max(component.repeat.repeatMax);
+      }
+
+      if (
+        component.type === 'numberVariable' &&
+        !isComponentRepeating(component)
+      ) {
+        const numberValidation = component.validation as FormNumberValidation;
+        accumulator[component.name] = yup
+          .string()
+          .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+          .test('decimal-places', 'Invalid number of decimals', (value) => {
+            if (!value) return true;
+            const decimalPlaces = (value.split('.')[1] || []).length;
+            return decimalPlaces === numberValidation.numberOfDecimals;
+          })
+          .test('min', 'Invalid range (min)', (value) => {
+            if (!value) return true;
+            const intValue = parseInt(value, 10);
+            return numberValidation.min <= intValue;
+          })
+          .test('max', 'Invalid range (max)', (value) => {
+            if (!value) return true;
+            const intValue = parseInt(value, 10);
+            return numberValidation.max >= intValue;
+          });
+      }
+      return accumulator;
+    },
+    {} as Record<
+      string,
+      StringSchema | NumberSchema | ArraySchema<any, any, any, any>
+    >,
+  );
 
   return yup.object().shape(composedShape);
 };
@@ -115,17 +162,23 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
-    resolver: yupResolver(
-      generateYupSchema(
-        props.formSchema.components.filter(
-          (component) => component.type !== 'text',
-        ),
-      ),
-    ),
+    resolver: yupResolver(generateYupSchema(props.formSchema.components)),
   });
 
+  // eslint-disable-next-line consistent-return
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
+
+    if (isComponentRepeating(component)) {
+      return (
+        <FieldArrayComponent
+          component={component}
+          key={reactKey}
+          control={methods.control}
+          name={component.name}
+        />
+      );
+    }
     switch (component.type) {
       case 'textVariable':
       case 'numberVariable': {
@@ -135,6 +188,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             label={component.name}
             name={component.name}
             placeholder={component.placeholder}
+            tooltip={component.tooltip}
             control={methods.control}
           />
         );

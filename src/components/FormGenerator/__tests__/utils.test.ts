@@ -26,6 +26,7 @@ describe('FormGenerator utils', () => {
   test('should take a formDef and make default values object', () => {
     const expectedDefaultValues = {
       someNameInData: '',
+      someNumberVariableNameInData: '',
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDef as FormSchema,
