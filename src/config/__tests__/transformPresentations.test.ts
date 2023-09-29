@@ -24,6 +24,7 @@ import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPre
 import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
 import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
 import coraPresentationWithMiscTypes from '../../__mocks__/coraPresentationWithMiscTypes.json';
+import coraPresentationWithOneCollectionVariable from '../../__mocks__/coraPresentationWithOneCollectionVariable.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -140,4 +141,17 @@ describe('transformCoraPresentations', () => {
 
     expect(transformData).toHaveLength(3);
   });
+
+  // pCollVar
+  it('Returns one BFFPresentation for one pCollVar entry', () => {
+    const transformData = transformCoraPresentations(coraPresentationWithOneCollectionVariable);
+    expect(transformData[0]).toStrictEqual({
+      id: 'examplePCollVar',
+      type: 'pCollVar',
+      presentationOf: 'exampleCollectionVar',
+      mode: 'input',
+      emptyTextId: 'initialEmptyValueText'
+    });
+  });
+
 });
