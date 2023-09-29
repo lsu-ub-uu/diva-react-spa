@@ -25,7 +25,7 @@ import {
 import {
   containsChildWithNameInData,
   getAllDataGroupsWithNameInDataAndAttributes,
-  getFirstDataGroupWithNameInData
+  getFirstDataGroupWithNameInData,
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
@@ -67,6 +67,9 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     }
     case 'collectionVariable': {
       return transformCollectionVariable(dataRecordGroup, metadata);
+    }
+    case 'itemCollection': {
+      return transformItemCollection(dataRecordGroup, metadata);
     }
     // TODO add more types
     default: {
@@ -111,6 +114,15 @@ const transformCollectionVariable = (dataRecordGroup: DataGroup, metadata: BFFMe
   return { ...metadata, refCollection } as BFFMetadataCollectionVariable;
 };
 
+const transformItemCollection = (dataRecordGroup: DataGroup, metadata: BFFMetadata) => {
+  const collectionItemReferences = getCollectionItemReferencesFromGroup(dataRecordGroup); // collectionItemReferences
+
+  return {
+    ...metadata,
+    collectionItemReferences
+  } as BFFMetadata;
+};
+
 const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const nameInData = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'nameInData');
@@ -139,11 +151,20 @@ const transformMetadataGroup = (dataRecordGroup: DataGroup, metadata: BFFMetadat
     children
   } as BFFMetadataGroup;
 };
+
 export const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
   const childReferences = getFirstDataGroupWithNameInData(dataRecordGroup, 'childReferences');
 
   return getAllDataGroupsWithNameInDataAndAttributes(childReferences, 'childReference');
 };
+
+export const getCollectionItemReferencesFromGroup = (dataRecordGroup: DataGroup) => {
+  const collectionItemReferencesGroup = getFirstDataGroupWithNameInData(dataRecordGroup, 'collectionItemReferences');
+  return collectionItemReferencesGroup.children.map((collectionRef) => {
+    return { refCollectionItemId: getFirstDataAtomicValueWithNameInData(collectionRef as DataGroup, 'linkedRecordId')}
+  });
+};
+
 
 const transformChildReference = (childReference: DataGroup): BFFMetadataChildReference => {
   const childId = extractLinkedRecordIdFromNamedRecordLink(childReference, 'ref');

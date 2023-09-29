@@ -51,7 +51,7 @@ export interface BFFMetadataTextVariable extends BFFMetadata {
   finalValue?: string;
 }
 
-export interface BFFMetadataNumberVariable  extends BFFMetadata  {
+export interface BFFMetadataNumberVariable extends BFFMetadata  {
   min: string;
   max: string;
   warningMin: string;
@@ -60,7 +60,7 @@ export interface BFFMetadataNumberVariable  extends BFFMetadata  {
   finalValue?: string;
 }
 
-export interface BFFMetadataCollectionVariable  extends BFFMetadata  {
+export interface BFFMetadataCollectionVariable extends BFFMetadata  {
   refCollection: string;
   finalValue?: string;
 }

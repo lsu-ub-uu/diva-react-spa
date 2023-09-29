@@ -7,6 +7,7 @@ import testNumberVariableMetaData from '../../__mocks__/coraMetadataNumberVariab
 import testNumberVariableWithFinalValueMetaData from '../../__mocks__/coraMetadataNumberVariableWithFinalValue.json';
 import testCollectionVariableMetaData from '../../__mocks__/coraMetadataCollectionVariable.json';
 import testCollectionVariableMetaDataWithFinalValue from '../../__mocks__/coraMetadataCollectionVariableWithFinalValue.json';
+import testItemCollection from '../../__mocks__/coraMetadataItemCollection.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
@@ -167,4 +168,25 @@ describe('transformMetadata', () => {
     });
   });
 
+  describe('itemCollection', () => {
+
+    it('Returns one BFFMetadata for itemCollection', () => {
+      // @ts-ignore
+      const metadataList = transformMetadata(testItemCollection as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'exampleCollection',
+        nameInData: 'colour',
+        type: 'itemCollection',
+        textId: 'exampleCollectionText',
+        defTextId: 'exampleCollectionDefText',
+        collectionItemReferences: [
+          { refCollectionItemId: 'exampleBlueItem' },
+          { refCollectionItemId: 'examplePinkItem' },
+          { refCollectionItemId: 'exampleYellowItem' },
+        ]
+      });
+
+    });
+  });
 });
