@@ -20,6 +20,7 @@
 import { test, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import {
   formDef,
   formDefWithOneNumberVariable,
@@ -296,18 +297,18 @@ describe('<FormGenerator />', () => {
   describe('collectionVariable', () => {
     it('Renders a form with collectionVariable and all its options', async () => {
       const mockSubmit = vi.fn();
-      render(
+      const { container } = render(
         <FormGenerator
           formSchema={formDefWithOneCollectionVariable as FormSchema}
           onSubmit={mockSubmit}
         />,
       );
-      const selectElement = screen.getByPlaceholderText(
-        'initialEmptyValueText',
+
+      const selectInputs = container.getElementsByClassName(
+        'MuiSelect-nativeInput',
       );
 
-      expect(selectElement).toBeInTheDocument();
-
+      expect(selectInputs).toHaveLength(1);
     });
   });
 });

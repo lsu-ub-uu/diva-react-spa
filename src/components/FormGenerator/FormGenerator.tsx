@@ -24,7 +24,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ArraySchema, NumberSchema, StringSchema } from 'yup';
 import { useTranslation } from 'react-i18next';
-import { ControlledTextField } from '../Controlled';
+import { ControlledTextField, ControlledSelectField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
 import {
   createDefaultValuesFromFormSchema,
@@ -83,7 +83,9 @@ interface FormNumberValidation {
 
 const generateYupSchema = (components: FormComponent[]) => {
   const validatableComponents = components.filter((component) =>
-    ['numberVariable', 'textVariable'].includes(component.type),
+    ['numberVariable', 'textVariable', 'collectionVariable'].includes(
+      component.type,
+    ),
   );
 
   const composedShape = validatableComponents.reduce(
@@ -193,6 +195,21 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             placeholder={component.placeholder}
             tooltip={component.tooltip}
             control={methods.control}
+          />
+        );
+      }
+      case 'collectionVariable': {
+        return (
+          <ControlledSelectField
+            key={reactKey}
+            name={component.name}
+            isLoading={false}
+            loadingError={false}
+            label={component.name}
+            placeholder={component.placeholder}
+            tooltip={component.tooltip}
+            control={methods.control}
+            options={component.options}
           />
         );
       }

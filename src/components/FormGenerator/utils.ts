@@ -34,21 +34,22 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
       const numberToShowFromStart =
         component.repeat.minNumberOfRepeatingToShow ?? 0;
       if (component.type === 'textVariable') {
-        const initialValues = Array.from(
+        defaultValues[component.name] = Array.from(
           { length: numberToShowFromStart },
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           (_) => ({
             value: '',
           }),
         );
-
-        defaultValues[component.name] = initialValues;
       }
     } else {
       if (component.type === 'textVariable') {
         defaultValues[component.name] = '';
       }
       if (component.type === 'numberVariable') {
+        defaultValues[component.name] = '';
+      }
+      if (component.type === 'collectionVariable') {
         defaultValues[component.name] = '';
       }
     }
