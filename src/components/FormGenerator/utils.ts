@@ -23,6 +23,9 @@ import { FormComponent, FormSchema } from './FormGenerator';
 export const isComponentRepeating = (component: FormComponent) =>
   component.repeat?.repeatMax > 1 ?? false;
 
+export const isComponentOptional = (component: FormComponent) =>
+  component.repeat?.repeatMin === 0 ?? false;
+
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   const defaultValues: {
     [x: string]: string | number | ({} | undefined)[] | undefined;

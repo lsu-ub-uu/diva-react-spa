@@ -28,6 +28,7 @@ import { ControlledTextField, ControlledSelectField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
 import {
   createDefaultValuesFromFormSchema,
+  isComponentOptional,
   isComponentRepeating,
 } from './utils';
 // eslint-disable-next-line import/no-cycle
@@ -129,7 +130,9 @@ const generateYupSchema = (components: FormComponent[]) => {
         component.type === 'collectionVariable' &&
         !isComponentRepeating(component)
       ) {
-        accumulator[component.name] = yup.string().required();
+        if (!isComponentOptional(component)) {
+          accumulator[component.name] = yup.string().required();
+        }
       }
 
       if (
