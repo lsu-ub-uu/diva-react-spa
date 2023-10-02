@@ -4,7 +4,7 @@ import {
   BFFValidationType,
   BFFPresentation,
   BFFPresentationGroup,
-  BFFMetadataNumberVariable
+  BFFMetadataNumberVariable, BFFMetadataCollectionVariable, BFFMetadata, BFFMetadataItemCollection,
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
@@ -46,6 +46,11 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
       childId: 'someMetadataNumberVarId',
       repeatMin: '0',
       repeatMax: '1'
+    },
+    {
+      childId: 'exampleCollectionVarId',
+      repeatMin: '1',
+      repeatMax: '1'
     }
   ]
 };
@@ -81,6 +86,55 @@ export const someMetadataNumberVar: BFFMetadataNumberVariable = {
   warningMax: '10',
   numberOfDecimals: '0'
 };
+
+export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
+  id: 'exampleCollectionVarId',
+  nameInData: 'colour',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'blue',
+}
+
+export const someMetadataItemCollection: BFFMetadataItemCollection = {
+  id: 'exampleCollection',
+  nameInData: 'colour',
+  type: 'itemCollection',
+  textId: 'exampleCollectionText',
+  defTextId: 'exampleCollectionDefText',
+  collectionItemReferences: [
+    { refCollectionItemId: 'exampleBlueItem' },
+    { refCollectionItemId: 'examplePinkItem' },
+    { refCollectionItemId: 'exampleYellowItem' },
+  ]
+}
+
+export const someMetadataCollectionItemBlue: BFFMetadata = {
+  id: 'exampleBlueItem',
+  nameInData: 'blue',
+  type: 'collectionItem',
+  textId: 'exampleBlueItemText',
+  defTextId: 'exampleBlueItemDefText'
+}
+
+export const someMetadataCollectionItemPink: BFFMetadata = {
+  id: 'examplePinkItem',
+  nameInData: 'pink',
+  type: 'collectionItem',
+  textId: 'examplePinkItemText',
+  defTextId: 'examplePinkItemDefText'
+}
+
+export const someMetadataCollectionItemYellow: BFFMetadata = {
+  id: 'exampleYellowItem',
+  nameInData: 'yellow',
+  type: 'collectionItem',
+  textId: 'exampleYellowItemText',
+  defTextId: 'exampleYellowItemDefText'
+}
+
+
 
 export const someRecordInfo: BFFMetadataGroup = {
   id: 'someRecordInfoId',
@@ -125,6 +179,15 @@ export const pSomeMetadataTextVariable2: BFFPresentation = {
   emptyTextId: 'someEmptyTextId'
 };
 
+export const pSomeMetadataCollectionVariable: BFFPresentation = {
+  id: 'pSomeMetadataCollectionVariableId',
+  presentationOf: 'exampleCollectionVarId',
+  mode: 'input',
+  type: 'pCollVar',
+  emptyTextId: 'someEmptyTextId'
+};
+
+
 export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   id: 'pSomeNewMetadataGroupId',
   presentationOf: 'someNewMetadataGroupId', // metadata
@@ -158,7 +221,12 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       type: 'presentation',
       minNumberOfRepeatingToShow: '1',
       childStyle: ['style3', 'style4']
-    }
+    },
+    {
+      childId: 'pSomeMetadataCollectionVariableId',
+      type: 'presentation',
+      childStyle: ['style3', 'style4']
+    },
   ]
 };
 

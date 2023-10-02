@@ -19,10 +19,10 @@
 
 import { listToPool } from '../../utils/structs/listToPool';
 import {
-  BFFMetadata,
+  BFFMetadata, BFFMetadataItemCollection,
   BFFPresentation,
   BFFPresentationGroup,
-  BFFValidationType
+  BFFValidationType,
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -35,14 +35,20 @@ import {
   someNewMetadataGroupFaultyChildReference,
   someRecordInfo,
   someValidationTypeData,
-  someValidationTypeDataFaultyChildReference, pSomeMetadataTextVariable2, someMetadataTextVariable2,
+  someValidationTypeDataFaultyChildReference,
+  pSomeMetadataTextVariable2,
+  someMetadataTextVariable2,
+  someMetadataCollectionVariable,
+  someMetadataItemCollection,
+  someMetadataCollectionItemBlue,
+  someMetadataCollectionItemPink, someMetadataCollectionItemYellow, pSomeMetadataCollectionVariable,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
-  let metadataPool: Lookup<string, BFFMetadata>;
+  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
   let presentationPool: Lookup<string, BFFPresentation | BFFPresentationGroup>;
   const FORM_MODE_NEW = 'new';
   let dependencies: Dependencies;
@@ -52,22 +58,26 @@ describe('formDefinition', () => {
       someValidationTypeData,
       someValidationTypeDataFaultyChildReference
     ]);
-    metadataPool = listToPool<BFFMetadata>([
+    metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
       someMetadataTextVariable2,
       someMetadataNumberVar,
       someNewMetadataGroup,
       someRecordInfo,
-      someNewMetadataGroupFaultyChildReference
-      // todo add collectionVariable
-      // todo add ItemCollection
-      // todo add collectionItem
+      someNewMetadataGroupFaultyChildReference,
+      someMetadataCollectionVariable,
+      someMetadataItemCollection,
+      someMetadataCollectionItemBlue,
+      someMetadataCollectionItemPink,
+      someMetadataCollectionItemYellow,
+
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
       pSomeMetadataTextVariable2,
       pSomeMetadataNumberVar,
-      pSomeNewMetadataGroup
+      pSomeNewMetadataGroup,
+      pSomeMetadataCollectionVariable
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -120,7 +130,7 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(5);
+    expect(formDefinition.components).toHaveLength(6);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       components: [
@@ -207,6 +217,25 @@ describe('formDefinition', () => {
             warningMax: 10,
             numberOfDecimals: 0
           },
+          mode: 'input',
+        },
+        {
+          type: 'collectionVariable',
+          name: 'colour',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText',
+          },
+          options: [
+            {value: 'blue', label: 'exampleBlueItemText'},
+            {value: 'pink', label: 'examplePinkItemText'},
+            {value: 'yellow', label: 'exampleYellowItemText'}
+          ],
           mode: 'input',
         }
       ]

@@ -65,6 +65,19 @@ export interface BFFMetadataCollectionVariable extends BFFMetadata  {
   finalValue?: string;
 }
 
+export interface BFFCollectionItemReference {
+  refCollectionItemId: string;
+}
+
+export interface BFFMetadataItemCollection {
+  id: string;
+  nameInData: string;
+  type: string;
+  textId: string;
+  defTextId: string;
+  collectionItemReferences: BFFCollectionItemReference[];
+}
+
 export interface BFFMetadataGroup extends BFFMetadata {
   children: BFFMetadataChildReference[];
 }

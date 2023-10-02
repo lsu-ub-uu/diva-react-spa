@@ -1,11 +1,11 @@
 import {
-  BFFMetadata,
-  BFFMetadataGroup,
+  BFFMetadata, BFFMetadataCollectionVariable,
+  BFFMetadataGroup, BFFMetadataItemCollection,
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
   BFFPresentation,
   BFFPresentationGroup,
-  BFFValidationType
+  BFFValidationType,
 } from 'config/bffTypes';
 import { Dependencies } from './formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
@@ -53,6 +53,7 @@ export const createFormDefinition = (
     let mode;
     let inputType;
     let tooltip;
+    let options;
 
     if (presentationChildType === 'text') {
       return { name: presentationChildId, type: presentationChildType };
@@ -88,7 +89,6 @@ export const createFormDefinition = (
       const metadata = metadataPool.get(metadataId) as BFFMetadata;
       name = metadata.nameInData;
       type = metadata.type;
-      // metadata.textId,
 
       tooltip = { title: metadata.textId, body: metadata.defTextId };
 
@@ -102,6 +102,7 @@ export const createFormDefinition = (
           validation = { type: 'regex', pattern };
         }
       }
+
       if (presentation.type === 'pNumVar') {
         placeholder = presentation.emptyTextId;
         const numberVariable = metadata as BFFMetadataNumberVariable;
@@ -115,9 +116,28 @@ export const createFormDefinition = (
 
         validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
       }
+
+      if (presentation.type === 'pCollVar') {
+        placeholder = presentation.emptyTextId;
+        const collectionVariable = metadata as BFFMetadataCollectionVariable;
+        // todo handle collectionVariable.finalValue
+        mode = presentation.mode;
+        inputType = presentation.inputType;
+        // create options list
+        collectionVariable.refCollection
+        const collection = metadataPool.get(collectionVariable.refCollection) as BFFMetadataItemCollection;
+        const itemReferences = collection.collectionItemReferences;
+        options = itemReferences.map((itemRef) => {
+          const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
+          const label = collectionItem.textId;
+          const value = collectionItem.nameInData;
+          return { value, label}; // todo handle disabled?
+        })
+
+      }
     }
 
-    return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType, tooltip });
+    return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType, tooltip, options });
   });
 
   return {
