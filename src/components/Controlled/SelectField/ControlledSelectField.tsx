@@ -20,6 +20,7 @@ interface ControlledSelectFieldProps {
   loadingError: boolean;
   placeholder?: string;
   required?: boolean;
+  readOnly?: boolean;
   tooltip?: { title: string; body: string };
 }
 
@@ -71,6 +72,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             inputProps={{
               id: props.name,
               inputRef: ref,
+              readOnly: props.readOnly,
             }}
             onBlur={onBlur}
             size='small'

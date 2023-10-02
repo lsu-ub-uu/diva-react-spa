@@ -45,16 +45,14 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
           }),
         );
       }
-    } else {
-      if (component.type === 'textVariable') {
-        defaultValues[component.name] = '';
-      }
-      if (component.type === 'numberVariable') {
-        defaultValues[component.name] = '';
-      }
-      if (component.type === 'collectionVariable') {
-        defaultValues[component.name] = '';
-      }
+    } else if (
+      component.type === 'textVariable' ||
+      component.type === 'numberVariable' ||
+      component.type === 'collectionVariable'
+    ) {
+      defaultValues[component.name] = component.finalValue
+        ? component.finalValue
+        : '';
     }
   });
 

@@ -72,6 +72,28 @@ export const formDefWithOneTextVariable = {
     },
   ],
 };
+
+export const formDefWithOneTextVariableHavingFinalValue = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'textVariable',
+      name: 'someNameInData',
+      finalValue: 'someFinalValue',
+      placeholder: 'someEmptyTextId',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      validation: {
+        type: 'regex',
+        pattern: '^[a-zA-Z]$',
+      },
+      inputType: 'input',
+    },
+  ],
+};
+
 export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow = {
   validationTypeId: 'someValidationTypeId',
   components: [

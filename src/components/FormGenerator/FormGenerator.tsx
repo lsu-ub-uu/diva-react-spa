@@ -59,6 +59,7 @@ export interface FormComponentTooltip {
 export interface FormComponent {
   type: string;
   name: string;
+  finalValue?: string;
   placeholder?: string;
   validation?: FormRegexValidation | FormNumberValidation;
   repeat: FormComponentRepeat;
@@ -205,6 +206,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             placeholder={component.placeholder}
             tooltip={component.tooltip}
             control={methods.control}
+            readOnly={!!component.finalValue}
           />
         );
       }
@@ -220,6 +222,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             tooltip={component.tooltip}
             control={methods.control}
             options={component.options}
+            readOnly={!!component.finalValue}
           />
         );
       }
