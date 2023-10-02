@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
-import { Box, ButtonGroup, Grid, IconButton, Stack } from '@mui/material';
+import {
+  Box,
+  ButtonGroup,
+  Grid,
+  IconButton,
+  Stack,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -58,8 +64,7 @@ export const ReactHookFormTestPage = () => {
 
   useEffect(() => {
     setFocus('nonRepTextVariable');
-    console.log('Mounted form');
-  }, []);
+  }, [setFocus]);
 
   const handleMove = async (prev: number, next: number) => {
     move(prev, next);
@@ -121,49 +126,53 @@ export const ReactHookFormTestPage = () => {
                   xs={12}
                   sm={12}
                 >
-                  <ControlledTextField
-                    placeholder='some placeholder'
-                    control={control}
-                    name={`someTextVariable.${index}.value` as const}
-                    label='Somelabel'
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                >
-                  <ButtonGroup
-                    variant='outlined'
-                    aria-label='outlined secondary button group'
+                  <Stack
+                    spacing={{ xs: 1 }}
+                    direction='row'
                   >
-                    <IconButton
-                      aria-label='up'
-                      disabled={index === 0}
-                      onClick={() => handleMove(index, index - 1)}
+                    <ControlledTextField
+                      placeholder='some placeholder'
+                      control={control}
+                      name={`someTextVariable.${index}.value` as const}
+                      label='Somelabel'
+                    />
+                    <ButtonGroup
+                      size='small'
+                      orientation='vertical'
+                      variant='text'
                     >
-                      <ArrowUpwardIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label='down'
-                      disabled={index === fields.length - 1}
-                      onClick={() => handleMove(index, index + 1)}
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label='delete'
-                      disabled={
-                        fields.length <=
-                        getFieldValidationPropertyValue(
-                          'someTextVariable',
-                          'min',
-                        )
-                      }
-                      onClick={() => handleRemove(index)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ButtonGroup>
+                      <IconButton
+                        size='small'
+                        aria-label='up'
+                        disabled={index === 0}
+                        onClick={() => handleMove(index, index - 1)}
+                      >
+                        <ArrowUpwardIcon />
+                      </IconButton>
+                      <IconButton
+                        size='small'
+                        aria-label='delete'
+                        disabled={
+                          fields.length <=
+                          getFieldValidationPropertyValue(
+                            'someTextVariable',
+                            'min',
+                          )
+                        }
+                        onClick={() => handleRemove(index)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton
+                        size='small'
+                        aria-label='down'
+                        disabled={index === fields.length - 1}
+                        onClick={() => handleMove(index, index + 1)}
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </ButtonGroup>
+                  </Stack>
                 </Grid>
               </Grid>
             );
