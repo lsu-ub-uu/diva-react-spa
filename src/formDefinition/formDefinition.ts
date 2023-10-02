@@ -54,6 +54,7 @@ export const createFormDefinition = (
     let inputType;
     let tooltip;
     let options;
+    let finalValue
 
     if (presentationChildType === 'text') {
       return { name: presentationChildId, type: presentationChildType };
@@ -90,11 +91,13 @@ export const createFormDefinition = (
       name = metadata.nameInData;
       type = metadata.type;
 
+
       tooltip = { title: metadata.textId, body: metadata.defTextId };
 
       if (presentation.type === 'pVar') {
         placeholder = presentation.emptyTextId;
         const textVariable = metadata as BFFMetadataTextVariable;
+        finalValue = textVariable.finalValue;
         mode = presentation.mode;
         inputType = presentation.inputType;
         const pattern = textVariable.regEx;
@@ -108,6 +111,7 @@ export const createFormDefinition = (
         const numberVariable = metadata as BFFMetadataNumberVariable;
         mode = presentation.mode;
         inputType = presentation.inputType;
+        finalValue = numberVariable.finalValue;
         const min = parseInt(numberVariable.min);
         const max = parseInt(numberVariable.max);
         const warningMin = parseInt(numberVariable.warningMin);
@@ -120,7 +124,7 @@ export const createFormDefinition = (
       if (presentation.type === 'pCollVar') {
         placeholder = presentation.emptyTextId;
         const collectionVariable = metadata as BFFMetadataCollectionVariable;
-        // todo handle collectionVariable.finalValue
+        finalValue = collectionVariable.finalValue
         mode = presentation.mode;
         inputType = presentation.inputType;
         // create options list
@@ -137,7 +141,7 @@ export const createFormDefinition = (
       }
     }
 
-    return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType, tooltip, options });
+    return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType, tooltip, options, finalValue });
   });
 
   return {
