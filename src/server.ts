@@ -2,7 +2,14 @@ import express, { Application } from 'express';
 import { configureServer } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
 import { listToPool } from './utils/structs/listToPool';
-import { BFFMetadata, BFFPresentation, BFFPresentationGroup, BFFText, BFFValidationType } from './config/bffTypes';
+import {
+  BFFMetadata,
+  BFFMetadataItemCollection,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFText,
+  BFFValidationType,
+} from './config/bffTypes';
 import { getRecordDataListByType } from './cora/cora';
 import { DataListWrapper } from './utils/cora-data/CoraData';
 import { transformCoraTexts } from './config/transformTexts';
@@ -46,7 +53,7 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
     const result = await Promise.all(promises);
 
     const metadata = transformMetadata(result[0].data);
-    const metadataPool = listToPool<BFFMetadata>(metadata);
+    const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
 
     const presentation = transformCoraPresentations(result[1].data);
     const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>(presentation);
