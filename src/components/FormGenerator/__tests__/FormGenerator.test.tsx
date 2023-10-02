@@ -320,7 +320,7 @@ describe('<FormGenerator />', () => {
       await user.click(expandButton);
       const items = screen.getByRole('listbox');
 
-      expect(items.children).toHaveLength(3);
+      expect(items.children).toHaveLength(4); // includes None option
 
       await user.selectOptions(items, 'exampleBlueItemText');
       await user.click(submitButton);
