@@ -218,14 +218,6 @@ describe('<FormGenerator />', () => {
     });
   });
   describe('minNumberOfRepeatingToShow', () => {
-    //     repeatMin: 2,
-    //   att finns 2 från början
-    // repeatMax: 3,
-    //   trycker på add,
-    //   tills det finns 3,
-    //   add knappen blir disablad
-    // minNumberOfRepeatingToShow: 2
-    //   kolla att det finns så många
 
     it('should render number of inputs based on repeatMin', () => {
       const mockSubmit = vi.fn();
