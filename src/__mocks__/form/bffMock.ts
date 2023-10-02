@@ -43,6 +43,11 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
       repeatMax: 'X'
     },
     {
+      childId: 'someMetadataTextVariable3Id',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
       childId: 'someMetadataNumberVarId',
       repeatMin: '0',
       repeatMax: '1'
@@ -71,6 +76,15 @@ export const someMetadataTextVariable2: BFFMetadataTextVariable = {
   textId: 'someTextId',
   defTextId: 'someDefTextId',
   regEx: 'someRegex'
+};
+export const someMetadataTextVariable3: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable3Id',
+  nameInData: 'someNameInData3',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  finalValue: 'someFinalValue'
 };
 
 
@@ -178,6 +192,14 @@ export const pSomeMetadataTextVariable2: BFFPresentation = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId'
 };
+export const pSomeMetadataTextVariable3: BFFPresentation = {
+  id: 'pSomeMetadataTextVariable3Id',
+  presentationOf: 'someMetadataTextVariable3Id',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId'
+};
 
 export const pSomeMetadataCollectionVariable: BFFPresentation = {
   id: 'pSomeMetadataCollectionVariableId',
@@ -213,6 +235,11 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
     },
     {
       childId: 'pSomeMetadataTextVariable2Id',
+      type: 'presentation',
+      childStyle: ['style3', 'style4']
+    },
+    {
+      childId: 'pSomeMetadataTextVariable3Id',
       type: 'presentation',
       childStyle: ['style3', 'style4']
     },

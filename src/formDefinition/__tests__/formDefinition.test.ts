@@ -41,7 +41,11 @@ import {
   someMetadataCollectionVariable,
   someMetadataItemCollection,
   someMetadataCollectionItemBlue,
-  someMetadataCollectionItemPink, someMetadataCollectionItemYellow, pSomeMetadataCollectionVariable,
+  someMetadataCollectionItemPink, 
+  someMetadataCollectionItemYellow, 
+  pSomeMetadataCollectionVariable, 
+  pSomeMetadataTextVariable3, 
+  someMetadataTextVariable3,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -61,6 +65,7 @@ describe('formDefinition', () => {
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
       someMetadataTextVariable2,
+      someMetadataTextVariable3,
       someMetadataNumberVar,
       someNewMetadataGroup,
       someRecordInfo,
@@ -75,6 +80,7 @@ describe('formDefinition', () => {
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
       pSomeMetadataTextVariable2,
+      pSomeMetadataTextVariable3,
       pSomeMetadataNumberVar,
       pSomeNewMetadataGroup,
       pSomeMetadataCollectionVariable
@@ -130,7 +136,7 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(6);
+    expect(formDefinition.components).toHaveLength(7);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       components: [
@@ -195,6 +201,26 @@ describe('formDefinition', () => {
           },
           mode: 'input', // output
           inputType: 'input' //textarea
+        },
+        {
+          type: 'textVariable',
+          name: 'someNameInData3',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId',
+          },
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex'
+          },
+          mode: 'input', // output
+          inputType: 'input', //textarea
+          finalValue: 'someFinalValue',
         },
         {
           type: 'numberVariable',
