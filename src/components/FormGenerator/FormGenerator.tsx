@@ -126,6 +126,13 @@ const generateYupSchema = (components: FormComponent[]) => {
       }
 
       if (
+        component.type === 'collectionVariable' &&
+        !isComponentRepeating(component)
+      ) {
+        accumulator[component.name] = yup.string().required();
+      }
+
+      if (
         component.type === 'numberVariable' &&
         !isComponentRepeating(component)
       ) {

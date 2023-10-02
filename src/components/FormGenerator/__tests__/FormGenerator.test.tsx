@@ -218,7 +218,6 @@ describe('<FormGenerator />', () => {
     });
   });
   describe('minNumberOfRepeatingToShow', () => {
-
     it('should render number of inputs based on repeatMin', () => {
       const mockSubmit = vi.fn();
 
@@ -301,6 +300,49 @@ describe('<FormGenerator />', () => {
       );
 
       expect(selectInputs).toHaveLength(1);
+    });
+
+    it('Renders a form with collectionVariable and validates it correctly and does not call submit', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithOneCollectionVariable as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+      const expandButton = screen.getByRole('button', { expanded: false });
+      expect(expandButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.click(expandButton);
+      const items = screen.getByRole('listbox');
+
+      expect(items.children).toHaveLength(3);
+
+      await user.selectOptions(items, 'exampleBlueItemText');
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('Renders a form with collectionVariable and validates it correctly and does not call submit', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithOneCollectionVariable as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
 });
