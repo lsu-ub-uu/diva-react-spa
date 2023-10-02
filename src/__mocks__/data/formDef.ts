@@ -174,3 +174,37 @@ export const formDefWithOneNumberVariableHavingDecimals: FormSchema = {
     },
   ],
 };
+
+export const formDefWithOneCollectionVariable: FormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      name: 'colour',
+      type: 'collectionVariable',
+      placeholder: 'initialEmptyValueText',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      mode: 'input',
+      tooltip: {
+        title: 'exampleCollectionVarText',
+        body: 'exampleCollectionVarDefText',
+      },
+      options: [
+        {
+          value: 'blue',
+          label: 'exampleBlueItemText',
+        },
+        {
+          value: 'pink',
+          label: 'examplePinkItemText',
+        },
+        {
+          value: 'yellow',
+          label: 'exampleYellowItemText',
+        },
+      ],
+    },
+  ],
+};

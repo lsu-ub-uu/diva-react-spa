@@ -26,6 +26,7 @@ import {
   formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneTextVariable,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
+  formDefWithOneCollectionVariable,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator, FormSchema } from '../FormGenerator';
 
@@ -289,6 +290,24 @@ describe('<FormGenerator />', () => {
       expect(removeButtonElements).toHaveLength(2);
       expect(removeButtonElements[0]).toBeDisabled();
       expect(removeButtonElements[1]).toBeDisabled();
+    });
+  });
+
+  describe('collectionVariable', () => {
+    it('Renders a form with collectionVariable and all its options', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithOneCollectionVariable as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+      const selectElement = screen.getByPlaceholderText(
+        'initialEmptyValueText',
+      );
+
+      expect(selectElement).toBeInTheDocument();
+
     });
   });
 });

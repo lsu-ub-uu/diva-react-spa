@@ -32,6 +32,7 @@ import {
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { FieldArrayComponent } from './FieldArrayComponent';
+import { Option } from '../index';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -62,6 +63,8 @@ export interface FormComponent {
   repeat: FormComponentRepeat;
   tooltip?: FormComponentTooltip;
   inputType?: 'input' | 'textarea'; // really be optional?
+  mode?: string;
+  options?: Option[];
 }
 
 interface FormRegexValidation {
