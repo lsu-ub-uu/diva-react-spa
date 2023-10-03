@@ -17,15 +17,16 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { DataGroup, DataListWrapper, RecordLink, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   extractIdFromRecordInfo,
   extractAttributeValueByName
 } from '../utils/cora-data/CoraDataTransforms';
 import {
   containsChildWithNameInData,
+  getAllChildrenWithNameInData,
   getAllDataGroupsWithNameInDataAndAttributes,
-  getFirstDataGroupWithNameInData,
+  getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
@@ -33,7 +34,9 @@ import {
   BFFMetadata,
   BFFMetadataGroup,
   BFFMetadataChildReference,
-  BFFMetadataTextVariable, BFFMetadataNumberVariable, BFFMetadataCollectionVariable,
+  BFFMetadataTextVariable,
+  BFFMetadataNumberVariable,
+  BFFMetadataCollectionVariable
 } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
@@ -43,8 +46,7 @@ export const transformMetadata = (dataListWrapper: DataListWrapper): BFFMetadata
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(transformCoraRecordToBFFMetaData)
-    .filter((item) => item !== undefined);
+  return coraRecords.map(transformCoraRecordToBFFMetaData).filter((item) => item !== undefined);
 };
 
 const transformCoraRecordToBFFMetaData = (coraRecordWrapper: RecordWrapper): BFFMetadata => {
@@ -87,27 +89,47 @@ const transformTextVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata
     const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
     metadata = { ...metadata, finalValue } as BFFMetadata;
   }
+  const attributeReferences = extractAttributesReferences(dataRecordGroup);
 
   const regEx = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'regEx');
-  return { ...metadata, regEx } as BFFMetadataTextVariable;
+  return { ...metadata, regEx, attributeReferences } as BFFMetadataTextVariable;
 };
 
-const transformNumberVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata): BFFMetadata => {
+const transformNumberVariable = (
+  dataRecordGroup: DataGroup,
+  metadata: BFFMetadata
+): BFFMetadata => {
   if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
     const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
     metadata = { ...metadata, finalValue } as BFFMetadata;
   }
 
+  const attributeReferences = extractAttributesReferences(dataRecordGroup);
+
   const min = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'min');
   const max = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'max');
   const warningMin = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'warningMin');
   const warningMax = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'warningMax');
-  const numberOfDecimals = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'numberOfDecimals');
+  const numberOfDecimals = getFirstDataAtomicValueWithNameInData(
+    dataRecordGroup,
+    'numberOfDecimals'
+  );
 
-  return { ...metadata, min, max, warningMin, warningMax, numberOfDecimals } as BFFMetadataNumberVariable;
+  return {
+    ...metadata,
+    min,
+    max,
+    warningMin,
+    warningMax,
+    numberOfDecimals,
+    attributeReferences
+  } as BFFMetadataNumberVariable;
 };
 
-const transformCollectionVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata): BFFMetadata => {
+const transformCollectionVariable = (
+  dataRecordGroup: DataGroup,
+  metadata: BFFMetadata
+): BFFMetadata => {
   if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
     const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
     metadata = { ...metadata, finalValue } as BFFMetadata;
@@ -155,6 +177,22 @@ const transformMetadataGroup = (dataRecordGroup: DataGroup, metadata: BFFMetadat
     children
   } as BFFMetadataGroup;
 };
+const extractAttributesReferences = (dataRecordGroup: DataGroup) => {
+  if (containsChildWithNameInData(dataRecordGroup, 'attributeReferences')) {
+    const attributesReferencesGroup = getFirstDataGroupWithNameInData(
+      dataRecordGroup,
+      'attributeReferences'
+    );
+    const attribRefs = getAllChildrenWithNameInData(attributesReferencesGroup, 'ref');
+    return attribRefs.map((attribRef) => {
+      const refCollectionVarId = getFirstDataAtomicValueWithNameInData(
+        attribRef as RecordLink,
+        'linkedRecordId'
+      );
+      return { refCollectionVarId };
+    });
+  }
+};
 
 export const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
   const childReferences = getFirstDataGroupWithNameInData(dataRecordGroup, 'childReferences');
@@ -163,12 +201,19 @@ export const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {
 };
 
 export const getCollectionItemReferencesFromGroup = (dataRecordGroup: DataGroup) => {
-  const collectionItemReferencesGroup = getFirstDataGroupWithNameInData(dataRecordGroup, 'collectionItemReferences');
+  const collectionItemReferencesGroup = getFirstDataGroupWithNameInData(
+    dataRecordGroup,
+    'collectionItemReferences'
+  );
   return collectionItemReferencesGroup.children.map((collectionRef) => {
-    return { refCollectionItemId: getFirstDataAtomicValueWithNameInData(collectionRef as DataGroup, 'linkedRecordId')}
+    return {
+      refCollectionItemId: getFirstDataAtomicValueWithNameInData(
+        collectionRef as DataGroup,
+        'linkedRecordId'
+      )
+    };
   });
 };
-
 
 const transformChildReference = (childReference: DataGroup): BFFMetadataChildReference => {
   const childId = extractLinkedRecordIdFromNamedRecordLink(childReference, 'ref');

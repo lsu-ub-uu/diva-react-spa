@@ -8,7 +8,10 @@ import testNumberVariableWithFinalValueMetaData from '../../__mocks__/coraMetada
 import testCollectionVariableMetaData from '../../__mocks__/coraMetadataCollectionVariable.json';
 import testCollectionVariableMetaDataWithFinalValue from '../../__mocks__/coraMetadataCollectionVariableWithFinalValue.json';
 import testItemCollection from '../../__mocks__/coraMetadataItemCollection.json';
-import testCollectionItem from '../../__mocks__/coraMetadataCollectionItem.json';
+import testTestCollectionItem from '../../__mocks__/coraMetadataCollectionItem.json';
+import testTextWithOneAttribute from '../../__mocks__/coraMetadataTextVarWithOneAttribute.json';
+import testTestWithTwoAttributes from '../../__mocks__/coraMetadataTextVarWithTwoAttributes.json';
+import testNumberWithTwoAttributes from '../../__mocks__/coraMetadataNumberVarWithTwoAttributes.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
@@ -148,13 +151,15 @@ describe('transformMetadata', () => {
         type: 'collectionVariable',
         textId: 'exampleCollectionVarText',
         defTextId: 'exampleCollectionVarDefText',
-        refCollection: 'exampleCollection',
+        refCollection: 'exampleCollection'
       });
       expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
     });
 
     it('Returns one BFFMetadata for collectionVariable with finalValue', () => {
-      const metadataList = transformMetadata(testCollectionVariableMetaDataWithFinalValue as DataListWrapper);
+      const metadataList = transformMetadata(
+        testCollectionVariableMetaDataWithFinalValue as DataListWrapper
+      );
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toEqual({
         id: 'exampleCollectionVar',
@@ -163,14 +168,13 @@ describe('transformMetadata', () => {
         textId: 'exampleCollectionVarText',
         defTextId: 'exampleCollectionVarDefText',
         refCollection: 'exampleCollection',
-        finalValue: 'blue',
+        finalValue: 'blue'
       });
       expect(metadataList[0].hasOwnProperty('finalValue')).toBe(true);
     });
   });
 
   describe('itemCollection', () => {
-
     it('Returns one BFFMetadata for itemCollection', () => {
       // @ts-ignore
       const metadataList = transformMetadata(testItemCollection as DataListWrapper);
@@ -184,17 +188,15 @@ describe('transformMetadata', () => {
         collectionItemReferences: [
           { refCollectionItemId: 'exampleBlueItem' },
           { refCollectionItemId: 'examplePinkItem' },
-          { refCollectionItemId: 'exampleYellowItem' },
+          { refCollectionItemId: 'exampleYellowItem' }
         ]
       });
-
     });
   });
 
   describe('collectionItem', () => {
-
     it('Returns one BFFMetadata for collectionItem', () => {
-      const metadataList = transformMetadata(testCollectionItem as DataListWrapper);
+      const metadataList = transformMetadata(testTestCollectionItem as DataListWrapper);
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toStrictEqual({
         id: 'exampleBlueItem',
@@ -203,7 +205,45 @@ describe('transformMetadata', () => {
         textId: 'exampleBlueItemText',
         defTextId: 'exampleBlueItemDefText'
       });
-
+    });
+  });
+  describe('attributeReference', () => {
+    it('Returns one BFFMetadataTextVariable with one attributeReference', () => {
+      const metadataList = transformMetadata(testTextWithOneAttribute as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someTextVar',
+        nameInData: 'someNameInData',
+        type: 'textVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        regEx: 'someRegEx',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar'
+          }
+        ]
+      });
+    });
+    it('Returns one BFFMetadataTextVariable with two attributeReference', () => {
+      const metadataList = transformMetadata(testTestWithTwoAttributes as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someTextVar',
+        nameInData: 'someNameInData',
+        type: 'textVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        regEx: 'someRegEx',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
+          },
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
+          }
+        ]
+      });
     });
   });
 });

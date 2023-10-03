@@ -49,6 +49,10 @@ export abstract interface BFFMetadata extends BFFBase {
 export interface BFFMetadataTextVariable extends BFFMetadata {
   regEx: string;
   finalValue?: string;
+  attributeReferences?: BFFAttributeReference[];
+}
+export interface BFFAttributeReference {
+  refCollectionVarId: string;
 }
 
 export interface BFFMetadataNumberVariable extends BFFMetadata  {
