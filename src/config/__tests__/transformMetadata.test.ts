@@ -12,6 +12,7 @@ import testTestCollectionItem from '../../__mocks__/coraMetadataCollectionItem.j
 import testTextWithOneAttribute from '../../__mocks__/coraMetadataTextVarWithOneAttribute.json';
 import testTestWithTwoAttributes from '../../__mocks__/coraMetadataTextVarWithTwoAttributes.json';
 import testNumberWithTwoAttributes from '../../__mocks__/coraMetadataNumberVarWithTwoAttributes.json';
+import testCollectionWithTwoAttributes from '../../__mocks__/coraMetadataCollectionVarWithTwoAttributes.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
@@ -235,6 +236,54 @@ describe('transformMetadata', () => {
         textId: 'someTextVarText',
         defTextId: 'someTextVarDefText',
         regEx: 'someRegEx',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
+          },
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
+          }
+        ]
+      });
+    });
+    it('Returns one BFFMetadataNumberVariable with two attributeReference', () => {
+      const metadataList = transformMetadata(testNumberWithTwoAttributes as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someNumberVar',
+        nameInData: 'someNameInData',
+        type: 'numberVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        min: '0',
+        max: '20',
+        warningMin: '2',
+        warningMax: '10',
+        numberOfDecimals: '3',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
+          },
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
+          }
+        ]
+      });
+    });
+    it('Returns one BFFMetadataNumberVariable with two attributeReference', () => {
+      const metadataList = transformMetadata(testNumberWithTwoAttributes as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someNumberVar',
+        nameInData: 'someNameInData',
+        type: 'numberVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        min: '0',
+        max: '20',
+        warningMin: '2',
+        warningMax: '10',
+        numberOfDecimals: '3',
         attributeReferences: [
           {
             refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
