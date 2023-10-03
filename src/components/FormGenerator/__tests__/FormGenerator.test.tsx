@@ -289,9 +289,7 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const removeButtonElements = screen.getAllByRole('button', {
-        name: 'Remove',
-      });
+      const removeButtonElements = screen.getAllByLabelText('delete');
 
       expect(removeButtonElements).toHaveLength(2);
       expect(removeButtonElements[0]).toBeDisabled();
