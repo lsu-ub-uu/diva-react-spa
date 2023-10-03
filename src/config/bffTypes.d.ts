@@ -67,6 +67,7 @@ export interface BFFMetadataNumberVariable extends BFFMetadata  {
 export interface BFFMetadataCollectionVariable extends BFFMetadata  {
   refCollection: string;
   finalValue?: string;
+  attributeReferences?: BFFAttributeReference[];
 }
 
 export interface BFFCollectionItemReference {

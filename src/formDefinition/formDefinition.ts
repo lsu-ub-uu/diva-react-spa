@@ -1,11 +1,13 @@
 import {
-  BFFMetadata, BFFMetadataCollectionVariable,
-  BFFMetadataGroup, BFFMetadataItemCollection,
+  BFFMetadata,
+  BFFMetadataCollectionVariable,
+  BFFMetadataGroup,
+  BFFMetadataItemCollection,
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
   BFFPresentation,
   BFFPresentationGroup,
-  BFFValidationType,
+  BFFValidationType
 } from 'config/bffTypes';
 import { Dependencies } from './formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
@@ -54,7 +56,7 @@ export const createFormDefinition = (
     let inputType;
     let tooltip;
     let options;
-    let finalValue
+    let finalValue;
 
     if (presentationChildType === 'text') {
       return { name: presentationChildId, type: presentationChildType };
@@ -80,7 +82,7 @@ export const createFormDefinition = (
           return Number.MAX_VALUE;
         }
         return parseInt(value);
-      }
+      };
 
       const repeatMin = parseInt(metaDataChildRef.repeatMin);
       const repeatMax = determineRepeatMax(metaDataChildRef.repeatMax);
@@ -90,7 +92,6 @@ export const createFormDefinition = (
       const metadata = metadataPool.get(metadataId) as BFFMetadata;
       name = metadata.nameInData;
       type = metadata.type;
-
 
       tooltip = { title: metadata.textId, body: metadata.defTextId };
 
@@ -124,24 +125,45 @@ export const createFormDefinition = (
       if (presentation.type === 'pCollVar') {
         placeholder = presentation.emptyTextId;
         const collectionVariable = metadata as BFFMetadataCollectionVariable;
-        finalValue = collectionVariable.finalValue
+        finalValue = collectionVariable.finalValue;
         mode = presentation.mode;
         inputType = presentation.inputType;
+
+        if (collectionVariable.attributeReferences !== undefined) {
+          console.log(collectionVariable.attributeReferences);
+          collectionVariable.attributeReferences.map((attributeReference) => {
+            const refCollectionVar = metadataPool.get(
+              attributeReference.refCollectionVarId
+            ) as BFFMetadataCollectionVariable;
+          });
+        }
+
         // create options list
-        collectionVariable.refCollection
-        const collection = metadataPool.get(collectionVariable.refCollection) as BFFMetadataItemCollection;
+        const collection = metadataPool.get(
+          collectionVariable.refCollection
+        ) as BFFMetadataItemCollection;
         const itemReferences = collection.collectionItemReferences;
         options = itemReferences.map((itemRef) => {
           const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
           const label = collectionItem.textId;
           const value = collectionItem.nameInData;
-          return { value, label}; // todo handle disabled?
-        })
-
+          return { value, label }; // todo handle disabled?
+        });
       }
     }
 
-    return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType, tooltip, options, finalValue });
+    return removeEmpty({
+      name,
+      type,
+      placeholder,
+      validation,
+      repeat,
+      mode,
+      inputType,
+      tooltip,
+      options,
+      finalValue
+    });
   });
 
   return {
