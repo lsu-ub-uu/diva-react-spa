@@ -238,6 +238,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     >
       {props.formSchema.components.map(generateFormComponent)}
       <Button
+        sx={{ mt: 2, mb: 2 }}
         fullWidth
         type='submit'
         disableRipple
