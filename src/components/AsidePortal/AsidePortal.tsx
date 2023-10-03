@@ -30,9 +30,6 @@ export const AsidePortal = (props: AsidePortalProps) => {
     }
   };
   window.addEventListener('scroll', setFixedSidebar);
-  /*   useEffect(() => {
-    console.log(fixed);
-  }, [fixed]); */
 
   const [element, setElement] = useState<Element | null>(null);
 
