@@ -84,7 +84,10 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             error={error !== undefined}
             loading={props.isLoading}
           >
-            <MenuItem value=''>
+            <MenuItem
+              value=''
+              disableRipple
+            >
               <em>{t('option.none')}</em>
             </MenuItem>
             {props.options &&
