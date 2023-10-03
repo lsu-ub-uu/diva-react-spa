@@ -226,8 +226,11 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           />
         );
       }
-      default:
+      case 'text': {
         return <h3 key={reactKey}>{t(component.name)}</h3>;
+      }
+      default:
+        return null;
     }
   };
 
