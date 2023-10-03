@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import React, { useEffect } from 'react';
-import { Stack } from '@mui/material';
+import { Skeleton, Stack } from '@mui/material';
 import { Card, useBackdrop, FormGenerator, FormSchema } from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 
@@ -16,7 +16,13 @@ export const UploadTestPage = () => {
   }, [isLoading, setBackdrop]);
 
   if (error) return <span>Error: {error}</span>;
-  if (isLoading) return <span>Loading form from cora...</span>;
+  if (isLoading)
+    return (
+      <Skeleton
+        variant='rectangular'
+        height={800}
+      />
+    );
 
   return (
     <>
