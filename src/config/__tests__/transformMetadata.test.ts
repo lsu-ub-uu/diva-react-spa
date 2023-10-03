@@ -294,5 +294,25 @@ describe('transformMetadata', () => {
         ]
       });
     });
+    it('Returns one BFFMetadataCollectionVariable with two attributeReference', () => {
+      const metadataList = transformMetadata(testCollectionWithTwoAttributes as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someCollectionVar',
+        nameInData: 'someNameInData',
+        type: 'collectionVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        refCollection: 'exampleCollection',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
+          },
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
+          }
+        ]
+      });
+    });
   });
 });

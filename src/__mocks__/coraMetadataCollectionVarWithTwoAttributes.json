@@ -10,7 +10,7 @@
                 "children": [
                   {
                     "name": "id",
-                    "value": "someTextVar"
+                    "value": "someCollectionVar"
                   },
                   {
                     "children": [
@@ -170,8 +170,25 @@
                 "value": "someNameInData"
               },
               {
-                "name": "regEx",
-                "value": "someRegEx"
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "metadata"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "exampleCollection"
+                  }
+                ],
+                "actionLinks": {
+                  "read": {
+                    "requestMethod": "GET",
+                    "rel": "read",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/exampleCollection",
+                    "accept": "application/vnd.uub.record+json"
+                  }
+                },
+                "name": "refCollection"
               },
               {
                 "children": [
@@ -267,7 +284,7 @@
             ],
             "name": "metadata",
             "attributes": {
-              "type": "textVariable"
+              "type": "collectionVariable"
             }
           },
           "actionLinks": {

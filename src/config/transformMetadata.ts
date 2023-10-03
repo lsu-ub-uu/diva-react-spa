@@ -134,10 +134,10 @@ const transformCollectionVariable = (
     const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
     metadata = { ...metadata, finalValue } as BFFMetadata;
   }
-
+  const attributeReferences = extractAttributesReferences(dataRecordGroup);
   const refCollection = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'refCollection');
 
-  return { ...metadata, refCollection } as BFFMetadataCollectionVariable;
+  return { ...metadata, refCollection, attributeReferences } as BFFMetadataCollectionVariable;
 };
 
 const transformItemCollection = (dataRecordGroup: DataGroup, metadata: BFFMetadata) => {
