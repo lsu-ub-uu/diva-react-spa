@@ -37,6 +37,7 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
       const numberToShowFromStart =
         component.repeat.minNumberOfRepeatingToShow ?? 0;
       if (
+        component.type === 'collectionVariable' ||
         component.type === 'textVariable' ||
         component.type === 'numberVariable'
       ) {
