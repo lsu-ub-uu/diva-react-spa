@@ -230,3 +230,48 @@ export const formDefWithOneCollectionVariable: FormSchema = {
     },
   ],
 };
+
+export const formDefWithOneNumberVariableWithAttributeCollection: FormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'numberVariable',
+      name: 'someNameInDataNumberWithAttributeVar',
+      placeholder: 'someEmptyTextId',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'someNumberVarTextId',
+        body: 'someNumberVarDefTextId',
+      },
+      attributes: [
+        {
+          type: 'collectionVariable',
+          name: 'colour',
+          placeholder: 'emptyTextId',
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText',
+          },
+          options: [
+            { value: 'blue', label: 'exampleBlueItemText' },
+            { value: 'pink', label: 'examplePinkItemText' },
+            { value: 'yellow', label: 'exampleYellowItemText' },
+          ],
+          mode: 'input',
+        },
+      ],
+      validation: {
+        type: 'number',
+        min: 0,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
+      },
+      mode: 'input',
+    },
+  ],
+};

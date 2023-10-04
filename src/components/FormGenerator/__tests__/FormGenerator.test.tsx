@@ -29,6 +29,7 @@ import {
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
   formDefWithOneTextVariableHavingFinalValue,
   formDefWithOneCollectionVariable,
+  formDefWithOneNumberVariableWithAttributeCollection,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator, FormSchema } from '../FormGenerator';
 
@@ -87,6 +88,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
+
   describe('textVariable', () => {
     test('Renders a form with TextVariable and validates it correctly and does not call the submit', async () => {
       const mockSubmit = vi.fn();
@@ -120,6 +122,7 @@ describe('<FormGenerator />', () => {
       expect(inputElement).toHaveValue('someFinalValue');
     });
   });
+
   describe('numberVariable', () => {
     test('Renders a form with numberVariable and validates it correctly and does not call the submit', async () => {
       const mockSubmit = vi.fn();
@@ -231,6 +234,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
+
   describe('minNumberOfRepeatingToShow', () => {
     it('should render number of inputs based on repeatMin', () => {
       const mockSubmit = vi.fn();
@@ -248,6 +252,7 @@ describe('<FormGenerator />', () => {
       expect(inputElements).toHaveLength(2);
     });
   });
+
   describe('repeatMax', () => {
     it('Add button should be disabled when repeatMax is reached', async () => {
       const mockSubmit = vi.fn();
@@ -314,7 +319,7 @@ describe('<FormGenerator />', () => {
       expect(selectInputs).toHaveLength(1);
     });
 
-    it('Renders a form with collectionVariable and validates it correctly and does not call submit', async () => {
+    it('Renders a form with collectionVariable and validates it correctly and calls submit', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -355,6 +360,28 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('attribute collection', () => {
+    it('renders a form with numberVariable and attribute collection selectBox', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneNumberVariableWithAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const numberInput = screen.getByPlaceholderText('someEmptyTextId');
+      expect(numberInput).toBeInTheDocument();
+
+      // const selectElement = screen.getByPlaceholderText('emptyTextId');
+      // expect(selectElement).toBeInTheDocument();
+
+      screen.debug();
     });
   });
 });

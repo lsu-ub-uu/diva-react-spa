@@ -33,10 +33,14 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
-  const { fields, move, remove, append } = useFieldArray({
+  const { fields, append, move, remove } = useFieldArray({
     control: props.control,
     name: props.name,
   });
+
+  const handleAppend = async () => {
+    append({ value: '' });
+  };
 
   const handleMove = async (prev: number, next: number) => {
     move(prev, next);
@@ -77,7 +81,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         sx={{ mt: 1, mb: 1 }}
         variant='outlined'
         disabled={fields.length >= props.component.repeat.repeatMax}
-        onClick={() => append({ value: '' })}
+        onClick={handleAppend}
         disableRipple
         endIcon={<AddCircleOutlineIcon />}
       >

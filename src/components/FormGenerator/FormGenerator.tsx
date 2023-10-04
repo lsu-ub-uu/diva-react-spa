@@ -67,7 +67,13 @@ export interface FormComponent {
   inputType?: 'input' | 'textarea'; // really be optional?
   mode?: string;
   options?: Option[];
+  attributes?: FormAttributeCollection[];
 }
+
+type FormAttributeCollection = Omit<
+  FormComponent,
+  'repeat' | 'inputType' | 'attributes'
+>;
 
 interface FormRegexValidation {
   type: 'regex';
@@ -181,20 +187,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     resolver: yupResolver(generateYupSchema(props.formSchema.components)),
   });
 
-  // eslint-disable-next-line consistent-return
-  const generateFormComponent = (component: FormComponent, idx: number) => {
-    const reactKey = `${component.name}_${idx}`;
-
-    if (isComponentRepeating(component)) {
-      return (
-        <FieldArrayComponent
-          component={component}
-          key={reactKey}
-          control={methods.control}
-          name={component.name}
-        />
-      );
-    }
+  const renderVariableField = (component: FormComponent, reactKey: string) => {
     switch (component.type) {
       case 'textVariable':
       case 'numberVariable': {
@@ -232,6 +225,29 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       default:
         return null;
     }
+  };
+
+  // eslint-disable-next-line consistent-return
+  const generateFormComponent = (component: FormComponent, idx: number) => {
+    const reactKey = `${component.name}_${idx}`;
+
+    if (isComponentRepeating(component)) {
+      return (
+        <FieldArrayComponent
+          component={component}
+          key={reactKey}
+          control={methods.control}
+          name={component.name}
+        />
+      );
+    }
+
+    if (component.attributes !== undefined) {
+      // should render the parent component by calling renderVariableField
+      // iterate attributes and call renderVariableField foreach
+    }
+
+    return renderVariableField(component, reactKey);
   };
 
   return (
