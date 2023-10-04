@@ -280,11 +280,11 @@ describe('formDefinition', () => {
             title: 'exampleCollectionVarText',
             body: 'exampleCollectionVarDefText'
           },
-          /* attributes: [
+          attributes: [
             {
               type: 'collectionVariable',
               name: 'colour',
-              placeholder: 'someEmptyTextId',
+              placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText'
@@ -296,7 +296,7 @@ describe('formDefinition', () => {
               ],
               mode: 'input'
             }
-          ], */
+          ],
           options: [
             { value: 'blue', label: 'exampleBlueItemText' },
             { value: 'pink', label: 'examplePinkItemText' },

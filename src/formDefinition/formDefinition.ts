@@ -113,6 +113,27 @@ const createCollectionVariableOptions = (metadataPool: any, collectionVariable: 
   });
 }
 
+function createAttributes(collectionVariable: BFFMetadataCollectionVariable, metadataPool: any, options: unknown[]) {
+  return collectionVariable.attributeReferences?.map((attributeReference) => {
+    const refCollectionVar = metadataPool.get(
+      attributeReference.refCollectionVarId,
+    ) as BFFMetadataCollectionVariable;
+
+    const fakePresentation: BFFPresentation = {
+      id: 'someFakeId',
+      presentationOf: refCollectionVar.id,
+      type: 'pCollVar',
+      mode: 'input',
+      emptyTextId: 'emptyTextId',
+    };
+
+    const finalValue = collectionVariable.finalValue;
+    const commonParameters = createCommonParameters(refCollectionVar, fakePresentation);
+    options = createCollectionVariableOptions(metadataPool, refCollectionVar);
+    return removeEmpty({ ...commonParameters, options, finalValue});
+  });
+}
+
 const createPresentation = (
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
@@ -122,9 +143,10 @@ const createPresentation = (
   let validation;
   let options;
   let finalValue;
+  let attributes;
 
   const presentationChildId = presentationChildReference.childId;
-  const presentation: BFFPresentation = presentationPool.get(presentationChildId); // pSomeMetadataTextVariableId
+  const presentation: BFFPresentation = presentationPool.get(presentationChildId);
   const metadataId = presentation.presentationOf;
   const metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
   const repeat = createRepeat(presentationChildReference, metaDataChildRef);
@@ -155,16 +177,11 @@ const createPresentation = (
     const collectionVariable = metadata as BFFMetadataCollectionVariable;
     finalValue = collectionVariable.finalValue;
 
-    // create options list
     options = createCollectionVariableOptions(metadataPool, collectionVariable);
 
+    // break out Attributes to support all variable types. Attributes are always pCollVar
     if (collectionVariable.attributeReferences !== undefined) {
-      console.log(collectionVariable.attributeReferences);
-      collectionVariable.attributeReferences.map((attributeReference) => {
-        const refCollectionVar = metadataPool.get(
-          attributeReference.refCollectionVarId
-        ) as BFFMetadataCollectionVariable;
-      });
+      attributes = createAttributes(collectionVariable, metadataPool, options);
     }
   }
 
@@ -173,7 +190,8 @@ const createPresentation = (
     validation,
     repeat,
     options,
-    finalValue
+    finalValue,
+    attributes
   });
 };
 
