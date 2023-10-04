@@ -18,12 +18,11 @@
  */
 
 import { Box } from '@mui/material';
-import { FieldValues, useForm } from 'react-hook-form';
+import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ArraySchema, NumberSchema, StringSchema } from 'yup';
-import { useTranslation } from 'react-i18next';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
 import {
@@ -144,6 +143,43 @@ const generateYupSchema = (components: FormComponent[]) => {
 
       if (
         component.type === 'numberVariable' &&
+        isComponentRepeating(component)
+      ) {
+        const numberValidation = component.validation as FormNumberValidation;
+        accumulator[component.name] = yup
+          .array()
+          .of(
+            yup.object().shape({
+              value: yup
+                .string()
+                .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+                .test(
+                  'decimal-places',
+                  'Invalid number of decimals',
+                  (value) => {
+                    if (!value) return true;
+                    const decimalPlaces = (value.split('.')[1] || []).length;
+                    return decimalPlaces === numberValidation.numberOfDecimals;
+                  },
+                )
+                .test('min', 'Invalid range (min)', (value) => {
+                  if (!value) return true;
+                  const intValue = parseInt(value, 10);
+                  return numberValidation.min <= intValue;
+                })
+                .test('max', 'Invalid range (max)', (value) => {
+                  if (!value) return true;
+                  const intValue = parseInt(value, 10);
+                  return numberValidation.max >= intValue;
+                }),
+            }),
+          )
+          .min(component.repeat.repeatMin)
+          .max(component.repeat.repeatMax);
+      }
+
+      if (
+        component.type === 'numberVariable' &&
         !isComponentRepeating(component)
       ) {
         const numberValidation = component.validation as FormNumberValidation;
@@ -177,8 +213,52 @@ const generateYupSchema = (components: FormComponent[]) => {
   return yup.object().shape(composedShape);
 };
 
+export const renderVariableField = (
+  component: FormComponent,
+  reactKey: string,
+  control: Control<any>,
+  name: string,
+) => {
+  switch (component.type) {
+    case 'textVariable':
+    case 'numberVariable': {
+      return (
+        <ControlledTextField
+          key={reactKey}
+          label={component.name}
+          name={name}
+          placeholder={component.placeholder}
+          tooltip={component.tooltip}
+          control={control}
+          readOnly={!!component.finalValue}
+        />
+      );
+    }
+    case 'collectionVariable': {
+      return (
+        <ControlledSelectField
+          key={reactKey}
+          name={name}
+          isLoading={false}
+          loadingError={false}
+          label={component.name}
+          placeholder={component.placeholder}
+          tooltip={component.tooltip}
+          control={control}
+          options={component.options}
+          readOnly={!!component.finalValue}
+        />
+      );
+    }
+    case 'text': {
+      return <h3 key={reactKey}>{component.name}</h3>;
+    }
+    default:
+      return null;
+  }
+};
+
 export const FormGenerator = (props: FormGeneratorProps) => {
-  const { t } = useTranslation();
   const methods = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -186,46 +266,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
     resolver: yupResolver(generateYupSchema(props.formSchema.components)),
   });
-
-  const renderVariableField = (component: FormComponent, reactKey: string) => {
-    switch (component.type) {
-      case 'textVariable':
-      case 'numberVariable': {
-        return (
-          <ControlledTextField
-            key={reactKey}
-            label={component.name}
-            name={component.name}
-            placeholder={component.placeholder}
-            tooltip={component.tooltip}
-            control={methods.control}
-            readOnly={!!component.finalValue}
-          />
-        );
-      }
-      case 'collectionVariable': {
-        return (
-          <ControlledSelectField
-            key={reactKey}
-            name={component.name}
-            isLoading={false}
-            loadingError={false}
-            label={component.name}
-            placeholder={component.placeholder}
-            tooltip={component.tooltip}
-            control={methods.control}
-            options={component.options}
-            readOnly={!!component.finalValue}
-          />
-        );
-      }
-      case 'text': {
-        return <h3 key={reactKey}>{t(component.name)}</h3>;
-      }
-      default:
-        return null;
-    }
-  };
 
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (component: FormComponent, idx: number) => {
@@ -247,7 +287,12 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       // iterate attributes and call renderVariableField foreach
     }
 
-    return renderVariableField(component, reactKey);
+    return renderVariableField(
+      component,
+      reactKey,
+      methods.control,
+      component.name,
+    );
   };
 
   return (

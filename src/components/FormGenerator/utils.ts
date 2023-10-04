@@ -36,7 +36,10 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
     if (isComponentRepeating(component)) {
       const numberToShowFromStart =
         component.repeat.minNumberOfRepeatingToShow ?? 0;
-      if (component.type === 'textVariable') {
+      if (
+        component.type === 'textVariable' ||
+        component.type === 'numberVariable'
+      ) {
         defaultValues[component.name] = Array.from(
           { length: numberToShowFromStart },
           // eslint-disable-next-line @typescript-eslint/no-unused-vars

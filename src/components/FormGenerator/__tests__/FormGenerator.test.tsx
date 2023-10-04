@@ -380,8 +380,6 @@ describe('<FormGenerator />', () => {
 
       // const selectElement = screen.getByPlaceholderText('emptyTextId');
       // expect(selectElement).toBeInTheDocument();
-
-      screen.debug();
     });
   });
 });

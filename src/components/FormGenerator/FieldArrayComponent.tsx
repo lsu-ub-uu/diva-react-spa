@@ -22,9 +22,8 @@ import { Stack } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import { ControlledTextField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
-import { FormComponent } from './FormGenerator';
+import { FormComponent, renderVariableField } from './FormGenerator';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -58,13 +57,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           spacing={{ xs: 1 }}
           direction='row'
         >
-          <ControlledTextField
-            placeholder={props.component.placeholder}
-            control={props.control}
-            name={`${props.name}.${index}.value` as const}
-            label={props.component.name}
-            tooltip={props.component.tooltip}
-          />
+          {renderVariableField(
+            props.component,
+            field.id,
+            props.control as Control,
+            `${props.name}.${index}.value` as const,
+          )}
           <ActionButtonGroup
             moveUpButtonDisabled={index === 0}
             moveUpButtonAction={() => handleMove(index, index - 1)}
