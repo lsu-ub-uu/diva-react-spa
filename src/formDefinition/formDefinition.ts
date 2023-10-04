@@ -100,6 +100,19 @@ const createText = (
   return { name: presentationChildId, type: presentationChildType };
 };
 
+const createCollectionVariableOptions = (metadataPool: any, collectionVariable: BFFMetadataCollectionVariable) => {
+  const collection = metadataPool.get(
+    collectionVariable.refCollection,
+  ) as BFFMetadataItemCollection;
+  const itemReferences = collection.collectionItemReferences;
+  return itemReferences.map((itemRef) => {
+    const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
+    const label = collectionItem.textId;
+    const value = collectionItem.nameInData;
+    return { value, label }; // todo handle disabled?
+  });
+}
+
 const createPresentation = (
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
@@ -143,16 +156,7 @@ const createPresentation = (
     finalValue = collectionVariable.finalValue;
 
     // create options list
-    const collection = metadataPool.get(
-      collectionVariable.refCollection
-    ) as BFFMetadataItemCollection;
-    const itemReferences = collection.collectionItemReferences;
-    options = itemReferences.map((itemRef) => {
-      const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
-      const label = collectionItem.textId;
-      const value = collectionItem.nameInData;
-      return { value, label }; // todo handle disabled?
-    });
+    options = createCollectionVariableOptions(metadataPool, collectionVariable);
 
     if (collectionVariable.attributeReferences !== undefined) {
       console.log(collectionVariable.attributeReferences);
