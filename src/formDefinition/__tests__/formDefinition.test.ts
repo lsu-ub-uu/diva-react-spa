@@ -48,7 +48,11 @@ import {
   pSomeMetadataTextVariable3,
   someMetadataTextVariable3,
   someMetadataCollectionVariableWithAttribute,
-  pSomeMetadataCollectionVariableWithAttribute
+  pSomeMetadataCollectionVariableWithAttribute,
+  someMetadataNumberVarWithAttribute,
+  pSomeMetadataNumberWithAttributeVar,
+  pSomeMetadataTextVariableWithAttributeVar,
+  someMetadataTextVariableWithAttributeVar,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -78,7 +82,9 @@ describe('formDefinition', () => {
       someMetadataCollectionItemBlue,
       someMetadataCollectionItemPink,
       someMetadataCollectionItemYellow,
-      someMetadataCollectionVariableWithAttribute
+      someMetadataCollectionVariableWithAttribute,
+      someMetadataNumberVarWithAttribute,
+      someMetadataTextVariableWithAttributeVar
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
@@ -87,7 +93,9 @@ describe('formDefinition', () => {
       pSomeMetadataNumberVar,
       pSomeNewMetadataGroup,
       pSomeMetadataCollectionVariable,
-      pSomeMetadataCollectionVariableWithAttribute
+      pSomeMetadataCollectionVariableWithAttribute,
+      pSomeMetadataNumberWithAttributeVar,
+      pSomeMetadataTextVariableWithAttributeVar
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -140,7 +148,7 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(8);
+    expect(formDefinition.components).toHaveLength(10);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       components: [
@@ -303,7 +311,82 @@ describe('formDefinition', () => {
             { value: 'yellow', label: 'exampleYellowItemText' }
           ],
           mode: 'input'
-        }
+        },
+        {
+          type: 'numberVariable',
+          name: 'someNameInDataNumberWithAttributeVar',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someNumberVarTextId',
+            body: 'someNumberVarDefTextId'
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText'
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' }
+              ],
+              mode: 'input'
+            }
+          ],
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0
+          },
+          mode: 'input'
+        },
+        {
+          type: 'textVariable',
+          name: 'someNameInDataTextWithAttrib',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId'
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText'
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' }
+              ],
+              mode: 'input'
+            }
+          ],
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex'
+          },
+          mode: 'input',
+          inputType: 'input',
+        },
       ]
     });
   });

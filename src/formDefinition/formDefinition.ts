@@ -55,8 +55,7 @@ const getMetadataChildReferencesForValidationType = (
 ) => {
   const newMetadataGroupId = validationType.newMetadataGroupId;
   const newMetadataGroup = metadataPool.get(newMetadataGroupId) as BFFMetadataGroup;
-  const metadataChildReferences = newMetadataGroup.children;
-  return metadataChildReferences;
+  return newMetadataGroup.children;
 };
 
 const getPresentationChildReferencesForValidationType = (
@@ -65,8 +64,7 @@ const getPresentationChildReferencesForValidationType = (
 ) => {
   const newPresentationGroupId = validationType.newPresentationGroupId;
   const newPresentationGroup: BFFPresentationGroup = presentationPool.get(newPresentationGroupId);
-  const presentationChildReferences = newPresentationGroup.children;
-  return presentationChildReferences;
+  return newPresentationGroup.children;
 };
 
 const createComponentsFromChildReferences = (
@@ -113,8 +111,8 @@ const createCollectionVariableOptions = (metadataPool: any, collectionVariable: 
   });
 }
 
-function createAttributes(collectionVariable: BFFMetadataCollectionVariable, metadataPool: any, options: unknown[]) {
-  return collectionVariable.attributeReferences?.map((attributeReference) => {
+function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFMetadataNumberVariable | BFFMetadataTextVariable, metadataPool: any, options: unknown[] | undefined) {
+  return metadataVariable.attributeReferences?.map((attributeReference) => {
     const refCollectionVar = metadataPool.get(
       attributeReference.refCollectionVarId,
     ) as BFFMetadataCollectionVariable;
@@ -127,7 +125,7 @@ function createAttributes(collectionVariable: BFFMetadataCollectionVariable, met
       emptyTextId: 'emptyTextId',
     };
 
-    const finalValue = collectionVariable.finalValue;
+    const finalValue = metadataVariable.finalValue;
     const commonParameters = createCommonParameters(refCollectionVar, fakePresentation);
     options = createCollectionVariableOptions(metadataPool, refCollectionVar);
     return removeEmpty({ ...commonParameters, options, finalValue});
@@ -160,6 +158,10 @@ const createPresentation = (
     finalValue = textVariable.finalValue;
     const pattern = textVariable.regEx;
     validation = { type: 'regex', pattern };
+
+    if (textVariable.attributeReferences !== undefined) {
+      attributes = createAttributes(textVariable, metadataPool, undefined);
+    }
   }
 
   if (presentation.type === 'pNumVar') {
@@ -171,15 +173,17 @@ const createPresentation = (
     const warningMax = parseInt(numberVariable.warningMax);
     const numberOfDecimals = parseInt(numberVariable.numberOfDecimals);
     validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
+
+    if (numberVariable.attributeReferences !== undefined) {
+      attributes = createAttributes(numberVariable, metadataPool, undefined);
+    }
   }
 
   if (presentation.type === 'pCollVar') {
     const collectionVariable = metadata as BFFMetadataCollectionVariable;
     finalValue = collectionVariable.finalValue;
-
     options = createCollectionVariableOptions(metadataPool, collectionVariable);
 
-    // break out Attributes to support all variable types. Attributes are always pCollVar
     if (collectionVariable.attributeReferences !== undefined) {
       attributes = createAttributes(collectionVariable, metadataPool, options);
     }
@@ -217,8 +221,7 @@ const createRepeat = (
   const repeatMin = parseInt(metaDataChildRef.repeatMin);
   const repeatMax = determineRepeatMax(metaDataChildRef.repeatMax);
 
-  const repeat = { minNumberOfRepeatingToShow, repeatMin, repeatMax };
-  return repeat;
+  return { minNumberOfRepeatingToShow, repeatMin, repeatMax };
 };
 
 const determineRepeatMax = (value: string) => {
