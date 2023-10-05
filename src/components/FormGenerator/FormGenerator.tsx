@@ -108,13 +108,13 @@ const createYupNumberSchema = (numberValidation: FormNumberValidation) => {
     })
     .test('min', 'Invalid range (min)', (value) => {
       if (!value) return true;
-      const intValue = parseInt(value, 10);
-      return numberValidation.min <= intValue;
+      const numValue = parseFloat(value);
+      return numberValidation.min <= numValue;
     })
     .test('max', 'Invalid range (max)', (value) => {
       if (!value) return true;
-      const intValue = parseInt(value, 10);
-      return numberValidation.max >= intValue;
+      const numValue = parseFloat(value);
+      return numberValidation.max >= numValue;
     });
 };
 
