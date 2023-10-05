@@ -72,6 +72,28 @@ export const formDefWithOneTextVariable = {
     },
   ],
 };
+
+export const formDefWithOneTextVariableHavingFinalValue = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'textVariable',
+      name: 'someNameInData',
+      finalValue: 'someFinalValue',
+      placeholder: 'someEmptyTextId',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      validation: {
+        type: 'regex',
+        pattern: '^[a-zA-Z]$',
+      },
+      inputType: 'input',
+    },
+  ],
+};
+
 export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow = {
   validationTypeId: 'someValidationTypeId',
   components: [
@@ -171,6 +193,85 @@ export const formDefWithOneNumberVariableHavingDecimals: FormSchema = {
         repeatMin: 1,
         repeatMax: 1,
       },
+    },
+  ],
+};
+
+export const formDefWithOneCollectionVariable: FormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      name: 'colour',
+      type: 'collectionVariable',
+      placeholder: 'initialEmptyValueText',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      mode: 'input',
+      tooltip: {
+        title: 'exampleCollectionVarText',
+        body: 'exampleCollectionVarDefText',
+      },
+      options: [
+        {
+          value: 'blue',
+          label: 'exampleBlueItemText',
+        },
+        {
+          value: 'pink',
+          label: 'examplePinkItemText',
+        },
+        {
+          value: 'yellow',
+          label: 'exampleYellowItemText',
+        },
+      ],
+    },
+  ],
+};
+
+export const formDefWithOneNumberVariableWithAttributeCollection: FormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'numberVariable',
+      name: 'someNameInDataNumberWithAttributeVar',
+      placeholder: 'someEmptyTextId',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'someNumberVarTextId',
+        body: 'someNumberVarDefTextId',
+      },
+      attributes: [
+        {
+          type: 'collectionVariable',
+          name: 'colour',
+          placeholder: 'emptyTextId',
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText',
+          },
+          options: [
+            { value: 'blue', label: 'exampleBlueItemText' },
+            { value: 'pink', label: 'examplePinkItemText' },
+            { value: 'yellow', label: 'exampleYellowItemText' },
+          ],
+          mode: 'input',
+        },
+      ],
+      validation: {
+        type: 'number',
+        min: 0,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
+      },
+      mode: 'input',
     },
   ],
 };

@@ -20,12 +20,16 @@
 import { test, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import {
   formDef,
   formDefWithOneNumberVariable,
   formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneTextVariable,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
+  formDefWithOneTextVariableHavingFinalValue,
+  formDefWithOneCollectionVariable,
+  formDefWithOneNumberVariableWithAttributeCollection,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator, FormSchema } from '../FormGenerator';
 
@@ -84,6 +88,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
+
   describe('textVariable', () => {
     test('Renders a form with TextVariable and validates it correctly and does not call the submit', async () => {
       const mockSubmit = vi.fn();
@@ -103,7 +108,21 @@ describe('<FormGenerator />', () => {
 
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
+
+    test('Renders a form with TextVariable and sets a finalValue', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableHavingFinalValue as FormSchema}
+        />,
+      );
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+      expect(inputElement).toHaveValue('someFinalValue');
+    });
   });
+
   describe('numberVariable', () => {
     test('Renders a form with numberVariable and validates it correctly and does not call the submit', async () => {
       const mockSubmit = vi.fn();
@@ -215,16 +234,8 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
-  describe('minNumberOfRepeatingToShow', () => {
-    //     repeatMin: 2,
-    //   att finns 2 från början
-    // repeatMax: 3,
-    //   trycker på add,
-    //   tills det finns 3,
-    //   add knappen blir disablad
-    // minNumberOfRepeatingToShow: 2
-    //   kolla att det finns så många
 
+  describe('minNumberOfRepeatingToShow', () => {
     it('should render number of inputs based on repeatMin', () => {
       const mockSubmit = vi.fn();
 
@@ -241,6 +252,7 @@ describe('<FormGenerator />', () => {
       expect(inputElements).toHaveLength(2);
     });
   });
+
   describe('repeatMax', () => {
     it('Add button should be disabled when repeatMax is reached', async () => {
       const mockSubmit = vi.fn();
@@ -282,13 +294,92 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const removeButtonElements = screen.getAllByRole('button', {
-        name: 'Remove',
-      });
+      const removeButtonElements = screen.getAllByLabelText('delete');
 
       expect(removeButtonElements).toHaveLength(2);
       expect(removeButtonElements[0]).toBeDisabled();
       expect(removeButtonElements[1]).toBeDisabled();
+    });
+  });
+
+  describe('collectionVariable', () => {
+    it('Renders a form with collectionVariable and all its options', async () => {
+      const mockSubmit = vi.fn();
+      const { container } = render(
+        <FormGenerator
+          formSchema={formDefWithOneCollectionVariable as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const selectInputs = container.getElementsByClassName(
+        'MuiSelect-nativeInput',
+      );
+
+      expect(selectInputs).toHaveLength(1);
+    });
+
+    it('Renders a form with collectionVariable and validates it correctly and calls submit', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithOneCollectionVariable as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+      const expandButton = screen.getByRole('button', { expanded: false });
+      expect(expandButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.click(expandButton);
+      const items = screen.getByRole('listbox');
+
+      expect(items.children).toHaveLength(4); // includes None option
+
+      await user.selectOptions(items, 'exampleBlueItemText');
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('Renders a form with collectionVariable and validates it correctly and does not call submit', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithOneCollectionVariable as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('attribute collection', () => {
+    it('renders a form with numberVariable and attribute collection selectBox', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneNumberVariableWithAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const numberInput = screen.getByPlaceholderText('someEmptyTextId');
+      expect(numberInput).toBeInTheDocument();
+
+      // const selectElement = screen.getByPlaceholderText('emptyTextId');
+      // expect(selectElement).toBeInTheDocument();
     });
   });
 });

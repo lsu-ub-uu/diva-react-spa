@@ -1,39 +1,21 @@
 import { useEffect } from 'react';
-import { Box, ButtonGroup, Grid, IconButton, Stack } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
 import { Card } from '../components';
-import { ControlledTextField } from '../components/Controlled';
+import {
+  ControlledSelectField,
+  ControlledTextField,
+} from '../components/Controlled';
 
 const validationSchema = yup.object().shape({
-  // eslint-disable-next-line react/forbid-prop-types
-  nonRepTextVariable: yup.string().matches(/^[A-Za-z åäöÅÄÖ]{3,}$/, {
-    message: 'Field1 must be either empty or 10 digits',
-    excludeEmptyString: false,
+  someTextVariable: yup.object().shape({
+    value: yup.string().required(),
+    _someAttrib: yup.string().required(),
+    _someAttrib2: yup.string().required(),
   }),
-  someTextVariable: yup
-    .array()
-    .of(
-      yup.object().shape({
-        value: yup
-          .string()
-          .test('is-cake', 'must be a cake', (value: string | undefined) => {
-            if (value === 'cake') {
-              return true;
-            }
-            return false;
-          }),
-      }),
-    )
-    .min(1)
-    .max(2),
 });
 
 export const ReactHookFormTestPage = () => {
@@ -43,146 +25,34 @@ export const ReactHookFormTestPage = () => {
     shouldFocusError: false,
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      nonRepTextVariable: '',
-      someTextVariable: [{ value: '' }, { value: '' }],
+      someTextVariable: {
+        value: 'init value test',
+        _someAttrib: '',
+        _someAttrib2: 'testVal2',
+      },
     },
   });
 
-  const { setFocus, control, handleSubmit } = methods;
-
-  // @ts-ignore
-  const { fields, append, remove, move } = useFieldArray({
-    control,
-    name: 'someTextVariable',
-  });
+  const { formState, setFocus, control, handleSubmit } = methods;
 
   useEffect(() => {
-    setFocus('nonRepTextVariable');
-    console.log('Mounted form');
-  }, []);
-
-  const handleMove = async (prev: number, next: number) => {
-    move(prev, next);
-  };
-
-  const handleRemove = async (index: number) => {
-    remove(index);
-  };
-
-  const handleOnSubmit = (data: unknown) => {
-    console.log(data);
-  };
-
-  const getFieldValidationPropertyValue = (
-    fieldName: string,
-    ruleName: string,
-  ): number => {
-    // @ts-ignore
-    const fieldRules = validationSchema.fields[fieldName]?.describe();
-
-    if (!fieldRules) {
-      return 1;
-    }
-
-    const rule = fieldRules.tests.find((r: any) => r.name === ruleName);
-    return rule ? rule.params[ruleName] : 1;
-  };
+    setFocus('someTextVariable');
+  }, [setFocus]);
 
   // @ts-ignore
   return (
     <Box
       component='form'
-      onSubmit={handleSubmit(handleOnSubmit)}
+      onSubmit={handleSubmit((values) =>
+        alert(JSON.stringify(values, null, 1)),
+      )}
     >
-      <Stack spacing={1}>
-        <Card
-          title='Testing'
-          variant='variant6'
-          tooltipTitle='Title'
-          tooltipBody='Here goes some text about how choose type'
-        >
-          <ControlledTextField
-            placeholder='some placeholder'
-            control={control}
-            name='nonRepTextVariable'
-            label='nonRepTextVariable'
-          />
-          {fields.map((item, index) => {
-            return (
-              <Grid
-                key={item.id}
-                container
-                spacing={0}
-                justifyContent='space-between'
-                alignItems='flex-start'
-              >
-                <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                >
-                  <ControlledTextField
-                    placeholder='some placeholder'
-                    control={control}
-                    name={`someTextVariable.${index}.value` as const}
-                    label='Somelabel'
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                >
-                  <ButtonGroup
-                    variant='outlined'
-                    aria-label='outlined secondary button group'
-                  >
-                    <IconButton
-                      aria-label='up'
-                      disabled={index === 0}
-                      onClick={() => handleMove(index, index - 1)}
-                    >
-                      <ArrowUpwardIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label='down'
-                      disabled={index === fields.length - 1}
-                      onClick={() => handleMove(index, index + 1)}
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label='delete'
-                      disabled={
-                        fields.length <=
-                        getFieldValidationPropertyValue(
-                          'someTextVariable',
-                          'min',
-                        )
-                      }
-                      onClick={() => handleRemove(index)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ButtonGroup>
-                </Grid>
-              </Grid>
-            );
-          })}
-
-          <Button
-            fullWidth
-            variant='outlined'
-            disabled={
-              fields.length >=
-              getFieldValidationPropertyValue('someTextVariable', 'max')
-            }
-            disableRipple
-            onClick={() => append({ value: '' })}
-            endIcon={<AddCircleOutlineIcon />}
-          >
-            Add
-          </Button>
-        </Card>
+      <Card
+        title='Testing'
+        variant='variant6'
+        tooltipTitle='Title'
+        tooltipBody='Here goes some text about how choose type'
+      >
         <Grid
           container
           direction='row'
@@ -192,8 +62,58 @@ export const ReactHookFormTestPage = () => {
           <Grid
             item
             xs={12}
+            sm={12}
+          >
+            <ControlledTextField
+              placeholder='some placeholder'
+              control={control}
+              name={`someTextVariable.value` as const}
+              label='Somelabel'
+            />
+            <Grid
+              spacing={1}
+              container
+              direction='row'
+              justifyContent='space-between'
+              alignItems='flex-start'
+            >
+              <Grid
+                item
+                xs={6}
+              >
+                <ControlledSelectField
+                  placeholder='some placeholder'
+                  control={control}
+                  name={`someTextVariable._someAttrib` as const}
+                  label='Somelabel'
+                  isLoading={false}
+                  loadingError={false}
+                  options={[{ value: 'testVal', label: 'Option TestVal' }]}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={6}
+              >
+                <ControlledSelectField
+                  placeholder='some placeholder'
+                  control={control}
+                  name={`someTextVariable._someAttrib2` as const}
+                  label='Somelabel2 that are really realllllllllly loooong'
+                  isLoading={false}
+                  loadingError={false}
+                  options={[{ value: 'testVal2', label: 'Option TestVal2' }]}
+                  readOnly
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            xs={12}
           >
             <Button
+              disabled={!formState.isValid}
               fullWidth
               type='submit'
               disableRipple
@@ -203,7 +123,7 @@ export const ReactHookFormTestPage = () => {
             </Button>
           </Grid>
         </Grid>
-      </Stack>
+      </Card>
     </Box>
   );
 };

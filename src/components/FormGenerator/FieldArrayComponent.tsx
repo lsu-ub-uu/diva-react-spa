@@ -18,9 +18,12 @@
  */
 
 import { Control, useFieldArray } from 'react-hook-form';
-import { ControlledTextField } from '../Controlled';
+import { Stack } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Button from '@mui/material/Button';
+import { ActionButtonGroup } from './ActionButtonGroup';
 // eslint-disable-next-line import/no-cycle
-import { FormComponent } from './FormGenerator';
+import { FormComponent, renderVariableField } from './FormGenerator';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -29,10 +32,18 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
-  const { fields, remove, append } = useFieldArray({
+  const { fields, append, move, remove } = useFieldArray({
     control: props.control,
     name: props.name,
   });
+
+  const handleAppend = async () => {
+    append({ value: '' });
+  };
+
+  const handleMove = async (prev: number, next: number) => {
+    move(prev, next);
+  };
 
   const handleRemove = async (index: number) => {
     remove(index);
@@ -41,39 +52,39 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   return (
     <>
       {fields.map((field, index) => (
-        <div
+        <Stack
           key={field.id}
-          style={{
-            borderBottom: '1px dashed black',
-            marginBottom: '10px',
-            padding: '10px',
-          }}
+          spacing={{ xs: 1 }}
+          direction='row'
         >
-          <ControlledTextField
-            placeholder={props.component.placeholder}
-            control={props.control}
-            name={`${props.name}.${index}.value` as const}
-            label={props.component.name}
-            tooltip={props.component.tooltip}
+          {renderVariableField(
+            props.component,
+            field.id,
+            props.control as Control,
+            `${props.name}.${index}.value` as const,
+          )}
+          <ActionButtonGroup
+            moveUpButtonDisabled={index === 0}
+            moveUpButtonAction={() => handleMove(index, index - 1)}
+            moveDownButtonDisabled={index === fields.length - 1}
+            moveDownButtonAction={() => handleMove(index, index + 1)}
+            deleteButtonDisabled={
+              fields.length <= props.component.repeat.repeatMin
+            }
+            deleteButtonAction={() => handleRemove(index)}
           />
-          <button
-            type='button'
-            disabled={fields.length <= props.component.repeat.repeatMin}
-            onClick={() => handleRemove(index)}
-          >
-            Remove
-          </button>
-        </div>
+        </Stack>
       ))}
-
-      <button
-        style={{ marginBottom: '20px' }}
-        type='button'
+      <Button
+        sx={{ mt: 1, mb: 1 }}
+        variant='outlined'
         disabled={fields.length >= props.component.repeat.repeatMax}
-        onClick={() => append({ value: '' })}
+        onClick={handleAppend}
+        disableRipple
+        endIcon={<AddCircleOutlineIcon />}
       >
         Add {props.component.name}
-      </button>
+      </Button>
     </>
   );
 };
