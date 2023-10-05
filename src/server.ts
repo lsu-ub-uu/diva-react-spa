@@ -61,8 +61,8 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
     const validationTypes = transformCoraValidationTypes(result[2].data);
     const validationTypePool = listToPool<BFFValidationType>(validationTypes);
 
-    if (!validationTypePool.has(req.params.validationTypeId)) {
-      res.status(404).json({});
+    if (!validationTypePool.has(validationTypeId)) {
+      throw new Error(`Validation type [${validationTypeId}] does not exist`)
     }
 
     const dependencies = {
@@ -76,7 +76,7 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
   } catch (error: unknown) {
     //@ts-ignore
     console.log(error.message);
-    res.status(500).json('Internal server error');
+    res.status(500).json('Internal server error').send();
   }
 });
 
