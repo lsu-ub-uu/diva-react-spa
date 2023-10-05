@@ -273,7 +273,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     resolver: yupResolver(generateYupSchema(props.formSchema.components)),
   });
 
-  const { control, handleSubmit, formState } = methods;
+  const { control, handleSubmit } = methods;
 
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (component: FormComponent, idx: number) => {
@@ -295,12 +295,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       // iterate attributes and call renderVariableField foreach
     }
 
-    return renderVariableField(
-      component,
-      reactKey,
-      control,
-      component.name,
-    );
+    return renderVariableField(component, reactKey, control, component.name);
   };
 
   return (
@@ -310,7 +305,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     >
       {props.formSchema.components.map(generateFormComponent)}
       <Button
-        disabled={!formState.isValid}
         sx={{ mt: 4, mb: 2 }}
         fullWidth
         type='submit'
