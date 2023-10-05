@@ -88,6 +88,36 @@ interface FormNumberValidation {
   numberOfDecimals: number;
 }
 
+const createYupStringRegexpSchema = (regexpValidation: FormRegexValidation) => {
+  return yup
+    .string()
+    .matches(
+      new RegExp(regexpValidation.pattern ?? '.+'),
+      'Invalid input format',
+    );
+};
+
+const createYupNumberSchema = (numberValidation: FormNumberValidation) => {
+  return yup
+    .string()
+    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+    .test('decimal-places', 'Invalid number of decimals', (value) => {
+      if (!value) return true;
+      const decimalPlaces = (value.split('.')[1] || []).length;
+      return decimalPlaces === numberValidation.numberOfDecimals;
+    })
+    .test('min', 'Invalid range (min)', (value) => {
+      if (!value) return true;
+      const intValue = parseInt(value, 10);
+      return numberValidation.min <= intValue;
+    })
+    .test('max', 'Invalid range (max)', (value) => {
+      if (!value) return true;
+      const intValue = parseInt(value, 10);
+      return numberValidation.max >= intValue;
+    });
+};
+
 const generateYupSchema = (components: FormComponent[]) => {
   const validatableComponents = components.filter((component) =>
     ['numberVariable', 'textVariable', 'collectionVariable'].includes(
@@ -103,12 +133,8 @@ const generateYupSchema = (components: FormComponent[]) => {
         !isComponentRepeating(component)
       ) {
         const regexpValidation = component.validation as FormRegexValidation;
-        accumulator[component.name] = yup
-          .string()
-          .matches(
-            new RegExp(regexpValidation.pattern ?? '.+'),
-            'Invalid input format',
-          );
+        accumulator[component.name] =
+          createYupStringRegexpSchema(regexpValidation);
       }
 
       if (
@@ -120,12 +146,7 @@ const generateYupSchema = (components: FormComponent[]) => {
           .array()
           .of(
             yup.object().shape({
-              value: yup
-                .string()
-                .matches(
-                  new RegExp(regexpValidation.pattern ?? '.+'),
-                  'Invalid input format',
-                ),
+              value: createYupStringRegexpSchema(regexpValidation),
             }),
           )
           .min(component.repeat.repeatMin)
@@ -142,6 +163,23 @@ const generateYupSchema = (components: FormComponent[]) => {
       }
 
       if (
+        component.type === 'collectionVariable' &&
+        isComponentRepeating(component)
+      ) {
+        if (!isComponentOptional(component)) {
+          accumulator[component.name] = yup
+            .array()
+            .of(
+              yup.object().shape({
+                value: yup.string().required(),
+              }),
+            )
+            .min(component.repeat.repeatMin)
+            .max(component.repeat.repeatMax);
+        }
+      }
+
+      if (
         component.type === 'numberVariable' &&
         isComponentRepeating(component)
       ) {
@@ -150,28 +188,7 @@ const generateYupSchema = (components: FormComponent[]) => {
           .array()
           .of(
             yup.object().shape({
-              value: yup
-                .string()
-                .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-                .test(
-                  'decimal-places',
-                  'Invalid number of decimals',
-                  (value) => {
-                    if (!value) return true;
-                    const decimalPlaces = (value.split('.')[1] || []).length;
-                    return decimalPlaces === numberValidation.numberOfDecimals;
-                  },
-                )
-                .test('min', 'Invalid range (min)', (value) => {
-                  if (!value) return true;
-                  const intValue = parseInt(value, 10);
-                  return numberValidation.min <= intValue;
-                })
-                .test('max', 'Invalid range (max)', (value) => {
-                  if (!value) return true;
-                  const intValue = parseInt(value, 10);
-                  return numberValidation.max >= intValue;
-                }),
+              value: createYupNumberSchema(numberValidation),
             }),
           )
           .min(component.repeat.repeatMin)
@@ -183,24 +200,7 @@ const generateYupSchema = (components: FormComponent[]) => {
         !isComponentRepeating(component)
       ) {
         const numberValidation = component.validation as FormNumberValidation;
-        accumulator[component.name] = yup
-          .string()
-          .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-          .test('decimal-places', 'Invalid number of decimals', (value) => {
-            if (!value) return true;
-            const decimalPlaces = (value.split('.')[1] || []).length;
-            return decimalPlaces === numberValidation.numberOfDecimals;
-          })
-          .test('min', 'Invalid range (min)', (value) => {
-            if (!value) return true;
-            const intValue = parseInt(value, 10);
-            return numberValidation.min <= intValue;
-          })
-          .test('max', 'Invalid range (max)', (value) => {
-            if (!value) return true;
-            const intValue = parseInt(value, 10);
-            return numberValidation.max >= intValue;
-          });
+        accumulator[component.name] = createYupNumberSchema(numberValidation);
       }
       return accumulator;
     },
