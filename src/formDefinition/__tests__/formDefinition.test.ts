@@ -20,6 +20,7 @@
 import { listToPool } from '../../utils/structs/listToPool';
 import {
   BFFMetadata,
+  BFFMetadataItemCollection,
   BFFPresentation,
   BFFPresentationGroup,
   BFFValidationType
@@ -35,14 +36,30 @@ import {
   someNewMetadataGroupFaultyChildReference,
   someRecordInfo,
   someValidationTypeData,
-  someValidationTypeDataFaultyChildReference
+  someValidationTypeDataFaultyChildReference,
+  pSomeMetadataTextVariable2,
+  someMetadataTextVariable2,
+  someMetadataCollectionVariable,
+  someMetadataItemCollection,
+  someMetadataCollectionItemBlue,
+  someMetadataCollectionItemPink,
+  someMetadataCollectionItemYellow,
+  pSomeMetadataCollectionVariable,
+  pSomeMetadataTextVariable3,
+  someMetadataTextVariable3,
+  someMetadataCollectionVariableWithAttribute,
+  pSomeMetadataCollectionVariableWithAttribute,
+  someMetadataNumberVarWithAttribute,
+  pSomeMetadataNumberWithAttributeVar,
+  pSomeMetadataTextVariableWithAttributeVar,
+  someMetadataTextVariableWithAttributeVar,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
-  let metadataPool: Lookup<string, BFFMetadata>;
+  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
   let presentationPool: Lookup<string, BFFPresentation | BFFPresentationGroup>;
   const FORM_MODE_NEW = 'new';
   let dependencies: Dependencies;
@@ -52,17 +69,33 @@ describe('formDefinition', () => {
       someValidationTypeData,
       someValidationTypeDataFaultyChildReference
     ]);
-    metadataPool = listToPool<BFFMetadata>([
+    metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
+      someMetadataTextVariable2,
+      someMetadataTextVariable3,
       someMetadataNumberVar,
       someNewMetadataGroup,
       someRecordInfo,
-      someNewMetadataGroupFaultyChildReference
+      someNewMetadataGroupFaultyChildReference,
+      someMetadataCollectionVariable,
+      someMetadataItemCollection,
+      someMetadataCollectionItemBlue,
+      someMetadataCollectionItemPink,
+      someMetadataCollectionItemYellow,
+      someMetadataCollectionVariableWithAttribute,
+      someMetadataNumberVarWithAttribute,
+      someMetadataTextVariableWithAttributeVar
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
+      pSomeMetadataTextVariable2,
+      pSomeMetadataTextVariable3,
       pSomeMetadataNumberVar,
-      pSomeNewMetadataGroup
+      pSomeNewMetadataGroup,
+      pSomeMetadataCollectionVariable,
+      pSomeMetadataCollectionVariableWithAttribute,
+      pSomeMetadataNumberWithAttributeVar,
+      pSomeMetadataTextVariableWithAttributeVar
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -115,8 +148,8 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(4);
-    expect(formDefinition).toEqual({
+    expect(formDefinition.components).toHaveLength(10);
+    expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       components: [
         {
@@ -134,7 +167,7 @@ describe('formDefinition', () => {
           },
           tooltip: {
             title: 'someTextId',
-            body: 'someDefTextId',
+            body: 'someDefTextId'
           },
           validation: {
             type: 'regex',
@@ -153,7 +186,26 @@ describe('formDefinition', () => {
           },
           tooltip: {
             title: 'someTextId',
-            body: 'someDefTextId',
+            body: 'someDefTextId'
+          },
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex'
+          },
+          mode: 'input',
+          inputType: 'input'
+        },
+        {
+          type: 'textVariable',
+          name: 'someNameInData2',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: Number.MAX_VALUE
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId'
           },
           validation: {
             type: 'regex',
@@ -161,6 +213,26 @@ describe('formDefinition', () => {
           },
           mode: 'input', // output
           inputType: 'input' //textarea
+        },
+        {
+          type: 'textVariable',
+          name: 'someNameInData3',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId'
+          },
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex'
+          },
+          mode: 'input', // output
+          inputType: 'input', //textarea
+          finalValue: 'someFinalValue'
         },
         {
           type: 'numberVariable',
@@ -173,7 +245,7 @@ describe('formDefinition', () => {
           },
           tooltip: {
             title: 'someNumberVarTextId',
-            body: 'someNumberVarDefTextId',
+            body: 'someNumberVarDefTextId'
           },
           validation: {
             type: 'number',
@@ -183,8 +255,138 @@ describe('formDefinition', () => {
             warningMax: 10,
             numberOfDecimals: 0
           },
+          mode: 'input'
+        },
+        {
+          type: 'collectionVariable',
+          name: 'colour',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText'
+          },
+          options: [
+            { value: 'blue', label: 'exampleBlueItemText' },
+            { value: 'pink', label: 'examplePinkItemText' },
+            { value: 'yellow', label: 'exampleYellowItemText' }
+          ],
+          mode: 'input'
+        },
+        {
+          type: 'collectionVariable',
+          name: 'colourAttributeVar',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText'
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText'
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' }
+              ],
+              mode: 'input'
+            }
+          ],
+          options: [
+            { value: 'blue', label: 'exampleBlueItemText' },
+            { value: 'pink', label: 'examplePinkItemText' },
+            { value: 'yellow', label: 'exampleYellowItemText' }
+          ],
+          mode: 'input'
+        },
+        {
+          type: 'numberVariable',
+          name: 'someNameInDataNumberWithAttributeVar',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someNumberVarTextId',
+            body: 'someNumberVarDefTextId'
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText'
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' }
+              ],
+              mode: 'input'
+            }
+          ],
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0
+          },
+          mode: 'input'
+        },
+        {
+          type: 'textVariable',
+          name: 'someNameInDataTextWithAttrib',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId'
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText'
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' }
+              ],
+              mode: 'input'
+            }
+          ],
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex'
+          },
           mode: 'input',
-        }
+          inputType: 'input',
+        },
       ]
     });
   });

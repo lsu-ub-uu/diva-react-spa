@@ -65,7 +65,11 @@ const transformCoraPresentationToBFFPresentation = (
     case 'pVar': {
       return transformCoraPresentationPVarToBFFPresentation(coraRecordWrapper);
     }
-    // TODO add more types here like, pCollVar, pRecordLink etc
+    case 'pCollVar': {
+      // basic presentation should be enough för collection variable
+      return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
+    }
+    // TODO add more types here like pRecordLink etc
     default: {
       return;
     }

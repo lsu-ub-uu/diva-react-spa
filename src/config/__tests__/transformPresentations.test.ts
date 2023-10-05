@@ -24,6 +24,7 @@ import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPre
 import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
 import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
 import coraPresentationWithMiscTypes from '../../__mocks__/coraPresentationWithMiscTypes.json';
+import coraPresentationWithOneCollectionVariable from '../../__mocks__/coraPresentationWithOneCollectionVariable.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -133,11 +134,24 @@ describe('transformCoraPresentations', () => {
     });
   });
 
-  it('Returns only BFFPresentationGroup and BFFPresentation (pVar) entries and skips other types', () => {
+  it('Returns only BFFPresentationGroup and BFFPresentation (pGroup, pNumVar, pVar and pCollVar) entries and skips other types', () => {
     const transformData = transformCoraPresentations(
       coraPresentationWithMiscTypes as DataListWrapper
     );
 
-    expect(transformData).toHaveLength(3);
+    expect(transformData).toHaveLength(4);
   });
+
+  // pCollVar
+  it('Returns one BFFPresentation for one pCollVar entry', () => {
+    const transformData = transformCoraPresentations(coraPresentationWithOneCollectionVariable);
+    expect(transformData[0]).toStrictEqual({
+      id: 'examplePCollVar',
+      type: 'pCollVar',
+      presentationOf: 'exampleCollectionVar',
+      mode: 'input',
+      emptyTextId: 'initialEmptyValueText'
+    });
+  });
+
 });

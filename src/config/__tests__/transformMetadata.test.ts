@@ -5,6 +5,15 @@ import testMetaDataWithFinalValue from '../../__mocks__/coraMetadataWithFinalVal
 import testMetaDataForGroupWithTwoChildren from '../../__mocks__/coraMetadataForGroupWithTwoChildren.json';
 import testNumberVariableMetaData from '../../__mocks__/coraMetadataNumberVariable.json';
 import testNumberVariableWithFinalValueMetaData from '../../__mocks__/coraMetadataNumberVariableWithFinalValue.json';
+import testCollectionVariableMetaData from '../../__mocks__/coraMetadataCollectionVariable.json';
+import testCollectionVariableMetaDataWithFinalValue from '../../__mocks__/coraMetadataCollectionVariableWithFinalValue.json';
+import testItemCollection from '../../__mocks__/coraMetadataItemCollection.json';
+import testTestCollectionItem from '../../__mocks__/coraMetadataCollectionItem.json';
+import testTextWithOneAttribute from '../../__mocks__/coraMetadataTextVarWithOneAttribute.json';
+import testTestWithTwoAttributes from '../../__mocks__/coraMetadataTextVarWithTwoAttributes.json';
+import testNumberWithTwoAttributes from '../../__mocks__/coraMetadataNumberVarWithTwoAttributes.json';
+import testCollectionWithTwoAttributes from '../../__mocks__/coraMetadataCollectionVarWithTwoAttributes.json';
+import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
   it('Empty list should return empty', () => {
@@ -58,6 +67,7 @@ describe('transformMetadata', () => {
       });
     });
   });
+
   describe('metadataGroup', () => {
     it('Returns one BFFMetadata for group', () => {
       const metadataList = transformMetadata(testMetaDataForGroupWithTwoChildren);
@@ -92,6 +102,7 @@ describe('transformMetadata', () => {
       expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
     });
   });
+
   describe('numberVariable', () => {
     it('Returns one BFFMetadata for numberVariable without finalValue', () => {
       const metadataList = transformMetadata(testNumberVariableMetaData);
@@ -128,6 +139,180 @@ describe('transformMetadata', () => {
         finalValue: '50.123'
       });
       expect(metadataList[0].hasOwnProperty('finalValue')).toBe(true);
+    });
+  });
+
+  describe('collectionVariable', () => {
+    it('Returns one BFFMetadata for collectionVariable without finalValue', () => {
+      const metadataList = transformMetadata(testCollectionVariableMetaData as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toEqual({
+        id: 'exampleCollectionVar',
+        nameInData: 'colour',
+        type: 'collectionVariable',
+        textId: 'exampleCollectionVarText',
+        defTextId: 'exampleCollectionVarDefText',
+        refCollection: 'exampleCollection'
+      });
+      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
+    });
+
+    it('Returns one BFFMetadata for collectionVariable with finalValue', () => {
+      const metadataList = transformMetadata(
+        testCollectionVariableMetaDataWithFinalValue as DataListWrapper
+      );
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toEqual({
+        id: 'exampleCollectionVar',
+        nameInData: 'colour',
+        type: 'collectionVariable',
+        textId: 'exampleCollectionVarText',
+        defTextId: 'exampleCollectionVarDefText',
+        refCollection: 'exampleCollection',
+        finalValue: 'blue'
+      });
+      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(true);
+    });
+  });
+
+  describe('itemCollection', () => {
+    it('Returns one BFFMetadata for itemCollection', () => {
+      // @ts-ignore
+      const metadataList = transformMetadata(testItemCollection as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'exampleCollection',
+        nameInData: 'colour',
+        type: 'itemCollection',
+        textId: 'exampleCollectionText',
+        defTextId: 'exampleCollectionDefText',
+        collectionItemReferences: [
+          { refCollectionItemId: 'exampleBlueItem' },
+          { refCollectionItemId: 'examplePinkItem' },
+          { refCollectionItemId: 'exampleYellowItem' }
+        ]
+      });
+    });
+  });
+
+  describe('collectionItem', () => {
+    it('Returns one BFFMetadata for collectionItem', () => {
+      const metadataList = transformMetadata(testTestCollectionItem as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'exampleBlueItem',
+        nameInData: 'blue',
+        type: 'collectionItem',
+        textId: 'exampleBlueItemText',
+        defTextId: 'exampleBlueItemDefText'
+      });
+    });
+  });
+  describe('attributeReference', () => {
+    it('Returns one BFFMetadataTextVariable with one attributeReference', () => {
+      const metadataList = transformMetadata(testTextWithOneAttribute as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someTextVar',
+        nameInData: 'someNameInData',
+        type: 'textVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        regEx: 'someRegEx',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar'
+          }
+        ]
+      });
+    });
+    it('Returns one BFFMetadataTextVariable with two attributeReference', () => {
+      const metadataList = transformMetadata(testTestWithTwoAttributes as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someTextVar',
+        nameInData: 'someNameInData',
+        type: 'textVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        regEx: 'someRegEx',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
+          },
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
+          }
+        ]
+      });
+    });
+    it('Returns one BFFMetadataNumberVariable with two attributeReference', () => {
+      const metadataList = transformMetadata(testNumberWithTwoAttributes as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someNumberVar',
+        nameInData: 'someNameInData',
+        type: 'numberVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        min: '0',
+        max: '20',
+        warningMin: '2',
+        warningMax: '10',
+        numberOfDecimals: '3',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
+          },
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
+          }
+        ]
+      });
+    });
+    it('Returns one BFFMetadataNumberVariable with two attributeReference', () => {
+      const metadataList = transformMetadata(testNumberWithTwoAttributes as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someNumberVar',
+        nameInData: 'someNameInData',
+        type: 'numberVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        min: '0',
+        max: '20',
+        warningMin: '2',
+        warningMax: '10',
+        numberOfDecimals: '3',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
+          },
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
+          }
+        ]
+      });
+    });
+    it('Returns one BFFMetadataCollectionVariable with two attributeReference', () => {
+      const metadataList = transformMetadata(testCollectionWithTwoAttributes as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'someCollectionVar',
+        nameInData: 'someNameInData',
+        type: 'collectionVariable',
+        textId: 'someTextVarText',
+        defTextId: 'someTextVarDefText',
+        refCollection: 'exampleCollection',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
+          },
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
+          }
+        ]
+      });
     });
   });
 });

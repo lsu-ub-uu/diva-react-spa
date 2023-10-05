@@ -46,17 +46,44 @@ export abstract interface BFFMetadata extends BFFBase {
   textId: string;
   defTextId: string;
 }
+
+export interface BFFAttributeReference {
+  refCollectionVarId: string;
+}
+
 export interface BFFMetadataTextVariable extends BFFMetadata {
   regEx: string;
   finalValue?: string;
+  attributeReferences?: BFFAttributeReference[];
 }
 
-export interface BFFMetadataNumberVariable  extends BFFMetadata  {
+export interface BFFMetadataNumberVariable extends BFFMetadata  {
   min: string;
   max: string;
   warningMin: string;
   warningMax: string;
   numberOfDecimals: string;
+  finalValue?: string;
+  attributeReferences?: BFFAttributeReference[];
+}
+
+export interface BFFMetadataCollectionVariable extends BFFMetadata  {
+  refCollection: string;
+  finalValue?: string;
+  attributeReferences?: BFFAttributeReference[];
+}
+
+export interface BFFCollectionItemReference {
+  refCollectionItemId: string;
+}
+
+export interface BFFMetadataItemCollection {
+  id: string;
+  nameInData: string;
+  type: string;
+  textId: string;
+  defTextId: string;
+  collectionItemReferences: BFFCollectionItemReference[];
 }
 
 export interface BFFMetadataGroup extends BFFMetadata {

@@ -1,14 +1,18 @@
 import {
   BFFMetadata,
+  BFFMetadataChildReference,
+  BFFMetadataCollectionVariable,
   BFFMetadataGroup,
+  BFFMetadataItemCollection,
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
   BFFPresentation,
+  BFFPresentationChildReference,
   BFFPresentationGroup,
   BFFValidationType
 } from 'config/bffTypes';
-import { Dependencies } from './formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
+import { Dependencies } from './formDefinitionsDep';
 
 export const createFormDefinition = (
   dependencies: Dependencies,
@@ -18,102 +22,232 @@ export const createFormDefinition = (
   const validationPool = dependencies.validationTypePool;
   const metadataPool = dependencies.metadataPool;
   const presentationPool = dependencies.presentationPool;
-
   const validationType: BFFValidationType = validationPool.get(validationTypeId);
 
   // metadata
-  const newMetadataGroupId = validationType.newMetadataGroupId;
-  const newMetadataGroup = metadataPool.get(newMetadataGroupId) as BFFMetadataGroup;
-  const metadataChildReferences = newMetadataGroup.children;
+  const metadataChildReferences = getMetadataChildReferencesForValidationType(
+    validationType,
+    metadataPool
+  );
 
-  // helper method
-  const findMetadataChildReferenceById = (childId: string) => {
-    const metaDataChildRef = metadataChildReferences.find(
-      (reference) => reference.childId === childId
-    );
-    if (metaDataChildRef === undefined) {
-      throw new Error(`Child reference with childId [${childId}] does not exist`);
-    }
-    return metaDataChildRef;
-  };
   // presentation
-  const newPresentationGroupId = validationType.newPresentationGroupId;
-  const newPresentationGroup: BFFPresentationGroup = presentationPool.get(newPresentationGroupId);
-  const presentationChildReferences = newPresentationGroup.children;
+  const presentationChildReferences = getPresentationChildReferencesForValidationType(
+    validationType,
+    presentationPool
+  );
 
-  const components = presentationChildReferences.map((presentationChildReference) => {
-    const presentationChildId = presentationChildReference.childId;
-    const presentationChildType = presentationChildReference.type;
-
-    let type;
-    let placeholder;
-    let name;
-    let validation;
-    let repeat;
-    let mode;
-    let inputType;
-    let tooltip;
-
-    if (presentationChildType === 'text') {
-      return { name: presentationChildId, type: presentationChildType };
-    }
-
-    // todo handle gui_element
-
-    if (presentationChildType === 'presentation') {
-      const presentation: BFFPresentation = presentationPool.get(presentationChildId); // pSomeMetadataTextVariableId
-      const metadataId = presentation.presentationOf;
-      const metaDataChildRef = findMetadataChildReferenceById(metadataId);
-
-      let minNumberOfRepeatingToShow;
-      if (presentationChildReference.minNumberOfRepeatingToShow !== undefined) {
-        minNumberOfRepeatingToShow = parseInt(
-          presentationChildReference.minNumberOfRepeatingToShow
-        );
-      }
-
-      const repeatMin = parseInt(metaDataChildRef.repeatMin);
-      const repeatMax = parseInt(metaDataChildRef.repeatMax);
-
-      repeat = { minNumberOfRepeatingToShow, repeatMin, repeatMax };
-
-      const metadata = metadataPool.get(metadataId) as BFFMetadata;
-      name = metadata.nameInData;
-      type = metadata.type;
-      // metadata.textId,
-
-      tooltip = { title: metadata.textId, body: metadata.defTextId };
-
-      if (presentation.type === 'pVar') {
-        placeholder = presentation.emptyTextId;
-        const textVariable = metadata as BFFMetadataTextVariable;
-        mode = presentation.mode;
-        inputType = presentation.inputType;
-        const pattern = textVariable.regEx;
-        if (pattern) {
-          validation = { type: 'regex', pattern };
-        }
-      }
-      if (presentation.type === 'pNumVar') {
-        placeholder = presentation.emptyTextId;
-        const numberVariable = metadata as BFFMetadataNumberVariable;
-        mode = presentation.mode;
-        inputType = presentation.inputType;
-        const min = parseInt(numberVariable.min);
-        const max = parseInt(numberVariable.max);
-        const warningMin = parseInt(numberVariable.warningMin);
-        const warningMax = parseInt(numberVariable.warningMax);
-        const numberOfDecimals = parseInt(numberVariable.numberOfDecimals);
-
-        validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
-      }
-    }
-
-    return removeEmpty({ name, type, placeholder, validation, repeat, mode, inputType, tooltip });
-  });
+  const components = createComponentsFromChildReferences(
+    metadataChildReferences,
+    presentationChildReferences,
+    metadataPool,
+    presentationPool
+  );
 
   return {
     validationTypeId: validationType.id,
     components
   };
+};
+
+const getMetadataChildReferencesForValidationType = (
+  validationType: BFFValidationType,
+  metadataPool: any
+) => {
+  const newMetadataGroupId = validationType.newMetadataGroupId;
+  const newMetadataGroup = metadataPool.get(newMetadataGroupId) as BFFMetadataGroup;
+  return newMetadataGroup.children;
+};
+
+const getPresentationChildReferencesForValidationType = (
+  validationType: BFFValidationType,
+  presentationPool: any
+) => {
+  const newPresentationGroupId = validationType.newPresentationGroupId;
+  const newPresentationGroup: BFFPresentationGroup = presentationPool.get(newPresentationGroupId);
+  return newPresentationGroup.children;
+};
+
+const createComponentsFromChildReferences = (
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReferences: BFFPresentationChildReference[],
+  metadataPool: any,
+  presentationPool: any
+) => {
+  return presentationChildReferences.map((presentationChildReference) => {
+    const presentationChildType = presentationChildReference.type;
+
+    if (presentationChildType === 'text') {
+      return createText(presentationChildReference, presentationChildType);
+    }
+
+    // todo handle gui_element
+
+    return createPresentation(
+      metadataChildReferences,
+      presentationChildReference,
+      metadataPool,
+      presentationPool
+    );
+  });
+};
+const createText = (
+  presentationChildReference: BFFPresentationChildReference,
+  presentationChildType: string
+) => {
+  const presentationChildId = presentationChildReference.childId;
+  return { name: presentationChildId, type: presentationChildType };
+};
+
+const createCollectionVariableOptions = (metadataPool: any, collectionVariable: BFFMetadataCollectionVariable) => {
+  const collection = metadataPool.get(
+    collectionVariable.refCollection,
+  ) as BFFMetadataItemCollection;
+  const itemReferences = collection.collectionItemReferences;
+  return itemReferences.map((itemRef) => {
+    const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
+    const label = collectionItem.textId;
+    const value = collectionItem.nameInData;
+    return { value, label }; // todo handle disabled?
+  });
+}
+
+function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFMetadataNumberVariable | BFFMetadataTextVariable, metadataPool: any, options: unknown[] | undefined) {
+  return metadataVariable.attributeReferences?.map((attributeReference) => {
+    const refCollectionVar = metadataPool.get(
+      attributeReference.refCollectionVarId,
+    ) as BFFMetadataCollectionVariable;
+
+    const fakePresentation: BFFPresentation = {
+      id: 'someFakeId',
+      presentationOf: refCollectionVar.id,
+      type: 'pCollVar',
+      mode: 'input',
+      emptyTextId: 'emptyTextId',
+    };
+
+    const finalValue = metadataVariable.finalValue;
+    const commonParameters = createCommonParameters(refCollectionVar, fakePresentation);
+    options = createCollectionVariableOptions(metadataPool, refCollectionVar);
+    return removeEmpty({ ...commonParameters, options, finalValue});
+  });
+}
+
+const createPresentation = (
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReference: BFFPresentationChildReference,
+  metadataPool: any,
+  presentationPool: any
+) => {
+  let validation;
+  let options;
+  let finalValue;
+  let attributes;
+
+  const presentationChildId = presentationChildReference.childId;
+  const presentation: BFFPresentation = presentationPool.get(presentationChildId);
+  const metadataId = presentation.presentationOf;
+  const metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
+  const repeat = createRepeat(presentationChildReference, metaDataChildRef);
+  const metadata = metadataPool.get(metadataId) as BFFMetadata;
+
+  const commonParameters = createCommonParameters(metadata, presentation);
+  // { name, type, placeholder, mode, inputType, tooltip }
+
+  if (presentation.type === 'pVar') {
+    const textVariable = metadata as BFFMetadataTextVariable;
+    finalValue = textVariable.finalValue;
+    const pattern = textVariable.regEx;
+    validation = { type: 'regex', pattern };
+
+    if (textVariable.attributeReferences !== undefined) {
+      attributes = createAttributes(textVariable, metadataPool, undefined);
+    }
+  }
+
+  if (presentation.type === 'pNumVar') {
+    const numberVariable = metadata as BFFMetadataNumberVariable;
+    finalValue = numberVariable.finalValue;
+    const min = parseInt(numberVariable.min);
+    const max = parseInt(numberVariable.max);
+    const warningMin = parseInt(numberVariable.warningMin);
+    const warningMax = parseInt(numberVariable.warningMax);
+    const numberOfDecimals = parseInt(numberVariable.numberOfDecimals);
+    validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
+
+    if (numberVariable.attributeReferences !== undefined) {
+      attributes = createAttributes(numberVariable, metadataPool, undefined);
+    }
+  }
+
+  if (presentation.type === 'pCollVar') {
+    const collectionVariable = metadata as BFFMetadataCollectionVariable;
+    finalValue = collectionVariable.finalValue;
+    options = createCollectionVariableOptions(metadataPool, collectionVariable);
+
+    if (collectionVariable.attributeReferences !== undefined) {
+      attributes = createAttributes(collectionVariable, metadataPool, options);
+    }
+  }
+
+  return removeEmpty({
+    ...commonParameters,
+    validation,
+    repeat,
+    options,
+    finalValue,
+    attributes
+  });
+};
+
+const findMetadataChildReferenceById = (
+  childId: string,
+  metadataChildReferences: BFFMetadataChildReference[]
+) => {
+  const metaDataChildRef = metadataChildReferences.find(
+    (reference) => reference.childId === childId
+  );
+  if (metaDataChildRef === undefined) {
+    throw new Error(`Child reference with childId [${childId}] does not exist`);
+  }
+  return metaDataChildRef;
+};
+
+const createRepeat = (
+  presentationChildReference: BFFPresentationChildReference,
+  metaDataChildRef: BFFMetadataChildReference
+) => {
+  const minNumberOfRepeatingToShow = getMinNumberOfRepeatingToShow(presentationChildReference);
+
+  const repeatMin = parseInt(metaDataChildRef.repeatMin);
+  const repeatMax = determineRepeatMax(metaDataChildRef.repeatMax);
+
+  return { minNumberOfRepeatingToShow, repeatMin, repeatMax };
+};
+
+const determineRepeatMax = (value: string) => {
+  const infiniteNumberOfRepeat = 'X';
+  if (value === infiniteNumberOfRepeat) {
+    return Number.MAX_VALUE;
+  }
+  return parseInt(value);
+};
+
+const getMinNumberOfRepeatingToShow = (
+  presentationChildReference: BFFPresentationChildReference
+) => {
+  let minNumberOfRepeatingToShow;
+  if (presentationChildReference.minNumberOfRepeatingToShow !== undefined) {
+    minNumberOfRepeatingToShow = parseInt(presentationChildReference.minNumberOfRepeatingToShow);
+  }
+  return minNumberOfRepeatingToShow;
+};
+
+const createCommonParameters = (metadata: BFFMetadata, presentation: BFFPresentation) => {
+  const name = metadata.nameInData;
+  const type = metadata.type;
+  const placeholder = presentation.emptyTextId;
+  const mode = presentation.mode;
+  const inputType = presentation.inputType;
+  const tooltip = { title: metadata.textId, body: metadata.defTextId };
+  return { name, type, placeholder, mode, inputType, tooltip };
 };
