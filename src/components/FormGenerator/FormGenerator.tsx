@@ -32,7 +32,7 @@ import {
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { FieldArrayComponent } from './FieldArrayComponent';
-import { Option } from '../index';
+import { Option, Typography } from '../index';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -251,7 +251,13 @@ export const renderVariableField = (
       );
     }
     case 'text': {
-      return <h3 key={reactKey}>{component.name}</h3>;
+      return (
+        <Typography
+          key={reactKey}
+          variant='h5'
+          text={component.name}
+        />
+      );
     }
     default:
       return null;
