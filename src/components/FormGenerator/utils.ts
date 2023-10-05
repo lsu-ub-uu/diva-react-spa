@@ -43,7 +43,7 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
           { length: numberToShowFromStart },
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           (_) => ({
-            value: '',
+            value: component.finalValue ? component.finalValue : '',
           }),
         );
       }
