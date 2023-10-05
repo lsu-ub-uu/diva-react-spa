@@ -30,8 +30,6 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   const defaultValues: {
     [x: string]: string | number | ({} | undefined)[] | undefined;
   } = {};
-  // todo handle final value in here
-
   formSchema.components.forEach((component) => {
     if (isComponentRepeating(component)) {
       const numberToShowFromStart =
