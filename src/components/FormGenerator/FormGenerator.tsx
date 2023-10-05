@@ -273,6 +273,8 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     resolver: yupResolver(generateYupSchema(props.formSchema.components)),
   });
 
+  const { control, handleSubmit, formState } = methods;
+
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
@@ -282,7 +284,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         <FieldArrayComponent
           component={component}
           key={reactKey}
-          control={methods.control}
+          control={control}
           name={component.name}
         />
       );
@@ -296,7 +298,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     return renderVariableField(
       component,
       reactKey,
-      methods.control,
+      control,
       component.name,
     );
   };
@@ -304,11 +306,12 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   return (
     <Box
       component='form'
-      onSubmit={methods.handleSubmit((values) => props.onSubmit(values))}
+      onSubmit={handleSubmit((values) => props.onSubmit(values))}
     >
       {props.formSchema.components.map(generateFormComponent)}
       <Button
-        sx={{ mt: 2, mb: 2 }}
+        disabled={!formState.isValid}
+        sx={{ mt: 4, mb: 2 }}
         fullWidth
         type='submit'
         disableRipple
