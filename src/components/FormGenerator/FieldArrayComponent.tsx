@@ -38,7 +38,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   });
 
   const handleAppend = async () => {
-    append({ value: '' });
+    append({
+      value: props.component.finalValue ? props.component.finalValue : '',
+    });
   };
 
   const handleMove = async (prev: number, next: number) => {
