@@ -2,7 +2,13 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import React, { useEffect } from 'react';
 import { Skeleton, Stack } from '@mui/material';
-import { Card, useBackdrop, FormGenerator, FormSchema } from '../components';
+import {
+  Card,
+  useBackdrop,
+  FormGenerator,
+  FormSchema,
+  Autocomplete,
+} from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 
 export const UploadTestPage = () => {
@@ -37,6 +43,10 @@ export const UploadTestPage = () => {
             tooltipTitle='Tooltip title'
             tooltipBody='Some body text on how this form works'
           >
+            <Autocomplete
+              onSelected={(id) => console.log(id)}
+              placeholder='Search for name'
+            />
             <FormGenerator
               onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
               formSchema={schema as FormSchema}

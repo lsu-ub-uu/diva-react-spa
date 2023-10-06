@@ -4,27 +4,33 @@ import { Autocomplete as MuiAutocomplete } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { SelectItem } from '../index';
+import { useCoraRecordSearch } from '../../app/hooks';
+import { Option } from '../index';
 
 interface AutoCompleteProps {
   placeholder?: string;
-  options: SelectItem[];
   onSelected?: (id: string) => void;
 }
 
 export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
+  const { isLoading, options, setQuery } = useCoraRecordSearch();
+
   return (
     <MuiAutocomplete
+      loading={isLoading}
       popupIcon={<ExpandMoreIcon />}
-      onChange={(event: React.SyntheticEvent, value: SelectItem | null) => {
-        if (props.onSelected && value != null) props.onSelected(value.id);
+      onChange={(event: React.SyntheticEvent, option: Option | null) => {
+        if (props.onSelected && option != null) props.onSelected(option.value);
       }}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
+      onInputChange={(event, newInputValue) => {
+        setQuery(newInputValue);
+      }}
+      // isOptionEqualToValue={(option, value) => option.id === value.id}
       id='autocomplete-test'
       sx={{ width: '100%' }}
-      options={props.options}
-      getOptionDisabled={(option) => option.disabled ?? false}
-      getOptionLabel={(option) => option.name}
+      options={options}
+      // getOptionDisabled={(option) => option.disabled ?? false}
+      getOptionLabel={(option) => option.label}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -33,8 +39,8 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
         />
       )}
       renderOption={(renderProps, option, { inputValue }) => {
-        const matches = match(option.name, inputValue, { insideWords: true });
-        const parts = parse(option.name, matches);
+        const matches = match(option.label, inputValue, { insideWords: true });
+        const parts = parse(option.label, matches);
 
         return (
           <li {...renderProps}>
