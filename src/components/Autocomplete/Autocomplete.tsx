@@ -17,6 +17,7 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
 
   return (
     <MuiAutocomplete
+      size='small'
       loading={isLoading}
       popupIcon={<ExpandMoreIcon />}
       onChange={(event: React.SyntheticEvent, option: Option | null) => {
