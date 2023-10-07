@@ -26,7 +26,9 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
       onInputChange={(event, newInputValue) => {
         setQuery(newInputValue);
       }}
-      // isOptionEqualToValue={(option, value) => option.id === value.id}
+      isOptionEqualToValue={(option, selected) =>
+        option.value === selected.value
+      }
       id='autocomplete-test'
       sx={{ width: '100%' }}
       options={options}
