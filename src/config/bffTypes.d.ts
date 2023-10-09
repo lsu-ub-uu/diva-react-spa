@@ -104,6 +104,7 @@ export interface BFFPresentation extends BFFBase {
   mode: 'input' | 'output';
   inputType?: string;
   emptyTextId?: string;
+  specifiedLabel?: string;
 }
 
 export interface BFFPresentationGroup extends BFFBase {

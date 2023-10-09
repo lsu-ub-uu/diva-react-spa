@@ -25,6 +25,7 @@ import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
 import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
 import coraPresentationWithMiscTypes from '../../__mocks__/coraPresentationWithMiscTypes.json';
 import coraPresentationWithOneCollectionVariable from '../../__mocks__/coraPresentationWithOneCollectionVariable.json';
+import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '../../__mocks__/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -47,6 +48,19 @@ describe('transformCoraPresentations', () => {
       mode: 'input',
       inputType: 'someInputType',
       emptyTextId: 'somePlaceholderText'
+    });
+  });
+
+  it('Returns one BFFPresentation for one pVar entry with specified label', () => {
+    const transformData = transformCoraPresentations(coraPresentationWithOneTextVariableHavingSpecifiedLabel);
+    expect(transformData[0]).toStrictEqual({
+      id: 'someTextVarPVar',
+      type: 'pVar',
+      presentationOf: 'someTextVar',
+      mode: 'input',
+      inputType: 'someInputType',
+      emptyTextId: 'somePlaceholderText',
+      specifiedLabelTextId: 'someSpecifiedTextVarText',
     });
   });
 
