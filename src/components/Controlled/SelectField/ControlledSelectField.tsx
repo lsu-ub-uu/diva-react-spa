@@ -74,6 +74,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
               inputRef: ref,
               readOnly: props.readOnly,
             }}
+            labelId={name}
             onBlur={onBlur}
             size='small'
             value={props.options?.length ? value : ''}
