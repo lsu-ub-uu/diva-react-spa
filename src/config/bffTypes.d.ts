@@ -105,6 +105,7 @@ export interface BFFPresentation extends BFFBase {
   inputType?: string;
   emptyTextId?: string;
   specifiedLabel?: string;
+  showLabel?: string;
 }
 
 export interface BFFPresentationGroup extends BFFBase {

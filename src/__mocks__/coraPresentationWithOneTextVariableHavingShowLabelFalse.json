@@ -195,25 +195,8 @@
                 "value": "someInputType"
               },
               {
-                "children": [
-                  {
-                    "name": "linkedRecordType",
-                    "value": "text"
-                  },
-                  {
-                    "name": "linkedRecordId",
-                    "value": "someSpecifiedTextVarText"
-                  }
-                ],
-                "actionLinks": {
-                  "read": {
-                    "requestMethod": "GET",
-                    "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/text/testNewsContentTextVarText",
-                    "accept": "application/vnd.uub.record+json"
-                  }
-                },
-                "name": "specifiedLabelText"
+                "name": "showLabel",
+                "value": "false"
               },
               {
                 "children": [

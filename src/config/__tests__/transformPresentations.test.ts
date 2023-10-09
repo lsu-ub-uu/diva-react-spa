@@ -26,6 +26,7 @@ import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__
 import coraPresentationWithMiscTypes from '../../__mocks__/coraPresentationWithMiscTypes.json';
 import coraPresentationWithOneCollectionVariable from '../../__mocks__/coraPresentationWithOneCollectionVariable.json';
 import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '../../__mocks__/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
+import coraPresentationWithOneTextVariableHavingShowLabelFalse from '../../__mocks__/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -63,6 +64,20 @@ describe('transformCoraPresentations', () => {
       specifiedLabelTextId: 'someSpecifiedTextVarText',
     });
   });
+
+  it('Returns one BFFPresentation for one pVar entry with label hidden/disabled', () => {
+    const transformData = transformCoraPresentations(coraPresentationWithOneTextVariableHavingShowLabelFalse);
+    expect(transformData[0]).toStrictEqual({
+      id: 'someTextVarPVar',
+      type: 'pVar',
+      presentationOf: 'someTextVar',
+      mode: 'input',
+      inputType: 'someInputType',
+      emptyTextId: 'somePlaceholderText',
+      showLabel: 'false',
+    });
+  });
+
 
   it('Returns one BFFPresentation for one pVar with missing emptyTextId', () => {
     const transformData = transformCoraPresentations(coraPresentationGroupWithMissingEmptyTextId);

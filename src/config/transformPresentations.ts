@@ -100,7 +100,12 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     specifiedLabelTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'specifiedLabelText');
   }
 
-  return removeEmpty({ id, presentationOf, mode, emptyTextId, type, specifiedLabelTextId } as BFFPresentation);
+  let showLabel;
+  if (containsChildWithNameInData(dataRecordGroup, 'showLabel')) {
+    showLabel = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'showLabel');
+  }
+
+  return removeEmpty({ id, presentationOf, mode, emptyTextId, type, specifiedLabelTextId, showLabel } as BFFPresentation);
 };
 
 // Handle pVar
