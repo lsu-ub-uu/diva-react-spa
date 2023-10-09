@@ -100,7 +100,9 @@ describe('<FormGenerator />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', { name: 'Submit' });
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+      const inputElement = screen.getByRole('textbox', {
+        name: 'someLabelTextId',
+      });
 
       const user = userEvent.setup();
       await user.type(inputElement, 'does not validate');
@@ -377,9 +379,6 @@ describe('<FormGenerator />', () => {
 
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
-
-      // const selectElement = screen.getByPlaceholderText('emptyTextId');
-      // expect(selectElement).toBeInTheDocument();
     });
   });
 });

@@ -58,6 +58,7 @@ export interface FormComponentTooltip {
 export interface FormComponent {
   type: string;
   name: string;
+  label?: string;
   finalValue?: string;
   placeholder?: string;
   validation?: FormRegexValidation | FormNumberValidation;
@@ -225,7 +226,7 @@ export const renderVariableField = (
       return (
         <ControlledTextField
           key={reactKey}
-          label={component.name}
+          label={component.label ?? ''}
           name={name}
           placeholder={component.placeholder}
           tooltip={component.tooltip}
@@ -241,7 +242,7 @@ export const renderVariableField = (
           name={name}
           isLoading={false}
           loadingError={false}
-          label={component.name}
+          label={component.label ?? ''}
           placeholder={component.placeholder}
           tooltip={component.tooltip}
           control={control}

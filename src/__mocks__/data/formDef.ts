@@ -14,6 +14,7 @@ export const formDef = {
     {
       type: 'textVariable',
       name: 'someNameInData',
+      label: 'someLabelTextId',
       placeholder: 'someEmptyTextId',
       repeat: {
         repeatMin: 1,
