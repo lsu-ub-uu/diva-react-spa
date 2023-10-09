@@ -159,6 +159,7 @@ describe('formDefinition', () => {
         {
           type: 'textVariable',
           name: 'someNameInData',
+          label: 'someTextId',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -180,6 +181,7 @@ describe('formDefinition', () => {
           type: 'textVariable',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
+          label: 'someTextId',
           repeat: {
             repeatMin: 1,
             repeatMax: 3
@@ -198,6 +200,7 @@ describe('formDefinition', () => {
         {
           type: 'textVariable',
           name: 'someNameInData2',
+          label: 'someOtherLabelTextId', // overridden label
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -217,6 +220,7 @@ describe('formDefinition', () => {
         {
           type: 'textVariable',
           name: 'someNameInData3',
+          label: 'someTextId',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -237,6 +241,7 @@ describe('formDefinition', () => {
         {
           type: 'numberVariable',
           name: 'someNameInDataNumberVar',
+          label: '',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 0,
@@ -260,6 +265,7 @@ describe('formDefinition', () => {
         {
           type: 'collectionVariable',
           name: 'colour',
+          label: 'exampleCollectionVarText',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -279,6 +285,7 @@ describe('formDefinition', () => {
         {
           type: 'collectionVariable',
           name: 'colourAttributeVar',
+          label: 'exampleCollectionVarText',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -292,6 +299,7 @@ describe('formDefinition', () => {
             {
               type: 'collectionVariable',
               name: 'colour',
+              label: 'exampleCollectionVarText',
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -315,6 +323,7 @@ describe('formDefinition', () => {
         {
           type: 'numberVariable',
           name: 'someNameInDataNumberWithAttributeVar',
+          label: 'someNumberVarTextId',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -328,6 +337,7 @@ describe('formDefinition', () => {
             {
               type: 'collectionVariable',
               name: 'colour',
+              label: 'exampleCollectionVarText',
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -354,6 +364,7 @@ describe('formDefinition', () => {
         {
           type: 'textVariable',
           name: 'someNameInDataTextWithAttrib',
+          label: 'someTextId',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -367,6 +378,7 @@ describe('formDefinition', () => {
             {
               type: 'collectionVariable',
               name: 'colour',
+              label: 'exampleCollectionVarText',
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',

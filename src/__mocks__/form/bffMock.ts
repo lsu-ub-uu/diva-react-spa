@@ -93,7 +93,7 @@ export const someMetadataTextVariable2: BFFMetadataTextVariable = {
   type: 'textVariable',
   textId: 'someTextId',
   defTextId: 'someDefTextId',
-  regEx: 'someRegex'
+  regEx: 'someRegex',
 };
 
 export const someMetadataTextVariable3: BFFMetadataTextVariable = {
@@ -231,7 +231,8 @@ export const pSomeMetadataNumberVar: BFFPresentation = {
   presentationOf: 'someMetadataNumberVarId',
   mode: 'input',
   type: 'pNumVar',
-  emptyTextId: 'someEmptyTextId'
+  emptyTextId: 'someEmptyTextId',
+  showLabel: 'false'
 };
 
 export const pSomeMetadataNumberWithAttributeVar: BFFPresentation = {
@@ -268,7 +269,8 @@ export const pSomeMetadataTextVariable2: BFFPresentation = {
   mode: 'input',
   inputType: 'input',
   type: 'pVar',
-  emptyTextId: 'someEmptyTextId'
+  emptyTextId: 'someEmptyTextId',
+  specifiedLabelTextId: 'someOtherLabelTextId'
 };
 export const pSomeMetadataTextVariable3: BFFPresentation = {
   id: 'pSomeMetadataTextVariable3Id',

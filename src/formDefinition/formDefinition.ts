@@ -249,5 +249,12 @@ const createCommonParameters = (metadata: BFFMetadata, presentation: BFFPresenta
   const mode = presentation.mode;
   const inputType = presentation.inputType;
   const tooltip = { title: metadata.textId, body: metadata.defTextId };
-  return { name, type, placeholder, mode, inputType, tooltip };
+  let label = metadata.textId;
+  if (presentation.specifiedLabelTextId) {
+    label = presentation.specifiedLabelTextId;
+  }
+  if (presentation.showLabel && presentation.showLabel === 'false') {
+    label = '';
+  }
+  return { name, type, placeholder, mode, inputType, tooltip, label };
 };
