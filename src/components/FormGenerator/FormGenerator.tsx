@@ -91,7 +91,8 @@ interface FormNumberValidation {
   numberOfDecimals: number;
 }
 
-const createYupStringRegexpSchema = (regexpValidation: FormRegexValidation) => {
+const createYupStringRegexpSchema = (component: FormComponent) => {
+  const regexpValidation = component.validation as FormRegexValidation;
   return yup
     .string()
     .matches(
@@ -99,10 +100,6 @@ const createYupStringRegexpSchema = (regexpValidation: FormRegexValidation) => {
       'Invalid input format',
     );
 };
-
-/* const createYupAttributeSchema = (component: FormComponent) => {
-  //return yup.object().shape();
-}; */
 
 const createYupNumberSchema = (component: FormComponent) => {
   const numberValidation = component.validation as FormNumberValidation;
@@ -155,21 +152,18 @@ const generateYupSchema = (components: FormComponent[]) => {
           component.type === 'textVariable' &&
           !isComponentRepeating(component)
         ) {
-          const regexpValidation = component.validation as FormRegexValidation;
-          accumulator[component.name] =
-            createYupStringRegexpSchema(regexpValidation);
+          accumulator[component.name] = createYupStringRegexpSchema(component);
         }
 
         if (
           component.type === 'textVariable' &&
           isComponentRepeating(component)
         ) {
-          const regexpValidation = component.validation as FormRegexValidation;
           accumulator[component.name] = yup
             .array()
             .of(
               yup.object().shape({
-                value: createYupStringRegexpSchema(regexpValidation),
+                value: createYupStringRegexpSchema(component),
               }),
             )
             .min(component.repeat.repeatMin)
