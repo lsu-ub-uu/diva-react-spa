@@ -265,6 +265,7 @@ describe('formDefinition', () => {
         {
           type: 'collectionVariable',
           name: 'colour',
+          finalValue: "pink",
           label: 'exampleCollectionVarText',
           placeholder: 'someEmptyTextId',
           repeat: {
@@ -297,10 +298,11 @@ describe('formDefinition', () => {
           },
           attributes: [
             {
+              finalValue: "pink",
               type: 'collectionVariable',
               name: 'colour',
               label: 'exampleCollectionVarText',
-              placeholder: 'emptyTextId',
+              placeholder: 'initialEmptyValueText',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText'
@@ -335,10 +337,11 @@ describe('formDefinition', () => {
           },
           attributes: [
             {
+              finalValue: "pink",
               type: 'collectionVariable',
               name: 'colour',
               label: 'exampleCollectionVarText',
-              placeholder: 'emptyTextId',
+              placeholder: 'initialEmptyValueText',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText'
@@ -378,8 +381,9 @@ describe('formDefinition', () => {
             {
               type: 'collectionVariable',
               name: 'colour',
+              finalValue: "pink",
               label: 'exampleCollectionVarText',
-              placeholder: 'emptyTextId',
+              placeholder: 'initialEmptyValueText',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText'

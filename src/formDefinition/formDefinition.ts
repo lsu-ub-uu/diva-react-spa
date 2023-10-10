@@ -122,13 +122,13 @@ function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFM
       presentationOf: refCollectionVar.id,
       type: 'pCollVar',
       mode: 'input',
-      emptyTextId: 'emptyTextId',
+      emptyTextId: 'initialEmptyValueText',
     };
 
-    const finalValue = metadataVariable.finalValue;
+    const finalValue = refCollectionVar.finalValue;
     const commonParameters = createCommonParameters(refCollectionVar, fakePresentation);
     options = createCollectionVariableOptions(metadataPool, refCollectionVar);
-    return removeEmpty({ ...commonParameters, options, finalValue});
+    return removeEmpty({ ...commonParameters, options, finalValue });
   });
 }
 

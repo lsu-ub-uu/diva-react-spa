@@ -157,7 +157,9 @@ export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
   type: 'collectionVariable',
   textId: 'exampleCollectionVarText',
   defTextId: 'exampleCollectionVarDefText',
-  refCollection: 'exampleCollection'
+  refCollection: 'exampleCollection',
+  finalValue: 'pink' // added this for now
+
 };
 
 export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionVariable = {
