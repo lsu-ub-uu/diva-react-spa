@@ -310,7 +310,12 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
 
-    if (isComponentRepeating(component)) {
+    if (
+      isComponentRepeating(component) &&
+      ['numberVariable', 'textVariable', 'collectionVariable'].includes(
+        component.type,
+      )
+    ) {
       return (
         <FieldArrayComponent
           component={component}

@@ -24,7 +24,7 @@ export const hasComponentAttributes = (component: FormComponent) =>
   component.attributes ? component.attributes.length > 0 : false;
 
 export const isComponentRepeating = (component: FormComponent) =>
-  component.repeat?.repeatMax > 1 ?? false;
+  !(component.repeat?.repeatMax === 1 && component.repeat?.repeatMin === 1);
 
 export const isComponentOptional = (component: FormComponent) =>
   component.repeat?.repeatMin === 0 ?? false;
@@ -36,7 +36,7 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   formSchema.components.forEach((component) => {
     if (isComponentRepeating(component)) {
       const numberToShowFromStart =
-        component.repeat.minNumberOfRepeatingToShow ?? 0;
+        component.repeat?.minNumberOfRepeatingToShow ?? 0;
       if (
         component.type === 'collectionVariable' ||
         component.type === 'textVariable' ||

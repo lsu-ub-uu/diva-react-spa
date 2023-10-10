@@ -80,7 +80,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       <Button
         sx={{ mt: 1, mb: 1 }}
         variant='outlined'
-        disabled={fields.length >= props.component.repeat.repeatMax}
+        disabled={fields.length >= props.component.repeat?.repeatMax ?? true}
         onClick={handleAppend}
         disableRipple
         endIcon={<AddCircleOutlineIcon />}
