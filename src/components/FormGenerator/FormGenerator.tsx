@@ -123,6 +123,17 @@ const createYupNumberSchema = (component: FormComponent) => {
     });
 };
 
+const createYupComponentSchema = (component: FormComponent) => {
+  switch (component.type) {
+    case 'textVariable':
+      return createYupStringRegexpSchema(component);
+    case 'numberVariable':
+      return createYupNumberSchema(component);
+    default: // collectionVariable
+      return yup.string().required();
+  }
+};
+
 const generateYupSchema = (components: FormComponent[]) => {
   const validatableComponents = components.filter((component) =>
     ['numberVariable', 'textVariable', 'collectionVariable'].includes(
@@ -135,7 +146,7 @@ const generateYupSchema = (components: FormComponent[]) => {
       // eslint-disable-next-line prefer-regex-literals
       if (hasComponentAttributes(component)) {
         const componentRule = {
-          value: yup.string().required(), // this is not correct
+          value: createYupComponentSchema(component),
         };
         const attributeRules = component.attributes?.map((attribute) => ({
           [`_${attribute.name}`]: yup.string().required(), // this is fine attributes are always required
