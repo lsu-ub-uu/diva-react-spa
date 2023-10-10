@@ -18,7 +18,7 @@
  */
 
 import { test, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import {
@@ -347,7 +347,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Renders a form with collectionVariable and validates it correctly and does not call submit', async () => {
+    it('Renders a form with collectionVariable and validates it falsy and does not call submit', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -366,7 +366,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('attribute collection', () => {
-    it('renders a form with numberVariable and attribute collection selectBox', async () => {
+    it('renders a form with numberVariable and attribute collection selectBox and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -379,6 +379,25 @@ describe('<FormGenerator />', () => {
 
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
+
+      const expandButton = screen.getByRole('button', { expanded: false });
+      expect(expandButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.click(expandButton);
+      const listBoxElement = screen.getByRole('listbox');
+
+      expect(listBoxElement.children).toHaveLength(4);
+
+      await user.selectOptions(listBoxElement, '<em>option.none</em>');
+
+      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
 });

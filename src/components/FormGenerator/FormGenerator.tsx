@@ -22,11 +22,13 @@ import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ArraySchema, NumberSchema, StringSchema } from 'yup';
+import { ArraySchema, NumberSchema, ObjectSchema, StringSchema } from 'yup';
+import React from 'react';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
 import {
   createDefaultValuesFromFormSchema,
+  hasComponentAttributes,
   isComponentOptional,
   isComponentRepeating,
 } from './utils';
@@ -98,7 +100,12 @@ const createYupStringRegexpSchema = (regexpValidation: FormRegexValidation) => {
     );
 };
 
-const createYupNumberSchema = (numberValidation: FormNumberValidation) => {
+/* const createYupAttributeSchema = (component: FormComponent) => {
+  //return yup.object().shape();
+}; */
+
+const createYupNumberSchema = (component: FormComponent) => {
+  const numberValidation = component.validation as FormNumberValidation;
   return yup
     .string()
     .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
@@ -129,85 +136,103 @@ const generateYupSchema = (components: FormComponent[]) => {
   const composedShape = validatableComponents.reduce(
     (accumulator, component) => {
       // eslint-disable-next-line prefer-regex-literals
-      if (
-        component.type === 'textVariable' &&
-        !isComponentRepeating(component)
-      ) {
-        const regexpValidation = component.validation as FormRegexValidation;
-        accumulator[component.name] =
-          createYupStringRegexpSchema(regexpValidation);
-      }
+      if (hasComponentAttributes(component)) {
+        const componentRule = {
+          value: yup.string().required(), // this is not correct
+        };
+        const attributeRules = component.attributes?.map((attribute) => ({
+          [`_${attribute.name}`]: yup.string().required(), // this is fine attributes are always required
+        }));
 
-      if (
-        component.type === 'textVariable' &&
-        isComponentRepeating(component)
-      ) {
-        const regexpValidation = component.validation as FormRegexValidation;
-        accumulator[component.name] = yup
-          .array()
-          .of(
-            yup.object().shape({
-              value: createYupStringRegexpSchema(regexpValidation),
-            }),
-          )
-          .min(component.repeat.repeatMin)
-          .max(component.repeat.repeatMax);
-      }
+        const componentShape = {
+          ...componentRule,
+          ...Object.assign({}, ...(attributeRules ?? [])),
+        };
 
-      if (
-        component.type === 'collectionVariable' &&
-        !isComponentRepeating(component)
-      ) {
-        if (!isComponentOptional(component)) {
-          accumulator[component.name] = yup.string().required();
+        accumulator[component.name] = yup.object().shape(componentShape);
+      } else {
+        if (
+          component.type === 'textVariable' &&
+          !isComponentRepeating(component)
+        ) {
+          const regexpValidation = component.validation as FormRegexValidation;
+          accumulator[component.name] =
+            createYupStringRegexpSchema(regexpValidation);
         }
-      }
 
-      if (
-        component.type === 'collectionVariable' &&
-        isComponentRepeating(component)
-      ) {
-        if (!isComponentOptional(component)) {
+        if (
+          component.type === 'textVariable' &&
+          isComponentRepeating(component)
+        ) {
+          const regexpValidation = component.validation as FormRegexValidation;
           accumulator[component.name] = yup
             .array()
             .of(
               yup.object().shape({
-                value: yup.string().required(),
+                value: createYupStringRegexpSchema(regexpValidation),
               }),
             )
             .min(component.repeat.repeatMin)
             .max(component.repeat.repeatMax);
         }
+
+        if (
+          component.type === 'collectionVariable' &&
+          !isComponentRepeating(component)
+        ) {
+          if (!isComponentOptional(component)) {
+            accumulator[component.name] = yup.string().required();
+          }
+        }
+
+        if (
+          component.type === 'collectionVariable' &&
+          isComponentRepeating(component)
+        ) {
+          if (!isComponentOptional(component)) {
+            accumulator[component.name] = yup
+              .array()
+              .of(
+                yup.object().shape({
+                  value: yup.string().required(),
+                }),
+              )
+              .min(component.repeat.repeatMin)
+              .max(component.repeat.repeatMax);
+          }
+        }
+
+        if (
+          component.type === 'numberVariable' &&
+          isComponentRepeating(component)
+        ) {
+          accumulator[component.name] = yup
+            .array()
+            .of(
+              yup.object().shape({
+                value: createYupNumberSchema(component),
+              }),
+            )
+            .min(component.repeat.repeatMin)
+            .max(component.repeat.repeatMax);
+        }
+
+        if (
+          component.type === 'numberVariable' &&
+          !isComponentRepeating(component)
+        ) {
+          accumulator[component.name] = createYupNumberSchema(component);
+        }
       }
 
-      if (
-        component.type === 'numberVariable' &&
-        isComponentRepeating(component)
-      ) {
-        const numberValidation = component.validation as FormNumberValidation;
-        accumulator[component.name] = yup
-          .array()
-          .of(
-            yup.object().shape({
-              value: createYupNumberSchema(numberValidation),
-            }),
-          )
-          .min(component.repeat.repeatMin)
-          .max(component.repeat.repeatMax);
-      }
-
-      if (
-        component.type === 'numberVariable' &&
-        !isComponentRepeating(component)
-      ) {
-        const numberValidation = component.validation as FormNumberValidation;
-        accumulator[component.name] = createYupNumberSchema(numberValidation);
-      }
       return accumulator;
     },
     {} as Record<
       string,
-      StringSchema | NumberSchema | ArraySchema<any, any, any, any>
+      | ObjectSchema<any, any>
+      | StringSchema
+      | NumberSchema
+      | ArraySchema<any, any, any, any>
     >,
   );
 
@@ -291,12 +316,38 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       );
     }
 
+    let renderResult = renderVariableField(
+      component,
+      reactKey,
+      control,
+      component.attributes ? `${component.name}.value` : component.name,
+    );
+
     if (component.attributes !== undefined) {
-      // should render the parent component by calling renderVariableField
-      // iterate attributes and call renderVariableField foreach
+      renderResult = (
+        <React.Fragment key={reactKey}>
+          {renderResult}
+          {component.attributes.map((attribute, index) => {
+            return (
+              <ControlledSelectField
+                key={`${attribute.name}_${index}`}
+                name={`${component.name}._${attribute.name}`}
+                isLoading={false}
+                loadingError={false}
+                label={attribute.label ?? ''}
+                placeholder={attribute.placeholder}
+                tooltip={attribute.tooltip}
+                control={control}
+                options={attribute.options}
+                readOnly={!!attribute.finalValue}
+              />
+            );
+          })}
+        </React.Fragment>
+      );
     }
 
-    return renderVariableField(component, reactKey, control, component.name);
+    return renderResult;
   };
 
   return (

@@ -20,6 +20,9 @@
 // eslint-disable-next-line import/no-cycle
 import { FormComponent, FormSchema } from './FormGenerator';
 
+export const hasComponentAttributes = (component: FormComponent) =>
+  component.attributes ? component.attributes.length > 0 : false;
+
 export const isComponentRepeating = (component: FormComponent) =>
   component.repeat?.repeatMax > 1 ?? false;
 
@@ -28,7 +31,7 @@ export const isComponentOptional = (component: FormComponent) =>
 
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   const defaultValues: {
-    [x: string]: string | number | ({} | undefined)[] | undefined;
+    [x: string]: string | number | ({} | undefined)[] | undefined | any;
   } = {};
   formSchema.components.forEach((component) => {
     if (isComponentRepeating(component)) {
@@ -52,9 +55,26 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
       component.type === 'numberVariable' ||
       component.type === 'collectionVariable'
     ) {
-      defaultValues[component.name] = component.finalValue
-        ? component.finalValue
-        : '';
+      if (!component.attributes) {
+        defaultValues[component.name] = component.finalValue
+          ? component.finalValue
+          : '';
+      } else {
+        // variable with attributes
+        const componentDefaultValue = {
+          value: component.finalValue ? component.finalValue : '',
+        };
+        // attributes
+        const attributeValues = component.attributes.map((attribute) => ({
+          [`_${attribute.name}`]: attribute.finalValue
+            ? attribute.finalValue
+            : '',
+        }));
+        defaultValues[component.name] = {
+          ...componentDefaultValue,
+          ...Object.assign({}, ...attributeValues),
+        };
+      }
     }
   });
 
