@@ -124,6 +124,36 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow = {
   ],
 };
 
+export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero =
+  {
+    validationTypeId: 'someValidationTypeId',
+    components: [
+      {
+        type: 'text',
+        name: 'presentationTypeTextCollectionVarDefText',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+      },
+    ],
+  };
+
 export const formDefWithOneNumberVariable: FormSchema = {
   validationTypeId: 'someValidationTypeId',
   components: [

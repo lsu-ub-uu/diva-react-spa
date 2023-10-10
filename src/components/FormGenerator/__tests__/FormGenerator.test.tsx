@@ -30,6 +30,7 @@ import {
   formDefWithOneTextVariableHavingFinalValue,
   formDefWithOneCollectionVariable,
   formDefWithOneNumberVariableWithAttributeCollection,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator, FormSchema } from '../FormGenerator';
 
@@ -301,6 +302,23 @@ describe('<FormGenerator />', () => {
       expect(removeButtonElements).toHaveLength(2);
       expect(removeButtonElements[0]).toBeDisabled();
       expect(removeButtonElements[1]).toBeDisabled();
+    });
+
+    it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const removeButtonElements = screen.getAllByLabelText('delete');
+
+      expect(removeButtonElements).toHaveLength(1);
+      expect(removeButtonElements[0]).toBeEnabled();
     });
   });
 
