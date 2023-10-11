@@ -31,6 +31,10 @@ import {
   hasComponentAttributes,
   isComponentOptional,
   isComponentRepeating,
+  isComponentVariable,
+  isComponentCollectionVariable,
+  isComponentNumberVariable,
+  isComponentTextVariable,
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { FieldArrayComponent } from './FieldArrayComponent';
@@ -135,11 +139,7 @@ const createYupComponentSchema = (component: FormComponent) => {
 };
 
 const generateYupSchema = (components: FormComponent[]) => {
-  const validatableComponents = components.filter((component) =>
-    ['numberVariable', 'textVariable', 'collectionVariable'].includes(
-      component.type,
-    ),
-  );
+  const validatableComponents = components.filter(isComponentVariable);
 
   const composedShape = validatableComponents.reduce(
     (accumulator, component) => {
@@ -160,14 +160,14 @@ const generateYupSchema = (components: FormComponent[]) => {
         accumulator[component.name] = yup.object().shape(componentShape);
       } else {
         if (
-          component.type === 'textVariable' &&
+          isComponentTextVariable(component) &&
           !isComponentRepeating(component)
         ) {
           accumulator[component.name] = createYupStringRegexpSchema(component);
         }
 
         if (
-          component.type === 'textVariable' &&
+          isComponentTextVariable(component) &&
           isComponentRepeating(component)
         ) {
           accumulator[component.name] = yup
@@ -182,7 +182,7 @@ const generateYupSchema = (components: FormComponent[]) => {
         }
 
         if (
-          component.type === 'collectionVariable' &&
+          isComponentCollectionVariable(component) &&
           !isComponentRepeating(component)
         ) {
           if (!isComponentOptional(component)) {
@@ -191,7 +191,7 @@ const generateYupSchema = (components: FormComponent[]) => {
         }
 
         if (
-          component.type === 'collectionVariable' &&
+          isComponentCollectionVariable(component) &&
           isComponentRepeating(component)
         ) {
           if (!isComponentOptional(component)) {
@@ -208,7 +208,7 @@ const generateYupSchema = (components: FormComponent[]) => {
         }
 
         if (
-          component.type === 'numberVariable' &&
+          isComponentNumberVariable(component) &&
           isComponentRepeating(component)
         ) {
           accumulator[component.name] = yup
@@ -223,7 +223,7 @@ const generateYupSchema = (components: FormComponent[]) => {
         }
 
         if (
-          component.type === 'numberVariable' &&
+          isComponentNumberVariable(component) &&
           !isComponentRepeating(component)
         ) {
           accumulator[component.name] = createYupNumberSchema(component);
@@ -310,12 +310,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
 
-    if (
-      isComponentRepeating(component) &&
-      ['numberVariable', 'textVariable', 'collectionVariable'].includes(
-        component.type,
-      )
-    ) {
+    if (isComponentRepeating(component) && isComponentVariable(component)) {
       return (
         <FieldArrayComponent
           component={component}

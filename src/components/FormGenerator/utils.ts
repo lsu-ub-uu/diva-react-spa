@@ -23,6 +23,20 @@ import { FormComponent, FormSchema } from './FormGenerator';
 export const hasComponentAttributes = (component: FormComponent) =>
   component.attributes ? component.attributes.length > 0 : false;
 
+export const isComponentVariable = (component: FormComponent) =>
+  ['numberVariable', 'textVariable', 'collectionVariable'].includes(
+    component.type,
+  );
+
+export const isComponentTextVariable = (component: FormComponent) =>
+  component.type === 'textVariable';
+
+export const isComponentNumberVariable = (component: FormComponent) =>
+  component.type === 'numberVariable';
+
+export const isComponentCollectionVariable = (component: FormComponent) =>
+  component.type === 'collectionVariable';
+
 export const isComponentRepeating = (component: FormComponent) =>
   !(component.repeat?.repeatMax === 1 && component.repeat?.repeatMin === 1);
 
