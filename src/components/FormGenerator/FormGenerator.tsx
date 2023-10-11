@@ -250,7 +250,7 @@ export const renderVariableField = (
   reactKey: string,
   control: Control<any>,
   name: string,
-) => {
+): JSX.Element | null => {
   switch (component.type) {
     case 'textVariable':
     case 'numberVariable': {
@@ -280,6 +280,21 @@ export const renderVariableField = (
           options={component.options}
           readOnly={!!component.finalValue}
         />
+      );
+    }
+    case 'group': {
+      return (
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+        <>
+          {component.components?.map((comp) => {
+            return renderVariableField(
+              comp,
+              `${reactKey}_${comp.name}`,
+              control,
+              comp.name,
+            );
+          })}
+        </>
       );
     }
     case 'text': {
@@ -331,6 +346,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
     if (component.attributes !== undefined) {
       renderResult = (
+        // @ts-ignore
         <React.Fragment key={reactKey}>
           {renderResult}
           {component.attributes.map((attribute, index) => {
