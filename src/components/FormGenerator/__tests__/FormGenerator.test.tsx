@@ -31,6 +31,7 @@ import {
   formDefWithOneCollectionVariable,
   formDefWithOneNumberVariableWithAttributeCollection,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
+  formDefWithOneGroupHavingTextVariableAsChild,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator, FormSchema } from '../FormGenerator';
 
@@ -416,6 +417,23 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('group', () => {
+    it('renders a form with group and renders its textVariable child', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneGroupHavingTextVariableAsChild as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const textInput = screen.getByPlaceholderText('someEmptyTextId');
+      expect(textInput).toBeInTheDocument();
     });
   });
 });

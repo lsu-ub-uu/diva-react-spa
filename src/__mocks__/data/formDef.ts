@@ -279,3 +279,45 @@ export const formDefWithOneNumberVariableWithAttributeCollection: FormSchema = {
     },
   ],
 };
+
+export const formDefWithOneGroupHavingTextVariableAsChild: FormSchema = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'group',
+      label: 'someChildGroupTextId',
+      name: 'someChildGroupNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'someChildGroupTextId',
+        body: 'someChildGroupDefTextId',
+      },
+      components: [
+        {
+          type: 'textVariable',
+          name: 'someNameInData',
+          label: 'someTextId',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someTextId',
+            body: 'someDefTextId',
+          },
+          validation: {
+            type: 'regex',
+            pattern: 'someRegex',
+          },
+          mode: 'input',
+          inputType: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  ],
+};

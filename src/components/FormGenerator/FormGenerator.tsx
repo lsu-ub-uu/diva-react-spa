@@ -74,6 +74,7 @@ export interface FormComponent {
   mode?: string;
   options?: Option[];
   attributes?: FormAttributeCollection[];
+  components?: FormComponent[]; // for groups
 }
 
 type FormAttributeCollection = Omit<
