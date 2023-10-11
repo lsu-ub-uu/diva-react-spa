@@ -90,6 +90,7 @@ const createComponentsFromChildReferences = (
     );
   });
 };
+
 const createText = (
   presentationChildReference: BFFPresentationChildReference,
   presentationChildType: string
@@ -188,6 +189,8 @@ const createPresentation = (
       attributes = createAttributes(collectionVariable, metadataPool, options);
     }
   }
+
+  // id type == pGroup
 
   return removeEmpty({
     ...commonParameters,

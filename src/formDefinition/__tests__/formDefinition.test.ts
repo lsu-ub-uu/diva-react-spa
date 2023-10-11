@@ -52,7 +52,7 @@ import {
   someMetadataNumberVarWithAttribute,
   pSomeMetadataNumberWithAttributeVar,
   pSomeMetadataTextVariableWithAttributeVar,
-  someMetadataTextVariableWithAttributeVar,
+  someMetadataTextVariableWithAttributeVar, pSomeMetadataChildGroup, someMetadataChildGroup,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -84,7 +84,8 @@ describe('formDefinition', () => {
       someMetadataCollectionItemYellow,
       someMetadataCollectionVariableWithAttribute,
       someMetadataNumberVarWithAttribute,
-      someMetadataTextVariableWithAttributeVar
+      someMetadataTextVariableWithAttributeVar,
+      someMetadataChildGroup,
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
@@ -95,7 +96,8 @@ describe('formDefinition', () => {
       pSomeMetadataCollectionVariable,
       pSomeMetadataCollectionVariableWithAttribute,
       pSomeMetadataNumberWithAttributeVar,
-      pSomeMetadataTextVariableWithAttributeVar
+      pSomeMetadataTextVariableWithAttributeVar,
+      pSomeMetadataChildGroup
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -148,7 +150,7 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(10);
+    expect(formDefinition.components).toHaveLength(11);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       components: [
@@ -402,6 +404,42 @@ describe('formDefinition', () => {
           },
           mode: 'input',
           inputType: 'input',
+        },
+        {
+          type: 'group',
+          label: "someChildGroupTextId",
+          name: 'someChildGroupNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someChildGroupTextId',
+            body: 'someChildGroupDefTextId'
+          },
+          components: [
+            {
+              type: 'textVariable',
+              name: 'someNameInData',
+              label: 'someTextId',
+              placeholder: 'someEmptyTextId',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              tooltip: {
+                title: 'someTextId',
+                body: 'someDefTextId'
+              },
+              validation: {
+                type: 'regex',
+                pattern: 'someRegex'
+              },
+              mode: 'input',
+              inputType: 'input'
+            },
+          ],
+          mode: 'input',
         },
       ]
     });

@@ -74,9 +74,30 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
       childId: 'someMetadataTextVariableWithAttributeVarId',
       repeatMin: '1',
       repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataChildGroupId',
+      repeatMin: '1',
+      repeatMax: '1'
     }
   ]
 };
+
+export const someMetadataChildGroup: BFFMetadataGroup = {
+  id: 'someMetadataChildGroupId',
+  nameInData: 'someChildGroupNameInData',
+  type: 'group',
+  textId: 'someChildGroupTextId',
+  defTextId: 'someChildGroupDefTextId',
+  children: [
+    {
+      childId: 'someMetadataTextVariableId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+  ]
+};
+
 
 export const someMetadataTextVariable: BFFMetadataTextVariable = {
   id: 'someMetadataTextVariableId',
@@ -299,6 +320,20 @@ export const pSomeMetadataCollectionVariableWithAttribute: BFFPresentation = {
   emptyTextId: 'someEmptyTextId'
 };
 
+export const pSomeMetadataChildGroup: BFFPresentationGroup = {
+  id: 'pSomeMetadataChildGroupId',
+  presentationOf: 'someMetadataChildGroupId', // metadata
+  mode: 'input',
+  children: [
+    {
+      childId: 'pSomeMetadataTextVariableId',
+      type: 'presentation',
+      childStyle: ['style3', 'style4']
+    },
+  ]
+};
+
+
 export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   id: 'pSomeNewMetadataGroupId',
   presentationOf: 'someNewMetadataGroupId', // metadata
@@ -355,6 +390,11 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
     },
     {
       childId: 'pSomeMetadataTextVariableWithAttributeVarId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataChildGroupId',
       type: 'presentation',
       childStyle: []
     }
