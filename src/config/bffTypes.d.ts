@@ -108,8 +108,7 @@ export interface BFFPresentation extends BFFBase {
   showLabel?: string;
 }
 
-export interface BFFPresentationGroup extends BFFBase {
-  // type?
+export interface BFFPresentationGroup extends BFFPresentation {
   presentationOf: string;
   mode: 'input' | 'output';
   children: BFFPresentationChildReference[];

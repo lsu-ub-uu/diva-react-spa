@@ -129,7 +129,7 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     'presentationOf'
   );
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
-
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
   const children = childReferencesList.map((childReference) => {
     return transformChildReference(childReference);
@@ -139,7 +139,8 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     id,
     presentationOf,
     mode,
-    children
+    children,
+    type
   } as BFFPresentationGroup;
 };
 

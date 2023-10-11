@@ -123,6 +123,7 @@ describe('transformCoraPresentations', () => {
     const transformData = transformCoraPresentations(coraPresentationGroup);
     expect(transformData[0]).toStrictEqual({
       id: 'someNewPGroup',
+      type: 'pGroup',
       presentationOf: 'someNewGroup',
       mode: 'input',
       children: [
@@ -140,6 +141,7 @@ describe('transformCoraPresentations', () => {
     );
     expect(transformData[0]).toStrictEqual({
       id: 'someNewPGroup',
+      type: 'pGroup',
       presentationOf: 'someNewGroup',
       mode: 'input',
       children: [

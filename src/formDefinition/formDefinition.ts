@@ -72,7 +72,7 @@ const createComponentsFromChildReferences = (
   presentationChildReferences: BFFPresentationChildReference[],
   metadataPool: any,
   presentationPool: any
-) => {
+): unknown => {
   return presentationChildReferences.map((presentationChildReference) => {
     const presentationChildType = presentationChildReference.type;
 
@@ -143,6 +143,7 @@ const createPresentation = (
   let options;
   let finalValue;
   let attributes;
+  let components;
 
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
@@ -190,7 +191,17 @@ const createPresentation = (
     }
   }
 
-  // id type == pGroup
+  if (presentation.type === 'pGroup') {
+    const group = metadata as BFFMetadataGroup;
+    const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
+
+    components = createComponentsFromChildReferences(
+      group.children,
+      presentationGroup.children,
+      metadataPool,
+      presentationPool
+    );
+  }
 
   return removeEmpty({
     ...commonParameters,
@@ -198,7 +209,8 @@ const createPresentation = (
     repeat,
     options,
     finalValue,
-    attributes
+    attributes,
+    components
   });
 };
 

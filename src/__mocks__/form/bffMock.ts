@@ -322,6 +322,7 @@ export const pSomeMetadataCollectionVariableWithAttribute: BFFPresentation = {
 
 export const pSomeMetadataChildGroup: BFFPresentationGroup = {
   id: 'pSomeMetadataChildGroupId',
+  type: 'pGroup',
   presentationOf: 'someMetadataChildGroupId', // metadata
   mode: 'input',
   children: [
@@ -336,6 +337,7 @@ export const pSomeMetadataChildGroup: BFFPresentationGroup = {
 
 export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   id: 'pSomeNewMetadataGroupId',
+  type: 'pGroup',
   presentationOf: 'someNewMetadataGroupId', // metadata
   mode: 'input',
   children: [
