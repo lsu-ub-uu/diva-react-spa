@@ -195,12 +195,15 @@ const createPresentation = (
     const group = metadata as BFFMetadataGroup;
     const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
 
-    components = createComponentsFromChildReferences(
-      group.children,
-      presentationGroup.children,
-      metadataPool,
-      presentationPool
-    );
+    // skip children for recordInfo group for now
+    if (group.nameInData !== 'recordInfo') {
+      components = createComponentsFromChildReferences(
+        group.children,
+        presentationGroup.children,
+        metadataPool,
+        presentationPool
+      );
+    }
   }
 
   return removeEmpty({
