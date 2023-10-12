@@ -88,22 +88,28 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
     }
   }
 
-  // NOT repeating - textVariable / numberVariable/ collectionVariable
-  if (
-    !isComponentRepeating(component) &&
-    (isComponentVariable(component) || isComponentGroup(component))
-  ) {
+  // NOT repeating - textVariable / numberVariable/ collectionVariable/group
+  if (!isComponentRepeating(component) && isComponentValidForData(component)) {
     // run even if it is repeating and also on groups
     if (hasComponentAttributes(component)) {
       defaultValues[component.name] = generateComponentAttributes(component);
     } else {
       // variable or group without attribute
-      defaultValues[component.name] = component.finalValue
-        ? component.finalValue
-        : '';
+      // eslint-disable-next-line no-lonely-if
+      if (!isComponentGroup(component)) {
+        defaultValues[component.name] = component.finalValue
+          ? component.finalValue
+          : '';
+      } else {
+        // is a group recursively call createDefaultValues for component
+        const compArray = component.components ?? [];
+        const formDefaultValues = compArray
+          .filter(isComponentValidForData)
+          .map(createDefaultValuesFromComponent);
+        defaultValues[component.name] = Object.assign({}, ...formDefaultValues);
+      }
     }
   }
-
   return defaultValues;
 };
 

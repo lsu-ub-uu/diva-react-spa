@@ -46,6 +46,7 @@ describe('FormGenerator utils', () => {
         exampleNumberVar: '',
         exampleTextVar: '',
       },
+      recordInfo: {},
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDefRealDemo as FormSchema,
