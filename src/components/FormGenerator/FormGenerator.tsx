@@ -285,16 +285,16 @@ export const renderVariableField = (
     case 'group': {
       return (
         // eslint-disable-next-line react/jsx-no-useless-fragment
-        <>
-          {component.components?.map((comp) => {
+        <React.Fragment key={`${reactKey}_group`}>
+          {component.components?.map((childComponent) => {
             return renderVariableField(
-              comp,
-              `${reactKey}_${comp.name}`,
+              childComponent,
+              `${reactKey}_group_${childComponent.name}`,
               control,
-              comp.name,
+              `${component.name}.${childComponent.name}`,
             );
           })}
-        </>
+        </React.Fragment>
       );
     }
     case 'text': {
