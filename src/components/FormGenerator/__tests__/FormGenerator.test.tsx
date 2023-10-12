@@ -33,7 +33,8 @@ import {
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
   formDefWithOneGroupHavingTextVariableAsChild,
 } from '../../../__mocks__/data/formDef';
-import { FormGenerator, FormSchema } from '../FormGenerator';
+import { FormGenerator } from '../FormGenerator';
+import { FormSchema } from '../types';
 
 /**
  * @vitest-environment jsdom

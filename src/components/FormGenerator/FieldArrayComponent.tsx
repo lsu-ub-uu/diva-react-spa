@@ -23,7 +23,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { ActionButtonGroup } from './ActionButtonGroup';
 // eslint-disable-next-line import/no-cycle
-import { FormComponent, renderVariableField } from './FormGenerator';
+import { renderVariableField } from './FormGenerator';
+import { FormComponent } from './types';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;

@@ -38,62 +38,17 @@ import {
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { FieldArrayComponent } from './FieldArrayComponent';
-import { Option, Typography } from '../index';
+import { Typography } from '../index';
+import {
+  FormComponent,
+  FormNumberValidation,
+  FormRegexValidation,
+  FormSchema,
+} from './types';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
-}
-
-export interface FormSchema {
-  validationTypeId: string;
-  components: FormComponent[];
-}
-
-export interface FormComponentRepeat {
-  repeatMin: number;
-  repeatMax: number;
-  minNumberOfRepeatingToShow?: number;
-}
-
-export interface FormComponentTooltip {
-  title: string;
-  body: string;
-}
-
-export interface FormComponent {
-  type: string;
-  name: string;
-  label?: string;
-  finalValue?: string;
-  placeholder?: string;
-  validation?: FormRegexValidation | FormNumberValidation;
-  repeat: FormComponentRepeat;
-  tooltip?: FormComponentTooltip;
-  inputType?: 'input' | 'textarea'; // really be optional?
-  mode?: string;
-  options?: Option[];
-  attributes?: FormAttributeCollection[];
-  components?: FormComponent[]; // for groups
-}
-
-type FormAttributeCollection = Omit<
-  FormComponent,
-  'repeat' | 'inputType' | 'attributes'
->;
-
-interface FormRegexValidation {
-  type: 'regex';
-  pattern: string;
-}
-
-interface FormNumberValidation {
-  type: 'number';
-  min: number;
-  max: number;
-  warningMin: number;
-  warningMax: number;
-  numberOfDecimals: number;
 }
 
 const createYupStringRegexpSchema = (component: FormComponent) => {
