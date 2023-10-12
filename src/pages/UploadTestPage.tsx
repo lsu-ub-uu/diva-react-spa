@@ -38,7 +38,9 @@ export const UploadTestPage = () => {
             tooltipBody='Some body text on how this form works'
           >
             <FormGenerator
-              onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+              onSubmit={(values) =>
+                console.log(JSON.stringify(values, null, 2))
+              }
               formSchema={schema as FormSchema}
             />
           </Card>

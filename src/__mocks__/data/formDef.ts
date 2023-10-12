@@ -280,6 +280,7 @@ export const formDefWithOneNumberVariableWithAttributeCollection: FormSchema = {
   ],
 };
 
+// @ts-ignore
 export const formDefWithOneGroupHavingTextVariableAsChild: FormSchema = {
   validationTypeId: 'someValidationTypeId',
   components: [
@@ -318,6 +319,133 @@ export const formDefWithOneGroupHavingTextVariableAsChild: FormSchema = {
         },
       ],
       mode: 'input',
+    },
+  ],
+};
+
+export const formDefRealDemo: FormSchema = {
+  validationTypeId: 'demo',
+  components: [
+    {
+      name: 'demoText',
+      type: 'text',
+    },
+    {
+      name: 'recordInfo',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'recordInfoText',
+        body: 'recordInfoDefText',
+      },
+      label: 'recordInfoText',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+    },
+    {
+      name: 'bookTitle',
+      type: 'textVariable',
+      mode: 'input',
+      inputType: 'input',
+      tooltip: {
+        title: 'bookTitletextVarText',
+        body: 'bookTitletextVarDefText',
+      },
+      label: 'bookTitletextVarText',
+      validation: {
+        type: 'regex',
+        pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{2,50}$)',
+      },
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+    },
+    {
+      name: 'keeptHis',
+      type: 'numberVariable',
+      mode: 'input',
+      tooltip: {
+        title: 'keepThisNumberVarText',
+        body: 'keepThisNumberVarDefText',
+      },
+      label: 'keepThisNumberVarText',
+      validation: {
+        type: 'number',
+        min: 0,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 0,
+      },
+      repeat: {
+        minNumberOfRepeatingToShow: 1,
+        repeatMin: 0,
+        repeatMax: 1,
+      },
+    },
+    {
+      name: 'firstChildGroup',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'exampleFirstChildGroupText',
+        body: 'exampleFirstChildGroupDefText',
+      },
+      label: 'exampleFirstChildGroupText',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'exampleFirstChildGroupText',
+          type: 'text',
+        },
+        {
+          name: 'exampleNumberVar',
+          type: 'numberVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataNumberVarText',
+            body: 'exampleMetadataNumberVarDefText',
+          },
+          label: 'exampleMetadataNumberVarText',
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 100,
+            warningMin: 10,
+            warningMax: 90,
+            numberOfDecimals: 2,
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        },
+        {
+          name: 'exampleTextVar',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'exampleMetadataTextVarText',
+            body: 'exampleMetadataTextVarDefText',
+          },
+          label: 'exampleMetadataTextVarText',
+          validation: {
+            type: 'regex',
+            pattern: '.*',
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        },
+      ],
     },
   ],
 };

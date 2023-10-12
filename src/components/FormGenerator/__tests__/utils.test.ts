@@ -19,7 +19,7 @@
 
 import { test } from 'vitest';
 import { createDefaultValuesFromFormSchema } from '../utils';
-import { formDef } from '../../../__mocks__/data/formDef';
+import { formDef, formDefRealDemo } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
 describe('FormGenerator utils', () => {
@@ -32,6 +32,30 @@ describe('FormGenerator utils', () => {
       formDef as FormSchema,
     );
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and make default values object', () => {
+    const expectedDefaultValues = {
+      bookTitle: '',
+      keeptHis: [
+        {
+          value: '',
+        },
+      ],
+      firstChildGroup: {
+        exampleNumberVar: '',
+        exampleTextVar: '',
+      },
+    };
+    const actualDefaultValues = createDefaultValuesFromFormSchema(
+      formDefRealDemo as FormSchema,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  // finalValues
+  test.skip('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
+    expect(true).toStrictEqual(false);
   });
 
   test('should take a tree and be able to add full name paths', () => {
