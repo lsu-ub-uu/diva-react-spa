@@ -129,6 +129,8 @@ describe('FormGenerator utils', () => {
           _colourAgain: 'pink',
           value: 'exampleFinalValue',
         },
+        _groupColour: '',
+        _groupColourAgain: 'pink',
       },
       recordInfo: {},
     };

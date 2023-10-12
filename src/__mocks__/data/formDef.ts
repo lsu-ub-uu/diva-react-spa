@@ -671,6 +671,39 @@ export const formDefRealDemoWithAttributes: FormSchema = {
         repeatMin: 1,
         repeatMax: 1,
       },
+      attributes: [
+        {
+          type: 'collectionVariable',
+          name: 'groupColour',
+          placeholder: 'emptyTextId',
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText',
+          },
+          options: [
+            { value: 'blue', label: 'exampleBlueItemText' },
+            { value: 'pink', label: 'examplePinkItemText' },
+            { value: 'yellow', label: 'exampleYellowItemText' },
+          ],
+          mode: 'input',
+        },
+        {
+          type: 'collectionVariable',
+          name: 'groupColourAgain',
+          finalValue: 'pink',
+          placeholder: 'emptyTextId',
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText',
+          },
+          options: [
+            { value: 'blue', label: 'exampleBlueItemText' },
+            { value: 'pink', label: 'examplePinkItemText' },
+            { value: 'yellow', label: 'exampleYellowItemText' },
+          ],
+          mode: 'input',
+        },
+      ],
       components: [
         {
           name: 'exampleNumberVar',

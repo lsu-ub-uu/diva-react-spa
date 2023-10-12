@@ -109,10 +109,24 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
   if (!isComponentRepeating(component) && isComponentValidForData(component)) {
     // run even if it is repeating and also on groups
     if (hasComponentAttributes(component)) {
-      defaultValues[component.name] = {
-        value: createDefaultValue(component),
-        ...generateComponentAttributes(component),
-      };
+      if (!isComponentGroup(component)) {
+        defaultValues[component.name] = {
+          value: createDefaultValue(component),
+          ...generateComponentAttributes(component),
+        };
+      } else {
+        // break out this
+        const compArray = component.components ?? [];
+        const formDefaultValues = compArray
+          .filter(isComponentValidForData)
+          .map(createDefaultValuesFromComponent);
+        const subChildValues = Object.assign({}, ...formDefaultValues);
+
+        defaultValues[component.name] = {
+          ...subChildValues,
+          ...generateComponentAttributes(component),
+        };
+      }
     } else {
       // variable or group without attribute
       // eslint-disable-next-line no-lonely-if
