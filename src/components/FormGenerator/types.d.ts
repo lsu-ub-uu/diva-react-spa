@@ -36,7 +36,12 @@ export interface FormComponentTooltip {
 }
 
 export interface FormComponent {
-  type: 'collectionVariable' | 'numberVariable' | 'textVariable' | 'group';
+  type:
+    | 'collectionVariable'
+    | 'numberVariable'
+    | 'textVariable'
+    | 'group'
+    | 'text';
   name: string;
   label?: string;
   finalValue?: string;

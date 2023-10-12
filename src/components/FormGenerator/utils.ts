@@ -49,11 +49,10 @@ export const isComponentRepeating = (component: FormComponent) =>
 export const isComponentOptional = (component: FormComponent) =>
   component.repeat?.repeatMin === 0 ?? false;
 
-export const generateComponentAttributes = (component: FormComponent) => {
-  const componentDefaultValue = {
-    value: component.finalValue ? component.finalValue : '',
-  };
+const createDefaultValue = (component: FormComponent) =>
+  component.finalValue ? component.finalValue : '';
 
+export const generateComponentAttributes = (component: FormComponent) => {
   const attributeValues =
     component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
@@ -63,7 +62,6 @@ export const generateComponentAttributes = (component: FormComponent) => {
       }),
     ) ?? [];
   return {
-    ...componentDefaultValue,
     ...Object.assign({}, ...attributeValues),
   };
 };
@@ -82,7 +80,8 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
         { length: numberToShowFromStart },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         (_) => ({
-          value: component.finalValue ? component.finalValue : '',
+          value: createDefaultValue(component),
+          ...generateComponentAttributes(component),
         }),
       );
     }
@@ -92,14 +91,15 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
   if (!isComponentRepeating(component) && isComponentValidForData(component)) {
     // run even if it is repeating and also on groups
     if (hasComponentAttributes(component)) {
-      defaultValues[component.name] = generateComponentAttributes(component);
+      defaultValues[component.name] = {
+        value: createDefaultValue(component),
+        ...generateComponentAttributes(component),
+      };
     } else {
       // variable or group without attribute
       // eslint-disable-next-line no-lonely-if
       if (!isComponentGroup(component)) {
-        defaultValues[component.name] = component.finalValue
-          ? component.finalValue
-          : '';
+        defaultValues[component.name] = createDefaultValue(component);
       } else {
         // is a group recursively call createDefaultValues for component
         const compArray = component.components ?? [];

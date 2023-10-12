@@ -19,7 +19,13 @@
 
 import { test } from 'vitest';
 import { createDefaultValuesFromFormSchema } from '../utils';
-import { formDef, formDefRealDemo } from '../../../__mocks__/data/formDef';
+import {
+  formDef,
+  formDefRealDemo,
+  formDefRealDemoWithAttributes,
+  formDefRealDemoWithFinalValues,
+  formDefRealDemoWithRepeatingVars,
+} from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
 describe('FormGenerator utils', () => {
@@ -55,8 +61,113 @@ describe('FormGenerator utils', () => {
   });
 
   // finalValues
-  test.skip('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
-    expect(true).toStrictEqual(false);
+  test('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
+    const expectedDefaultValues = {
+      bookTitle: 'someFinalValue',
+      keeptHis: [
+        {
+          value: '12',
+        },
+      ],
+      firstChildGroup: {
+        exampleNumberVar: '55',
+        exampleTextVar: 'someText',
+      },
+      recordInfo: {},
+    };
+    const actualDefaultValues = createDefaultValuesFromFormSchema(
+      formDefRealDemoWithFinalValues as FormSchema,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  // attributes
+  test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and attributes and make default values object', () => {
+    const expectedDefaultValues = {
+      bookTitle: {
+        value: '',
+        _colour: '',
+      },
+      keeptHis: [
+        {
+          value: '',
+          _colour: '',
+        },
+      ],
+      firstChildGroup: {
+        exampleNumberVar: '',
+        exampleTextVar: {
+          _colour: '',
+          _colourAgain: 'pink',
+          value: 'exampleFinalValue',
+        },
+      },
+      recordInfo: {},
+    };
+    const actualDefaultValues = createDefaultValuesFromFormSchema(
+      formDefRealDemoWithAttributes as FormSchema,
+    );
+
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  // repeating vars
+  test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and repeating variables and make default values object', () => {
+    const expectedDefaultValues = {
+      bookTitle: '',
+      keeptHis: [
+        {
+          value: '',
+          _colour: 'blue',
+        },
+        {
+          value: '',
+          _colour: 'blue',
+        },
+        {
+          value: '',
+          _colour: 'blue',
+        },
+        {
+          value: '',
+          _colour: 'blue',
+        },
+        {
+          value: '',
+          _colour: 'blue',
+        },
+      ],
+      firstChildGroup: {
+        exampleNumberVar: [
+          {
+            value: '',
+            _colour: 'pink',
+          },
+          {
+            value: '',
+            _colour: 'pink',
+          },
+          {
+            value: '',
+            _colour: 'pink',
+          },
+          {
+            value: '',
+            _colour: 'pink',
+          },
+          {
+            value: '',
+            _colour: 'pink',
+          },
+        ],
+        exampleTextVar: [],
+      },
+      recordInfo: {},
+    };
+    const actualDefaultValues = createDefaultValuesFromFormSchema(
+      formDefRealDemoWithRepeatingVars as FormSchema,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
   });
 
   test('should take a tree and be able to add full name paths', () => {
