@@ -71,10 +71,12 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
     [x: string]: string | number | ({} | undefined)[] | undefined | any;
   } = {};
 
-  // Repeating - textVariable / numberVariable/ collectionVariable
+  // Repeating - textVariable / numberVariable/ collectionVariable /group
   if (isComponentRepeating(component)) {
     const numberToShowFromStart =
       component.repeat?.minNumberOfRepeatingToShow ?? 0;
+
+    // handle repeating vars
     if (isComponentVariable(component)) {
       defaultValues[component.name] = Array.from(
         { length: numberToShowFromStart },
@@ -82,6 +84,22 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
         (_) => ({
           value: createDefaultValue(component),
           ...generateComponentAttributes(component),
+        }),
+      );
+    }
+    // handle repeating groups
+    if (isComponentGroup(component)) {
+      const compArray = component.components ?? [];
+      const formDefaultValues = compArray
+        .filter(isComponentValidForData)
+        .map(createDefaultValuesFromComponent);
+      const temp = Object.assign({}, ...formDefaultValues);
+      defaultValues[component.name] = Array.from(
+        { length: numberToShowFromStart },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        (_) => ({
+          ...temp,
+          // todo attributes (?)
         }),
       );
     }

@@ -42,5 +42,12 @@ interface TypographyProps {
 export const Typography = (props: TypographyProps) => {
   const { t } = useTranslation();
 
-  return <MuiTypography variant={props.variant}>{t(props.text)}</MuiTypography>;
+  return (
+    <MuiTypography
+      mt={2}
+      variant={props.variant}
+    >
+      {t(props.text)}
+    </MuiTypography>
+  );
 };

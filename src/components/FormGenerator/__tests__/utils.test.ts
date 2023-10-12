@@ -24,6 +24,7 @@ import {
   formDefRealDemo,
   formDefRealDemoWithAttributes,
   formDefRealDemoWithFinalValues,
+  formDefRealDemoWithRepeatingGroups,
   formDefRealDemoWithRepeatingVars,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
@@ -40,6 +41,7 @@ describe('FormGenerator utils', () => {
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
   });
 
+  // group
   test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and make default values object', () => {
     const expectedDefaultValues = {
       bookTitle: '',
@@ -56,6 +58,32 @@ describe('FormGenerator utils', () => {
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDefRealDemo as FormSchema,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  test('createDefaultValuesFromFormSchema should take a more complex formDef with repeating groups and make default values object', () => {
+    const expectedDefaultValues = {
+      bookTitle: '',
+      keeptHis: [
+        {
+          value: '',
+        },
+      ],
+      firstChildGroup: [
+        {
+          exampleNumberVar: '',
+          exampleTextVar: '',
+        },
+        {
+          exampleNumberVar: '',
+          exampleTextVar: '',
+        },
+      ],
+      recordInfo: {},
+    };
+    const actualDefaultValues = createDefaultValuesFromFormSchema(
+      formDefRealDemoWithRepeatingGroups as FormSchema,
     );
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
   });
