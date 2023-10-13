@@ -1,4 +1,7 @@
-import { FormSchema } from '../../components/FormGenerator/types';
+import {
+  FormComponent,
+  FormSchema,
+} from '../../components/FormGenerator/types';
 
 export const formDef = {
   validationTypeId: 'someValidationTypeId',
@@ -1057,6 +1060,65 @@ export const formDefRealDemoWithRepeatingGroups: FormSchema = {
           },
         },
       ],
+    },
+  ],
+};
+
+export const formComponentGroup: FormComponent = {
+  name: 'firstChildGroup',
+  type: 'group',
+  mode: 'input',
+  tooltip: {
+    title: 'exampleFirstChildGroupText',
+    body: 'exampleFirstChildGroupDefText',
+  },
+  label: 'exampleFirstChildGroupText',
+  repeat: {
+    minNumberOfRepeatingToShow: 0,
+    repeatMin: 0,
+    repeatMax: 2,
+  },
+  components: [
+    {
+      name: 'exampleNumberVar',
+      type: 'numberVariable',
+      mode: 'input',
+      tooltip: {
+        title: 'exampleMetadataNumberVarText',
+        body: 'exampleMetadataNumberVarDefText',
+      },
+      label: 'exampleMetadataNumberVarText',
+      validation: {
+        type: 'number',
+        min: 0,
+        max: 100,
+        warningMin: 10,
+        warningMax: 90,
+        numberOfDecimals: 2,
+      },
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+    },
+    {
+      name: 'exampleTextVar',
+      type: 'textVariable',
+      mode: 'input',
+      inputType: 'input',
+      tooltip: {
+        title: 'exampleMetadataTextVarText',
+        body: 'exampleMetadataTextVarDefText',
+      },
+      label: 'exampleMetadataTextVarText',
+      validation: {
+        type: 'regex',
+        pattern: '.*',
+      },
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
     },
   ],
 };

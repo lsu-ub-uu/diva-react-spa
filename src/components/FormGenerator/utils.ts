@@ -66,8 +66,19 @@ export const generateComponentAttributes = (component: FormComponent) => {
   };
 };
 
-export const createDefaultValuesFromComponent = (component: FormComponent) => {
-  const defaultValues: {
+const generateRepeatingObject = (size: number, obj: unknown): unknown[] => {
+  return Array.from(
+    { length: size },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_) => obj,
+  );
+};
+
+export const createDefaultValuesFromComponent = (
+  component: FormComponent,
+  forceComponentToShow = false,
+) => {
+  let defaultValues: {
     [x: string]: string | number | ({} | undefined)[] | undefined | any;
   } = {};
 
@@ -78,30 +89,35 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
 
     // handle repeating vars
     if (isComponentVariable(component)) {
-      defaultValues[component.name] = Array.from(
-        { length: numberToShowFromStart },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        (_) => ({
-          value: createDefaultValue(component),
-          ...generateComponentAttributes(component),
-        }),
+      const formDefaultObject = {
+        value: createDefaultValue(component),
+        ...generateComponentAttributes(component),
+      };
+      defaultValues[component.name] = generateRepeatingObject(
+        numberToShowFromStart,
+        formDefaultObject,
       );
     }
+
     // handle repeating groups
     if (isComponentGroup(component)) {
       const compArray = component.components ?? [];
       const formDefaultValues = compArray
         .filter(isComponentValidForData)
-        .map(createDefaultValuesFromComponent);
-      const temp = Object.assign({}, ...formDefaultValues);
-      defaultValues[component.name] = Array.from(
-        { length: numberToShowFromStart },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        (_) => ({
-          ...temp,
-          // todo attributes (?)
-        }),
-      );
+        .map((formComponent) =>
+          createDefaultValuesFromComponent(formComponent),
+        );
+      // TODO attributes // ...generateComponentAttributes(component),
+      const formDefaultObject = Object.assign({}, ...formDefaultValues);
+
+      if (forceComponentToShow) {
+        defaultValues = formDefaultObject;
+      } else {
+        defaultValues[component.name] = generateRepeatingObject(
+          numberToShowFromStart,
+          formDefaultObject,
+        );
+      }
     }
   }
 
@@ -119,7 +135,9 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
         const compArray = component.components ?? [];
         const formDefaultValues = compArray
           .filter(isComponentValidForData)
-          .map(createDefaultValuesFromComponent);
+          .map((formComponent) =>
+            createDefaultValuesFromComponent(formComponent),
+          );
         const subChildValues = Object.assign({}, ...formDefaultValues);
 
         defaultValues[component.name] = {
@@ -137,7 +155,9 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
         const compArray = component.components ?? [];
         const formDefaultValues = compArray
           .filter(isComponentValidForData)
-          .map(createDefaultValuesFromComponent);
+          .map((formComponent) =>
+            createDefaultValuesFromComponent(formComponent),
+          );
         defaultValues[component.name] = Object.assign({}, ...formDefaultValues);
       }
     }
@@ -148,6 +168,6 @@ export const createDefaultValuesFromComponent = (component: FormComponent) => {
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   const formDefaultValues = formSchema.components
     .filter(isComponentValidForData)
-    .map(createDefaultValuesFromComponent);
+    .map((formComponent) => createDefaultValuesFromComponent(formComponent));
   return Object.assign({}, ...formDefaultValues);
 };

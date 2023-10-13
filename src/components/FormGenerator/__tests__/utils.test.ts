@@ -18,8 +18,12 @@
  */
 
 import { test } from 'vitest';
-import { createDefaultValuesFromFormSchema } from '../utils';
 import {
+  createDefaultValuesFromComponent,
+  createDefaultValuesFromFormSchema,
+} from '../utils';
+import {
+  formComponentGroup,
   formDef,
   formDefRealDemo,
   formDefRealDemoWithAttributes,
@@ -84,6 +88,18 @@ describe('FormGenerator utils', () => {
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDefRealDemoWithRepeatingGroups as FormSchema,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  test('createDefaultValuesFromComponent should construct a default value object for repeating components', () => {
+    const expectedDefaultValues = {
+      exampleNumberVar: '',
+      exampleTextVar: '',
+    };
+    const actualDefaultValues = createDefaultValuesFromComponent(
+      formComponentGroup,
+      true,
     );
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
   });
