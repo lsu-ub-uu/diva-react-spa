@@ -70,6 +70,9 @@ const generateRepeatingObject = (size: number, obj: unknown): unknown[] => {
   return Array.from({ length: size }, () => obj);
 };
 
+const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
+  component.repeat?.minNumberOfRepeatingToShow ?? 0;
+
 export const createDefaultValuesFromComponent = (
   component: FormComponent,
   forceComponentToShow = false,
@@ -80,8 +83,7 @@ export const createDefaultValuesFromComponent = (
 
   // Repeating - textVariable / numberVariable/ collectionVariable /group
   if (isComponentRepeating(component)) {
-    const numberToShowFromStart =
-      component.repeat?.minNumberOfRepeatingToShow ?? 0;
+    const numberToShowFromStart = getMinNumberOfRepeatingToShow(component);
 
     // handle repeating vars
     if (isComponentVariable(component)) {
@@ -157,6 +159,7 @@ export const createDefaultValuesFromComponent = (
         defaultValues[component.name] = createDefaultValue(component);
       } else {
         // is a group recursively call createDefaultValues for component
+        // DRY?
         const compArray = component.components ?? [];
         const formDefaultValues = compArray
           .filter(isComponentValidForData)
