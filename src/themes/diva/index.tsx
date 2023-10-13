@@ -3,8 +3,29 @@ import {
   PaletteColorOptions,
   Shadows,
 } from '@mui/material/styles';
+import { CSSProperties } from 'react';
 
 declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    h1TextStyle: CSSProperties;
+    h2TextStyle: CSSProperties;
+    h3TextStyle: CSSProperties;
+    h4TextStyle: CSSProperties;
+    h5TextStyle: CSSProperties;
+    h6TextStyle: CSSProperties;
+    bodyTextStyle: CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    h1TextStyle?: CSSProperties;
+    h2TextStyle?: CSSProperties;
+    h3TextStyle?: CSSProperties;
+    h4TextStyle?: CSSProperties;
+    h5TextStyle?: CSSProperties;
+    h6TextStyle?: CSSProperties;
+    bodyTextStyle?: CSSProperties;
+  }
+
   interface Palette {
     blue: PaletteColorOptions;
     purple: PaletteColorOptions;
@@ -22,6 +43,18 @@ declare module '@mui/material/styles' {
     gray: PaletteColorOptions;
   }
 }
+
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    h1TextStyle: true;
+    h2TextStyle: true;
+    h3TextStyle: true;
+    h4TextStyle: true;
+    h5TextStyle: true;
+    h6TextStyle: true;
+    bodyTextStyle: true;
+  }
+}
 const { palette } = createTheme();
 export const divaTheme = createTheme({
   shadows: Array(25).fill('none') as Shadows,
@@ -31,6 +64,27 @@ export const divaTheme = createTheme({
   typography: {
     button: {
       textTransform: 'none',
+    },
+    h1TextStyle: {
+      fontSize: '4rem',
+    },
+    h2TextStyle: {
+      fontSize: '3rem',
+    },
+    h3TextStyle: {
+      fontSize: '3rem',
+    },
+    h4TextStyle: {
+      fontSize: '2rem',
+    },
+    h5TextStyle: {
+      fontSize: '2rem',
+    },
+    h6TextStyle: {
+      fontSize: '2rem',
+    },
+    bodyTextStyle: {
+      fontSize: '1rem',
     },
   },
   shape: {
@@ -128,13 +182,6 @@ export const divaTheme = createTheme({
         },
       },
     },
-    /*     MuiFormControlLabel: {
-      styleOverrides: {
-        root: {
-          marginLeft: '0',
-        },
-      },
-    }, */
     MuiCheckbox: {
       styleOverrides: {
         root: {
@@ -165,6 +212,19 @@ export const divaTheme = createTheme({
           '&:hover': {
             border: '3px solid #111',
           },
+        },
+      },
+    },
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          h1TextStyle: 'h1',
+          h2TextStyle: 'h2',
+          h3TextStyle: 'h3',
+          h4TextStyle: 'h4',
+          h5TextStyle: 'h5',
+          h6TextStyle: 'h6',
+          bodyTextStyle: 'p',
         },
       },
     },

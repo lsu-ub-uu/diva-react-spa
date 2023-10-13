@@ -256,7 +256,7 @@ export const renderVariableField = (
       return (
         <Typography
           key={reactKey}
-          variant='h5'
+          variant={component.textStyle ?? 'bodyTextStyle'}
           text={component.name}
         />
       );

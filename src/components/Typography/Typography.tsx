@@ -19,33 +19,42 @@
 
 import { useTranslation } from 'react-i18next';
 import { Typography as MuiTypography } from '@mui/material';
+import { ElementType } from 'react';
 
-interface TypographyProps {
-  text: string;
+export interface DivaTypographyVariants {
   variant:
-    | 'h1'
-    | 'h2'
-    | 'h3'
-    | 'h4'
-    | 'h5'
-    | 'h6'
-    | 'subtitle1'
-    | 'subtitle2'
-    | 'body1'
-    | 'body2'
-    | 'caption'
-    | 'button'
-    | 'overline'
-    | 'inherit';
+    | 'h1TextStyle'
+    | 'h2TextStyle'
+    | 'h3TextStyle'
+    | 'h4TextStyle'
+    | 'h5TextStyle'
+    | 'h6TextStyle'
+    | 'bodyTextStyle';
 }
+
+interface TypographyProps extends DivaTypographyVariants {
+  text: string;
+}
+
+const mapHeaderStyleToComponent = (headerStyle: string): ElementType => {
+  // hack to get header components to render correctly
+  return headerStyle.slice(0, 2) as ElementType;
+};
 
 export const Typography = (props: TypographyProps) => {
   const { t } = useTranslation();
 
   return (
     <MuiTypography
+      component={
+        props.variant === 'bodyTextStyle'
+          ? 'p'
+          : mapHeaderStyleToComponent(props.variant)
+      }
       mt={2}
+      mb={2}
       variant={props.variant}
+      gutterBottom
     >
       {t(props.text)}
     </MuiTypography>

@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Option } from 'components/index';
+import { Option } from '../index';
 
 export interface FormSchema {
   validationTypeId: string;
@@ -54,6 +54,14 @@ export interface FormComponent {
   options?: Option[];
   attributes?: FormAttributeCollection[];
   components?: FormComponent[]; // for groups
+  textStyle?:
+    | 'h1TextStyle'
+    | 'h2TextStyle'
+    | 'h3TextStyle'
+    | 'h4TextStyle'
+    | 'h5TextStyle'
+    | 'h6TextStyle'
+    | 'bodyTextStyle';
 }
 
 type FormAttributeCollection = Omit<
