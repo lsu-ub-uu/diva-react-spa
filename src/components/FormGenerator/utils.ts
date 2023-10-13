@@ -159,7 +159,7 @@ export const createDefaultValuesFromComponent = (
   return defaultValues;
 };
 
-const createDefaultValuesFromComponents = (
+export const createDefaultValuesFromComponents = (
   components: FormComponent[] | undefined,
 ): { [p: string]: any } => {
   const formDefaultValuesArray = (components ?? [])

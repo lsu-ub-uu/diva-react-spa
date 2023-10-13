@@ -25,6 +25,7 @@ import { ActionButtonGroup } from './ActionButtonGroup';
 // eslint-disable-next-line import/no-cycle
 import { renderVariableField } from './FormGenerator';
 import { FormComponent } from './types';
+import { createDefaultValuesFromComponent } from './utils';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -39,9 +40,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   });
 
   const handleAppend = async () => {
-    append({
-      value: props.component.finalValue ? props.component.finalValue : '',
-    });
+    append(createDefaultValuesFromComponent(props.component, true));
   };
 
   const handleMove = async (prev: number, next: number) => {
