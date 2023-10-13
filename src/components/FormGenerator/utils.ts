@@ -67,11 +67,7 @@ export const generateComponentAttributes = (component: FormComponent) => {
 };
 
 const generateRepeatingObject = (size: number, obj: unknown): unknown[] => {
-  return Array.from(
-    { length: size },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (_) => obj,
-  );
+  return Array.from({ length: size }, () => obj);
 };
 
 export const createDefaultValuesFromComponent = (
