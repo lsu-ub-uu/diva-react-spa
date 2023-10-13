@@ -156,7 +156,8 @@ describe('formDefinition', () => {
       components: [
         {
           type: 'text',
-          name: 'someHeadlineTextId'
+          name: 'someHeadlineTextId',
+          textStyle: 'bold',
         },
         {
           type: 'textVariable',

@@ -96,7 +96,7 @@ const createText = (
   presentationChildType: string
 ) => {
   const presentationChildId = presentationChildReference.childId;
-  return { name: presentationChildId, type: presentationChildType };
+  return { name: presentationChildId, type: presentationChildType, textStyle: presentationChildReference.textStyle };
 };
 
 const createCollectionVariableOptions = (metadataPool: any, collectionVariable: BFFMetadataCollectionVariable) => {
