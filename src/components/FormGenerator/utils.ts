@@ -31,7 +31,7 @@ export const isComponentVariable = (component: FormComponent) =>
 export const isComponentGroup = (component: FormComponent) =>
   component.type === 'group';
 
-export const isComponentValidForData = (component: FormComponent) =>
+export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentVariable(component) || isComponentGroup(component);
 
 export const isComponentTextVariable = (component: FormComponent) =>
@@ -103,13 +103,10 @@ export const createDefaultValuesFromComponent = (
 
     // handle repeating groups
     if (isComponentGroup(component)) {
-      const compArray = component.components ?? [];
-      const formDefaultValues = compArray
-        .filter(isComponentValidForData)
-        .map((formComponent) =>
-          createDefaultValuesFromComponent(formComponent),
-        );
-
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      const formDefaultValues = createDefaultValuesFromComponents(
+        component.components,
+      );
       const subChildValues = Object.assign({}, ...formDefaultValues);
 
       const formDefaultObject = {
@@ -128,9 +125,11 @@ export const createDefaultValuesFromComponent = (
     }
   }
 
-  // NOT repeating - textVariable / numberVariable/ collectionVariable/group
-  if (!isComponentRepeating(component) && isComponentValidForData(component)) {
-    // run even if it is repeating and also on groups
+  // NOT repeating textVariable / numberVariable / collectionVariable / group
+  if (
+    !isComponentRepeating(component) &&
+    isComponentValidForDataCarrying(component)
+  ) {
     if (hasComponentAttributes(component)) {
       if (!isComponentGroup(component)) {
         defaultValues[component.name] = {
@@ -138,13 +137,10 @@ export const createDefaultValuesFromComponent = (
           ...generateComponentAttributes(component),
         };
       } else {
-        // break out this
-        const compArray = component.components ?? [];
-        const formDefaultValues = compArray
-          .filter(isComponentValidForData)
-          .map((formComponent) =>
-            createDefaultValuesFromComponent(formComponent),
-          );
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        const formDefaultValues = createDefaultValuesFromComponents(
+          component.components,
+        );
         const subChildValues = Object.assign({}, ...formDefaultValues);
 
         defaultValues[component.name] = {
@@ -158,14 +154,11 @@ export const createDefaultValuesFromComponent = (
       if (!isComponentGroup(component)) {
         defaultValues[component.name] = createDefaultValue(component);
       } else {
-        // is a group recursively call createDefaultValues for component
-        // DRY?
-        const compArray = component.components ?? [];
-        const formDefaultValues = compArray
-          .filter(isComponentValidForData)
-          .map((formComponent) =>
-            createDefaultValuesFromComponent(formComponent),
-          );
+        // is a group, then recursively call createDefaultValues for component
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        const formDefaultValues = createDefaultValuesFromComponents(
+          component.components,
+        );
         defaultValues[component.name] = Object.assign({}, ...formDefaultValues);
       }
     }
@@ -173,9 +166,17 @@ export const createDefaultValuesFromComponent = (
   return defaultValues;
 };
 
-export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
-  const formDefaultValues = formSchema.components
-    .filter(isComponentValidForData)
+const createDefaultValuesFromComponents = (
+  components: FormComponent[] | undefined,
+) => {
+  return (components ?? [])
+    .filter(isComponentValidForDataCarrying)
     .map((formComponent) => createDefaultValuesFromComponent(formComponent));
+};
+
+export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
+  const formDefaultValues = createDefaultValuesFromComponents(
+    formSchema.components,
+  );
   return Object.assign({}, ...formDefaultValues);
 };
