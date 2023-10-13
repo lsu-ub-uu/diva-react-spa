@@ -24,7 +24,9 @@ import {
 } from '../utils';
 import {
   formComponentGroup,
+  formComponentGroupAndTextVariableWithinGroup,
   formComponentGroupWithChildren,
+  formComponentGroupWithinGroupWithAttributes,
   formComponentRepeatingTextVariable,
   formDef,
   formDefRealDemo,
@@ -124,6 +126,110 @@ describe('FormGenerator utils', () => {
     };
     const actualDefaultValues = createDefaultValuesFromComponent(
       formComponentGroupWithChildren,
+      true,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  test('createDefaultValuesFromComponent should construct a default value object for group within group having repeating vars and minNumberToShow set', () => {
+    const expectedDefaultValues = {
+      exampleTextVar: '',
+      innerChildGroup: [
+        {
+          exampleNumberVar: [
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+          ],
+          exampleTextVar: '',
+        },
+        {
+          exampleNumberVar: [
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+            {
+              value: '12',
+            },
+          ],
+          exampleTextVar: '',
+        },
+      ],
+    };
+    const actualDefaultValues = createDefaultValuesFromComponent(
+      formComponentGroupAndTextVariableWithinGroup,
+      true,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  test('createDefaultValuesFromComponent should construct a default value object for group with attributes and attributes for vars within group', () => {
+    const expectedDefaultValues = {
+      _firstChildGroupColor: 'yellow',
+      _firstChildGroupSecondAttribute: '',
+      secondChildGroup: [
+        {
+          exampleNumberVar: '',
+          exampleTextVar: {
+            _colour: '',
+            value: '',
+          },
+        },
+      ],
+    };
+    const actualDefaultValues = createDefaultValuesFromComponent(
+      formComponentGroupWithinGroupWithAttributes,
       true,
     );
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);

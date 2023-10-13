@@ -111,8 +111,13 @@ export const createDefaultValuesFromComponent = (
         .map((formComponent) =>
           createDefaultValuesFromComponent(formComponent),
         );
-      // TODO attributes // ...generateComponentAttributes(component),
-      const formDefaultObject = Object.assign({}, ...formDefaultValues);
+
+      const subChildValues = Object.assign({}, ...formDefaultValues);
+
+      const formDefaultObject = {
+        ...subChildValues,
+        ...generateComponentAttributes(component),
+      };
 
       if (forceComponentToShow) {
         defaultValues = formDefaultObject;
