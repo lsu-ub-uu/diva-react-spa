@@ -91,6 +91,8 @@ export const createDefaultValuesFromComponent = (
         value: createDefaultValue(component),
         ...generateComponentAttributes(component),
       };
+
+      // break out?
       if (forceComponentToShow) {
         defaultValues = formDefaultObject;
       } else {
@@ -103,17 +105,13 @@ export const createDefaultValuesFromComponent = (
 
     // handle repeating groups
     if (isComponentGroup(component)) {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      const formDefaultValues = createDefaultValuesFromComponents(
-        component.components,
-      );
-      const subChildValues = Object.assign({}, ...formDefaultValues);
-
       const formDefaultObject = {
-        ...subChildValues,
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        ...createDefaultValuesFromComponents(component.components),
         ...generateComponentAttributes(component),
       };
 
+      // break out?
       if (forceComponentToShow) {
         defaultValues = formDefaultObject;
       } else {
@@ -137,14 +135,10 @@ export const createDefaultValuesFromComponent = (
           ...generateComponentAttributes(component),
         };
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        const formDefaultValues = createDefaultValuesFromComponents(
-          component.components,
-        );
-        const subChildValues = Object.assign({}, ...formDefaultValues);
-
+        // group
         defaultValues[component.name] = {
-          ...subChildValues,
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          ...createDefaultValuesFromComponents(component.components),
           ...generateComponentAttributes(component),
         };
       }
@@ -156,10 +150,9 @@ export const createDefaultValuesFromComponent = (
       } else {
         // is a group, then recursively call createDefaultValues for component
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        const formDefaultValues = createDefaultValuesFromComponents(
+        defaultValues[component.name] = createDefaultValuesFromComponents(
           component.components,
         );
-        defaultValues[component.name] = Object.assign({}, ...formDefaultValues);
       }
     }
   }
@@ -168,15 +161,14 @@ export const createDefaultValuesFromComponent = (
 
 const createDefaultValuesFromComponents = (
   components: FormComponent[] | undefined,
-) => {
-  return (components ?? [])
+): { [p: string]: any } => {
+  const formDefaultValuesArray = (components ?? [])
     .filter(isComponentValidForDataCarrying)
     .map((formComponent) => createDefaultValuesFromComponent(formComponent));
+  return Object.assign({}, ...formDefaultValuesArray);
 };
 
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
-  const formDefaultValues = createDefaultValuesFromComponents(
-    formSchema.components,
-  );
-  return Object.assign({}, ...formDefaultValues);
+  // do we need some more stuff here?
+  return createDefaultValuesFromComponents(formSchema.components);
 };
