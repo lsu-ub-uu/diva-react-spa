@@ -93,10 +93,14 @@ export const createDefaultValuesFromComponent = (
         value: createDefaultValue(component),
         ...generateComponentAttributes(component),
       };
-      defaultValues[component.name] = generateRepeatingObject(
-        numberToShowFromStart,
-        formDefaultObject,
-      );
+      if (forceComponentToShow) {
+        defaultValues = formDefaultObject;
+      } else {
+        defaultValues[component.name] = generateRepeatingObject(
+          numberToShowFromStart,
+          formDefaultObject,
+        );
+      }
     }
 
     // handle repeating groups

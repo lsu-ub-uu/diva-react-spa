@@ -1122,3 +1122,84 @@ export const formComponentGroup: FormComponent = {
     },
   ],
 };
+
+export const formComponentRepeatingTextVariable: FormComponent = {
+  name: 'exampleTextVar',
+  type: 'textVariable',
+  mode: 'input',
+  inputType: 'input',
+  tooltip: {
+    title: 'exampleMetadataTextVarText',
+    body: 'exampleMetadataTextVarDefText',
+  },
+  label: 'exampleMetadataTextVarText',
+  validation: {
+    type: 'regex',
+    pattern: '.*',
+  },
+  repeat: {
+    repeatMin: 0,
+    repeatMax: 1,
+  },
+};
+
+export const formComponentGroupWithChildren: FormComponent = {
+  name: 'firstChildGroup',
+  type: 'group',
+  mode: 'input',
+  tooltip: {
+    title: 'exampleFirstChildGroupText',
+    body: 'exampleFirstChildGroupDefText',
+  },
+  label: 'exampleFirstChildGroupText',
+  repeat: {
+    minNumberOfRepeatingToShow: 0,
+    repeatMin: 0,
+    repeatMax: 2,
+  },
+  components: [
+    {
+      name: 'exampleNumberVar',
+      type: 'numberVariable',
+      mode: 'input',
+      tooltip: {
+        title: 'exampleMetadataNumberVarText',
+        body: 'exampleMetadataNumberVarDefText',
+      },
+      label: 'exampleMetadataNumberVarText',
+      validation: {
+        type: 'number',
+        min: 0,
+        max: 100,
+        warningMin: 10,
+        warningMax: 90,
+        numberOfDecimals: 2,
+      },
+      repeat: {
+        minNumberOfRepeatingToShow: 1,
+        repeatMin: 0,
+        repeatMax: 5,
+      },
+    },
+    {
+      name: 'exampleTextVar',
+      type: 'textVariable',
+      mode: 'input',
+      inputType: 'input',
+      tooltip: {
+        title: 'exampleMetadataTextVarText',
+        body: 'exampleMetadataTextVarDefText',
+      },
+      label: 'exampleMetadataTextVarText',
+      validation: {
+        type: 'regex',
+        pattern: '.*',
+      },
+      repeat: {
+        minNumberOfRepeatingToShow: 2,
+        repeatMin: 0,
+        repeatMax: 2,
+      },
+    },
+  ],
+};

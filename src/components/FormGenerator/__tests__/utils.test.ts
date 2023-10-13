@@ -24,6 +24,8 @@ import {
 } from '../utils';
 import {
   formComponentGroup,
+  formComponentGroupWithChildren,
+  formComponentRepeatingTextVariable,
   formDef,
   formDefRealDemo,
   formDefRealDemoWithAttributes,
@@ -92,13 +94,47 @@ describe('FormGenerator utils', () => {
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
   });
 
-  test('createDefaultValuesFromComponent should construct a default value object for repeating components', () => {
+  test('createDefaultValuesFromComponent should construct a default value object for repeating component', () => {
     const expectedDefaultValues = {
       exampleNumberVar: '',
       exampleTextVar: '',
     };
     const actualDefaultValues = createDefaultValuesFromComponent(
       formComponentGroup,
+      true,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  test('createDefaultValuesFromComponent should construct a default value object for complex children in repeating component', () => {
+    const expectedDefaultValues = {
+      exampleNumberVar: [
+        {
+          value: '',
+        },
+      ],
+      exampleTextVar: [
+        {
+          value: '',
+        },
+        {
+          value: '',
+        },
+      ],
+    };
+    const actualDefaultValues = createDefaultValuesFromComponent(
+      formComponentGroupWithChildren,
+      true,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  test('createDefaultValuesFromComponent should construct a default value object for textVariable component', () => {
+    const expectedDefaultValues = {
+      value: '',
+    };
+    const actualDefaultValues = createDefaultValuesFromComponent(
+      formComponentRepeatingTextVariable,
       true,
     );
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
