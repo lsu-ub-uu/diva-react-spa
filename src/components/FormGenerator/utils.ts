@@ -84,42 +84,24 @@ export const createDefaultValuesFromComponent = (
   // Repeating - textVariable / numberVariable/ collectionVariable /group
   if (isComponentRepeating(component)) {
     const numberToShowFromStart = getMinNumberOfRepeatingToShow(component);
+    const formDefaultObject = isComponentVariable(component)
+      ? {
+          value: createDefaultValue(component),
+          ...generateComponentAttributes(component),
+        }
+      : {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          ...createDefaultValuesFromComponents(component.components),
+          ...generateComponentAttributes(component),
+        };
 
-    // handle repeating vars
-    if (isComponentVariable(component)) {
-      const formDefaultObject = {
-        value: createDefaultValue(component),
-        ...generateComponentAttributes(component),
-      };
-
-      // break out?
-      if (forceComponentToShow) {
-        defaultValues = formDefaultObject;
-      } else {
-        defaultValues[component.name] = generateRepeatingObject(
-          numberToShowFromStart,
-          formDefaultObject,
-        );
-      }
-    }
-
-    // handle repeating groups
-    if (isComponentGroup(component)) {
-      const formDefaultObject = {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        ...createDefaultValuesFromComponents(component.components),
-        ...generateComponentAttributes(component),
-      };
-
-      // break out?
-      if (forceComponentToShow) {
-        defaultValues = formDefaultObject;
-      } else {
-        defaultValues[component.name] = generateRepeatingObject(
-          numberToShowFromStart,
-          formDefaultObject,
-        );
-      }
+    if (forceComponentToShow) {
+      defaultValues = formDefaultObject;
+    } else {
+      defaultValues[component.name] = generateRepeatingObject(
+        numberToShowFromStart,
+        formDefaultObject,
+      );
     }
   }
 
