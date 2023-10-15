@@ -49,16 +49,16 @@ export const isComponentRepeating = (component: FormComponent) =>
 export const isComponentOptional = (component: FormComponent) =>
   component.repeat?.repeatMin === 0 ?? false;
 
-const createDefaultValue = (component: FormComponent) =>
-  component.finalValue ? component.finalValue : '';
+const createDefaultValue = (
+  component: FormComponent | FormAttributeCollection,
+) => (component.finalValue ? component.finalValue : '');
 
 export const generateComponentAttributes = (component: FormComponent) => {
   const attributeValues =
     component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
-        [`_${attributeCollection.name}`]: attributeCollection.finalValue
-          ? attributeCollection.finalValue
-          : '',
+        [`_${attributeCollection.name}`]:
+          createDefaultValue(attributeCollection),
       }),
     ) ?? [];
   return {
@@ -81,7 +81,6 @@ export const createDefaultValuesFromComponent = (
     [x: string]: string | number | ({} | undefined)[] | undefined | any;
   } = {};
 
-  // Repeating - textVariable / numberVariable/ collectionVariable /group
   if (isComponentRepeating(component)) {
     const numberToShowFromStart = getMinNumberOfRepeatingToShow(component);
     const formDefaultObject = isComponentVariable(component)
@@ -105,7 +104,6 @@ export const createDefaultValuesFromComponent = (
     }
   }
 
-  // NOT repeating textVariable / numberVariable / collectionVariable / group
   if (!isComponentRepeating(component)) {
     if (!isComponentGroup(component)) {
       if (!hasComponentAttributes(component)) {
