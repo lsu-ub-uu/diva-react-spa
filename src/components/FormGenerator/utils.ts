@@ -125,32 +125,22 @@ export const createDefaultValuesFromComponent = (
 
   // NOT repeating textVariable / numberVariable / collectionVariable / group
   if (!isComponentRepeating(component)) {
-    if (hasComponentAttributes(component)) {
-      if (!isComponentGroup(component)) {
+    if (!isComponentGroup(component)) {
+      if (!hasComponentAttributes(component)) {
+        defaultValues[component.name] = createDefaultValue(component);
+      } else {
         defaultValues[component.name] = {
           value: createDefaultValue(component),
           ...generateComponentAttributes(component),
         };
-      } else {
-        // group
-        defaultValues[component.name] = {
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          ...createDefaultValuesFromComponents(component.components),
-          ...generateComponentAttributes(component),
-        };
       }
     } else {
-      // variable or group without attribute
-      // eslint-disable-next-line no-lonely-if
-      if (!isComponentGroup(component)) {
-        defaultValues[component.name] = createDefaultValue(component);
-      } else {
-        // is a group, then recursively call createDefaultValues for component
+      // group
+      defaultValues[component.name] = {
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        defaultValues[component.name] = createDefaultValuesFromComponents(
-          component.components,
-        );
-      }
+        ...createDefaultValuesFromComponents(component.components),
+        ...generateComponentAttributes(component),
+      };
     }
   }
   return defaultValues;
