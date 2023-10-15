@@ -1235,6 +1235,14 @@ export const formComponentGroupAndTextVariableWithinGroup: FormComponent = {
       },
       components: [
         {
+          name: 'shouldBeSkippedComponent',
+          type: 'text',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 2,
+          },
+        },
+        {
           name: 'exampleNumberVar',
           type: 'numberVariable',
           mode: 'input',

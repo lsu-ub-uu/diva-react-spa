@@ -124,10 +124,7 @@ export const createDefaultValuesFromComponent = (
   }
 
   // NOT repeating textVariable / numberVariable / collectionVariable / group
-  if (
-    !isComponentRepeating(component) &&
-    isComponentValidForDataCarrying(component)
-  ) {
+  if (!isComponentRepeating(component)) {
     if (hasComponentAttributes(component)) {
       if (!isComponentGroup(component)) {
         defaultValues[component.name] = {
