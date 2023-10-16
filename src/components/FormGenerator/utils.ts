@@ -226,18 +226,24 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
       component.repeat,
     );
   } else {
-    validationRule[component.name] = yup
-      .object()
-      .default({})
-      .shape({ value: createValidationFromComponentType(component) });
+    // eslint-disable-next-line no-lonely-if
+    if (isComponentGroup(component)) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      validationRule[component.name] = generateYupSchema(component.components);
+    } else {
+      validationRule[component.name] = yup
+        .object()
+        .default({})
+        .shape({ value: createValidationFromComponentType(component) });
+    }
   }
   return validationRule;
 };
 
 // this gets called recursively
-export const generateYupSchema = (components: FormComponent[]) => {
+export const generateYupSchema = (components: FormComponent[] | undefined) => {
   const validationsRules = (components ?? [])
-    .filter(isComponentVariable) // add groups
+    .filter(isComponentValidForDataCarrying)
     .map((formComponent) => createYupValidationsFromComponent(formComponent));
 
   const obj = Object.assign({}, ...validationsRules) as ObjectShape;

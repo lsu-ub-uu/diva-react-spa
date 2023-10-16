@@ -35,6 +35,7 @@ import {
   formDefRealDemoWithFinalValues,
   formDefRealDemoWithRepeatingGroups,
   formDefRealDemoWithRepeatingVars,
+  formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithRepeatingCollectionVar,
   formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '../../../__mocks__/data/formDef';
@@ -586,6 +587,31 @@ describe('FormGenerator utils yupSchema', () => {
             value: {
               type: 'string',
               tests: requiredValidationTests,
+            },
+          },
+        },
+      },
+    };
+    expect(actualSchema).toMatchObject(expectedSchema);
+  });
+
+  test('should return correct validationSchema for one group having a text variable', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
+    );
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      someChildGroupNameInData: {
+        type: 'object',
+        fields: {
+          someNameInData: {
+            type: 'object',
+            fields: {
+              value: {
+                type: 'string',
+                tests: stringValidationTests(/someRegex/),
+              },
             },
           },
         },
