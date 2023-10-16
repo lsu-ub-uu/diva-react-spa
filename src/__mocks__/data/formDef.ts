@@ -1434,3 +1434,45 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
     },
   ],
 };
+
+export const formDefWithTwoRepeatingVars = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'text',
+      name: 'presentationTypeTextCollectionVarDefText',
+    },
+    {
+      type: 'textVariable',
+      name: 'someNameInData',
+      label: 'someLabelTextId',
+      placeholder: 'someEmptyTextId',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 2,
+      },
+      validation: {
+        type: 'regex',
+        pattern: '^[a-zA-Z]$',
+      },
+      inputType: 'input',
+    },
+    {
+      type: 'numberVariable',
+      name: 'someNumberVariableNameInData',
+      placeholder: 'someNumberPlaceholderTextId',
+      validation: {
+        type: 'number',
+        min: 0,
+        max: 20,
+        warningMin: 2,
+        warningMax: 10,
+        numberOfDecimals: 2,
+      },
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 5,
+      },
+    },
+  ],
+};

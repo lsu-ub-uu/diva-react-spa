@@ -19,10 +19,11 @@
 
 // eslint-disable-next-line import/no-cycle
 import * as yup from 'yup';
-import { ObjectShape } from 'yup';
+import { AnyObject, ObjectShape, TestConfig } from 'yup';
 import {
   FormAttributeCollection,
   FormComponent,
+  FormComponentRepeat,
   FormNumberValidation,
   FormRegexValidation,
   FormSchema,
@@ -147,26 +148,60 @@ const createYupStringRegexpSchema = (component: FormComponent) => {
     );
 };
 
+export const createYupArray = (
+  shape: ObjectShape,
+  repeat: FormComponentRepeat,
+) => {
+  return yup
+    .array()
+    .of(yup.object(shape))
+    .min(repeat.repeatMin)
+    .max(repeat.repeatMax);
+};
+
 const createYupNumberSchema = (component: FormComponent) => {
   const numberValidation = component.validation as FormNumberValidation;
+  const { numberOfDecimals, min, max } = numberValidation;
+
+  const testDecimals: TestConfig<string | undefined, AnyObject> = {
+    name: 'decimal-places',
+    message: 'Invalid number of decimals',
+    params: { numberOfDecimals },
+    test: (value) => {
+      if (!value) return true;
+      const decimalPlaces = (value.split('.')[1] || []).length;
+      return decimalPlaces === numberOfDecimals;
+    },
+  };
+
+  const testMin: TestConfig<string | undefined, AnyObject> = {
+    name: 'min',
+    message: 'Invalid range (min)',
+    params: { min },
+    test: (value) => {
+      if (!value) return true;
+      const numValue = parseFloat(value);
+      return min <= numValue;
+    },
+  };
+
+  const testMax: TestConfig<string | undefined, AnyObject> = {
+    name: 'max',
+    message: 'Invalid range (max)',
+    params: { max },
+    test: (value) => {
+      if (!value) return true;
+      const numValue = parseFloat(value);
+      return max >= numValue;
+    },
+  };
+
   return yup
     .string()
     .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-    .test('decimal-places', 'Invalid number of decimals', (value) => {
-      if (!value) return true;
-      const decimalPlaces = (value.split('.')[1] || []).length;
-      return decimalPlaces === numberValidation.numberOfDecimals;
-    })
-    .test('min', 'Invalid range (min)', (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return numberValidation.min <= numValue;
-    })
-    .test('max', 'Invalid range (max)', (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return numberValidation.max >= numValue;
-    });
+    .test(testDecimals)
+    .test(testMin)
+    .test(testMax);
 };
 
 const createValidationFromComponentType = (component: FormComponent) => {
@@ -184,22 +219,25 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   const validationRule: {
     [x: string]: any;
   } = {};
-  const shape = yup
-    .object()
-    .default({})
-    .shape({ value: createValidationFromComponentType(component) });
-  validationRule[component.name] = shape;
+  if (isComponentRepeating(component)) {
+    const innerShape = { value: createValidationFromComponentType(component) };
+    validationRule[component.name] = createYupArray(
+      innerShape,
+      component.repeat,
+    );
+  } else {
+    validationRule[component.name] = yup
+      .object()
+      .default({})
+      .shape({ value: createValidationFromComponentType(component) });
+  }
   return validationRule;
-};
-
-export const createArray = (shape: ObjectShape) => {
-  return yup.array().of(yup.object(shape));
 };
 
 // this gets called recursively
 export const generateYupSchema = (components: FormComponent[]) => {
   const validationsRules = (components ?? [])
-    .filter(isComponentVariable)
+    .filter(isComponentVariable) // add groups
     .map((formComponent) => createYupValidationsFromComponent(formComponent));
 
   const obj = Object.assign({}, ...validationsRules) as ObjectShape;

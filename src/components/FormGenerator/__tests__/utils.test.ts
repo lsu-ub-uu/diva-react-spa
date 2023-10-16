@@ -35,6 +35,7 @@ import {
   formDefRealDemoWithFinalValues,
   formDefRealDemoWithRepeatingGroups,
   formDefRealDemoWithRepeatingVars,
+  formDefWithTwoRepeatingVars,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
@@ -484,24 +485,27 @@ describe('FormGenerator utils defaultValues', () => {
   });
 });
 
-const numberValidationTests = [
+const numberValidationTests = (
+  min: number,
+  max: number,
+  numberOfDecimals: number,
+) => [
   { name: 'matches', params: { regex: /^[1-9]\d*(\.\d+)?$/ } },
-  { name: 'decimal-places' },
-  { name: 'min' },
-  { name: 'max' },
+  { name: 'decimal-places', params: { numberOfDecimals } },
+  { name: 'min', params: { min } },
+  { name: 'max', params: { max } },
 ];
 
 const stringValidationTests = (regex: RegExp) => [
   { name: 'matches', params: { regex } },
 ];
-/*
-const requiredValidationTests = [{ name: 'required' }];
+
+// const requiredValidationTests = [{ name: 'required' }];
 
 const minMaxValidationTests = (min: number, max: number) => [
   { name: 'min', params: { min } },
   { name: 'max', params: { max } },
 ];
-*/
 
 describe('FormGenerator utils yupSchema', () => {
   test('should return correct validationSchema for one textVar and one numberVar', () => {
@@ -518,7 +522,42 @@ describe('FormGenerator utils yupSchema', () => {
       someNumberVariableNameInData: {
         type: 'object',
         fields: {
-          value: { type: 'string', tests: numberValidationTests },
+          value: { type: 'string', tests: numberValidationTests(0, 20, 0) },
+        },
+      },
+    };
+    expect(actualSchema).toMatchObject(expectedSchema);
+  });
+
+  test('should return correct validationSchema for two repeating variables', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithTwoRepeatingVars as FormSchema,
+    );
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      someNameInData: {
+        type: 'array',
+        tests: minMaxValidationTests(0, 2),
+        innerType: {
+          fields: {
+            value: {
+              type: 'string',
+              tests: stringValidationTests(/^[a-zA-Z]$/),
+            },
+          },
+        },
+      },
+      someNumberVariableNameInData: {
+        type: 'array',
+        tests: minMaxValidationTests(1, 5),
+        innerType: {
+          fields: {
+            value: {
+              type: 'string',
+              tests: numberValidationTests(0, 20, 2),
+            },
+          },
         },
       },
     };
