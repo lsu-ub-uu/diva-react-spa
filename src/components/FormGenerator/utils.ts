@@ -165,7 +165,7 @@ const createYupNumberSchema = (component: FormComponent) => {
 
   const testDecimals: TestConfig<string | undefined, AnyObject> = {
     name: 'decimal-places',
-    message: 'Invalid number of decimals',
+    message: 'Invalid number of decimals', // todo translation
     params: { numberOfDecimals },
     test: (value) => {
       if (!value) return true;

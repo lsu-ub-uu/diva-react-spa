@@ -35,7 +35,8 @@ import {
   formDefRealDemoWithFinalValues,
   formDefRealDemoWithRepeatingGroups,
   formDefRealDemoWithRepeatingVars,
-  formDefWithTwoRepeatingVars,
+  formDefWithRepeatingCollectionVar,
+  formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
@@ -500,7 +501,7 @@ const stringValidationTests = (regex: RegExp) => [
   { name: 'matches', params: { regex } },
 ];
 
-// const requiredValidationTests = [{ name: 'required' }];
+const requiredValidationTests = [{ name: 'required' }];
 
 const minMaxValidationTests = (min: number, max: number) => [
   { name: 'min', params: { min } },
@@ -531,7 +532,7 @@ describe('FormGenerator utils yupSchema', () => {
 
   test('should return correct validationSchema for two repeating variables', () => {
     const yupSchema = generateYupSchemaFromFormSchema(
-      formDefWithTwoRepeatingVars as FormSchema,
+      formDefWithTwoRepeatingVarsAndCollectionVar as FormSchema,
     );
     const actualSchema = yupSchema.describe().fields;
 
@@ -556,6 +557,35 @@ describe('FormGenerator utils yupSchema', () => {
             value: {
               type: 'string',
               tests: numberValidationTests(0, 20, 2),
+            },
+          },
+        },
+      },
+      colour: {
+        type: 'object',
+        fields: {
+          value: { type: 'string', tests: requiredValidationTests },
+        },
+      },
+    };
+    expect(actualSchema).toMatchObject(expectedSchema);
+  });
+
+  test('should return correct validationSchema for one repeating collectionVariable', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithRepeatingCollectionVar as FormSchema,
+    );
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      colour: {
+        type: 'array',
+        tests: minMaxValidationTests(0, 3),
+        innerType: {
+          fields: {
+            value: {
+              type: 'string',
+              tests: requiredValidationTests,
             },
           },
         },

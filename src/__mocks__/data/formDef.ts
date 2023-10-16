@@ -1435,7 +1435,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
   ],
 };
 
-export const formDefWithTwoRepeatingVars = {
+export const formDefWithTwoRepeatingVarsAndCollectionVar = {
   validationTypeId: 'someValidationTypeId',
   components: [
     {
@@ -1473,6 +1473,55 @@ export const formDefWithTwoRepeatingVars = {
         repeatMin: 1,
         repeatMax: 5,
       },
+    },
+    {
+      type: 'collectionVariable',
+      name: 'colour',
+      placeholder: 'emptyTextId',
+      tooltip: {
+        title: 'exampleCollectionVarText',
+        body: 'exampleCollectionVarDefText',
+      },
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      options: [
+        { value: 'blue', label: 'exampleBlueItemText' },
+        { value: 'pink', label: 'examplePinkItemText' },
+        { value: 'yellow', label: 'exampleYellowItemText' },
+      ],
+      mode: 'input',
+    },
+  ],
+};
+
+export const formDefWithRepeatingCollectionVar = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      type: 'text',
+      name: 'presentationTypeTextCollectionVarDefText',
+    },
+    {
+      type: 'collectionVariable',
+      name: 'colour',
+      placeholder: 'emptyTextId',
+      tooltip: {
+        title: 'exampleCollectionVarText',
+        body: 'exampleCollectionVarDefText',
+      },
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 3,
+      },
+      options: [
+        { value: 'blue', label: 'exampleBlueItemText' },
+        { value: 'pink', label: 'examplePinkItemText' },
+        { value: 'yellow', label: 'exampleYellowItemText' },
+        { value: 'green', label: 'exampleGreenItemText' },
+      ],
+      mode: 'input',
     },
   ],
 };
