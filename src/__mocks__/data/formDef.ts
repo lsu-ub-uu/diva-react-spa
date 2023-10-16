@@ -1525,3 +1525,52 @@ export const formDefWithRepeatingCollectionVar = {
     },
   ],
 };
+
+export const formDefWithRepeatingGroup = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      name: 'firstChildGroup',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'exampleFirstChildGroupText',
+        body: 'exampleFirstChildGroupDefText',
+      },
+      label: 'exampleFirstChildGroupText',
+      repeat: {
+        minNumberOfRepeatingToShow: 0,
+        repeatMin: 0,
+        repeatMax: 10,
+      },
+      components: [
+        {
+          type: 'text',
+          name: 'presentationTypeTextCollectionVarDefText',
+        },
+        {
+          name: 'exampleNumberVar',
+          type: 'numberVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataNumberVarText',
+            body: 'exampleMetadataNumberVarDefText',
+          },
+          label: 'exampleMetadataNumberVarText',
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 20,
+            warningMin: 10,
+            warningMax: 90,
+            numberOfDecimals: 2,
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        },
+      ],
+    },
+  ],
+};

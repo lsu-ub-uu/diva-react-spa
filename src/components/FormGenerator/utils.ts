@@ -19,7 +19,7 @@
 
 // eslint-disable-next-line import/no-cycle
 import * as yup from 'yup';
-import { AnyObject, ObjectShape, TestConfig } from 'yup';
+import { AnyObject, ObjectSchema, ObjectShape, TestConfig } from 'yup';
 import {
   FormAttributeCollection,
   FormComponent,
@@ -159,6 +159,13 @@ export const createYupArray = (
     .max(repeat.repeatMax);
 };
 
+export const createYupArrayFromSchema = (
+  schema: ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>,
+  repeat: FormComponentRepeat,
+) => {
+  return yup.array().of(schema).min(repeat.repeatMin).max(repeat.repeatMax);
+};
+
 const createYupNumberSchema = (component: FormComponent) => {
   const numberValidation = component.validation as FormNumberValidation;
   const { numberOfDecimals, min, max } = numberValidation;
@@ -220,12 +227,24 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
     [x: string]: any;
   } = {};
   if (isComponentRepeating(component)) {
-    const innerShape = { value: createValidationFromComponentType(component) };
-    validationRule[component.name] = createYupArray(
-      innerShape,
-      component.repeat,
-    );
+    if (isComponentGroup(component)) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      const temp = generateYupSchema(component.components);
+      validationRule[component.name] = createYupArrayFromSchema(
+        temp,
+        component.repeat,
+      );
+    } else {
+      const innerShape = {
+        value: createValidationFromComponentType(component),
+      };
+      validationRule[component.name] = createYupArray(
+        innerShape,
+        component.repeat,
+      );
+    }
   } else {
+    // Non-repeating
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define

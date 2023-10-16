@@ -37,6 +37,7 @@ import {
   formDefRealDemoWithRepeatingVars,
   formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithRepeatingCollectionVar,
+  formDefWithRepeatingGroup,
   formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
@@ -617,6 +618,64 @@ describe('FormGenerator utils yupSchema', () => {
         },
       },
     };
+    expect(actualSchema).toMatchObject(expectedSchema);
+  });
+
+  test('should return correct validationSchema for repeating group having a text variable', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithRepeatingGroup as FormSchema,
+    );
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      firstChildGroup: {
+        type: 'array',
+        tests: minMaxValidationTests(0, 10),
+        innerType: {
+          fields: {
+            exampleNumberVar: {
+              type: 'object',
+              fields: {
+                value: {
+                  type: 'string',
+                  tests: numberValidationTests(0, 20, 2),
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    expect(actualSchema).toMatchObject(expectedSchema);
+  });
+
+  test.skip('should return correct validationSchema for repeating group having repeating child group with one field', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithRepeatingGroup as FormSchema,
+    );
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      firstChildGroup: {
+        type: 'array',
+        tests: minMaxValidationTests(0, 10),
+        innerType: {
+          fields: {
+            exampleNumberVar: {
+              type: 'object',
+              fields: {
+                value: {
+                  type: 'string',
+                  tests: numberValidationTests(0, 20, 2),
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
     expect(actualSchema).toMatchObject(expectedSchema);
   });
 });
