@@ -1574,3 +1574,84 @@ export const formDefWithRepeatingGroup = {
     },
   ],
 };
+
+export const formDefWithRepeatingGroupWithRepeatingChildGroup = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      name: 'author',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'authorGroupText',
+        body: 'authorGroupDefText',
+      },
+      label: 'authorGroupText',
+      repeat: {
+        minNumberOfRepeatingToShow: 1,
+        repeatMin: 1,
+        repeatMax: 10,
+      },
+      components: [
+        {
+          name: 'name',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleFirstChildGroupText',
+            body: 'exampleFirstChildGroupDefText',
+          },
+          label: 'exampleFirstChildGroupText',
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 100,
+          },
+          components: [
+            {
+              name: 'shouldBeSkippedComponent',
+              type: 'text',
+            },
+            {
+              name: 'firstName',
+              type: 'textVariable',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleMetadataVarText',
+                body: 'exampleMetadataVarDefText',
+              },
+              label: 'firstName',
+              validation: {
+                type: 'regex',
+                pattern: '^[a-zA-Z]$',
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+            {
+              name: 'lastName',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'exampleMetadataTextVarText',
+                body: 'exampleMetadataTextVarDefText',
+              },
+              label: 'exampleMetadataTextVarText',
+              validation: {
+                type: 'regex',
+                pattern: '^[a-zA-Z]$',
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
