@@ -40,8 +40,12 @@ import { FormSchema } from '../types';
 describe('FormGenerator utils', () => {
   test('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
     const expectedDefaultValues = {
-      someNameInData: '',
-      someNumberVariableNameInData: '',
+      someNameInData: {
+        value: '',
+      },
+      someNumberVariableNameInData: {
+        value: '',
+      },
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDef as FormSchema,
@@ -52,15 +56,21 @@ describe('FormGenerator utils', () => {
   // group
   test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and make default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: '',
+      bookTitle: {
+        value: '',
+      },
       keeptHis: [
         {
           value: '',
         },
       ],
       firstChildGroup: {
-        exampleNumberVar: '',
-        exampleTextVar: '',
+        exampleNumberVar: {
+          value: '',
+        },
+        exampleTextVar: {
+          value: '',
+        },
       },
       recordInfo: {},
     };
@@ -72,7 +82,9 @@ describe('FormGenerator utils', () => {
 
   test('createDefaultValuesFromFormSchema should take a more complex formDef with repeating groups and make default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: '',
+      bookTitle: {
+        value: '',
+      },
       keeptHis: [
         {
           value: '',
@@ -80,12 +92,20 @@ describe('FormGenerator utils', () => {
       ],
       firstChildGroup: [
         {
-          exampleNumberVar: '',
-          exampleTextVar: '',
+          exampleNumberVar: {
+            value: '',
+          },
+          exampleTextVar: {
+            value: '',
+          },
         },
         {
-          exampleNumberVar: '',
-          exampleTextVar: '',
+          exampleNumberVar: {
+            value: '',
+          },
+          exampleTextVar: {
+            value: '',
+          },
         },
       ],
       recordInfo: {},
@@ -98,8 +118,12 @@ describe('FormGenerator utils', () => {
 
   test('createDefaultValuesFromComponent should construct a default value object for repeating component', () => {
     const expectedDefaultValues = {
-      exampleNumberVar: '',
-      exampleTextVar: '',
+      exampleNumberVar: {
+        value: '',
+      },
+      exampleTextVar: {
+        value: '',
+      },
     };
     const actualDefaultValues = createDefaultValuesFromComponent(
       formComponentGroup,
@@ -133,7 +157,9 @@ describe('FormGenerator utils', () => {
 
   test('createDefaultValuesFromComponent should construct a default value object for group within group having repeating vars and minNumberToShow set', () => {
     const expectedDefaultValues = {
-      exampleTextVar: '',
+      exampleTextVar: {
+        value: '',
+      },
       innerChildGroup: [
         {
           exampleNumberVar: [
@@ -168,7 +194,9 @@ describe('FormGenerator utils', () => {
               value: '12',
             },
           ],
-          exampleTextVar: '',
+          exampleTextVar: {
+            value: '',
+          },
         },
         {
           exampleNumberVar: [
@@ -203,7 +231,9 @@ describe('FormGenerator utils', () => {
               value: '12',
             },
           ],
-          exampleTextVar: '',
+          exampleTextVar: {
+            value: '',
+          },
         },
       ],
     };
@@ -220,7 +250,9 @@ describe('FormGenerator utils', () => {
       _firstChildGroupSecondAttribute: '',
       secondChildGroup: [
         {
-          exampleNumberVar: '',
+          exampleNumberVar: {
+            value: '',
+          },
           exampleTextVar: {
             _colour: '',
             value: '',
@@ -249,15 +281,21 @@ describe('FormGenerator utils', () => {
   // finalValues
   test('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: 'someFinalValue',
+      bookTitle: {
+        value: 'someFinalValue',
+      },
       keeptHis: [
         {
           value: '12',
         },
       ],
       firstChildGroup: {
-        exampleNumberVar: '55',
-        exampleTextVar: 'someText',
+        exampleNumberVar: {
+          value: '55',
+        },
+        exampleTextVar: {
+          value: 'someText',
+        },
       },
       recordInfo: {},
     };
@@ -281,7 +319,9 @@ describe('FormGenerator utils', () => {
         },
       ],
       firstChildGroup: {
-        exampleNumberVar: '',
+        exampleNumberVar: {
+          value: '',
+        },
         exampleTextVar: {
           _colour: '',
           _colourAgain: 'pink',
@@ -302,7 +342,9 @@ describe('FormGenerator utils', () => {
   // repeating vars
   test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and repeating variables and make default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: '',
+      bookTitle: {
+        value: '',
+      },
       keeptHis: [
         {
           value: '',
