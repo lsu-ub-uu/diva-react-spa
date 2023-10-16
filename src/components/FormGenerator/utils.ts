@@ -19,6 +19,7 @@
 
 // eslint-disable-next-line import/no-cycle
 import * as yup from 'yup';
+import { ObjectShape } from 'yup';
 import {
   FormAttributeCollection,
   FormComponent,
@@ -133,7 +134,7 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
 };
 
 /**
- * Validation
+ * YUP Validation
  */
 
 const createYupStringRegexpSchema = (component: FormComponent) => {
@@ -168,7 +169,7 @@ const createYupNumberSchema = (component: FormComponent) => {
     });
 };
 
-const createYupComponentSchema = (component: FormComponent) => {
+const createValidationFromComponentType = (component: FormComponent) => {
   switch (component.type) {
     case 'textVariable':
       return createYupStringRegexpSchema(component);
@@ -179,37 +180,30 @@ const createYupComponentSchema = (component: FormComponent) => {
   }
 };
 
+export const createYupValidationsFromComponent = (component: FormComponent) => {
+  const validationRule: {
+    [x: string]: any;
+  } = {};
+  const shape = yup
+    .object()
+    .default({})
+    .shape({ value: createValidationFromComponentType(component) });
+  validationRule[component.name] = shape;
+  return validationRule;
+};
+
+export const createArray = (shape: ObjectShape) => {
+  return yup.array().of(yup.object(shape));
+};
+
 // this gets called recursively
 export const generateYupSchema = (components: FormComponent[]) => {
-  const mockNumberValidation = yup
-    .string()
-    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-    .test('decimal-places', 'Invalid number of decimals', (value) => {
-      if (!value) return true;
-      const decimalPlaces = (value.split('.')[1] || []).length;
-      return decimalPlaces === 2;
-    })
-    .test('min', 'Invalid range (min)', (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return numValue >= 2;
-    })
-    .test('max', 'Invalid range (max)', (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return numValue <= 2;
-    });
+  const validationsRules = (components ?? [])
+    .filter(isComponentVariable)
+    .map((formComponent) => createYupValidationsFromComponent(formComponent));
 
-  const testShape = {
-    username: yup.string().matches(/.+/, 'Invalid input format'),
-    age: mockNumberValidation,
-    emails: yup
-      .array()
-      .of(yup.object().shape({ value: yup.string().required() }))
-      .min(1)
-      .max(5),
-  };
-  return yup.object().shape(testShape);
+  const obj = Object.assign({}, ...validationsRules) as ObjectShape;
+  return yup.object().default({}).shape(obj);
 };
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {

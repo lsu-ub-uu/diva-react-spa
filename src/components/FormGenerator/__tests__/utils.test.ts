@@ -494,32 +494,32 @@ const numberValidationTests = [
 const stringValidationTests = (regex: RegExp) => [
   { name: 'matches', params: { regex } },
 ];
+/*
+const requiredValidationTests = [{ name: 'required' }];
 
 const minMaxValidationTests = (min: number, max: number) => [
   { name: 'min', params: { min } },
   { name: 'max', params: { max } },
 ];
+*/
 
 describe('FormGenerator utils yupSchema', () => {
-  test('something validate', () => {
+  test('should return correct validationSchema for one textVar and one numberVar', () => {
     const yupSchema = generateYupSchemaFromFormSchema(formDef as FormSchema);
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
-      username: {
-        type: 'string',
-        tests: stringValidationTests(/.+/),
-      },
-      age: {
-        type: 'string', // number
-        tests: numberValidationTests,
-      },
-      emails: {
-        innerType: {
-          fields: { value: { type: 'string', tests: [{ name: 'required' }] } },
+      someNameInData: {
+        type: 'object',
+        fields: {
+          value: { type: 'string', tests: stringValidationTests(/^[a-zA-Z]$/) },
         },
-        tests: minMaxValidationTests(1, 5),
-        type: 'array',
+      },
+      someNumberVariableNameInData: {
+        type: 'object',
+        fields: {
+          value: { type: 'string', tests: numberValidationTests },
+        },
       },
     };
     expect(actualSchema).toMatchObject(expectedSchema);
