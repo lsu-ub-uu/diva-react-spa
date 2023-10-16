@@ -18,7 +18,14 @@
  */
 
 // eslint-disable-next-line import/no-cycle
-import { FormAttributeCollection, FormComponent, FormSchema } from './types';
+import * as yup from 'yup';
+import {
+  FormAttributeCollection,
+  FormComponent,
+  FormNumberValidation,
+  FormRegexValidation,
+  FormSchema,
+} from './types';
 
 export const hasComponentAttributes = (component: FormComponent) =>
   component.attributes ? component.attributes.length > 0 : false;
@@ -123,4 +130,88 @@ export const createDefaultValuesFromComponents = (
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   // do we need some more stuff here?
   return createDefaultValuesFromComponents(formSchema.components);
+};
+
+/**
+ * Validation
+ */
+
+const createYupStringRegexpSchema = (component: FormComponent) => {
+  const regexpValidation = component.validation as FormRegexValidation;
+  return yup
+    .string()
+    .matches(
+      new RegExp(regexpValidation.pattern ?? '.+'),
+      'Invalid input format',
+    );
+};
+
+const createYupNumberSchema = (component: FormComponent) => {
+  const numberValidation = component.validation as FormNumberValidation;
+  return yup
+    .string()
+    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+    .test('decimal-places', 'Invalid number of decimals', (value) => {
+      if (!value) return true;
+      const decimalPlaces = (value.split('.')[1] || []).length;
+      return decimalPlaces === numberValidation.numberOfDecimals;
+    })
+    .test('min', 'Invalid range (min)', (value) => {
+      if (!value) return true;
+      const numValue = parseFloat(value);
+      return numberValidation.min <= numValue;
+    })
+    .test('max', 'Invalid range (max)', (value) => {
+      if (!value) return true;
+      const numValue = parseFloat(value);
+      return numberValidation.max >= numValue;
+    });
+};
+
+const createYupComponentSchema = (component: FormComponent) => {
+  switch (component.type) {
+    case 'textVariable':
+      return createYupStringRegexpSchema(component);
+    case 'numberVariable':
+      return createYupNumberSchema(component);
+    default: // collectionVariable
+      return yup.string().required();
+  }
+};
+
+// this gets called recursively
+export const generateYupSchema = (components: FormComponent[]) => {
+  const mockNumberValidation = yup
+    .string()
+    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+    .test('decimal-places', 'Invalid number of decimals', (value) => {
+      if (!value) return true;
+      const decimalPlaces = (value.split('.')[1] || []).length;
+      return decimalPlaces === 2;
+    })
+    .test('min', 'Invalid range (min)', (value) => {
+      if (!value) return true;
+      const numValue = parseFloat(value);
+      return numValue >= 2;
+    })
+    .test('max', 'Invalid range (max)', (value) => {
+      if (!value) return true;
+      const numValue = parseFloat(value);
+      return numValue <= 2;
+    });
+
+  const testShape = {
+    username: yup.string().matches(/.+/, 'Invalid input format'),
+    age: mockNumberValidation,
+    emails: yup
+      .array()
+      .of(yup.object().shape({ value: yup.string().required() }))
+      .min(1)
+      .max(5),
+  };
+  return yup.object().shape(testShape);
+};
+
+export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
+  return generateYupSchema(formSchema.components);
 };

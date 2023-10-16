@@ -21,6 +21,7 @@ import { test } from 'vitest';
 import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
+  generateYupSchemaFromFormSchema,
 } from '../utils';
 import {
   formComponentGroup,
@@ -37,7 +38,7 @@ import {
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
-describe('FormGenerator utils', () => {
+describe('FormGenerator utils defaultValues', () => {
   test('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
     const expectedDefaultValues = {
       someNameInData: {
@@ -480,5 +481,47 @@ describe('FormGenerator utils', () => {
 
     const actual = createFormDefWithPaths([treeData]);
     expect(actual).toStrictEqual(expected);
+  });
+});
+
+const numberValidationTests = [
+  { name: 'matches', params: { regex: /^[1-9]\d*(\.\d+)?$/ } },
+  { name: 'decimal-places' },
+  { name: 'min' },
+  { name: 'max' },
+];
+
+const stringValidationTests = (regex: RegExp) => [
+  { name: 'matches', params: { regex } },
+];
+
+const minMaxValidationTests = (min: number, max: number) => [
+  { name: 'min', params: { min } },
+  { name: 'max', params: { max } },
+];
+
+describe('FormGenerator utils yupSchema', () => {
+  test('something validate', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(formDef as FormSchema);
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      username: {
+        type: 'string',
+        tests: stringValidationTests(/.+/),
+      },
+      age: {
+        type: 'string', // number
+        tests: numberValidationTests,
+      },
+      emails: {
+        innerType: {
+          fields: { value: { type: 'string', tests: [{ name: 'required' }] } },
+        },
+        tests: minMaxValidationTests(1, 5),
+        type: 'array',
+      },
+    };
+    expect(actualSchema).toMatchObject(expectedSchema);
   });
 });

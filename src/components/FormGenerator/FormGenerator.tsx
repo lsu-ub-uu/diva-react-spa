@@ -20,185 +20,25 @@
 import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ArraySchema, NumberSchema, ObjectSchema, StringSchema } from 'yup';
 import React from 'react';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
 import {
   createDefaultValuesFromFormSchema,
-  hasComponentAttributes,
-  isComponentOptional,
+  generateYupSchema,
   isComponentRepeating,
   isComponentVariable,
-  isComponentCollectionVariable,
-  isComponentNumberVariable,
-  isComponentTextVariable,
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { Typography } from '../index';
-import {
-  FormComponent,
-  FormNumberValidation,
-  FormRegexValidation,
-  FormSchema,
-} from './types';
+import { FormComponent, FormSchema } from './types';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
 }
-
-const createYupStringRegexpSchema = (component: FormComponent) => {
-  const regexpValidation = component.validation as FormRegexValidation;
-  return yup
-    .string()
-    .matches(
-      new RegExp(regexpValidation.pattern ?? '.+'),
-      'Invalid input format',
-    );
-};
-
-const createYupNumberSchema = (component: FormComponent) => {
-  const numberValidation = component.validation as FormNumberValidation;
-  return yup
-    .string()
-    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-    .test('decimal-places', 'Invalid number of decimals', (value) => {
-      if (!value) return true;
-      const decimalPlaces = (value.split('.')[1] || []).length;
-      return decimalPlaces === numberValidation.numberOfDecimals;
-    })
-    .test('min', 'Invalid range (min)', (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return numberValidation.min <= numValue;
-    })
-    .test('max', 'Invalid range (max)', (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return numberValidation.max >= numValue;
-    });
-};
-
-const createYupComponentSchema = (component: FormComponent) => {
-  switch (component.type) {
-    case 'textVariable':
-      return createYupStringRegexpSchema(component);
-    case 'numberVariable':
-      return createYupNumberSchema(component);
-    default: // collectionVariable
-      return yup.string().required();
-  }
-};
-
-const generateYupSchema = (components: FormComponent[]) => {
-  const validatableComponents = components.filter(isComponentVariable);
-
-  const composedShape = validatableComponents.reduce(
-    (accumulator, component) => {
-      // eslint-disable-next-line prefer-regex-literals
-      if (hasComponentAttributes(component)) {
-        const componentRule = {
-          value: createYupComponentSchema(component),
-        };
-        const attributeRules = component.attributes?.map((attribute) => ({
-          [`_${attribute.name}`]: yup.string().required(), // this is fine attributes are always required
-        }));
-
-        const componentShape = {
-          ...componentRule,
-          ...Object.assign({}, ...(attributeRules ?? [])),
-        };
-
-        accumulator[component.name] = yup.object().shape(componentShape);
-      } else {
-        if (
-          isComponentTextVariable(component) &&
-          !isComponentRepeating(component)
-        ) {
-          accumulator[component.name] = createYupStringRegexpSchema(component);
-        }
-
-        if (
-          isComponentTextVariable(component) &&
-          isComponentRepeating(component)
-        ) {
-          accumulator[component.name] = yup
-            .array()
-            .of(
-              yup.object().shape({
-                value: createYupStringRegexpSchema(component),
-              }),
-            )
-            .min(component.repeat.repeatMin)
-            .max(component.repeat.repeatMax);
-        }
-
-        if (
-          isComponentCollectionVariable(component) &&
-          !isComponentRepeating(component)
-        ) {
-          if (!isComponentOptional(component)) {
-            accumulator[component.name] = yup.string().required();
-          }
-        }
-
-        if (
-          isComponentCollectionVariable(component) &&
-          isComponentRepeating(component)
-        ) {
-          if (!isComponentOptional(component)) {
-            accumulator[component.name] = yup
-              .array()
-              .of(
-                yup.object().shape({
-                  value: yup.string().required(),
-                }),
-              )
-              .min(component.repeat.repeatMin)
-              .max(component.repeat.repeatMax);
-          }
-        }
-
-        if (
-          isComponentNumberVariable(component) &&
-          isComponentRepeating(component)
-        ) {
-          accumulator[component.name] = yup
-            .array()
-            .of(
-              yup.object().shape({
-                value: createYupNumberSchema(component),
-              }),
-            )
-            .min(component.repeat.repeatMin)
-            .max(component.repeat.repeatMax);
-        }
-
-        if (
-          isComponentNumberVariable(component) &&
-          !isComponentRepeating(component)
-        ) {
-          accumulator[component.name] = createYupNumberSchema(component);
-        }
-      }
-
-      return accumulator;
-    },
-    {} as Record<
-      string,
-      | ObjectSchema<any, any>
-      | StringSchema
-      | NumberSchema
-      | ArraySchema<any, any, any, any>
-    >,
-  );
-
-  return yup.object().shape(composedShape);
-};
 
 export const renderVariableField = (
   component: FormComponent,
@@ -296,7 +136,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       component,
       reactKey,
       control,
-      component.attributes ? `${component.name}.value` : component.name,
+      `${component.name}.value`,
     );
 
     if (component.attributes !== undefined) {
