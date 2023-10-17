@@ -262,6 +262,7 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
         component.repeat,
       );
     } else {
+      // repeating variables
       const innerObjectStringSchema = {
         value: createValidationFromComponentType(component),
       };
@@ -274,8 +275,13 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
     // Non-repeating
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
+      // non-repeating group
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      validationRule[component.name] = generateYupSchema(component.components);
+      const innerSchema = generateYupSchema(component.components);
+      validationRule[component.name] = yup.object().shape({
+        ...innerSchema.fields,
+        ...createValidationForAttributesFromComponent(component),
+      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
       const extendedSchema = yup.object().shape({
         value: createValidationFromComponentType(component),

@@ -1802,5 +1802,37 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes = {
         },
       ],
     },
+    {
+      type: 'group',
+      label: 'someChildGroupTextId',
+      name: 'nonRepeatingGroup',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'someChildGroupTextId',
+        body: 'someChildGroupDefTextId',
+      },
+      attributes: [
+        {
+          type: 'collectionVariable',
+          name: 'groupAttribute',
+          placeholder: 'emptyTextId',
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText',
+          },
+          options: [
+            { value: 'blue', label: 'exampleBlueItemText' },
+            { value: 'pink', label: 'examplePinkItemText' },
+            { value: 'yellow', label: 'exampleYellowItemText' },
+          ],
+          mode: 'input',
+        },
+      ],
+      components: [],
+      mode: 'input',
+    },
   ],
 };

@@ -712,6 +712,15 @@ describe('FormGenerator utils yupSchema', () => {
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
+      nonRepeatingGroup: {
+        type: 'object',
+        fields: {
+          _groupAttribute: {
+            type: 'string',
+            tests: requiredValidationTests,
+          },
+        },
+      },
       author: {
         type: 'array',
         tests: minMaxValidationTests(1, 10),
