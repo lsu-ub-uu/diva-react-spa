@@ -1834,5 +1834,38 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes = {
       components: [],
       mode: 'input',
     },
+    {
+      type: 'numberVariable',
+      name: 'grade',
+      placeholder: 'yourGrades',
+      validation: {
+        type: 'number',
+        min: 1,
+        max: 5,
+        warningMin: 2,
+        warningMax: 4,
+        numberOfDecimals: 0,
+      },
+      attributes: [
+        {
+          type: 'collectionVariable',
+          name: 'gradeAttribute',
+          placeholder: 'emptyTextId',
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText',
+          },
+          options: [
+            { value: 'strong', label: 'someStrongLabelText' },
+            { value: 'weak', label: 'someWeakLabelText' },
+          ],
+          mode: 'input',
+        },
+      ],
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 12,
+      },
+    },
   ],
 };

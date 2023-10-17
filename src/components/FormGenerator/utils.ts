@@ -148,17 +148,6 @@ const createYupStringRegexpSchema = (component: FormComponent) => {
     );
 };
 
-export const createYupArray = (
-  shape: ObjectShape,
-  repeat: FormComponentRepeat,
-) => {
-  return yup
-    .array()
-    .of(yup.object(shape))
-    .min(repeat.repeatMin)
-    .max(repeat.repeatMax);
-};
-
 export const createYupArrayFromSchema = (
   schema:
     | ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>
@@ -263,11 +252,13 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
       );
     } else {
       // repeating variables
-      const innerObjectStringSchema = {
+      const extendedSchema = yup.object().shape({
         value: createValidationFromComponentType(component),
-      };
-      validationRule[component.name] = createYupArray(
-        innerObjectStringSchema,
+        ...createValidationForAttributesFromComponent(component),
+      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+
+      validationRule[component.name] = createYupArrayFromSchema(
+        extendedSchema,
         component.repeat,
       );
     }
