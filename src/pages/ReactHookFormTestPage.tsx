@@ -62,9 +62,14 @@ const NestedNameFieldArray = (props: NFProps): JSX.Element => {
         variant='outlined'
         fullWidth
         disableRipple
-        onClick={() => append({})}
+        onClick={() =>
+          append({
+            firstName: { value: 'new firstName' },
+            lastName: { value: 'new lastName' },
+          })
+        }
       >
-        Add {name} (TODO: not correct append obj)
+        Add {name}
       </Button>
     </div>
   );
@@ -129,7 +134,7 @@ export const ReactHookFormTestPage = () => {
     <Box
       component='form'
       onSubmit={handleSubmit((values) =>
-        alert(JSON.stringify(values, null, 1)),
+        console.log(JSON.stringify(values, null, 1)),
       )}
     >
       <Card
@@ -149,11 +154,6 @@ export const ReactHookFormTestPage = () => {
             xs={12}
             sm={12}
           >
-            <p>
-              We should have a repeating person (using some short of FieldArray)
-              .. and inside that we have a repeating group called name
-              containing two textFields firstName and Lastname
-            </p>
             <NestedFieldArray
               control={control}
               name='author'
