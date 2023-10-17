@@ -53,10 +53,10 @@ export const HomePage = () => {
               disableRipple
               variant='contained'
               component={RouterLink}
-              to='/upload'
+              to='/form'
               endIcon={<FileUploadIcon />}
             >
-              Form test page
+              Dynamic Cora Form Page
             </Button>
           </Stack>
         </AsidePortal>

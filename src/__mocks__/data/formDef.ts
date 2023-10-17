@@ -32,6 +32,7 @@ export const formDef = {
     {
       type: 'numberVariable',
       name: 'someNumberVariableNameInData',
+      label: 'someOtherLabelId',
       placeholder: 'someNumberPlaceholderTextId',
       validation: {
         type: 'number',
@@ -83,6 +84,7 @@ export const formDefWithOneTextVariableHavingFinalValue = {
     {
       type: 'textVariable',
       name: 'someNameInData',
+      label: 'label',
       finalValue: 'someFinalValue',
       placeholder: 'someEmptyTextId',
       repeat: {
@@ -112,6 +114,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow = {
     {
       type: 'textVariable',
       name: 'someNameInData',
+      label: 'someNameInDataLabel',
       placeholder: 'someEmptyTextId',
       repeat: {
         repeatMin: 2,
@@ -134,10 +137,6 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMi
       {
         type: 'text',
         name: 'presentationTypeTextCollectionVarDefText',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
       },
       {
         type: 'textVariable',
@@ -209,6 +208,7 @@ export const formDefWithOneCollectionVariable: FormSchema = {
     {
       name: 'colour',
       type: 'collectionVariable',
+      label: 'Colour',
       placeholder: 'initialEmptyValueText',
       repeat: {
         repeatMin: 1,
@@ -257,6 +257,7 @@ export const formDefWithOneNumberVariableWithAttributeCollection: FormSchema = {
         {
           type: 'collectionVariable',
           name: 'colour',
+          label: 'attribute colour',
           placeholder: 'emptyTextId',
           tooltip: {
             title: 'exampleCollectionVarText',
