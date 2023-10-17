@@ -1649,6 +1649,23 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup = {
                 repeatMax: 1,
               },
             },
+            {
+              type: 'numberVariable',
+              name: 'age',
+              placeholder: 'someNumberPlaceholderTextId',
+              validation: {
+                type: 'number',
+                min: 0,
+                max: 125,
+                warningMin: 50,
+                warningMax: 100,
+                numberOfDecimals: 0,
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
           ],
         },
       ],

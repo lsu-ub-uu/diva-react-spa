@@ -229,9 +229,9 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      const temp = generateYupSchema(component.components);
+      const objectSchema = generateYupSchema(component.components);
       validationRule[component.name] = createYupArrayFromSchema(
-        temp,
+        objectSchema,
         component.repeat,
       );
     } else {

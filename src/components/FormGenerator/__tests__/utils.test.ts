@@ -684,6 +684,15 @@ describe('FormGenerator utils yupSchema', () => {
                       },
                     },
                   },
+                  age: {
+                    type: 'object',
+                    fields: {
+                      value: {
+                        type: 'string',
+                        tests: numberValidationTests(0, 125, 0),
+                      },
+                    },
+                  },
                 },
               },
             },
