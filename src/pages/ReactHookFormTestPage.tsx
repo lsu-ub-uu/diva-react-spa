@@ -64,7 +64,7 @@ const NestedNameFieldArray = (props: NFProps): JSX.Element => {
         disableRipple
         onClick={() => append({})}
       >
-        Add {name}
+        Add {name} (TODO: not correct append obj)
       </Button>
     </div>
   );
@@ -100,7 +100,7 @@ const NestedFieldArray = (props: NFProps): JSX.Element => {
         disableRipple
         onClick={() => append({})}
       >
-        Add {name}
+        Add {name} (TODO: not correct append obj)
       </Button>
     </div>
   );
