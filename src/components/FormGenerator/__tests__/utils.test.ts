@@ -43,6 +43,28 @@ import {
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
+const numberValidationTests = (
+  min: number,
+  max: number,
+  numberOfDecimals: number,
+) => [
+  { name: 'matches', params: { regex: /^[1-9]\d*(\.\d+)?$/ } },
+  { name: 'decimal-places', params: { numberOfDecimals } },
+  { name: 'min', params: { min } },
+  { name: 'max', params: { max } },
+];
+
+const stringValidationTests = (regex: RegExp) => [
+  { name: 'matches', params: { regex } },
+];
+
+const requiredValidationTests = [{ name: 'required' }];
+
+const minMaxValidationTests = (min: number, max: number) => [
+  { name: 'min', params: { min } },
+  { name: 'max', params: { max } },
+];
+
 describe('FormGenerator utils defaultValues', () => {
   test('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
     const expectedDefaultValues = {
@@ -489,28 +511,6 @@ describe('FormGenerator utils defaultValues', () => {
   });
 });
 
-const numberValidationTests = (
-  min: number,
-  max: number,
-  numberOfDecimals: number,
-) => [
-  { name: 'matches', params: { regex: /^[1-9]\d*(\.\d+)?$/ } },
-  { name: 'decimal-places', params: { numberOfDecimals } },
-  { name: 'min', params: { min } },
-  { name: 'max', params: { max } },
-];
-
-const stringValidationTests = (regex: RegExp) => [
-  { name: 'matches', params: { regex } },
-];
-
-const requiredValidationTests = [{ name: 'required' }];
-
-const minMaxValidationTests = (min: number, max: number) => [
-  { name: 'min', params: { min } },
-  { name: 'max', params: { max } },
-];
-
 describe('FormGenerator utils yupSchema', () => {
   test('should return correct validationSchema for one textVar and one numberVar', () => {
     const yupSchema = generateYupSchemaFromFormSchema(formDef as FormSchema);
@@ -673,7 +673,14 @@ describe('FormGenerator utils yupSchema', () => {
                     fields: {
                       value: {
                         type: 'string',
-                        tests: stringValidationTests(/^[a-zA-Z9]$/),
+                      },
+                    },
+                  },
+                  lastName: {
+                    type: 'object',
+                    fields: {
+                      value: {
+                        type: 'string',
                       },
                     },
                   },
