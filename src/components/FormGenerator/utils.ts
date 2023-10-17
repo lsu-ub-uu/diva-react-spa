@@ -160,7 +160,9 @@ export const createYupArray = (
 };
 
 export const createYupArrayFromSchema = (
-  schema: ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>,
+  schema:
+    | ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>
+    | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
   repeat: FormComponentRepeat,
 ) => {
   return yup.array().of(schema).min(repeat.repeatMin).max(repeat.repeatMax);
@@ -211,13 +213,31 @@ const createYupNumberSchema = (component: FormComponent) => {
     .test(testMax);
 };
 
-const createValidationFromComponentType = (component: FormComponent) => {
+const createValidationForAttributesFromComponent = (
+  component: FormComponent,
+) => {
+  const attributeValidation =
+    component.attributes?.map(
+      (attributeCollection: FormAttributeCollection) => ({
+        [`_${attributeCollection.name}`]:
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          createValidationFromComponentType(attributeCollection),
+      }),
+    ) ?? [];
+  return {
+    ...Object.assign({}, ...attributeValidation),
+  };
+};
+
+const createValidationFromComponentType = (
+  component: FormComponent | FormAttributeCollection,
+) => {
   switch (component.type) {
     case 'textVariable':
-      return createYupStringRegexpSchema(component);
+      return createYupStringRegexpSchema(component as FormComponent);
     case 'numberVariable':
-      return createYupNumberSchema(component);
-    default: // collectionVariable
+      return createYupNumberSchema(component as FormComponent);
+    default: // collectionVariable and attributeCollection
       return yup.string().required();
   }
 };
@@ -229,17 +249,29 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      const objectSchema = generateYupSchema(component.components);
+      const innerObjectSchema = generateYupSchema(component.components);
+
+      // create attribute fields
+      const attributeValidationsRuleFields =
+        createValidationForAttributesFromComponent(component);
+      // end attribs
+
+      // Create a new schema by merging the existing schema and attribute fields
+      const extendedSchema = yup.object().shape({
+        ...innerObjectSchema.fields,
+        ...attributeValidationsRuleFields,
+      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+
       validationRule[component.name] = createYupArrayFromSchema(
-        objectSchema,
+        extendedSchema,
         component.repeat,
       );
     } else {
-      const innerShape = {
+      const innerObjectStringSchema = {
         value: createValidationFromComponentType(component),
       };
       validationRule[component.name] = createYupArray(
-        innerShape,
+        innerObjectStringSchema,
         component.repeat,
       );
     }
@@ -250,6 +282,7 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       validationRule[component.name] = generateYupSchema(component.components);
     } else {
+      // value object shape
       validationRule[component.name] = yup
         .object()
         .default({})

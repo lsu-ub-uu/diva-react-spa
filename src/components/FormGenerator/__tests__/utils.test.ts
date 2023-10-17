@@ -39,6 +39,7 @@ import {
   formDefWithRepeatingCollectionVar,
   formDefWithRepeatingGroup,
   formDefWithRepeatingGroupWithRepeatingChildGroup,
+  formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
   formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
@@ -663,6 +664,64 @@ describe('FormGenerator utils yupSchema', () => {
         tests: minMaxValidationTests(1, 10),
         innerType: {
           fields: {
+            name: {
+              type: 'array',
+              tests: minMaxValidationTests(1, 100),
+              innerType: {
+                fields: {
+                  firstName: {
+                    type: 'object',
+                    fields: {
+                      value: {
+                        type: 'string',
+                      },
+                    },
+                  },
+                  lastName: {
+                    type: 'object',
+                    fields: {
+                      value: {
+                        type: 'string',
+                      },
+                    },
+                  },
+                  age: {
+                    type: 'object',
+                    fields: {
+                      value: {
+                        type: 'string',
+                        tests: numberValidationTests(0, 125, 0),
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    expect(actualSchema).toMatchObject(expectedSchema);
+  });
+
+  test('should return correct validationSchema for repeating group having repeating child group with two name fields and different attributes', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes as FormSchema,
+    );
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      author: {
+        type: 'array',
+        tests: minMaxValidationTests(1, 10),
+        innerType: {
+          fields: {
+            _colourAttribute: {
+              // attribute values are always required
+              type: 'string',
+              tests: requiredValidationTests,
+            },
             name: {
               type: 'array',
               tests: minMaxValidationTests(1, 100),
