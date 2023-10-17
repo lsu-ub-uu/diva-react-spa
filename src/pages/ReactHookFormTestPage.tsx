@@ -1,22 +1,110 @@
-import { useEffect } from 'react';
 import { Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useForm } from 'react-hook-form';
+import { Control, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import React from 'react';
 import { Card } from '../components';
-import {
-  ControlledSelectField,
-  ControlledTextField,
-} from '../components/Controlled';
+import { ControlledTextField } from '../components/Controlled';
 
 const validationSchema = yup.object().shape({
-  someTextVariable: yup.object().shape({
-    value: yup.string().required(),
-    _someAttrib: yup.string().required(),
-    _someAttrib2: yup.string().required(),
-  }),
+  author: yup.array().of(
+    yup.object().shape({
+      name: yup.array().of(
+        yup.object().shape({
+          firstName: yup.object().shape({
+            value: yup.string().required(),
+          }),
+          lastName: yup.object().shape({
+            value: yup.string().required(),
+          }),
+        }),
+      ),
+    }),
+  ),
 });
+
+interface NFProps {
+  control: Control<any>;
+  name: string;
+}
+
+const NestedNameFieldArray = (props: NFProps): JSX.Element => {
+  const { control, name } = props;
+  const { fields, append } = useFieldArray({ control, name });
+
+  return (
+    <div id={props.name}>
+      {fields.map((field, index) => {
+        return (
+          <Card
+            key={field.id}
+            title={`${name} ${index}`}
+            variant='variant2'
+            tooltipTitle='title'
+            tooltipBody='body'
+          >
+            <ControlledTextField
+              label={`${name}[${index}].firstName.value`}
+              name={`${name}[${index}].firstName.value`}
+              control={control}
+            />
+            <ControlledTextField
+              label={`${name}[${index}].lastName.value`}
+              name={`${name}[${index}].lastName.value`}
+              control={control}
+            />
+          </Card>
+        );
+      })}
+      <Button
+        sx={{ mt: 1, mb: 1 }}
+        variant='outlined'
+        fullWidth
+        disableRipple
+        onClick={() => append({})}
+      >
+        Add {name}
+      </Button>
+    </div>
+  );
+};
+
+const NestedFieldArray = (props: NFProps): JSX.Element => {
+  const { control, name } = props;
+  const { fields, append } = useFieldArray({ control, name });
+
+  return (
+    <div id={props.name}>
+      {fields.map((field, index) => {
+        return (
+          <Card
+            key={field.id}
+            title={`${name} ${index}`}
+            variant='variant1'
+            tooltipTitle='title'
+            tooltipBody='Some body text on how this form works'
+          >
+            <NestedNameFieldArray
+              control={control}
+              name={`${name}[${index}].name` as const}
+            />
+          </Card>
+        );
+      })}
+      <Button
+        sx={{ mt: 3, mb: 3 }}
+        variant='outlined'
+        color='info'
+        fullWidth
+        disableRipple
+        onClick={() => append({})}
+      >
+        Add {name}
+      </Button>
+    </div>
+  );
+};
 
 export const ReactHookFormTestPage = () => {
   const methods = useForm({
@@ -25,21 +113,18 @@ export const ReactHookFormTestPage = () => {
     shouldFocusError: false,
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      someTextVariable: {
-        value: 'init value test',
-        _someAttrib: '',
-        _someAttrib2: 'testVal2',
-      },
+      author: [
+        {
+          name: [
+            { firstName: { value: 'Egil' }, lastName: { value: 'Baker' } },
+          ],
+        },
+      ],
     },
   });
 
-  const { formState, setFocus, control, handleSubmit } = methods;
+  const { formState, control, handleSubmit } = methods;
 
-  useEffect(() => {
-    setFocus('someTextVariable');
-  }, [setFocus]);
-
-  // @ts-ignore
   return (
     <Box
       component='form'
@@ -48,7 +133,7 @@ export const ReactHookFormTestPage = () => {
       )}
     >
       <Card
-        title='Testing'
+        title='Test'
         variant='variant6'
         tooltipTitle='Title'
         tooltipBody='Here goes some text about how choose type'
@@ -64,49 +149,15 @@ export const ReactHookFormTestPage = () => {
             xs={12}
             sm={12}
           >
-            <ControlledTextField
-              placeholder='some placeholder'
+            <p>
+              We should have a repeating person (using some short of FieldArray)
+              .. and inside that we have a repeating group called name
+              containing two textFields firstName and Lastname
+            </p>
+            <NestedFieldArray
               control={control}
-              name={`someTextVariable.value` as const}
-              label='Somelabel'
+              name='author'
             />
-            <Grid
-              spacing={1}
-              container
-              direction='row'
-              justifyContent='space-between'
-              alignItems='flex-start'
-            >
-              <Grid
-                item
-                xs={6}
-              >
-                <ControlledSelectField
-                  placeholder='some placeholder'
-                  control={control}
-                  name={`someTextVariable._someAttrib` as const}
-                  label='Somelabel'
-                  isLoading={false}
-                  loadingError={false}
-                  options={[{ value: 'testVal', label: 'Option TestVal' }]}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={6}
-              >
-                <ControlledSelectField
-                  placeholder='some placeholder'
-                  control={control}
-                  name={`someTextVariable._someAttrib2` as const}
-                  label='Somelabel2 that are really realllllllllly loooong'
-                  isLoading={false}
-                  loadingError={false}
-                  options={[{ value: 'testVal2', label: 'Option TestVal2' }]}
-                  readOnly
-                />
-              </Grid>
-            </Grid>
           </Grid>
           <Grid
             item

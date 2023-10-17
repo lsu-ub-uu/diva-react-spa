@@ -38,7 +38,7 @@ export const HomePage = () => {
               to='/author-form'
               endIcon={<ArrowForwardIcon />}
             >
-              Add publication
+              Add author spike
             </Button>
             <Button
               disableRipple
