@@ -733,6 +733,10 @@ describe('FormGenerator utils yupSchema', () => {
                       value: {
                         type: 'string',
                       },
+                      _colourAttribute: {
+                        type: 'string',
+                        tests: requiredValidationTests,
+                      },
                     },
                   },
                   lastName: {

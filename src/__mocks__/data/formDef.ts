@@ -1744,6 +1744,23 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes = {
                 repeatMin: 1,
                 repeatMax: 1,
               },
+              attributes: [
+                {
+                  type: 'collectionVariable',
+                  name: 'colourAttribute',
+                  placeholder: 'emptyTextId',
+                  tooltip: {
+                    title: 'exampleCollectionVarText',
+                    body: 'exampleCollectionVarDefText',
+                  },
+                  options: [
+                    { value: 'blue', label: 'exampleBlueItemText' },
+                    { value: 'pink', label: 'examplePinkItemText' },
+                    { value: 'yellow', label: 'exampleYellowItemText' },
+                  ],
+                  mode: 'input',
+                },
+              ],
             },
             {
               name: 'lastName',
