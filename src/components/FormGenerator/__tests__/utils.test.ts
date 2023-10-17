@@ -432,34 +432,28 @@ describe('FormGenerator utils defaultValues', () => {
   test('should take a tree and be able to add full name paths', () => {
     const expected = [
       {
-        name: 'Root',
-        path: 'Root',
+        name: 'person',
+        path: 'person',
         components: [
           {
-            name: 'Node1',
+            name: 'name',
             components: [
               {
-                name: 'Node11',
-                path: 'Root.Node1.Node11',
+                name: 'firstName',
+                path: 'person.name.firstName',
                 components: [],
               },
               {
-                name: 'Node12',
-                path: 'Root.Node1.Node12',
-                components: [
-                  {
-                    name: 'Node121',
-                    path: 'Root.Node1.Node12.Node121',
-                    components: [],
-                  },
-                ],
+                name: 'lastName',
+                path: 'person.name.lastName',
+                components: [],
               },
             ],
-            path: 'Root.Node1',
+            path: 'person.name',
           },
           {
-            name: 'Node2',
-            path: 'Root.Node2',
+            name: 'age',
+            path: 'person.age',
             components: [],
           },
         ],
@@ -480,28 +474,23 @@ describe('FormGenerator utils defaultValues', () => {
     };
 
     const treeData = {
-      name: 'Root',
+      name: 'person',
       components: [
         {
-          name: 'Node1',
+          name: 'name',
           components: [
             {
-              name: 'Node11',
+              name: 'firstName',
               components: [],
             },
             {
-              name: 'Node12',
-              components: [
-                {
-                  name: 'Node121',
-                  components: [],
-                },
-              ],
+              name: 'lastName',
+              components: [],
             },
           ],
         },
         {
-          name: 'Node2',
+          name: 'age',
           components: [],
         },
       ],
