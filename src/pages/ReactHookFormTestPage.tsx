@@ -11,6 +11,14 @@ import {
 } from '../components/Controlled';
 
 const validationSchema = yup.object().shape({
+  title: yup.object().shape({
+    main: yup.object().shape({
+      value: yup.string().required(),
+    }),
+    tagLine: yup.object().shape({
+      value: yup.string().required(),
+    }),
+  }),
   author: yup.array().of(
     yup.object().shape({
       _gender: yup.string().required(),
@@ -185,6 +193,10 @@ export const ReactHookFormTestPage = () => {
     shouldFocusError: false,
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      title: {
+        main: { value: 'Moby Dick' },
+        tagLine: { value: 'Call me Ishmael' },
+      },
       author: [
         {
           _gender: '',
@@ -227,6 +239,16 @@ export const ReactHookFormTestPage = () => {
             xs={12}
             sm={12}
           >
+            <ControlledTextField
+              label='title.main.value'
+              name='title.main.value'
+              control={control}
+            />
+            <ControlledTextField
+              label='title.tagLine.value'
+              name='title.tagLine.value'
+              control={control}
+            />
             <NestedFieldArray
               control={control}
               name='author'
