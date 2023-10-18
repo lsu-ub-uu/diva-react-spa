@@ -9,6 +9,7 @@ import {
   ControlledSelectField,
   ControlledTextField,
 } from '../components/Controlled';
+import { ActionButtonGroup } from '../components/FormGenerator/ActionButtonGroup';
 
 const validationSchema = yup.object().shape({
   title: yup.object().shape({
@@ -118,7 +119,7 @@ const NestedNameFieldArray = (props: NFProps): JSX.Element => {
 
 const NestedFieldArray = (props: NFProps): JSX.Element => {
   const { control, name } = props;
-  const { fields, append } = useFieldArray({ control, name });
+  const { fields, append, remove } = useFieldArray({ control, name });
 
   return (
     <div id={props.name}>
@@ -130,6 +131,16 @@ const NestedFieldArray = (props: NFProps): JSX.Element => {
             variant='variant1'
             tooltipTitle='title'
             tooltipBody='Some body text on how this form works'
+            action={
+              <ActionButtonGroup
+                moveUpButtonDisabled={index === 0}
+                moveUpButtonAction={() => console.log('')}
+                moveDownButtonDisabled={index === fields.length - 1}
+                moveDownButtonAction={() => console.log('')}
+                deleteButtonDisabled={false}
+                deleteButtonAction={() => remove(index)}
+              />
+            }
           >
             <ControlledSelectField
               control={control}

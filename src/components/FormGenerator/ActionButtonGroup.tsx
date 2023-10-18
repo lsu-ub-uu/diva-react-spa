@@ -37,7 +37,7 @@ export const ActionButtonGroup = (
   return (
     <ButtonGroup
       size='small'
-      orientation='vertical'
+      orientation='horizontal'
       variant='text'
     >
       <IconButton
