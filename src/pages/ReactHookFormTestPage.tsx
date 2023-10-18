@@ -5,13 +5,19 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { Card } from '../components';
-import { ControlledTextField } from '../components/Controlled';
+import {
+  ControlledSelectField,
+  ControlledTextField,
+} from '../components/Controlled';
 
 const validationSchema = yup.object().shape({
   author: yup.array().of(
     yup.object().shape({
+      _gender: yup.string().required(),
+      _color: yup.string().required(),
       name: yup.array().of(
         yup.object().shape({
+          _title: yup.string().required(),
           firstName: yup.object().shape({
             value: yup.string().required(),
           }),
@@ -44,6 +50,17 @@ const NestedNameFieldArray = (props: NFProps): JSX.Element => {
             tooltipTitle='title'
             tooltipBody='body'
           >
+            <ControlledSelectField
+              options={[
+                { value: 'mr', label: 'Mr' },
+                { value: 'mrs', label: 'Mrs' },
+              ]}
+              label={`${name}[${index}]._title`}
+              name={`${name}[${index}]._title`}
+              control={control}
+              isLoading={false}
+              loadingError={false}
+            />
             <ControlledTextField
               label={`${name}[${index}].firstName.value`}
               name={`${name}[${index}].firstName.value`}
@@ -64,6 +81,7 @@ const NestedNameFieldArray = (props: NFProps): JSX.Element => {
         disableRipple
         onClick={() =>
           append({
+            _title: 'mrs',
             firstName: { value: 'new firstName' },
             lastName: { value: 'new lastName' },
           })
@@ -90,6 +108,28 @@ const NestedFieldArray = (props: NFProps): JSX.Element => {
             tooltipTitle='title'
             tooltipBody='Some body text on how this form works'
           >
+            <ControlledSelectField
+              control={control}
+              isLoading={false}
+              options={[
+                { value: 'blue', label: 'Blue' },
+                { value: 'yellow', label: 'Yellow' },
+              ]}
+              label='Color'
+              name={`${name}[${index}]._color` as const}
+              loadingError={false}
+            />
+            <ControlledSelectField
+              control={control}
+              isLoading={false}
+              options={[
+                { value: 'male', label: 'Male' },
+                { value: 'female', label: 'Female' },
+              ]}
+              label='Gender'
+              name={`${name}[${index}]._gender` as const}
+              loadingError={false}
+            />
             <NestedNameFieldArray
               control={control}
               name={`${name}[${index}].name` as const}
@@ -103,7 +143,19 @@ const NestedFieldArray = (props: NFProps): JSX.Element => {
         color='info'
         fullWidth
         disableRipple
-        onClick={() => append({})}
+        onClick={() =>
+          append({
+            _gender: 'male',
+            _color: 'yellow',
+            name: [
+              {
+                _title: 'mr',
+                firstName: { value: 'Egil' },
+                lastName: { value: 'Baker' },
+              },
+            ],
+          })
+        }
       >
         Add {name} (TODO: not correct append obj)
       </Button>
@@ -120,8 +172,14 @@ export const ReactHookFormTestPage = () => {
     defaultValues: {
       author: [
         {
+          _gender: '',
+          _color: 'blue',
           name: [
-            { firstName: { value: 'Egil' }, lastName: { value: 'Baker' } },
+            {
+              _title: 'mr',
+              firstName: { value: 'Egil' },
+              lastName: { value: 'Baker' },
+            },
           ],
         },
       ],
