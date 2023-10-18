@@ -149,7 +149,7 @@ const NestedFieldArray = (props: NFProps): JSX.Element => {
                 { value: 'blue', label: 'Blue' },
                 { value: 'yellow', label: 'Yellow' },
               ]}
-              label='Color'
+              label={`${name}[${index}]._color` as const}
               name={`${name}[${index}]._color` as const}
               loadingError={false}
             />
@@ -160,7 +160,7 @@ const NestedFieldArray = (props: NFProps): JSX.Element => {
                 { value: 'male', label: 'Male' },
                 { value: 'female', label: 'Female' },
               ]}
-              label='Gender'
+              label={`${name}[${index}]._gender` as const}
               name={`${name}[${index}]._gender` as const}
               loadingError={false}
             />
