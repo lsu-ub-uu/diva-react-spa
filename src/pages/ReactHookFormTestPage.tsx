@@ -19,6 +19,7 @@ const validationSchema = yup.object().shape({
         yup.object().shape({
           _title: yup.string().required(),
           firstName: yup.object().shape({
+            _originCountry: yup.string().required(),
             value: yup.string().required(),
           }),
           lastName: yup.object().shape({
@@ -61,6 +62,20 @@ const NestedNameFieldArray = (props: NFProps): JSX.Element => {
               isLoading={false}
               loadingError={false}
             />
+
+            <ControlledSelectField
+              options={[
+                { value: 'se', label: 'Sweden' },
+                { value: 'us', label: 'USA' },
+                { value: 'de', label: 'Germany' },
+              ]}
+              label={`${name}[${index}].firstName._originCountry`}
+              name={`${name}[${index}].firstName._originCountry`}
+              control={control}
+              isLoading={false}
+              loadingError={false}
+            />
+
             <ControlledTextField
               label={`${name}[${index}].firstName.value`}
               name={`${name}[${index}].firstName.value`}
@@ -82,7 +97,7 @@ const NestedNameFieldArray = (props: NFProps): JSX.Element => {
         onClick={() =>
           append({
             _title: 'mrs',
-            firstName: { value: 'new firstName' },
+            firstName: { value: 'new firstName', _originCountry: '' },
             lastName: { value: 'new lastName' },
           })
         }
@@ -150,8 +165,8 @@ const NestedFieldArray = (props: NFProps): JSX.Element => {
             name: [
               {
                 _title: 'mr',
-                firstName: { value: 'Egil' },
-                lastName: { value: 'Baker' },
+                firstName: { value: 'New firstname', _originCountry: 'de' },
+                lastName: { value: 'New last name' },
               },
             ],
           })
@@ -177,7 +192,7 @@ export const ReactHookFormTestPage = () => {
           name: [
             {
               _title: 'mr',
-              firstName: { value: 'Egil' },
+              firstName: { value: 'Egil', _originCountry: 'se' },
               lastName: { value: 'Baker' },
             },
           ],
