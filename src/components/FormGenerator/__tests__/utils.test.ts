@@ -307,6 +307,21 @@ describe('FormGenerator utils defaultValues', () => {
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
   });
 
+  test('createDefaultValuesFromFormSchema should construct a default value object for one single group having textVar as child component', () => {
+    const expectedDefaultValues = {
+      someChildGroupNameInData: {
+        someNameInData: {
+          value: '',
+        },
+      },
+    };
+
+    const actualDefaultValues = createDefaultValuesFromFormSchema(
+      formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
   // finalValues
   test('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
     const expectedDefaultValues = {
