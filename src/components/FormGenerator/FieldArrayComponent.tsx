@@ -23,7 +23,9 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { ActionButtonGroup } from './ActionButtonGroup';
 // eslint-disable-next-line import/no-cycle
-import { FormComponent, renderVariableField } from './FormGenerator';
+import { renderVariableField } from './FormGenerator';
+import { FormComponent } from './types';
+import { createDefaultValuesFromComponent } from './utils';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -38,9 +40,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   });
 
   const handleAppend = async () => {
-    append({
-      value: props.component.finalValue ? props.component.finalValue : '',
-    });
+    append(createDefaultValuesFromComponent(props.component, true));
   };
 
   const handleMove = async (prev: number, next: number) => {
@@ -63,7 +63,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             props.component,
             field.id,
             props.control as Control,
-            `${props.name}.${index}.value` as const,
+            `${props.name}.${index}.value` as const, // not correct
           )}
           <ActionButtonGroup
             moveUpButtonDisabled={index === 0}
@@ -71,7 +71,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             moveDownButtonDisabled={index === fields.length - 1}
             moveDownButtonAction={() => handleMove(index, index + 1)}
             deleteButtonDisabled={
-              fields.length <= props.component.repeat.repeatMin
+              fields.length <= (props.component.repeat?.repeatMin ?? 1)
             }
             deleteButtonAction={() => handleRemove(index)}
           />
@@ -80,7 +80,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       <Button
         sx={{ mt: 1, mb: 1 }}
         variant='outlined'
-        disabled={fields.length >= props.component.repeat.repeatMax}
+        disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
         onClick={handleAppend}
         disableRipple
         endIcon={<AddCircleOutlineIcon />}

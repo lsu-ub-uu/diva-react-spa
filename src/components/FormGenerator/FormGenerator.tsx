@@ -20,212 +20,39 @@
 import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ArraySchema, NumberSchema, StringSchema } from 'yup';
+import React from 'react';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 // eslint-disable-next-line import/no-cycle
 import {
   createDefaultValuesFromFormSchema,
-  isComponentOptional,
+  generateYupSchema,
   isComponentRepeating,
+  isComponentValidForDataCarrying,
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { FieldArrayComponent } from './FieldArrayComponent';
-import { Option, Typography } from '../index';
+import { Typography } from '../index';
+import { FormComponent, FormSchema } from './types';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
 }
 
-export interface FormSchema {
-  validationTypeId: string;
-  components: FormComponent[];
-}
-
-export interface FormComponentRepeat {
-  repeatMin: number;
-  repeatMax: number;
-  minNumberOfRepeatingToShow?: number;
-}
-
-export interface FormComponentTooltip {
-  title: string;
-  body: string;
-}
-
-export interface FormComponent {
-  type: string;
-  name: string;
-  finalValue?: string;
-  placeholder?: string;
-  validation?: FormRegexValidation | FormNumberValidation;
-  repeat: FormComponentRepeat;
-  tooltip?: FormComponentTooltip;
-  inputType?: 'input' | 'textarea'; // really be optional?
-  mode?: string;
-  options?: Option[];
-  attributes?: FormAttributeCollection[];
-}
-
-type FormAttributeCollection = Omit<
-  FormComponent,
-  'repeat' | 'inputType' | 'attributes'
->;
-
-interface FormRegexValidation {
-  type: 'regex';
-  pattern: string;
-}
-
-interface FormNumberValidation {
-  type: 'number';
-  min: number;
-  max: number;
-  warningMin: number;
-  warningMax: number;
-  numberOfDecimals: number;
-}
-
-const createYupStringRegexpSchema = (regexpValidation: FormRegexValidation) => {
-  return yup
-    .string()
-    .matches(
-      new RegExp(regexpValidation.pattern ?? '.+'),
-      'Invalid input format',
-    );
-};
-
-const createYupNumberSchema = (numberValidation: FormNumberValidation) => {
-  return yup
-    .string()
-    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-    .test('decimal-places', 'Invalid number of decimals', (value) => {
-      if (!value) return true;
-      const decimalPlaces = (value.split('.')[1] || []).length;
-      return decimalPlaces === numberValidation.numberOfDecimals;
-    })
-    .test('min', 'Invalid range (min)', (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return numberValidation.min <= numValue;
-    })
-    .test('max', 'Invalid range (max)', (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return numberValidation.max >= numValue;
-    });
-};
-
-const generateYupSchema = (components: FormComponent[]) => {
-  const validatableComponents = components.filter((component) =>
-    ['numberVariable', 'textVariable', 'collectionVariable'].includes(
-      component.type,
-    ),
-  );
-
-  const composedShape = validatableComponents.reduce(
-    (accumulator, component) => {
-      // eslint-disable-next-line prefer-regex-literals
-      if (
-        component.type === 'textVariable' &&
-        !isComponentRepeating(component)
-      ) {
-        const regexpValidation = component.validation as FormRegexValidation;
-        accumulator[component.name] =
-          createYupStringRegexpSchema(regexpValidation);
-      }
-
-      if (
-        component.type === 'textVariable' &&
-        isComponentRepeating(component)
-      ) {
-        const regexpValidation = component.validation as FormRegexValidation;
-        accumulator[component.name] = yup
-          .array()
-          .of(
-            yup.object().shape({
-              value: createYupStringRegexpSchema(regexpValidation),
-            }),
-          )
-          .min(component.repeat.repeatMin)
-          .max(component.repeat.repeatMax);
-      }
-
-      if (
-        component.type === 'collectionVariable' &&
-        !isComponentRepeating(component)
-      ) {
-        if (!isComponentOptional(component)) {
-          accumulator[component.name] = yup.string().required();
-        }
-      }
-
-      if (
-        component.type === 'collectionVariable' &&
-        isComponentRepeating(component)
-      ) {
-        if (!isComponentOptional(component)) {
-          accumulator[component.name] = yup
-            .array()
-            .of(
-              yup.object().shape({
-                value: yup.string().required(),
-              }),
-            )
-            .min(component.repeat.repeatMin)
-            .max(component.repeat.repeatMax);
-        }
-      }
-
-      if (
-        component.type === 'numberVariable' &&
-        isComponentRepeating(component)
-      ) {
-        const numberValidation = component.validation as FormNumberValidation;
-        accumulator[component.name] = yup
-          .array()
-          .of(
-            yup.object().shape({
-              value: createYupNumberSchema(numberValidation),
-            }),
-          )
-          .min(component.repeat.repeatMin)
-          .max(component.repeat.repeatMax);
-      }
-
-      if (
-        component.type === 'numberVariable' &&
-        !isComponentRepeating(component)
-      ) {
-        const numberValidation = component.validation as FormNumberValidation;
-        accumulator[component.name] = createYupNumberSchema(numberValidation);
-      }
-      return accumulator;
-    },
-    {} as Record<
-      string,
-      StringSchema | NumberSchema | ArraySchema<any, any, any, any>
-    >,
-  );
-
-  return yup.object().shape(composedShape);
-};
-
 export const renderVariableField = (
   component: FormComponent,
   reactKey: string,
   control: Control<any>,
   name: string,
-) => {
+): JSX.Element | null => {
   switch (component.type) {
     case 'textVariable':
     case 'numberVariable': {
       return (
         <ControlledTextField
           key={reactKey}
-          label={component.name}
+          label={component.label ?? ''}
           name={name}
           placeholder={component.placeholder}
           tooltip={component.tooltip}
@@ -241,7 +68,7 @@ export const renderVariableField = (
           name={name}
           isLoading={false}
           loadingError={false}
-          label={component.name}
+          label={component.label ?? ''}
           placeholder={component.placeholder}
           tooltip={component.tooltip}
           control={control}
@@ -250,11 +77,26 @@ export const renderVariableField = (
         />
       );
     }
+    case 'group': {
+      return (
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+        <React.Fragment key={`${reactKey}_group`}>
+          {component.components?.map((childComponent) => {
+            return renderVariableField(
+              childComponent,
+              `${reactKey}_group_${childComponent.name}`,
+              control,
+              `${component.name}.${childComponent.name}`,
+            );
+          })}
+        </React.Fragment>
+      );
+    }
     case 'text': {
       return (
         <Typography
           key={reactKey}
-          variant='h5'
+          variant={component.textStyle ?? 'bodyTextStyle'}
           text={component.name}
         />
       );
@@ -279,7 +121,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
 
-    if (isComponentRepeating(component)) {
+    if (
+      isComponentRepeating(component) &&
+      isComponentValidForDataCarrying(component)
+    ) {
       return (
         <FieldArrayComponent
           component={component}
@@ -290,12 +135,39 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       );
     }
 
+    let renderResult = renderVariableField(
+      component,
+      reactKey,
+      control,
+      `${component.name}.value`,
+    );
+
     if (component.attributes !== undefined) {
-      // should render the parent component by calling renderVariableField
-      // iterate attributes and call renderVariableField foreach
+      renderResult = (
+        // @ts-ignore
+        <React.Fragment key={reactKey}>
+          {renderResult}
+          {component.attributes.map((attribute, index) => {
+            return (
+              <ControlledSelectField
+                key={`${attribute.name}_${index}`}
+                name={`${component.name}._${attribute.name}`}
+                isLoading={false}
+                loadingError={false}
+                label={attribute.label ?? ''}
+                placeholder={attribute.placeholder}
+                tooltip={attribute.tooltip}
+                control={control}
+                options={attribute.options}
+                readOnly={!!attribute.finalValue}
+              />
+            );
+          })}
+        </React.Fragment>
+      );
     }
 
-    return renderVariableField(component, reactKey, control, component.name);
+    return renderResult;
   };
 
   return (

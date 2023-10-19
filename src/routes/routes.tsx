@@ -10,7 +10,7 @@ import {
   RecordTypePage,
   PersonSearchPage,
   PersonCreatePage,
-  UploadTestPage,
+  DynamicFormPage,
 } from '../pages';
 
 export const routes = [
@@ -28,7 +28,7 @@ export const routes = [
       },
       { path: '/users/about', element: <AboutUsersPage /> },
       {
-        path: '/form',
+        path: '/form-stepper',
         element: <FormPage />,
       },
       {
@@ -48,8 +48,8 @@ export const routes = [
         element: <PersonCreatePage />,
       },
       {
-        path: '/upload',
-        element: <UploadTestPage />,
+        path: '/form',
+        element: <DynamicFormPage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],

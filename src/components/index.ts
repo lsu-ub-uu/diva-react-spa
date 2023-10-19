@@ -31,8 +31,6 @@ export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';
 export { SnackbarProvider } from './Snackbar/SnackbarProvider';
 // eslint-disable-next-line import/no-cycle
 export { FormGenerator } from './FormGenerator/FormGenerator';
-// eslint-disable-next-line import/no-cycle
-export type { FormSchema } from './FormGenerator/FormGenerator';
 export { Typography } from './Typography/Typography';
 
 export interface SelectItem {

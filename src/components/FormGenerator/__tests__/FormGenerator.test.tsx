@@ -18,7 +18,7 @@
  */
 
 import { test, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import {
@@ -30,8 +30,11 @@ import {
   formDefWithOneTextVariableHavingFinalValue,
   formDefWithOneCollectionVariable,
   formDefWithOneNumberVariableWithAttributeCollection,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
+  formDefWithOneGroupHavingTextVariableAsChild,
 } from '../../../__mocks__/data/formDef';
-import { FormGenerator, FormSchema } from '../FormGenerator';
+import { FormGenerator } from '../FormGenerator';
+import { FormSchema } from '../types';
 
 /**
  * @vitest-environment jsdom
@@ -100,7 +103,9 @@ describe('<FormGenerator />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', { name: 'Submit' });
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+      const inputElement = screen.getByRole('textbox', {
+        name: 'someLabelTextId',
+      });
 
       const user = userEvent.setup();
       await user.type(inputElement, 'does not validate');
@@ -300,6 +305,23 @@ describe('<FormGenerator />', () => {
       expect(removeButtonElements[0]).toBeDisabled();
       expect(removeButtonElements[1]).toBeDisabled();
     });
+
+    it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const removeButtonElements = screen.getAllByLabelText('delete');
+
+      expect(removeButtonElements).toHaveLength(1);
+      expect(removeButtonElements[0]).toBeEnabled();
+    });
   });
 
   describe('collectionVariable', () => {
@@ -345,7 +367,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Renders a form with collectionVariable and validates it correctly and does not call submit', async () => {
+    it('Renders a form with collectionVariable and validates it falsy and does not call submit', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -364,7 +386,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('attribute collection', () => {
-    it('renders a form with numberVariable and attribute collection selectBox', async () => {
+    it('renders a form with numberVariable and attribute collection selectBox and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -378,8 +400,39 @@ describe('<FormGenerator />', () => {
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
 
-      // const selectElement = screen.getByPlaceholderText('emptyTextId');
-      // expect(selectElement).toBeInTheDocument();
+      const expandButton = screen.getByRole('button', { expanded: false });
+      expect(expandButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.click(expandButton);
+      const listBoxElement = screen.getByRole('listbox');
+
+      expect(listBoxElement.children).toHaveLength(4);
+
+      await user.selectOptions(listBoxElement, '<em>option.none</em>');
+
+      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('group', () => {
+    it('renders a form with group and renders its textVariable child', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithOneGroupHavingTextVariableAsChild}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const textInput = screen.getByPlaceholderText('someEmptyTextId');
+      expect(textInput).toBeInTheDocument();
     });
   });
 });

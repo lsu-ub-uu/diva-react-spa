@@ -43,7 +43,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             error={error !== undefined}
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
           >
-            {props.label}
+            {t(props.label)}
             {props.tooltip && (
               <Tooltip
                 title={t(props.tooltip.title)}
@@ -74,6 +74,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
               inputRef: ref,
               readOnly: props.readOnly,
             }}
+            labelId={name}
             onBlur={onBlur}
             size='small'
             value={props.options?.length ? value : ''}
