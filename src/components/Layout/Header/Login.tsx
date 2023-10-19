@@ -2,6 +2,7 @@ import { useState, MouseEvent } from 'react';
 import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { devAccounts } from '../../../utils';
+// eslint-disable-next-line import/no-cycle
 import { dummyLoginAsync } from '../../../features/auth/actions';
 import { logout } from '../../../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -47,16 +48,6 @@ export const Login = (): JSX.Element => {
     dispatch(logout());
   };
 
-  const addDivaToLoginName = (idFromLogin: string) => {
-    if (
-      idFromLogin === 'coraUser:491055276494310' ||
-      idFromLogin === 'coraUser:491144693381458' ||
-      idFromLogin === 'coraUser:491201365536105'
-    ) {
-      return 'diva';
-    }
-  };
-
   return (
     <div>
       {authState.userSession !== null ? (
@@ -66,7 +57,7 @@ export const Login = (): JSX.Element => {
           alignItems='center'
         >
           <Box>
-            {addDivaToLoginName(authState.userSession.idFromLogin)}
+            {authState.userSession.idFromLogin}
             {authState.userSession.firstName}
             {authState.userSession.lastName}
           </Box>

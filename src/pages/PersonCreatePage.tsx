@@ -14,13 +14,11 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ErrorIcon from '@mui/icons-material/Error';
-
 import { Helmet } from 'react-helmet-async';
-import { useTranslation } from 'react-i18next';
-
 import { useAppDispatch } from '../app/hooks';
 import { loadPublicationTypesAsync } from '../features/publicationTypes';
 import { Card, useBackdrop, ErrorSummary } from '../components';
+// eslint-disable-next-line import/no-cycle
 import { postOnePerson } from '../features/createPerson/createPersonSlice';
 
 export interface PersonCreateModel {
@@ -54,7 +52,6 @@ export const PersonCreatePage = () => {
     },
   });
 
-  const { t } = useTranslation();
   const methods = useForm<PersonCreateModel>({
     resolver: yupResolver(validationSchema),
     defaultValues: {

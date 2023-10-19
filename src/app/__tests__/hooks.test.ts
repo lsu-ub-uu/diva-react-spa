@@ -51,7 +51,7 @@ describe('useCoraFormSchemaByValidationType', () => {
           },
         },
         {
-          type: 'input',
+          type: 'textVariable',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
           validation: {
