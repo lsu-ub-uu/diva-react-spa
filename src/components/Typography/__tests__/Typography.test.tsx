@@ -37,7 +37,7 @@ describe('<Typography>', () => {
   it('should render a text translated into english', () => {
     render(
       <Typography
-        variant='h1'
+        variant='h1TextStyle'
         text='not translated'
       />,
     );
