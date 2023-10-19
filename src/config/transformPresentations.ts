@@ -24,7 +24,7 @@ import {
 } from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { BFFPresentation, BFFPresentationGroup } from './bffTypes';
+import { BFFContainer, BFFPresentation, BFFPresentationGroup } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { getChildReferencesListFromGroup } from './transformMetadata';
 import {
@@ -69,6 +69,9 @@ const transformCoraPresentationToBFFPresentation = (
       // basic presentation should be enough för collection variable
       return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
     }
+    case 'container': {
+      return transformCoraPresentationContainerToBFFContainer(coraRecordWrapper);
+    }
     // TODO add more types here like pRecordLink etc
     default: {
       return;
@@ -97,7 +100,10 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
 
   let specifiedLabelTextId;
   if (containsChildWithNameInData(dataRecordGroup, 'specifiedLabelText')) {
-    specifiedLabelTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'specifiedLabelText');
+    specifiedLabelTextId = extractLinkedRecordIdFromNamedRecordLink(
+      dataRecordGroup,
+      'specifiedLabelText'
+    );
   }
 
   let showLabel;
@@ -105,7 +111,15 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     showLabel = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'showLabel');
   }
 
-  return removeEmpty({ id, presentationOf, mode, emptyTextId, type, specifiedLabelTextId, showLabel } as BFFPresentation);
+  return removeEmpty({
+    id,
+    presentationOf,
+    mode,
+    emptyTextId,
+    type,
+    specifiedLabelTextId,
+    showLabel
+  } as BFFPresentation);
 };
 
 // Handle pVar
@@ -168,6 +182,46 @@ const transformChildReference = (childReference: DataGroup) => {
     textStyle,
     presentationSize,
     childStyles
+  });
+};
+
+const transformCoraPresentationContainerToBFFContainer = (
+  coraRecordWrapper: RecordWrapper
+): BFFContainer => {
+  const dataRecordGroup = coraRecordWrapper.record.data;
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+  const presentationsOf = getFirstDataGroupWithNameInDataAndAttributes(
+    dataRecordGroup,
+    'presentationsOf'
+  );
+
+  const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
+  const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
+  const children = childReferencesList.map((childReference) => {
+    return transformContainerChildReference(childReference);
+  });
+
+  return {
+    id,
+    // presentationsOf,
+    mode,
+    children,
+    type
+  } as BFFContainer;
+};
+
+const transformContainerChildReference = (childReference: DataGroup) => {
+  const refGroup = getFirstDataGroupWithNameInDataAndAttributes(childReference, 'refGroup');
+  const ref = getFirstChildWithNameInData(refGroup, 'ref');
+  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
+  const type = extractAttributeValueByName(ref as DataGroup, 'type');
+  const textStyle = extractAtomicValueByName(childReference, 'textStyle');
+
+  return removeEmpty({
+    childId,
+    type,
+    textStyle
   });
 };
 

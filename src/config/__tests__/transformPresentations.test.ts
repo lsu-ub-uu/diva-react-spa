@@ -27,6 +27,7 @@ import coraPresentationWithMiscTypes from '../../__mocks__/coraPresentationWithM
 import coraPresentationWithOneCollectionVariable from '../../__mocks__/coraPresentationWithOneCollectionVariable.json';
 import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '../../__mocks__/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
 import coraPresentationWithOneTextVariableHavingShowLabelFalse from '../../__mocks__/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
+import coraPresentationSurroundingContainer from '../../__mocks__/coraPresentationSurroundingContainer.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -35,154 +36,176 @@ describe('transformCoraPresentations', () => {
     expect(transformData).toStrictEqual([]);
   });
 
-  it('Returns two BFFPresentation of type pVar', () => {
-    const transformData = transformCoraPresentations(presentationListWithTwoPVars);
-    expect(transformData).toHaveLength(2);
-  });
+  describe('pVar', () => {
+    it('Returns two BFFPresentation of type pVar', () => {
+      const transformData = transformCoraPresentations(presentationListWithTwoPVars);
+      expect(transformData).toHaveLength(2);
+    });
 
-  it('Returns one BFFPresentation for one pVar entry', () => {
-    const transformData = transformCoraPresentations(presentationListWithTwoPVars);
-    expect(transformData[0]).toStrictEqual({
-      id: 'someTextVarPVar',
-      type: 'pVar',
-      presentationOf: 'someTextVar',
-      mode: 'input',
-      inputType: 'someInputType',
-      emptyTextId: 'somePlaceholderText'
+    it('Returns one BFFPresentation for one pVar entry', () => {
+      const transformData = transformCoraPresentations(presentationListWithTwoPVars);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someTextVarPVar',
+        type: 'pVar',
+        presentationOf: 'someTextVar',
+        mode: 'input',
+        inputType: 'someInputType',
+        emptyTextId: 'somePlaceholderText'
+      });
+    });
+
+    it('Returns one BFFPresentation for one pVar entry with specified label', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationWithOneTextVariableHavingSpecifiedLabel
+      );
+      expect(transformData[0]).toStrictEqual({
+        id: 'someTextVarPVar',
+        type: 'pVar',
+        presentationOf: 'someTextVar',
+        mode: 'input',
+        inputType: 'someInputType',
+        emptyTextId: 'somePlaceholderText',
+        specifiedLabelTextId: 'someSpecifiedTextVarText'
+      });
+    });
+
+    it('Returns one BFFPresentation for one pVar entry with label hidden/disabled', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationWithOneTextVariableHavingShowLabelFalse
+      );
+      expect(transformData[0]).toStrictEqual({
+        id: 'someTextVarPVar',
+        type: 'pVar',
+        presentationOf: 'someTextVar',
+        mode: 'input',
+        inputType: 'someInputType',
+        emptyTextId: 'somePlaceholderText',
+        showLabel: 'false'
+      });
+    });
+
+    it('Returns one BFFPresentation for one pVar with missing emptyTextId', () => {
+      const transformData = transformCoraPresentations(coraPresentationGroupWithMissingEmptyTextId);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someTextVarPVar',
+        type: 'pVar',
+        presentationOf: 'someTextVar',
+        mode: 'input',
+        inputType: 'someInputType'
+      });
     });
   });
-
-  it('Returns one BFFPresentation for one pVar entry with specified label', () => {
-    const transformData = transformCoraPresentations(coraPresentationWithOneTextVariableHavingSpecifiedLabel);
-    expect(transformData[0]).toStrictEqual({
-      id: 'someTextVarPVar',
-      type: 'pVar',
-      presentationOf: 'someTextVar',
-      mode: 'input',
-      inputType: 'someInputType',
-      emptyTextId: 'somePlaceholderText',
-      specifiedLabelTextId: 'someSpecifiedTextVarText',
+  describe('pNumVar', () => {
+    it('Returns one BFFPresentation for one pNumVar entry', () => {
+      const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someTextVarPNumVar',
+        type: 'pNumVar',
+        presentationOf: 'someNumberVar',
+        mode: 'input',
+        emptyTextId: 'somePlaceholderText'
+      });
     });
-  });
 
-  it('Returns one BFFPresentation for one pVar entry with label hidden/disabled', () => {
-    const transformData = transformCoraPresentations(coraPresentationWithOneTextVariableHavingShowLabelFalse);
-    expect(transformData[0]).toStrictEqual({
-      id: 'someTextVarPVar',
-      type: 'pVar',
-      presentationOf: 'someTextVar',
-      mode: 'input',
-      inputType: 'someInputType',
-      emptyTextId: 'somePlaceholderText',
-      showLabel: 'false',
-    });
-  });
-
-
-  it('Returns one BFFPresentation for one pVar with missing emptyTextId', () => {
-    const transformData = transformCoraPresentations(coraPresentationGroupWithMissingEmptyTextId);
-    expect(transformData[0]).toStrictEqual({
-      id: 'someTextVarPVar',
-      type: 'pVar',
-      presentationOf: 'someTextVar',
-      mode: 'input',
-      inputType: 'someInputType'
-    });
-  });
-
-  // pNum
-  it('Returns one BFFPresentation for one pNumVar entry', () => {
-    const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
-    expect(transformData[0]).toStrictEqual({
-      id: 'someTextVarPNumVar',
-      type: 'pNumVar',
-      presentationOf: 'someNumberVar',
-      mode: 'input',
-      emptyTextId: 'somePlaceholderText'
-    });
-  });
-
-  it('Returns one BFFPresentation for one pNumVar with missing emptyTextId', () => {
-    const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
-    expect(transformData[1]).toStrictEqual({
-      id: 'someTextVarPNumVar2',
-      type: 'pNumVar',
-      presentationOf: 'someNumberVar2',
-      mode: 'input'
+    it('Returns one BFFPresentation for one pNumVar with missing emptyTextId', () => {
+      const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
+      expect(transformData[1]).toStrictEqual({
+        id: 'someTextVarPNumVar2',
+        type: 'pNumVar',
+        presentationOf: 'someNumberVar2',
+        mode: 'input'
+      });
     });
   });
 
   // Groups testing
+  describe('pGroup', () => {
+    it('Should return one BFFPresentationGroup entry', () => {
+      const transformData = transformCoraPresentations(coraPresentationGroup);
+      expect(transformData).toHaveLength(1);
+    });
 
-  it('Should return one BFFPresentationGroup entry', () => {
-    const transformData = transformCoraPresentations(coraPresentationGroup);
-    expect(transformData).toHaveLength(1);
-  });
+    it('Returns one BFFPresentationGroup for one entry', () => {
+      const transformData = transformCoraPresentations(coraPresentationGroup);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someNewPGroup',
+        type: 'pGroup',
+        presentationOf: 'someNewGroup',
+        mode: 'input',
+        children: [
+          { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle', childStyles: [] },
+          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
+          { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
+          { childId: 'bookTitleTextVarPVar', type: 'presentation', childStyles: [] }
+        ]
+      });
+    });
 
-  it('Returns one BFFPresentationGroup for one entry', () => {
-    const transformData = transformCoraPresentations(coraPresentationGroup);
-    expect(transformData[0]).toStrictEqual({
-      id: 'someNewPGroup',
-      type: 'pGroup',
-      presentationOf: 'someNewGroup',
-      mode: 'input',
-      children: [
-        { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle', childStyles: [] },
-        { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
-        { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
-        { childId: 'bookTitleTextVarPVar', type: 'presentation', childStyles: [] }
-      ]
+    it('Returns one BFFPresentationGroup for one entry with minNumberOfRepeatingToShow', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationGroupWithMinNumberOfRepeatingToShow
+      );
+      expect(transformData[0]).toStrictEqual({
+        id: 'someNewPGroup',
+        type: 'pGroup',
+        presentationOf: 'someNewGroup',
+        mode: 'input',
+        children: [
+          {
+            childId: 'demoText',
+            type: 'text',
+            textStyle: 'h1TextStyle',
+            presentationSize: 'firstSmaller',
+            childStyles: []
+          },
+          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
+          { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
+          {
+            childId: 'bookTitleTextVarPVar',
+            minNumberOfRepeatingToShow: '99',
+            textStyle: 'h5TextStyle',
+            type: 'presentation',
+            childStyles: ['5', '3']
+          }
+        ]
+      });
+    });
+
+    it('Returns only BFFPresentationGroup and BFFPresentation (pGroup, pNumVar, pVar and pCollVar, collection) entries and skips other types', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationWithMiscTypes as DataListWrapper
+      );
+
+      expect(transformData).toHaveLength(5);
     });
   });
-
-  it('Returns one BFFPresentationGroup for one entry with minNumberOfRepeatingToShow', () => {
-    const transformData = transformCoraPresentations(
-      coraPresentationGroupWithMinNumberOfRepeatingToShow
-    );
-    expect(transformData[0]).toStrictEqual({
-      id: 'someNewPGroup',
-      type: 'pGroup',
-      presentationOf: 'someNewGroup',
-      mode: 'input',
-      children: [
-        {
-          childId: 'demoText',
-          type: 'text',
-          textStyle: 'h1TextStyle',
-          presentationSize: 'firstSmaller',
-          childStyles: []
-        },
-        { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
-        { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
-        {
-          childId: 'bookTitleTextVarPVar',
-          minNumberOfRepeatingToShow: '99',
-          textStyle: 'h5TextStyle',
-          type: 'presentation',
-          childStyles: ['5', '3']
-        }
-      ]
+  describe('pCollVar', () => {
+    it('Returns one BFFPresentation for one pCollVar entry', () => {
+      const transformData = transformCoraPresentations(coraPresentationWithOneCollectionVariable);
+      expect(transformData[0]).toStrictEqual({
+        id: 'examplePCollVar',
+        type: 'pCollVar',
+        presentationOf: 'exampleCollectionVar',
+        mode: 'input',
+        emptyTextId: 'initialEmptyValueText'
+      });
     });
   });
-
-  it('Returns only BFFPresentationGroup and BFFPresentation (pGroup, pNumVar, pVar and pCollVar) entries and skips other types', () => {
-    const transformData = transformCoraPresentations(
-      coraPresentationWithMiscTypes as DataListWrapper
-    );
-
-    expect(transformData).toHaveLength(4);
-  });
-
-  // pCollVar
-  it('Returns one BFFPresentation for one pCollVar entry', () => {
-    const transformData = transformCoraPresentations(coraPresentationWithOneCollectionVariable);
-    expect(transformData[0]).toStrictEqual({
-      id: 'examplePCollVar',
-      type: 'pCollVar',
-      presentationOf: 'exampleCollectionVar',
-      mode: 'input',
-      emptyTextId: 'initialEmptyValueText'
+  describe('SContainer', () => {
+    it('Returns one BFFPresentation for one SContainer', () => {
+      const transformData = transformCoraPresentations(coraPresentationSurroundingContainer);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someSContainer',
+        type: 'container',
+        // presentationsOf: ['publicationContentTypeCollectionVar', 'plainTextPasswordTextVar'], //'someNewGroup',
+        mode: 'input',
+        children: [
+          // do we need childStyle for Container children?
+          { childId: 'plainTextPasswordTextVarText', type: 'text' },
+          { childId: 'plainTextPasswordPVar', type: 'presentation' },
+          { childId: 'updatesHeadlineText', type: 'text', textStyle: 'h3TextStyle' }
+        ]
+      });
     });
   });
-
 });
