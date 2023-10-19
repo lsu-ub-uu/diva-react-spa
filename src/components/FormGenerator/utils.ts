@@ -84,7 +84,7 @@ const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
 
 export const createDefaultValuesFromComponent = (
   component: FormComponent,
-  forceComponentToShow = false,
+  forceDefaultValuesForAppend = false,
 ) => {
   let defaultValues: {
     [x: string]: string | number | ({} | undefined)[] | undefined | any;
@@ -102,7 +102,7 @@ export const createDefaultValuesFromComponent = (
         ...generateComponentAttributes(component),
       };
 
-  if (forceComponentToShow) {
+  if (forceDefaultValuesForAppend) {
     defaultValues = formDefaultObject;
   } else {
     // eslint-disable-next-line no-lonely-if
