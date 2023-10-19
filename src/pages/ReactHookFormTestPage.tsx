@@ -234,7 +234,7 @@ export const ReactHookFormTestPage = () => {
       )}
     >
       <Card
-        title='Test'
+        title='Book'
         variant='variant6'
         tooltipTitle='Title'
         tooltipBody='Here goes some text about how choose type'
