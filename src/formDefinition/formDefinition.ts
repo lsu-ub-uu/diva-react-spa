@@ -72,7 +72,7 @@ const createComponentsFromChildReferences = (
   presentationChildReferences: BFFPresentationChildReference[],
   metadataPool: any,
   presentationPool: any
-) => {
+): unknown => {
   return presentationChildReferences.map((presentationChildReference) => {
     const presentationChildType = presentationChildReference.type;
 
@@ -90,12 +90,13 @@ const createComponentsFromChildReferences = (
     );
   });
 };
+
 const createText = (
   presentationChildReference: BFFPresentationChildReference,
   presentationChildType: string
 ) => {
   const presentationChildId = presentationChildReference.childId;
-  return { name: presentationChildId, type: presentationChildType };
+  return { name: presentationChildId, type: presentationChildType, textStyle: presentationChildReference.textStyle };
 };
 
 const createCollectionVariableOptions = (metadataPool: any, collectionVariable: BFFMetadataCollectionVariable) => {
@@ -122,13 +123,13 @@ function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFM
       presentationOf: refCollectionVar.id,
       type: 'pCollVar',
       mode: 'input',
-      emptyTextId: 'emptyTextId',
+      emptyTextId: 'initialEmptyValueText',
     };
 
-    const finalValue = metadataVariable.finalValue;
+    const finalValue = refCollectionVar.finalValue;
     const commonParameters = createCommonParameters(refCollectionVar, fakePresentation);
     options = createCollectionVariableOptions(metadataPool, refCollectionVar);
-    return removeEmpty({ ...commonParameters, options, finalValue});
+    return removeEmpty({ ...commonParameters, options, finalValue });
   });
 }
 
@@ -142,6 +143,7 @@ const createPresentation = (
   let options;
   let finalValue;
   let attributes;
+  let components;
 
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
@@ -189,13 +191,29 @@ const createPresentation = (
     }
   }
 
+  if (presentation.type === 'pGroup') {
+    const group = metadata as BFFMetadataGroup;
+    const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
+
+    // skip children for recordInfo group for now
+    if (group.nameInData !== 'recordInfo') {
+      components = createComponentsFromChildReferences(
+        group.children,
+        presentationGroup.children,
+        metadataPool,
+        presentationPool
+      );
+    }
+  }
+
   return removeEmpty({
     ...commonParameters,
     validation,
     repeat,
     options,
     finalValue,
-    attributes
+    attributes,
+    components
   });
 };
 
@@ -249,5 +267,12 @@ const createCommonParameters = (metadata: BFFMetadata, presentation: BFFPresenta
   const mode = presentation.mode;
   const inputType = presentation.inputType;
   const tooltip = { title: metadata.textId, body: metadata.defTextId };
-  return { name, type, placeholder, mode, inputType, tooltip };
+  let label = metadata.textId;
+  if (presentation.specifiedLabelTextId) {
+    label = presentation.specifiedLabelTextId;
+  }
+  if (presentation.showLabel && presentation.showLabel === 'false') {
+    label = '';
+  }
+  return { name, type, placeholder, mode, inputType, tooltip, label };
 };

@@ -104,10 +104,11 @@ export interface BFFPresentation extends BFFBase {
   mode: 'input' | 'output';
   inputType?: string;
   emptyTextId?: string;
+  specifiedLabelTextId?: string;
+  showLabel?: string;
 }
 
-export interface BFFPresentationGroup extends BFFBase {
-  // type?
+export interface BFFPresentationGroup extends BFFPresentation {
   presentationOf: string;
   mode: 'input' | 'output';
   children: BFFPresentationChildReference[];

@@ -52,7 +52,7 @@ import {
   someMetadataNumberVarWithAttribute,
   pSomeMetadataNumberWithAttributeVar,
   pSomeMetadataTextVariableWithAttributeVar,
-  someMetadataTextVariableWithAttributeVar,
+  someMetadataTextVariableWithAttributeVar, pSomeMetadataChildGroup, someMetadataChildGroup,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -84,7 +84,8 @@ describe('formDefinition', () => {
       someMetadataCollectionItemYellow,
       someMetadataCollectionVariableWithAttribute,
       someMetadataNumberVarWithAttribute,
-      someMetadataTextVariableWithAttributeVar
+      someMetadataTextVariableWithAttributeVar,
+      someMetadataChildGroup,
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
@@ -95,7 +96,8 @@ describe('formDefinition', () => {
       pSomeMetadataCollectionVariable,
       pSomeMetadataCollectionVariableWithAttribute,
       pSomeMetadataNumberWithAttributeVar,
-      pSomeMetadataTextVariableWithAttributeVar
+      pSomeMetadataTextVariableWithAttributeVar,
+      pSomeMetadataChildGroup
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -148,17 +150,19 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(10);
+    expect(formDefinition.components).toHaveLength(11);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       components: [
         {
           type: 'text',
-          name: 'someHeadlineTextId'
+          name: 'someHeadlineTextId',
+          textStyle: 'bold',
         },
         {
           type: 'textVariable',
           name: 'someNameInData',
+          label: 'someTextId',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -180,6 +184,7 @@ describe('formDefinition', () => {
           type: 'textVariable',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
+          label: 'someTextId',
           repeat: {
             repeatMin: 1,
             repeatMax: 3
@@ -198,6 +203,7 @@ describe('formDefinition', () => {
         {
           type: 'textVariable',
           name: 'someNameInData2',
+          label: 'someOtherLabelTextId', // overridden label
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -217,6 +223,7 @@ describe('formDefinition', () => {
         {
           type: 'textVariable',
           name: 'someNameInData3',
+          label: 'someTextId',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -237,6 +244,7 @@ describe('formDefinition', () => {
         {
           type: 'numberVariable',
           name: 'someNameInDataNumberVar',
+          label: '',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 0,
@@ -260,6 +268,8 @@ describe('formDefinition', () => {
         {
           type: 'collectionVariable',
           name: 'colour',
+          finalValue: "pink",
+          label: 'exampleCollectionVarText',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -279,6 +289,7 @@ describe('formDefinition', () => {
         {
           type: 'collectionVariable',
           name: 'colourAttributeVar',
+          label: 'exampleCollectionVarText',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -290,9 +301,11 @@ describe('formDefinition', () => {
           },
           attributes: [
             {
+              finalValue: "pink",
               type: 'collectionVariable',
               name: 'colour',
-              placeholder: 'emptyTextId',
+              label: 'exampleCollectionVarText',
+              placeholder: 'initialEmptyValueText',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText'
@@ -315,6 +328,7 @@ describe('formDefinition', () => {
         {
           type: 'numberVariable',
           name: 'someNameInDataNumberWithAttributeVar',
+          label: 'someNumberVarTextId',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -326,9 +340,11 @@ describe('formDefinition', () => {
           },
           attributes: [
             {
+              finalValue: "pink",
               type: 'collectionVariable',
               name: 'colour',
-              placeholder: 'emptyTextId',
+              label: 'exampleCollectionVarText',
+              placeholder: 'initialEmptyValueText',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText'
@@ -354,6 +370,7 @@ describe('formDefinition', () => {
         {
           type: 'textVariable',
           name: 'someNameInDataTextWithAttrib',
+          label: 'someTextId',
           placeholder: 'someEmptyTextId',
           repeat: {
             repeatMin: 1,
@@ -367,7 +384,9 @@ describe('formDefinition', () => {
             {
               type: 'collectionVariable',
               name: 'colour',
-              placeholder: 'emptyTextId',
+              finalValue: "pink",
+              label: 'exampleCollectionVarText',
+              placeholder: 'initialEmptyValueText',
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText'
@@ -386,6 +405,42 @@ describe('formDefinition', () => {
           },
           mode: 'input',
           inputType: 'input',
+        },
+        {
+          type: 'group',
+          label: "someChildGroupTextId",
+          name: 'someChildGroupNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someChildGroupTextId',
+            body: 'someChildGroupDefTextId'
+          },
+          components: [
+            {
+              type: 'textVariable',
+              name: 'someNameInData',
+              label: 'someTextId',
+              placeholder: 'someEmptyTextId',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              tooltip: {
+                title: 'someTextId',
+                body: 'someDefTextId'
+              },
+              validation: {
+                type: 'regex',
+                pattern: 'someRegex'
+              },
+              mode: 'input',
+              inputType: 'input'
+            },
+          ],
+          mode: 'input',
         },
       ]
     });

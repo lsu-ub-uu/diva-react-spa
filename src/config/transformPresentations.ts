@@ -95,7 +95,17 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     emptyTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'emptyTextId');
   }
 
-  return removeEmpty({ id, presentationOf, mode, emptyTextId, type } as BFFPresentation);
+  let specifiedLabelTextId;
+  if (containsChildWithNameInData(dataRecordGroup, 'specifiedLabelText')) {
+    specifiedLabelTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'specifiedLabelText');
+  }
+
+  let showLabel;
+  if (containsChildWithNameInData(dataRecordGroup, 'showLabel')) {
+    showLabel = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'showLabel');
+  }
+
+  return removeEmpty({ id, presentationOf, mode, emptyTextId, type, specifiedLabelTextId, showLabel } as BFFPresentation);
 };
 
 // Handle pVar
@@ -119,7 +129,7 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     'presentationOf'
   );
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
-
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
   const children = childReferencesList.map((childReference) => {
     return transformChildReference(childReference);
@@ -129,7 +139,8 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     id,
     presentationOf,
     mode,
-    children
+    children,
+    type
   } as BFFPresentationGroup;
 };
 
