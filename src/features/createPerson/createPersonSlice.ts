@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// eslint-disable-next-line import/no-cycle
 import personService from './createPersonService';
+// eslint-disable-next-line import/no-cycle
 import { PersonCreateModel } from '../../pages/PersonCreatePage';
 
 interface RecordTypeTypeState {

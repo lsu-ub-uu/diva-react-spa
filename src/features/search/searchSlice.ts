@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  PaginationRequest,
   PersonSearchRequest,
   PersonSearchResult,
 } from 'types/personSearchResult';

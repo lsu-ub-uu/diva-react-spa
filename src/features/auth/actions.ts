@@ -1,18 +1,9 @@
 import axios from 'axios';
 import { AppThunk } from 'app/store';
-import {
-  UserSession,
-  authenticated,
-  authenticating,
-  hasError,
-} from './authSlice';
+import { authenticated, authenticating, hasError } from './authSlice';
+// eslint-disable-next-line import/no-cycle
 import { Account } from '../../components/Layout/Header/Login';
 
-function DelayPromiseResolve(delay: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
 const BFF_API_URL = import.meta.env.VITE_BFF_API_URL;
 
 export const dummyLoginAsync =

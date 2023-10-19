@@ -1,7 +1,6 @@
 import { AppThunk } from '../../app/store';
 import { hasError, update, updating } from './publicationTypeSlice';
 
-const URL = `${window.location.protocol}//${window.location.host}`;
 const BFF_API_URL = import.meta.env.VITE_BFF_API_URL;
 
 export const loadPublicationTypesAsync =

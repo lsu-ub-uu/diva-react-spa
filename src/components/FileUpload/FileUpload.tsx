@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 const StyledLinearProgress = styled(LinearProgress)(() => ({
   height: 10,

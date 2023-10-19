@@ -7,7 +7,7 @@ import { reduxRender } from '../../../../utils/testUtils';
  * @vitest-environment jsdom
  */
 
-const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+vi.spyOn(Storage.prototype, 'setItem');
 
 afterEach(() => {
   localStorage.clear();

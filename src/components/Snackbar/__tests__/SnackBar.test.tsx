@@ -1,13 +1,13 @@
-import { test, expect, vi } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
+import { expect } from 'vitest';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { render } from '../../../utils/testUtils';
 /**
  * @vitest-environment jsdom
  */
 
-const Button = ({ maxSnack }: { maxSnack?: number }) => {
+const Button = () => {
   const { enqueueSnackbar } = useSnackbar();
   return (
     <button
@@ -25,7 +25,7 @@ const Button = ({ maxSnack }: { maxSnack?: number }) => {
 };
 describe('Snackbars', () => {
   // it.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])(
-  // look into why it doeasn't goes higher than 3
+  // look into why it doesn't goes higher than 3
   it.each([1, 2, 3])(
     'It renders %d snackbars from <Button /> on select',
     async (snacks) => {
