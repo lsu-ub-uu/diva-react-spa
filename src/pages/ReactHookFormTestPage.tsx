@@ -224,7 +224,7 @@ export const ReactHookFormTestPage = () => {
     },
   });
 
-  const { formState, control, handleSubmit } = methods;
+  const { getValues, formState, control, handleSubmit } = methods;
 
   return (
     <Box
@@ -269,6 +269,7 @@ export const ReactHookFormTestPage = () => {
             item
             xs={12}
           >
+            <pre>{JSON.stringify(getValues(), null, 1)}</pre>
             <Button
               disabled={!formState.isValid}
               fullWidth
