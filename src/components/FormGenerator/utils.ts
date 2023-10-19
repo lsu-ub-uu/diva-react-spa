@@ -43,6 +43,9 @@ export const isComponentGroup = (component: FormComponent) =>
 export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentVariable(component) || isComponentGroup(component);
 
+export const isComponentText = (component: FormComponent) =>
+  component.type === 'text';
+
 export const isComponentTextVariable = (component: FormComponent) =>
   component.type === 'textVariable';
 
@@ -52,11 +55,11 @@ export const isComponentNumberVariable = (component: FormComponent) =>
 export const isComponentCollectionVariable = (component: FormComponent) =>
   component.type === 'collectionVariable';
 
-export const isComponentRepeating = (component: FormComponent) =>
-  !(component.repeat?.repeatMax === 1 && component.repeat?.repeatMin === 1);
-
-export const isComponentOptional = (component: FormComponent) =>
-  component.repeat?.repeatMin === 0 ?? false;
+export const isComponentRepeating = (component: FormComponent) => {
+  const rMax = component.repeat?.repeatMax ?? 1;
+  const rMin = component.repeat?.repeatMin ?? 1;
+  return !(rMax === 1 && rMin === 1);
+};
 
 const createDefaultValue = (
   component: FormComponent | FormAttributeCollection,
@@ -152,9 +155,13 @@ export const createYupArrayFromSchema = (
   schema:
     | ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>
     | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
-  repeat: FormComponentRepeat,
+  repeat: FormComponentRepeat | undefined,
 ) => {
-  return yup.array().of(schema).min(repeat.repeatMin).max(repeat.repeatMax);
+  return yup
+    .array()
+    .of(schema)
+    .min(repeat?.repeatMin ?? 1)
+    .max(repeat?.repeatMax ?? 1);
 };
 
 const createYupNumberSchema = (component: FormComponent) => {
@@ -296,4 +303,50 @@ export const generateYupSchema = (components: FormComponent[] | undefined) => {
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   return generateYupSchema(formSchema.components);
+};
+
+/**
+ * Form Components
+ */
+
+export const generateFormElementsFromComponents = (
+  components: FormComponent[] | undefined,
+  parentPath = '',
+): { name: string }[] => {
+  return (components ?? []).flatMap((formComponent, index: number) => {
+    // path builder
+    let componentPath = `${parentPath}.${formComponent.name}`;
+    if (
+      isComponentVariable(formComponent) &&
+      !isComponentRepeating(formComponent)
+    ) {
+      componentPath = `${componentPath}.value`;
+    }
+    if (
+      isComponentRepeating(formComponent) &&
+      isComponentValidForDataCarrying(formComponent)
+    ) {
+      componentPath = `${componentPath}[${index}]`;
+    }
+    // end path builder
+
+    const comps = generateFormElementsFromComponents(
+      formComponent.components,
+      componentPath,
+    );
+
+    const name = componentPath.slice(1);
+
+    if (isComponentGroup(formComponent)) {
+      return comps;
+    }
+
+    return {
+      name,
+    };
+  });
+};
+
+export const generateFormElementsFromFormSchema = (formSchema: FormSchema) => {
+  return generateFormElementsFromComponents(formSchema.components);
 };

@@ -47,7 +47,7 @@ export interface FormComponent {
   finalValue?: string;
   placeholder?: string;
   validation?: FormRegexValidation | FormNumberValidation;
-  repeat: FormComponentRepeat;
+  repeat?: FormComponentRepeat;
   tooltip?: FormComponentTooltip;
   inputType?: 'input' | 'textarea'; // really be optional?
   mode?: string;

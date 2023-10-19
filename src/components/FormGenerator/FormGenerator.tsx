@@ -28,7 +28,7 @@ import {
   createDefaultValuesFromFormSchema,
   generateYupSchema,
   isComponentRepeating,
-  isComponentVariable,
+  isComponentValidForDataCarrying,
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { FieldArrayComponent } from './FieldArrayComponent';
@@ -121,7 +121,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const generateFormComponent = (component: FormComponent, idx: number) => {
     const reactKey = `${component.name}_${idx}`;
 
-    if (isComponentRepeating(component) && isComponentVariable(component)) {
+    if (
+      isComponentRepeating(component) &&
+      isComponentValidForDataCarrying(component)
+    ) {
       return (
         <FieldArrayComponent
           component={component}

@@ -56,10 +56,6 @@ export const formDefWithOneTextVariable = {
     {
       type: 'text',
       name: 'presentationTypeTextCollectionVarDefText',
-      repeat: {
-        repeatMin: 1,
-        repeatMax: 1,
-      },
     },
     {
       type: 'textVariable',
@@ -1867,6 +1863,138 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes = {
         repeatMin: 1,
         repeatMax: 12,
       },
+    },
+  ],
+};
+
+export const formDefWithGroupWithChildGroupWithTextVar = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      name: 'author',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'authorGroupText',
+        body: 'authorGroupDefText',
+      },
+      label: 'authorGroupText',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          type: 'numberVariable',
+          name: 'age',
+          placeholder: 'someNumberPlaceholderTextId',
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 125,
+            warningMin: 50,
+            warningMax: 100,
+            numberOfDecimals: 0,
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        },
+        {
+          name: 'name',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleFirstChildGroupText',
+            body: 'exampleFirstChildGroupDefText',
+          },
+          label: 'exampleFirstChildGroupText',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'firstName',
+              type: 'textVariable',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleMetadataVarText',
+                body: 'exampleMetadataVarDefText',
+              },
+              label: 'firstName',
+              validation: {
+                type: 'regex',
+                pattern: '^[a-zA-Z]$',
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+            {
+              name: 'lastName',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'exampleMetadataTextVarText',
+                body: 'exampleMetadataTextVarDefText',
+              },
+              label: 'exampleMetadataTextVarText',
+              validation: {
+                type: 'regex',
+                pattern: '^[a-zA-Z]$',
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const formDefWithRepeatingAuthorGroupWithNameTextVar = {
+  validationTypeId: 'someValidationTypeId',
+  components: [
+    {
+      name: 'author',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'authorGroupText',
+        body: 'authorGroupDefText',
+      },
+      label: 'authorGroupText',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'name',
+          type: 'textVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataVarText',
+            body: 'exampleMetadataVarDefText',
+          },
+          label: 'name',
+          validation: {
+            type: 'regex',
+            pattern: '^[a-zA-Z]$',
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        },
+      ],
     },
   ],
 };

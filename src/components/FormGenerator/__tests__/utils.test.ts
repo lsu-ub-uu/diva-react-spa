@@ -21,7 +21,9 @@ import { test } from 'vitest';
 import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
+  generateFormElementsFromFormSchema,
   generateYupSchemaFromFormSchema,
+  isComponentRepeating,
 } from '../utils';
 import {
   formComponentGroup,
@@ -35,14 +37,17 @@ import {
   formDefRealDemoWithFinalValues,
   formDefRealDemoWithRepeatingGroups,
   formDefRealDemoWithRepeatingVars,
+  formDefWithGroupWithChildGroupWithTextVar,
   formDefWithOneGroupHavingTextVariableAsChild,
+  formDefWithOneTextVariable,
+  formDefWithRepeatingAuthorGroupWithNameTextVar,
   formDefWithRepeatingCollectionVar,
   formDefWithRepeatingGroup,
   formDefWithRepeatingGroupWithRepeatingChildGroup,
   formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
   formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '../../../__mocks__/data/formDef';
-import { FormSchema } from '../types';
+import { FormComponent, FormSchema } from '../types';
 
 const numberValidationTests = (
   min: number,
@@ -448,19 +453,27 @@ describe('FormGenerator utils defaultValues', () => {
     const expected = [
       {
         name: 'person',
+        type: 'group',
+        repeat: true,
         path: 'person',
         components: [
           {
             name: 'name',
+            type: 'group',
+            repeat: true,
             components: [
               {
                 name: 'firstName',
+                type: 'textVariable',
+                repeat: false,
                 path: 'person.name.firstName',
                 components: [],
               },
               {
                 name: 'lastName',
                 path: 'person.name.lastName',
+                type: 'textVariable',
+                repeat: false,
                 components: [],
               },
             ],
@@ -468,6 +481,8 @@ describe('FormGenerator utils defaultValues', () => {
           },
           {
             name: 'age',
+            type: 'numberVariable',
+            repeat: false,
             path: 'person.age',
             components: [],
           },
@@ -475,8 +490,19 @@ describe('FormGenerator utils defaultValues', () => {
       },
     ];
 
-    const createFormDefWithPaths = (data: any, parentPath = '') => {
-      return data.map((node: any) => {
+    interface TestComponentLight {
+      name: string;
+      type: 'group' | 'textVariable' | 'numberVariable';
+      repeat: boolean;
+      path?: string; // path template
+      components: TestComponentLight[];
+    }
+
+    const createFormDefWithPaths = (
+      data: TestComponentLight[],
+      parentPath = '',
+    ): unknown => {
+      return data.map((node: TestComponentLight) => {
         const nodePath = `${parentPath}.${node.name}`;
         const components = createFormDefWithPaths(node.components, nodePath);
 
@@ -484,34 +510,46 @@ describe('FormGenerator utils defaultValues', () => {
           ...node,
           path: nodePath.slice(1),
           components,
-        };
+        } as TestComponentLight;
       });
     };
 
-    const treeData = {
-      name: 'person',
-      components: [
-        {
-          name: 'name',
-          components: [
-            {
-              name: 'firstName',
-              components: [],
-            },
-            {
-              name: 'lastName',
-              components: [],
-            },
-          ],
-        },
-        {
-          name: 'age',
-          components: [],
-        },
-      ],
-    };
+    const rootComponents: TestComponentLight[] = [
+      {
+        name: 'person',
+        type: 'group',
+        repeat: true,
+        components: [
+          {
+            name: 'name',
+            type: 'group',
+            repeat: true,
+            components: [
+              {
+                name: 'firstName',
+                type: 'textVariable',
+                repeat: false,
+                components: [],
+              },
+              {
+                name: 'lastName',
+                type: 'textVariable',
+                repeat: false,
+                components: [],
+              },
+            ],
+          },
+          {
+            name: 'age',
+            type: 'numberVariable',
+            repeat: false,
+            components: [],
+          },
+        ],
+      },
+    ];
 
-    const actual = createFormDefWithPaths([treeData]);
+    const actual = createFormDefWithPaths(rootComponents);
     expect(actual).toStrictEqual(expected);
   });
 });
@@ -795,5 +833,83 @@ describe('FormGenerator utils yupSchema', () => {
     };
 
     expect(actualSchema).toMatchObject(expectedSchema);
+  });
+});
+
+describe('FormGenerator utils formComponents', () => {
+  test('createComponentsFromFormSchema should take a formDef with one textVariable', () => {
+    const expectedFormElements: unknown[] = [
+      { name: 'presentationTypeTextCollectionVarDefText' },
+      { name: 'someNameInData.value' },
+    ];
+
+    const actualFormElements = generateFormElementsFromFormSchema(
+      formDefWithOneTextVariable as FormSchema,
+    );
+    expect(actualFormElements).toStrictEqual(expectedFormElements);
+  });
+
+  test('createComponentsFromFormSchema should take a formDef with one non-repeating group and a non-repeating textVariable', () => {
+    const expectedFormElements: unknown[] = [
+      { name: 'someChildGroupNameInData.someNameInData.value' },
+    ];
+
+    const actualFormElements = generateFormElementsFromFormSchema(
+      formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
+    );
+    expect(actualFormElements).toStrictEqual(expectedFormElements);
+  });
+
+  test('createComponentsFromFormSchema should take a formDef with one non-repeating group and a non-repeating textVariable', () => {
+    const expectedFormElements: unknown[] = [
+      { name: 'someChildGroupNameInData.someNameInData.value' },
+    ];
+
+    const actualFormElements = generateFormElementsFromFormSchema(
+      formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
+    );
+    expect(actualFormElements).toStrictEqual(expectedFormElements);
+  });
+
+  test('createComponentsFromFormSchema should take a formDef with author group with age and a childGroup called name having firstName and lastName', () => {
+    const expectedFormElements: unknown[] = [
+      { name: 'author.age.value' },
+      { name: 'author.name.firstName.value' },
+      { name: 'author.name.lastName.value' },
+    ];
+
+    const actualFormElements = generateFormElementsFromFormSchema(
+      formDefWithGroupWithChildGroupWithTextVar as FormSchema,
+    );
+    expect(actualFormElements).toStrictEqual(expectedFormElements);
+  });
+
+  test('createComponentsFromFormSchema should take a formDef with repeating author group with a name textVar', () => {
+    const expectedFormElements: unknown[] = [{ name: 'author[0].name.value' }];
+
+    const actualFormElements = generateFormElementsFromFormSchema(
+      formDefWithRepeatingAuthorGroupWithNameTextVar as FormSchema,
+    );
+    expect(actualFormElements).toStrictEqual(expectedFormElements);
+  });
+
+  test('isComponentRepeating should return false if repeat is not set ', () => {
+    const testComponent = {
+      type: 'text',
+      name: 'presentationTypeTextCollectionVarDefText',
+    } as FormComponent;
+    expect(isComponentRepeating(testComponent)).toEqual(false);
+  });
+
+  test('isComponentRepeating should return false if repeat is set but min max both are set to 1', () => {
+    const testComponent = {
+      type: 'group',
+      name: 'someRepeatingGroup',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+    } as FormComponent;
+    expect(isComponentRepeating(testComponent)).toEqual(false);
   });
 });

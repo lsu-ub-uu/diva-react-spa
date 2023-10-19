@@ -63,7 +63,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             props.component,
             field.id,
             props.control as Control,
-            `${props.name}.${index}.value` as const,
+            `${props.name}.${index}.value` as const, // not correct
           )}
           <ActionButtonGroup
             moveUpButtonDisabled={index === 0}
@@ -71,7 +71,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             moveDownButtonDisabled={index === fields.length - 1}
             moveDownButtonAction={() => handleMove(index, index + 1)}
             deleteButtonDisabled={
-              fields.length <= props.component.repeat.repeatMin
+              fields.length <= (props.component.repeat?.repeatMin ?? 1)
             }
             deleteButtonAction={() => handleRemove(index)}
           />
@@ -80,7 +80,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       <Button
         sx={{ mt: 1, mb: 1 }}
         variant='outlined'
-        disabled={fields.length >= props.component.repeat?.repeatMax ?? true}
+        disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
         onClick={handleAppend}
         disableRipple
         endIcon={<AddCircleOutlineIcon />}
