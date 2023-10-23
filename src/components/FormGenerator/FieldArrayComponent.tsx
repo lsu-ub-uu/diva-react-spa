@@ -25,10 +25,7 @@ import { ActionButtonGroup } from './ActionButtonGroup';
 // eslint-disable-next-line import/no-cycle
 import { renderLeafComponent } from './FormGenerator';
 import { FormComponent } from './types';
-import {
-  createDefaultValuesFromComponent,
-  isComponentRepeating,
-} from './utils';
+import { createDefaultValuesFromComponent } from './utils';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
