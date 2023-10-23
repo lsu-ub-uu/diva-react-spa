@@ -195,15 +195,14 @@ describe('transformCoraPresentations', () => {
     it('Returns one BFFPresentation for one SContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationSurroundingContainer);
       expect(transformData[0]).toStrictEqual({
-        id: 'someSContainer',
+        id: 'labelInputSContainer',
         type: 'container',
-        // presentationsOf: ['publicationContentTypeCollectionVar', 'plainTextPasswordTextVar'], //'someNewGroup',
+        presentationsOf: ['showLabelCollectionVar'],
         mode: 'input',
         children: [
           // do we need childStyle for Container children?
-          { childId: 'plainTextPasswordTextVarText', type: 'text' },
-          { childId: 'plainTextPasswordPVar', type: 'presentation' },
-          { childId: 'updatesHeadlineText', type: 'text', textStyle: 'h3TextStyle' }
+          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
+          { childId: 'showLabelPCollVar', type: 'presentation' }
         ]
       });
     });

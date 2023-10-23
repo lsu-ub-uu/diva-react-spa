@@ -190,9 +190,13 @@ const transformCoraPresentationContainerToBFFContainer = (
 ): BFFContainer => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const presentationsOf = getFirstDataGroupWithNameInDataAndAttributes(
+  const presentationsOfArray = getFirstDataGroupWithNameInDataAndAttributes(
     dataRecordGroup,
     'presentationsOf'
+  );
+  let presentationsOf: string[] = [];
+  presentationsOf.push(
+    extractLinkedRecordIdFromNamedRecordLink(presentationsOfArray, 'presentationOf')
   );
 
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
@@ -204,7 +208,7 @@ const transformCoraPresentationContainerToBFFContainer = (
 
   return {
     id,
-    // presentationsOf,
+    presentationsOf,
     mode,
     children,
     type

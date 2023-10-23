@@ -111,7 +111,13 @@ export interface BFFPresentation extends BFFBase {
 export interface BFFContainer extends BFFPresentation {
   presentationsOf: string[];
   mode: 'input' | 'output';
-  children: BFFPresentationChildReference[];
+  children: BFFContainerChildReference[];
+}
+
+export interface BFFContainerChildReference {
+  childId: string;
+  type: 'text' | 'presentation' | 'guiElement';
+  textStyle?: string;
 }
 export interface BFFPresentationGroup extends BFFPresentation {
   presentationOf: string;
