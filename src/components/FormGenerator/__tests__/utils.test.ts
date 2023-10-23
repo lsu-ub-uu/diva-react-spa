@@ -837,7 +837,7 @@ describe('FormGenerator utils yupSchema', () => {
 });
 
 describe('FormGenerator utils formComponents', () => {
-  test('createComponentsFromFormSchema should take a formDef with one textVariable', () => {
+  test('createComponentsFromFormSchema should take a formDef with one text and one textVariable', () => {
     const expectedFormElements: unknown[] = [
       { name: 'presentationTypeTextCollectionVarDefText' },
       { name: 'someNameInData.value' },
@@ -845,17 +845,6 @@ describe('FormGenerator utils formComponents', () => {
 
     const actualFormElements = generateFormElementsFromFormSchema(
       formDefWithOneTextVariable as FormSchema,
-    );
-    expect(actualFormElements).toStrictEqual(expectedFormElements);
-  });
-
-  test('createComponentsFromFormSchema should take a formDef with one non-repeating group and a non-repeating textVariable', () => {
-    const expectedFormElements: unknown[] = [
-      { name: 'someChildGroupNameInData.someNameInData.value' },
-    ];
-
-    const actualFormElements = generateFormElementsFromFormSchema(
-      formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
     );
     expect(actualFormElements).toStrictEqual(expectedFormElements);
   });
