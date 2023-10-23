@@ -328,6 +328,14 @@ export const generateFormElementsFromComponents = (
     ) {
       componentPath = `${componentPath}[${index}]`;
     }
+    // handle attributes
+    const attributeNames =
+      formComponent.attributes?.map(
+        (attributeCollection: FormAttributeCollection) => {
+          return `${parentPath}.${formComponent.name}._${attributeCollection.name}`;
+        },
+      ) ?? [];
+    console.log(attributeNames);
     // end path builder
 
     const comps = generateFormElementsFromComponents(
