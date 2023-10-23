@@ -28,6 +28,7 @@ import coraPresentationWithOneCollectionVariable from '../../__mocks__/coraPrese
 import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '../../__mocks__/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
 import coraPresentationWithOneTextVariableHavingShowLabelFalse from '../../__mocks__/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
 import coraPresentationSurroundingContainer from '../../__mocks__/coraPresentationSurroundingContainer.json';
+import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '../../__mocks__/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -203,6 +204,23 @@ describe('transformCoraPresentations', () => {
           // do we need childStyle for Container children?
           { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
           { childId: 'showLabelPCollVar', type: 'presentation' }
+        ]
+      });
+    });
+    it('Returns one BFFPresentation for one SContainer with two vars in presentationsOf', () => {
+      const transformData = transformCoraPresentations(
+        coraPresentationSurroundingContainerWithTwoVarPresentationsOf
+      );
+      expect(transformData[0]).toStrictEqual({
+        id: 'labelInputSContainer',
+        type: 'container',
+        presentationsOf: ['showLabelCollectionVar', 'showLabelCollectionVar2'],
+        mode: 'input',
+        children: [
+          // do we need childStyle for Container children?
+          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
+          { childId: 'showLabelPCollVar', type: 'presentation' },
+          { childId: 'showLabelPCollVar2', type: 'presentation' }
         ]
       });
     });
