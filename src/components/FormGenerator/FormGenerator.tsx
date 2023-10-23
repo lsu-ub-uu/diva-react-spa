@@ -40,7 +40,7 @@ interface FormGeneratorProps {
   onSubmit: (formValues: FieldValues) => void;
 }
 
-export const renderVariableField = (
+export const renderLeafComponent = (
   component: FormComponent,
   reactKey: string,
   control: Control<any>,
@@ -82,7 +82,7 @@ export const renderVariableField = (
         // eslint-disable-next-line react/jsx-no-useless-fragment
         <React.Fragment key={`${reactKey}_group`}>
           {component.components?.map((childComponent) => {
-            return renderVariableField(
+            return renderLeafComponent(
               childComponent,
               `${reactKey}_group_${childComponent.name}`,
               control,
@@ -135,7 +135,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       );
     }
 
-    let renderResult = renderVariableField(
+    let renderResult = renderLeafComponent(
       component,
       reactKey,
       control,

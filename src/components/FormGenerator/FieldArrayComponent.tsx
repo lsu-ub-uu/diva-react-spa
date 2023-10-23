@@ -23,9 +23,12 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { ActionButtonGroup } from './ActionButtonGroup';
 // eslint-disable-next-line import/no-cycle
-import { renderVariableField } from './FormGenerator';
+import { renderLeafComponent } from './FormGenerator';
 import { FormComponent } from './types';
-import { createDefaultValuesFromComponent } from './utils';
+import {
+  createDefaultValuesFromComponent,
+  isComponentRepeating,
+} from './utils';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -59,7 +62,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           spacing={{ xs: 1 }}
           direction='row'
         >
-          {renderVariableField(
+          {renderLeafComponent(
             props.component,
             field.id,
             props.control as Control,
