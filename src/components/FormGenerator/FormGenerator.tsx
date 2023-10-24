@@ -138,7 +138,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
     if (isComponentGroup(component) && !isComponentRepeating(component)) {
       return (
-        <Paper key={reactKey}>
+        <Box key={reactKey}>
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
@@ -146,13 +146,13 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               component.components,
               currentComponentNamePath,
             )}
-        </Paper>
+        </Box>
       );
     }
 
     if (isComponentGroup(component) && isComponentRepeating(component)) {
       return (
-        <Paper key={reactKey}>
+        <Box key={reactKey}>
           <FieldArrayComponent
             control={control}
             component={component}
@@ -166,7 +166,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               ];
             }}
           />
-        </Paper>
+        </Box>
       );
     }
     if (isComponentVariable(component) && isComponentRepeating(component)) {

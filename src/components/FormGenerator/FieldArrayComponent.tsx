@@ -18,7 +18,7 @@
  */
 
 import { Control, useFieldArray } from 'react-hook-form';
-import { Paper, Stack } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { ActionButtonGroup } from './ActionButtonGroup';
@@ -54,18 +54,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   return (
     <Paper>
       {fields.map((field, index) => (
-        <Stack
-          key={field.id}
-          spacing={{ xs: 1 }}
-          direction='row'
-        >
-          <Paper>
-            {
-              props.renderCallback(
-                `${props.name}[${index}]` as const,
-              ) as JSX.Element
-            }
-          </Paper>
+        <Box key={field.id}>
+          {
+            props.renderCallback(
+              `${props.name}[${index}]` as const,
+            ) as JSX.Element
+          }
           <ActionButtonGroup
             moveUpButtonDisabled={index === 0}
             moveUpButtonAction={() => handleMove(index, index - 1)}
@@ -76,7 +70,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             }
             deleteButtonAction={() => handleRemove(index)}
           />
-        </Stack>
+        </Box>
       ))}
       <Button
         sx={{ mt: 1, mb: 1 }}
