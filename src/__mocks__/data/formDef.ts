@@ -312,7 +312,7 @@ export const formDefWithOneGroupHavingTextVariableAsChild: FormSchema = {
           },
           validation: {
             type: 'regex',
-            pattern: 'someRegex',
+            pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{3,50}$)',
           },
           mode: 'input',
           inputType: 'input',
@@ -1998,3 +1998,253 @@ export const formDefWithRepeatingAuthorGroupWithNameTextVar = {
     },
   ],
 };
+
+export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema =
+  {
+    validationTypeId: 'book',
+    components: [
+      {
+        type: 'text',
+        name: 'someHeaderText',
+      },
+      {
+        name: 'colour',
+        type: 'collectionVariable',
+        label: 'colour',
+        placeholder: 'book cover colour',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        mode: 'input',
+        tooltip: {
+          title: 'exampleCollectionVarText',
+          body: 'exampleCollectionVarDefText',
+        },
+        options: [
+          {
+            value: 'blue',
+            label: 'exampleBlueItemText',
+          },
+          {
+            value: 'pink',
+            label: 'examplePinkItemText',
+          },
+          {
+            value: 'yellow',
+            label: 'exampleYellowItemText',
+          },
+        ],
+      },
+      {
+        type: 'numberVariable',
+        name: 'year',
+        label: 'year',
+        placeholder: 'year',
+        validation: {
+          type: 'number',
+          min: 0,
+          max: 2023,
+          warningMin: 0,
+          warningMax: 0,
+          numberOfDecimals: 0,
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        name: 'title',
+        type: 'group',
+        tooltip: {
+          title: 'non-repeating title group',
+          body: '',
+        },
+        label: 'title',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'titleColorAttribute',
+            placeholder: 'Select title color',
+            tooltip: {
+              title: 'Face color',
+              body: 'state the author face color',
+            },
+            label: 'Title color',
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+        components: [
+          {
+            type: 'text',
+            name: 'this a header for group',
+            textStyle: 'h5TextStyle',
+          },
+          {
+            name: 'main',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'Main',
+              body: '',
+            },
+            label: 'Main title',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            name: 'tagLine',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'title.tagLine.value',
+              body: '',
+            },
+            label: 'Title tagline',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+      },
+      {
+        type: 'text',
+        name: 'Authors',
+        textStyle: 'h3TextStyle',
+      },
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'author',
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 10,
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'eyeColor',
+            placeholder: 'Select eye color',
+            tooltip: {
+              title: 'Eye color',
+              body: 'state the author eye color',
+            },
+            finalValue: 'blue',
+            label: 'Eye color',
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+        components: [
+          {
+            name: 'firstName',
+            type: 'textVariable',
+            mode: 'input',
+            tooltip: {
+              title: '',
+              body: '',
+            },
+            label: 'First name',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                type: 'collectionVariable',
+                name: 'faceColorAttribute',
+                placeholder: 'Select eye color',
+                tooltip: {
+                  title: 'Face color',
+                  body: 'state the author face color',
+                },
+                label: 'Face color',
+                options: [
+                  { value: 'pale', label: 'examplePaleItemText' },
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' },
+                ],
+                mode: 'input',
+              },
+            ],
+          },
+          {
+            name: 'lastName',
+            type: 'textVariable',
+            mode: 'input',
+            tooltip: {
+              title: '',
+              body: '',
+            },
+            label: 'Last name',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 3,
+            },
+            attributes: [
+              {
+                type: 'collectionVariable',
+                name: 'lastNameColor',
+                placeholder: 'Select lastname color',
+                tooltip: {
+                  title: 'Last color',
+                  body: 'state the author eye color',
+                },
+                finalValue: 'yellow',
+                label: 'Lastname color',
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' },
+                ],
+                mode: 'input',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };

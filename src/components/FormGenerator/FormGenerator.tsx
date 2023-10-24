@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,20 +27,21 @@ import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
   generateYupSchema,
+  isComponentGroup,
   isComponentRepeating,
-  isComponentValidForDataCarrying,
+  isComponentVariable,
 } from './utils';
 // eslint-disable-next-line import/no-cycle
-import { FieldArrayComponent } from './FieldArrayComponent';
 import { Typography } from '../index';
 import { FormComponent, FormSchema } from './types';
+import { FieldArrayComponent } from './FieldArrayComponent';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
 }
 
-export const renderVariableField = (
+export const renderLeafComponent = (
   component: FormComponent,
   reactKey: string,
   control: Control<any>,
@@ -77,21 +78,6 @@ export const renderVariableField = (
         />
       );
     }
-    case 'group': {
-      return (
-        // eslint-disable-next-line react/jsx-no-useless-fragment
-        <React.Fragment key={`${reactKey}_group`}>
-          {component.components?.map((childComponent) => {
-            return renderVariableField(
-              childComponent,
-              `${reactKey}_group_${childComponent.name}`,
-              control,
-              `${component.name}.${childComponent.name}`,
-            );
-          })}
-        </React.Fragment>
-      );
-    }
     case 'text': {
       return (
         <Typography
@@ -118,56 +104,112 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const { control, handleSubmit } = methods;
 
   // eslint-disable-next-line consistent-return
-  const generateFormComponent = (component: FormComponent, idx: number) => {
-    const reactKey = `${component.name}_${idx}`;
+  const generateFormComponent = (
+    component: FormComponent,
+    idx: number,
+    path: string,
+  ) => {
+    const reactKey = `key_${idx}`;
+    const currentComponentNamePath = !path
+      ? `${component.name}`
+      : `${path}.${component.name}`;
 
-    if (
-      isComponentRepeating(component) &&
-      isComponentValidForDataCarrying(component)
-    ) {
+    const createFormComponentAttributes = (
+      aComponent: FormComponent,
+      aPath: string,
+    ) => {
+      return (aComponent.attributes ?? []).map((attribute, index) => {
+        return (
+          <ControlledSelectField
+            key={`${attribute.name}_${index}`}
+            name={`${aPath}._${attribute.name}`}
+            isLoading={false}
+            loadingError={false}
+            label={attribute.label ?? ''}
+            placeholder={attribute.placeholder}
+            tooltip={attribute.tooltip}
+            control={control}
+            options={attribute.options}
+            readOnly={!!attribute.finalValue}
+          />
+        );
+      });
+    };
+
+    if (isComponentGroup(component) && !isComponentRepeating(component)) {
       return (
-        <FieldArrayComponent
-          component={component}
-          key={reactKey}
-          control={control}
-          name={component.name}
-        />
+        <Box key={reactKey}>
+          {createFormComponentAttributes(component, currentComponentNamePath)}
+          {component.components &&
+            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+            createFormComponents(
+              component.components,
+              currentComponentNamePath,
+            )}
+        </Box>
       );
     }
 
-    let renderResult = renderVariableField(
-      component,
-      reactKey,
-      control,
-      `${component.name}.value`,
+    if (isComponentGroup(component) && isComponentRepeating(component)) {
+      return (
+        <Box key={reactKey}>
+          <FieldArrayComponent
+            control={control}
+            component={component}
+            name={currentComponentNamePath}
+            renderCallback={(arrayPath: string) => {
+              /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+              return [
+                ...createFormComponentAttributes(component, arrayPath),
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                ...createFormComponents(component.components ?? [], arrayPath),
+              ];
+            }}
+          />
+        </Box>
+      );
+    }
+    if (isComponentVariable(component) && isComponentRepeating(component)) {
+      return (
+        <Paper key={reactKey}>
+          <FieldArrayComponent
+            control={control}
+            component={component}
+            name={currentComponentNamePath}
+            renderCallback={(variableArrayPath: string) => {
+              return [
+                ...createFormComponentAttributes(component, variableArrayPath),
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                renderLeafComponent(
+                  component,
+                  variableArrayPath,
+                  control,
+                  `${variableArrayPath}.value`,
+                ),
+              ];
+            }}
+          />
+        </Paper>
+      );
+    }
+    return (
+      <div key={reactKey}>
+        {createFormComponentAttributes(component, currentComponentNamePath)}
+        {renderLeafComponent(
+          component,
+          reactKey,
+          control,
+          `${currentComponentNamePath}.value`,
+        )}
+      </div>
     );
+  };
 
-    if (component.attributes !== undefined) {
-      renderResult = (
-        // @ts-ignore
-        <React.Fragment key={reactKey}>
-          {renderResult}
-          {component.attributes.map((attribute, index) => {
-            return (
-              <ControlledSelectField
-                key={`${attribute.name}_${index}`}
-                name={`${component.name}._${attribute.name}`}
-                isLoading={false}
-                loadingError={false}
-                label={attribute.label ?? ''}
-                placeholder={attribute.placeholder}
-                tooltip={attribute.tooltip}
-                control={control}
-                options={attribute.options}
-                readOnly={!!attribute.finalValue}
-              />
-            );
-          })}
-        </React.Fragment>
-      );
-    }
-
-    return renderResult;
+  const createFormComponents = (
+    components: FormComponent[],
+    path = '',
+  ): JSX.Element[] => {
+    return components.map((c, i) => generateFormComponent(c, i, path));
   };
 
   return (
@@ -175,7 +217,8 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       component='form'
       onSubmit={handleSubmit((values) => props.onSubmit(values))}
     >
-      {props.formSchema.components.map(generateFormComponent)}
+      {createFormComponents(props.formSchema.components)}
+
       <Button
         sx={{ mt: 4, mb: 2 }}
         fullWidth
