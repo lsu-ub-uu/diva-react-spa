@@ -28,6 +28,7 @@ import {
   createDefaultValuesFromFormSchema,
   generateYupSchema,
   isComponentGroup,
+  isComponentRepeating,
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { Typography } from '../index';
@@ -111,7 +112,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       ? `${component.name}`
       : `${path}.${component.name}`;
 
-    if (isComponentGroup(component)) {
+    if (isComponentGroup(component) && !isComponentRepeating(component)) {
       return (
         <div key={reactKey}>
           {component.components &&
@@ -122,6 +123,9 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             )}
         </div>
       );
+    }
+    if (isComponentGroup(component) && isComponentRepeating(component)) {
+      return <div key={reactKey}>this is a repeating group</div>;
     }
     return (
       <div key={reactKey}>

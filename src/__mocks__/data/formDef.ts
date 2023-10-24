@@ -2111,5 +2111,39 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
           },
         ],
       },
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'author',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'name',
+            type: 'textVariable',
+            mode: 'input',
+            tooltip: {
+              title: '',
+              body: '',
+            },
+            label: 'author.name',
+            validation: {
+              type: 'regex',
+              pattern: '^[a-zA-Z]$',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+      },
     ],
   };
