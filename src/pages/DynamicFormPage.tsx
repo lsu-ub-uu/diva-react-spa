@@ -5,14 +5,11 @@ import { Stack } from '@mui/material';
 import { Card, FormGenerator } from '../components';
 import { FormSchema } from '../components/FormGenerator/types';
 import { createDefaultValuesFromFormSchema } from '../components/FormGenerator/utils';
-import {
-  formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups,
-} from '../__mocks__/data/formDef';
+import { formDefRealDemo } from '../__mocks__/data/formDef';
 
 export const DynamicFormPage = () => {
   const { t } = useTranslation();
-  const schema =
-    formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups as FormSchema;
+  const schema = formDefRealDemo as FormSchema;
 
   return (
     <>

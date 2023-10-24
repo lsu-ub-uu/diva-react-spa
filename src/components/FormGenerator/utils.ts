@@ -29,9 +29,6 @@ import {
   FormSchema,
 } from './types';
 
-export const hasComponentAttributes = (component: FormComponent) =>
-  component.attributes ? component.attributes.length > 0 : false;
-
 export const isComponentVariable = (component: FormComponent) =>
   ['numberVariable', 'textVariable', 'collectionVariable'].includes(
     component.type,
@@ -42,18 +39,6 @@ export const isComponentGroup = (component: FormComponent) =>
 
 export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentVariable(component) || isComponentGroup(component);
-
-export const isComponentText = (component: FormComponent) =>
-  component.type === 'text';
-
-export const isComponentTextVariable = (component: FormComponent) =>
-  component.type === 'textVariable';
-
-export const isComponentNumberVariable = (component: FormComponent) =>
-  component.type === 'numberVariable';
-
-export const isComponentCollectionVariable = (component: FormComponent) =>
-  component.type === 'collectionVariable';
 
 export const isComponentRepeating = (component: FormComponent) => {
   const rMax = component.repeat?.repeatMax ?? 1;
@@ -281,11 +266,10 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
-      const extendedSchema = yup.object().shape({
+      validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(component),
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      validationRule[component.name] = extendedSchema;
     }
   }
   return validationRule;
@@ -303,58 +287,4 @@ export const generateYupSchema = (components: FormComponent[] | undefined) => {
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   return generateYupSchema(formSchema.components);
-};
-
-/**
- * Form Components
- */
-
-export const generateFormElementsFromComponents = (
-  components: FormComponent[] | undefined,
-  parentPath = '',
-): { name: string }[] => {
-  return (components ?? []).flatMap((formComponent, index: number) => {
-    // path builder
-    let componentPath = `${parentPath}.${formComponent.name}`;
-    if (
-      isComponentVariable(formComponent) &&
-      !isComponentRepeating(formComponent)
-    ) {
-      componentPath = `${componentPath}.value`;
-    }
-    if (
-      isComponentRepeating(formComponent) &&
-      isComponentValidForDataCarrying(formComponent)
-    ) {
-      componentPath = `${componentPath}[${index}]`;
-    }
-    // todo handle attributes
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const attributeNames =
-      formComponent.attributes?.map(
-        (attributeCollection: FormAttributeCollection) => {
-          return `${parentPath}.${formComponent.name}._${attributeCollection.name}`;
-        },
-      ) ?? [];
-    // end path builder
-
-    const comps = generateFormElementsFromComponents(
-      formComponent.components,
-      componentPath,
-    );
-
-    const name = componentPath.slice(1);
-
-    if (isComponentGroup(formComponent)) {
-      return comps;
-    }
-
-    return {
-      name,
-    };
-  });
-};
-
-export const generateFormElementsFromFormSchema = (formSchema: FormSchema) => {
-  return generateFormElementsFromComponents(formSchema.components);
 };

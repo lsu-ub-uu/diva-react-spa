@@ -312,7 +312,7 @@ export const formDefWithOneGroupHavingTextVariableAsChild: FormSchema = {
           },
           validation: {
             type: 'regex',
-            pattern: 'someRegex',
+            pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{3,50}$)',
           },
           mode: 'input',
           inputType: 'input',
