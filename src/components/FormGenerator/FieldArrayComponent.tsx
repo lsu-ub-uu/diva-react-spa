@@ -59,7 +59,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           spacing={{ xs: 1 }}
           direction='row'
         >
-          {/* eslint-disable-next-line react/jsx-no-useless-fragment */}
           <Paper>
             {
               props.renderCallback(

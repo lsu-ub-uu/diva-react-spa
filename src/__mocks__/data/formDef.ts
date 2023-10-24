@@ -2078,10 +2078,10 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
             mode: 'input',
             inputType: 'input',
             tooltip: {
-              title: 'title.main.value',
+              title: 'Main',
               body: '',
             },
-            label: 'title.main.value',
+            label: 'Main title',
             validation: {
               type: 'regex',
               pattern: '.+',
@@ -2100,7 +2100,7 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
               title: 'title.tagLine.value',
               body: '',
             },
-            label: 'title.tagLine.value',
+            label: 'Title tagline',
             validation: {
               type: 'regex',
               pattern: '.+',
@@ -2111,6 +2111,11 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
             },
           },
         ],
+      },
+      {
+        type: 'text',
+        name: 'Authors',
+        textStyle: 'h3TextStyle',
       },
       {
         name: 'author',
