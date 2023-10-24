@@ -1998,3 +1998,118 @@ export const formDefWithRepeatingAuthorGroupWithNameTextVar = {
     },
   ],
 };
+
+export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema =
+  {
+    validationTypeId: 'book',
+    components: [
+      {
+        type: 'text',
+        name: 'someHeaderText',
+      },
+      {
+        name: 'colour',
+        type: 'collectionVariable',
+        label: 'colour',
+        placeholder: 'book cover colour',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        mode: 'input',
+        tooltip: {
+          title: 'exampleCollectionVarText',
+          body: 'exampleCollectionVarDefText',
+        },
+        options: [
+          {
+            value: 'blue',
+            label: 'exampleBlueItemText',
+          },
+          {
+            value: 'pink',
+            label: 'examplePinkItemText',
+          },
+          {
+            value: 'yellow',
+            label: 'exampleYellowItemText',
+          },
+        ],
+      },
+      {
+        type: 'numberVariable',
+        name: 'year',
+        label: 'year',
+        placeholder: 'year',
+        validation: {
+          type: 'number',
+          min: 0,
+          max: 2023,
+          warningMin: 0,
+          warningMax: 0,
+          numberOfDecimals: 0,
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        name: 'title',
+        type: 'group',
+        tooltip: {
+          title: 'non-repeating title group',
+          body: '',
+        },
+        label: 'title',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            type: 'text',
+            name: 'this a header for group',
+          },
+          {
+            name: 'main',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'title.main.value',
+              body: '',
+            },
+            label: 'title.main.value',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            name: 'tagLine',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'title.tagLine.value',
+              body: '',
+            },
+            label: 'title.tagLine.value',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+      },
+    ],
+  };

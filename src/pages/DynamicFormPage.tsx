@@ -1,33 +1,19 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import React, { useEffect } from 'react';
-import { Alert, Skeleton, Stack } from '@mui/material';
-import { Card, useBackdrop, FormGenerator } from '../components';
-import { useCoraFormSchemaByValidationType } from '../app/hooks';
+import { Stack } from '@mui/material';
+import { Card, FormGenerator } from '../components';
 import { FormSchema } from '../components/FormGenerator/types';
+import { createDefaultValuesFromFormSchema } from '../components/FormGenerator/utils';
 import {
-  createDefaultValuesFromFormSchema,
-  generateYupSchemaFromFormSchema,
-} from '../components/FormGenerator/utils';
+  formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups,
+  formDefWithOneTextVariableHavingFinalValue,
+} from '../__mocks__/data/formDef';
 
 export const DynamicFormPage = () => {
   const { t } = useTranslation();
-  const { setBackdrop } = useBackdrop();
-  const { error, isLoading, schema } =
-    useCoraFormSchemaByValidationType('demo');
-
-  useEffect(() => {
-    setBackdrop(isLoading);
-  }, [isLoading, setBackdrop]);
-
-  if (error) return <Alert severity='error'>{error}</Alert>;
-  if (isLoading)
-    return (
-      <Skeleton
-        variant='rectangular'
-        height={800}
-      />
-    );
+  const schema =
+    formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups as FormSchema;
 
   return (
     <>
@@ -37,9 +23,9 @@ export const DynamicFormPage = () => {
       <div>
         <Stack spacing={2}>
           <Card
-            title='Form from Cora'
+            title='CORA forms'
             variant='variant6'
-            tooltipTitle='Tooltip title'
+            tooltipTitle='New dynamic cora forms'
             tooltipBody='Some body text on how this form works'
           >
             <FormGenerator
@@ -47,23 +33,11 @@ export const DynamicFormPage = () => {
               formSchema={schema as FormSchema}
             />
           </Card>
-          <p>Form def:</p>
+          <p>Cora Form Definition:</p>
           <pre>{JSON.stringify(schema, null, 2)}</pre>
           <p>Default values:</p>
           <pre>
-            {JSON.stringify(
-              schema && createDefaultValuesFromFormSchema(schema),
-              null,
-              2,
-            )}
-          </pre>
-          <p>YUP validations:</p>
-          <pre>
-            {JSON.stringify(
-              schema && generateYupSchemaFromFormSchema(schema).describe(),
-              null,
-              2,
-            )}
+            {JSON.stringify(createDefaultValuesFromFormSchema(schema), null, 2)}
           </pre>
         </Stack>
       </div>
