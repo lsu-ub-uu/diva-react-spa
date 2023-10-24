@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -29,6 +29,7 @@ import {
   generateYupSchema,
   isComponentGroup,
   isComponentRepeating,
+  isComponentVariable,
 } from './utils';
 // eslint-disable-next-line import/no-cycle
 import { Typography } from '../index';
@@ -115,19 +116,19 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
     if (isComponentGroup(component) && !isComponentRepeating(component)) {
       return (
-        <div key={reactKey}>
+        <Paper key={reactKey}>
           {component.components &&
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             createFormComponents(
               component.components,
               currentComponentNamePath,
             )}
-        </div>
+        </Paper>
       );
     }
     if (isComponentGroup(component) && isComponentRepeating(component)) {
       return (
-        <div key={reactKey}>
+        <Paper key={reactKey}>
           <FieldArrayComponent
             control={control}
             component={component}
@@ -137,7 +138,26 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               createFormComponents(component.components ?? [], arrayPath)
             }
           />
-        </div>
+        </Paper>
+      );
+    }
+    if (isComponentVariable(component) && isComponentRepeating(component)) {
+      return (
+        <Paper key={reactKey}>
+          <FieldArrayComponent
+            control={control}
+            component={component}
+            name={currentComponentNamePath}
+            renderCallback={(variableArrayPath: string) => {
+              return renderLeafComponent(
+                component,
+                variableArrayPath,
+                control,
+                `${variableArrayPath}.value`,
+              );
+            }}
+          />
+        </Paper>
       );
     }
     return (

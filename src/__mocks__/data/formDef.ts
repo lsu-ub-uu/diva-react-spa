@@ -2070,6 +2070,7 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
           {
             type: 'text',
             name: 'this a header for group',
+            textStyle: 'h5TextStyle',
           },
           {
             name: 'main',
@@ -2158,8 +2159,9 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
               pattern: '.+',
             },
             repeat: {
+              minNumberOfRepeatingToShow: 1,
               repeatMin: 1,
-              repeatMax: 1,
+              repeatMax: 3,
             },
           },
         ],
