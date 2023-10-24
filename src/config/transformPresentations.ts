@@ -30,6 +30,7 @@ import { getChildReferencesListFromGroup } from './transformMetadata';
 import {
   containsChildWithNameInData,
   getAllDataAtomicsWithNameInData,
+  getAllRecordLinksWithNameInData,
   getFirstChildWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes
 } from '../utils/cora-data/CoraDataUtils';
@@ -190,14 +191,14 @@ const transformCoraPresentationContainerToBFFContainer = (
 ): BFFContainer => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const presentationsOfArray = getFirstDataGroupWithNameInDataAndAttributes(
-    dataRecordGroup,
-    'presentationsOf'
-  );
+
+  const getPresentationOf = getPresentationOfFromRecordLinks(dataRecordGroup);
   let presentationsOf: string[] = [];
-  presentationsOf.push(
-    extractLinkedRecordIdFromNamedRecordLink(presentationsOfArray, 'presentationOf')
-  );
+  getPresentationOf.map((presentationsOfId) => {
+    if (presentationsOfId) {
+      presentationsOf.push(presentationsOfId.id as string);
+    }
+  });
 
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
@@ -236,3 +237,11 @@ const extractAtomicValueByName = (childReference: DataGroup, nameInData: string)
   }
   return atomicValue;
 };
+function getPresentationOfFromRecordLinks(dataRecordGroup: DataGroup) {
+  const presentationsOfArray = getFirstDataGroupWithNameInDataAndAttributes(
+    dataRecordGroup,
+    'presentationsOf'
+  );
+
+  return getAllRecordLinksWithNameInData(presentationsOfArray, 'presentationOf');
+}
