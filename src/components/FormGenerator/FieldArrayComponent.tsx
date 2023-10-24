@@ -23,7 +23,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { ActionButtonGroup } from './ActionButtonGroup';
 // eslint-disable-next-line import/no-cycle
-import { renderLeafComponent } from './FormGenerator';
 import { FormComponent } from './types';
 import { createDefaultValuesFromComponent } from './utils';
 
@@ -31,6 +30,7 @@ interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
   component: FormComponent;
+  renderCallback: () => unknown;
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
@@ -59,12 +59,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           spacing={{ xs: 1 }}
           direction='row'
         >
-          {renderLeafComponent(
-            props.component,
-            field.id,
-            props.control as Control,
-            `${props.name}.${index}.value` as const, // not correct
-          )}
+          <p>{`${props.name}[${index}]`}</p>
+          {/* eslint-disable-next-line react/jsx-no-useless-fragment */}
+          <>{props.component.components && props.renderCallback()}</>
           <ActionButtonGroup
             moveUpButtonDisabled={index === 0}
             moveUpButtonAction={() => handleMove(index, index - 1)}

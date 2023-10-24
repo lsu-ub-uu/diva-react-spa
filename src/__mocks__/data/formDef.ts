@@ -2122,7 +2122,7 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
         label: 'author',
         repeat: {
           repeatMin: 0,
-          repeatMax: 1,
+          repeatMax: 10,
         },
         components: [
           {
@@ -2136,7 +2136,7 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
             label: 'author.name',
             validation: {
               type: 'regex',
-              pattern: '^[a-zA-Z]$',
+              pattern: '.*',
             },
             repeat: {
               repeatMin: 1,

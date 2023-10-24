@@ -33,6 +33,7 @@ import {
 // eslint-disable-next-line import/no-cycle
 import { Typography } from '../index';
 import { FormComponent, FormSchema } from './types';
+import { FieldArrayComponent } from './FieldArrayComponent';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -125,7 +126,23 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       );
     }
     if (isComponentGroup(component) && isComponentRepeating(component)) {
-      return <div key={reactKey}>this is a repeating group</div>;
+      return (
+        <div key={reactKey}>
+          <h4>{currentComponentNamePath}</h4>
+          <FieldArrayComponent
+            control={control}
+            component={component}
+            name={currentComponentNamePath}
+            renderCallback={() =>
+              /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+              createFormComponents(
+                component.components ?? [],
+                currentComponentNamePath,
+              )
+            }
+          />
+        </div>
+      );
     }
     return (
       <div key={reactKey}>
@@ -139,7 +156,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     );
   };
 
-  const createFormComponents = (components: FormComponent[], path = '') => {
+  const createFormComponents = (
+    components: FormComponent[],
+    path = '',
+  ): JSX.Element[] => {
     return components.map((c, i) => generateFormComponent(c, i, path));
   };
 
