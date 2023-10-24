@@ -128,17 +128,13 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     if (isComponentGroup(component) && isComponentRepeating(component)) {
       return (
         <div key={reactKey}>
-          <h4>{currentComponentNamePath}</h4>
           <FieldArrayComponent
             control={control}
             component={component}
             name={currentComponentNamePath}
-            renderCallback={() =>
+            renderCallback={(arrayPath: string) =>
               /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-              createFormComponents(
-                component.components ?? [],
-                currentComponentNamePath,
-              )
+              createFormComponents(component.components ?? [], arrayPath)
             }
           />
         </div>

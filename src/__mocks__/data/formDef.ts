@@ -2121,22 +2121,41 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
         },
         label: 'author',
         repeat: {
-          repeatMin: 0,
+          minNumberOfRepeatingToShow: 0,
+          repeatMin: 1,
           repeatMax: 10,
         },
         components: [
           {
-            name: 'name',
+            name: 'firstName',
             type: 'textVariable',
             mode: 'input',
             tooltip: {
               title: '',
               body: '',
             },
-            label: 'author.name',
+            label: 'First name',
             validation: {
               type: 'regex',
-              pattern: '.*',
+              pattern: '.+',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            name: 'lastName',
+            type: 'textVariable',
+            mode: 'input',
+            tooltip: {
+              title: '',
+              body: '',
+            },
+            label: 'Last name',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
             },
             repeat: {
               repeatMin: 1,

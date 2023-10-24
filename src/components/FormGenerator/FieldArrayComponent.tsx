@@ -30,7 +30,7 @@ interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
   component: FormComponent;
-  renderCallback: () => unknown;
+  renderCallback: (path: string) => unknown;
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
@@ -59,9 +59,11 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           spacing={{ xs: 1 }}
           direction='row'
         >
-          <p>{`${props.name}[${index}]`}</p>
           {/* eslint-disable-next-line react/jsx-no-useless-fragment */}
-          <>{props.component.components && props.renderCallback()}</>
+          <>
+            {props.component.components &&
+              props.renderCallback(`${props.name}[${index}]` as const)}
+          </>
           <ActionButtonGroup
             moveUpButtonDisabled={index === 0}
             moveUpButtonAction={() => handleMove(index, index - 1)}
