@@ -7,7 +7,6 @@ import { FormSchema } from '../components/FormGenerator/types';
 import { createDefaultValuesFromFormSchema } from '../components/FormGenerator/utils';
 import {
   formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups,
-  formDefWithOneTextVariableHavingFinalValue,
 } from '../__mocks__/data/formDef';
 
 export const DynamicFormPage = () => {
@@ -29,7 +28,9 @@ export const DynamicFormPage = () => {
             tooltipBody='Some body text on how this form works'
           >
             <FormGenerator
-              onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+              onSubmit={(values) =>
+                console.log(JSON.stringify(values, null, 2))
+              }
               formSchema={schema as FormSchema}
             />
           </Card>

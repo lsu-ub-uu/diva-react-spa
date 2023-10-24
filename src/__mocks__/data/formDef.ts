@@ -2066,6 +2066,24 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
           repeatMin: 1,
           repeatMax: 1,
         },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'titleColorAttribute',
+            placeholder: 'Select title color',
+            tooltip: {
+              title: 'Face color',
+              body: 'state the author face color',
+            },
+            label: 'Title color',
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
         components: [
           {
             type: 'text',
@@ -2127,10 +2145,29 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
         },
         label: 'author',
         repeat: {
-          minNumberOfRepeatingToShow: 0,
+          minNumberOfRepeatingToShow: 1,
           repeatMin: 1,
           repeatMax: 10,
         },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'eyeColor',
+            placeholder: 'Select eye color',
+            tooltip: {
+              title: 'Eye color',
+              body: 'state the author eye color',
+            },
+            finalValue: 'blue',
+            label: 'Eye color',
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
         components: [
           {
             name: 'firstName',
@@ -2149,6 +2186,25 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
               repeatMin: 1,
               repeatMax: 1,
             },
+            attributes: [
+              {
+                type: 'collectionVariable',
+                name: 'faceColorAttribute',
+                placeholder: 'Select eye color',
+                tooltip: {
+                  title: 'Face color',
+                  body: 'state the author face color',
+                },
+                label: 'Face color',
+                options: [
+                  { value: 'pale', label: 'examplePaleItemText' },
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' },
+                ],
+                mode: 'input',
+              },
+            ],
           },
           {
             name: 'lastName',
@@ -2168,6 +2224,25 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups: FormSchema 
               repeatMin: 1,
               repeatMax: 3,
             },
+            attributes: [
+              {
+                type: 'collectionVariable',
+                name: 'lastNameColor',
+                placeholder: 'Select lastname color',
+                tooltip: {
+                  title: 'Last color',
+                  body: 'state the author eye color',
+                },
+                finalValue: 'yellow',
+                label: 'Lastname color',
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' },
+                ],
+                mode: 'input',
+              },
+            ],
           },
         ],
       },

@@ -114,9 +114,32 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       ? `${component.name}`
       : `${path}.${component.name}`;
 
+    const createFormComponentAttributes = (
+      aComponent: FormComponent,
+      aPath: string,
+    ) => {
+      return (aComponent.attributes ?? []).map((attribute, index) => {
+        return (
+          <ControlledSelectField
+            key={`${attribute.name}_${index}`}
+            name={`${aPath}._${attribute.name}`}
+            isLoading={false}
+            loadingError={false}
+            label={attribute.label ?? ''}
+            placeholder={attribute.placeholder}
+            tooltip={attribute.tooltip}
+            control={control}
+            options={attribute.options}
+            readOnly={!!attribute.finalValue}
+          />
+        );
+      });
+    };
+
     if (isComponentGroup(component) && !isComponentRepeating(component)) {
       return (
         <Paper key={reactKey}>
+          {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             createFormComponents(
@@ -126,6 +149,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         </Paper>
       );
     }
+
     if (isComponentGroup(component) && isComponentRepeating(component)) {
       return (
         <Paper key={reactKey}>
@@ -133,10 +157,14 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             control={control}
             component={component}
             name={currentComponentNamePath}
-            renderCallback={(arrayPath: string) =>
+            renderCallback={(arrayPath: string) => {
               /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-              createFormComponents(component.components ?? [], arrayPath)
-            }
+              return [
+                ...createFormComponentAttributes(component, arrayPath),
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                ...createFormComponents(component.components ?? [], arrayPath),
+              ];
+            }}
           />
         </Paper>
       );
@@ -149,12 +177,16 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             component={component}
             name={currentComponentNamePath}
             renderCallback={(variableArrayPath: string) => {
-              return renderLeafComponent(
-                component,
-                variableArrayPath,
-                control,
-                `${variableArrayPath}.value`,
-              );
+              return [
+                ...createFormComponentAttributes(component, variableArrayPath),
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                renderLeafComponent(
+                  component,
+                  variableArrayPath,
+                  control,
+                  `${variableArrayPath}.value`,
+                ),
+              ];
             }}
           />
         </Paper>
@@ -162,6 +194,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     }
     return (
       <div key={reactKey}>
+        {createFormComponentAttributes(component, currentComponentNamePath)}
         {renderLeafComponent(
           component,
           reactKey,
