@@ -219,7 +219,7 @@ const createValidationFromComponentType = (
     case 'numberVariable':
       return createYupNumberSchema(component as FormComponent);
     default: // collectionVariable and attributeCollection
-      return yup.string().required();
+      return yup.string().required('field is required');
   }
 };
 
