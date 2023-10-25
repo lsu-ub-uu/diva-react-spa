@@ -112,6 +112,7 @@ export interface BFFPresentation extends BFFBase {
 export interface BFFContainer extends BFFPresentation {
   presentationsOf: string[];
   mode: 'input' | 'output';
+  repeat: 'children' | 'this';
   children: BFFContainerChildReference[];
 }
 

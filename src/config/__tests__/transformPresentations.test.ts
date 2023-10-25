@@ -29,6 +29,7 @@ import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '../../__moc
 import coraPresentationWithOneTextVariableHavingShowLabelFalse from '../../__mocks__/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
 import coraPresentationSurroundingContainer from '../../__mocks__/coraPresentationSurroundingContainer.json';
 import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '../../__mocks__/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
+import coraPresentationRepeatingContainer from '../../__mocks__/coraPresentationRepeatingContainer.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -204,7 +205,8 @@ describe('transformCoraPresentations', () => {
           // do we need childStyle for Container children?
           { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
           { childId: 'showLabelPCollVar', type: 'presentation' }
-        ]
+        ],
+        repeat: 'children'
       });
     });
     it('Returns one BFFPresentation for one SContainer with two vars in presentationsOf', () => {
@@ -221,7 +223,25 @@ describe('transformCoraPresentations', () => {
           { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
           { childId: 'showLabelPCollVar', type: 'presentation' },
           { childId: 'showLabelPCollVar2', type: 'presentation' }
-        ]
+        ],
+        repeat: 'children'
+      });
+    });
+  });
+  describe('RContainer', () => {
+    it('Returns one BFFPresentation for one RContainer', () => {
+      const transformData = transformCoraPresentations(coraPresentationRepeatingContainer);
+      expect(transformData[0]).toStrictEqual({
+        id: 'refPresentationTextLinkRContainer',
+        type: 'container',
+        presentationsOf: ['showLabelCollectionVar'],
+        mode: 'input',
+        children: [
+          // do we need childStyle for Container children?
+          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
+          { childId: 'showLabelPCollVar', type: 'presentation' }
+        ],
+        repeat: 'this'
       });
     });
   });

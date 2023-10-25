@@ -202,6 +202,7 @@ const transformCoraPresentationContainerToBFFContainer = (
 
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
+  const repeat = extractAttributeValueByName(dataRecordGroup, 'repeat');
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
   const children = childReferencesList.map((childReference) => {
     return transformContainerChildReference(childReference);
@@ -212,7 +213,8 @@ const transformCoraPresentationContainerToBFFContainer = (
     presentationsOf,
     mode,
     children,
-    type
+    type,
+    repeat
   } as BFFContainer;
 };
 
