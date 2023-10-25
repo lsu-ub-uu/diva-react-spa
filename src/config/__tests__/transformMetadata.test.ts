@@ -15,6 +15,7 @@ import testNumberWithTwoAttributes from '../../__mocks__/coraMetadataNumberVarWi
 import testCollectionWithTwoAttributes from '../../__mocks__/coraMetadataCollectionVarWithTwoAttributes.json';
 import testMetadataGroupWithAttribute  from '../../__mocks__/coraMetadataGroupWithAttribute.json';
 import testMetadataRecordLink from '../../__mocks__/coraMetadataRecordLink.json';
+import testMetadataRecordLinkWithFinalValue from '../../__mocks__/coraMetadataRecordLinkWithFinalValue.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
@@ -44,7 +45,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for textVariable without finalValue', () => {
       const metadataList = transformMetadata(testMetaData);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'someTextVar',
         nameInData: 'someNameInData',
         type: 'textVariable',
@@ -58,7 +59,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for textVariable with finalValue', () => {
       const metadataList = transformMetadata(testMetaDataWithFinalValue);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'someTextVar',
         nameInData: 'someNameInData',
         type: 'textVariable',
@@ -109,7 +110,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for numberVariable without finalValue', () => {
       const metadataList = transformMetadata(testNumberVariableMetaData);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'someNumberVar',
         nameInData: 'someNameInDataNumberVar',
         type: 'numberVariable',
@@ -127,7 +128,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for numberVariable with finalValue', () => {
       const metadataList = transformMetadata(testNumberVariableWithFinalValueMetaData);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'someNumberVar',
         nameInData: 'someNameInDataNumberVar',
         type: 'numberVariable',
@@ -148,7 +149,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for collectionVariable without finalValue', () => {
       const metadataList = transformMetadata(testCollectionVariableMetaData as DataListWrapper);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'exampleCollectionVar',
         nameInData: 'colour',
         type: 'collectionVariable',
@@ -164,7 +165,7 @@ describe('transformMetadata', () => {
         testCollectionVariableMetaDataWithFinalValue as DataListWrapper
       );
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'exampleCollectionVar',
         nameInData: 'colour',
         type: 'collectionVariable',
@@ -320,7 +321,7 @@ describe('transformMetadata', () => {
   });
 
   describe('recordLink', () => {
-    it('Returns one BFFMetadata for recordLink', () => {
+    it('Returns one BFFMetadata for recordLink without finalValue', () => {
       const metadataList = transformMetadata(testMetadataRecordLink as DataListWrapper);
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toStrictEqual({
@@ -330,6 +331,25 @@ describe('transformMetadata', () => {
         textId: 'nationalSubjectCategoryLinkText',
         defTextId: 'nationalSubjectCategoryLinkDefText',
         linkedRecordType: 'nationalSubjectCategory'
+      });
+    });
+
+    it('Returns one BFFMetadata for recordLink with finalValue and one attribute', () => {
+      const metadataList = transformMetadata(testMetadataRecordLinkWithFinalValue as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'nationalSubjectCategoryLink',
+        nameInData: 'nationalSubjectCategory',
+        type: 'recordLink',
+        textId: 'nationalSubjectCategoryLinkText',
+        defTextId: 'nationalSubjectCategoryLinkDefText',
+        linkedRecordType: 'nationalSubjectCategory',
+        finalValue: 'someFinalSubjectCategory',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar'
+          }
+        ],
       });
     });
   });

@@ -69,10 +69,9 @@ export interface BFFMetadataNumberVariable extends BFFMetadata  {
 
 export interface BFFMetadataRecordLink extends BFFMetadata  {
   linkedRecordType: string;
-  // finalValue?: string;
-  // attributeReferences?: BFFAttributeReference[];
+  finalValue?: string;
+  attributeReferences?: BFFAttributeReference[];
 }
-
 
 export interface BFFMetadataCollectionVariable extends BFFMetadata  {
   refCollection: string;
