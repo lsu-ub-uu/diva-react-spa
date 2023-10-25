@@ -191,6 +191,11 @@ const createPresentation = (
     }
   }
 
+  if (presentation.type === 'pRecordLink') {
+    // todo more stuff around the record link presentation
+    // what about linkedRecordType
+  }
+
   if (presentation.type === 'pGroup') {
     const group = metadata as BFFMetadataGroup;
     const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
