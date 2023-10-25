@@ -30,9 +30,12 @@ import {
 } from './types';
 
 export const isComponentVariable = (component: FormComponent) =>
-  ['numberVariable', 'textVariable', 'collectionVariable'].includes(
-    component.type,
-  );
+  [
+    'numberVariable',
+    'textVariable',
+    'collectionVariable',
+    'recordLink',
+  ].includes(component.type);
 
 export const isComponentGroup = (component: FormComponent) =>
   component.type === 'group';

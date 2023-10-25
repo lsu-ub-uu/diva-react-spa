@@ -49,7 +49,8 @@ export const renderLeafComponent = (
 ): JSX.Element | null => {
   switch (component.type) {
     case 'textVariable':
-    case 'numberVariable': {
+    case 'numberVariable':
+    case 'recordLink': {
       return (
         <ControlledTextField
           key={reactKey}
