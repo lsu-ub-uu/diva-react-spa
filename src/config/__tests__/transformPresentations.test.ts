@@ -30,6 +30,7 @@ import coraPresentationWithOneTextVariableHavingShowLabelFalse from '../../__moc
 import coraPresentationSurroundingContainer from '../../__mocks__/coraPresentationSurroundingContainer.json';
 import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '../../__mocks__/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
 import coraPresentationRepeatingContainer from '../../__mocks__/coraPresentationRepeatingContainer.json';
+import coraPresentationWithRecordLink from '../../__mocks__/coraPresentationRecordLink.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -173,12 +174,12 @@ describe('transformCoraPresentations', () => {
       });
     });
 
-    it('Returns only BFFPresentationGroup and BFFPresentation (pGroup, pNumVar, pVar and pCollVar, collection) entries and skips other types', () => {
+    it('Returns only BFFPresentationGroup and BFFPresentation (pGroup, pRecordLink, pNumVar, pVar and pCollVar) entries and skips other types', () => {
       const transformData = transformCoraPresentations(
         coraPresentationWithMiscTypes as DataListWrapper
       );
 
-      expect(transformData).toHaveLength(4);
+      expect(transformData).toHaveLength(5);
     });
   });
   describe('pCollVar', () => {
@@ -193,6 +194,21 @@ describe('transformCoraPresentations', () => {
       });
     });
   });
+
+  describe('pRecordLink', () => {
+    it('Returns one BFFPresentation for one pRecordLink entry', () => {
+      const transformData = transformCoraPresentations(coraPresentationWithRecordLink);
+      expect(transformData[0]).toStrictEqual({
+        id: 'nationalSubjectCategoryPLink',
+        type: 'pRecordLink',
+        presentationOf: 'nationalSubjectCategoryLink',
+        mode: 'input'
+        // TODO linkedRecordPresentations
+        // TODO Search
+      });
+    });
+  });
+
   describe.skip('SContainer', () => {
     it('Returns one BFFPresentation for one SContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationSurroundingContainer);

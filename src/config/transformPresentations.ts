@@ -67,7 +67,11 @@ const transformCoraPresentationToBFFPresentation = (
       return transformCoraPresentationPVarToBFFPresentation(coraRecordWrapper);
     }
     case 'pCollVar': {
-      // basic presentation should be enough för collection variable
+      // basic presentation should be enough for collection variable
+      return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
+    }
+    case 'pRecordLink': {
+      // basic presentation should be enough for pRecordLink until we deal with linkedPresentations and search
       return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
     }
     /*
@@ -75,7 +79,7 @@ const transformCoraPresentationToBFFPresentation = (
       return transformCoraPresentationContainerToBFFContainer(coraRecordWrapper);
     }
     */
-    // TODO add more types here like pRecordLink etc
+    // TODO add more types here like pResourceLink
     default: {
       return;
     }
