@@ -7,7 +7,7 @@ import {
   BFFMetadataNumberVariable,
   BFFMetadataCollectionVariable,
   BFFMetadata,
-  BFFMetadataItemCollection
+  BFFMetadataItemCollection, BFFMetadataRecordLink, BFFPresentationRecordLink,
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
@@ -77,6 +77,11 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
     },
     {
       childId: 'someMetadataChildGroupId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'nationalSubjectCategoryLinkId',
       repeatMin: '1',
       repeatMax: '1'
     }
@@ -399,6 +404,11 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       childId: 'pSomeMetadataChildGroupId',
       type: 'presentation',
       childStyle: []
+    },
+    {
+      childId: 'nationalSubjectCategoryPLinkId',
+      type: 'presentation',
+      childStyle: []
     }
   ]
 };
@@ -435,3 +445,21 @@ export const someNewMetadataGroupFaultyChildReference: BFFMetadataGroup = {
     }
   ]
 };
+
+export const someMetadataRecordLink: BFFMetadataRecordLink = {
+  id: 'nationalSubjectCategoryLinkId',
+  nameInData: 'nationalSubjectCategory',
+  type: 'recordLink',
+  textId: 'nationalSubjectCategoryLinkText',
+  defTextId: 'nationalSubjectCategoryLinkDefText',
+  linkedRecordType: 'nationalSubjectCategory',
+}
+
+export const pSomeMetadataRecordLink : BFFPresentationRecordLink = {
+  id: 'nationalSubjectCategoryPLinkId',
+  type: 'pRecordLink',
+  presentationOf: 'nationalSubjectCategoryLinkId',
+  mode: 'input'
+  // TODO linkedRecordPresentations?
+  // TODO Search ?
+}

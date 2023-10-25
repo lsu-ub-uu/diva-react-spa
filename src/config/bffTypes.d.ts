@@ -115,7 +115,11 @@ export interface BFFPresentation extends BFFBase {
   showLabel?: string;
 }
 
-export interface BFFContainer extends BFFPresentation {
+export interface BFFPresentationRecordLink extends BFFPresentation {
+
+}
+
+export interface BFFPresentationContainer extends BFFPresentation {
   presentationsOf: string[];
   mode: 'input' | 'output';
   repeat: 'children' | 'this';
