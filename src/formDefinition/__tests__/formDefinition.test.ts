@@ -158,6 +158,7 @@ describe('formDefinition', () => {
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
     expect(formDefinition.components).toHaveLength(12);
     expect(formDefinition).toStrictEqual({
+      name: 'someNewMetadataGroupNameInData',
       validationTypeId: validationTypeId,
       components: [
         {

@@ -24,6 +24,9 @@ export const createFormDefinition = (
   const presentationPool = dependencies.presentationPool;
   const validationType: BFFValidationType = validationPool.get(validationTypeId);
 
+  // we need to check the mode parameter
+  const newMetadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
+
   // metadata
   const metadataChildReferences = getMetadataChildReferencesForValidationType(
     validationType,
@@ -44,6 +47,7 @@ export const createFormDefinition = (
   );
 
   return {
+    name: newMetadataGroup.nameInData, // depending on mode
     validationTypeId: validationType.id,
     components
   };

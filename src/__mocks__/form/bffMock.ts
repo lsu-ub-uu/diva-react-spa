@@ -25,7 +25,7 @@ export const someValidationTypeData: BFFValidationType = {
 
 export const someNewMetadataGroup: BFFMetadataGroup = {
   id: 'someNewMetadataGroupId',
-  nameInData: 'someNameInData',
+  nameInData: 'someNewMetadataGroupNameInData',
   type: 'group',
   textId: 'textId345',
   defTextId: 'defTextId678',
