@@ -112,7 +112,7 @@ const createCollectionVariableOptions = (metadataPool: any, collectionVariable: 
   });
 }
 
-function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFMetadataNumberVariable | BFFMetadataTextVariable, metadataPool: any, options: unknown[] | undefined) {
+function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFMetadataNumberVariable | BFFMetadataTextVariable | BFFMetadataGroup, metadataPool: any, options: unknown[] | undefined) {
   return metadataVariable.attributeReferences?.map((attributeReference) => {
     const refCollectionVar = metadataPool.get(
       attributeReference.refCollectionVarId,
@@ -194,6 +194,10 @@ const createPresentation = (
   if (presentation.type === 'pGroup') {
     const group = metadata as BFFMetadataGroup;
     const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
+
+    if (group.attributeReferences !== undefined) {
+      attributes = createAttributes(group, metadataPool, undefined);
+    }
 
     // skip children for recordInfo group for now
     if (group.nameInData !== 'recordInfo') {

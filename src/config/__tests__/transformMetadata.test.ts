@@ -13,6 +13,7 @@ import testTextWithOneAttribute from '../../__mocks__/coraMetadataTextVarWithOne
 import testTestWithTwoAttributes from '../../__mocks__/coraMetadataTextVarWithTwoAttributes.json';
 import testNumberWithTwoAttributes from '../../__mocks__/coraMetadataNumberVarWithTwoAttributes.json';
 import testCollectionWithTwoAttributes from '../../__mocks__/coraMetadataCollectionVarWithTwoAttributes.json';
+import testMetadataGroupWithAttribute  from '../../__mocks__/coraMetadataGroupWithAttribute.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
@@ -209,6 +210,29 @@ describe('transformMetadata', () => {
     });
   });
   describe('attributeReference', () => {
+    it('Returns one BFFMetadataGroup with one attributeReference', () => {
+      const metadataList = transformMetadata(testMetadataGroupWithAttribute as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'demoNewGroup',
+        nameInData: 'book',
+        type: 'group',
+        textId: 'demoGroupText',
+        defTextId: 'demoGroupDefText',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar'
+          }
+        ],
+        children: [
+          {
+            childId: 'recordInfoNewGroup',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ]
+      });
+    });
     it('Returns one BFFMetadataTextVariable with one attributeReference', () => {
       const metadataList = transformMetadata(testTextWithOneAttribute as DataListWrapper);
       expect(metadataList).toHaveLength(1);

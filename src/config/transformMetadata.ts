@@ -172,11 +172,15 @@ const transformMetadataGroup = (dataRecordGroup: DataGroup, metadata: BFFMetadat
     return transformChildReference(childReference);
   });
 
-  return {
+  const attributeReferences = extractAttributesReferences(dataRecordGroup);
+
+  return removeEmpty({
     ...metadata,
+    attributeReferences,
     children
-  } as BFFMetadataGroup;
+  }) as BFFMetadataGroup;
 };
+
 const extractAttributesReferences = (dataRecordGroup: DataGroup) => {
   if (containsChildWithNameInData(dataRecordGroup, 'attributeReferences')) {
     const attributesReferencesGroup = getFirstDataGroupWithNameInData(

@@ -87,6 +87,7 @@ export interface BFFMetadataItemCollection {
 }
 
 export interface BFFMetadataGroup extends BFFMetadata {
+  attributeReferences?: BFFAttributeReference[];
   children: BFFMetadataChildReference[];
 }
 
