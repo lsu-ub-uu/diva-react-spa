@@ -36,7 +36,8 @@ import {
   BFFMetadataChildReference,
   BFFMetadataTextVariable,
   BFFMetadataNumberVariable,
-  BFFMetadataCollectionVariable
+  BFFMetadataCollectionVariable,
+  BFFMetadataRecordLink,
 } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
@@ -76,6 +77,9 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     case 'collectionItem': {
       // Basic metadata is enough for a collectionItem
       return metadata;
+    }
+    case 'recordLink': {
+      return transformRecordLink(dataRecordGroup, metadata);
     }
     // TODO add more types
     default: {
@@ -138,6 +142,17 @@ const transformCollectionVariable = (
   const refCollection = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'refCollection');
 
   return { ...metadata, refCollection, attributeReferences } as BFFMetadataCollectionVariable;
+};
+
+const transformRecordLink = (
+  dataRecordGroup: DataGroup,
+  metadata: BFFMetadata
+): BFFMetadataRecordLink => {
+  // todo handle finalValue
+  // todo handle attributes
+  const linkedRecordType = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'linkedRecordType');
+
+  return { ...metadata, linkedRecordType } as BFFMetadataRecordLink;
 };
 
 const transformItemCollection = (dataRecordGroup: DataGroup, metadata: BFFMetadata) => {

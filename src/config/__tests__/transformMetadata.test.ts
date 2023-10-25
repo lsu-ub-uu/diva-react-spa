@@ -14,6 +14,7 @@ import testTestWithTwoAttributes from '../../__mocks__/coraMetadataTextVarWithTw
 import testNumberWithTwoAttributes from '../../__mocks__/coraMetadataNumberVarWithTwoAttributes.json';
 import testCollectionWithTwoAttributes from '../../__mocks__/coraMetadataCollectionVarWithTwoAttributes.json';
 import testMetadataGroupWithAttribute  from '../../__mocks__/coraMetadataGroupWithAttribute.json';
+import testMetadataRecordLink from '../../__mocks__/coraMetadataRecordLink.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
@@ -209,6 +210,7 @@ describe('transformMetadata', () => {
       });
     });
   });
+
   describe('attributeReference', () => {
     it('Returns one BFFMetadataGroup with one attributeReference', () => {
       const metadataList = transformMetadata(testMetadataGroupWithAttribute as DataListWrapper);
@@ -313,6 +315,21 @@ describe('transformMetadata', () => {
             refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
           }
         ]
+      });
+    });
+  });
+
+  describe('recordLink', () => {
+    it('Returns one BFFMetadata for recordLink', () => {
+      const metadataList = transformMetadata(testMetadataRecordLink as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'nationalSubjectCategoryLink',
+        nameInData: 'nationalSubjectCategory',
+        type: 'recordLink',
+        textId: 'nationalSubjectCategoryLinkText',
+        defTextId: 'nationalSubjectCategoryLinkDefText',
+        linkedRecordType: 'nationalSubjectCategory'
       });
     });
   });
