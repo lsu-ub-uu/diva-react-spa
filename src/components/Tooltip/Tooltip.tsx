@@ -67,7 +67,9 @@ const Content = (props: ContentProps) => {
       >
         <CloseIcon />
       </IconButton>
-      <Typography sx={{ fontWeight: 'bold', width: '90%' }}>{props.title}</Typography>
+      <Typography sx={{ fontWeight: 'bold', width: '90%' }}>
+        {props.title}
+      </Typography>
       <Typography
         variant='body1'
         sx={{ fontSize: 14 }}
