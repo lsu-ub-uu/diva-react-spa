@@ -37,6 +37,7 @@ export interface FormComponentTooltip {
 
 export interface FormComponent {
   type:
+    | 'recordLink'
     | 'collectionVariable'
     | 'numberVariable'
     | 'textVariable'

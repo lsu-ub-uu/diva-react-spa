@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { AppThunk } from 'app/store';
 import { authenticated, authenticating, hasError } from './authSlice';
-// eslint-disable-next-line import/no-cycle
 import { Account } from '../../components/Layout/Header/Login';
 
 const BFF_API_URL = import.meta.env.VITE_BFF_API_URL;

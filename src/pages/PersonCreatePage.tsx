@@ -18,7 +18,6 @@ import { Helmet } from 'react-helmet-async';
 import { useAppDispatch } from '../app/hooks';
 import { loadPublicationTypesAsync } from '../features/publicationTypes';
 import { Card, useBackdrop, ErrorSummary } from '../components';
-// eslint-disable-next-line import/no-cycle
 import { postOnePerson } from '../features/createPerson/createPersonSlice';
 
 export interface PersonCreateModel {

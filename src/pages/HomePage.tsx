@@ -5,19 +5,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet-async';
 import React from 'react';
-import {
-  AsidePortal,
-  Card,
-  TabsMenu,
-  SubjectCategoryPicker,
-} from '../components';
+import { AsidePortal, Card, TabsMenu } from '../components';
 
 export const HomePage = () => {
   const { t } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -62,21 +55,6 @@ export const HomePage = () => {
         </AsidePortal>
         <TabsMenu />
         <Stack spacing={2}>
-          <Card
-            title='National subject category'
-            variant='variant6'
-            tooltipTitle='Publication'
-            tooltipBody='Publications help body text tooltip'
-          >
-            <SubjectCategoryPicker
-              onSelect={(id) =>
-                enqueueSnackbar(`Subject ${id} was successfully added`, {
-                  variant: 'success',
-                  anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                })
-              }
-            />
-          </Card>
           <Card
             title='Variant1'
             variant='variant1'

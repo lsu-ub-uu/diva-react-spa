@@ -17,13 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Paper } from '@mui/material';
+import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
-// eslint-disable-next-line import/no-cycle
 import {
   createDefaultValuesFromFormSchema,
   generateYupSchema,
@@ -31,7 +29,6 @@ import {
   isComponentRepeating,
   isComponentVariable,
 } from './utils';
-// eslint-disable-next-line import/no-cycle
 import { Typography } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
@@ -49,7 +46,8 @@ export const renderLeafComponent = (
 ): JSX.Element | null => {
   switch (component.type) {
     case 'textVariable':
-    case 'numberVariable': {
+    case 'numberVariable':
+    case 'recordLink': {
       return (
         <ControlledTextField
           key={reactKey}
@@ -141,7 +139,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         <Box key={reactKey}>
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
-            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             createFormComponents(
               component.components,
               currentComponentNamePath,
@@ -158,10 +155,8 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             component={component}
             name={currentComponentNamePath}
             renderCallback={(arrayPath: string) => {
-              /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
               return [
                 ...createFormComponentAttributes(component, arrayPath),
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 ...createFormComponents(component.components ?? [], arrayPath),
               ];
             }}
@@ -171,25 +166,23 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     }
     if (isComponentVariable(component) && isComponentRepeating(component)) {
       return (
-        <Paper key={reactKey}>
-          <FieldArrayComponent
-            control={control}
-            component={component}
-            name={currentComponentNamePath}
-            renderCallback={(variableArrayPath: string) => {
-              return [
-                ...createFormComponentAttributes(component, variableArrayPath),
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                renderLeafComponent(
-                  component,
-                  variableArrayPath,
-                  control,
-                  `${variableArrayPath}.value`,
-                ),
-              ];
-            }}
-          />
-        </Paper>
+        <FieldArrayComponent
+          key={reactKey}
+          control={control}
+          component={component}
+          name={currentComponentNamePath}
+          renderCallback={(variableArrayPath: string) => {
+            return [
+              ...createFormComponentAttributes(component, variableArrayPath),
+              renderLeafComponent(
+                component,
+                variableArrayPath,
+                control,
+                `${variableArrayPath}.value`,
+              ),
+            ];
+          }}
+        />
       );
     }
     return (
