@@ -24,12 +24,13 @@ import {
 } from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { BFFPresentation, BFFPresentationGroup } from './bffTypes';
+import { BFFPresentationContainer, BFFPresentation, BFFPresentationGroup } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { getChildReferencesListFromGroup } from './transformMetadata';
 import {
   containsChildWithNameInData,
   getAllDataAtomicsWithNameInData,
+  getAllRecordLinksWithNameInData,
   getFirstChildWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes
 } from '../utils/cora-data/CoraDataUtils';
@@ -66,10 +67,19 @@ const transformCoraPresentationToBFFPresentation = (
       return transformCoraPresentationPVarToBFFPresentation(coraRecordWrapper);
     }
     case 'pCollVar': {
-      // basic presentation should be enough för collection variable
+      // basic presentation should be enough for collection variable
       return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
     }
-    // TODO add more types here like pRecordLink etc
+    case 'pRecordLink': {
+      // basic presentation should be enough for pRecordLink until we deal with linkedPresentations and search
+      return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
+    }
+    /*
+    case 'container': {
+      return transformCoraPresentationContainerToBFFContainer(coraRecordWrapper);
+    }
+    */
+    // TODO add more types here like pResourceLink
     default: {
       return;
     }
@@ -97,7 +107,10 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
 
   let specifiedLabelTextId;
   if (containsChildWithNameInData(dataRecordGroup, 'specifiedLabelText')) {
-    specifiedLabelTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'specifiedLabelText');
+    specifiedLabelTextId = extractLinkedRecordIdFromNamedRecordLink(
+      dataRecordGroup,
+      'specifiedLabelText'
+    );
   }
 
   let showLabel;
@@ -105,7 +118,15 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     showLabel = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'showLabel');
   }
 
-  return removeEmpty({ id, presentationOf, mode, emptyTextId, type, specifiedLabelTextId, showLabel } as BFFPresentation);
+  return removeEmpty({
+    id,
+    presentationOf,
+    mode,
+    emptyTextId,
+    type,
+    specifiedLabelTextId,
+    showLabel
+  } as BFFPresentation);
 };
 
 // Handle pVar
@@ -171,6 +192,52 @@ const transformChildReference = (childReference: DataGroup) => {
   });
 };
 
+const transformCoraPresentationContainerToBFFContainer = (
+  coraRecordWrapper: RecordWrapper
+): BFFPresentationContainer => {
+  const dataRecordGroup = coraRecordWrapper.record.data;
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+
+  const getPresentationOf = getPresentationOfFromRecordLinks(dataRecordGroup);
+  let presentationsOf: string[] = [];
+  getPresentationOf.map((presentationsOfId) => {
+    if (presentationsOfId) {
+      presentationsOf.push(presentationsOfId.id as string);
+    }
+  });
+
+  const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
+  const repeat = extractAttributeValueByName(dataRecordGroup, 'repeat');
+  const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
+  const children = childReferencesList.map((childReference) => {
+    return transformContainerChildReference(childReference);
+  });
+
+  return {
+    id,
+    presentationsOf,
+    mode,
+    children,
+    type,
+    repeat
+  } as BFFPresentationContainer;
+};
+
+const transformContainerChildReference = (childReference: DataGroup) => {
+  const refGroup = getFirstDataGroupWithNameInDataAndAttributes(childReference, 'refGroup');
+  const ref = getFirstChildWithNameInData(refGroup, 'ref');
+  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
+  const type = extractAttributeValueByName(ref as DataGroup, 'type');
+  const textStyle = extractAtomicValueByName(childReference, 'textStyle');
+
+  return removeEmpty({
+    childId,
+    type,
+    textStyle
+  });
+};
+
 const extractAtomicValueByName = (childReference: DataGroup, nameInData: string) => {
   let atomicValue;
   if (containsChildWithNameInData(childReference, nameInData)) {
@@ -178,3 +245,11 @@ const extractAtomicValueByName = (childReference: DataGroup, nameInData: string)
   }
   return atomicValue;
 };
+function getPresentationOfFromRecordLinks(dataRecordGroup: DataGroup) {
+  const presentationsOfArray = getFirstDataGroupWithNameInDataAndAttributes(
+    dataRecordGroup,
+    'presentationsOf'
+  );
+
+  return getAllRecordLinksWithNameInData(presentationsOfArray, 'presentationOf');
+}

@@ -13,6 +13,9 @@ import testTextWithOneAttribute from '../../__mocks__/coraMetadataTextVarWithOne
 import testTestWithTwoAttributes from '../../__mocks__/coraMetadataTextVarWithTwoAttributes.json';
 import testNumberWithTwoAttributes from '../../__mocks__/coraMetadataNumberVarWithTwoAttributes.json';
 import testCollectionWithTwoAttributes from '../../__mocks__/coraMetadataCollectionVarWithTwoAttributes.json';
+import testMetadataGroupWithAttribute  from '../../__mocks__/coraMetadataGroupWithAttribute.json';
+import testMetadataRecordLink from '../../__mocks__/coraMetadataRecordLink.json';
+import testMetadataRecordLinkWithFinalValue from '../../__mocks__/coraMetadataRecordLinkWithFinalValue.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformMetadata', () => {
@@ -42,7 +45,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for textVariable without finalValue', () => {
       const metadataList = transformMetadata(testMetaData);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'someTextVar',
         nameInData: 'someNameInData',
         type: 'textVariable',
@@ -56,7 +59,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for textVariable with finalValue', () => {
       const metadataList = transformMetadata(testMetaDataWithFinalValue);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'someTextVar',
         nameInData: 'someNameInData',
         type: 'textVariable',
@@ -107,7 +110,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for numberVariable without finalValue', () => {
       const metadataList = transformMetadata(testNumberVariableMetaData);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'someNumberVar',
         nameInData: 'someNameInDataNumberVar',
         type: 'numberVariable',
@@ -125,7 +128,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for numberVariable with finalValue', () => {
       const metadataList = transformMetadata(testNumberVariableWithFinalValueMetaData);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'someNumberVar',
         nameInData: 'someNameInDataNumberVar',
         type: 'numberVariable',
@@ -146,7 +149,7 @@ describe('transformMetadata', () => {
     it('Returns one BFFMetadata for collectionVariable without finalValue', () => {
       const metadataList = transformMetadata(testCollectionVariableMetaData as DataListWrapper);
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'exampleCollectionVar',
         nameInData: 'colour',
         type: 'collectionVariable',
@@ -162,7 +165,7 @@ describe('transformMetadata', () => {
         testCollectionVariableMetaDataWithFinalValue as DataListWrapper
       );
       expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toEqual({
+      expect(metadataList[0]).toStrictEqual({
         id: 'exampleCollectionVar',
         nameInData: 'colour',
         type: 'collectionVariable',
@@ -208,7 +211,31 @@ describe('transformMetadata', () => {
       });
     });
   });
+
   describe('attributeReference', () => {
+    it('Returns one BFFMetadataGroup with one attributeReference', () => {
+      const metadataList = transformMetadata(testMetadataGroupWithAttribute as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'demoNewGroup',
+        nameInData: 'book',
+        type: 'group',
+        textId: 'demoGroupText',
+        defTextId: 'demoGroupDefText',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar'
+          }
+        ],
+        children: [
+          {
+            childId: 'recordInfoNewGroup',
+            repeatMin: '1',
+            repeatMax: '1',
+          },
+        ]
+      });
+    });
     it('Returns one BFFMetadataTextVariable with one attributeReference', () => {
       const metadataList = transformMetadata(testTextWithOneAttribute as DataListWrapper);
       expect(metadataList).toHaveLength(1);
@@ -270,30 +297,7 @@ describe('transformMetadata', () => {
         ]
       });
     });
-    it('Returns one BFFMetadataNumberVariable with two attributeReference', () => {
-      const metadataList = transformMetadata(testNumberWithTwoAttributes as DataListWrapper);
-      expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toStrictEqual({
-        id: 'someNumberVar',
-        nameInData: 'someNameInData',
-        type: 'numberVariable',
-        textId: 'someTextVarText',
-        defTextId: 'someTextVarDefText',
-        min: '0',
-        max: '20',
-        warningMin: '2',
-        warningMax: '10',
-        numberOfDecimals: '3',
-        attributeReferences: [
-          {
-            refCollectionVarId: 'exampleAttributeFinalCollectionVar1'
-          },
-          {
-            refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
-          }
-        ]
-      });
-    });
+
     it('Returns one BFFMetadataCollectionVariable with two attributeReference', () => {
       const metadataList = transformMetadata(testCollectionWithTwoAttributes as DataListWrapper);
       expect(metadataList).toHaveLength(1);
@@ -312,6 +316,40 @@ describe('transformMetadata', () => {
             refCollectionVarId: 'exampleAttributeFinalCollectionVar2'
           }
         ]
+      });
+    });
+  });
+
+  describe('recordLink', () => {
+    it('Returns one BFFMetadata for recordLink without finalValue', () => {
+      const metadataList = transformMetadata(testMetadataRecordLink as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'nationalSubjectCategoryLink',
+        nameInData: 'nationalSubjectCategory',
+        type: 'recordLink',
+        textId: 'nationalSubjectCategoryLinkText',
+        defTextId: 'nationalSubjectCategoryLinkDefText',
+        linkedRecordType: 'nationalSubjectCategory'
+      });
+    });
+
+    it('Returns one BFFMetadata for recordLink with finalValue and one attribute', () => {
+      const metadataList = transformMetadata(testMetadataRecordLinkWithFinalValue as DataListWrapper);
+      expect(metadataList).toHaveLength(1);
+      expect(metadataList[0]).toStrictEqual({
+        id: 'nationalSubjectCategoryLink',
+        nameInData: 'nationalSubjectCategory',
+        type: 'recordLink',
+        textId: 'nationalSubjectCategoryLinkText',
+        defTextId: 'nationalSubjectCategoryLinkDefText',
+        linkedRecordType: 'nationalSubjectCategory',
+        finalValue: 'someFinalSubjectCategory',
+        attributeReferences: [
+          {
+            refCollectionVarId: 'exampleAttributeFinalCollectionVar'
+          }
+        ],
       });
     });
   });

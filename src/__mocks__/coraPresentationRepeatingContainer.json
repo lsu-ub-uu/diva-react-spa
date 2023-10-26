@@ -1,0 +1,242 @@
+{
+  "dataList": {
+    "fromNo": "0",
+    "data": [
+      {
+        "record": {
+          "data": {
+            "name": "presentation",
+            "children": [
+              {
+                "name": "recordInfo",
+                "children": [
+                  {
+                    "name": "id",
+                    "value": "exampleCoordinatesRContainer"
+                  },
+                  {
+                    "name": "type",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "presentation"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "createdBy",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "user"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "141414"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "dataDivider",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "testSystem"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "tsCreated",
+                    "value": "2023-02-25T09:50:23.964299Z"
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "141414"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2023-02-25T09:50:23.964299Z"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "1",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "141414"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2023-03-02T15:33:15.607251Z"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "validationType",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "validationType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "presentationRepeatingContainer"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "presentationOf",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "metadata"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "exampleCoordinatesGroup"
+                  }
+                ]
+              },
+              {
+                "name": "childReferences",
+                "children": [
+                  {
+                    "name": "childReference",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "refGroup",
+                        "repeatId": "0",
+                        "children": [
+                          {
+                            "name": "ref",
+                            "children": [
+                              {
+                                "name": "linkedRecordType",
+                                "value": "presentation"
+                              },
+                              {
+                                "name": "linkedRecordId",
+                                "value": "exampleCoordinatesPGroup"
+                              }
+                            ],
+                            "attributes": {
+                              "type": "presentation"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "presentationSize",
+                        "value": ""
+                      },
+                      {
+                        "name": "textStyle",
+                        "value": ""
+                      },
+                      {
+                        "name": "childStyle",
+                        "repeatId": "1",
+                        "value": ""
+                      },
+                      {
+                        "name": "minNumberOfRepeatingToShow",
+                        "value": ""
+                      }
+                    ]
+                  },
+                  {
+                    "name": "childReference",
+                    "repeatId": "1",
+                    "children": [
+                      {
+                        "name": "refGroup",
+                        "repeatId": "0",
+                        "children": [
+                          {
+                            "name": "ref",
+                            "children": [
+                              {
+                                "name": "linkedRecordType",
+                                "value": "presentation"
+                              },
+                              {
+                                "name": "linkedRecordId",
+                                "value": "exampleCoordinatesAsMapPGroup"
+                              }
+                            ],
+                            "attributes": {
+                              "type": "presentation"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "presentationSize",
+                        "value": ""
+                      },
+                      {
+                        "name": "textStyle",
+                        "value": ""
+                      },
+                      {
+                        "name": "childStyle",
+                        "repeatId": "1",
+                        "value": ""
+                      },
+                      {
+                        "name": "minNumberOfRepeatingToShow",
+                        "value": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "attributes": {
+              "type": "container",
+              "repeat": "this"
+            }
+          }
+        }
+      }
+    ],
+    "totalNo": "1",
+    "containDataOfType": "recordType",
+    "toNo": "1"
+  }
+}

@@ -67,6 +67,12 @@ export interface BFFMetadataNumberVariable extends BFFMetadata  {
   attributeReferences?: BFFAttributeReference[];
 }
 
+export interface BFFMetadataRecordLink extends BFFMetadata  {
+  linkedRecordType: string;
+  finalValue?: string;
+  attributeReferences?: BFFAttributeReference[];
+}
+
 export interface BFFMetadataCollectionVariable extends BFFMetadata  {
   refCollection: string;
   finalValue?: string;
@@ -87,6 +93,7 @@ export interface BFFMetadataItemCollection {
 }
 
 export interface BFFMetadataGroup extends BFFMetadata {
+  attributeReferences?: BFFAttributeReference[];
   children: BFFMetadataChildReference[];
 }
 
@@ -108,6 +115,22 @@ export interface BFFPresentation extends BFFBase {
   showLabel?: string;
 }
 
+export interface BFFPresentationRecordLink extends BFFPresentation {
+
+}
+
+export interface BFFPresentationContainer extends BFFPresentation {
+  presentationsOf: string[];
+  mode: 'input' | 'output';
+  repeat: 'children' | 'this';
+  children: BFFContainerChildReference[];
+}
+
+export interface BFFContainerChildReference {
+  childId: string;
+  type: 'text' | 'presentation' | 'guiElement';
+  textStyle?: string;
+}
 export interface BFFPresentationGroup extends BFFPresentation {
   presentationOf: string;
   mode: 'input' | 'output';

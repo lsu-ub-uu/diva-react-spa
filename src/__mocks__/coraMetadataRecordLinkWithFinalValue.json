@@ -1,0 +1,231 @@
+{
+  "dataList": {
+    "fromNo": "0",
+    "data": [
+      {
+        "record": {
+          "data": {
+            "name": "metadata",
+            "children": [
+              {
+                "name": "recordInfo",
+                "children": [
+                  {
+                    "name": "id",
+                    "value": "nationalSubjectCategoryLink"
+                  },
+                  {
+                    "name": "type",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "metadata"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "validationType",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "validationType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "metadataRecordLink"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "dataDivider",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "diva"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "createdBy",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "user"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "coraUser:4412982402853626"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "tsCreated",
+                    "value": "2018-12-19T13:09:15.261000Z"
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "coraUser:4412982402853626"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2018-12-19T13:09:15.261000Z"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "1",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "coraUser:4412982402853626"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2019-03-01T12:31:15.804000Z"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "2",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "coraUser:490742519075086"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2023-03-03T13:14:18.684269Z"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "nameInData",
+                "value": "nationalSubjectCategory"
+              },
+              {
+                "name": "textId",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "nationalSubjectCategoryLinkText"
+                  }
+                ]
+              },
+              {
+                "name": "defTextId",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "text"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "nationalSubjectCategoryLinkDefText"
+                  }
+                ]
+              },
+              {
+                "name": "linkedRecordType",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "recordType"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "nationalSubjectCategory"
+                  }
+                ]
+              },
+              {
+                "children": [
+                  {
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "metadata"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "exampleAttributeFinalCollectionVar"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/exampleAttributeFinalCollectionVar",
+                        "accept": "application/vnd.uub.record+json"
+                      }
+                    },
+                    "name": "ref"
+                  }
+                ],
+                "name": "attributeReferences"
+              },
+              {
+                "name": "finalValue",
+                "value": "someFinalSubjectCategory"
+              }
+
+            ],
+            "attributes": {
+              "type": "recordLink"
+            }
+          }
+        }
+      }
+    ],
+    "totalNo": "1",
+    "containDataOfType": "metadata",
+    "toNo": "1"
+  }
+}

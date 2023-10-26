@@ -36,7 +36,8 @@ import {
   BFFMetadataChildReference,
   BFFMetadataTextVariable,
   BFFMetadataNumberVariable,
-  BFFMetadataCollectionVariable
+  BFFMetadataCollectionVariable,
+  BFFMetadataRecordLink,
 } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
@@ -77,6 +78,9 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
       // Basic metadata is enough for a collectionItem
       return metadata;
     }
+    case 'recordLink': {
+      return transformRecordLink(dataRecordGroup, metadata);
+    }
     // TODO add more types
     default: {
       return;
@@ -92,7 +96,7 @@ const transformTextVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata
   const attributeReferences = extractAttributesReferences(dataRecordGroup);
 
   const regEx = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'regEx');
-  return { ...metadata, regEx, attributeReferences } as BFFMetadataTextVariable;
+  return removeEmpty({ ...metadata, regEx, attributeReferences }) as BFFMetadataTextVariable;
 };
 
 const transformNumberVariable = (
@@ -115,7 +119,7 @@ const transformNumberVariable = (
     'numberOfDecimals'
   );
 
-  return {
+  return removeEmpty({
     ...metadata,
     min,
     max,
@@ -123,7 +127,7 @@ const transformNumberVariable = (
     warningMax,
     numberOfDecimals,
     attributeReferences
-  } as BFFMetadataNumberVariable;
+  }) as BFFMetadataNumberVariable;
 };
 
 const transformCollectionVariable = (
@@ -137,7 +141,22 @@ const transformCollectionVariable = (
   const attributeReferences = extractAttributesReferences(dataRecordGroup);
   const refCollection = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'refCollection');
 
-  return { ...metadata, refCollection, attributeReferences } as BFFMetadataCollectionVariable;
+  return removeEmpty({ ...metadata, refCollection, attributeReferences }) as BFFMetadataCollectionVariable;
+};
+
+const transformRecordLink = (
+  dataRecordGroup: DataGroup,
+  metadata: BFFMetadata
+): BFFMetadataRecordLink => {
+  if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
+    const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
+    metadata = { ...metadata, finalValue } as BFFMetadata;
+  }
+
+  const attributeReferences = extractAttributesReferences(dataRecordGroup);
+  const linkedRecordType = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'linkedRecordType');
+
+  return removeEmpty({ ...metadata, linkedRecordType, attributeReferences }) as BFFMetadataRecordLink;
 };
 
 const transformItemCollection = (dataRecordGroup: DataGroup, metadata: BFFMetadata) => {
@@ -172,11 +191,15 @@ const transformMetadataGroup = (dataRecordGroup: DataGroup, metadata: BFFMetadat
     return transformChildReference(childReference);
   });
 
-  return {
+  const attributeReferences = extractAttributesReferences(dataRecordGroup);
+
+  return removeEmpty({
     ...metadata,
+    attributeReferences,
     children
-  } as BFFMetadataGroup;
+  }) as BFFMetadataGroup;
 };
+
 const extractAttributesReferences = (dataRecordGroup: DataGroup) => {
   if (containsChildWithNameInData(dataRecordGroup, 'attributeReferences')) {
     const attributesReferencesGroup = getFirstDataGroupWithNameInData(

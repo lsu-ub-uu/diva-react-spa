@@ -24,6 +24,9 @@ export const createFormDefinition = (
   const presentationPool = dependencies.presentationPool;
   const validationType: BFFValidationType = validationPool.get(validationTypeId);
 
+  // we need to check the mode parameter
+  const newMetadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
+
   // metadata
   const metadataChildReferences = getMetadataChildReferencesForValidationType(
     validationType,
@@ -44,6 +47,7 @@ export const createFormDefinition = (
   );
 
   return {
+    name: newMetadataGroup.nameInData, // depending on mode
     validationTypeId: validationType.id,
     components
   };
@@ -112,7 +116,7 @@ const createCollectionVariableOptions = (metadataPool: any, collectionVariable: 
   });
 }
 
-function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFMetadataNumberVariable | BFFMetadataTextVariable, metadataPool: any, options: unknown[] | undefined) {
+function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFMetadataNumberVariable | BFFMetadataTextVariable | BFFMetadataGroup, metadataPool: any, options: unknown[] | undefined) {
   return metadataVariable.attributeReferences?.map((attributeReference) => {
     const refCollectionVar = metadataPool.get(
       attributeReference.refCollectionVarId,
@@ -191,9 +195,18 @@ const createPresentation = (
     }
   }
 
+  if (presentation.type === 'pRecordLink') {
+    // todo more stuff around the record link presentation
+    // what about linkedRecordType
+  }
+
   if (presentation.type === 'pGroup') {
     const group = metadata as BFFMetadataGroup;
     const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
+
+    if (group.attributeReferences !== undefined) {
+      attributes = createAttributes(group, metadataPool, undefined);
+    }
 
     // skip children for recordInfo group for now
     if (group.nameInData !== 'recordInfo') {

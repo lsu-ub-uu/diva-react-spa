@@ -52,7 +52,11 @@ import {
   someMetadataNumberVarWithAttribute,
   pSomeMetadataNumberWithAttributeVar,
   pSomeMetadataTextVariableWithAttributeVar,
-  someMetadataTextVariableWithAttributeVar, pSomeMetadataChildGroup, someMetadataChildGroup,
+  someMetadataTextVariableWithAttributeVar,
+  pSomeMetadataChildGroup,
+  someMetadataChildGroup,
+  someMetadataRecordLink,
+  pSomeMetadataRecordLink,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -86,6 +90,7 @@ describe('formDefinition', () => {
       someMetadataNumberVarWithAttribute,
       someMetadataTextVariableWithAttributeVar,
       someMetadataChildGroup,
+      someMetadataRecordLink
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pSomeMetadataTextVariable,
@@ -97,7 +102,8 @@ describe('formDefinition', () => {
       pSomeMetadataCollectionVariableWithAttribute,
       pSomeMetadataNumberWithAttributeVar,
       pSomeMetadataTextVariableWithAttributeVar,
-      pSomeMetadataChildGroup
+      pSomeMetadataChildGroup,
+      pSomeMetadataRecordLink
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -150,8 +156,9 @@ describe('formDefinition', () => {
   it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(11);
+    expect(formDefinition.components).toHaveLength(12);
     expect(formDefinition).toStrictEqual({
+      name: 'someNewMetadataGroupNameInData',
       validationTypeId: validationTypeId,
       components: [
         {
@@ -441,6 +448,20 @@ describe('formDefinition', () => {
             },
           ],
           mode: 'input',
+        },
+        {
+          type: 'recordLink',
+          name: 'nationalSubjectCategory',
+          label: 'nationalSubjectCategoryLinkText',
+          mode: 'input',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          tooltip: {
+            title: 'nationalSubjectCategoryLinkText',
+            body: 'nationalSubjectCategoryLinkDefText'
+          }
         },
       ]
     });
