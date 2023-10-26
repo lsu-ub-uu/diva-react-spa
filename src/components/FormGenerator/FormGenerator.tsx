@@ -21,9 +21,7 @@ import { Box, Paper } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
-// eslint-disable-next-line import/no-cycle
 import {
   createDefaultValuesFromFormSchema,
   generateYupSchema,
@@ -31,7 +29,6 @@ import {
   isComponentRepeating,
   isComponentVariable,
 } from './utils';
-// eslint-disable-next-line import/no-cycle
 import { Typography } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';

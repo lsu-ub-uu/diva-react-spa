@@ -22,7 +22,6 @@ import { Box, Paper } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { ActionButtonGroup } from './ActionButtonGroup';
-// eslint-disable-next-line import/no-cycle
 import { FormComponent } from './types';
 import { createDefaultValuesFromComponent } from './utils';
 

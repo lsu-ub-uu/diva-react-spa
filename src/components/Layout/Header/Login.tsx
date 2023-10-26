@@ -2,7 +2,6 @@ import { useState, MouseEvent } from 'react';
 import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { devAccounts } from '../../../utils';
-// eslint-disable-next-line import/no-cycle
 import { dummyLoginAsync } from '../../../features/auth/actions';
 import { logout } from '../../../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
