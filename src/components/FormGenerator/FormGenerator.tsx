@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Paper } from '@mui/material';
+import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -166,24 +166,23 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     }
     if (isComponentVariable(component) && isComponentRepeating(component)) {
       return (
-        <Paper key={reactKey}>
-          <FieldArrayComponent
-            control={control}
-            component={component}
-            name={currentComponentNamePath}
-            renderCallback={(variableArrayPath: string) => {
-              return [
-                ...createFormComponentAttributes(component, variableArrayPath),
-                renderLeafComponent(
-                  component,
-                  variableArrayPath,
-                  control,
-                  `${variableArrayPath}.value`,
-                ),
-              ];
-            }}
-          />
-        </Paper>
+        <FieldArrayComponent
+          key={reactKey}
+          control={control}
+          component={component}
+          name={currentComponentNamePath}
+          renderCallback={(variableArrayPath: string) => {
+            return [
+              ...createFormComponentAttributes(component, variableArrayPath),
+              renderLeafComponent(
+                component,
+                variableArrayPath,
+                control,
+                `${variableArrayPath}.value`,
+              ),
+            ];
+          }}
+        />
       );
     }
     return (

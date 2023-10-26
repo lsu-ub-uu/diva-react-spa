@@ -18,7 +18,7 @@
  */
 
 import { Control, useFieldArray } from 'react-hook-form';
-import { Box, Paper } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { ActionButtonGroup } from './ActionButtonGroup';
@@ -51,25 +51,41 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   };
 
   return (
-    <Paper>
+    <Box>
       {fields.map((field, index) => (
-        <Box key={field.id}>
-          {
-            props.renderCallback(
-              `${props.name}[${index}]` as const,
-            ) as JSX.Element
-          }
-          <ActionButtonGroup
-            moveUpButtonDisabled={index === 0}
-            moveUpButtonAction={() => handleMove(index, index - 1)}
-            moveDownButtonDisabled={index === fields.length - 1}
-            moveDownButtonAction={() => handleMove(index, index + 1)}
-            deleteButtonDisabled={
-              fields.length <= (props.component.repeat?.repeatMin ?? 1)
+        <Grid
+          key={field.id}
+          container
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+        >
+          <Grid
+            item
+            xs={10}
+          >
+            {
+              props.renderCallback(
+                `${props.name}[${index}]` as const,
+              ) as JSX.Element
             }
-            deleteButtonAction={() => handleRemove(index)}
-          />
-        </Box>
+          </Grid>
+          <Grid
+            item
+            xs={2}
+          >
+            <ActionButtonGroup
+              moveUpButtonDisabled={index === 0}
+              moveUpButtonAction={() => handleMove(index, index - 1)}
+              moveDownButtonDisabled={index === fields.length - 1}
+              moveDownButtonAction={() => handleMove(index, index + 1)}
+              deleteButtonDisabled={
+                fields.length <= (props.component.repeat?.repeatMin ?? 1)
+              }
+              deleteButtonAction={() => handleRemove(index)}
+            />
+          </Grid>
+        </Grid>
       ))}
       <Button
         sx={{ mt: 1, mb: 1 }}
@@ -81,6 +97,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       >
         Add {props.component.name}
       </Button>
-    </Paper>
+    </Box>
   );
 };

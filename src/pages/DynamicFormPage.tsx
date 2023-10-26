@@ -14,7 +14,7 @@ export const DynamicFormPage = () => {
   const { t } = useTranslation();
   const { setBackdrop } = useBackdrop();
   const { error, isLoading, schema } =
-    useCoraFormSchemaByValidationType('demo');
+    useCoraFormSchemaByValidationType('manuscript');
 
   useEffect(() => {
     setBackdrop(isLoading);
