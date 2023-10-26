@@ -65,13 +65,14 @@ describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
   let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
   let presentationPool: Lookup<string, BFFPresentation | BFFPresentationGroup>;
-  const FORM_MODE_NEW = 'new';
+  const FORM_MODE_NEW = 'new'; // todo handle edit
   let dependencies: Dependencies;
 
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([
       someValidationTypeData,
       someValidationTypeDataFaultyChildReference
+
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -148,322 +149,336 @@ describe('formDefinition', () => {
     } catch (error: unknown) {
       const createFormDefinitionError: Error = <Error>error;
       expect(createFormDefinitionError.message).toStrictEqual(
-        'Child reference with childId [someMetadataTextVariableId] does not exist'
+        'Child reference with childId [someNewMetadataGroupId] does not exist'
       );
     }
   });
 
-  it('should return a form definition containing a text and a inputText with repeatMin, repeatMax and minNumberOfRepeatingToShow', () => {
+  it('should return a form definition', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.components).toHaveLength(12);
+    expect(formDefinition.form.components).toHaveLength(12);
     expect(formDefinition).toStrictEqual({
-      name: 'someNewMetadataGroupNameInData',
       validationTypeId: validationTypeId,
-      components: [
-        {
-          type: 'text',
-          name: 'someHeadlineTextId',
-          textStyle: 'bold',
+      form: {
+        type: 'group',
+        label: "textId345",
+        name: 'someNewMetadataGroupNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
         },
-        {
-          type: 'textVariable',
-          name: 'someNameInData',
-          label: 'someTextId',
-          placeholder: 'someEmptyTextId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3,
-            minNumberOfRepeatingToShow: 1
-          },
-          tooltip: {
-            title: 'someTextId',
-            body: 'someDefTextId'
-          },
-          validation: {
-            type: 'regex',
-            pattern: 'someRegex'
-          },
-          mode: 'input',
-          inputType: 'input'
+        tooltip: {
+          title: 'textId345',
+          body: 'defTextId678'
         },
-        {
-          type: 'textVariable',
-          name: 'someNameInData',
-          placeholder: 'someEmptyTextId',
-          label: 'someTextId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3
+        // todo test attributes
+        components: [
+          {
+            type: 'text',
+            name: 'someHeadlineTextId',
+            textStyle: 'bold',
           },
-          tooltip: {
-            title: 'someTextId',
-            body: 'someDefTextId'
-          },
-          validation: {
-            type: 'regex',
-            pattern: 'someRegex'
-          },
-          mode: 'input',
-          inputType: 'input'
-        },
-        {
-          type: 'textVariable',
-          name: 'someNameInData2',
-          label: 'someOtherLabelTextId', // overridden label
-          placeholder: 'someEmptyTextId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: Number.MAX_VALUE
-          },
-          tooltip: {
-            title: 'someTextId',
-            body: 'someDefTextId'
-          },
-          validation: {
-            type: 'regex',
-            pattern: 'someRegex'
-          },
-          mode: 'input', // output
-          inputType: 'input' //textarea
-        },
-        {
-          type: 'textVariable',
-          name: 'someNameInData3',
-          label: 'someTextId',
-          placeholder: 'someEmptyTextId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          tooltip: {
-            title: 'someTextId',
-            body: 'someDefTextId'
-          },
-          validation: {
-            type: 'regex',
-            pattern: 'someRegex'
-          },
-          mode: 'input', // output
-          inputType: 'input', //textarea
-          finalValue: 'someFinalValue'
-        },
-        {
-          type: 'numberVariable',
-          name: 'someNameInDataNumberVar',
-          label: '',
-          placeholder: 'someEmptyTextId',
-          repeat: {
-            repeatMin: 0,
-            repeatMax: 1,
-            minNumberOfRepeatingToShow: 1
-          },
-          tooltip: {
-            title: 'someNumberVarTextId',
-            body: 'someNumberVarDefTextId'
-          },
-          validation: {
-            type: 'number',
-            min: 0,
-            max: 20,
-            warningMin: 2,
-            warningMax: 10,
-            numberOfDecimals: 0
-          },
-          mode: 'input'
-        },
-        {
-          type: 'collectionVariable',
-          name: 'colour',
-          finalValue: "pink",
-          label: 'exampleCollectionVarText',
-          placeholder: 'someEmptyTextId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          tooltip: {
-            title: 'exampleCollectionVarText',
-            body: 'exampleCollectionVarDefText'
-          },
-          options: [
-            { value: 'blue', label: 'exampleBlueItemText' },
-            { value: 'pink', label: 'examplePinkItemText' },
-            { value: 'yellow', label: 'exampleYellowItemText' }
-          ],
-          mode: 'input'
-        },
-        {
-          type: 'collectionVariable',
-          name: 'colourAttributeVar',
-          label: 'exampleCollectionVarText',
-          placeholder: 'someEmptyTextId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          tooltip: {
-            title: 'exampleCollectionVarText',
-            body: 'exampleCollectionVarDefText'
-          },
-          attributes: [
-            {
-              finalValue: "pink",
-              type: 'collectionVariable',
-              name: 'colour',
-              label: 'exampleCollectionVarText',
-              placeholder: 'initialEmptyValueText',
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText'
-              },
-              options: [
-                { value: 'blue', label: 'exampleBlueItemText' },
-                { value: 'pink', label: 'examplePinkItemText' },
-                { value: 'yellow', label: 'exampleYellowItemText' }
-              ],
-              mode: 'input'
-            }
-          ],
-          options: [
-            { value: 'blue', label: 'exampleBlueItemText' },
-            { value: 'pink', label: 'examplePinkItemText' },
-            { value: 'yellow', label: 'exampleYellowItemText' }
-          ],
-          mode: 'input'
-        },
-        {
-          type: 'numberVariable',
-          name: 'someNameInDataNumberWithAttributeVar',
-          label: 'someNumberVarTextId',
-          placeholder: 'someEmptyTextId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          tooltip: {
-            title: 'someNumberVarTextId',
-            body: 'someNumberVarDefTextId'
-          },
-          attributes: [
-            {
-              finalValue: "pink",
-              type: 'collectionVariable',
-              name: 'colour',
-              label: 'exampleCollectionVarText',
-              placeholder: 'initialEmptyValueText',
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText'
-              },
-              options: [
-                { value: 'blue', label: 'exampleBlueItemText' },
-                { value: 'pink', label: 'examplePinkItemText' },
-                { value: 'yellow', label: 'exampleYellowItemText' }
-              ],
-              mode: 'input'
-            }
-          ],
-          validation: {
-            type: 'number',
-            min: 0,
-            max: 20,
-            warningMin: 2,
-            warningMax: 10,
-            numberOfDecimals: 0
-          },
-          mode: 'input'
-        },
-        {
-          type: 'textVariable',
-          name: 'someNameInDataTextWithAttrib',
-          label: 'someTextId',
-          placeholder: 'someEmptyTextId',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          tooltip: {
-            title: 'someTextId',
-            body: 'someDefTextId'
-          },
-          attributes: [
-            {
-              type: 'collectionVariable',
-              name: 'colour',
-              finalValue: "pink",
-              label: 'exampleCollectionVarText',
-              placeholder: 'initialEmptyValueText',
-              tooltip: {
-                title: 'exampleCollectionVarText',
-                body: 'exampleCollectionVarDefText'
-              },
-              options: [
-                { value: 'blue', label: 'exampleBlueItemText' },
-                { value: 'pink', label: 'examplePinkItemText' },
-                { value: 'yellow', label: 'exampleYellowItemText' }
-              ],
-              mode: 'input'
-            }
-          ],
-          validation: {
-            type: 'regex',
-            pattern: 'someRegex'
-          },
-          mode: 'input',
-          inputType: 'input',
-        },
-        {
-          type: 'group',
-          label: "someChildGroupTextId",
-          name: 'someChildGroupNameInData',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          tooltip: {
-            title: 'someChildGroupTextId',
-            body: 'someChildGroupDefTextId'
-          },
-          components: [
-            {
-              type: 'textVariable',
-              name: 'someNameInData',
-              label: 'someTextId',
-              placeholder: 'someEmptyTextId',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-              tooltip: {
-                title: 'someTextId',
-                body: 'someDefTextId'
-              },
-              validation: {
-                type: 'regex',
-                pattern: 'someRegex'
-              },
-              mode: 'input',
-              inputType: 'input'
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            label: 'someTextId',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 3,
+              minNumberOfRepeatingToShow: 1
             },
-          ],
-          mode: 'input',
-        },
-        {
-          type: 'recordLink',
-          name: 'nationalSubjectCategory',
-          label: 'nationalSubjectCategoryLinkText',
-          mode: 'input',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input',
+            inputType: 'input'
           },
-          tooltip: {
-            title: 'nationalSubjectCategoryLinkText',
-            body: 'nationalSubjectCategoryLinkDefText'
-          }
-        },
-      ]
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            placeholder: 'someEmptyTextId',
+            label: 'someTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 3
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input',
+            inputType: 'input'
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData2',
+            label: 'someOtherLabelTextId', // overridden label
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: Number.MAX_VALUE
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input', // output
+            inputType: 'input' //textarea
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData3',
+            label: 'someTextId',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input', // output
+            inputType: 'input', //textarea
+            finalValue: 'someFinalValue'
+          },
+          {
+            type: 'numberVariable',
+            name: 'someNameInDataNumberVar',
+            label: '',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1,
+              minNumberOfRepeatingToShow: 1
+            },
+            tooltip: {
+              title: 'someNumberVarTextId',
+              body: 'someNumberVarDefTextId'
+            },
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 20,
+              warningMin: 2,
+              warningMax: 10,
+              numberOfDecimals: 0
+            },
+            mode: 'input'
+          },
+          {
+            type: 'collectionVariable',
+            name: 'colour',
+            finalValue: "pink",
+            label: 'exampleCollectionVarText',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText'
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'collectionVariable',
+            name: 'colourAttributeVar',
+            label: 'exampleCollectionVarText',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText'
+            },
+            attributes: [
+              {
+                finalValue: "pink",
+                type: 'collectionVariable',
+                name: 'colour',
+                label: 'exampleCollectionVarText',
+                placeholder: 'initialEmptyValueText',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText'
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
+                ],
+                mode: 'input'
+              }
+            ],
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'numberVariable',
+            name: 'someNameInDataNumberWithAttributeVar',
+            label: 'someNumberVarTextId',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            tooltip: {
+              title: 'someNumberVarTextId',
+              body: 'someNumberVarDefTextId'
+            },
+            attributes: [
+              {
+                finalValue: "pink",
+                type: 'collectionVariable',
+                name: 'colour',
+                label: 'exampleCollectionVarText',
+                placeholder: 'initialEmptyValueText',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText'
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
+                ],
+                mode: 'input'
+              }
+            ],
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 20,
+              warningMin: 2,
+              warningMax: 10,
+              numberOfDecimals: 0
+            },
+            mode: 'input'
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInDataTextWithAttrib',
+            label: 'someTextId',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            attributes: [
+              {
+                type: 'collectionVariable',
+                name: 'colour',
+                finalValue: "pink",
+                label: 'exampleCollectionVarText',
+                placeholder: 'initialEmptyValueText',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText'
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
+                ],
+                mode: 'input'
+              }
+            ],
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input',
+            inputType: 'input',
+          },
+          {
+            type: 'group',
+            label: "someChildGroupTextId",
+            name: 'someChildGroupNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            tooltip: {
+              title: 'someChildGroupTextId',
+              body: 'someChildGroupDefTextId'
+            },
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              },
+            ],
+            mode: 'input',
+          },
+          {
+            type: 'recordLink',
+            name: 'nationalSubjectCategory',
+            label: 'nationalSubjectCategoryLinkText',
+            mode: 'input',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'nationalSubjectCategoryLinkText',
+              body: 'nationalSubjectCategoryLinkDefText'
+            }
+          },
+        ],
+        mode: 'input',
+      }
     });
   });
 });
