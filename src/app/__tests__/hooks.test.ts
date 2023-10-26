@@ -41,29 +41,42 @@ describe('useCoraFormSchemaByValidationType', () => {
   test('returns schema for validation type', async () => {
     const expectedFormSchema: FormSchema = {
       validationTypeId: 'someValidationTypeId',
-      components: [
-        {
-          type: 'text',
-          name: 'someText',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
+      form: {
+        type: 'group',
+        label: 'textId345',
+        name: 'someNewMetadataGroupNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
         },
-        {
-          type: 'textVariable',
-          name: 'someNameInData',
-          placeholder: 'someEmptyTextId',
-          validation: {
-            type: 'regex',
-            pattern: 'someRegex',
-          },
-          repeat: {
-            repeatMin: 0,
-            repeatMax: 10,
-          },
+        tooltip: {
+          title: 'textId345',
+          body: 'defTextId678',
         },
-      ],
+        components: [
+          {
+            type: 'text',
+            name: 'someText',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            placeholder: 'someEmptyTextId',
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex',
+            },
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 10,
+            },
+          },
+        ],
+      },
     };
 
     const validationType = 'someValidationTypeId';
