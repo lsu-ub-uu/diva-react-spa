@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// eslint-disable-next-line import/no-cycle
 import * as yup from 'yup';
 import { AnyObject, ObjectSchema, ObjectShape, TestConfig } from 'yup';
 import {
@@ -88,7 +87,6 @@ export const createDefaultValuesFromComponent = (
       }
     : {
         // groups
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         ...createDefaultValuesFromComponents(component.components),
         ...generateComponentAttributes(component),
       };
@@ -204,7 +202,6 @@ const createValidationForAttributesFromComponent = (
     component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
         [`_${attributeCollection.name}`]:
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           createValidationFromComponentType(attributeCollection),
       }),
     ) ?? [];
@@ -221,7 +218,7 @@ const createValidationFromComponentType = (
       return createYupStringRegexpSchema(component as FormComponent);
     case 'numberVariable':
       return createYupNumberSchema(component as FormComponent);
-    default: // collectionVariable and attributeCollection
+    default: // collectionVariable, recordLink
       return yup.string().required('field is required');
   }
 };
@@ -232,7 +229,6 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   } = {};
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       const innerObjectSchema = generateYupSchema(component.components);
 
       // Create a new schema by merging the existing schema and attribute fields
@@ -258,11 +254,9 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
       );
     }
   } else {
-    // Non-repeating
+    // non-repeating group
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
-      // non-repeating group
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       const innerSchema = generateYupSchema(component.components);
       validationRule[component.name] = yup.object().shape({
         ...innerSchema.fields,
@@ -278,7 +272,6 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   return validationRule;
 };
 
-// this gets called recursively
 export const generateYupSchema = (components: FormComponent[] | undefined) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)

@@ -142,7 +142,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         <Box key={reactKey}>
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
-            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             createFormComponents(
               component.components,
               currentComponentNamePath,
@@ -159,10 +158,8 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             component={component}
             name={currentComponentNamePath}
             renderCallback={(arrayPath: string) => {
-              /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
               return [
                 ...createFormComponentAttributes(component, arrayPath),
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 ...createFormComponents(component.components ?? [], arrayPath),
               ];
             }}
@@ -180,7 +177,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             renderCallback={(variableArrayPath: string) => {
               return [
                 ...createFormComponentAttributes(component, variableArrayPath),
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 renderLeafComponent(
                   component,
                   variableArrayPath,
