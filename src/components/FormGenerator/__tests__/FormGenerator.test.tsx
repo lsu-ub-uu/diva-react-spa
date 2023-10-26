@@ -426,7 +426,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
-          formSchema={formDefWithOneGroupHavingTextVariableAsChild}
+          formSchema={
+            formDefWithOneGroupHavingTextVariableAsChild as FormSchema
+          }
           onSubmit={mockSubmit}
         />,
       );

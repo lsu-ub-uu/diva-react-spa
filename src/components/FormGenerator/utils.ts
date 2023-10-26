@@ -120,7 +120,7 @@ export const createDefaultValuesFromComponents = (
 
 export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
   // do we need some more stuff here?
-  return createDefaultValuesFromComponents(formSchema.components);
+  return createDefaultValuesFromComponent(formSchema.form);
 };
 
 /**
@@ -272,7 +272,7 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   return validationRule;
 };
 
-export const generateYupSchema = (components: FormComponent[] | undefined) => {
+const generateYupSchema = (components: FormComponent[] | undefined) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
     .map((formComponent) => createYupValidationsFromComponent(formComponent));
@@ -282,5 +282,7 @@ export const generateYupSchema = (components: FormComponent[] | undefined) => {
 };
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
-  return generateYupSchema(formSchema.components);
+  const rule = createYupValidationsFromComponent(formSchema.form);
+  const obj = Object.assign({}, ...[rule]) as ObjectShape;
+  return yup.object().shape(obj);
 };

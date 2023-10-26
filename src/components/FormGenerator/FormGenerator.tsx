@@ -24,7 +24,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
-  generateYupSchema,
+  generateYupSchemaFromFormSchema,
   isComponentGroup,
   isComponentRepeating,
   isComponentVariable,
@@ -96,7 +96,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
-    resolver: yupResolver(generateYupSchema(props.formSchema.components)),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
 
   const { control, handleSubmit } = methods;
@@ -210,7 +210,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       component='form'
       onSubmit={handleSubmit((values) => props.onSubmit(values))}
     >
-      {createFormComponents(props.formSchema.components)}
+      {generateFormComponent(props.formSchema.form, 0, '')}
 
       <Button
         sx={{ mt: 4, mb: 2 }}

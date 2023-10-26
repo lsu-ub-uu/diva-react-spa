@@ -21,7 +21,7 @@ import { Option } from '../index';
 
 export interface FormSchema {
   validationTypeId: string;
-  components: FormComponent[];
+  form: FormComponent;
 }
 
 export interface FormComponentRepeat {

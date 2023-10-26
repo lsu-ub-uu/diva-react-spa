@@ -69,11 +69,13 @@ const minMaxValidationTests = (min: number, max: number) => [
 describe('FormGenerator utils defaultValues', () => {
   test('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
     const expectedDefaultValues = {
-      someNameInData: {
-        value: '',
-      },
-      someNumberVariableNameInData: {
-        value: '',
+      someRootNameInData: {
+        someNameInData: {
+          value: '',
+        },
+        someNumberVariableNameInData: {
+          value: '',
+        },
       },
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
@@ -85,23 +87,25 @@ describe('FormGenerator utils defaultValues', () => {
   // group
   test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and make default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: {
-        value: '',
+      someRootNameInData: {
+        bookTitle: {
+          value: '',
+        },
+        keeptHis: [
+          {
+            value: '',
+          },
+        ],
+        firstChildGroup: {
+          exampleNumberVar: {
+            value: '',
+          },
+          exampleTextVar: {
+            value: '',
+          },
+        },
+        recordInfo: {},
       },
-      keeptHis: [
-        {
-          value: '',
-        },
-      ],
-      firstChildGroup: {
-        exampleNumberVar: {
-          value: '',
-        },
-        exampleTextVar: {
-          value: '',
-        },
-      },
-      recordInfo: {},
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDefRealDemo as FormSchema,
@@ -111,33 +115,35 @@ describe('FormGenerator utils defaultValues', () => {
 
   test('createDefaultValuesFromFormSchema should take a more complex formDef with repeating groups and make default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: {
-        value: '',
-      },
-      keeptHis: [
-        {
+      someRootNameInData: {
+        bookTitle: {
           value: '',
         },
-      ],
-      firstChildGroup: [
-        {
-          exampleNumberVar: {
+        keeptHis: [
+          {
             value: '',
           },
-          exampleTextVar: {
-            value: '',
+        ],
+        firstChildGroup: [
+          {
+            exampleNumberVar: {
+              value: '',
+            },
+            exampleTextVar: {
+              value: '',
+            },
           },
-        },
-        {
-          exampleNumberVar: {
-            value: '',
+          {
+            exampleNumberVar: {
+              value: '',
+            },
+            exampleTextVar: {
+              value: '',
+            },
           },
-          exampleTextVar: {
-            value: '',
-          },
-        },
-      ],
-      recordInfo: {},
+        ],
+        recordInfo: {},
+      },
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDefRealDemoWithRepeatingGroups as FormSchema,
@@ -309,9 +315,11 @@ describe('FormGenerator utils defaultValues', () => {
 
   test('createDefaultValuesFromFormSchema should construct a default value object for one single group having textVar as child component', () => {
     const expectedDefaultValues = {
-      someChildGroupNameInData: {
-        someNameInData: {
-          value: '',
+      someRootNameInData: {
+        someChildGroupNameInData: {
+          someNameInData: {
+            value: '',
+          },
         },
       },
     };
@@ -325,23 +333,25 @@ describe('FormGenerator utils defaultValues', () => {
   // finalValues
   test('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: {
-        value: 'someFinalValue',
+      someRootNameInData: {
+        bookTitle: {
+          value: 'someFinalValue',
+        },
+        keeptHis: [
+          {
+            value: '12',
+          },
+        ],
+        firstChildGroup: {
+          exampleNumberVar: {
+            value: '55',
+          },
+          exampleTextVar: {
+            value: 'someText',
+          },
+        },
+        recordInfo: {},
       },
-      keeptHis: [
-        {
-          value: '12',
-        },
-      ],
-      firstChildGroup: {
-        exampleNumberVar: {
-          value: '55',
-        },
-        exampleTextVar: {
-          value: 'someText',
-        },
-      },
-      recordInfo: {},
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDefRealDemoWithFinalValues as FormSchema,
@@ -352,29 +362,31 @@ describe('FormGenerator utils defaultValues', () => {
   // attributes
   test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and attributes and make default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: {
-        value: '',
-        _colour: '',
-      },
-      keeptHis: [
-        {
+      someRootNameInData: {
+        bookTitle: {
           value: '',
           _colour: '',
         },
-      ],
-      firstChildGroup: {
-        exampleNumberVar: {
-          value: '',
+        keeptHis: [
+          {
+            value: '',
+            _colour: '',
+          },
+        ],
+        firstChildGroup: {
+          exampleNumberVar: {
+            value: '',
+          },
+          exampleTextVar: {
+            _colour: '',
+            _colourAgain: 'pink',
+            value: 'exampleFinalValue',
+          },
+          _groupColour: '',
+          _groupColourAgain: 'pink',
         },
-        exampleTextVar: {
-          _colour: '',
-          _colourAgain: 'pink',
-          value: 'exampleFinalValue',
-        },
-        _groupColour: '',
-        _groupColourAgain: 'pink',
+        recordInfo: {},
       },
-      recordInfo: {},
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDefRealDemoWithAttributes as FormSchema,
@@ -386,57 +398,59 @@ describe('FormGenerator utils defaultValues', () => {
   // repeating vars
   test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and repeating variables and make default values object', () => {
     const expectedDefaultValues = {
-      bookTitle: {
-        value: '',
-      },
-      keeptHis: [
-        {
+      someRootNameInData: {
+        bookTitle: {
           value: '',
-          _colour: 'blue',
         },
-        {
-          value: '',
-          _colour: 'blue',
-        },
-        {
-          value: '',
-          _colour: 'blue',
-        },
-        {
-          value: '',
-          _colour: 'blue',
-        },
-        {
-          value: '',
-          _colour: 'blue',
-        },
-      ],
-      firstChildGroup: {
-        exampleNumberVar: [
+        keeptHis: [
           {
             value: '',
-            _colour: 'pink',
+            _colour: 'blue',
           },
           {
             value: '',
-            _colour: 'pink',
+            _colour: 'blue',
           },
           {
             value: '',
-            _colour: 'pink',
+            _colour: 'blue',
           },
           {
             value: '',
-            _colour: 'pink',
+            _colour: 'blue',
           },
           {
             value: '',
-            _colour: 'pink',
+            _colour: 'blue',
           },
         ],
-        exampleTextVar: [],
+        firstChildGroup: {
+          exampleNumberVar: [
+            {
+              value: '',
+              _colour: 'pink',
+            },
+            {
+              value: '',
+              _colour: 'pink',
+            },
+            {
+              value: '',
+              _colour: 'pink',
+            },
+            {
+              value: '',
+              _colour: 'pink',
+            },
+            {
+              value: '',
+              _colour: 'pink',
+            },
+          ],
+          exampleTextVar: [],
+        },
+        recordInfo: {},
       },
-      recordInfo: {},
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDefRealDemoWithRepeatingVars as FormSchema,
@@ -555,16 +569,24 @@ describe('FormGenerator utils yupSchema', () => {
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
-      someNameInData: {
+      someRootNameInData: {
         type: 'object',
         fields: {
-          value: { type: 'string', tests: stringValidationTests(/^[a-zA-Z]$/) },
-        },
-      },
-      someNumberVariableNameInData: {
-        type: 'object',
-        fields: {
-          value: { type: 'string', tests: numberValidationTests(0, 20, 0) },
+          someNameInData: {
+            type: 'object',
+            fields: {
+              value: {
+                type: 'string',
+                tests: stringValidationTests(/^[a-zA-Z]$/),
+              },
+            },
+          },
+          someNumberVariableNameInData: {
+            type: 'object',
+            fields: {
+              value: { type: 'string', tests: numberValidationTests(0, 20, 0) },
+            },
+          },
         },
       },
     };
@@ -578,34 +600,39 @@ describe('FormGenerator utils yupSchema', () => {
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
-      someNameInData: {
-        type: 'array',
-        tests: minMaxValidationTests(0, 2),
-        innerType: {
-          fields: {
-            value: {
-              type: 'string',
-              tests: stringValidationTests(/^[a-zA-Z]$/),
-            },
-          },
-        },
-      },
-      someNumberVariableNameInData: {
-        type: 'array',
-        tests: minMaxValidationTests(1, 5),
-        innerType: {
-          fields: {
-            value: {
-              type: 'string',
-              tests: numberValidationTests(0, 20, 2),
-            },
-          },
-        },
-      },
-      colour: {
+      someRootNameInData: {
         type: 'object',
         fields: {
-          value: { type: 'string', tests: requiredValidationTests },
+          someNameInData: {
+            type: 'array',
+            tests: minMaxValidationTests(0, 2),
+            innerType: {
+              fields: {
+                value: {
+                  type: 'string',
+                  tests: stringValidationTests(/^[a-zA-Z]$/),
+                },
+              },
+            },
+          },
+          someNumberVariableNameInData: {
+            type: 'array',
+            tests: minMaxValidationTests(1, 5),
+            innerType: {
+              fields: {
+                value: {
+                  type: 'string',
+                  tests: numberValidationTests(0, 20, 2),
+                },
+              },
+            },
+          },
+          colour: {
+            type: 'object',
+            fields: {
+              value: { type: 'string', tests: requiredValidationTests },
+            },
+          },
         },
       },
     };
@@ -619,14 +646,19 @@ describe('FormGenerator utils yupSchema', () => {
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
-      colour: {
-        type: 'array',
-        tests: minMaxValidationTests(0, 3),
-        innerType: {
-          fields: {
-            value: {
-              type: 'string',
-              tests: requiredValidationTests,
+      someRootNameInData: {
+        type: 'object',
+        fields: {
+          colour: {
+            type: 'array',
+            tests: minMaxValidationTests(0, 3),
+            innerType: {
+              fields: {
+                value: {
+                  type: 'string',
+                  tests: requiredValidationTests,
+                },
+              },
             },
           },
         },
@@ -642,14 +674,19 @@ describe('FormGenerator utils yupSchema', () => {
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
-      someChildGroupNameInData: {
+      someRootNameInData: {
         type: 'object',
         fields: {
-          someNameInData: {
+          someChildGroupNameInData: {
             type: 'object',
             fields: {
-              value: {
-                type: 'string',
+              someNameInData: {
+                type: 'object',
+                fields: {
+                  value: {
+                    type: 'string',
+                  },
+                },
               },
             },
           },
@@ -666,17 +703,22 @@ describe('FormGenerator utils yupSchema', () => {
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
-      firstChildGroup: {
-        type: 'array',
-        tests: minMaxValidationTests(0, 10),
-        innerType: {
-          fields: {
-            exampleNumberVar: {
-              type: 'object',
+      someRootNameInData: {
+        type: 'object',
+        fields: {
+          firstChildGroup: {
+            type: 'array',
+            tests: minMaxValidationTests(0, 10),
+            innerType: {
               fields: {
-                value: {
-                  type: 'string',
-                  tests: numberValidationTests(0, 20, 2),
+                exampleNumberVar: {
+                  type: 'object',
+                  fields: {
+                    value: {
+                      type: 'string',
+                      tests: numberValidationTests(0, 20, 2),
+                    },
+                  },
                 },
               },
             },
@@ -695,38 +737,43 @@ describe('FormGenerator utils yupSchema', () => {
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
-      author: {
-        type: 'array',
-        tests: minMaxValidationTests(1, 10),
-        innerType: {
-          fields: {
-            name: {
-              type: 'array',
-              tests: minMaxValidationTests(1, 100),
-              innerType: {
-                fields: {
-                  firstName: {
-                    type: 'object',
+      someRootNameInData: {
+        type: 'object',
+        fields: {
+          author: {
+            type: 'array',
+            tests: minMaxValidationTests(1, 10),
+            innerType: {
+              fields: {
+                name: {
+                  type: 'array',
+                  tests: minMaxValidationTests(1, 100),
+                  innerType: {
                     fields: {
-                      value: {
-                        type: 'string',
+                      firstName: {
+                        type: 'object',
+                        fields: {
+                          value: {
+                            type: 'string',
+                          },
+                        },
                       },
-                    },
-                  },
-                  lastName: {
-                    type: 'object',
-                    fields: {
-                      value: {
-                        type: 'string',
+                      lastName: {
+                        type: 'object',
+                        fields: {
+                          value: {
+                            type: 'string',
+                          },
+                        },
                       },
-                    },
-                  },
-                  age: {
-                    type: 'object',
-                    fields: {
-                      value: {
-                        type: 'string',
-                        tests: numberValidationTests(0, 125, 0),
+                      age: {
+                        type: 'object',
+                        fields: {
+                          value: {
+                            type: 'string',
+                            tests: numberValidationTests(0, 125, 0),
+                          },
+                        },
                       },
                     },
                   },
@@ -748,73 +795,78 @@ describe('FormGenerator utils yupSchema', () => {
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {
-      grade: {
-        type: 'array',
-        tests: minMaxValidationTests(1, 12),
-        innerType: {
-          type: 'object',
-          fields: {
-            _gradeAttribute: {
-              type: 'string',
-              tests: requiredValidationTests,
-            },
-            value: {
-              type: 'string',
-              tests: numberValidationTests(1, 5, 0),
-            },
-          },
-        },
-      },
-      nonRepeatingGroup: {
+      someRootNameInData: {
         type: 'object',
         fields: {
-          _groupAttribute: {
-            type: 'string',
-            tests: requiredValidationTests,
-          },
-        },
-      },
-      author: {
-        type: 'array',
-        tests: minMaxValidationTests(1, 10),
-        innerType: {
-          fields: {
-            _colourAttribute: {
-              // attribute values are always required
-              type: 'string',
-              tests: requiredValidationTests,
+          grade: {
+            type: 'array',
+            tests: minMaxValidationTests(1, 12),
+            innerType: {
+              type: 'object',
+              fields: {
+                _gradeAttribute: {
+                  type: 'string',
+                  tests: requiredValidationTests,
+                },
+                value: {
+                  type: 'string',
+                  tests: numberValidationTests(1, 5, 0),
+                },
+              },
             },
-            name: {
-              type: 'array',
-              tests: minMaxValidationTests(1, 100),
-              innerType: {
-                fields: {
-                  firstName: {
-                    type: 'object',
+          },
+          nonRepeatingGroup: {
+            type: 'object',
+            fields: {
+              _groupAttribute: {
+                type: 'string',
+                tests: requiredValidationTests,
+              },
+            },
+          },
+          author: {
+            type: 'array',
+            tests: minMaxValidationTests(1, 10),
+            innerType: {
+              fields: {
+                _colourAttribute: {
+                  // attribute values are always required
+                  type: 'string',
+                  tests: requiredValidationTests,
+                },
+                name: {
+                  type: 'array',
+                  tests: minMaxValidationTests(1, 100),
+                  innerType: {
                     fields: {
-                      value: {
-                        type: 'string',
+                      firstName: {
+                        type: 'object',
+                        fields: {
+                          value: {
+                            type: 'string',
+                          },
+                          _colourAttribute: {
+                            type: 'string',
+                            tests: requiredValidationTests,
+                          },
+                        },
                       },
-                      _colourAttribute: {
-                        type: 'string',
-                        tests: requiredValidationTests,
+                      lastName: {
+                        type: 'object',
+                        fields: {
+                          value: {
+                            type: 'string',
+                          },
+                        },
                       },
-                    },
-                  },
-                  lastName: {
-                    type: 'object',
-                    fields: {
-                      value: {
-                        type: 'string',
-                      },
-                    },
-                  },
-                  age: {
-                    type: 'object',
-                    fields: {
-                      value: {
-                        type: 'string',
-                        tests: numberValidationTests(0, 125, 0),
+                      age: {
+                        type: 'object',
+                        fields: {
+                          value: {
+                            type: 'string',
+                            tests: numberValidationTests(0, 125, 0),
+                          },
+                        },
                       },
                     },
                   },
