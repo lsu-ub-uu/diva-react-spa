@@ -172,7 +172,34 @@ describe('formDefinition', () => {
           title: 'textId345',
           body: 'defTextId678'
         },
-        // todo test attributes
+        attributes: [
+          {
+            finalValue: "pink",
+            label: "exampleCollectionVarText",
+            mode: "input",
+            name: "colour",
+            options: [
+              {
+                label: "exampleBlueItemText",
+                value: "blue"
+              },
+              {
+                label: "examplePinkItemText",
+                value: "pink"
+              },
+              {
+                label: "exampleYellowItemText",
+                value: "yellow"
+              }
+            ],
+            placeholder: "initialEmptyValueText",
+            tooltip: {
+              body: "exampleCollectionVarDefText",
+              title: "exampleCollectionVarText"
+            },
+            type: "collectionVariable"
+          }
+        ],
         components: [
           {
             type: 'text',
