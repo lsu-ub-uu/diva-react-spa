@@ -29,6 +29,11 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
   type: 'group',
   textId: 'textId345',
   defTextId: 'defTextId678',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ],
   children: [
     {
       childId: 'someRecordInfoId',

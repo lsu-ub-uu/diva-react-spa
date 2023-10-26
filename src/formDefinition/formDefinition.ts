@@ -26,49 +26,26 @@ export const createFormDefinition = (
 
   // we need to check the mode parameter
   const newMetadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
+  const newPresentationGroup = presentationPool.get(validationType.newPresentationGroupId) as BFFPresentationGroup;
 
-  // metadata
-  const metadataChildReferences = getMetadataChildReferencesForValidationType(
-    validationType,
-    metadataPool
-  );
+  // construct the metadata childReference
+  const formRootReference: BFFMetadataChildReference = {
+    childId: newMetadataGroup.id,
+    repeatMax: '1',
+    repeatMin: '1'
+  };
 
-  // presentation
-  const presentationChildReferences = getPresentationChildReferencesForValidationType(
-    validationType,
-    presentationPool
-  );
+  const formRootPresentationReference: BFFPresentationChildReference = {
+    childId: newPresentationGroup.id,
+    type: 'presentation',
+  }
 
-  const components = createComponentsFromChildReferences(
-    metadataChildReferences,
-    presentationChildReferences,
-    metadataPool,
-    presentationPool
-  );
+  const form = createPresentation([formRootReference], formRootPresentationReference, metadataPool, presentationPool);
 
   return {
-    name: newMetadataGroup.nameInData, // depending on mode
     validationTypeId: validationType.id,
-    components
+    form
   };
-};
-
-const getMetadataChildReferencesForValidationType = (
-  validationType: BFFValidationType,
-  metadataPool: any
-) => {
-  const newMetadataGroupId = validationType.newMetadataGroupId;
-  const newMetadataGroup = metadataPool.get(newMetadataGroupId) as BFFMetadataGroup;
-  return newMetadataGroup.children;
-};
-
-const getPresentationChildReferencesForValidationType = (
-  validationType: BFFValidationType,
-  presentationPool: any
-) => {
-  const newPresentationGroupId = validationType.newPresentationGroupId;
-  const newPresentationGroup: BFFPresentationGroup = presentationPool.get(newPresentationGroupId);
-  return newPresentationGroup.children;
 };
 
 const createComponentsFromChildReferences = (
