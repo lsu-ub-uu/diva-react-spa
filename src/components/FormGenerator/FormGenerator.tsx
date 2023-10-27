@@ -51,6 +51,7 @@ export const renderLeafComponent = (
       return (
         <ControlledTextField
           key={reactKey}
+          multiline={component.inputType === 'textarea'}
           label={component.label ?? ''}
           name={name}
           placeholder={component.placeholder}
