@@ -19,6 +19,7 @@ import axios from 'axios';
 import { transformCoraValidationTypes } from './config/transformValidationTypes';
 import { Dependencies } from './formDefinition/formDefinitionsDep';
 import { createFormDefinition } from './formDefinition/formDefinition';
+import authRoute from './routes/authRoute';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -30,6 +31,7 @@ const app: Application = express();
 configureServer(app);
 // loadCoraDefinitions()  // keeps them in memory some way... redis, node-cache
 
+app.use('/api/auth', authRoute);
 app.use('/api/translations/:lang', async (req, res) => {
   try {
     const response = await getRecordDataListByType<DataListWrapper>('text', '');
