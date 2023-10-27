@@ -164,7 +164,7 @@ describe('formDefinition', () => {
   it('should return a form definition', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.form.components).toHaveLength(12);
+    expect(formDefinition.form.components).toHaveLength(13);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       form: {
@@ -512,6 +512,8 @@ describe('formDefinition', () => {
           },
           {
             type: 'container',
+            presentationStyle: 'card',
+            containerType: 'surrounding', // repeating
             components: [
               {
                 type: 'textVariable',
@@ -520,7 +522,8 @@ describe('formDefinition', () => {
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
-                  repeatMax: 1
+                  repeatMax: 3,
+                  minNumberOfRepeatingToShow: 1
                 },
                 tooltip: {
                   title: 'someTextId',
@@ -531,11 +534,12 @@ describe('formDefinition', () => {
                   pattern: 'someRegex'
                 },
                 mode: 'input',
-                inputType: 'input'
+                inputType: 'input',
+                childStyle: ['5']
               }
             ],
             mode: 'input'
-          },
+          }
         ],
         mode: 'input'
       }

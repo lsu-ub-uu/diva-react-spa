@@ -8,6 +8,7 @@ import {
   BFFMetadataTextVariable,
   BFFPresentation,
   BFFPresentationChildReference,
+  BFFPresentationContainer,
   BFFPresentationGroup,
   BFFValidationType
 } from 'config/bffTypes';
@@ -26,7 +27,9 @@ export const createFormDefinition = (
 
   // we need to check the mode parameter
   const newMetadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
-  const newPresentationGroup = presentationPool.get(validationType.newPresentationGroupId) as BFFPresentationGroup;
+  const newPresentationGroup = presentationPool.get(
+    validationType.newPresentationGroupId
+  ) as BFFPresentationGroup;
 
   // construct the metadata childReference
   const formRootReference: BFFMetadataChildReference = {
@@ -37,10 +40,15 @@ export const createFormDefinition = (
 
   const formRootPresentationReference: BFFPresentationChildReference = {
     childId: newPresentationGroup.id,
-    type: 'presentation',
-  }
+    type: 'presentation'
+  };
 
-  const form = createPresentation([formRootReference], formRootPresentationReference, metadataPool, presentationPool);
+  const form = createPresentation(
+    [formRootReference],
+    formRootPresentationReference,
+    metadataPool,
+    presentationPool
+  );
 
   return {
     validationTypeId: validationType.id,
@@ -77,12 +85,19 @@ const createText = (
   presentationChildType: string
 ) => {
   const presentationChildId = presentationChildReference.childId;
-  return { name: presentationChildId, type: presentationChildType, textStyle: presentationChildReference.textStyle };
+  return {
+    name: presentationChildId,
+    type: presentationChildType,
+    textStyle: presentationChildReference.textStyle
+  };
 };
 
-const createCollectionVariableOptions = (metadataPool: any, collectionVariable: BFFMetadataCollectionVariable) => {
+const createCollectionVariableOptions = (
+  metadataPool: any,
+  collectionVariable: BFFMetadataCollectionVariable
+) => {
   const collection = metadataPool.get(
-    collectionVariable.refCollection,
+    collectionVariable.refCollection
   ) as BFFMetadataItemCollection;
   const itemReferences = collection.collectionItemReferences;
   return itemReferences.map((itemRef) => {
@@ -91,12 +106,20 @@ const createCollectionVariableOptions = (metadataPool: any, collectionVariable: 
     const value = collectionItem.nameInData;
     return { value, label }; // todo handle disabled?
   });
-}
+};
 
-function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFMetadataNumberVariable | BFFMetadataTextVariable | BFFMetadataGroup, metadataPool: any, options: unknown[] | undefined) {
+function createAttributes(
+  metadataVariable:
+    | BFFMetadataCollectionVariable
+    | BFFMetadataNumberVariable
+    | BFFMetadataTextVariable
+    | BFFMetadataGroup,
+  metadataPool: any,
+  options: unknown[] | undefined
+) {
   return metadataVariable.attributeReferences?.map((attributeReference) => {
     const refCollectionVar = metadataPool.get(
-      attributeReference.refCollectionVarId,
+      attributeReference.refCollectionVarId
     ) as BFFMetadataCollectionVariable;
 
     const fakePresentation: BFFPresentation = {
@@ -104,7 +127,7 @@ function createAttributes(metadataVariable: BFFMetadataCollectionVariable | BFFM
       presentationOf: refCollectionVar.id,
       type: 'pCollVar',
       mode: 'input',
-      emptyTextId: 'initialEmptyValueText',
+      emptyTextId: 'initialEmptyValueText'
     };
 
     const finalValue = refCollectionVar.finalValue;
@@ -125,16 +148,30 @@ const createPresentation = (
   let finalValue;
   let attributes;
   let components;
+  let containerType;
+  let presentationStyle;
+
+  let metadataId;
+  let metaDataChildRef;
+  let repeat;
+  let metadata;
+  let commonParameters;
+  let childStyle;
 
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-  const metadataId = presentation.presentationOf;
-  const metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
-  const repeat = createRepeat(presentationChildReference, metaDataChildRef);
-  const metadata = metadataPool.get(metadataId) as BFFMetadata;
+  // Scontainers does not have presentationOf, it has presentationsOf
+  if (presentation.type === 'container') {
+    // skip metadataId, metaDataChildRef, repeat, metadata, commonParameters
+  } else {
+    metadataId = presentation.presentationOf;
+    metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
+    repeat = createRepeat(presentationChildReference, metaDataChildRef);
+    metadata = metadataPool.get(metadataId) as BFFMetadata;
 
-  const commonParameters = createCommonParameters(metadata, presentation);
-  // { name, type, placeholder, mode, inputType, tooltip }
+    commonParameters = createCommonParameters(metadata, presentation);
+    // { name, type, placeholder, mode, inputType, tooltip }
+  }
 
   if (presentation.type === 'pVar') {
     const textVariable = metadata as BFFMetadataTextVariable;
@@ -177,6 +214,29 @@ const createPresentation = (
     // what about linkedRecordType
   }
 
+  if (presentation.type === 'container') {
+    //@ts-ignore
+    const container = presentation as BFFPresentationContainer;
+    const type = presentation.type;
+    const mode = presentation.mode;
+    containerType = container.repeat === 'children' ? 'surrounding' : 'repeating';
+    presentationStyle = container.presentationStyle;
+
+    const metadataIds = container.presentationsOf;
+    // get the metadata from presentationsOf
+
+    const temp = metadataChildReferences.filter((childRef) => {
+      return metadataIds.includes(childRef.childId);
+    });
+    commonParameters = { mode, type };
+    components = createComponentsFromChildReferences(
+      temp,
+      container.children,
+      metadataPool,
+      presentationPool
+    );
+  }
+
   if (presentation.type === 'pGroup') {
     const group = metadata as BFFMetadataGroup;
     const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
@@ -203,7 +263,9 @@ const createPresentation = (
     options,
     finalValue,
     attributes,
-    components
+    components,
+    presentationStyle,
+    containerType
   });
 };
 

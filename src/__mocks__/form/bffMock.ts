@@ -426,7 +426,7 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
 export const pSomeContainer: BFFPresentationContainer = {
   id: 'pSomeContainerId',
   type: 'container',
-  presentationStyle: '',
+  presentationStyle: 'card',
   presentationsOf: ['someMetadataTextVariableId'], // metadata
   mode: 'input',
   children: [
