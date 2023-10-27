@@ -74,11 +74,9 @@ const transformCoraPresentationToBFFPresentation = (
       // basic presentation should be enough for pRecordLink until we deal with linkedPresentations and search
       return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
     }
-    /*
     case 'container': {
       return transformCoraPresentationContainerToBFFContainer(coraRecordWrapper);
     }
-    */
     // TODO add more types here like pResourceLink
     default: {
       return;
@@ -198,21 +196,18 @@ const transformCoraPresentationContainerToBFFContainer = (
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
 
-  const getPresentationOf = getPresentationOfFromRecordLinks(dataRecordGroup);
-  let presentationsOf: string[] = [];
-  getPresentationOf.map((presentationsOfId) => {
-    if (presentationsOfId) {
-      presentationsOf.push(presentationsOfId.id as string);
-    }
-  });
+  const presentationRecordLinks = getPresentationOfFromRecordLinks(dataRecordGroup);
+  const presentationsOf = presentationRecordLinks.map(
+    (presentationRecordLink) => presentationRecordLink.id
+  );
 
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const repeat = extractAttributeValueByName(dataRecordGroup, 'repeat');
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
-  const children = childReferencesList.map((childReference) => {
-    return transformContainerChildReference(childReference);
-  });
+  const children = childReferencesList.map((childReference) =>
+    transformChildReference(childReference)
+  );
 
   return {
     id,
@@ -222,20 +217,6 @@ const transformCoraPresentationContainerToBFFContainer = (
     type,
     repeat
   } as BFFPresentationContainer;
-};
-
-const transformContainerChildReference = (childReference: DataGroup) => {
-  const refGroup = getFirstDataGroupWithNameInDataAndAttributes(childReference, 'refGroup');
-  const ref = getFirstChildWithNameInData(refGroup, 'ref');
-  const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
-  const type = extractAttributeValueByName(ref as DataGroup, 'type');
-  const textStyle = extractAtomicValueByName(childReference, 'textStyle');
-
-  return removeEmpty({
-    childId,
-    type,
-    textStyle
-  });
 };
 
 const extractAtomicValueByName = (childReference: DataGroup, nameInData: string) => {

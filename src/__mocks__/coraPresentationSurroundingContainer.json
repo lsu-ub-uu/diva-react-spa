@@ -169,19 +169,6 @@
                             }
                           }
                         ]
-                      },
-                      {
-                        "name": "presentationSize",
-                        "value": ""
-                      },
-                      {
-                        "name": "childStyle",
-                        "repeatId": "1",
-                        "value": ""
-                      },
-                      {
-                        "name": "minNumberOfRepeatingToShow",
-                        "value": ""
                       }
                     ]
                   },

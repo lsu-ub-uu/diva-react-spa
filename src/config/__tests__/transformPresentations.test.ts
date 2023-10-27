@@ -179,7 +179,7 @@ describe('transformCoraPresentations', () => {
         coraPresentationWithMiscTypes as DataListWrapper
       );
 
-      expect(transformData).toHaveLength(5);
+      expect(transformData).toHaveLength(6);
     });
   });
   describe('pCollVar', () => {
@@ -209,7 +209,7 @@ describe('transformCoraPresentations', () => {
     });
   });
 
-  describe.skip('SContainer', () => {
+  describe('SContainer', () => {
     it('Returns one BFFPresentation for one SContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationSurroundingContainer);
       expect(transformData[0]).toStrictEqual({
@@ -218,9 +218,8 @@ describe('transformCoraPresentations', () => {
         presentationsOf: ['showLabelCollectionVar'],
         mode: 'input',
         children: [
-          // do we need childStyle for Container children?
-          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
-          { childId: 'showLabelPCollVar', type: 'presentation' }
+          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle', childStyles: [] },
+          { childId: 'showLabelPCollVar', type: 'presentation', childStyles: [] }
         ],
         repeat: 'children'
       });
@@ -232,33 +231,38 @@ describe('transformCoraPresentations', () => {
       expect(transformData[0]).toStrictEqual({
         id: 'labelInputSContainer',
         type: 'container',
-        presentationsOf: ['showLabelCollectionVar', 'showLabelCollectionVar2'],
+        presentationsOf: ['showLabelCollectionVar', 'specifiedLabelTextLink'],
         mode: 'input',
         children: [
-          // do we need childStyle for Container children?
-          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
-          { childId: 'showLabelPCollVar', type: 'presentation' },
-          { childId: 'showLabelPCollVar2', type: 'presentation' }
+          {
+            childId: 'labelHeadlineText',
+            type: 'text',
+            minNumberOfRepeatingToShow: '99',
+            childStyles: ['5'],
+            textStyle: 'h2TextStyle'
+          },
+          { childId: 'showLabelPCollVar', type: 'presentation', childStyles: [] },
+          { childId: 'specifiedLabelTextPLink', type: 'presentation', childStyles: [] }
         ],
         repeat: 'children'
       });
     });
   });
-  describe.skip('RContainer', () => {
-    it('Returns one BFFPresentation for one RContainer', () => {
-      const transformData = transformCoraPresentations(coraPresentationRepeatingContainer);
-      expect(transformData[0]).toStrictEqual({
-        id: 'refPresentationTextLinkRContainer',
-        type: 'container',
-        presentationsOf: ['showLabelCollectionVar'],
-        mode: 'input',
-        children: [
-          // do we need childStyle for Container children?
-          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
-          { childId: 'showLabelPCollVar', type: 'presentation' }
-        ],
-        repeat: 'this'
-      });
-    });
-  });
+  // describe.skip('RContainer', () => {
+  //   it('Returns one BFFPresentation for one RContainer', () => {
+  //     const transformData = transformCoraPresentations(coraPresentationRepeatingContainer);
+  //     expect(transformData[0]).toStrictEqual({
+  //       id: 'refPresentationTextLinkRContainer',
+  //       type: 'container',
+  //       presentationsOf: ['showLabelCollectionVar'],
+  //       mode: 'input',
+  //       children: [
+  //         // do we need childStyle for Container children?
+  //         { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
+  //         { childId: 'showLabelPCollVar', type: 'presentation' }
+  //       ],
+  //       repeat: 'this'
+  //     });
+  //   });
+  // });
 });

@@ -123,14 +123,9 @@ export interface BFFPresentationContainer extends BFFPresentation {
   presentationsOf: string[];
   mode: 'input' | 'output';
   repeat: 'children' | 'this';
-  children: BFFContainerChildReference[];
+  children: BFFPresentationChildReference[];
 }
 
-export interface BFFContainerChildReference {
-  childId: string;
-  type: 'text' | 'presentation' | 'guiElement';
-  textStyle?: string;
-}
 export interface BFFPresentationGroup extends BFFPresentation {
   presentationOf: string;
   mode: 'input' | 'output';
