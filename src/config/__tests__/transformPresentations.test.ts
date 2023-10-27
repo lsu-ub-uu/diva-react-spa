@@ -233,6 +233,7 @@ describe('transformCoraPresentations', () => {
         type: 'container',
         presentationsOf: ['showLabelCollectionVar', 'specifiedLabelTextLink'],
         mode: 'input',
+        presentationStyle: 'card',
         children: [
           {
             childId: 'labelHeadlineText',

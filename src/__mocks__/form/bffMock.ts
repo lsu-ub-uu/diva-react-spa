@@ -7,7 +7,10 @@ import {
   BFFMetadataNumberVariable,
   BFFMetadataCollectionVariable,
   BFFMetadata,
-  BFFMetadataItemCollection, BFFMetadataRecordLink, BFFPresentationRecordLink,
+  BFFMetadataItemCollection,
+  BFFMetadataRecordLink,
+  BFFPresentationRecordLink,
+  BFFPresentationContainer
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
@@ -104,10 +107,9 @@ export const someMetadataChildGroup: BFFMetadataGroup = {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
       repeatMax: '1'
-    },
+    }
   ]
 };
-
 
 export const someMetadataTextVariable: BFFMetadataTextVariable = {
   id: 'someMetadataTextVariableId',
@@ -124,7 +126,7 @@ export const someMetadataTextVariable2: BFFMetadataTextVariable = {
   type: 'textVariable',
   textId: 'someTextId',
   defTextId: 'someDefTextId',
-  regEx: 'someRegex',
+  regEx: 'someRegex'
 };
 
 export const someMetadataTextVariable3: BFFMetadataTextVariable = {
@@ -190,7 +192,6 @@ export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
   defTextId: 'exampleCollectionVarDefText',
   refCollection: 'exampleCollection',
   finalValue: 'pink' // added this for now
-
 };
 
 export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionVariable = {
@@ -340,10 +341,9 @@ export const pSomeMetadataChildGroup: BFFPresentationGroup = {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
       childStyle: ['style3', 'style4']
-    },
+    }
   ]
 };
-
 
 export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   id: 'pSomeNewMetadataGroupId',
@@ -414,8 +414,30 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       childId: 'nationalSubjectCategoryPLinkId',
       type: 'presentation',
       childStyle: []
+    },
+    {
+      childId: 'pSomeContainerId',
+      type: 'presentation',
+      childStyle: []
     }
   ]
+};
+
+export const pSomeContainer: BFFPresentationContainer = {
+  id: 'pSomeContainerId',
+  type: 'container',
+  presentationStyle: '',
+  presentationsOf: ['someMetadataTextVariableId'], // metadata
+  mode: 'input',
+  children: [
+    {
+      childId: 'pSomeMetadataTextVariableId',
+      type: 'presentation',
+      childStyle: ['5'],
+      minNumberOfRepeatingToShow: '1'
+    }
+  ],
+  repeat: 'children'
 };
 
 export const someValidationTypeDataFaultyChildReference: BFFValidationType = {

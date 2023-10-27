@@ -119,16 +119,18 @@ export interface BFFPresentationRecordLink extends BFFPresentation {
 
 }
 
-export interface BFFPresentationContainer extends BFFPresentation {
+type AbstractContainerBase = Omit<BFFPresentation, "presentationOf">;
+
+export interface BFFPresentationContainer extends AbstractContainerBase {
   presentationsOf: string[];
-  mode: 'input' | 'output';
+  presentationStyle?: string;
   repeat: 'children' | 'this';
   children: BFFPresentationChildReference[];
 }
 
 export interface BFFPresentationGroup extends BFFPresentation {
   presentationOf: string;
-  mode: 'input' | 'output';
+  presentationStyle?: string;
   children: BFFPresentationChildReference[];
 }
 

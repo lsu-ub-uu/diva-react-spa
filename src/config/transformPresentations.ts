@@ -52,7 +52,7 @@ export const transformCoraPresentations = (
 
 const transformCoraPresentationToBFFPresentation = (
   coraRecordWrapper: RecordWrapper
-): BFFPresentation | BFFPresentationGroup | undefined => {
+): BFFPresentation | BFFPresentationGroup | BFFPresentationContainer | undefined => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
 
@@ -202,6 +202,12 @@ const transformCoraPresentationContainerToBFFContainer = (
   );
 
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+
+  let presentationStyle;
+  if (containsChildWithNameInData(dataRecordGroup, 'presentationStyle')) {
+    presentationStyle = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'presentationStyle');
+  }
+
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const repeat = extractAttributeValueByName(dataRecordGroup, 'repeat');
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
@@ -209,14 +215,15 @@ const transformCoraPresentationContainerToBFFContainer = (
     transformChildReference(childReference)
   );
 
-  return {
+  return removeEmpty({
     id,
     presentationsOf,
     mode,
     children,
     type,
-    repeat
-  } as BFFPresentationContainer;
+    repeat,
+    presentationStyle
+  }) as BFFPresentationContainer;
 };
 
 const extractAtomicValueByName = (childReference: DataGroup, nameInData: string) => {
