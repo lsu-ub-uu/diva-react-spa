@@ -21,6 +21,7 @@ import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
@@ -29,7 +30,7 @@ import {
   isComponentRepeating,
   isComponentVariable,
 } from './utils';
-import { Typography } from '../index';
+import { Card, Typography } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 
@@ -92,6 +93,7 @@ export const renderLeafComponent = (
 };
 
 export const FormGenerator = (props: FormGeneratorProps) => {
+  const { t } = useTranslation();
   const methods = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -137,14 +139,20 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
     if (isComponentGroup(component) && !isComponentRepeating(component)) {
       return (
-        <Box key={reactKey}>
+        <Card
+          variant='variant6'
+          title={t(component.label ?? '') as string}
+          key={reactKey}
+          tooltipBody=''
+          tooltipTitle='Non-repeating group'
+        >
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             createFormComponents(
               component.components,
               currentComponentNamePath,
             )}
-        </Box>
+        </Card>
       );
     }
 

@@ -18,12 +18,14 @@
  */
 
 import { Control, useFieldArray } from 'react-hook-form';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
+import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { FormComponent } from './types';
 import { createDefaultValuesFromComponent } from './utils';
+import { Card } from '../Card/Card';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -33,6 +35,7 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
+  const { t } = useTranslation();
   const { fields, append, move, remove } = useFieldArray({
     control: props.control,
     name: props.name,
@@ -51,7 +54,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   };
 
   return (
-    <Box>
+    <Card
+      title={t(props.component.label ?? '') as string}
+      variant='variant6'
+      tooltipTitle='card in field array'
+      tooltipBody='body'
+    >
       {fields.map((field, index) => (
         <Grid
           key={field.id}
@@ -97,6 +105,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       >
         Add {props.component.name}
       </Button>
-    </Box>
+    </Card>
   );
 };

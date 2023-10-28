@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import React, { useEffect } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { Card, useBackdrop, FormGenerator } from '../components';
+import { useBackdrop, FormGenerator } from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import {
@@ -36,19 +36,10 @@ export const DynamicFormPage = () => {
       </Helmet>
       <div>
         <Stack spacing={2}>
-          <Card
-            title='Form from Cora'
-            variant='variant6'
-            tooltipTitle='Tooltip title'
-            tooltipBody='Some body text on how this form works'
-          >
-            <FormGenerator
-              onSubmit={(values) =>
-                console.log(JSON.stringify(values, null, 2))
-              }
-              formSchema={schema as FormSchema}
-            />
-          </Card>
+          <FormGenerator
+            onSubmit={(values) => console.log(JSON.stringify(values, null, 2))}
+            formSchema={schema as FormSchema}
+          />
           <p>Form def:</p>
           <pre>{JSON.stringify(schema, null, 2)}</pre>
           <p>Default values:</p>
