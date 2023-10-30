@@ -75,6 +75,9 @@ const transformCoraPresentationToBFFPresentation = (
       return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
     }
     case 'container': {
+      const drg = coraRecordWrapper.record.data;
+      const repeat = extractAttributeValueByName(drg, 'repeat');
+      if (repeat === "this") return;
       return transformCoraPresentationContainerToBFFContainer(coraRecordWrapper);
     }
     // TODO add more types here like pResourceLink
@@ -178,7 +181,7 @@ const transformChildReference = (childReference: DataGroup) => {
   const presentationSize = extractAtomicValueByName(childReference, 'presentationSize');
 
   const childStyleAtomics = getAllDataAtomicsWithNameInData(childReference, 'childStyle');
-  const childStyles = childStyleAtomics.map((childStyle) => childStyle.value);
+  const childStyle = childStyleAtomics.map((childStyle) => childStyle.value);
 
   return removeEmpty({
     childId,
@@ -186,7 +189,7 @@ const transformChildReference = (childReference: DataGroup) => {
     minNumberOfRepeatingToShow,
     textStyle,
     presentationSize,
-    childStyles
+    childStyle
   });
 };
 
@@ -195,6 +198,7 @@ const transformCoraPresentationContainerToBFFContainer = (
 ): BFFPresentationContainer => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
 
   const presentationRecordLinks = getPresentationOfFromRecordLinks(dataRecordGroup);
   const presentationsOf = presentationRecordLinks.map(
@@ -208,7 +212,6 @@ const transformCoraPresentationContainerToBFFContainer = (
     presentationStyle = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'presentationStyle');
   }
 
-  const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const repeat = extractAttributeValueByName(dataRecordGroup, 'repeat');
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
   const children = childReferencesList.map((childReference) =>
@@ -233,7 +236,8 @@ const extractAtomicValueByName = (childReference: DataGroup, nameInData: string)
   }
   return atomicValue;
 };
-function getPresentationOfFromRecordLinks(dataRecordGroup: DataGroup) {
+
+const getPresentationOfFromRecordLinks = (dataRecordGroup: DataGroup) => {
   const presentationsOfArray = getFirstDataGroupWithNameInDataAndAttributes(
     dataRecordGroup,
     'presentationsOf'
