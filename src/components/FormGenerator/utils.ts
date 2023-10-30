@@ -76,7 +76,9 @@ const generateRepeatingObject = (size: number, obj: unknown): unknown[] => {
 };
 
 const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
-  component.repeat?.minNumberOfRepeatingToShow ?? 0;
+  component.repeat?.minNumberOfRepeatingToShow ??
+  component.repeat?.repeatMin ??
+  0;
 
 export const createDefaultValuesFromComponent = (
   component: FormComponent,
