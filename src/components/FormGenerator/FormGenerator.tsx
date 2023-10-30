@@ -145,6 +145,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           key={reactKey}
           tooltipBody=''
           tooltipTitle='Non-repeating group'
+          sx={{ mb: 1 }}
         >
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&

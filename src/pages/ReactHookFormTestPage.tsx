@@ -1,4 +1,4 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import { Control, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -234,55 +234,58 @@ export const ReactHookFormTestPage = () => {
         console.log(JSON.stringify(values, null, 1)),
       )}
     >
-      <Card
-        title='Book'
-        variant='variant6'
-        tooltipTitle='Title'
-        tooltipBody='Here goes some text about how choose type'
-      >
-        <Grid
-          container
-          direction='row'
-          justifyContent='space-between'
-          alignItems='flex-start'
+      <Stack>
+        <Card
+          title='Book'
+          variant='variant6'
+          tooltipTitle='Title'
+          tooltipBody='Here goes some text about how choose type'
         >
           <Grid
-            item
-            xs={12}
-            sm={12}
+            container
+            direction='row'
+            justifyContent='space-between'
+            alignItems='flex-start'
           >
-            <ControlledTextField
-              label='title.main.value'
-              name='title.main.value'
-              control={control}
-            />
-            <ControlledTextField
-              label='title.tagLine.value'
-              name='title.tagLine.value'
-              control={control}
-            />
-            <NestedFieldArray
-              control={control}
-              name='author'
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-          >
-            <pre>{JSON.stringify(getValues(), null, 1)}</pre>
-            <Button
-              disabled={!formState.isValid}
-              fullWidth
-              type='submit'
-              disableRipple
-              variant='contained'
+            <Grid
+              item
+              xs={12}
+              sm={12}
             >
-              Submit form
-            </Button>
+              <ControlledTextField
+                label='title.main.value'
+                name='title.main.value'
+                control={control}
+              />
+              <ControlledTextField
+                label='title.tagLine.value'
+                name='title.tagLine.value'
+                control={control}
+              />
+              <NestedFieldArray
+                control={control}
+                name='author'
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <pre>{JSON.stringify(getValues(), null, 1)}</pre>
+              <Button
+                disabled={!formState.isValid}
+                fullWidth
+                type='submit'
+                disableRipple
+                variant='contained'
+              >
+                Submit form
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </Card>
+        </Card>
+        <Typography>test</Typography>
+      </Stack>
     </Box>
   );
 };

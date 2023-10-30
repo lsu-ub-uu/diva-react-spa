@@ -18,7 +18,7 @@
  */
 
 import { Control, useFieldArray } from 'react-hook-form';
-import { Grid } from '@mui/material';
+import { Chip, Divider, Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -62,6 +62,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       variant='variant6'
       tooltipTitle='card in field array'
       tooltipBody='body'
+      sx={{ mb: 1 }}
     >
       {fields.map((field, index) => (
         <Grid
@@ -71,6 +72,18 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           justifyContent='space-between'
           alignItems='center'
         >
+          <Grid
+            item
+            xs={12}
+          >
+            {!isComponentSingularAndOptional(props.component) && (
+              <Divider>
+                <Chip
+                  label={`${t(props.component.label ?? '')} ${index + 1}`}
+                />
+              </Divider>
+            )}
+          </Grid>
           <Grid
             item
             xs={10}
