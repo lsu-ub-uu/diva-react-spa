@@ -217,13 +217,13 @@ const createPresentation = (
 
   if (presentation.type === 'container') {
     //@ts-ignore
-    const container = presentation as BFFPresentationContainer;
+    const presentationContainer = presentation as BFFPresentationContainer;
     const type = presentation.type;
     const mode = presentation.mode;
-    containerType = container.repeat === 'children' ? 'surrounding' : 'repeating';
-    presentationStyle = container.presentationStyle;
+    containerType = presentationContainer.repeat === 'children' ? 'surrounding' : 'repeating';
+    presentationStyle = presentationContainer.presentationStyle;
 
-    const metadataIds = container.presentationsOf;
+    const metadataIds = presentationContainer.presentationsOf;
 
     const filteredChildRefs = metadataChildReferences.filter((childRef) => {
       return metadataIds.includes(childRef.childId);
@@ -231,7 +231,7 @@ const createPresentation = (
     commonParameters = { mode, type };
     components = createComponentsFromChildReferences(
       filteredChildRefs,
-      container.children,
+      presentationContainer.children,
       metadataPool,
       presentationPool
     );
@@ -240,6 +240,7 @@ const createPresentation = (
   if (presentation.type === 'pGroup') {
     const group = metadata as BFFMetadataGroup;
     const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
+    presentationStyle = presentationGroup.presentationStyle;
 
     if (group.attributeReferences !== undefined) {
       attributes = createAttributes(group, metadataPool, undefined);

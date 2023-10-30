@@ -335,6 +335,7 @@ export const pSomeMetadataChildGroup: BFFPresentationGroup = {
   id: 'pSomeMetadataChildGroupId',
   type: 'pGroup',
   presentationOf: 'someMetadataChildGroupId', // metadata
+  presentationStyle: 'someMetadataChildGroupPresentationStyle',
   mode: 'input',
   children: [
     {
@@ -350,6 +351,7 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
   type: 'pGroup',
   presentationOf: 'someNewMetadataGroupId', // metadata
   mode: 'input',
+  presentationStyle: 'card',
   children: [
     {
       childId: 'someHeadlineTextId',

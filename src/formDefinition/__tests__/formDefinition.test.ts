@@ -170,6 +170,7 @@ describe('formDefinition', () => {
       form: {
         type: 'group',
         label: 'textId345',
+        presentationStyle: 'card',
         name: 'someNewMetadataGroupNameInData',
         repeat: {
           repeatMin: 1,
@@ -473,6 +474,7 @@ describe('formDefinition', () => {
             type: 'group',
             label: 'someChildGroupTextId',
             childStyle: [],
+            presentationStyle: 'someMetadataChildGroupPresentationStyle',
             name: 'someChildGroupNameInData',
             repeat: {
               repeatMin: 1,
