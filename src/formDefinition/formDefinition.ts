@@ -158,9 +158,10 @@ const createPresentation = (
   let commonParameters;
   let childStyle;
 
+  childStyle = presentationChildReference.childStyle;
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-  // Scontainers does not have presentationOf, it has presentationsOf
+  // containers does not have presentationOf, it has presentationsOf
   if (presentation.type === 'container') {
     // skip metadataId, metaDataChildRef, repeat, metadata, commonParameters
   } else {
@@ -223,14 +224,13 @@ const createPresentation = (
     presentationStyle = container.presentationStyle;
 
     const metadataIds = container.presentationsOf;
-    // get the metadata from presentationsOf
 
-    const temp = metadataChildReferences.filter((childRef) => {
+    const filteredChildRefs = metadataChildReferences.filter((childRef) => {
       return metadataIds.includes(childRef.childId);
     });
     commonParameters = { mode, type };
     components = createComponentsFromChildReferences(
-      temp,
+      filteredChildRefs,
       container.children,
       metadataPool,
       presentationPool
@@ -265,7 +265,8 @@ const createPresentation = (
     attributes,
     components,
     presentationStyle,
-    containerType
+    containerType,
+    childStyle,
   });
 };
 

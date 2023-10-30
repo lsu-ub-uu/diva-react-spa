@@ -214,6 +214,7 @@ describe('formDefinition', () => {
             textStyle: 'bold'
           },
           {
+            childStyle: ['style3', 'style4'],
             type: 'textVariable',
             name: 'someNameInData',
             label: 'someTextId',
@@ -239,6 +240,7 @@ describe('formDefinition', () => {
             name: 'someNameInData',
             placeholder: 'someEmptyTextId',
             label: 'someTextId',
+            childStyle: ['style3', 'style4'],
             repeat: {
               repeatMin: 1,
               repeatMax: 3
@@ -259,6 +261,7 @@ describe('formDefinition', () => {
             name: 'someNameInData2',
             label: 'someOtherLabelTextId', // overridden label
             placeholder: 'someEmptyTextId',
+            childStyle: ['style3', 'style4'],
             repeat: {
               repeatMin: 1,
               repeatMax: Number.MAX_VALUE
@@ -279,6 +282,7 @@ describe('formDefinition', () => {
             name: 'someNameInData3',
             label: 'someTextId',
             placeholder: 'someEmptyTextId',
+            childStyle: ['style3', 'style4'],
             repeat: {
               repeatMin: 1,
               repeatMax: 1
@@ -299,6 +303,7 @@ describe('formDefinition', () => {
             type: 'numberVariable',
             name: 'someNameInDataNumberVar',
             label: '',
+            childStyle: ['style3', 'style4'],
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 0,
@@ -324,6 +329,7 @@ describe('formDefinition', () => {
             name: 'colour',
             finalValue: 'pink',
             label: 'exampleCollectionVarText',
+            childStyle: ['style3', 'style4'],
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
@@ -344,6 +350,7 @@ describe('formDefinition', () => {
             type: 'collectionVariable',
             name: 'colourAttributeVar',
             label: 'exampleCollectionVarText',
+            childStyle: ['style3', 'style4'],
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
@@ -383,6 +390,7 @@ describe('formDefinition', () => {
             type: 'numberVariable',
             name: 'someNameInDataNumberWithAttributeVar',
             label: 'someNumberVarTextId',
+            childStyle: [],
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
@@ -425,6 +433,7 @@ describe('formDefinition', () => {
             type: 'textVariable',
             name: 'someNameInDataTextWithAttrib',
             label: 'someTextId',
+            childStyle: [],
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
@@ -463,6 +472,7 @@ describe('formDefinition', () => {
           {
             type: 'group',
             label: 'someChildGroupTextId',
+            childStyle: [],
             name: 'someChildGroupNameInData',
             repeat: {
               repeatMin: 1,
@@ -477,6 +487,7 @@ describe('formDefinition', () => {
                 type: 'textVariable',
                 name: 'someNameInData',
                 label: 'someTextId',
+                childStyle: ['style3', 'style4'],
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
@@ -500,6 +511,7 @@ describe('formDefinition', () => {
             type: 'recordLink',
             name: 'nationalSubjectCategory',
             label: 'nationalSubjectCategoryLinkText',
+            childStyle: [],
             mode: 'input',
             repeat: {
               repeatMin: 1,
@@ -513,12 +525,14 @@ describe('formDefinition', () => {
           {
             type: 'container',
             presentationStyle: 'card',
-            containerType: 'surrounding', // repeating
+            containerType: 'surrounding',
+            childStyle: [],
             components: [
               {
                 type: 'textVariable',
                 name: 'someNameInData',
                 label: 'someTextId',
+                childStyle: ['5'],
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
@@ -535,7 +549,6 @@ describe('formDefinition', () => {
                 },
                 mode: 'input',
                 inputType: 'input',
-                childStyle: ['5']
               }
             ],
             mode: 'input'
