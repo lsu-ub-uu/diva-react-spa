@@ -75,9 +75,6 @@ const transformCoraPresentationToBFFPresentation = (
       return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
     }
     case 'container': {
-      const drg = coraRecordWrapper.record.data;
-      const repeat = extractAttributeValueByName(drg, 'repeat');
-      if (repeat === "this") return;
       return transformCoraPresentationContainerToBFFContainer(coraRecordWrapper);
     }
     // TODO add more types here like pResourceLink
@@ -200,19 +197,34 @@ const transformCoraPresentationContainerToBFFContainer = (
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
 
-  const presentationRecordLinks = getPresentationOfFromRecordLinks(dataRecordGroup);
-  const presentationsOf = presentationRecordLinks.map(
-    (presentationRecordLink) => presentationRecordLink.id
-  );
+  const repeat = extractAttributeValueByName(dataRecordGroup, 'repeat');
 
-  const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  let presentationsOf;
+  let presentationOf;
+  let mode = 'input'; // default value
+
+  if (containsChildWithNameInData(dataRecordGroup, 'presentationsOf')) {
+    // SContainer
+    const presentationRecordLinks = getPresentationOfFromRecordLinks(dataRecordGroup);
+    presentationsOf = presentationRecordLinks.map(
+      (presentationRecordLink) => presentationRecordLink.id
+    );
+  }
+
+  if (containsChildWithNameInData(dataRecordGroup, 'presentationOf')) {
+    // RContainer
+    presentationOf = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'presentationOf');
+  }
+
+  if (containsChildWithNameInData(dataRecordGroup, 'mode')) {
+    mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
+  }
 
   let presentationStyle;
   if (containsChildWithNameInData(dataRecordGroup, 'presentationStyle')) {
     presentationStyle = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'presentationStyle');
   }
 
-  const repeat = extractAttributeValueByName(dataRecordGroup, 'repeat');
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
   const children = childReferencesList.map((childReference) =>
     transformChildReference(childReference)
@@ -221,6 +233,7 @@ const transformCoraPresentationContainerToBFFContainer = (
   return removeEmpty({
     id,
     presentationsOf,
+    presentationOf,
     mode,
     children,
     type,

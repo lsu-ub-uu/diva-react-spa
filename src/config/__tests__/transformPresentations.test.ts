@@ -249,18 +249,18 @@ describe('transformCoraPresentations', () => {
       });
     });
   });
-  describe.skip('RContainer', () => {
+  describe('RContainer', () => {
     it('Returns one BFFPresentation for one RContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationRepeatingContainer);
       expect(transformData[0]).toStrictEqual({
-        id: 'refPresentationTextLinkRContainer',
+        id: 'exampleCoordinatesRContainer',
         type: 'container',
         presentationOf: 'exampleCoordinatesGroup',
         mode: 'input',
         children: [
           // do we need childStyle for Container children?
-          { childId: 'exampleCoordinatesPGroup', type: 'presentation' },
-          { childId: 'exampleCoordinatesAsMapPGroup', type: 'presentation' }
+          { childId: 'exampleCoordinatesPGroup', type: 'presentation', childStyle: [] },
+          { childId: 'exampleCoordinatesAsMapPGroup', type: 'presentation', childStyle: [] }
         ],
         repeat: 'this'
       });
