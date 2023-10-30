@@ -48,6 +48,12 @@ export const isComponentRepeating = (component: FormComponent) => {
   return !(rMax === 1 && rMin === 1);
 };
 
+export const isComponentSingularAndOptional = (component: FormComponent) => {
+  const rMax = component.repeat?.repeatMax ?? 1;
+  const rMin = component.repeat?.repeatMin ?? 1;
+  return rMax === 1 && rMin === 0;
+};
+
 const createDefaultValue = (
   component: FormComponent | FormAttributeCollection,
 ) => (component.finalValue ? component.finalValue : '');

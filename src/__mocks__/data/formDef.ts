@@ -558,6 +558,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMi
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
+        minNumberOfRepeatingToShow: 1,
         repeatMin: 1,
         repeatMax: 1,
       },

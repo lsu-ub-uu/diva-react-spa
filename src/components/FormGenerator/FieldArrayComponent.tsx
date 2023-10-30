@@ -24,7 +24,10 @@ import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { FormComponent } from './types';
-import { createDefaultValuesFromComponent } from './utils';
+import {
+  createDefaultValuesFromComponent,
+  isComponentSingularAndOptional,
+} from './utils';
 import { Card } from '../Card/Card';
 
 interface FieldArrayComponentProps {
@@ -83,6 +86,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             xs={2}
           >
             <ActionButtonGroup
+              hideMoveButtons={isComponentSingularAndOptional(props.component)}
               moveUpButtonDisabled={index === 0}
               moveUpButtonAction={() => handleMove(index, index - 1)}
               moveDownButtonDisabled={index === fields.length - 1}

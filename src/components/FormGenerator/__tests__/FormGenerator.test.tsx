@@ -285,6 +285,27 @@ describe('<FormGenerator />', () => {
 
       expect(buttonElement).toBeDisabled();
     });
+
+    it('Move buttons should NOT be rendered when repeatMax is less or equal to one', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const removeButtonElement = screen.queryByLabelText('delete');
+      expect(removeButtonElement).toBeInTheDocument();
+
+      const moveUpButtonElement = screen.queryByLabelText('up');
+      expect(moveUpButtonElement).not.toBeInTheDocument();
+
+      const moveDownButtonElement = screen.queryByLabelText('down');
+      expect(moveDownButtonElement).not.toBeInTheDocument();
+    });
   });
 
   describe('repeatMin', () => {

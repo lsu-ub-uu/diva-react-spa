@@ -133,6 +133,7 @@ const NestedFieldArray = (props: NFProps): JSX.Element => {
             tooltipBody='Some body text on how this form works'
             action={
               <ActionButtonGroup
+                hideMoveButtons={false}
                 moveUpButtonDisabled={index === 0}
                 moveUpButtonAction={() => console.log('')}
                 moveDownButtonDisabled={index === fields.length - 1}
