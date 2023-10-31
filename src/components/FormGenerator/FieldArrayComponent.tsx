@@ -77,7 +77,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             xs={12}
           >
             {!isComponentSingularAndOptional(props.component) && (
-              <Divider>
+              <Divider sx={{ mb: 2 }}>
                 <Chip
                   label={`${t(props.component.label ?? '')} ${index + 1}`}
                 />
@@ -86,7 +86,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           </Grid>
           <Grid
             item
-            xs={10}
+            xs={11}
           >
             {
               props.renderCallback(
@@ -96,7 +96,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           </Grid>
           <Grid
             item
-            xs={2}
+            xs={1}
           >
             <ActionButtonGroup
               hideMoveButtons={isComponentSingularAndOptional(props.component)}

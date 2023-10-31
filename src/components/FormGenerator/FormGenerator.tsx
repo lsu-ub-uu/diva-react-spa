@@ -102,7 +102,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
 
-  const { control, handleSubmit } = methods;
+  const { control, handleSubmit, reset } = methods;
 
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (
@@ -222,15 +222,32 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     >
       {generateFormComponent(props.formSchema.form, 0, '')}
 
-      <Button
+      <Box
+        component='span'
         sx={{ mt: 4, mb: 2 }}
-        fullWidth
-        type='submit'
-        disableRipple
-        variant='contained'
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        onClick={() => reset()}
       >
-        Submit
-      </Button>
+        <Button
+          disableRipple
+          variant='contained'
+          color='secondary'
+          sx={{ height: 40 }}
+        >
+          Reset
+        </Button>
+        <Button
+          type='submit'
+          disableRipple
+          variant='contained'
+          color='primary'
+          sx={{ height: 40 }}
+        >
+          Submit
+        </Button>
+      </Box>
     </Box>
   );
 };
