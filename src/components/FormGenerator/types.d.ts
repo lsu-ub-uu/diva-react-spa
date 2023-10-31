@@ -42,7 +42,8 @@ export interface FormComponent {
     | 'numberVariable'
     | 'textVariable'
     | 'group'
-    | 'text';
+    | 'text'
+    | 'guiElementLink';
   name: string;
   label?: string;
   finalValue?: string;
@@ -63,6 +64,9 @@ export interface FormComponent {
     | 'h5TextStyle'
     | 'h6TextStyle'
     | 'bodyTextStyle';
+  url?: string; // used for guiElementLink
+  elementText?: string; // used for guiElementLink
+  presentAs?: string; // used for guiElementLink
 }
 
 type FormAttributeCollection = Omit<

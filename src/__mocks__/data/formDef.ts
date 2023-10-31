@@ -628,6 +628,50 @@ export const formDefWithOneNumberVariable = {
   },
 };
 
+export const formDefWithOneNumberVariableAndGuiElementLink = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        name: 'someNumberVariableNameInData',
+        placeholder: 'someNumberPlaceholderTextId',
+        validation: {
+          type: 'number',
+          min: 1,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        type: 'guiElementLink',
+        name: 'pSomeGuiElementLinkId',
+        url: 'http://www.google.se',
+        elementText: 'demoTestLinkGuiElementText',
+        presentAs: 'link',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefWithOneNumberVariableHavingDecimals = {
   validationTypeId: 'someValidationTypeId',
   form: {

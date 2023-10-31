@@ -32,6 +32,7 @@ import {
   formDefWithOneNumberVariableWithAttributeCollection,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
   formDefWithOneGroupHavingTextVariableAsChild,
+  formDefWithOneNumberVariableAndGuiElementLink,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -82,7 +83,11 @@ describe('<FormGenerator />', () => {
         />,
       );
       const submitButton = screen.getByRole('button', { name: 'Submit' });
+      expect(submitButton).toBeInTheDocument();
+
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+
+      expect(inputElement).toBeInTheDocument();
 
       const user = userEvent.setup();
       await user.type(inputElement, 'a');
@@ -456,6 +461,26 @@ describe('<FormGenerator />', () => {
 
       const textInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(textInput).toBeInTheDocument();
+    });
+  });
+
+  describe('guiElementLink', () => {
+    it('renders a form with numberVariable and a gui element link', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneNumberVariableAndGuiElementLink as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const link = screen.getByRole('link', {
+        name: 'demoTestLinkGuiElementText',
+      });
+
+      expect(link).toHaveAttribute('href', 'http://www.google.se');
     });
   });
 });

@@ -87,6 +87,19 @@ export const renderLeafComponent = (
         />
       );
     }
+    case 'guiElementLink': {
+      // TODO If needed take component.presentAs in consideration
+      return (
+        <a
+          rel='noreferrer'
+          href={component.url ?? ''}
+          key={reactKey}
+          target='_blank'
+        >
+          {component.elementText}
+        </a>
+      );
+    }
     default:
       return null;
   }
