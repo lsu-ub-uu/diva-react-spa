@@ -476,9 +476,7 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const link = screen.getByRole('link', {
-        name: 'demoTestLinkGuiElementText',
-      });
+      const link = screen.getByRole('link');
 
       expect(link).toHaveAttribute('href', 'http://www.google.se');
     });

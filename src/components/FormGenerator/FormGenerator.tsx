@@ -91,6 +91,7 @@ export const renderLeafComponent = (
     }
     case 'guiElementLink': {
       // TODO If needed take component.presentAs in consideration
+      // TODO Break out button ExternalLinkButton target, icon, text
       return (
         <Button
           component='a'
