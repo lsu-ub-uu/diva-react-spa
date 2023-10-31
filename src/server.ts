@@ -3,12 +3,13 @@ import { configureServer } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
 import { listToPool } from './utils/structs/listToPool';
 import {
+  BFFGuiElement,
   BFFMetadata,
   BFFMetadataItemCollection,
   BFFPresentation,
   BFFPresentationGroup,
   BFFText,
-  BFFValidationType,
+  BFFValidationType
 } from './config/bffTypes';
 import { getRecordDataListByType } from './cora/cora';
 import { DataListWrapper } from './utils/cora-data/CoraData';
@@ -49,22 +50,27 @@ app.use('/api/translations/:lang', async (req, res) => {
 
 app.use('/api/form/:validationTypeId', async (req, res) => {
   try {
-    const { validationTypeId} = req.params;
-    const types = ['metadata', 'presentation', 'validationType'];
+    const { validationTypeId } = req.params;
+    const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
     const promises = types.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
     const result = await Promise.all(promises);
 
     const metadata = transformMetadata(result[0].data);
     const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
-
+    // console.log(result[3].data);
     const presentation = transformCoraPresentations(result[1].data);
-    const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>(presentation);
+    const guiElements = transformCoraPresentations(result[3].data);
+
+    const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup | BFFGuiElement>([
+      ...presentation,
+      ...guiElements
+    ]);
 
     const validationTypes = transformCoraValidationTypes(result[2].data);
     const validationTypePool = listToPool<BFFValidationType>(validationTypes);
 
     if (!validationTypePool.has(validationTypeId)) {
-      throw new Error(`Validation type [${validationTypeId}] does not exist`)
+      throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
 
     const dependencies = {
