@@ -1,4 +1,5 @@
 import {
+  BFFGuiElement,
   BFFMetadata,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
@@ -10,7 +11,7 @@ import {
   BFFPresentationChildReference,
   BFFPresentationContainer,
   BFFPresentationGroup,
-  BFFValidationType
+  BFFValidationType,
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -70,6 +71,9 @@ const createComponentsFromChildReferences = (
     }
 
     // todo handle gui_element
+    if (presentationChildType === 'guiElement') {
+      return createGuiElement(presentationChildReference, presentationPool);
+    }
 
     return createPresentation(
       metadataChildReferences,
@@ -89,6 +93,20 @@ const createText = (
     name: presentationChildId,
     type: presentationChildType,
     textStyle: presentationChildReference.textStyle
+  };
+};
+const createGuiElement = (
+  presentationChildReference: BFFPresentationChildReference,
+  presentationPool: any
+) => {
+  const presentationChildId = presentationChildReference.childId;
+  const presentation: BFFGuiElement = presentationPool.get(presentationChildId);
+  return {
+    name: presentationChildId,
+    type: presentation.type,
+    url: presentation.url,
+    elementText: presentation.elementText,
+    presentAs: presentation.presentAs
   };
 };
 
