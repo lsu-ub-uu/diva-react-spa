@@ -20,8 +20,10 @@
 import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
@@ -90,14 +92,16 @@ export const renderLeafComponent = (
     case 'guiElementLink': {
       // TODO If needed take component.presentAs in consideration
       return (
-        <a
-          rel='noreferrer'
-          href={component.url ?? ''}
-          key={reactKey}
+        <Button
+          component='a'
+          href={component.url}
           target='_blank'
+          rel='noopener noreferrer'
+          endIcon={<LaunchIcon />}
+          color='primary'
         >
-          {component.elementText}
-        </a>
+          {i18next.t(component.elementText ?? '') as string}
+        </Button>
       );
     }
     default:
@@ -237,17 +241,17 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
       <Box
         component='span'
-        sx={{ mt: 4, mb: 2 }}
+        sx={{ mt: 2, mb: 2 }}
         display='flex'
         justifyContent='space-between'
         alignItems='center'
-        onClick={() => reset()}
       >
         <Button
           disableRipple
           variant='contained'
           color='secondary'
           sx={{ height: 40 }}
+          onClick={() => reset()}
         >
           Reset
         </Button>
