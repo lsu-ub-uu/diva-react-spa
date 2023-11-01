@@ -159,23 +159,6 @@
                             }
                           }
                         ]
-                      },
-                      {
-                        "name": "presentationSize",
-                        "value": ""
-                      },
-                      {
-                        "name": "textStyle",
-                        "value": ""
-                      },
-                      {
-                        "name": "childStyle",
-                        "repeatId": "1",
-                        "value": ""
-                      },
-                      {
-                        "name": "minNumberOfRepeatingToShow",
-                        "value": ""
                       }
                     ]
                   },
@@ -204,23 +187,6 @@
                             }
                           }
                         ]
-                      },
-                      {
-                        "name": "presentationSize",
-                        "value": ""
-                      },
-                      {
-                        "name": "textStyle",
-                        "value": ""
-                      },
-                      {
-                        "name": "childStyle",
-                        "repeatId": "1",
-                        "value": ""
-                      },
-                      {
-                        "name": "minNumberOfRepeatingToShow",
-                        "value": ""
                       }
                     ]
                   }

@@ -20,17 +20,23 @@ import emptyDataList from '../../__mocks__/emptyDataList.json';
 import { transformCoraPresentations } from '../transformPresentations';
 import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
 import presentationListWithTwoPNumVar from '../../__mocks__/coraPresentationWithTwoNumberVariables.json';
-import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPresentationGroupWithMissingEmptyTextId.json';
+import coraPresentationGroupWithMissingEmptyTextId
+  from '../../__mocks__/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
-import coraPresentationGroupWithMinNumberOfRepeatingToShow from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
+import coraPresentationGroupWithMinNumberOfRepeatingToShow
+  from '../../__mocks__/coraPresentationGroupWithMinNumberOfRepeatingToShow.json';
 import coraPresentationWithMiscTypes from '../../__mocks__/coraPresentationWithMiscTypes.json';
 import coraPresentationWithOneCollectionVariable from '../../__mocks__/coraPresentationWithOneCollectionVariable.json';
-import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '../../__mocks__/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
-import coraPresentationWithOneTextVariableHavingShowLabelFalse from '../../__mocks__/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
+import coraPresentationWithOneTextVariableHavingSpecifiedLabel
+  from '../../__mocks__/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
+import coraPresentationWithOneTextVariableHavingShowLabelFalse
+  from '../../__mocks__/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
 import coraPresentationSurroundingContainer from '../../__mocks__/coraPresentationSurroundingContainer.json';
-import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '../../__mocks__/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
+import coraPresentationSurroundingContainerWithTwoVarPresentationsOf
+  from '../../__mocks__/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
 import coraPresentationRepeatingContainer from '../../__mocks__/coraPresentationRepeatingContainer.json';
 import coraPresentationWithRecordLink from '../../__mocks__/coraPresentationRecordLink.json';
+import coraPresentationWithGuiElementLink from '../../__mocks__/coraPresentationGuiElement.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -53,13 +59,13 @@ describe('transformCoraPresentations', () => {
         presentationOf: 'someTextVar',
         mode: 'input',
         inputType: 'someInputType',
-        emptyTextId: 'somePlaceholderText'
+        emptyTextId: 'somePlaceholderText',
       });
     });
 
     it('Returns one BFFPresentation for one pVar entry with specified label', () => {
       const transformData = transformCoraPresentations(
-        coraPresentationWithOneTextVariableHavingSpecifiedLabel
+        coraPresentationWithOneTextVariableHavingSpecifiedLabel,
       );
       expect(transformData[0]).toStrictEqual({
         id: 'someTextVarPVar',
@@ -68,13 +74,13 @@ describe('transformCoraPresentations', () => {
         mode: 'input',
         inputType: 'someInputType',
         emptyTextId: 'somePlaceholderText',
-        specifiedLabelTextId: 'someSpecifiedTextVarText'
+        specifiedLabelTextId: 'someSpecifiedTextVarText',
       });
     });
 
     it('Returns one BFFPresentation for one pVar entry with label hidden/disabled', () => {
       const transformData = transformCoraPresentations(
-        coraPresentationWithOneTextVariableHavingShowLabelFalse
+        coraPresentationWithOneTextVariableHavingShowLabelFalse,
       );
       expect(transformData[0]).toStrictEqual({
         id: 'someTextVarPVar',
@@ -83,7 +89,7 @@ describe('transformCoraPresentations', () => {
         mode: 'input',
         inputType: 'someInputType',
         emptyTextId: 'somePlaceholderText',
-        showLabel: 'false'
+        showLabel: 'false',
       });
     });
 
@@ -94,7 +100,7 @@ describe('transformCoraPresentations', () => {
         type: 'pVar',
         presentationOf: 'someTextVar',
         mode: 'input',
-        inputType: 'someInputType'
+        inputType: 'someInputType',
       });
     });
   });
@@ -106,7 +112,7 @@ describe('transformCoraPresentations', () => {
         type: 'pNumVar',
         presentationOf: 'someNumberVar',
         mode: 'input',
-        emptyTextId: 'somePlaceholderText'
+        emptyTextId: 'somePlaceholderText',
       });
     });
 
@@ -116,7 +122,7 @@ describe('transformCoraPresentations', () => {
         id: 'someTextVarPNumVar2',
         type: 'pNumVar',
         presentationOf: 'someNumberVar2',
-        mode: 'input'
+        mode: 'input',
       });
     });
   });
@@ -136,17 +142,17 @@ describe('transformCoraPresentations', () => {
         presentationOf: 'someNewGroup',
         mode: 'input',
         children: [
-          { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle', childStyles: [] },
-          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
-          { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
-          { childId: 'bookTitleTextVarPVar', type: 'presentation', childStyles: [] }
-        ]
+          { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle', childStyle: [] },
+          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyle: [] },
+          { childId: 'bookTitleTextVarText', type: 'text', childStyle: [] },
+          { childId: 'bookTitleTextVarPVar', type: 'presentation', childStyle: [] },
+        ],
       });
     });
 
     it('Returns one BFFPresentationGroup for one entry with minNumberOfRepeatingToShow', () => {
       const transformData = transformCoraPresentations(
-        coraPresentationGroupWithMinNumberOfRepeatingToShow
+        coraPresentationGroupWithMinNumberOfRepeatingToShow,
       );
       expect(transformData[0]).toStrictEqual({
         id: 'someNewPGroup',
@@ -159,27 +165,27 @@ describe('transformCoraPresentations', () => {
             type: 'text',
             textStyle: 'h1TextStyle',
             presentationSize: 'firstSmaller',
-            childStyles: []
+            childStyle: [],
           },
-          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyles: [] },
-          { childId: 'bookTitleTextVarText', type: 'text', childStyles: [] },
+          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyle: [] },
+          { childId: 'bookTitleTextVarText', type: 'text', childStyle: [] },
           {
             childId: 'bookTitleTextVarPVar',
             minNumberOfRepeatingToShow: '99',
             textStyle: 'h5TextStyle',
             type: 'presentation',
-            childStyles: ['5', '3']
-          }
-        ]
+            childStyle: ['5', '3'],
+          },
+        ],
       });
     });
 
     it('Returns only BFFPresentationGroup and BFFPresentation (pGroup, pRecordLink, pNumVar, pVar and pCollVar) entries and skips other types', () => {
       const transformData = transformCoraPresentations(
-        coraPresentationWithMiscTypes as DataListWrapper
+        coraPresentationWithMiscTypes as DataListWrapper,
       );
 
-      expect(transformData).toHaveLength(5);
+      expect(transformData).toHaveLength(6);
     });
   });
   describe('pCollVar', () => {
@@ -190,7 +196,7 @@ describe('transformCoraPresentations', () => {
         type: 'pCollVar',
         presentationOf: 'exampleCollectionVar',
         mode: 'input',
-        emptyTextId: 'initialEmptyValueText'
+        emptyTextId: 'initialEmptyValueText',
       });
     });
   });
@@ -202,14 +208,14 @@ describe('transformCoraPresentations', () => {
         id: 'nationalSubjectCategoryPLink',
         type: 'pRecordLink',
         presentationOf: 'nationalSubjectCategoryLink',
-        mode: 'input'
+        mode: 'input',
         // TODO linkedRecordPresentations
         // TODO Search
       });
     });
   });
 
-  describe.skip('SContainer', () => {
+  describe('SContainer', () => {
     it('Returns one BFFPresentation for one SContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationSurroundingContainer);
       expect(transformData[0]).toStrictEqual({
@@ -218,47 +224,66 @@ describe('transformCoraPresentations', () => {
         presentationsOf: ['showLabelCollectionVar'],
         mode: 'input',
         children: [
-          // do we need childStyle for Container children?
-          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
-          { childId: 'showLabelPCollVar', type: 'presentation' }
+          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle', childStyle: [] },
+          { childId: 'showLabelPCollVar', type: 'presentation', childStyle: [] },
         ],
-        repeat: 'children'
+        repeat: 'children',
       });
     });
     it('Returns one BFFPresentation for one SContainer with two vars in presentationsOf', () => {
       const transformData = transformCoraPresentations(
-        coraPresentationSurroundingContainerWithTwoVarPresentationsOf
+        coraPresentationSurroundingContainerWithTwoVarPresentationsOf,
       );
       expect(transformData[0]).toStrictEqual({
         id: 'labelInputSContainer',
         type: 'container',
-        presentationsOf: ['showLabelCollectionVar', 'showLabelCollectionVar2'],
+        presentationsOf: ['showLabelCollectionVar', 'specifiedLabelTextLink'],
         mode: 'input',
+        presentationStyle: 'card',
         children: [
-          // do we need childStyle for Container children?
-          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
-          { childId: 'showLabelPCollVar', type: 'presentation' },
-          { childId: 'showLabelPCollVar2', type: 'presentation' }
+          {
+            childId: 'labelHeadlineText',
+            type: 'text',
+            minNumberOfRepeatingToShow: '99',
+            childStyle: ['5'],
+            textStyle: 'h2TextStyle',
+          },
+          { childId: 'showLabelPCollVar', type: 'presentation', childStyle: [] },
+          { childId: 'specifiedLabelTextPLink', type: 'presentation', childStyle: [] },
         ],
-        repeat: 'children'
+        repeat: 'children',
       });
     });
   });
-  describe.skip('RContainer', () => {
+  describe('RContainer', () => {
     it('Returns one BFFPresentation for one RContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationRepeatingContainer);
       expect(transformData[0]).toStrictEqual({
-        id: 'refPresentationTextLinkRContainer',
+        id: 'exampleCoordinatesRContainer',
         type: 'container',
-        presentationsOf: ['showLabelCollectionVar'],
+        presentationOf: 'exampleCoordinatesGroup',
         mode: 'input',
         children: [
           // do we need childStyle for Container children?
-          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle' },
-          { childId: 'showLabelPCollVar', type: 'presentation' }
+          { childId: 'exampleCoordinatesPGroup', type: 'presentation', childStyle: [] },
+          { childId: 'exampleCoordinatesAsMapPGroup', type: 'presentation', childStyle: [] },
         ],
-        repeat: 'this'
+        repeat: 'this',
       });
     });
   });
+
+  describe('guiElement', () => {
+    it('Returns one BFFPresentation for one guiElementLink entry', () => {
+      const transformData = transformCoraPresentations(coraPresentationWithGuiElementLink);
+      expect(transformData[0]).toStrictEqual({
+        id: 'demoTestLinkGuiElement',
+        url: 'http://www.google.se',
+        elementText: 'demoTestLinkGuiElementText',
+        presentAs: 'link',
+        type: 'guiElementLink',
+      });
+    });
+  });
+
 });

@@ -123,7 +123,7 @@
                 "children": [
                   {
                     "name": "presentationOf",
-                    "repeatId": "1",
+                    "repeatId": "0",
                     "children": [
                       {
                         "name": "linkedRecordType",
@@ -137,7 +137,7 @@
                   },
                   {
                     "name": "presentationOf",
-                    "repeatId": "2",
+                    "repeatId": "1",
                     "children": [
                       {
                         "name": "linkedRecordType",
@@ -145,7 +145,7 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "showLabelCollectionVar2"
+                        "value": "specifiedLabelTextLink"
                       }
                     ]
                   }
@@ -161,6 +161,14 @@
                       {
                         "name": "textStyle",
                         "value": "h2TextStyle"
+                      },
+                      {
+                        "name": "childStyle",
+                        "value": "5"
+                      },
+                      {
+                        "name": "minNumberOfRepeatingToShow",
+                        "value": "99"
                       },
                       {
                         "name": "refGroup",
@@ -216,7 +224,7 @@
                   },
                   {
                     "name": "childReference",
-                    "repeatId": "1",
+                    "repeatId": "2",
                     "children": [
                       {
                         "name": "refGroup",
@@ -231,7 +239,7 @@
                               },
                               {
                                 "name": "linkedRecordId",
-                                "value": "showLabelPCollVar2"
+                                "value": "specifiedLabelTextPLink"
                               }
                             ],
                             "attributes": {
@@ -247,6 +255,10 @@
               {
                 "name": "mode",
                 "value": "input"
+              },
+              {
+                "name": "presentationStyle",
+                "value": "card"
               }
             ],
             "attributes": {

@@ -30,7 +30,8 @@ export interface BFFBase {
   id: string;
 }
 
-export interface BFFRecordType extends BFFBase {}
+export interface BFFRecordType extends BFFBase {
+}
 
 export abstract interface BFFMetadata extends BFFBase {
   nameInData: string;
@@ -57,7 +58,7 @@ export interface BFFMetadataTextVariable extends BFFMetadata {
   attributeReferences?: BFFAttributeReference[];
 }
 
-export interface BFFMetadataNumberVariable extends BFFMetadata  {
+export interface BFFMetadataNumberVariable extends BFFMetadata {
   min: string;
   max: string;
   warningMin: string;
@@ -67,13 +68,13 @@ export interface BFFMetadataNumberVariable extends BFFMetadata  {
   attributeReferences?: BFFAttributeReference[];
 }
 
-export interface BFFMetadataRecordLink extends BFFMetadata  {
+export interface BFFMetadataRecordLink extends BFFMetadata {
   linkedRecordType: string;
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
 }
 
-export interface BFFMetadataCollectionVariable extends BFFMetadata  {
+export interface BFFMetadataCollectionVariable extends BFFMetadata {
   refCollection: string;
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
@@ -119,21 +120,18 @@ export interface BFFPresentationRecordLink extends BFFPresentation {
 
 }
 
-export interface BFFPresentationContainer extends BFFPresentation {
+type AbstractContainerBase = Omit<BFFPresentation, 'presentationOf'>;
+
+export interface BFFPresentationContainer extends AbstractContainerBase {
   presentationsOf: string[];
-  mode: 'input' | 'output';
+  presentationStyle?: string;
   repeat: 'children' | 'this';
-  children: BFFContainerChildReference[];
+  children: BFFPresentationChildReference[];
 }
 
-export interface BFFContainerChildReference {
-  childId: string;
-  type: 'text' | 'presentation' | 'guiElement';
-  textStyle?: string;
-}
 export interface BFFPresentationGroup extends BFFPresentation {
   presentationOf: string;
-  mode: 'input' | 'output';
+  presentationStyle?: string;
   children: BFFPresentationChildReference[];
 }
 
@@ -149,6 +147,13 @@ export interface BFFPresentationChildReference {
 export interface BFFText extends BFFBase {
   sv: string;
   en?: string;
+}
+
+export interface BFFGuiElement extends BFFBase {
+  url?: string;
+  elementText?: string;
+  presentAs?: 'link' | 'image';
+  type: string;
 }
 
 export interface BFFValidationType extends BFFBase {

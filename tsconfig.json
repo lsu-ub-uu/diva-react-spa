@@ -13,6 +13,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts", "jest.config.js"]
+  "include": ["src/**/*", "src/**/*.test.ts"],
+  "exclude": ["jest.config.js"]
 }
