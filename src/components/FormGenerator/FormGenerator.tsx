@@ -26,6 +26,7 @@ import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
   generateYupSchemaFromFormSchema,
+  isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
   isComponentVariable,
@@ -111,7 +112,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
 
-  const { control, handleSubmit, reset, formState } = methods;
+  const { control, handleSubmit, reset } = methods;
 
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (
@@ -120,9 +121,15 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     path: string,
   ) => {
     const reactKey = `key_${idx}`;
-    const currentComponentNamePath = !path
-      ? `${component.name}`
-      : `${path}.${component.name}`;
+
+    let currentComponentNamePath;
+    if (isComponentContainer(component)) {
+      currentComponentNamePath = path;
+    } else {
+      currentComponentNamePath = !path
+        ? `${component.name}`
+        : `${path}.${component.name}`;
+    }
 
     const createFormComponentAttributes = (
       aComponent: FormComponent,
@@ -145,6 +152,25 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         );
       });
     };
+
+    if (isComponentContainer(component) && !isComponentRepeating(component)) {
+      return (
+        <div
+          key={reactKey}
+          style={{
+            background: 'lightgray',
+            border: '2px solid black',
+            padding: '10px',
+          }}
+        >
+          {component.components &&
+            createFormComponents(
+              component.components,
+              currentComponentNamePath,
+            )}
+        </div>
+      );
+    }
 
     if (isComponentGroup(component) && !isComponentRepeating(component)) {
       return (
@@ -248,7 +274,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           Reset
         </Button>
         <Button
-          disabled={!formState.isValid}
           type='submit'
           disableRipple
           variant='contained'

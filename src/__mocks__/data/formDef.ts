@@ -2649,7 +2649,7 @@ export const formDefWithSurroundingContainerAroundTextVariable: FormSchema = {
             name: 'someNameInData',
             label: 'someTextId',
             childStyle: [],
-            placeholder: 'someEmptyTextId',
+            placeholder: 'text variable',
             repeat: {
               repeatMin: 1,
               repeatMax: 1,
@@ -2660,7 +2660,7 @@ export const formDefWithSurroundingContainerAroundTextVariable: FormSchema = {
             },
             validation: {
               type: 'regex',
-              pattern: 'someRegex',
+              pattern: '.+',
             },
             mode: 'input',
             inputType: 'input',
