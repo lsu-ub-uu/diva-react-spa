@@ -1,4 +1,7 @@
-import { FormComponent } from '../../components/FormGenerator/types';
+import {
+  FormComponent,
+  FormSchema,
+} from '../../components/FormGenerator/types';
 
 export const formComponentGroup: FormComponent = {
   name: 'firstChildGroup',
@@ -2609,6 +2612,147 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups = {
             ],
           },
         ],
+      },
+    ],
+  },
+};
+
+export const formDefWithSurroundingContainerAroundTextVariable: FormSchema = {
+  validationTypeId: 'book',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    mode: 'input',
+    components: [
+      {
+        type: 'text',
+        name: 'someHeaderText',
+      },
+      {
+        type: 'container',
+        containerType: 'surrounding',
+        name: 'someSurroundingContainerName',
+        presentationStyle: 'frame', // frame can in the first step be a div with a background yellow and a black border
+        childStyle: [],
+        components: [
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            label: 'someTextId',
+            childStyle: [],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId',
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex',
+            },
+            mode: 'input',
+            inputType: 'input',
+          },
+        ],
+        mode: 'input',
+      },
+    ],
+  },
+};
+
+export const formDefWithnestedSurroundingContainers: FormSchema = {
+  validationTypeId: 'book',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    mode: 'input',
+    components: [
+      {
+        type: 'text',
+        name: 'someHeaderText',
+      },
+      {
+        type: 'container',
+        containerType: 'surrounding',
+        name: 'someSurroundingContainerName',
+        presentationStyle: 'frame', // frame can in the first step be a div with a background yellow and a black border
+        childStyle: [],
+        components: [
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            label: 'someTextId',
+            childStyle: [],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId',
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex',
+            },
+            mode: 'input',
+            inputType: 'input',
+          },
+          {
+            type: 'container',
+            containerType: 'surrounding',
+            name: 'someInnerSurroundingContainerName',
+            presentationStyle: 'frame', // frame can in the first step be a div with a background yellow and a black border
+            childStyle: [],
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someInnerNameInData',
+                label: 'someTextId',
+                childStyle: [],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId',
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex',
+                },
+                mode: 'input',
+                inputType: 'input',
+              },
+            ],
+            mode: 'input',
+          },
+        ],
+        mode: 'input',
       },
     ],
   },

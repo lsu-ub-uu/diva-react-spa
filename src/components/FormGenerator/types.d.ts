@@ -43,6 +43,7 @@ export interface FormComponent {
     | 'textVariable'
     | 'group'
     | 'text'
+    | 'container'
     | 'guiElementLink';
   name: string;
   label?: string;
@@ -64,9 +65,12 @@ export interface FormComponent {
     | 'h5TextStyle'
     | 'h6TextStyle'
     | 'bodyTextStyle';
+  childStyle?: string[];
   url?: string; // used for guiElementLink
   elementText?: string; // used for guiElementLink
   presentAs?: string; // used for guiElementLink
+  containerType?: string;
+  presentationStyle?: string; // frame etc
 }
 
 type FormAttributeCollection = Omit<

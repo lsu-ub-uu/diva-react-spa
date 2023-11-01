@@ -28,6 +28,15 @@ import {
   FormSchema,
 } from './types';
 
+const removeRootObject = (obj: object) => {
+  const childKeys = Object.keys(obj);
+  if (childKeys.length === 1) {
+    // @ts-ignore
+    return obj[childKeys[0]];
+  }
+  return obj;
+};
+
 export const isComponentVariable = (component: FormComponent) =>
   [
     'numberVariable',
@@ -39,8 +48,13 @@ export const isComponentVariable = (component: FormComponent) =>
 export const isComponentGroup = (component: FormComponent) =>
   component.type === 'group';
 
+export const isComponentContainer = (component: FormComponent) =>
+  component.type === 'container';
+
 export const isComponentValidForDataCarrying = (component: FormComponent) =>
-  isComponentVariable(component) || isComponentGroup(component);
+  isComponentVariable(component) ||
+  isComponentGroup(component) ||
+  isComponentContainer(component); // a container can have children that are data carriers
 
 export const isComponentRepeating = (component: FormComponent) => {
   const rMax = component.repeat?.repeatMax ?? 1;
@@ -112,6 +126,11 @@ export const createDefaultValuesFromComponent = (
     } else {
       defaultValues[component.name] = formDefaultObject;
     }
+  }
+
+  // remove surrounding container in or data structure
+  if (isComponentContainer(component)) {
+    return removeRootObject(defaultValues);
   }
 
   return defaultValues;
@@ -232,9 +251,20 @@ const createValidationFromComponentType = (
 };
 
 export const createYupValidationsFromComponent = (component: FormComponent) => {
-  const validationRule: {
+  let validationRule: {
     [x: string]: any;
   } = {};
+
+  // remove surrounding container in yup validation structure
+  if (isComponentContainer(component)) {
+    // validation rules for children to the container
+    const validationsRules = (component.components ?? [])
+      .filter(isComponentValidForDataCarrying)
+      .map((formComponent) => createYupValidationsFromComponent(formComponent));
+    validationRule = Object.assign({}, ...validationsRules);
+    return validationRule;
+  }
+  // eslint-disable-next-line no-lonely-if
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
       const innerObjectSchema = generateYupSchema(component.components);
@@ -277,6 +307,7 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     }
   }
+
   return validationRule;
 };
 
