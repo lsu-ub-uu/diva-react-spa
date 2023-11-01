@@ -104,14 +104,14 @@ export const renderLeafComponent = (
 export const FormGenerator = (props: FormGeneratorProps) => {
   const { t } = useTranslation();
   const methods = useForm({
-    mode: 'onTouched',
+    mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
 
-  const { control, handleSubmit, reset } = methods;
+  const { control, handleSubmit, reset, formState } = methods;
 
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (
@@ -248,6 +248,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           Reset
         </Button>
         <Button
+          disabled={!formState.isValid}
           type='submit'
           disableRipple
           variant='contained'
