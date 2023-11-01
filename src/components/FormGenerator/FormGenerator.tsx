@@ -20,10 +20,8 @@
 import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
-import LaunchIcon from '@mui/icons-material/Launch';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
-import i18next from 'i18next';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
@@ -32,7 +30,7 @@ import {
   isComponentRepeating,
   isComponentVariable,
 } from './utils';
-import { Card, Typography } from '../index';
+import { Card, Typography, LinkButton } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 
@@ -91,18 +89,11 @@ export const renderLeafComponent = (
     }
     case 'guiElementLink': {
       // TODO If needed take component.presentAs in consideration
-      // TODO Break out button ExternalLinkButton target, icon, text
       return (
-        <Button
-          component='a'
-          href={component.url}
-          target='_blank'
-          rel='noopener noreferrer'
-          endIcon={<LaunchIcon />}
-          color='primary'
-        >
-          {i18next.t(component.elementText ?? '') as string}
-        </Button>
+        <LinkButton
+          href={component.url ?? ''}
+          text={component.elementText ?? ''}
+        />
       );
     }
     default:
