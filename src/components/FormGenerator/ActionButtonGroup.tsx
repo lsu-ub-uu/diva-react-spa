@@ -23,6 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 interface ActionButtonGroupProps {
+  hideMoveButtons: boolean;
   moveUpButtonDisabled: boolean;
   moveUpButtonAction: () => void;
   moveDownButtonDisabled: boolean;
@@ -40,14 +41,16 @@ export const ActionButtonGroup = (
       orientation='horizontal'
       variant='text'
     >
-      <IconButton
-        size='small'
-        aria-label='up'
-        disabled={props.moveUpButtonDisabled}
-        onClick={props.moveUpButtonAction}
-      >
-        <ArrowUpwardIcon />
-      </IconButton>
+      {!props.hideMoveButtons && (
+        <IconButton
+          size='small'
+          aria-label='up'
+          disabled={props.moveUpButtonDisabled}
+          onClick={props.moveUpButtonAction}
+        >
+          <ArrowUpwardIcon />
+        </IconButton>
+      )}
       <IconButton
         size='small'
         aria-label='delete'
@@ -56,14 +59,16 @@ export const ActionButtonGroup = (
       >
         <DeleteIcon />
       </IconButton>
-      <IconButton
-        size='small'
-        aria-label='down'
-        disabled={props.moveDownButtonDisabled}
-        onClick={props.moveDownButtonAction}
-      >
-        <ArrowDownwardIcon />
-      </IconButton>
+      {!props.hideMoveButtons && (
+        <IconButton
+          size='small'
+          aria-label='down'
+          disabled={props.moveDownButtonDisabled}
+          onClick={props.moveDownButtonAction}
+        >
+          <ArrowDownwardIcon />
+        </IconButton>
+      )}
     </ButtonGroup>
   );
 };

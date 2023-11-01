@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { test } from 'vitest';
 import {
   createDefaultValuesFromComponent,
@@ -35,11 +34,13 @@ import {
   formDefRealDemoWithFinalValues,
   formDefRealDemoWithRepeatingGroups,
   formDefRealDemoWithRepeatingVars,
+  formDefWithnestedSurroundingContainers,
   formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithRepeatingCollectionVar,
   formDefWithRepeatingGroup,
   formDefWithRepeatingGroupWithRepeatingChildGroup,
   formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
+  formDefWithSurroundingContainerAroundTextVariable,
   formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
@@ -80,6 +81,20 @@ describe('FormGenerator utils defaultValues', () => {
     };
     const actualDefaultValues = createDefaultValuesFromFormSchema(
       formDef as FormSchema,
+    );
+    expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+  });
+
+  test('createDefaultValuesFromFormSchema should take a formDef with a surrounding container and make default values object with that object level left out', () => {
+    const expectedDefaultValues = {
+      someRootNameInData: {
+        someNameInData: {
+          value: '',
+        },
+      },
+    };
+    const actualDefaultValues = createDefaultValuesFromFormSchema(
+      formDefWithSurroundingContainerAroundTextVariable as FormSchema,
     );
     expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
   });
@@ -585,6 +600,54 @@ describe('FormGenerator utils yupSchema', () => {
             type: 'object',
             fields: {
               value: { type: 'string', tests: numberValidationTests(0, 20, 0) },
+            },
+          },
+        },
+      },
+    };
+    expect(actualSchema).toMatchObject(expectedSchema);
+  });
+
+  test('should return correct validationSchema for one textVar with a surrounding container', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithSurroundingContainerAroundTextVariable as FormSchema,
+    );
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      someRootNameInData: {
+        type: 'object',
+        fields: {
+          someNameInData: {
+            type: 'object',
+            fields: {
+              value: {
+                type: 'string',
+              },
+            },
+          },
+        },
+      },
+    };
+    expect(actualSchema).toMatchObject(expectedSchema);
+  });
+
+  test('should return correct validationSchema for with nested surrounding containers', () => {
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithnestedSurroundingContainers as FormSchema,
+    );
+    const actualSchema = yupSchema.describe().fields;
+
+    const expectedSchema = {
+      someRootNameInData: {
+        type: 'object',
+        fields: {
+          someNameInData: {
+            type: 'object',
+            fields: {
+              value: {
+                type: 'string',
+              },
             },
           },
         },

@@ -27,6 +27,7 @@ export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';
 export { SnackbarProvider } from './Snackbar/SnackbarProvider';
 export { FormGenerator } from './FormGenerator/FormGenerator';
 export { Typography } from './Typography/Typography';
+export { LinkButton } from './LinkButton/LinkButton';
 
 export interface SelectItem {
   id: string;

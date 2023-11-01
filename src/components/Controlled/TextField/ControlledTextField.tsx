@@ -12,6 +12,7 @@ interface ControlledTextFieldProps {
   placeholder?: string;
   required?: boolean;
   readOnly?: boolean;
+  multiline?: boolean;
   tooltip?: { title: string; body: string };
 }
 
@@ -51,6 +52,8 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               )}
             </FormLabel>
             <TextField
+              multiline={props.multiline ?? false}
+              rows={props.multiline ? 3 : 1}
               id={field.name}
               size='small'
               error={error !== undefined}

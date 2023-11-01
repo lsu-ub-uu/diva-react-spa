@@ -18,12 +18,17 @@
  */
 
 import { Control, useFieldArray } from 'react-hook-form';
-import { Box, Grid } from '@mui/material';
+import { Chip, Divider, Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
+import { useTranslation } from 'react-i18next';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { FormComponent } from './types';
-import { createDefaultValuesFromComponent } from './utils';
+import {
+  createDefaultValuesFromComponent,
+  isComponentSingularAndOptional,
+} from './utils';
+import { Card } from '../Card/Card';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -33,6 +38,7 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
+  const { t } = useTranslation();
   const { fields, append, move, remove } = useFieldArray({
     control: props.control,
     name: props.name,
@@ -51,7 +57,13 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   };
 
   return (
-    <Box>
+    <Card
+      title={t(props.component.label ?? '') as string}
+      variant='variant6'
+      tooltipTitle='card in field array'
+      tooltipBody='body'
+      sx={{ mb: 1 }}
+    >
       {fields.map((field, index) => (
         <Grid
           key={field.id}
@@ -62,7 +74,19 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         >
           <Grid
             item
-            xs={10}
+            xs={12}
+          >
+            {!isComponentSingularAndOptional(props.component) && (
+              <Divider sx={{ mb: 2 }}>
+                <Chip
+                  label={`${t(props.component.label ?? '')} ${index + 1}`}
+                />
+              </Divider>
+            )}
+          </Grid>
+          <Grid
+            item
+            xs={11}
           >
             {
               props.renderCallback(
@@ -72,9 +96,10 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           </Grid>
           <Grid
             item
-            xs={2}
+            xs={1}
           >
             <ActionButtonGroup
+              hideMoveButtons={isComponentSingularAndOptional(props.component)}
               moveUpButtonDisabled={index === 0}
               moveUpButtonAction={() => handleMove(index, index - 1)}
               moveDownButtonDisabled={index === fields.length - 1}
@@ -97,6 +122,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       >
         Add {props.component.name}
       </Button>
-    </Box>
+    </Card>
   );
 };

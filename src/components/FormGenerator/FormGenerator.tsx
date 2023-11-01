@@ -21,15 +21,17 @@ import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
   generateYupSchemaFromFormSchema,
+  isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
   isComponentVariable,
 } from './utils';
-import { Typography } from '../index';
+import { Card, Typography, LinkButton } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 
@@ -51,6 +53,7 @@ export const renderLeafComponent = (
       return (
         <ControlledTextField
           key={reactKey}
+          multiline={component.inputType === 'textarea'}
           label={component.label ?? ''}
           name={name}
           placeholder={component.placeholder}
@@ -85,21 +88,31 @@ export const renderLeafComponent = (
         />
       );
     }
+    case 'guiElementLink': {
+      // TODO If needed take component.presentAs in consideration
+      return (
+        <LinkButton
+          href={component.url ?? ''}
+          text={component.elementText ?? ''}
+        />
+      );
+    }
     default:
       return null;
   }
 };
 
 export const FormGenerator = (props: FormGeneratorProps) => {
+  const { t } = useTranslation();
   const methods = useForm({
-    mode: 'onTouched',
+    mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
 
-  const { control, handleSubmit } = methods;
+  const { control, handleSubmit, reset } = methods;
 
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (
@@ -108,9 +121,15 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     path: string,
   ) => {
     const reactKey = `key_${idx}`;
-    const currentComponentNamePath = !path
-      ? `${component.name}`
-      : `${path}.${component.name}`;
+
+    let currentComponentNamePath;
+    if (isComponentContainer(component)) {
+      currentComponentNamePath = path;
+    } else {
+      currentComponentNamePath = !path
+        ? `${component.name}`
+        : `${path}.${component.name}`;
+    }
 
     const createFormComponentAttributes = (
       aComponent: FormComponent,
@@ -134,16 +153,42 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       });
     };
 
+    if (isComponentContainer(component) && !isComponentRepeating(component)) {
+      return (
+        <div
+          key={reactKey}
+          style={{
+            background: 'lightgray',
+            border: '2px solid black',
+            padding: '10px',
+          }}
+        >
+          {component.components &&
+            createFormComponents(
+              component.components,
+              currentComponentNamePath,
+            )}
+        </div>
+      );
+    }
+
     if (isComponentGroup(component) && !isComponentRepeating(component)) {
       return (
-        <Box key={reactKey}>
+        <Card
+          variant='variant6'
+          title={t(component.label ?? '') as string}
+          key={reactKey}
+          tooltipBody=''
+          tooltipTitle='Non-repeating group'
+          sx={{ mb: 1 }}
+        >
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             createFormComponents(
               component.components,
               currentComponentNamePath,
             )}
-        </Box>
+        </Card>
       );
     }
 
@@ -212,15 +257,32 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     >
       {generateFormComponent(props.formSchema.form, 0, '')}
 
-      <Button
-        sx={{ mt: 4, mb: 2 }}
-        fullWidth
-        type='submit'
-        disableRipple
-        variant='contained'
+      <Box
+        component='span'
+        sx={{ mt: 2, mb: 2 }}
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
       >
-        Submit
-      </Button>
+        <Button
+          disableRipple
+          variant='contained'
+          color='secondary'
+          sx={{ height: 40 }}
+          onClick={() => reset()}
+        >
+          Reset
+        </Button>
+        <Button
+          type='submit'
+          disableRipple
+          variant='contained'
+          color='primary'
+          sx={{ height: 40 }}
+        >
+          Submit
+        </Button>
+      </Box>
     </Box>
   );
 };
