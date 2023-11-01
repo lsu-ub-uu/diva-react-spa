@@ -70,7 +70,6 @@ const createComponentsFromChildReferences = (
       return createText(presentationChildReference, presentationChildType);
     }
 
-    // todo handle gui_element
     if (presentationChildType === 'guiElement') {
       return createGuiElement(presentationChildReference, presentationPool);
     }
@@ -179,17 +178,14 @@ const createPresentation = (
   childStyle = presentationChildReference.childStyle;
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
+
   // containers does not have presentationOf, it has presentationsOf
-  if (presentation.type === 'container') {
-    // skip metadataId, metaDataChildRef, repeat, metadata, commonParameters
-  } else {
+  if (presentation.type !== 'container') {
     metadataId = presentation.presentationOf;
     metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
     metadata = metadataPool.get(metadataId) as BFFMetadata;
-
     commonParameters = createCommonParameters(metadata, presentation);
-    // { name, type, placeholder, mode, inputType, tooltip }
   }
 
   if (presentation.type === 'pVar') {
@@ -236,6 +232,7 @@ const createPresentation = (
   if (presentation.type === 'container') {
     //@ts-ignore
     const presentationContainer = presentation as BFFPresentationContainer;
+    const name = presentation.id; // container does not have a nameInData so use id instead.
     const type = presentation.type;
     const mode = presentation.mode;
     containerType = presentationContainer.repeat === 'children' ? 'surrounding' : 'repeating';
@@ -246,7 +243,7 @@ const createPresentation = (
     const filteredChildRefs = metadataChildReferences.filter((childRef) => {
       return metadataIds.includes(childRef.childId);
     });
-    commonParameters = { mode, type };
+    commonParameters = { type, name, mode };
     components = createComponentsFromChildReferences(
       filteredChildRefs,
       presentationContainer.children,

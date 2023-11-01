@@ -529,7 +529,8 @@ describe('formDefinition', () => {
           },
           {
             type: 'container',
-            presentationStyle: 'card',
+            name: 'pSomeContainerId',
+            presentationStyle: 'card', // frame
             containerType: 'surrounding',
             childStyle: [],
             components: [
