@@ -38,14 +38,15 @@ describe('<LinkButton>', () => {
     render(
       <LinkButton
         text='not translated'
-        href='http://www.test.com'
+        href='https://www.test.com'
       />,
     );
 
     const linkElementButton = screen.getByRole('link');
-
     const translatedElement = screen.getByText('translated to english');
+
     expect(translatedElement).toBeInTheDocument();
     expect(linkElementButton).toBeInTheDocument();
+    expect(linkElementButton).toHaveAttribute('href', 'https://www.test.com');
   });
 });
