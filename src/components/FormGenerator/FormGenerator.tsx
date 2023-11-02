@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -32,7 +32,7 @@ import {
   isComponentSurroundingContainer,
   isComponentVariable,
 } from './utils';
-import { Card, Typography, LinkButton } from '../index';
+import { Typography, LinkButton, Card } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 
@@ -184,13 +184,9 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       !isComponentRepeating(component)
     ) {
       return (
-        <Card
-          variant='variant6'
-          title='Non-repeating group or repeating container'
-          key={reactKey}
-          tooltipBody=''
-          tooltipTitle=''
+        <Box
           sx={{ mb: 1 }}
+          key={reactKey}
         >
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
@@ -199,7 +195,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               component,
               currentComponentNamePath,
             )}
-        </Card>
+        </Box>
       );
     }
 
@@ -275,34 +271,41 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       component='form'
       onSubmit={handleSubmit((values) => props.onSubmit(values))}
     >
-      {generateFormComponent(props.formSchema.form, undefined, 0, '')}
-
-      <Box
-        component='span'
-        sx={{ mt: 2, mb: 2 }}
-        display='flex'
-        justifyContent='space-between'
-        alignItems='center'
+      <Card
+        variant='variant6'
+        title='Manuscript'
+        tooltipTitle='Manuscript body'
+        tooltipBody=''
       >
-        <Button
-          disableRipple
-          variant='contained'
-          color='secondary'
-          sx={{ height: 40 }}
-          onClick={() => reset()}
+        {generateFormComponent(props.formSchema.form, undefined, 0, '')}
+        <Divider sx={{ my: 4 }} />
+        <Box
+          component='span'
+          sx={{ mt: 2, mb: 2 }}
+          display='flex'
+          justifyContent='space-between'
+          alignItems='center'
         >
-          Reset
-        </Button>
-        <Button
-          type='submit'
-          disableRipple
-          variant='contained'
-          color='primary'
-          sx={{ height: 40 }}
-        >
-          Submit
-        </Button>
-      </Box>
+          <Button
+            disableRipple
+            variant='contained'
+            color='secondary'
+            sx={{ height: 40 }}
+            onClick={() => reset()}
+          >
+            Reset
+          </Button>
+          <Button
+            type='submit'
+            disableRipple
+            variant='contained'
+            color='primary'
+            sx={{ height: 40 }}
+          >
+            Submit
+          </Button>
+        </Box>
+      </Card>
     </Box>
   );
 };
