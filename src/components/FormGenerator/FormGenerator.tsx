@@ -21,7 +21,6 @@ import { Box } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useTranslation } from 'react-i18next';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
@@ -29,6 +28,8 @@ import {
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
+  isComponentRepeatingContainer,
+  isComponentSurroundingContainer,
   isComponentVariable,
 } from './utils';
 import { Card, Typography, LinkButton } from '../index';
@@ -103,7 +104,6 @@ export const renderLeafComponent = (
 };
 
 export const FormGenerator = (props: FormGeneratorProps) => {
-  const { t } = useTranslation();
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -117,6 +117,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (
     component: FormComponent,
+    parentComponent: FormComponent | undefined,
     idx: number,
     path: string,
   ) => {
@@ -153,9 +154,13 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       });
     };
 
-    if (isComponentContainer(component) && !isComponentRepeating(component)) {
+    if (
+      isComponentSurroundingContainer(component) &&
+      !isComponentRepeating(component)
+    ) {
       return (
         <div
+          id='dummy-surrounding-container'
           key={reactKey}
           style={{
             background: 'lightgray',
@@ -166,26 +171,32 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           {component.components &&
             createFormComponents(
               component.components,
+              component,
               currentComponentNamePath,
             )}
         </div>
       );
     }
 
-    if (isComponentGroup(component) && !isComponentRepeating(component)) {
+    if (
+      (isComponentGroup(component) ||
+        isComponentRepeatingContainer(component)) &&
+      !isComponentRepeating(component)
+    ) {
       return (
         <Card
           variant='variant6'
-          title={t(component.label ?? '') as string}
+          title='Non-repeating group or repeating container'
           key={reactKey}
           tooltipBody=''
-          tooltipTitle='Non-repeating group'
+          tooltipTitle=''
           sx={{ mb: 1 }}
         >
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             createFormComponents(
               component.components,
+              component,
               currentComponentNamePath,
             )}
         </Card>
@@ -198,11 +209,16 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           <FieldArrayComponent
             control={control}
             component={component}
+            parentComponent={parentComponent}
             name={currentComponentNamePath}
             renderCallback={(arrayPath: string) => {
               return [
                 ...createFormComponentAttributes(component, arrayPath),
-                ...createFormComponents(component.components ?? [], arrayPath),
+                ...createFormComponents(
+                  component.components ?? [],
+                  component,
+                  arrayPath,
+                ),
               ];
             }}
           />
@@ -215,6 +231,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           key={reactKey}
           control={control}
           component={component}
+          parentComponent={parentComponent}
           name={currentComponentNamePath}
           renderCallback={(variableArrayPath: string) => {
             return [
@@ -245,9 +262,12 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
   const createFormComponents = (
     components: FormComponent[],
+    parentComponent: FormComponent | undefined,
     path = '',
   ): JSX.Element[] => {
-    return components.map((c, i) => generateFormComponent(c, i, path));
+    return components.map((c, i) =>
+      generateFormComponent(c, parentComponent, i, path),
+    );
   };
 
   return (
@@ -255,7 +275,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       component='form'
       onSubmit={handleSubmit((values) => props.onSubmit(values))}
     >
-      {generateFormComponent(props.formSchema.form, 0, '')}
+      {generateFormComponent(props.formSchema.form, undefined, 0, '')}
 
       <Box
         component='span'

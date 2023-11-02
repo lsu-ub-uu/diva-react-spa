@@ -2672,7 +2672,7 @@ export const formDefWithSurroundingContainerAroundTextVariable: FormSchema = {
   },
 };
 
-export const formDefWithnestedSurroundingContainers: FormSchema = {
+export const formDefWithNestedSurroundingContainers: FormSchema = {
   validationTypeId: 'book',
   form: {
     type: 'group',
@@ -2750,6 +2750,57 @@ export const formDefWithnestedSurroundingContainers: FormSchema = {
               },
             ],
             mode: 'input',
+          },
+        ],
+        mode: 'input',
+      },
+    ],
+  },
+};
+export const formDefWithARepeatingContainer: FormSchema = {
+  validationTypeId: 'book',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    mode: 'input',
+    components: [
+      {
+        type: 'container',
+        name: 'pSomeRepeatingContainerId',
+        presentationStyle: 'label',
+        containerType: 'repeating',
+        childStyle: [],
+        components: [
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            label: 'someTextId',
+            childStyle: ['5'],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 3,
+              minNumberOfRepeatingToShow: 2,
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId',
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex',
+            },
+            mode: 'input',
+            inputType: 'input',
           },
         ],
         mode: 'input',
