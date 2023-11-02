@@ -69,7 +69,7 @@ export interface FormComponent {
   url?: string; // used for guiElementLink
   elementText?: string; // used for guiElementLink
   presentAs?: string; // used for guiElementLink
-  containerType?: string;
+  containerType?: 'repeating' | 'surrounding';
   presentationStyle?: string; // frame etc
 }
 
