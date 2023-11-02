@@ -23,7 +23,7 @@ import {
   BFFMetadata,
   BFFMetadataItemCollection,
   BFFPresentation,
-  BFFPresentationContainer,
+  BFFPresentationSurroundingContainer,
   BFFPresentationGroup,
   BFFValidationType,
 } from '../../config/bffTypes';
@@ -60,7 +60,7 @@ import {
   someMetadataRecordLink,
   pSomeMetadataRecordLink,
   pSomeContainer,
-  pSomeGuiElementLink,
+  pSomeGuiElementLink, pSomeRepeatingContainer,
 } from '../../__mocks__/form/bffMock';
 import { createFormDefinition } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -70,7 +70,7 @@ describe('formDefinition', () => {
   let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
   let presentationPool: Lookup<
     string,
-    BFFPresentation | BFFPresentationGroup | BFFPresentationContainer | BFFGuiElement
+    BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
   >;
   const FORM_MODE_NEW = 'new'; // todo handle edit
   let dependencies: Dependencies;
@@ -100,7 +100,7 @@ describe('formDefinition', () => {
       someMetadataRecordLink,
     ]);
     presentationPool = listToPool<
-      BFFPresentation | BFFPresentationGroup | BFFPresentationContainer | BFFGuiElement
+      BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
     >([
       pSomeMetadataTextVariable,
       pSomeMetadataTextVariable2,
@@ -115,6 +115,7 @@ describe('formDefinition', () => {
       pSomeMetadataRecordLink,
       pSomeContainer,
       pSomeGuiElementLink,
+      pSomeRepeatingContainer,
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -167,7 +168,7 @@ describe('formDefinition', () => {
   it('should return a form definition', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.form.components).toHaveLength(14);
+    expect(formDefinition.form.components).toHaveLength(15);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       form: {
@@ -565,7 +566,39 @@ describe('formDefinition', () => {
             elementText: 'demoTestLinkGuiElementText',
             presentAs: 'link',
             type: 'guiElementLink',
-          }
+          },
+          {
+            type: 'container',
+            name: 'pSomeRepeatingContainerId',
+            presentationStyle: 'label',
+            containerType: 'repeating',
+            childStyle: [],
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                childStyle: ['5'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 3,
+                  minNumberOfRepeatingToShow: 1,
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId',
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex',
+                },
+                mode: 'input',
+                inputType: 'input',
+              },
+            ],
+            mode: 'input',
+          },
         ],
         mode: 'input',
       },

@@ -9,9 +9,10 @@ import {
   BFFMetadataTextVariable,
   BFFPresentation,
   BFFPresentationChildReference,
-  BFFPresentationContainer,
+  BFFPresentationSurroundingContainer,
   BFFPresentationGroup,
-  BFFValidationType,
+  BFFValidationType, 
+  BFFPresentationContainer,
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -238,11 +239,18 @@ const createPresentation = (
     containerType = presentationContainer.repeat === 'children' ? 'surrounding' : 'repeating';
     presentationStyle = presentationContainer.presentationStyle;
 
-    const metadataIds = presentationContainer.presentationsOf;
+    let filteredChildRefs: BFFMetadataChildReference[] = [];
+    if (presentationContainer.repeat === 'children') {
+      const metadataIds = (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
+      filteredChildRefs = metadataChildReferences.filter((childRef) => {
+        return metadataIds.includes(childRef.childId);
+      });
+    } else if (presentationContainer.repeat === 'this') {
+      const metadataId = presentationContainer.presentationOf;
+      metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
+      filteredChildRefs = [metaDataChildRef];
+    }
 
-    const filteredChildRefs = metadataChildReferences.filter((childRef) => {
-      return metadataIds.includes(childRef.childId);
-    });
     commonParameters = { type, name, mode };
     components = createComponentsFromChildReferences(
       filteredChildRefs,

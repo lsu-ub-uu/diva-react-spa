@@ -215,7 +215,7 @@ describe('transformCoraPresentations', () => {
     });
   });
 
-  describe('SContainer', () => {
+  describe('Surrounding Container', () => {
     it('Returns one BFFPresentation for one SContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationSurroundingContainer);
       expect(transformData[0]).toStrictEqual({
@@ -255,7 +255,7 @@ describe('transformCoraPresentations', () => {
       });
     });
   });
-  describe('RContainer', () => {
+  describe('Repeating Container', () => {
     it('Returns one BFFPresentation for one RContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationRepeatingContainer);
       expect(transformData[0]).toStrictEqual({

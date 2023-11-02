@@ -10,8 +10,9 @@ import {
   BFFMetadataItemCollection,
   BFFMetadataRecordLink,
   BFFPresentationRecordLink,
-  BFFPresentationContainer,
+  BFFPresentationSurroundingContainer,
   BFFGuiElement,
+  BFFPresentationContainer,
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
@@ -428,10 +429,15 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       type: 'guiElement',
       childStyle: [],
     },
+    {
+      childId: 'pSomeRepeatingContainerId',
+      type: 'presentation',
+      childStyle: [],
+    },
   ],
 };
 
-export const pSomeContainer: BFFPresentationContainer = {
+export const pSomeContainer: BFFPresentationSurroundingContainer = {
   id: 'pSomeContainerId',
   type: 'container',
   presentationStyle: 'card',
@@ -447,6 +453,24 @@ export const pSomeContainer: BFFPresentationContainer = {
   ],
   repeat: 'children',
 };
+
+export const pSomeRepeatingContainer: BFFPresentationContainer = {
+  id: 'pSomeRepeatingContainerId',
+  type: 'container',
+  presentationStyle: 'label',
+  presentationOf: 'someMetadataTextVariableId',
+  mode: 'input',
+  children: [
+    {
+      childId: 'pSomeMetadataTextVariableId',
+      type: 'presentation',
+      childStyle: ['5'],
+      minNumberOfRepeatingToShow: '1',
+    },
+  ],
+  repeat: 'this',
+};
+
 
 export const someValidationTypeDataFaultyChildReference: BFFValidationType = {
   id: 'someValidationTypeDataFaultyChildReferenceId',
