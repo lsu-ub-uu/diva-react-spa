@@ -24,7 +24,7 @@ import {
 } from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { BFFPresentationContainer, BFFPresentation, BFFPresentationGroup, BFFGuiElement } from './bffTypes';
+import { BFFPresentationSurroundingContainer, BFFPresentation, BFFPresentationGroup, BFFGuiElement } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { getChildReferencesListFromGroup } from './transformMetadata';
 import {
@@ -52,7 +52,7 @@ export const transformCoraPresentations = (
 
 const transformCoraPresentationToBFFPresentation = (
   coraRecordWrapper: RecordWrapper,
-): BFFPresentation | BFFPresentationGroup | BFFPresentationContainer | BFFGuiElement | undefined => {
+): BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement | undefined => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
 
@@ -195,7 +195,7 @@ const transformChildReference = (childReference: DataGroup) => {
 
 const transformCoraPresentationContainerToBFFContainer = (
   coraRecordWrapper: RecordWrapper,
-): BFFPresentationContainer => {
+): BFFPresentationSurroundingContainer => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
@@ -242,7 +242,7 @@ const transformCoraPresentationContainerToBFFContainer = (
     type,
     repeat,
     presentationStyle,
-  }) as BFFPresentationContainer;
+  }) as BFFPresentationSurroundingContainer;
 };
 const transformCoraPresentationGuiElementLinkToBFFGuiElement = (coraRecordWrapper: RecordWrapper): BFFGuiElement => {
   const dataRecordGroup = coraRecordWrapper.record.data;
