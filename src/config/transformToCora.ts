@@ -17,6 +17,21 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const transformFormPayloadToCora = (formPayload: unknown): unknown => {
-  return {};
+import { DataAtomic, DataGroup } from '../utils/cora-data/CoraData';
+
+export const transformFormPayloadToCora = (data: object): DataGroup | DataAtomic => {
+  const keys = Object.keys(data);
+  const name = keys[0];
+  // @ts-ignore
+  const value = data[name];
+  let children: (DataAtomic | DataGroup)[] = []
+
+  if (typeof value === 'object' && value.hasOwnProperty('value')) {
+    return { name, value: value['value']} as DataAtomic;
+  } else {
+    children = Object.keys(value).map((childKey) => {
+      return transformFormPayloadToCora({[ childKey ]: value[childKey]})
+    })
+  }
+  return ({name, children} as DataGroup);
 };

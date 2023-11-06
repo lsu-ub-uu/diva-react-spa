@@ -31,7 +31,7 @@ describe('transformToCora', () => {
           children: [
             {
               name: "mainTitle",
-              value: "Moby Dick",
+              value: "someMainTitleValue",
             },
           ],
         },
@@ -42,4 +42,3 @@ describe('transformToCora', () => {
   });
 
 });
-
