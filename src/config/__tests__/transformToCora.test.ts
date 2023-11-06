@@ -19,6 +19,7 @@
 
 import { transformFormPayloadToCora } from '../transformToCora';
 import testFormPayloadWithTitleGroupWithMainTitleTextVar from '../../__mocks__/payloads/divaGuiPostPayload.json';
+import testFormPayloadWithRepeatingTitle from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingTitle.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
 
 describe('transformToCora', () => {
@@ -38,6 +39,26 @@ describe('transformToCora', () => {
       ],
     };
     const transformData = transformFormPayloadToCora(testFormPayloadWithTitleGroupWithMainTitleTextVar);
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should take a form payload with someRecordType group containing repeating text variable', () => {
+    const expected: DataGroup = {
+      name: "someRecordType",
+      children: [
+        {
+          repeatId: '0',
+          name: "title",
+          value: 'value0'
+        },
+        {
+          repeatId: '1',
+          name: "title",
+          value: 'value1'
+        },
+      ],
+    };
+    const transformData = transformFormPayloadToCora(testFormPayloadWithRepeatingTitle);
     expect(transformData).toStrictEqual(expected);
   });
 

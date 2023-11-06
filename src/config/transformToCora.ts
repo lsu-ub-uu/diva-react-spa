@@ -19,14 +19,20 @@
 
 import { DataAtomic, DataGroup } from '../utils/cora-data/CoraData';
 
-export const transformFormPayloadToCora = (data: object): DataGroup | DataAtomic => {
+export const transformFormPayloadToCora = (data: object): (DataGroup | DataAtomic) => {
   const keys = Object.keys(data);
   const name = keys[0];
   // @ts-ignore
   const value = data[name];
   let children: (DataAtomic | DataGroup)[] = []
 
-  if (typeof value === 'object' && value.hasOwnProperty('value')) {
+  if (Array.isArray(value)) {
+    const dataAtomics= value.map((child, repeatId) => {
+      // repeating dataAtomic
+      return { repeatId: repeatId.toString(), name, value: child['value']} as DataAtomic
+    })
+    children = dataAtomics;
+  } else if (typeof value === 'object' && value.hasOwnProperty('value')) {
     return { name, value: value['value']} as DataAtomic;
   } else {
     children = Object.keys(value).map((childKey) => {
