@@ -1,0 +1,30 @@
+{
+  "divaOutput": {
+    "title": {
+      "mainTitle": {
+        "value": "test"
+      },
+      "subTitle": [],
+      "_language": "fin"
+    },
+    "alternativeTitle": [],
+    "numberOfContributors": [],
+    "dateIssued": [],
+    "nationalSubjectCategory": [
+      {
+        "value": "test"
+      }
+    ],
+    "researchSubject": [],
+    "abstract": [],
+    "keywords": [],
+    "project": [],
+    "otherProject": [],
+    "funders": [],
+    "otherFunder": [],
+    "externalNote": [],
+    "administrativeNote": [],
+    "archiveNumber": [],
+    "localId": []
+  }
+}
