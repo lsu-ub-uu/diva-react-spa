@@ -19,25 +19,32 @@
 
 import { DataAtomic, DataGroup } from '../utils/cora-data/CoraData';
 
-export const transformFormPayloadToCora = (data: object): (DataGroup | DataAtomic) => {
-  const keys = Object.keys(data);
-  const name = keys[0];
-  // @ts-ignore
-  const value = data[name];
-  let children: (DataAtomic | DataGroup)[] = []
 
-  if (Array.isArray(value)) {
-    const dataAtomics= value.map((child, repeatId) => {
-      // repeating dataAtomic
-      return { repeatId: repeatId.toString(), name, value: child['value']} as DataAtomic
-    })
-    children = dataAtomics;
-  } else if (typeof value === 'object' && value.hasOwnProperty('value')) {
-    return { name, value: value['value']} as DataAtomic;
-  } else {
-    children = Object.keys(value).map((childKey) => {
-      return transformFormPayloadToCora({[ childKey ]: value[childKey]})
-    })
+export const transformNewData = (input: Record<string, any>, parent: string): DataGroup => {
+  let name = Object.keys(input)[0];
+  const children: (DataGroup  | DataAtomic )[] = [];
+  let currentParentName = parent === '' ? name : parent;
+
+  for (const key in input[name]) {
+    if (Array.isArray(input[name][key])) {
+      input[name][key].forEach((item: { value: string }, index: number) => {
+        children.push({ name: key, value: item.value, repeatId: index.toString() });
+      });
+    } else {
+      // this is a leaf
+      if (input[name].hasOwnProperty('value')) {
+        console.log('is leaf')
+        children.push({ name, value: input[name].value } as DataAtomic);
+        name = currentParentName;
+      } else {
+        // group
+        children.push({
+          name,
+          children: [transformNewData(input[name][key], key)],
+        });
+      }
+    }
   }
-  return ({name, children} as DataGroup);
+
+  return { name, children } as DataGroup;
 };

@@ -1,0 +1,20 @@
+{
+  "someRecordType": {
+    "exampleNumberVar": [
+      {
+        "value": "12.99"
+      },
+      {
+        "value": "1.34"
+      }
+    ],
+    "exampleTextVar": [
+      {
+        "value": "value0"
+      },
+      {
+        "value": "value1"
+      }
+    ]
+  }
+}
