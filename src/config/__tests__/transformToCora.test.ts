@@ -22,8 +22,11 @@ import {
 } from '../transformToCora';
 import testFormPayloadWithTitleGroupWithMainTitleTextVar from '../../__mocks__/payloads/divaGuiPostPayload.json';
 import testFormPayloadWithRepeatingTitle from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingTitle.json';
-import testFormPayloadWithRepeatingNumberAndTextVar from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberAndTextVar.json';
-import testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberAndTextVarAndChildGroup.json';
+import testFormPayloadWithRepeatingNumberAndTextVar
+  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberAndTextVar.json';
+import testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup
+  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberAndTextVarAndChildGroup.json';
+import testFormPayloadWithRepeatingGroup from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroup.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
 
 describe('transformToCora', () => {
@@ -48,17 +51,17 @@ describe('transformToCora', () => {
 
   it('should take a form payload with someRecordType group containing repeating text variable', () => {
     const expected: DataGroup = {
-      name: "someRecordType",
+      name: 'someRecordType',
       children: [
         {
           repeatId: '0',
-          name: "title",
-          value: 'value0'
+          name: 'title',
+          value: 'value0',
         },
         {
           repeatId: '1',
-          name: "title",
-          value: 'value1'
+          name: 'title',
+          value: 'value1',
         },
       ],
     };
@@ -67,29 +70,29 @@ describe('transformToCora', () => {
   });
   it('should take a form payload with someRecordType group containing repeating text variable and number variable', () => {
     const expected: DataGroup = {
-      name: "someRecordType",
+      name: 'someRecordType',
       children: [
         {
-          name: "exampleNumberVar",
-          repeatId: "0",
-          value: "12.99"
+          name: 'exampleNumberVar',
+          repeatId: '0',
+          value: '12.99',
         },
         {
-          name: "exampleNumberVar",
-          repeatId: "1",
-          value: "1.34"
+          name: 'exampleNumberVar',
+          repeatId: '1',
+          value: '1.34',
         },
         {
-          name: "exampleTextVar",
-          repeatId: "0",
-          value: "value0"
+          name: 'exampleTextVar',
+          repeatId: '0',
+          value: 'value0',
         },
         {
-          name: "exampleTextVar",
-          repeatId: "1",
-          value: "value1"
-        }
-      ]
+          name: 'exampleTextVar',
+          repeatId: '1',
+          value: 'value1',
+        },
+      ],
     };
     const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVar, '');
     expect(transformData[0]).toStrictEqual(expected);
@@ -97,27 +100,27 @@ describe('transformToCora', () => {
 
   it('should take a form payload with someRecordType group containing repeating text variable and number variable and childGroup', () => {
     const expected: DataGroup = {
-      name: "someRecordType",
+      name: 'someRecordType',
       children: [
         {
-          name: "exampleNumberVar",
-          repeatId: "0",
-          value: "12.99"
+          name: 'exampleNumberVar',
+          repeatId: '0',
+          value: '12.99',
         },
         {
-          name: "exampleNumberVar",
-          repeatId: "1",
-          value: "1.34"
+          name: 'exampleNumberVar',
+          repeatId: '1',
+          value: '1.34',
         },
         {
-          name: "exampleTextVar",
-          repeatId: "0",
-          value: "value0"
+          name: 'exampleTextVar',
+          repeatId: '0',
+          value: 'value0',
         },
         {
-          name: "exampleTextVar",
-          repeatId: "1",
-          value: "value1"
+          name: 'exampleTextVar',
+          repeatId: '1',
+          value: 'value1',
         },
         {
           name: 'someChildGroup',
@@ -128,9 +131,39 @@ describe('transformToCora', () => {
             },
           ],
         },
-      ]
+      ],
     };
     const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup);
+    expect(transformData[0]).toStrictEqual(expected);
+  });
+  it('should take a form payload with someRecordType group containing repeating group', () => {
+    const expected: DataGroup = {
+      name: 'someRecordType',
+      children: [
+        {
+          name: 'author',
+          repeatId: '0',
+          children: [
+            {
+              name: 'givenName',
+              value: 'Egil',
+            },
+
+          ],
+        },
+        {
+          name: 'author',
+          repeatId: '1',
+          children: [
+            {
+              name: 'givenName',
+              value: 'Erik',
+            },
+          ],
+        },
+      ],
+    };
+    const transformData = transformToCoraData(testFormPayloadWithRepeatingGroup);
     expect(transformData[0]).toStrictEqual(expected);
   });
 
