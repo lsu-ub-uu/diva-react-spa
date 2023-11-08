@@ -29,6 +29,8 @@ import testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup
 import testFormPayloadWithRepeatingGroup from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroup.json';
 import testFormPayloadWithRepeatingGroupAndVar
   from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroupAndVar.json';
+import testFormPayloadWithGroupAttribute
+  from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupAttribute.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
 
 describe('transformToCora', () => {
@@ -47,7 +49,7 @@ describe('transformToCora', () => {
         },
       ],
     };
-    const transformData = transformToCoraData(testFormPayloadWithTitleGroupWithMainTitleTextVar, '');
+    const transformData = transformToCoraData(testFormPayloadWithTitleGroupWithMainTitleTextVar);
     expect(transformData[0]).toStrictEqual(expected);
   });
 
@@ -67,7 +69,7 @@ describe('transformToCora', () => {
         },
       ],
     };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingTitle, '');
+    const transformData = transformToCoraData(testFormPayloadWithRepeatingTitle);
     expect(transformData[0]).toStrictEqual(expected);
   });
   it('should take a form payload with someRecordType group containing repeating text variable and number variable', () => {
@@ -96,7 +98,7 @@ describe('transformToCora', () => {
         },
       ],
     };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVar, '');
+    const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVar);
     expect(transformData[0]).toStrictEqual(expected);
   });
 
@@ -231,6 +233,24 @@ describe('transformToCora', () => {
     const transformData = transformToCoraData(testFormPayloadWithRepeatingGroupAndVar);
     expect(transformData[0]).toStrictEqual(expected);
   });
+
+  it('should take a form payload with someRecordType group containing name with a attribute', () => {
+    const expected: DataGroup = {
+      name: 'someRecordType',
+      children: [
+        {
+          name: 'givenName',
+          value: 'Egil'
+        },
+      ],
+      attributes: {
+        someTestAttribute: 'someAttributeValue'
+      },
+    };
+    const transformData = transformToCoraData(testFormPayloadWithGroupAttribute);
+    expect(transformData[0]).toStrictEqual(expected);
+  });
+
 
 });
 

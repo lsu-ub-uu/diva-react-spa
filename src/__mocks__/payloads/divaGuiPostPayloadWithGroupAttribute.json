@@ -1,0 +1,11 @@
+{
+  "someRecordType": {
+    "_someTestAttribute": "someAttributeValue",
+    "givenName": {
+      "value": "Egil"
+    }
+  }
+}
+
+
+
