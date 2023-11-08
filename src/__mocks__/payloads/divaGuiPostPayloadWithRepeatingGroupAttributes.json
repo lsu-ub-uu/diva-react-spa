@@ -1,0 +1,20 @@
+{
+  "someRecordType": {
+    "author": [
+      {
+        "givenName": {
+          "value": "Egil"
+        },
+        "_someTestAttribute": "someAttributeValue",
+        "_someTestAttribute2": "someAttributeValue2"
+      },
+      {
+        "givenName": {
+          "value": "Erik"
+        },
+        "_someTestAttribute": "someAttributeValue3",
+        "_someTestAttribute2": "someAttributeValue4"
+      }
+    ]
+  }
+}

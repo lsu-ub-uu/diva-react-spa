@@ -61,6 +61,16 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
       repeatMax: '1',
     },
     {
+      childId: 'someMetadataTextVariable4Id',
+      repeatMin: '1',
+      repeatMax: '3',
+    },
+    {
+      childId: 'someMetadataTextVariable5Id',
+      repeatMin: '1',
+      repeatMax: '3',
+    },
+    {
       childId: 'someMetadataNumberVarId',
       repeatMin: '0',
       repeatMax: '1',
@@ -139,6 +149,22 @@ export const someMetadataTextVariable3: BFFMetadataTextVariable = {
   defTextId: 'someDefTextId',
   regEx: 'someRegex',
   finalValue: 'someFinalValue',
+};
+export const someMetadataTextVariable4: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable4Id',
+  nameInData: 'someNameInData4',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+};
+export const someMetadataTextVariable5: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable5Id',
+  nameInData: 'someNameInData5',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
 };
 
 export const someMetadataTextVariableWithAttributeVar: BFFMetadataTextVariable = {
@@ -316,6 +342,22 @@ export const pSomeMetadataTextVariable3: BFFPresentation = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
 };
+export const pSomeMetadataTextVariable4: BFFPresentation = {
+  id: 'pSomeMetadataTextVariable4Id',
+  presentationOf: 'someMetadataTextVariable4Id',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId',
+};
+export const pSomeMetadataTextVariable5: BFFPresentation = {
+  id: 'pSomeMetadataTextVariable5Id',
+  presentationOf: 'someMetadataTextVariable5Id',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId',
+};
 
 export const pSomeMetadataCollectionVariable: BFFPresentation = {
   id: 'pSomeMetadataCollectionVariableId',
@@ -360,13 +402,6 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       type: 'text',
       textStyle: 'bold',
       childStyle: [],
-    },
-    {
-      childId: 'pSomeMetadataTextVariableId',
-      type: 'presentation',
-      minNumberOfRepeatingToShow: '1', // depends also on metadata repeatMin/Max
-      childStyle: ['style3', 'style4'],
-      // presentationSize: 'firstSmaller', // collapsable/switch view
     },
     {
       childId: 'pSomeMetadataTextVariableId',
@@ -441,11 +476,11 @@ export const pSomeContainer: BFFPresentationSurroundingContainer = {
   id: 'pSomeContainerId',
   type: 'container',
   presentationStyle: 'card',
-  presentationsOf: ['someMetadataTextVariableId'], // metadata
+  presentationsOf: ['someMetadataTextVariable4Id'], // metadata
   mode: 'input',
   children: [
     {
-      childId: 'pSomeMetadataTextVariableId',
+      childId: 'pSomeMetadataTextVariable4Id',
       type: 'presentation',
       childStyle: ['5'],
       minNumberOfRepeatingToShow: '1',
@@ -458,11 +493,11 @@ export const pSomeRepeatingContainer: BFFPresentationContainer = {
   id: 'pSomeRepeatingContainerId',
   type: 'container',
   presentationStyle: 'label',
-  presentationOf: 'someMetadataTextVariableId',
+  presentationOf: 'someMetadataTextVariable5Id',
   mode: 'input',
   children: [
     {
-      childId: 'pSomeMetadataTextVariableId',
+      childId: 'pSomeMetadataTextVariable5Id',
       type: 'presentation',
       childStyle: ['5'],
       minNumberOfRepeatingToShow: '1',

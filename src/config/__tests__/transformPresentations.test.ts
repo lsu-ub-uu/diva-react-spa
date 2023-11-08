@@ -142,10 +142,16 @@ describe('transformCoraPresentations', () => {
         presentationOf: 'someNewGroup',
         mode: 'input',
         children: [
-          { childId: 'demoText', type: 'text', textStyle: 'h1TextStyle', childStyle: [] },
-          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyle: [] },
-          { childId: 'bookTitleTextVarText', type: 'text', childStyle: [] },
-          { childId: 'bookTitleTextVarPVar', type: 'presentation', childStyle: [] },
+          {
+            childId: 'demoText',
+            type: 'text',
+            textStyle: 'h1TextStyle',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1',
+          },
+          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyle: [], minNumberOfRepeatingToShow: '1' },
+          { childId: 'bookTitleTextVarText', type: 'text', childStyle: [], minNumberOfRepeatingToShow: '1' },
+          { childId: 'bookTitleTextVarPVar', type: 'presentation', childStyle: [], minNumberOfRepeatingToShow: '1' },
         ],
       });
     });
@@ -166,9 +172,10 @@ describe('transformCoraPresentations', () => {
             textStyle: 'h1TextStyle',
             presentationSize: 'firstSmaller',
             childStyle: [],
+            minNumberOfRepeatingToShow: '1',
           },
-          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyle: [] },
-          { childId: 'bookTitleTextVarText', type: 'text', childStyle: [] },
+          { childId: 'recordInfoNewPGroup', type: 'presentation', childStyle: [], minNumberOfRepeatingToShow: '1' },
+          { childId: 'bookTitleTextVarText', type: 'text', childStyle: [], minNumberOfRepeatingToShow: '1' },
           {
             childId: 'bookTitleTextVarPVar',
             minNumberOfRepeatingToShow: '99',
@@ -224,8 +231,14 @@ describe('transformCoraPresentations', () => {
         presentationsOf: ['showLabelCollectionVar'],
         mode: 'input',
         children: [
-          { childId: 'labelHeadlineText', type: 'text', textStyle: 'h2TextStyle', childStyle: [] },
-          { childId: 'showLabelPCollVar', type: 'presentation', childStyle: [] },
+          {
+            childId: 'labelHeadlineText',
+            type: 'text',
+            textStyle: 'h2TextStyle',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1',
+          },
+          { childId: 'showLabelPCollVar', type: 'presentation', childStyle: [], minNumberOfRepeatingToShow: '1' },
         ],
         repeat: 'children',
       });
@@ -248,8 +261,8 @@ describe('transformCoraPresentations', () => {
             childStyle: ['5'],
             textStyle: 'h2TextStyle',
           },
-          { childId: 'showLabelPCollVar', type: 'presentation', childStyle: [] },
-          { childId: 'specifiedLabelTextPLink', type: 'presentation', childStyle: [] },
+          { childId: 'showLabelPCollVar', type: 'presentation', childStyle: [], minNumberOfRepeatingToShow: '1' },
+          { childId: 'specifiedLabelTextPLink', type: 'presentation', childStyle: [], minNumberOfRepeatingToShow: '1' },
         ],
         repeat: 'children',
       });
@@ -265,8 +278,18 @@ describe('transformCoraPresentations', () => {
         mode: 'input',
         children: [
           // do we need childStyle for Container children?
-          { childId: 'exampleCoordinatesPGroup', type: 'presentation', childStyle: [] },
-          { childId: 'exampleCoordinatesAsMapPGroup', type: 'presentation', childStyle: [] },
+          {
+            childId: 'exampleCoordinatesPGroup',
+            minNumberOfRepeatingToShow: '1',
+            type: 'presentation',
+            childStyle: [],
+          },
+          {
+            childId: 'exampleCoordinatesAsMapPGroup',
+            minNumberOfRepeatingToShow: '1',
+            type: 'presentation',
+            childStyle: [],
+          },
         ],
         repeat: 'this',
       });

@@ -48,7 +48,11 @@ import {
   someMetadataCollectionItemYellow,
   pSomeMetadataCollectionVariable,
   pSomeMetadataTextVariable3,
+  pSomeMetadataTextVariable4,
+  pSomeMetadataTextVariable5,
   someMetadataTextVariable3,
+  someMetadataTextVariable4,
+  someMetadataTextVariable5,
   someMetadataCollectionVariableWithAttribute,
   pSomeMetadataCollectionVariableWithAttribute,
   someMetadataNumberVarWithAttribute,
@@ -84,6 +88,8 @@ describe('formDefinition', () => {
       someMetadataTextVariable,
       someMetadataTextVariable2,
       someMetadataTextVariable3,
+      someMetadataTextVariable4,
+      someMetadataTextVariable5,
       someMetadataNumberVar,
       someNewMetadataGroup,
       someRecordInfo,
@@ -105,6 +111,8 @@ describe('formDefinition', () => {
       pSomeMetadataTextVariable,
       pSomeMetadataTextVariable2,
       pSomeMetadataTextVariable3,
+      pSomeMetadataTextVariable4,
+      pSomeMetadataTextVariable5,
       pSomeMetadataNumberVar,
       pSomeNewMetadataGroup,
       pSomeMetadataCollectionVariable,
@@ -168,7 +176,7 @@ describe('formDefinition', () => {
   it('should return a form definition', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.form.components).toHaveLength(15);
+    expect(formDefinition.form.components).toHaveLength(14);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       form: {
@@ -217,28 +225,6 @@ describe('formDefinition', () => {
             type: 'text',
             name: 'someHeadlineTextId',
             textStyle: 'bold',
-          },
-          {
-            childStyle: ['style3', 'style4'],
-            type: 'textVariable',
-            name: 'someNameInData',
-            label: 'someTextId',
-            placeholder: 'someEmptyTextId',
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 3,
-              minNumberOfRepeatingToShow: 1,
-            },
-            tooltip: {
-              title: 'someTextId',
-              body: 'someDefTextId',
-            },
-            validation: {
-              type: 'regex',
-              pattern: 'someRegex',
-            },
-            mode: 'input',
-            inputType: 'input',
           },
           {
             type: 'textVariable',
@@ -537,7 +523,7 @@ describe('formDefinition', () => {
             components: [
               {
                 type: 'textVariable',
-                name: 'someNameInData',
+                name: 'someNameInData4',
                 label: 'someTextId',
                 childStyle: ['5'],
                 placeholder: 'someEmptyTextId',
@@ -576,7 +562,7 @@ describe('formDefinition', () => {
             components: [
               {
                 type: 'textVariable',
-                name: 'someNameInData',
+                name: 'someNameInData5',
                 label: 'someTextId',
                 childStyle: ['5'],
                 placeholder: 'someEmptyTextId',
@@ -604,4 +590,53 @@ describe('formDefinition', () => {
       },
     });
   });
+
+  interface FormComponentRepeat {
+    repeatMin: number;
+    repeatMax: number;
+    minNumberOfRepeatingToShow?: number;
+  }
+
+  interface FormComponent {
+    type:
+      | 'recordLink'
+      | 'collectionVariable'
+      | 'numberVariable'
+      | 'textVariable'
+      | 'group'
+      | 'text'
+      | 'container'
+      | 'guiElementLink';
+    name: string;
+    repeat?: FormComponentRepeat;
+    components?: FormComponent[];
+  }
+
+  it.skip('should return a form definition path lookup hashmap', () => {
+    const validationTypeId = 'someValidationTypeId';
+    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+
+    const generatePathToComponentMap = (formComponent: FormComponent, path: string = '', componentMap: Record<string, FormComponent> = {}): Record<string, FormComponent> => {
+      let fullPath = path;
+      if (formComponent.type && formComponent.type !== 'container') {
+        fullPath = path + '/' + formComponent.name;
+        componentMap[fullPath] = formComponent;
+      }
+
+      if (formComponent.components && Array.isArray(formComponent.components)) {
+        formComponent.components.forEach((component) => {
+          const componentPath = fullPath;
+          generatePathToComponentMap(component, componentPath, componentMap);
+        });
+      }
+
+      return componentMap;
+    };
+
+    const lookup = generatePathToComponentMap(formDefinition.form);
+
+
+    expect(lookup).toHaveLength(1);
+  });
+
 });
