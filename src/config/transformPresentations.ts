@@ -20,11 +20,16 @@
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   extractAttributeValueByName,
-  extractIdFromRecordInfo,
+  extractIdFromRecordInfo
 } from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { BFFPresentationSurroundingContainer, BFFPresentation, BFFPresentationGroup, BFFGuiElement } from './bffTypes';
+import {
+  BFFPresentationSurroundingContainer,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFGuiElement
+} from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { getChildReferencesListFromGroup } from './transformMetadata';
 import {
@@ -32,11 +37,11 @@ import {
   getAllDataAtomicsWithNameInData,
   getAllRecordLinksWithNameInData,
   getFirstChildWithNameInData,
-  getFirstDataGroupWithNameInDataAndAttributes,
+  getFirstDataGroupWithNameInDataAndAttributes
 } from '../utils/cora-data/CoraDataUtils';
 
 export const transformCoraPresentations = (
-  dataListWrapper: DataListWrapper,
+  dataListWrapper: DataListWrapper
 ): (BFFPresentation | BFFPresentationGroup)[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
@@ -47,12 +52,17 @@ export const transformCoraPresentations = (
   return presentations.filter((item) => item !== undefined) as (
     | BFFPresentation
     | BFFPresentationGroup
-    )[];
+  )[];
 };
 
 const transformCoraPresentationToBFFPresentation = (
-  coraRecordWrapper: RecordWrapper,
-): BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement | undefined => {
+  coraRecordWrapper: RecordWrapper
+):
+  | BFFPresentation
+  | BFFPresentationGroup
+  | BFFPresentationSurroundingContainer
+  | BFFGuiElement
+  | undefined => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
 
@@ -89,14 +99,14 @@ const transformCoraPresentationToBFFPresentation = (
 
 // Handle pNumVar
 const transformBasicCoraPresentationVariableToBFFPresentation = (
-  coraRecordWrapper: RecordWrapper,
+  coraRecordWrapper: RecordWrapper
 ): BFFPresentation => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const presentationOf = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'presentationOf',
+    'presentationOf'
   );
 
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
@@ -110,7 +120,7 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
   if (containsChildWithNameInData(dataRecordGroup, 'specifiedLabelText')) {
     specifiedLabelTextId = extractLinkedRecordIdFromNamedRecordLink(
       dataRecordGroup,
-      'specifiedLabelText',
+      'specifiedLabelText'
     );
   }
 
@@ -126,13 +136,13 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     emptyTextId,
     type,
     specifiedLabelTextId,
-    showLabel,
+    showLabel
   } as BFFPresentation);
 };
 
 // Handle pVar
 const transformCoraPresentationPVarToBFFPresentation = (
-  coraRecordWrapper: RecordWrapper,
+  coraRecordWrapper: RecordWrapper
 ): BFFPresentation => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const basic = transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
@@ -142,13 +152,13 @@ const transformCoraPresentationPVarToBFFPresentation = (
 };
 
 const transformCoraPresentationGroupToBFFPresentationGroup = (
-  coraRecordWrapper: RecordWrapper,
+  coraRecordWrapper: RecordWrapper
 ): BFFPresentationGroup => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const presentationOf = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
-    'presentationOf',
+    'presentationOf'
   );
   const mode = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'mode');
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
@@ -157,13 +167,37 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     return transformChildReference(childReference);
   });
 
-  return {
+  let specifiedHeadlineTextId;
+  if (containsChildWithNameInData(dataRecordGroup, 'specifiedHeadlineText')) {
+    specifiedHeadlineTextId = extractLinkedRecordIdFromNamedRecordLink(
+      dataRecordGroup,
+      'specifiedHeadlineText'
+    );
+  }
+
+  let specifiedHeadlineLevel;
+  if (containsChildWithNameInData(dataRecordGroup, 'specifiedHeadlineLevel')) {
+    specifiedHeadlineLevel = getFirstDataAtomicValueWithNameInData(
+      dataRecordGroup,
+      'specifiedHeadlineLevel'
+    );
+  }
+
+  let showHeadline;
+  if (containsChildWithNameInData(dataRecordGroup, 'showHeadline')) {
+    showHeadline = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'showHeadline');
+  }
+
+  return removeEmpty({
     id,
     presentationOf,
+    specifiedHeadlineTextId,
+    showHeadline,
+    specifiedHeadlineLevel,
     mode,
     children,
-    type,
-  } as BFFPresentationGroup;
+    type
+  }) as BFFPresentationGroup;
 };
 
 // Group Child references
@@ -173,10 +207,8 @@ const transformChildReference = (childReference: DataGroup) => {
   const childId = extractLinkedRecordIdFromNamedRecordLink(refGroup, 'ref');
   const type = extractAttributeValueByName(ref as DataGroup, 'type');
 
-  const minNumberOfRepeatingToShow = extractAtomicValueByName(
-    childReference,
-    'minNumberOfRepeatingToShow',
-  ) ?? '1';
+  const minNumberOfRepeatingToShow =
+    extractAtomicValueByName(childReference, 'minNumberOfRepeatingToShow') ?? '1';
 
   const textStyle = extractAtomicValueByName(childReference, 'textStyle');
   const presentationSize = extractAtomicValueByName(childReference, 'presentationSize');
@@ -190,12 +222,12 @@ const transformChildReference = (childReference: DataGroup) => {
     minNumberOfRepeatingToShow,
     textStyle,
     presentationSize,
-    childStyle,
+    childStyle
   });
 };
 
 const transformCoraPresentationContainerToBFFContainer = (
-  coraRecordWrapper: RecordWrapper,
+  coraRecordWrapper: RecordWrapper
 ): BFFPresentationSurroundingContainer => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
@@ -211,7 +243,7 @@ const transformCoraPresentationContainerToBFFContainer = (
     // SContainer
     const presentationRecordLinks = getPresentationOfFromRecordLinks(dataRecordGroup);
     presentationsOf = presentationRecordLinks.map(
-      (presentationRecordLink) => presentationRecordLink.id,
+      (presentationRecordLink) => presentationRecordLink.id
     );
   }
 
@@ -231,7 +263,7 @@ const transformCoraPresentationContainerToBFFContainer = (
 
   const childReferencesList = getChildReferencesListFromGroup(dataRecordGroup);
   const children = childReferencesList.map((childReference) =>
-    transformChildReference(childReference),
+    transformChildReference(childReference)
   );
 
   return removeEmpty({
@@ -242,20 +274,18 @@ const transformCoraPresentationContainerToBFFContainer = (
     children,
     type,
     repeat,
-    presentationStyle,
+    presentationStyle
   }) as BFFPresentationSurroundingContainer;
 };
-const transformCoraPresentationGuiElementLinkToBFFGuiElement = (coraRecordWrapper: RecordWrapper): BFFGuiElement => {
+const transformCoraPresentationGuiElementLinkToBFFGuiElement = (
+  coraRecordWrapper: RecordWrapper
+): BFFGuiElement => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
   const url = extractAtomicValueByName(dataRecordGroup, 'url');
   const presentAs = extractAtomicValueByName(dataRecordGroup, 'presentAs');
-  const elementText = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'elementText',
-  );
-
+  const elementText = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'elementText');
 
   return removeEmpty({ id, type, url, presentAs, elementText });
 };
@@ -271,7 +301,7 @@ const extractAtomicValueByName = (childReference: DataGroup, nameInData: string)
 const getPresentationOfFromRecordLinks = (dataRecordGroup: DataGroup) => {
   const presentationsOfArray = getFirstDataGroupWithNameInDataAndAttributes(
     dataRecordGroup,
-    'presentationsOf',
+    'presentationsOf'
   );
 
   return getAllRecordLinksWithNameInData(presentationsOfArray, 'presentationOf');
