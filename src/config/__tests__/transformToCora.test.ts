@@ -31,6 +31,10 @@ import testFormPayloadWithRepeatingGroupAndVar
   from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroupAndVar.json';
 import testFormPayloadWithGroupAttribute
   from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupAttribute.json';
+import testFormPayloadWithVarAttribute
+  from '../../__mocks__/payloads/divaGuiPostPayloadWithVariableAttribute.json';
+import testFormPayloadWithRepeatingNumberVarWithAttributes
+  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberVarWithAttributes.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
 
 describe('transformToCora', () => {
@@ -234,21 +238,67 @@ describe('transformToCora', () => {
     expect(transformData[0]).toStrictEqual(expected);
   });
 
-  it('should take a form payload with someRecordType group containing name with a attribute', () => {
+  it('should take a form payload with someRecordType group containing name with two attributes', () => {
     const expected: DataGroup = {
       name: 'someRecordType',
       children: [
         {
           name: 'givenName',
-          value: 'Egil'
+          value: 'Egil',
         },
       ],
       attributes: {
         someTestAttribute: 'someAttributeValue',
-        someTestAttribute2: 'someAttributeValue2'
+        someTestAttribute2: 'someAttributeValue2',
       },
     };
     const transformData = transformToCoraData(testFormPayloadWithGroupAttribute);
+    expect(transformData[0]).toStrictEqual(expected);
+  });
+
+  it('should take a form payload with someRecordType group containing variable with two attributes', () => {
+    const expected: DataGroup = {
+      name: 'someRecordType',
+      children: [
+        {
+          name: 'givenName',
+          value: 'Egil',
+          attributes: {
+            someTestAttribute: 'someAttributeValue',
+            someTestAttribute2: 'someAttributeValue2',
+          },
+        },
+      ],
+    };
+    const transformData = transformToCoraData(testFormPayloadWithVarAttribute);
+    expect(transformData[0]).toStrictEqual(expected);
+  });
+
+  it('should take a form payload with someRecordType group containing repeating variables with two attributes', () => {
+    const expected: DataGroup = {
+      name: 'someRecordType',
+      children: [
+        {
+          name: 'exampleNumberVar',
+          value: '12.99',
+          repeatId: '0',
+          attributes: {
+            someTestAttribute: 'someAttributeValue',
+            someTestAttribute2: 'someAttributeValue2',
+          },
+        },
+        {
+          name: 'exampleNumberVar',
+          value: '1.34',
+          repeatId: '1',
+          attributes: {
+            someTestAttribute: 'someAttributeValue3',
+            someTestAttribute2: 'someAttributeValue4',
+          },
+        },
+      ],
+    };
+    const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberVarWithAttributes);
     expect(transformData[0]).toStrictEqual(expected);
   });
 
