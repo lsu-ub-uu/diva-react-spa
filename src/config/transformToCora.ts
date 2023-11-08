@@ -18,7 +18,19 @@
  */
 
 import { DataAtomic, DataGroup } from '../utils/cora-data/CoraData';
+import { removeEmpty } from '../utils/structs/removeEmpty';
 
+const findChildrenAttributes = (obj: any) => {
+  let attributesArray= [];
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key) && key.startsWith('_')) {
+      const value = obj[key];
+      attributesArray.push({ [key.substring(1)]: value })
+    }
+  }
+  if (!attributesArray.length) return undefined;
+  return Object.assign({}, ...attributesArray);
+}
 
 export const transformToCoraData = (obj: any, parentName?: string, repeatId?: string): (DataGroup | DataAtomic)[] => {
   if (typeof obj !== 'object' || obj === null) {
@@ -31,33 +43,35 @@ export const transformToCoraData = (obj: any, parentName?: string, repeatId?: st
     if (obj.hasOwnProperty(key)) {
       const value = obj[key];
 
-      if (Array.isArray(value)) {
-        value.forEach((item: (DataGroup | DataAtomic), index: number) => {
-          if ('value' in item) {
-            const temp = item as DataAtomic;
-            result.push({ name: key, value: temp.value, repeatId: index.toString() });
-          } else {
-            const temp = item as DataGroup;
+      if (!key.startsWith('_')) {
+        if (Array.isArray(value)) {
+          value.forEach((item: (DataGroup | DataAtomic), index: number) => {
+            if ('value' in item) {
+              const temp = item as DataAtomic;
+              result.push({ name: key, value: temp.value, repeatId: index.toString() });
+            } else {
+              const temp = item as DataGroup;
+              result.push({
+                name: key,
+                repeatId: index.toString(),
+                children: transformToCoraData(temp, key, repeatId),
+              });
+            }
+          });
+        } else {
+          if (typeof value === 'object' && value !== null && 'value' in value) {
             result.push({
               name: key,
-              repeatId: index.toString(),
-              children: transformToCoraData(temp, key, repeatId),
-            });
+              value: value.value,
+            } as DataAtomic);
+          } else {
+            // If Group
+            result.push(removeEmpty({
+              name: key,
+              attributes: findChildrenAttributes(value),
+              children: transformToCoraData(value, key, repeatId),
+            }));
           }
-        });
-      } else {
-        if (typeof value === 'object' && value !== null && 'value' in value) {
-          // If the value is a leaf node, add it to the result array
-          result.push({
-            name: key,
-            value: value.value,
-          } as DataAtomic);
-        } else {
-          // If Group
-          result.push({
-            name: key,
-            children: transformToCoraData(value, key, repeatId),
-          });
         }
       }
     }

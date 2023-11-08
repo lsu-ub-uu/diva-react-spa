@@ -244,7 +244,8 @@ describe('transformToCora', () => {
         },
       ],
       attributes: {
-        someTestAttribute: 'someAttributeValue'
+        someTestAttribute: 'someAttributeValue',
+        someTestAttribute2: 'someAttributeValue2'
       },
     };
     const transformData = transformToCoraData(testFormPayloadWithGroupAttribute);

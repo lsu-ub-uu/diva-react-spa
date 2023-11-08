@@ -1,6 +1,7 @@
 {
   "someRecordType": {
     "_someTestAttribute": "someAttributeValue",
+    "_someTestAttribute2": "someAttributeValue2",
     "givenName": {
       "value": "Egil"
     }
