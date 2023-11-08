@@ -27,6 +27,8 @@ import testFormPayloadWithRepeatingNumberAndTextVar
 import testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup
   from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberAndTextVarAndChildGroup.json';
 import testFormPayloadWithRepeatingGroup from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroup.json';
+import testFormPayloadWithRepeatingGroupAndVar
+  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroupAndVar.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
 
 describe('transformToCora', () => {
@@ -136,6 +138,7 @@ describe('transformToCora', () => {
     const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup);
     expect(transformData[0]).toStrictEqual(expected);
   });
+
   it('should take a form payload with someRecordType group containing repeating group', () => {
     const expected: DataGroup = {
       name: 'someRecordType',
@@ -164,6 +167,68 @@ describe('transformToCora', () => {
       ],
     };
     const transformData = transformToCoraData(testFormPayloadWithRepeatingGroup);
+    expect(transformData[0]).toStrictEqual(expected);
+  });
+
+  it('should take a form payload with someRecordType group containing repeating group containing repeating variable', () => {
+    const expected: DataGroup = {
+      name: 'someRecordType',
+      children: [
+        {
+          name: 'author',
+          repeatId: '0',
+          children: [
+            {
+              name: 'givenName',
+              value: 'Egil',
+            },
+            {
+              name: 'shoeSizeGroup',
+              children: [
+                {
+                  name: 'shoeSize',
+                  value: '29',
+                  repeatId: '0',
+                },
+                {
+                  name: 'shoeSize',
+                  value: '35',
+                  repeatId: '1',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'author',
+          repeatId: '1',
+          children: [
+            {
+              name: 'givenName',
+              value: 'Erik',
+            },
+            {
+              name: 'shoeSizeGroup',
+              children: [
+                {
+                  name: 'shoeSize',
+                  value: '43',
+                  repeatId: '0',
+                },
+                {
+                  name: 'shoeSize',
+                  value: '44',
+                  repeatId: '1',
+                },
+              ],
+            },
+          ],
+        },
+
+
+      ],
+    };
+    const transformData = transformToCoraData(testFormPayloadWithRepeatingGroupAndVar);
     expect(transformData[0]).toStrictEqual(expected);
   });
 
