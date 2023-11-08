@@ -47,19 +47,20 @@ export const transformToCoraData = (obj: any, parentName?: string, repeatId?: st
         if (Array.isArray(value)) {
           value.forEach((item: (DataGroup | DataAtomic), index: number) => {
             if ('value' in item) {
-              const temp = item as DataAtomic;
+              const atomic = item as DataAtomic;
               result.push({
                 name: key,
-                value: temp.value,
-                attributes: findChildrenAttributes(temp),
+                value: atomic.value,
+                attributes: findChildrenAttributes(atomic),
                 repeatId: index.toString()
               });
             } else {
-              const temp = item as DataGroup;
+              const group = item as DataGroup;
               result.push({
                 name: key,
+                attributes: findChildrenAttributes(group),
                 repeatId: index.toString(),
-                children: transformToCoraData(temp, key, repeatId),
+                children: transformToCoraData(group, key, repeatId),
               });
             }
           });
