@@ -20,31 +20,37 @@
 import { DataAtomic, DataGroup } from '../utils/cora-data/CoraData';
 
 
-export const transformNewData = (input: Record<string, any>, parent: string): DataGroup => {
-  let name = Object.keys(input)[0];
-  const children: (DataGroup  | DataAtomic )[] = [];
-  let currentParentName = parent === '' ? name : parent;
+export const transformToCoraData = (obj: any, parentName?: string, repeatId?: string): (DataGroup | DataAtomic)[] => {
+  if (typeof obj !== 'object' || obj === null) {
+    return [];
+  }
 
-  for (const key in input[name]) {
-    if (Array.isArray(input[name][key])) {
-      input[name][key].forEach((item: { value: string }, index: number) => {
-        children.push({ name: key, value: item.value, repeatId: index.toString() });
-      });
-    } else {
-      // this is a leaf
-      if (input[name].hasOwnProperty('value')) {
-        console.log('is leaf')
-        children.push({ name, value: input[name].value } as DataAtomic);
-        name = currentParentName;
-      } else {
-        // group
-        children.push({
-          name,
-          children: [transformNewData(input[name][key], key)],
+  const result: (DataGroup | DataAtomic)[] = [];
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key];
+
+      if (Array.isArray(value)) {
+        value.forEach((item: { value: string }, index: number) => {
+          result.push({ name: key, value: item.value, repeatId: index.toString() });
         });
+      } else {
+        if (typeof value === 'object' && value !== null && 'value' in value) {
+          // If the value is a leaf node, add it to the result array
+          result.push({
+            name: key,
+            value: value.value,
+          } as DataAtomic);
+        } else {
+          // If Group
+          result.push({
+            name: key,
+            children: transformToCoraData(value, key, repeatId),
+          });
+        }
       }
     }
   }
-
-  return { name, children } as DataGroup;
-};
+  return result;
+}

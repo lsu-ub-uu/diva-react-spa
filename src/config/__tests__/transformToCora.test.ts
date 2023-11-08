@@ -18,7 +18,7 @@
  */
 
 import {
-  transformNewData,
+  transformToCoraData,
 } from '../transformToCora';
 import testFormPayloadWithTitleGroupWithMainTitleTextVar from '../../__mocks__/payloads/divaGuiPostPayload.json';
 import testFormPayloadWithRepeatingTitle from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingTitle.json';
@@ -42,8 +42,8 @@ describe('transformToCora', () => {
         },
       ],
     };
-    const transformData = transformNewData(testFormPayloadWithTitleGroupWithMainTitleTextVar, '');
-    expect(transformData).toStrictEqual(expected);
+    const transformData = transformToCoraData(testFormPayloadWithTitleGroupWithMainTitleTextVar, '');
+    expect(transformData[0]).toStrictEqual(expected);
   });
 
   it('should take a form payload with someRecordType group containing repeating text variable', () => {
@@ -62,8 +62,8 @@ describe('transformToCora', () => {
         },
       ],
     };
-    const transformData = transformNewData(testFormPayloadWithRepeatingTitle, '');
-    expect(transformData).toStrictEqual(expected);
+    const transformData = transformToCoraData(testFormPayloadWithRepeatingTitle, '');
+    expect(transformData[0]).toStrictEqual(expected);
   });
   it('should take a form payload with someRecordType group containing repeating text variable and number variable', () => {
     const expected: DataGroup = {
@@ -91,8 +91,8 @@ describe('transformToCora', () => {
         }
       ]
     };
-    const transformData = transformNewData(testFormPayloadWithRepeatingNumberAndTextVar, '');
-    expect(transformData).toStrictEqual(expected);
+    const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVar, '');
+    expect(transformData[0]).toStrictEqual(expected);
   });
 
   it('should take a form payload with someRecordType group containing repeating text variable and number variable and childGroup', () => {
@@ -130,8 +130,8 @@ describe('transformToCora', () => {
         },
       ]
     };
-    const transformData = transformNewData(testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup, '');
-    expect(transformData).toStrictEqual(expected);
+    const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup);
+    expect(transformData[0]).toStrictEqual(expected);
   });
 
 });
