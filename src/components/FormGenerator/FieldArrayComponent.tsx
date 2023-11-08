@@ -126,16 +126,18 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           </Grid>
         </div>
       ))}
-      <Button
-        sx={{ mt: 1, mb: 1 }}
-        variant='outlined'
-        disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
-        onClick={handleAppend}
-        disableRipple
-        endIcon={<AddCircleOutlineIcon />}
-      >
-        Add {props.component.name}
-      </Button>
+      {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
+        <Button
+          sx={{ mt: 1, mb: 1 }}
+          variant='outlined'
+          disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
+          onClick={handleAppend}
+          disableRipple
+          endIcon={<AddCircleOutlineIcon />}
+        >
+          Add {props.component.name}
+        </Button>
+      )}
     </Box>
   );
 };

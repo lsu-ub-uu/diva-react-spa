@@ -288,7 +288,7 @@ describe('<FormGenerator />', () => {
       const inputElements2 = screen.getAllByPlaceholderText('someEmptyTextId');
       expect(inputElements2).toHaveLength(3);
 
-      expect(buttonElement).toBeDisabled();
+      expect(buttonElement).not.toBeInTheDocument();
     });
 
     it('Move buttons should NOT be rendered when repeatMax is less or equal to one', async () => {
