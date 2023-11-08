@@ -176,7 +176,8 @@ const transformChildReference = (childReference: DataGroup) => {
   const minNumberOfRepeatingToShow = extractAtomicValueByName(
     childReference,
     'minNumberOfRepeatingToShow',
-  );
+  ) ?? '1';
+
   const textStyle = extractAtomicValueByName(childReference, 'textStyle');
   const presentationSize = extractAtomicValueByName(childReference, 'presentationSize');
 
