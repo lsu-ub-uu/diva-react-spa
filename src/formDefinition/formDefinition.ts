@@ -11,8 +11,8 @@ import {
   BFFPresentationChildReference,
   BFFPresentationSurroundingContainer,
   BFFPresentationGroup,
-  BFFValidationType, 
-  BFFPresentationContainer,
+  BFFValidationType,
+  BFFPresentationContainer
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -241,7 +241,8 @@ const createPresentation = (
 
     let filteredChildRefs: BFFMetadataChildReference[] = [];
     if (presentationContainer.repeat === 'children') {
-      const metadataIds = (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
+      const metadataIds =
+        (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
       filteredChildRefs = metadataChildReferences.filter((childRef) => {
         return metadataIds.includes(childRef.childId);
       });
@@ -278,6 +279,8 @@ const createPresentation = (
         presentationPool
       );
     }
+
+    let label;
   }
 
   return removeEmpty({
@@ -290,7 +293,7 @@ const createPresentation = (
     components,
     presentationStyle,
     containerType,
-    childStyle,
+    childStyle
   });
 };
 
@@ -337,7 +340,10 @@ const getMinNumberOfRepeatingToShow = (
   return minNumberOfRepeatingToShow;
 };
 
-const createCommonParameters = (metadata: BFFMetadata, presentation: BFFPresentation) => {
+const createCommonParameters = (
+  metadata: BFFMetadata,
+  presentation: BFFPresentation | BFFPresentationGroup
+) => {
   const name = metadata.nameInData;
   const type = metadata.type;
   const placeholder = presentation.emptyTextId;
@@ -345,11 +351,31 @@ const createCommonParameters = (metadata: BFFMetadata, presentation: BFFPresenta
   const inputType = presentation.inputType;
   const tooltip = { title: metadata.textId, body: metadata.defTextId };
   let label = metadata.textId;
+  let headlineLevel;
   if (presentation.specifiedLabelTextId) {
     label = presentation.specifiedLabelTextId;
   }
+  if (presentation.hasOwnProperty('specifiedHeadlineTextId')) {
+    const presentationGroup = presentation as BFFPresentationGroup;
+    if (presentationGroup.specifiedHeadlineTextId !== undefined) {
+      label = presentationGroup.specifiedHeadlineTextId;
+    }
+  }
+  if (presentation.hasOwnProperty('specifiedHeadlineLevel')) {
+    const presentationGroup = presentation as BFFPresentationGroup;
+    if (presentationGroup.specifiedHeadlineLevel !== undefined) {
+      headlineLevel = presentationGroup.specifiedHeadlineLevel;
+    }
+  }
+  if (presentation.hasOwnProperty('showHeadline')) {
+    const presentationGroup = presentation as BFFPresentationGroup;
+    if (presentationGroup.showHeadline === 'false') {
+      label = '';
+    }
+  }
+
   if (presentation.showLabel && presentation.showLabel === 'false') {
     label = '';
   }
-  return { name, type, placeholder, mode, inputType, tooltip, label };
+  return removeEmpty({ name, type, placeholder, mode, inputType, tooltip, label, headlineLevel });
 };
