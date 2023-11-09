@@ -132,6 +132,43 @@ describe('transformCoraPresentations', () => {
       expect(transformData).toHaveLength(1);
     });
 
+    it('Returns one BFFPresentationGroup for one entry', () => {
+      const transformData = transformCoraPresentations(coraPresentationGroup);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someNewPGroup',
+        type: 'pGroup',
+        presentationOf: 'someNewGroup',
+        mode: 'input',
+        children: [
+          {
+            childId: 'demoText',
+            type: 'text',
+            textStyle: 'h1TextStyle',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1'
+          },
+          {
+            childId: 'recordInfoNewPGroup',
+            type: 'presentation',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1'
+          },
+          {
+            childId: 'bookTitleTextVarText',
+            type: 'text',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1'
+          },
+          {
+            childId: 'bookTitleTextVarPVar',
+            type: 'presentation',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1'
+          }
+        ]
+      });
+    });
+
     it('Returns one BFFPresentationGroup for one entry with specified headline', () => {
       const transformData = transformCoraPresentations(coraPresentationGroupSpecifiedHeadlineText);
       expect(transformData[0]).toStrictEqual({
@@ -216,43 +253,6 @@ describe('transformCoraPresentations', () => {
         presentationOf: 'someNewGroup',
         mode: 'input',
         specifiedHeadlineLevel: 'h3',
-        children: [
-          {
-            childId: 'demoText',
-            type: 'text',
-            textStyle: 'h1TextStyle',
-            childStyle: [],
-            minNumberOfRepeatingToShow: '1'
-          },
-          {
-            childId: 'recordInfoNewPGroup',
-            type: 'presentation',
-            childStyle: [],
-            minNumberOfRepeatingToShow: '1'
-          },
-          {
-            childId: 'bookTitleTextVarText',
-            type: 'text',
-            childStyle: [],
-            minNumberOfRepeatingToShow: '1'
-          },
-          {
-            childId: 'bookTitleTextVarPVar',
-            type: 'presentation',
-            childStyle: [],
-            minNumberOfRepeatingToShow: '1'
-          }
-        ]
-      });
-    });
-
-    it('Returns one BFFPresentationGroup for one entry', () => {
-      const transformData = transformCoraPresentations(coraPresentationGroup);
-      expect(transformData[0]).toStrictEqual({
-        id: 'someNewPGroup',
-        type: 'pGroup',
-        presentationOf: 'someNewGroup',
-        mode: 'input',
         children: [
           {
             childId: 'demoText',
