@@ -71,6 +71,7 @@ export interface FormComponent {
   presentAs?: string; // used for guiElementLink
   containerType?: 'repeating' | 'surrounding';
   presentationStyle?: string; // frame etc
+  headlineLevel?: string;
 }
 
 type FormAttributeCollection = Omit<

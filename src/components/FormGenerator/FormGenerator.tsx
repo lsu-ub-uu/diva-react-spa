@@ -35,6 +35,8 @@ import {
 import { Typography, LinkButton, Card } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
+import { DivaTypographyVariants } from '../Typography/Typography';
+// import { DivaTypographyVariants } from './Typography/Typography';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
@@ -101,6 +103,20 @@ export const renderLeafComponent = (
     default:
       return null;
   }
+};
+
+const headlineLevelToTypographyVariant = (
+  headlineLevel: string | undefined,
+): DivaTypographyVariants['variant'] => {
+  let typographyVariant: DivaTypographyVariants['variant'];
+  if (headlineLevel !== undefined) {
+    typographyVariant =
+      `${headlineLevel}TextStyle` as DivaTypographyVariants['variant'];
+  } else {
+    typographyVariant = 'h2TextStyle';
+  }
+
+  return typographyVariant as DivaTypographyVariants['variant']; // check style to return as default
 };
 
 export const FormGenerator = (props: FormGeneratorProps) => {
@@ -188,6 +204,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           sx={{ mb: 1 }}
           key={reactKey}
         >
+          <Typography
+            text={component?.label ?? ''}
+            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
+          />
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             createFormComponents(
@@ -202,6 +222,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     if (isComponentGroup(component) && isComponentRepeating(component)) {
       return (
         <Box key={reactKey}>
+          <Typography
+            text={component?.label ?? ''}
+            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
+          />
           <FieldArrayComponent
             control={control}
             component={component}

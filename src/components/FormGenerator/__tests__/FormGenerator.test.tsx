@@ -20,7 +20,6 @@
 import { test, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import {
   formDef,
   formDefWithOneNumberVariable,
@@ -33,6 +32,8 @@ import {
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
   formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithOneNumberVariableAndGuiElementLink,
+  formDefWithGroupWithSpecifiedHeadlineLevel,
+  formDefWithGroupWithDefaultHeadlineLevel,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -461,6 +462,54 @@ describe('<FormGenerator />', () => {
 
       const textInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(textInput).toBeInTheDocument();
+    });
+
+    it('renders a form with non-repeating group and headlineLevel', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const headlineElement = screen.getByRole('heading', {
+        name: 'someRootFormGroupText',
+        level: 1,
+      });
+      expect(headlineElement).toBeInTheDocument();
+    });
+
+    it('renders a form with repeating group and headlineLevel', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const headlineElement = screen.getByRole('heading', {
+        name: 'author',
+        level: 3,
+      });
+      expect(headlineElement).toBeInTheDocument();
+    });
+
+    it('renders a form with group and default headlineLevel', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithGroupWithDefaultHeadlineLevel as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const headlineElement = screen.getByRole('heading', {
+        name: 'author',
+        level: 2,
+      });
+      expect(headlineElement).toBeInTheDocument();
     });
   });
 
