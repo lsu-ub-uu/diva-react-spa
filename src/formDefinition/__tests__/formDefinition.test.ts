@@ -593,6 +593,85 @@ describe('formDefinition', () => {
               }
             ],
             mode: 'input'
+          },
+          {
+            type: 'group',
+            label: 'someOtherHeadlineTextId',
+            headlineLevel: 'h3',
+            childStyle: [],
+            presentationStyle: 'someMetadataChildGroupPresentationStyle',
+            name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someChildGroupTextId',
+              body: 'someChildGroupDefTextId'
+            },
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                childStyle: ['style3', 'style4'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'group',
+            label: '',
+            childStyle: [],
+            presentationStyle: 'someMetadataChildGroupPresentationStyle',
+            name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someChildGroupTextId',
+              body: 'someChildGroupDefTextId'
+            },
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                childStyle: ['style3', 'style4'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
           }
         ],
         mode: 'input'
