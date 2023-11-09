@@ -71,7 +71,7 @@ import {
   pSomeMetadataChildGroupWithSpecifiedHeadlineText,
   pSomeMetadataChildGroupWithShowHeadlineFalse
 } from '../../__mocks__/form/bffMock';
-import { createFormDefinition } from '../formDefinition';
+import { createFormDefinition, createFormMetaData } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
 describe('formDefinition', () => {
@@ -702,8 +702,9 @@ describe('formDefinition', () => {
 
   it.skip('should return a form definition path lookup hashmap', () => {
     const validationTypeId = 'someValidationTypeId';
-    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
 
+    /*
     const generatePathToComponentMap = (
       formComponent: FormComponent,
       path: string = '',
@@ -726,7 +727,8 @@ describe('formDefinition', () => {
     };
 
     const lookup = generatePathToComponentMap(formDefinition.form);
+    */
 
-    expect(lookup).toHaveLength(1);
+    expect(formMetaData).toHaveLength(1);
   });
 });

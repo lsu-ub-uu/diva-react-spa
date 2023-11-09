@@ -17,6 +17,40 @@ import {
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 
+export const createFormMetaData = (
+  dependencies: Dependencies,
+  validationTypeId: string,
+  mode: string
+) => {
+  const validationPool = dependencies.validationTypePool;
+  const metadataPool = dependencies.metadataPool;
+  const validationType: BFFValidationType = validationPool.get(validationTypeId);
+
+  // we need to check the mode parameter
+  const newMetadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
+  newMetadataGroup.children
+
+  // Start from the root metadata group
+  // construct the metadata childReference
+  /* const formRootReference: BFFMetadataChildReference = {
+    childId: newMetadataGroup.id,
+    repeatMax: '1',
+    repeatMin: '1'
+  };
+  metaDataChildRef = findMetadataChildReferenceById(metadataId, [metadataChildReferences]);
+  some type of other function to be able to get child data recursively -> createMetaDataFromChildReferences.
+  */
+
+  return {}
+}
+
+const createMetaDataFromChildReferences = (
+  metadataChildReferences: BFFMetadataChildReference[],
+  metadataPool: any,
+): unknown => {
+  return {}
+}
+
 export const createFormDefinition = (
   dependencies: Dependencies,
   validationTypeId: string,
