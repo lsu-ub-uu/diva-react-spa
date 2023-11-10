@@ -732,7 +732,8 @@ describe('formDefinition', () => {
             repeatMax: 1,
             repeatMin: 1
           },
-          type: 'recordLink'
+          type: 'recordLink',
+          linkedRecordType: 'nationalSubjectCategory',
         }
       ]
     };
@@ -752,7 +753,8 @@ describe('formDefinition', () => {
           'repeatMax': 1,
           'repeatMin': 1
         },
-        'type': 'recordLink'
+        'type': 'recordLink',
+        'linkedRecordType': 'nationalSubjectCategory'
       },
       'someNewMetadataGroupNameInData.someChildGroupNameInData': {
         'name': 'someChildGroupNameInData',
