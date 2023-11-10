@@ -12,7 +12,7 @@ import {
   BFFPresentationSurroundingContainer,
   BFFPresentationGroup,
   BFFValidationType,
-  BFFPresentationContainer
+  BFFPresentationContainer, BFFMetadataRecordLink,
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -46,10 +46,16 @@ const createMetaDataFromChildReference = (
   const repeatMin = parseInt(metadataChildReference.repeatMin);
   const repeatMax = determineRepeatMax(metadataChildReference.repeatMax);
   let children;
+  let linkedRecordType;
 
   if (metadata.type === 'group') {
     const metadataGroup = metadata as BFFMetadataGroup;
     children = metadataGroup.children.map((childRef) => createMetaDataFromChildReference(childRef, metadataPool))
+  }
+
+  if (metadata.type === 'recordLink') {
+    const metadataRecordLink = metadata as BFFMetadataRecordLink;
+    linkedRecordType = metadataRecordLink.linkedRecordType;
   }
 
   return removeEmpty({
@@ -59,7 +65,8 @@ const createMetaDataFromChildReference = (
       repeatMin,
       repeatMax,
     },
-    children
+    children,
+    linkedRecordType
   } as FormMetaData);
 }
 
@@ -79,6 +86,7 @@ export interface FormMetaData {
   name: string;
   repeat: FormMetaDataRepeat;
   children?: FormMetaData[];
+  linkedRecordType?: string;
 }
 
 export const createFormMetaDataPathLookup = (obj: FormMetaData, path: string = '', lookup: Record<string, FormMetaData> = {}) => {
@@ -353,8 +361,6 @@ const createPresentation = (
         presentationPool
       );
     }
-
-    let label;
   }
 
   return removeEmpty({
