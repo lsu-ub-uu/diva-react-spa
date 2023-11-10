@@ -71,44 +71,47 @@ export const transformToCoraData = (lookup: Record<string, FormMetaData>, obj: a
     const value = obj[fieldKey];
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
 
-    const currentMetadataLookup = lookup[currentPath];
-    const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
-
+    
     if (!fieldKey.startsWith('_')) {
+      const currentMetadataLookup = lookup[currentPath];
+      const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
+
       if (Array.isArray(value)) {
-        value.forEach((item: (DataGroup | DataAtomic), index: number) => {
+        value.forEach((item: DataGroup | DataAtomic, index: number) => {
           if ('value' in item) {
             const atomic = item as DataAtomic;
-            result.push(createLeaf(
-              currentMetadataLookup,
-              fieldKey,
-              atomic.value,
-              shouldDataHaveRepeatId ? index.toString() : undefined
-            ));
+            result.push(
+              createLeaf(
+                currentMetadataLookup,
+                fieldKey,
+                atomic.value,
+                shouldDataHaveRepeatId ? index.toString() : undefined
+              )
+            );
           } else {
             const group = item as DataGroup;
-            result.push(removeEmpty({
-              name: fieldKey,
-              attributes: findChildrenAttributes(group),
-              repeatId: shouldDataHaveRepeatId ? index.toString() : undefined,
-              children: transformToCoraData(lookup, group, currentPath, repeatId),
-            } as DataGroup));
+            result.push(
+              removeEmpty({
+                name: fieldKey,
+                attributes: findChildrenAttributes(group),
+                repeatId: shouldDataHaveRepeatId ? index.toString() : undefined,
+                children: transformToCoraData(lookup, group, currentPath, repeatId)
+              } as DataGroup)
+            );
           }
         });
       } else {
         if (typeof value === 'object' && value !== null && 'value' in value) {
-          result.push(createLeaf(
-            currentMetadataLookup,
-            fieldKey,
-            value.value
-          ));
+          result.push(createLeaf(currentMetadataLookup, fieldKey, value.value));
         } else {
           // If Group
-          result.push(removeEmpty({
-            name: fieldKey,
-            attributes: findChildrenAttributes(value),
-            children: transformToCoraData(lookup, value, currentPath, repeatId),
-          } as DataGroup));
+          result.push(
+            removeEmpty({
+              name: fieldKey,
+              attributes: findChildrenAttributes(value),
+              children: transformToCoraData(lookup, value, currentPath, repeatId)
+            } as DataGroup)
+          );
         }
       }
     }

@@ -665,11 +665,6 @@ export const someNewSimpleMetadataGroup: BFFMetadataGroup = {
   type: 'group',
   textId: 'textId345',
   defTextId: 'defTextId678',
-  attributeReferences: [
-    {
-      refCollectionVarId: 'exampleCollectionVarId'
-    }
-  ],
   children: [
     {
       childId: 'someMetadataTextVariableId',
@@ -683,6 +678,38 @@ export const someNewSimpleMetadataGroup: BFFMetadataGroup = {
     },
     {
       childId: 'nationalSubjectCategoryLinkId',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+export const someSimpleValidationTypeDataWithAttributes: BFFValidationType = {
+  id: 'someSimpleValidationTypeWithAttributesId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroup2WithAttributesId',
+  newPresentationGroupId: 'todo',
+  // Update/Edit
+  metadataGroupId: 'todo',
+  presentationGroupId: 'todo',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewSimpleMetadataGroupWithAttributes: BFFMetadataGroup = {
+  id: 'someNewMetadataGroup2WithAttributesId',
+  nameInData: 'someNewMetadataGroupWithAttributesNameInData',
+  type: 'group',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ],
+  children: [
+    {
+      childId: 'someMetadataTextVariableId',
       repeatMin: '1',
       repeatMax: '1'
     }

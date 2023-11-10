@@ -21,25 +21,27 @@ import {
   transformToCoraData,
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
+import testFormPayloadWithGroupWithAttributesAndTextVar from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
-import {
-  BFFMetadata,
-  BFFMetadataItemCollection,
-  BFFValidationType,
-} from '../bffTypes';
+import { BFFMetadata, BFFMetadataItemCollection, BFFValidationType } from '../bffTypes';
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
-  someMetadataChildGroup, someMetadataRecordLink,
+  someMetadataChildGroup,
+  someMetadataRecordLink,
   someMetadataTextVariable,
   someNewSimpleMetadataGroup,
   someSimpleValidationTypeData,
+  someSimpleValidationTypeDataWithAttributes,
+  someNewSimpleMetadataGroupWithAttributes
 } from '../../__mocks__/form/bffMock';
-import { createFormMetaData, createFormMetaDataPathLookup } from '../../formDefinition/formDefinition';
+import {
+  createFormMetaData,
+  createFormMetaDataPathLookup
+} from '../../formDefinition/formDefinition';
 
 describe('transformToCora', () => {
-
   let validationTypePool: Lookup<string, BFFValidationType>;
   let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
   const FORM_MODE_NEW = 'new'; // todo handle edit
@@ -47,18 +49,20 @@ describe('transformToCora', () => {
 
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([
-      someSimpleValidationTypeData
+      someSimpleValidationTypeData,
+      someSimpleValidationTypeDataWithAttributes
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
       someMetadataRecordLink,
       someMetadataChildGroup,
-      someNewSimpleMetadataGroup
+      someNewSimpleMetadataGroup,
+      someNewSimpleMetadataGroupWithAttributes
     ]);
 
     dependencies = {
       validationTypePool: validationTypePool,
-      metadataPool: metadataPool,
+      metadataPool: metadataPool
     };
   });
 
@@ -69,15 +73,15 @@ describe('transformToCora', () => {
         {
           repeatId: '0',
           name: 'someNameInData',
-          value: 'firstValue',
+          value: 'firstValue'
         },
         {
           name: 'someChildGroupNameInData',
           children: [
             {
               name: 'someNameInData',
-              value: 'secondValue',
-            },
+              value: 'secondValue'
+            }
           ]
         },
         {
@@ -92,15 +96,40 @@ describe('transformToCora', () => {
               value: 'linkValue'
             }
           ]
-        },
-      ],
+        }
+      ]
     };
     const validationTypeId = 'someSimpleValidationTypeId';
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(formMetaDataPathLookup, testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink
+    );
     expect(transformData[0]).toStrictEqual(expected);
   });
 
+  it('should take a form payload with someRecordType group containing group containing attributes', () => {
+    const expected: DataGroup = {
+      name: 'someNewMetadataGroupWithAttributesNameInData',
+      children: [
+        {
+          name: 'someNameInData',
+          value: 'Erik'
+        }
+      ],
+      attributes: {
+        colour: 'someAttributeValue3'
+      }
+    };
+    const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      testFormPayloadWithGroupWithAttributesAndTextVar
+    );
+    expect(transformData[0]).toStrictEqual(expected);
+  });
 });
 

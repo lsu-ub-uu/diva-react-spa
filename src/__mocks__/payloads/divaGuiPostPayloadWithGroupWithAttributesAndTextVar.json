@@ -1,0 +1,8 @@
+{
+  "someNewMetadataGroupWithAttributesNameInData": {
+    "_colour": "someAttributeValue3",
+    "someNameInData": {
+      "value": "Erik"
+    }
+  }
+}
