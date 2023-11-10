@@ -22,6 +22,7 @@ import {
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import testFormPayloadWithGroupWithAttributesAndTextVar from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
+import testFormPayloadWithGroupWithGroupWithRepeatingGroups from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithRepeatingGroups.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
 import { BFFMetadata, BFFMetadataItemCollection, BFFValidationType } from '../bffTypes';
@@ -35,7 +36,9 @@ import {
   someSimpleValidationTypeData,
   someSimpleValidationTypeDataWithAttributes,
   someNewSimpleMetadataGroupWithAttributes,
-  someMetadataNumberVar
+  someMetadataNumberVar,
+  someSimpleValidationTypeRepeatingGroups,
+  someNewSimpleMetadataGroupRepeatingGroups
 } from '../../__mocks__/form/bffMock';
 import {
   createFormMetaData,
@@ -51,7 +54,8 @@ describe('transformToCora', () => {
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([
       someSimpleValidationTypeData,
-      someSimpleValidationTypeDataWithAttributes
+      someSimpleValidationTypeDataWithAttributes,
+      someSimpleValidationTypeRepeatingGroups
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -59,7 +63,8 @@ describe('transformToCora', () => {
       someMetadataChildGroup,
       someNewSimpleMetadataGroup,
       someNewSimpleMetadataGroupWithAttributes,
-      someMetadataNumberVar
+      someMetadataNumberVar,
+      someNewSimpleMetadataGroupRepeatingGroups
     ]);
 
     dependencies = {
@@ -150,6 +155,42 @@ describe('transformToCora', () => {
     const transformData = transformToCoraData(
       formMetaDataPathLookup,
       testFormPayloadWithGroupWithAttributesAndTextVar
+    );
+    expect(transformData[0]).toStrictEqual(expected);
+  });
+
+  it('should take a form payload with repeating groups', () => {
+    const expected: DataGroup = {
+      name: 'someNewMetadataGroupRepeatingGroupsNameInData',
+      children: [
+        {
+          name: 'someChildGroupNameInData',
+          repeatId: '0',
+          children: [
+            {
+              name: 'someNameInData',
+              value: 'Erik'
+            }
+          ]
+        },
+        {
+          name: 'someChildGroupNameInData',
+          repeatId: '1',
+          children: [
+            {
+              name: 'someNameInData',
+              value: 'Egil'
+            }
+          ]
+        }
+      ]
+    };
+    const validationTypeId = 'someSimpleValidationTypeWithRepeatingGroupsId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      testFormPayloadWithGroupWithGroupWithRepeatingGroups
     );
     expect(transformData[0]).toStrictEqual(expected);
   });

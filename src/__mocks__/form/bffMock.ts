@@ -720,3 +720,31 @@ export const someNewSimpleMetadataGroupWithAttributes: BFFMetadataGroup = {
     }
   ]
 };
+
+export const someSimpleValidationTypeRepeatingGroups: BFFValidationType = {
+  id: 'someSimpleValidationTypeWithRepeatingGroupsId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupRepeatingGroupsId',
+  newPresentationGroupId: 'todo',
+  // Update/Edit
+  metadataGroupId: 'todo',
+  presentationGroupId: 'todo',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewSimpleMetadataGroupRepeatingGroups: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupRepeatingGroupsId',
+  nameInData: 'someNewMetadataGroupRepeatingGroupsNameInData',
+  type: 'group',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
+  children: [
+    {
+      childId: 'someMetadataChildGroupId',
+      repeatMin: '1',
+      repeatMax: '2'
+    }
+  ]
+};
