@@ -3,6 +3,20 @@
     "_colour": "someAttributeValue3",
     "someNameInData": {
       "value": "Erik"
-    }
+    },
+    "someNameInDataNumberVar": [
+      {
+        "value": "1"
+      },
+      {
+        "value": "2"
+      },
+      {
+        "value": "3"
+      },
+      {
+        "value": "4"
+      }
+    ]
   }
 }

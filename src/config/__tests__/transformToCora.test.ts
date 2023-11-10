@@ -34,7 +34,8 @@ import {
   someNewSimpleMetadataGroup,
   someSimpleValidationTypeData,
   someSimpleValidationTypeDataWithAttributes,
-  someNewSimpleMetadataGroupWithAttributes
+  someNewSimpleMetadataGroupWithAttributes,
+  someMetadataNumberVar
 } from '../../__mocks__/form/bffMock';
 import {
   createFormMetaData,
@@ -57,7 +58,8 @@ describe('transformToCora', () => {
       someMetadataRecordLink,
       someMetadataChildGroup,
       someNewSimpleMetadataGroup,
-      someNewSimpleMetadataGroupWithAttributes
+      someNewSimpleMetadataGroupWithAttributes,
+      someMetadataNumberVar
     ]);
 
     dependencies = {
@@ -109,13 +111,33 @@ describe('transformToCora', () => {
     expect(transformData[0]).toStrictEqual(expected);
   });
 
-  it('should take a form payload with someRecordType group containing group containing attributes', () => {
+  it('should take a form payload with group containing attributes, numberVar with repeatMax', () => {
     const expected: DataGroup = {
       name: 'someNewMetadataGroupWithAttributesNameInData',
       children: [
         {
           name: 'someNameInData',
           value: 'Erik'
+        },
+        {
+          name: 'someNameInDataNumberVar',
+          value: '1',
+          repeatId: '0'
+        },
+        {
+          name: 'someNameInDataNumberVar',
+          value: '2',
+          repeatId: '1'
+        },
+        {
+          name: 'someNameInDataNumberVar',
+          value: '3',
+          repeatId: '2'
+        },
+        {
+          name: 'someNameInDataNumberVar',
+          value: '4',
+          repeatId: '3'
         }
       ],
       attributes: {
