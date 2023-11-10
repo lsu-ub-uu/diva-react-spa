@@ -69,9 +69,16 @@ import {
   pSomeGuiElementLink,
   pSomeRepeatingContainer,
   pSomeMetadataChildGroupWithSpecifiedHeadlineText,
-  pSomeMetadataChildGroupWithShowHeadlineFalse
+  pSomeMetadataChildGroupWithShowHeadlineFalse,
+  someNewSimpleMetadataGroup,
+  someSimpleValidationTypeData,
 } from '../../__mocks__/form/bffMock';
-import { createFormDefinition, createFormMetaData } from '../formDefinition';
+import {
+  createFormDefinition,
+  createFormMetaData,
+  createFormMetaDataPathLookup,
+  FormMetaData,
+} from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
 describe('formDefinition', () => {
@@ -87,7 +94,8 @@ describe('formDefinition', () => {
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([
       someValidationTypeData,
-      someValidationTypeDataFaultyChildReference
+      someValidationTypeDataFaultyChildReference,
+      someSimpleValidationTypeData
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -110,7 +118,8 @@ describe('formDefinition', () => {
       someMetadataChildGroup,
       someMetadataRecordLink,
       someMetadataChildGroupWithSpecifiedHeadlineText,
-      someMetadataChildGroupWithShowHeadlineFalse
+      someMetadataChildGroupWithShowHeadlineFalse,
+      someNewSimpleMetadataGroup
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -679,56 +688,100 @@ describe('formDefinition', () => {
     });
   });
 
-  interface FormComponentRepeat {
-    repeatMin: number;
-    repeatMax: number;
-    minNumberOfRepeatingToShow?: number;
-  }
-
-  interface FormComponent {
-    type:
-      | 'recordLink'
-      | 'collectionVariable'
-      | 'numberVariable'
-      | 'textVariable'
-      | 'group'
-      | 'text'
-      | 'container'
-      | 'guiElementLink';
-    name: string;
-    repeat?: FormComponentRepeat;
-    components?: FormComponent[];
-  }
-
-  it.skip('should return a form definition path lookup hashmap', () => {
-    const validationTypeId = 'someValidationTypeId';
+  it('should return form meta data for a given validation type', () => {
+    const validationTypeId = 'someSimpleValidationTypeId';
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
 
-    /*
-    const generatePathToComponentMap = (
-      formComponent: FormComponent,
-      path: string = '',
-      componentMap: Record<string, FormComponent> = {}
-    ): Record<string, FormComponent> => {
-      let fullPath = path;
-      if (formComponent.type && formComponent.type !== 'container') {
-        fullPath = path + '/' + formComponent.name;
-        componentMap[fullPath] = formComponent;
-      }
-
-      if (formComponent.components && Array.isArray(formComponent.components)) {
-        formComponent.components.forEach((component) => {
-          const componentPath = fullPath;
-          generatePathToComponentMap(component, componentPath, componentMap);
-        });
-      }
-
-      return componentMap;
+    const expected: FormMetaData = {
+      name: 'someNewMetadataGroupNameInData',
+      type: 'group',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1
+      },
+      children: [
+        {
+          name: 'someNameInData',
+          type: 'textVariable',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          }
+        },
+        {
+          name: 'someChildGroupNameInData',
+          type: 'group',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          children: [
+            {
+              name: 'someNameInData',
+              type: 'textVariable',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1
+              }
+            }
+          ]
+        },
+        {
+          name: 'nationalSubjectCategory',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'recordLink'
+        }
+      ]
     };
 
-    const lookup = generatePathToComponentMap(formDefinition.form);
-    */
+    const expectedMetadataLookup = {
+      'someNewMetadataGroupNameInData': {
+        'name': 'someNewMetadataGroupNameInData',
+        'repeat': {
+          'repeatMax': 1,
+          'repeatMin': 1
+        },
+        'type': 'group'
+      },
+      'someNewMetadataGroupNameInData.nationalSubjectCategory': {
+        'name': 'nationalSubjectCategory',
+        'repeat': {
+          'repeatMax': 1,
+          'repeatMin': 1
+        },
+        'type': 'recordLink'
+      },
+      'someNewMetadataGroupNameInData.someChildGroupNameInData': {
+        'name': 'someChildGroupNameInData',
+        'repeat': {
+          'repeatMax': 1,
+          'repeatMin': 1
+        },
+        'type': 'group'
+      },
+      'someNewMetadataGroupNameInData.someChildGroupNameInData.someNameInData': {
+        'name': 'someNameInData',
+        'repeat': {
+          'repeatMax': 1,
+          'repeatMin': 1
+        },
+        'type': 'textVariable'
+      },
+      'someNewMetadataGroupNameInData.someNameInData': {
+        'name': 'someNameInData',
+        'repeat': {
+          'repeatMax': 3,
+          'repeatMin': 1
+        },
+        'type': 'textVariable'
+      }
+    };
 
-    expect(formMetaData).toHaveLength(1);
+    expect(formMetaData).toStrictEqual(expected);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
 });

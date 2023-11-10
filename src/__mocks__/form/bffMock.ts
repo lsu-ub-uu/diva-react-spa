@@ -132,6 +132,7 @@ export const someMetadataChildGroup: BFFMetadataGroup = {
     }
   ]
 };
+
 export const someMetadataChildGroupWithSpecifiedHeadlineText: BFFMetadataGroup = {
   id: 'someMetadataChildGroupWithSpecifiedHeadlineTextId',
   nameInData: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
@@ -642,4 +643,48 @@ export const pSomeGuiElementLink: BFFGuiElement = {
   elementText: 'demoTestLinkGuiElementText',
   presentAs: 'link',
   type: 'guiElementLink'
+};
+
+
+export const someSimpleValidationTypeData: BFFValidationType = {
+  id: 'someSimpleValidationTypeId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroup2Id',
+  newPresentationGroupId: 'todo',
+  // Update/Edit
+  metadataGroupId: 'todo',
+  presentationGroupId: 'todo',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewSimpleMetadataGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroup2Id',
+  nameInData: 'someNewMetadataGroupNameInData',
+  type: 'group',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ],
+  children: [
+    {
+      childId: 'someMetadataTextVariableId',
+      repeatMin: '1',
+      repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataChildGroupId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'nationalSubjectCategoryLinkId',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
 };
