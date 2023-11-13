@@ -107,8 +107,7 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
   try {
     const { validationTypeId } = req.params;
     const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
-    const promises = types.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
-    const result = await Promise.all(promises);
+    const result = await getPoolsFromCora(types);
 
     const metadata = transformMetadata(result[0].data);
     const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
