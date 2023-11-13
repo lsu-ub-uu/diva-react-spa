@@ -4,6 +4,10 @@
     "someNameInData": {
       "value": "Erik"
     },
+    "someNameInDataTextWithAttrib": {
+      "value": "AttribVar",
+      "_colour": "someAttributeValue3"
+    },
     "someNameInDataNumberVar": [
       {
         "value": "1"
