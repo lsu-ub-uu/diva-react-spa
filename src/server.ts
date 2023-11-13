@@ -99,7 +99,6 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
 
     res.status(response.status).json({ id }); // return id for now
   } catch (error: unknown) {
-    // error: AxiosError
     //@ts-ignore
     console.log(error.message);
     res.status(500).json('Error occurred while creating record');
