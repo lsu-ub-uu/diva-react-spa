@@ -22,6 +22,7 @@ import { Helmet } from 'react-helmet-async';
 import React, { useEffect } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 import { FieldValues } from 'react-hook-form';
 import { useBackdrop, FormGenerator } from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
@@ -30,7 +31,6 @@ import {
   createDefaultValuesFromFormSchema,
   generateYupSchemaFromFormSchema,
 } from '../components/FormGenerator/utils';
-import { useSnackbar } from "notistack";
 
 export const DynamicFormPage = () => {
   const { enqueueSnackbar } = useSnackbar();
