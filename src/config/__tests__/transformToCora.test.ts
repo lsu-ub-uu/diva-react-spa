@@ -17,9 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  transformToCoraData,
-} from '../transformToCora';
+import { generateRecordInfo, transformToCoraData } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import testFormPayloadWithGroupWithAttributesAndTextVar from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
 import testFormPayloadWithGroupWithGroupWithRepeatingGroups from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithRepeatingGroups.json';
@@ -249,6 +247,42 @@ describe('transformToCora', () => {
       testFormPayloadWithGroupWithGroupWithRepeatingGroups
     );
     expect(transformData[0]).toStrictEqual(expected);
+  });
+
+  it('should be able to generate a record info from data', () => {
+    const expected: DataGroup = {
+      name: 'recordInfo',
+      children: [
+        {
+          name: 'dataDivider',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'system'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'diva'
+            }
+          ]
+        },
+        {
+          name: 'validationType',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'validationType'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'divaOutput'
+            }
+          ]
+        }
+      ]
+    };
+    const recordInfo = generateRecordInfo('divaOutput', 'diva');
+    expect(recordInfo).toStrictEqual(expected);
   });
 });
 

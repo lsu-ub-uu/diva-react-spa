@@ -21,6 +21,15 @@ import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-dat
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
 
+export const generateRecordInfo = (validationType: string, dataDivider: string): DataGroup => {
+  const name = 'recordInfo';
+  const children = [
+    generateRecordLink('dataDivider', 'system', dataDivider),
+    generateRecordLink('validationType', 'validationType', validationType)
+  ];
+  return { name, children } as DataGroup;
+};
+
 const findChildrenAttributes = (obj: any) => {
   let attributesArray = [];
   for (const key in obj) {
@@ -42,7 +51,7 @@ const generateRecordLink = (
   name: string,
   linkedRecordType: string,
   linkedRecordId: string,
-  inAttributes: Attributes | undefined,
+  inAttributes: Attributes | undefined = undefined,
   repeatId: string | undefined = undefined
 ): RecordLink =>
   removeEmpty({
