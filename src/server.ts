@@ -63,6 +63,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
   try {
     const { validationTypeId } = req.params;
     const payload = req.body;
+    const recordType = Object.keys(payload)[0];
     const authToken = '4acc77dd-c486-42f8-b56a-c79585509112'; // TODO fix this
 
     const types = ['metadata', 'validationType'];
@@ -85,20 +86,22 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     // break out this
     const FORM_MODE_NEW = 'create'; //  handle this better
     const dataDivider = 'diva'; // TODO: handle in env file?
+
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(
       formMetaDataPathLookup,
       payload
     );
-
     const newGroup = injectRecordInfoIntoDataGroup(transformData[0] as DataGroup, validationTypeId, dataDivider);
-    const response = await postRecordData<RecordWrapper>(newGroup, 'divaOutput', authToken);
+    const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
     const id = extractIdFromRecordInfo(response.data.record.data);
 
     res.status(response.status).json({ id }); // return id for now
   } catch (error: unknown) {
     // error: AxiosError
+    //@ts-ignore
+    console.log(error.message);
     res.status(500).json('Error occurred while creating record');
   }
 });
