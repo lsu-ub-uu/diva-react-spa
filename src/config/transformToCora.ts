@@ -21,6 +21,14 @@ import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-dat
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
 
+export const injectRecordInfoIntoDataGroup = (dataGroup: DataGroup, validationTypeId: string, dataDivider: string): DataGroup => {
+  dataGroup.children = [
+    generateRecordInfo(validationTypeId, dataDivider),
+    ...dataGroup.children
+  ]
+  return dataGroup;
+}
+
 export const generateRecordInfo = (validationType: string, dataDivider: string): DataGroup => {
   const name = 'recordInfo';
   const children = [

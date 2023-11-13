@@ -637,7 +637,7 @@ export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
   // TODO Search ?
 };
 
-export const someMetadataRecordLinkWithAttibutes: BFFMetadataRecordLink = {
+export const someMetadataRecordLinkWithAttributes: BFFMetadataRecordLink = {
   id: 'nationalSubjectCategoryLinkWithAttibutesId',
   nameInData: 'nationalSubjectCategoryWithAttibutes',
   type: 'recordLink',
@@ -651,7 +651,7 @@ export const someMetadataRecordLinkWithAttibutes: BFFMetadataRecordLink = {
   ]
 };
 
-export const someMetadataRepeatingRecordLinkWithAttibutes: BFFMetadataRecordLink = {
+export const someMetadataRepeatingRecordLinkWithAttributes: BFFMetadataRecordLink = {
   id: 'nationalSubjectCategoryLinkRepeatingWithAttibutesId',
   nameInData: 'nationalSubjectCategoryRepeatingWithAttibutes',
   type: 'recordLink',

@@ -26,7 +26,7 @@ import {
 } from './formDefinition/formDefinition';
 import authRoute from './routes/authRoute';
 import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
-import { generateRecordInfo, transformToCoraData } from './config/transformToCora';
+import { generateRecordInfo, injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -84,6 +84,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
 
     // break out this
     const FORM_MODE_NEW = 'create'; //  handle this better
+    const dataDivider = 'diva'; // TODO: handle in env file?
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(
@@ -91,14 +92,8 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
       payload
     );
 
-    const coraRequestBodyPayload: DataGroup = {
-      "name": "divaOutput",
-      "children": [
-        generateRecordInfo(validationTypeId, 'diva')
-      ],
-    }
-    const newDataGroup = transformData[0] as DataGroup;
-    const response = await postRecordData<RecordWrapper>(coraRequestBodyPayload, 'divaOutput', authToken);
+    const newGroup = injectRecordInfoIntoDataGroup(transformData[0] as DataGroup, validationTypeId, dataDivider);
+    const response = await postRecordData<RecordWrapper>(newGroup, 'divaOutput', authToken);
     const id = extractIdFromRecordInfo(response.data.record.data);
 
     res.status(response.status).json({ id }); // return id for now
