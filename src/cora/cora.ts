@@ -17,7 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosHeaders, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { DataGroup } from '../utils/cora-data/CoraData';
 
 export async function getRecordDataListByType<T>(
   type: string,
@@ -33,7 +34,7 @@ export async function getRecordDataListByType<T>(
 }
 
 export async function postRecordData<T>(
-  payload: unknown,
+  payload: DataGroup,
   type: string,
   authToken: string
 ): Promise<AxiosResponse<T>> {

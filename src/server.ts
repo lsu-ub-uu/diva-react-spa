@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import axios from 'axios';
 import { configureServer } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
 import { listToPool } from './utils/structs/listToPool';
@@ -11,16 +12,21 @@ import {
   BFFText,
   BFFValidationType
 } from './config/bffTypes';
-import { getRecordDataListByType } from './cora/cora';
-import { DataListWrapper } from './utils/cora-data/CoraData';
+import { getRecordDataListByType, postRecordData } from './cora/cora';
+import { DataGroup, DataListWrapper, RecordWrapper } from './utils/cora-data/CoraData';
 import { transformCoraTexts } from './config/transformTexts';
 import { transformMetadata } from './config/transformMetadata';
 import { transformCoraPresentations } from './config/transformPresentations';
-import axios from 'axios';
 import { transformCoraValidationTypes } from './config/transformValidationTypes';
 import { Dependencies } from './formDefinition/formDefinitionsDep';
-import { createFormDefinition } from './formDefinition/formDefinition';
+import {
+  createFormDefinition,
+  createFormMetaData,
+  createFormMetaDataPathLookup,
+} from './formDefinition/formDefinition';
 import authRoute from './routes/authRoute';
+import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
+import { generateRecordInfo, transformToCoraData } from './config/transformToCora';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -48,6 +54,60 @@ app.use('/api/translations/:lang', async (req, res) => {
   }
 });
 
+const getPoolsFromCora = async (poolTypes: string[]) => {
+  const promises = poolTypes.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
+  return await Promise.all(promises);
+}
+
+app.post('/api/record/:validationTypeId', async (req, res) => {
+  try {
+    const { validationTypeId } = req.params;
+    const payload = req.body;
+    const authToken = '4acc77dd-c486-42f8-b56a-c79585509112'; // TODO fix this
+
+    const types = ['metadata', 'validationType'];
+    const result = await getPoolsFromCora(types);
+    const metadata = transformMetadata(result[0].data);
+    const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
+
+    const validationTypes = transformCoraValidationTypes(result[1].data);
+    const validationTypePool = listToPool<BFFValidationType>(validationTypes);
+
+    if (!validationTypePool.has(validationTypeId)) {
+      throw new Error(`Validation type [${validationTypeId}] does not exist`);
+    }
+
+    const dependencies = {
+      validationTypePool: validationTypePool,
+      metadataPool: metadataPool,
+    } as Dependencies;
+
+    // break out this
+    const FORM_MODE_NEW = 'create'; //  handle this better
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      payload
+    );
+
+    const coraRequestBodyPayload: DataGroup = {
+      "name": "divaOutput",
+      "children": [
+        generateRecordInfo(validationTypeId, 'diva')
+      ],
+    }
+    const newDataGroup = transformData[0] as DataGroup;
+    const response = await postRecordData<RecordWrapper>(coraRequestBodyPayload, 'divaOutput', authToken);
+    const id = extractIdFromRecordInfo(response.data.record.data);
+
+    res.status(response.status).json({ id }); // return id for now
+  } catch (error: unknown) {
+    // error: AxiosError
+    res.status(500).json('Error occurred while creating record');
+  }
+});
+
 app.use('/api/form/:validationTypeId', async (req, res) => {
   try {
     const { validationTypeId } = req.params;
@@ -57,7 +117,6 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
 
     const metadata = transformMetadata(result[0].data);
     const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
-    // console.log(result[3].data);
     const presentation = transformCoraPresentations(result[1].data);
     const guiElements = transformCoraPresentations(result[3].data);
 

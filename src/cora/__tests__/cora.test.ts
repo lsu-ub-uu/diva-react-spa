@@ -25,7 +25,6 @@ import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';
 import { BFFText } from '../../config/bffTypes';
 import { createTextDefinition } from '../../textDefinition/textDefinition';
-import { extractIdFromRecordInfo } from '../../utils/cora-data/CoraDataTransforms';
 
 describe('getRecordDataListByType', () => {
   let mockAxios: MockAdapter;
