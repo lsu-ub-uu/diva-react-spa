@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosHeaders, AxiosResponse } from 'axios';
 
 export async function getRecordDataListByType<T>(
   type: string,
@@ -29,5 +29,21 @@ export async function getRecordDataListByType<T>(
   };
 
   const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
+  return response;
+}
+
+export async function postRecordData<T>(
+  payload: unknown,
+  type: string,
+  authToken: string
+): Promise<AxiosResponse<T>> {
+  const apiUrl: string = `/record/${type}`;
+  const headers = {
+    'Accept': 'application/vnd.uub.record+json',
+    'Content-Type': 'application/vnd.uub.record+json',
+    'Authtoken': `${authToken}`
+  };
+
+  const response: AxiosResponse<T> = await axios.post(apiUrl, payload,  { headers });
   return response;
 }

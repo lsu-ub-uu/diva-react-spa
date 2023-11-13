@@ -19,12 +19,13 @@
 
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { getRecordDataListByType } from '../cora';
-import { DataListWrapper } from '../../utils/cora-data/CoraData';
+import { getRecordDataListByType, postRecordData } from '../cora';
+import { DataGroup, DataListWrapper, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';
 import { BFFText } from '../../config/bffTypes';
 import { createTextDefinition } from '../../textDefinition/textDefinition';
+import { extractIdFromRecordInfo } from '../../utils/cora-data/CoraDataTransforms';
 
 describe('getRecordDataListByType', () => {
   let mockAxios: MockAdapter;
@@ -89,19 +90,101 @@ describe('real', () => {
     });
   });
 
-  describe('real getRecordDataListByType', () => {
+  describe('real createRecord', () => {
     // @ts-ignore
-    it.skip('should make a real API call without authToken', async () => {
+    it('should make a real post API call to create a record with authToken', async () => {
       const { CORA_API_URL } = process.env;
       axios.defaults.baseURL = CORA_API_URL;
       console.log(axios.defaults.baseURL);
-      const response = await getRecordDataListByType<DataListWrapper>('text', '');
-      expect(response.status).toBe(200);
-      const texts = transformCoraTexts(response.data);
-      const textPool = listToPool<BFFText>(texts);
-      const defs = createTextDefinition({ textPool }, 'en');
-      expect(Object.keys(defs).length).toBe(6030);
-      expect(response.data.dataList.containDataOfType).toBe('text');
+
+      const payload: DataGroup = {
+          "name": "divaOutput",
+          "children": [
+            {
+              "name": "recordInfo",
+              "children": [
+                {
+                  "name": "dataDivider",
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "system"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "diva"
+                    }
+                  ]
+                },
+                {
+                  "name": "validationType",
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "validationType"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "manuscript"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "title",
+              "children": [
+                {
+                  "name": "mainTitle",
+                  "value": "Moby Dick"
+                }
+              ],
+              "attributes": {
+                "language": "swe"
+              }
+            },
+            {
+              "name": "contributors",
+              "children": [
+                {
+                  "name": "author",
+                  "repeatId": "0",
+                  "children": [
+                    {
+                      "name": "givenName",
+                      "value": "Kalle"
+                    },
+                    {
+                      "name": "familyName",
+                      "value": "Kulasson"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "nationalSubjectCategory",
+              "repeatId": "0",
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "nationalSubjectCategory"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "nationalSubjectCategory:6325359248717964"
+                }
+              ]
+            }
+          ]
+        }
+      ;
+      const authToken = '4acc77dd-c486-42f8-b56a-c79585509112';
+
+      const response = await postRecordData<RecordWrapper>(payload, 'divaOutput', authToken);
+      expect(response.status).toBe(201);
+      // const id = extractIdFromRecordInfo(response.data.record.data);
+
     });
   });
 });
