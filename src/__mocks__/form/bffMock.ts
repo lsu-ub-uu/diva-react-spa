@@ -722,6 +722,11 @@ export const someNewSimpleMetadataGroupWithAttributes: BFFMetadataGroup = {
       childId: 'someMetadataNumberVarId',
       repeatMin: '1',
       repeatMax: 'X'
+    },
+    {
+      childId: 'someMetadataNumberWithAttributeVarId',
+      repeatMin: '1',
+      repeatMax: '2'
     }
   ]
 };

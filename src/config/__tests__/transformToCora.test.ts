@@ -39,7 +39,8 @@ import {
   someMetadataNumberVar,
   someSimpleValidationTypeRepeatingGroups,
   someNewSimpleMetadataGroupRepeatingGroups,
-  someMetadataTextVariableWithAttributeVar
+  someMetadataTextVariableWithAttributeVar,
+  someMetadataNumberVarWithAttribute
 } from '../../__mocks__/form/bffMock';
 import {
   createFormMetaData,
@@ -66,7 +67,8 @@ describe('transformToCora', () => {
       someNewSimpleMetadataGroupWithAttributes,
       someMetadataNumberVar,
       someNewSimpleMetadataGroupRepeatingGroups,
-      someMetadataTextVariableWithAttributeVar
+      someMetadataTextVariableWithAttributeVar,
+      someMetadataNumberVarWithAttribute
     ]);
 
     dependencies = {
@@ -152,6 +154,14 @@ describe('transformToCora', () => {
           name: 'someNameInDataNumberVar',
           value: '4',
           repeatId: '3'
+        },
+        {
+          name: 'someNameInDataNumberWithAttributeVar',
+          value: '1',
+          attributes: {
+            colour: 'someAttributeValue3'
+          },
+          repeatId: '0'
         }
       ],
       attributes: {

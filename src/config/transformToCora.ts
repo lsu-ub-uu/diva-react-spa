@@ -88,12 +88,14 @@ export const transformToCoraData = (
         value.forEach((item: DataGroup | DataAtomic, index: number) => {
           if ('value' in item) {
             const atomic = item as DataAtomic;
+            const attributes = findChildrenAttributes(atomic);
             result.push(
               createLeaf(
                 currentMetadataLookup,
                 fieldKey,
                 atomic.value,
-                shouldDataHaveRepeatId ? index.toString() : undefined
+                shouldDataHaveRepeatId ? index.toString() : undefined,
+                attributes
               )
             );
           } else {

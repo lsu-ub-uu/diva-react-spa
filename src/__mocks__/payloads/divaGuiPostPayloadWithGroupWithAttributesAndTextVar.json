@@ -21,6 +21,12 @@
       {
         "value": "4"
       }
+    ],
+    "someNameInDataNumberWithAttributeVar": [
+      {
+        "value": "1",
+        "_colour": "someAttributeValue3"
+      }
     ]
   }
 }
