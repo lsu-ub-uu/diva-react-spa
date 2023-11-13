@@ -21,6 +21,8 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import React, { useEffect } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
+import axios from 'axios';
+import { FieldValues } from 'react-hook-form';
 import { useBackdrop, FormGenerator } from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
@@ -28,8 +30,10 @@ import {
   createDefaultValuesFromFormSchema,
   generateYupSchemaFromFormSchema,
 } from '../components/FormGenerator/utils';
+import { useSnackbar } from "notistack";
 
 export const DynamicFormPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const { setBackdrop } = useBackdrop();
   const { error, isLoading, schema } =
@@ -38,6 +42,17 @@ export const DynamicFormPage = () => {
   useEffect(() => {
     setBackdrop(isLoading);
   }, [isLoading, setBackdrop]);
+
+  const handleSubmit = async (values: FieldValues) => {
+    const response = await axios.post(
+      `/record/${schema?.validationTypeId}`,
+      values,
+    );
+    enqueueSnackbar(`Record was successfully created ${response.data.id}`, {
+      variant: 'success',
+      anchorOrigin: { vertical: 'top', horizontal: 'right' },
+    });
+  };
 
   if (error) return <Alert severity='error'>{error}</Alert>;
   if (isLoading)
@@ -56,7 +71,7 @@ export const DynamicFormPage = () => {
       <div>
         <Stack spacing={2}>
           <FormGenerator
-            onSubmit={(values) => console.log(JSON.stringify(values, null, 2))}
+            onSubmit={handleSubmit}
             formSchema={schema as FormSchema}
           />
           <p>Form def:</p>
