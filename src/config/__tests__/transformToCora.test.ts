@@ -40,7 +40,8 @@ import {
   someSimpleValidationTypeRepeatingGroups,
   someNewSimpleMetadataGroupRepeatingGroups,
   someMetadataTextVariableWithAttributeVar,
-  someMetadataNumberVarWithAttribute
+  someMetadataNumberVarWithAttribute,
+  someMetadataRecordLinkWithAttibutes
 } from '../../__mocks__/form/bffMock';
 import {
   createFormMetaData,
@@ -68,7 +69,8 @@ describe('transformToCora', () => {
       someMetadataNumberVar,
       someNewSimpleMetadataGroupRepeatingGroups,
       someMetadataTextVariableWithAttributeVar,
-      someMetadataNumberVarWithAttribute
+      someMetadataNumberVarWithAttribute,
+      someMetadataRecordLinkWithAttibutes
     ]);
 
     dependencies = {
@@ -162,6 +164,22 @@ describe('transformToCora', () => {
             colour: 'someAttributeValue3'
           },
           repeatId: '0'
+        },
+        {
+          name: 'nationalSubjectCategoryWithAttibutes',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'nationalSubjectCategory2'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'recordLinkWithAttrib'
+            }
+          ],
+          attributes: {
+            colour: 'someAttributeValue3'
+          }
         }
       ],
       attributes: {

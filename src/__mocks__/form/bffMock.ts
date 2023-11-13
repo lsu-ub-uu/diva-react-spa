@@ -637,6 +637,20 @@ export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
   // TODO Search ?
 };
 
+export const someMetadataRecordLinkWithAttibutes: BFFMetadataRecordLink = {
+  id: 'nationalSubjectCategoryLinkWithAttibutesId',
+  nameInData: 'nationalSubjectCategoryWithAttibutes',
+  type: 'recordLink',
+  textId: 'nationalSubjectCategoryLinkText',
+  defTextId: 'nationalSubjectCategoryLinkDefText',
+  linkedRecordType: 'nationalSubjectCategory2',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ]
+};
+
 export const pSomeGuiElementLink: BFFGuiElement = {
   id: 'pSomeGuiElementLinkId',
   url: 'http://www.google.se',
@@ -644,7 +658,6 @@ export const pSomeGuiElementLink: BFFGuiElement = {
   presentAs: 'link',
   type: 'guiElementLink'
 };
-
 
 export const someSimpleValidationTypeData: BFFValidationType = {
   id: 'someSimpleValidationTypeId',
@@ -727,6 +740,11 @@ export const someNewSimpleMetadataGroupWithAttributes: BFFMetadataGroup = {
       childId: 'someMetadataNumberWithAttributeVarId',
       repeatMin: '1',
       repeatMax: '2'
+    },
+    {
+      childId: 'nationalSubjectCategoryLinkWithAttibutesId',
+      repeatMin: '1',
+      repeatMax: '1'
     }
   ]
 };

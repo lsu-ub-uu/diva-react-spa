@@ -41,14 +41,17 @@ const generateAtomicValue = (name: string, value: any): DataAtomic => ({
 const generateRecordLink = (
   name: string,
   linkedRecordType: string,
-  linkedRecordId: string
-): RecordLink => ({
-  name,
-  children: [
-    generateAtomicValue('linkedRecordType', linkedRecordType),
-    generateAtomicValue('linkedRecordId', linkedRecordId)
-  ]
-});
+  linkedRecordId: string,
+  inAttributes: Attributes | undefined
+): RecordLink =>
+  removeEmpty({
+    name,
+    attributes: inAttributes,
+    children: [
+      generateAtomicValue('linkedRecordType', linkedRecordType),
+      generateAtomicValue('linkedRecordId', linkedRecordId)
+    ]
+  });
 
 const createLeaf = (
   metaData: FormMetaData,
@@ -65,7 +68,12 @@ const createLeaf = (
       repeatId
     } as DataAtomic);
   }
-  return generateRecordLink(name, metaData.linkedRecordType ?? '', value) as RecordLink;
+  return generateRecordLink(
+    name,
+    metaData.linkedRecordType ?? '',
+    value,
+    inAttributes
+  ) as RecordLink;
 };
 
 export const transformToCoraData = (
