@@ -42,7 +42,8 @@ const generateRecordLink = (
   name: string,
   linkedRecordType: string,
   linkedRecordId: string,
-  inAttributes: Attributes | undefined
+  inAttributes: Attributes | undefined,
+  repeatId: string | undefined = undefined
 ): RecordLink =>
   removeEmpty({
     name,
@@ -50,7 +51,8 @@ const generateRecordLink = (
     children: [
       generateAtomicValue('linkedRecordType', linkedRecordType),
       generateAtomicValue('linkedRecordId', linkedRecordId)
-    ]
+    ],
+    repeatId
   });
 
 const createLeaf = (
@@ -72,7 +74,8 @@ const createLeaf = (
     name,
     metaData.linkedRecordType ?? '',
     value,
-    inAttributes
+    inAttributes,
+    repeatId
   ) as RecordLink;
 };
 

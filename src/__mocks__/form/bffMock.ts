@@ -651,6 +651,20 @@ export const someMetadataRecordLinkWithAttibutes: BFFMetadataRecordLink = {
   ]
 };
 
+export const someMetadataRepeatingRecordLinkWithAttibutes: BFFMetadataRecordLink = {
+  id: 'nationalSubjectCategoryLinkRepeatingWithAttibutesId',
+  nameInData: 'nationalSubjectCategoryRepeatingWithAttibutes',
+  type: 'recordLink',
+  textId: 'nationalSubjectCategoryLinkText',
+  defTextId: 'nationalSubjectCategoryLinkDefText',
+  linkedRecordType: 'nationalSubjectCategory2',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ]
+};
+
 export const pSomeGuiElementLink: BFFGuiElement = {
   id: 'pSomeGuiElementLinkId',
   url: 'http://www.google.se',
@@ -745,6 +759,11 @@ export const someNewSimpleMetadataGroupWithAttributes: BFFMetadataGroup = {
       childId: 'nationalSubjectCategoryLinkWithAttibutesId',
       repeatMin: '1',
       repeatMax: '1'
+    },
+    {
+      childId: 'nationalSubjectCategoryLinkRepeatingWithAttibutesId',
+      repeatMin: '1',
+      repeatMax: '2'
     }
   ]
 };

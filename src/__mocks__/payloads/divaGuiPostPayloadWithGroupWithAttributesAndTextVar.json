@@ -31,6 +31,12 @@
     "nationalSubjectCategoryWithAttibutes": {
       "value": "recordLinkWithAttrib",
       "_colour": "someAttributeValue3"
-    }
+    },
+    "nationalSubjectCategoryRepeatingWithAttibutes": [
+      {
+        "value": "recordLinkRepeatingWithAttrib",
+        "_colour": "someAttributeValue4"
+      }
+    ]
   }
 }
