@@ -72,19 +72,38 @@ describe('getRecordDataListByType', () => {
   });
 });
 
-describe('real getRecordDataListByType', () => {
-  // @ts-ignore
-  it.skip('should make a real API call without authToken', async () => {
-    const { CORA_API_URL } = process.env;
-    axios.defaults.baseURL = CORA_API_URL;
-    console.log(axios.defaults.baseURL);
-    const response = await getRecordDataListByType<DataListWrapper>('text', '');
-    expect(response.status).toBe(200);
-    const texts = transformCoraTexts(response.data);
-    const textPool = listToPool<BFFText>(texts);
-    const defs = createTextDefinition({ textPool }, 'en');
-    expect(Object.keys(defs).length).toBe(6030);
-    expect(response.data.dataList.containDataOfType).toBe('text');
+describe('real', () => {
+  describe('real getRecordDataListByType', () => {
+    // @ts-ignore
+    it.skip('should make a real API call without authToken', async () => {
+      const { CORA_API_URL } = process.env;
+      axios.defaults.baseURL = CORA_API_URL;
+      console.log(axios.defaults.baseURL);
+      const response = await getRecordDataListByType<DataListWrapper>('text', '');
+      expect(response.status).toBe(200);
+      const texts = transformCoraTexts(response.data);
+      const textPool = listToPool<BFFText>(texts);
+      const defs = createTextDefinition({ textPool }, 'en');
+      expect(Object.keys(defs).length).toBe(6030);
+      expect(response.data.dataList.containDataOfType).toBe('text');
+    });
+  });
+
+  describe('real getRecordDataListByType', () => {
+    // @ts-ignore
+    it.skip('should make a real API call without authToken', async () => {
+      const { CORA_API_URL } = process.env;
+      axios.defaults.baseURL = CORA_API_URL;
+      console.log(axios.defaults.baseURL);
+      const response = await getRecordDataListByType<DataListWrapper>('text', '');
+      expect(response.status).toBe(200);
+      const texts = transformCoraTexts(response.data);
+      const textPool = listToPool<BFFText>(texts);
+      const defs = createTextDefinition({ textPool }, 'en');
+      expect(Object.keys(defs).length).toBe(6030);
+      expect(response.data.dataList.containDataOfType).toBe('text');
+    });
   });
 });
+
 
