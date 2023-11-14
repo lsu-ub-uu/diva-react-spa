@@ -1,12 +1,3 @@
-export interface AuthInterface {
-  id: string;
-  validForNoSeconds: string;
-  idInUserStorage: string;
-  idFromLogin: string;
-  firstName: string;
-  lastName: string;
-}
-
 export class Auth {
   id: string;
 
