@@ -62,9 +62,10 @@ const getPoolsFromCora = async (poolTypes: string[]) => {
 app.post('/api/record/:validationTypeId', async (req, res) => {
   try {
     const { validationTypeId } = req.params;
+    const authToken = req.header('authToken') ?? '';
+
     const payload = req.body;
     const recordType = Object.keys(payload)[0];
-    const authToken = '4acc77dd-c486-42f8-b56a-c79585509112'; // TODO fix this
 
     const types = ['metadata', 'validationType'];
     const result = await getPoolsFromCora(types);
@@ -100,8 +101,9 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     res.status(response.status).json({ id }); // return id for now
   } catch (error: unknown) {
     //@ts-ignore
+
     console.log(error.message);
-    res.status(500).json('Error occurred while creating record');
+    res.status(500).json(error);
   }
 });
 
