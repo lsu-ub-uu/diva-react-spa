@@ -36,11 +36,11 @@ import { Typography, LinkButton, Card } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
-// import { DivaTypographyVariants } from './Typography/Typography';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
+  onInvalid?: () => void;
 }
 
 export const renderLeafComponent = (
@@ -123,7 +123,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: false,
+    shouldFocusError: true,
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
@@ -293,7 +293,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   return (
     <Box
       component='form'
-      onSubmit={handleSubmit((values) => props.onSubmit(values))}
+      onSubmit={handleSubmit(
+        (values) => props.onSubmit(values),
+        () => props.onInvalid && props.onInvalid(),
+      )}
     >
       <Card
         variant='variant6'
