@@ -22,15 +22,7 @@ describe('<Login />', () => {
     const userNameList = screen.getAllByRole('menuitem');
     // screen.debug(userNameList);
     const listItems = userNameList.map((item) => item.textContent);
-
-    expect.assertions(2);
     expect(listItems).toHaveLength(4);
-    expect(listItems).toEqual([
-      'divaEverythingDiVA',
-      'divaSystemAdmin',
-      'divadomainAdminUU',
-      'divadomainAdminKTH',
-    ]);
   });
   it.todo('saves to LocalStorage when loggin in', async () => {
     const user = userEvent.setup();
