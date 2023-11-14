@@ -56,9 +56,7 @@ export const Login = (): JSX.Element => {
           alignItems='center'
         >
           <Box>
-            {authState.userSession.idFromLogin}
-            {authState.userSession.firstName}
-            {authState.userSession.lastName}
+            {`${authState.userSession.firstName} ${authState.userSession.lastName}`}
           </Box>
           <Avatar
             alt='Logout user'
@@ -86,7 +84,7 @@ export const Login = (): JSX.Element => {
                 key={index}
                 onClick={(event) => handleSelection(event, devAccount)}
               >
-                diva{devAccount.firstName}
+                {devAccount.firstName}
                 {devAccount.lastName}
               </MenuItem>
             ))}
