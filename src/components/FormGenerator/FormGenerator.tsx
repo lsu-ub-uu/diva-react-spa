@@ -35,10 +35,12 @@ import {
 import { Typography, LinkButton, Card } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
+import { DivaTypographyVariants } from '../Typography/Typography';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
+  onInvalid?: () => void;
 }
 
 export const renderLeafComponent = (
@@ -103,11 +105,25 @@ export const renderLeafComponent = (
   }
 };
 
+const headlineLevelToTypographyVariant = (
+  headlineLevel: string | undefined,
+): DivaTypographyVariants['variant'] => {
+  let typographyVariant: DivaTypographyVariants['variant'];
+  if (headlineLevel !== undefined) {
+    typographyVariant =
+      `${headlineLevel}TextStyle` as DivaTypographyVariants['variant'];
+  } else {
+    typographyVariant = 'h2TextStyle';
+  }
+
+  return typographyVariant as DivaTypographyVariants['variant']; // check style to return as default
+};
+
 export const FormGenerator = (props: FormGeneratorProps) => {
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: false,
+    shouldFocusError: true,
     defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
@@ -188,6 +204,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           sx={{ mb: 1 }}
           key={reactKey}
         >
+          <Typography
+            text={component?.label ?? ''}
+            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
+          />
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             createFormComponents(
@@ -202,6 +222,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     if (isComponentGroup(component) && isComponentRepeating(component)) {
       return (
         <Box key={reactKey}>
+          <Typography
+            text={component?.label ?? ''}
+            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
+          />
           <FieldArrayComponent
             control={control}
             component={component}
@@ -269,7 +293,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   return (
     <Box
       component='form'
-      onSubmit={handleSubmit((values) => props.onSubmit(values))}
+      onSubmit={handleSubmit(
+        (values) => props.onSubmit(values),
+        () => props.onInvalid && props.onInvalid(),
+      )}
     >
       <Card
         variant='variant6'

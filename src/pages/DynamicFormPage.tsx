@@ -19,8 +19,11 @@
 
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
+import axios from 'axios';
+import { useSnackbar, VariantType } from 'notistack';
+import { FieldValues } from 'react-hook-form';
 import { useBackdrop, FormGenerator } from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
@@ -30,14 +33,42 @@ import {
 } from '../components/FormGenerator/utils';
 
 export const DynamicFormPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
   const { error, isLoading, schema } =
     useCoraFormSchemaByValidationType('manuscript');
 
+  const notification = (message: string, variant: VariantType) => {
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { vertical: 'top', horizontal: 'right' },
+    });
+  };
+
   useEffect(() => {
-    setBackdrop(isLoading);
-  }, [isLoading, setBackdrop]);
+    setBackdrop(isLoading || isSubmitting);
+  }, [isLoading, setBackdrop, isSubmitting]);
+
+  const handleSubmit = async (values: FieldValues) => {
+    try {
+      setIsSubmitting(true);
+      const response = await axios.post(
+        `/record/${schema?.validationTypeId}`,
+        values,
+      );
+      notification(
+        `Record was successfully created ${response.data.id}`,
+        'success',
+      );
+    } catch (err: any) {
+      setIsSubmitting(false);
+      notification(`${err.message}`, 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (error) return <Alert severity='error'>{error}</Alert>;
   if (isLoading)
@@ -56,7 +87,8 @@ export const DynamicFormPage = () => {
       <div>
         <Stack spacing={2}>
           <FormGenerator
-            onSubmit={(values) => console.log(JSON.stringify(values, null, 2))}
+            onSubmit={handleSubmit}
+            onInvalid={() => notification(`Form is invalid`, 'error')}
             formSchema={schema as FormSchema}
           />
           <p>Form def:</p>

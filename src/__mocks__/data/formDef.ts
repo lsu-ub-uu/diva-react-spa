@@ -2808,3 +2808,154 @@ export const formDefWithARepeatingContainer: FormSchema = {
     ],
   },
 };
+
+export const formDefWithGroupWithSpecifiedHeadlineLevel = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    headlineLevel: 'h1',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        headlineLevel: 'h3',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'author',
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 10,
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'eyeColor',
+            placeholder: 'Select eye color',
+            tooltip: {
+              title: 'Eye color',
+              body: 'state the author eye color',
+            },
+            finalValue: 'blue',
+            label: 'Eye color',
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+        components: [
+          {
+            type: 'text',
+            name: 'presentationTypeTextCollectionVarDefText',
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            validation: {
+              type: 'regex',
+              pattern: '^[a-zA-Z]$',
+            },
+            inputType: 'input',
+          },
+        ],
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithGroupWithDefaultHeadlineLevel = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    headlineLevel: 'h1',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'author',
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 10,
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'eyeColor',
+            placeholder: 'Select eye color',
+            tooltip: {
+              title: 'Eye color',
+              body: 'state the author eye color',
+            },
+            finalValue: 'blue',
+            label: 'Eye color',
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+        components: [
+          {
+            type: 'text',
+            name: 'presentationTypeTextCollectionVarDefText',
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            validation: {
+              type: 'regex',
+              pattern: '^[a-zA-Z]$',
+            },
+            inputType: 'input',
+          },
+        ],
+      },
+    ],
+    mode: 'input',
+  },
+};

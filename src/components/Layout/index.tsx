@@ -19,12 +19,6 @@ export const Layout = () => {
         <MemberBar color='#efefef'>
           <p>AppBar</p>
         </MemberBar>
-        {/* MemberBar color='#F2D000'>
-          <img
-            src='./kau_logga.png'
-            alt='Logo of Karlstads University'
-          />
-        </MemberBar> */}
         <Header />
       </AppBar>
       <Container
