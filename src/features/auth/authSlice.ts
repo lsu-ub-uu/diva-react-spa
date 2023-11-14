@@ -37,7 +37,7 @@ export const createInitialState = (): UserSession | null => {
 };
 
 const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: createInitialState() !== null,
   isAuthenticating: false,
   hasError: false,
   error: '',

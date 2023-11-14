@@ -7,11 +7,11 @@ import {
   AboutUsersPage,
   FormPage,
   ReactHookFormTestPage,
-  RecordTypePage,
   PersonSearchPage,
   PersonCreatePage,
   DynamicFormPage,
 } from '../pages';
+import PrivateRoutes from './PrivateRoutes';
 
 export const routes = [
   {
@@ -32,8 +32,13 @@ export const routes = [
         element: <FormPage />,
       },
       {
-        path: '/recordtype',
-        element: <RecordTypePage />,
+        element: <PrivateRoutes />,
+        children: [
+          {
+            path: '/form',
+            element: <DynamicFormPage />,
+          },
+        ],
       },
       {
         path: '/author-form',
