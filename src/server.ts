@@ -59,6 +59,16 @@ const getPoolsFromCora = async (poolTypes: string[]) => {
   return await Promise.all(promises);
 }
 
+const errorHandler = (error: unknown) => {
+  //@ts-ignore
+  const message: string = (error.message ?? 'Unknown error') as string;
+  const status = axios.isAxiosError(error) ? error.response?.status : 500;
+  return {
+    message,
+    status: status ?? 500,
+  }
+}
+
 app.post('/api/record/:validationTypeId', async (req, res) => {
   try {
     const { validationTypeId } = req.params;
@@ -100,16 +110,15 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
 
     res.status(response.status).json({ id }); // return id for now
   } catch (error: unknown) {
-    //@ts-ignore
-
-    console.log(error.message);
-    res.status(500).json(error);
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();;
   }
 });
 
 app.use('/api/form/:validationTypeId', async (req, res) => {
   try {
     const { validationTypeId } = req.params;
+    // const authToken = req.header('authToken') ?? '';
     const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
     const result = await getPoolsFromCora(types);
 
@@ -139,9 +148,8 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
     const formDef = createFormDefinition(dependencies, validationTypeId, 'new');
     res.status(200).json(formDef);
   } catch (error: unknown) {
-    //@ts-ignore
-    console.log(error.message);
-    res.status(500).json('Internal server error').send();
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
   }
 });
 
