@@ -23,7 +23,7 @@ export const requestAuthTokenOnLogin = async (
     httpClient
       .post<AuthToken>(parameters)
       .then((authToken) => {
-        const token = extactDataFromResult(authToken);
+        const token = extractDataFromResult(authToken);
         resolve(token);
       })
       .catch((error: unknown) => {
@@ -32,7 +32,7 @@ export const requestAuthTokenOnLogin = async (
   });
 };
 
-const extactDataFromResult = (newAuthToken: AuthToken) => {
+const extractDataFromResult = (newAuthToken: AuthToken) => {
   let id = '';
   let validForNoSeconds = '';
   let idInUserStorage = '';

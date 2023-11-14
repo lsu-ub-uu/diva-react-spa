@@ -17,332 +17,400 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  transformToCoraData,
-} from '../transformToCora';
-import testFormPayloadWithTitleGroupWithMainTitleTextVar from '../../__mocks__/payloads/divaGuiPostPayload.json';
-import testFormPayloadWithRepeatingTitle from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingTitle.json';
-import testFormPayloadWithRepeatingNumberAndTextVar
-  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberAndTextVar.json';
-import testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup
-  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberAndTextVarAndChildGroup.json';
-import testFormPayloadWithRepeatingGroup from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroup.json';
-import testFormPayloadWithRepeatingGroupAndVar
-  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroupAndVar.json';
-import testFormPayloadWithGroupAttribute
-  from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupAttribute.json';
-import testFormPayloadWithVarAttribute
-  from '../../__mocks__/payloads/divaGuiPostPayloadWithVariableAttribute.json';
-import testFormPayloadWithRepeatingNumberVarWithAttributes
-  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingNumberVarWithAttributes.json';
-import testFormPayloadWithRepeatingGroupAttributes
-  from '../../__mocks__/payloads/divaGuiPostPayloadWithRepeatingGroupAttributes.json';
+import { generateRecordInfo, injectRecordInfoIntoDataGroup, transformToCoraData } from '../transformToCora';
+import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
+import testFormPayloadWithGroupWithAttributesAndTextVar from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
+import testFormPayloadWithGroupWithGroupWithRepeatingGroups from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithRepeatingGroups.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
+import { Lookup } from '../../utils/structs/lookup';
+import { BFFMetadata, BFFMetadataItemCollection, BFFValidationType } from '../bffTypes';
+import { Dependencies } from '../../formDefinition/formDefinitionsDep';
+import { listToPool } from '../../utils/structs/listToPool';
+import {
+  someMetadataChildGroup,
+  someMetadataRecordLink,
+  someMetadataTextVariable,
+  someNewSimpleMetadataGroup,
+  someSimpleValidationTypeData,
+  someSimpleValidationTypeDataWithAttributes,
+  someNewSimpleMetadataGroupWithAttributes,
+  someMetadataNumberVar,
+  someSimpleValidationTypeRepeatingGroups,
+  someNewSimpleMetadataGroupRepeatingGroups,
+  someMetadataTextVariableWithAttributeVar,
+  someMetadataNumberVarWithAttribute,
+  someMetadataRepeatingRecordLinkWithAttributes,
+  someMetadataRecordLinkWithAttributes,
+} from '../../__mocks__/form/bffMock';
+import {
+  createFormMetaData,
+  createFormMetaDataPathLookup
+} from '../../formDefinition/formDefinition';
 
 describe('transformToCora', () => {
+  let validationTypePool: Lookup<string, BFFValidationType>;
+  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
+  const FORM_MODE_NEW = 'new'; // todo handle edit
+  let dependencies: Dependencies;
+
+  beforeEach(() => {
+    validationTypePool = listToPool<BFFValidationType>([
+      someSimpleValidationTypeData,
+      someSimpleValidationTypeDataWithAttributes,
+      someSimpleValidationTypeRepeatingGroups
+    ]);
+    metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
+      someMetadataTextVariable,
+      someMetadataRecordLink,
+      someMetadataChildGroup,
+      someNewSimpleMetadataGroup,
+      someNewSimpleMetadataGroupWithAttributes,
+      someMetadataNumberVar,
+      someNewSimpleMetadataGroupRepeatingGroups,
+      someMetadataTextVariableWithAttributeVar,
+      someMetadataNumberVarWithAttribute,
+      someMetadataRepeatingRecordLinkWithAttributes,
+      someMetadataRecordLinkWithAttributes
+    ]);
+
+    dependencies = {
+      validationTypePool: validationTypePool,
+      metadataPool: metadataPool
+    };
+  });
+
   it('should take a form payload with someRecordType group containing title group with a mainTitle text variable', () => {
     const expected: DataGroup = {
-      name: 'someRecordType',
+      name: 'someNewMetadataGroupNameInData',
       children: [
         {
-          name: 'title',
+          repeatId: '0',
+          name: 'someNameInData',
+          value: 'firstValue'
+        },
+        {
+          name: 'someChildGroupNameInData',
           children: [
             {
-              name: 'mainTitle',
-              value: 'someMainTitleValue',
-            },
-          ],
+              name: 'someNameInData',
+              value: 'secondValue'
+            }
+          ]
         },
-      ],
+        {
+          name: 'nationalSubjectCategory',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'nationalSubjectCategory'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'linkValue'
+            }
+          ]
+        }
+      ]
     };
-    const transformData = transformToCoraData(testFormPayloadWithTitleGroupWithMainTitleTextVar);
+    const validationTypeId = 'someSimpleValidationTypeId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink
+    );
     expect(transformData[0]).toStrictEqual(expected);
   });
 
-  it('should take a form payload with someRecordType group containing repeating text variable', () => {
+  it('should take a form payload with group containing attributes, numberVar with repeatMax', () => {
     const expected: DataGroup = {
-      name: 'someRecordType',
+      name: 'someNewMetadataGroupWithAttributesNameInData',
       children: [
         {
-          repeatId: '0',
-          name: 'title',
-          value: 'value0',
+          name: 'someNameInData',
+          value: 'Erik'
         },
         {
-          repeatId: '1',
-          name: 'title',
-          value: 'value1',
-        },
-      ],
-    };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingTitle);
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-  it('should take a form payload with someRecordType group containing repeating text variable and number variable', () => {
-    const expected: DataGroup = {
-      name: 'someRecordType',
-      children: [
-        {
-          name: 'exampleNumberVar',
-          repeatId: '0',
-          value: '12.99',
+          name: 'someNameInDataTextWithAttrib',
+          value: 'AttribVar',
+          attributes: {
+            colour: 'someAttributeValue3'
+          }
         },
         {
-          name: 'exampleNumberVar',
-          repeatId: '1',
-          value: '1.34',
+          name: 'someNameInDataNumberVar',
+          value: '1',
+          repeatId: '0'
         },
         {
-          name: 'exampleTextVar',
-          repeatId: '0',
-          value: 'value0',
+          name: 'someNameInDataNumberVar',
+          value: '2',
+          repeatId: '1'
         },
         {
-          name: 'exampleTextVar',
-          repeatId: '1',
-          value: 'value1',
-        },
-      ],
-    };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVar);
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-
-  it('should take a form payload with someRecordType group containing repeating text variable and number variable and childGroup', () => {
-    const expected: DataGroup = {
-      name: 'someRecordType',
-      children: [
-        {
-          name: 'exampleNumberVar',
-          repeatId: '0',
-          value: '12.99',
+          name: 'someNameInDataNumberVar',
+          value: '3',
+          repeatId: '2'
         },
         {
-          name: 'exampleNumberVar',
-          repeatId: '1',
-          value: '1.34',
+          name: 'someNameInDataNumberVar',
+          value: '4',
+          repeatId: '3'
         },
         {
-          name: 'exampleTextVar',
-          repeatId: '0',
-          value: 'value0',
+          name: 'someNameInDataNumberWithAttributeVar',
+          value: '1',
+          attributes: {
+            colour: 'someAttributeValue3'
+          },
+          repeatId: '0'
         },
         {
-          name: 'exampleTextVar',
-          repeatId: '1',
-          value: 'value1',
-        },
-        {
-          name: 'someChildGroup',
+          name: 'nationalSubjectCategoryWithAttibutes',
           children: [
             {
-              name: 'mainTitle',
-              value: 'someMainTitleValue',
+              name: 'linkedRecordType',
+              value: 'nationalSubjectCategory2'
             },
+            {
+              name: 'linkedRecordId',
+              value: 'recordLinkWithAttrib'
+            }
           ],
+          attributes: {
+            colour: 'someAttributeValue3'
+          }
         },
-      ],
-    };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberAndTextVarAndChildGroup);
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-
-  it('should take a form payload with someRecordType group containing repeating group', () => {
-    const expected: DataGroup = {
-      name: 'someRecordType',
-      children: [
         {
-          name: 'author',
+          name: 'nationalSubjectCategoryRepeatingWithAttibutes',
           repeatId: '0',
           children: [
             {
-              name: 'givenName',
-              value: 'Egil',
+              name: 'linkedRecordType',
+              value: 'nationalSubjectCategory2'
             },
-
+            {
+              name: 'linkedRecordId',
+              value: 'recordLinkRepeatingWithAttrib'
+            }
           ],
-        },
-        {
-          name: 'author',
-          repeatId: '1',
-          children: [
-            {
-              name: 'givenName',
-              value: 'Erik',
-            },
-          ],
-        },
-      ],
-    };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingGroup);
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-
-  it('should take a form payload with someRecordType group containing repeating group containing repeating variable', () => {
-    const expected: DataGroup = {
-      name: 'someRecordType',
-      children: [
-        {
-          name: 'author',
-          repeatId: '0',
-          children: [
-            {
-              name: 'givenName',
-              value: 'Egil',
-            },
-            {
-              name: 'shoeSizeGroup',
-              children: [
-                {
-                  name: 'shoeSize',
-                  value: '29',
-                  repeatId: '0',
-                },
-                {
-                  name: 'shoeSize',
-                  value: '35',
-                  repeatId: '1',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: 'author',
-          repeatId: '1',
-          children: [
-            {
-              name: 'givenName',
-              value: 'Erik',
-            },
-            {
-              name: 'shoeSizeGroup',
-              children: [
-                {
-                  name: 'shoeSize',
-                  value: '43',
-                  repeatId: '0',
-                },
-                {
-                  name: 'shoeSize',
-                  value: '44',
-                  repeatId: '1',
-                },
-              ],
-            },
-          ],
-        },
-
-
-      ],
-    };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingGroupAndVar);
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-
-  it('should take a form payload with someRecordType group containing name with two attributes', () => {
-    const expected: DataGroup = {
-      name: 'someRecordType',
-      children: [
-        {
-          name: 'givenName',
-          value: 'Egil',
-        },
+          attributes: {
+            colour: 'someAttributeValue4'
+          }
+        }
       ],
       attributes: {
-        someTestAttribute: 'someAttributeValue',
-        someTestAttribute2: 'someAttributeValue2',
+        colour: 'someAttributeValue3'
+      }
+    };
+    const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      testFormPayloadWithGroupWithAttributesAndTextVar
+    );
+    expect(transformData[0]).toStrictEqual(expected);
+  });
+
+  it('should take a form payload with repeating groups', () => {
+    const expected: DataGroup = {
+      name: 'someNewMetadataGroupRepeatingGroupsNameInData',
+      children: [
+        {
+          name: 'someChildGroupNameInData',
+          repeatId: '0',
+          children: [
+            {
+              name: 'someNameInData',
+              value: 'Erik'
+            }
+          ]
+        },
+        {
+          name: 'someChildGroupNameInData',
+          repeatId: '1',
+          children: [
+            {
+              name: 'someNameInData',
+              value: 'Egil'
+            }
+          ]
+        }
+      ]
+    };
+    const validationTypeId = 'someSimpleValidationTypeWithRepeatingGroupsId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      testFormPayloadWithGroupWithGroupWithRepeatingGroups
+    );
+    expect(transformData[0]).toStrictEqual(expected);
+  });
+
+  it('should be able to generate a record info from data', () => {
+    const expected: DataGroup = {
+      name: 'recordInfo',
+      children: [
+        {
+          name: 'dataDivider',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'system'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'diva'
+            }
+          ]
+        },
+        {
+          name: 'validationType',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'validationType'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'divaOutput'
+            }
+          ]
+        }
+      ]
+    };
+    const recordInfo = generateRecordInfo('divaOutput', 'diva');
+    expect(recordInfo).toStrictEqual(expected);
+  });
+
+  it('should be able to generate a complete new group for a validation type', () => {
+
+    const expected = {
+      attributes: {
+        colour: "someAttributeValue3"
       },
-    };
-    const transformData = transformToCoraData(testFormPayloadWithGroupAttribute);
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-
-  it('should take a form payload with someRecordType group containing variable with two attributes', () => {
-    const expected: DataGroup = {
-      name: 'someRecordType',
       children: [
         {
-          name: 'givenName',
-          value: 'Egil',
-          attributes: {
-            someTestAttribute: 'someAttributeValue',
-            someTestAttribute2: 'someAttributeValue2',
-          },
-        },
-      ],
-    };
-    const transformData = transformToCoraData(testFormPayloadWithVarAttribute);
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-
-  it('should take a form payload with someRecordType group containing repeating variables with two attributes', () => {
-    const expected: DataGroup = {
-      name: 'someRecordType',
-      children: [
-        {
-          name: 'exampleNumberVar',
-          value: '12.99',
-          repeatId: '0',
-          attributes: {
-            someTestAttribute: 'someAttributeValue',
-            someTestAttribute2: 'someAttributeValue2',
-          },
-        },
-        {
-          name: 'exampleNumberVar',
-          value: '1.34',
-          repeatId: '1',
-          attributes: {
-            someTestAttribute: 'someAttributeValue3',
-            someTestAttribute2: 'someAttributeValue4',
-          },
-        },
-      ],
-    };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingNumberVarWithAttributes);
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-
-  it('should take a form payload with someRecordType repeating group containing two attributes', () => {
-    const expected: DataGroup = {
-      name: 'someRecordType',
-      children: [
-        {
-          name: 'author',
-          repeatId: '0',
           children: [
             {
-              name: 'givenName',
-              value: 'Egil',
+              children: [
+                {
+                  name: "linkedRecordType",
+                  value: "system"
+                },
+                {
+                  name: "linkedRecordId",
+                  value: "diva"
+                }
+              ],
+              name: "dataDivider"
             },
-
+            {
+              children: [
+                {
+                  name: "linkedRecordType",
+                  value: "validationType"
+                },
+                {
+                  name: "linkedRecordId",
+                  value: "someSimpleValidationTypeWithAttributesId"
+                }
+              ],
+              name: "validationType"
+            }
           ],
-          attributes: {
-            someTestAttribute: 'someAttributeValue',
-            someTestAttribute2: 'someAttributeValue2',
-          },
+          name: "recordInfo"
         },
         {
-          name: 'author',
-          repeatId: '1',
+          name: "someNameInData",
+          value: "Erik"
+        },
+        {
+          attributes: {
+            colour: "someAttributeValue3"
+          },
+          name: "someNameInDataTextWithAttrib",
+          value: "AttribVar"
+        },
+        {
+          name: "someNameInDataNumberVar",
+          repeatId: "0",
+          value: "1"
+        },
+        {
+          name: "someNameInDataNumberVar",
+          repeatId: "1",
+          value: "2"
+        },
+        {
+          name: "someNameInDataNumberVar",
+          repeatId: "2",
+          value: "3"
+        },
+        {
+          name: "someNameInDataNumberVar",
+          repeatId: "3",
+          value: "4"
+        },
+        {
+          attributes: {
+            colour: "someAttributeValue3"
+          },
+          name: "someNameInDataNumberWithAttributeVar",
+          repeatId: "0",
+          value: "1"
+        },
+        {
+          attributes: {
+            colour: "someAttributeValue3"
+          },
           children: [
             {
-              name: 'givenName',
-              value: 'Erik',
+              name: "linkedRecordType",
+              value: "nationalSubjectCategory2"
             },
+            {
+              name: "linkedRecordId",
+              value: "recordLinkWithAttrib"
+            }
           ],
-          attributes: {
-            someTestAttribute: 'someAttributeValue3',
-            someTestAttribute2: 'someAttributeValue4',
-          },
+          name: "nationalSubjectCategoryWithAttibutes"
         },
+        {
+          attributes: {
+            colour: "someAttributeValue4"
+          },
+          children: [
+            {
+              name: "linkedRecordType",
+              value: "nationalSubjectCategory2"
+            },
+            {
+              name: "linkedRecordId",
+              value: "recordLinkRepeatingWithAttrib"
+            }
+          ],
+          name: "nationalSubjectCategoryRepeatingWithAttibutes",
+          repeatId: "0"
+        }
       ],
+      name: "someNewMetadataGroupWithAttributesNameInData"
     };
-    const transformData = transformToCoraData(testFormPayloadWithRepeatingGroupAttributes);
-    expect(transformData[0]).toStrictEqual(expected);
+
+    const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
+    const dataDivider = 'diva';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      testFormPayloadWithGroupWithAttributesAndTextVar
+    );
+
+    const newGroup = injectRecordInfoIntoDataGroup(transformData[0] as DataGroup, validationTypeId, dataDivider);
+    expect(newGroup).toStrictEqual(expected);
+
   });
-
-
 });
 

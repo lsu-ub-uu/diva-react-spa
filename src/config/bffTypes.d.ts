@@ -114,6 +114,7 @@ export interface BFFPresentation extends BFFBase {
   emptyTextId?: string;
   specifiedLabelTextId?: string;
   showLabel?: string;
+
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentation {}
@@ -134,6 +135,9 @@ export interface BFFPresentationGroup extends BFFPresentation {
   presentationOf: string;
   presentationStyle?: string;
   children: BFFPresentationChildReference[];
+  specifiedHeadlineTextId?: string;
+  specifiedHeadlineLevel?: string;
+  showHeadline?: string
 }
 
 export interface BFFPresentationChildReference {

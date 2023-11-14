@@ -1,0 +1,42 @@
+{
+  "someNewMetadataGroupWithAttributesNameInData": {
+    "_colour": "someAttributeValue3",
+    "someNameInData": {
+      "value": "Erik"
+    },
+    "someNameInDataTextWithAttrib": {
+      "value": "AttribVar",
+      "_colour": "someAttributeValue3"
+    },
+    "someNameInDataNumberVar": [
+      {
+        "value": "1"
+      },
+      {
+        "value": "2"
+      },
+      {
+        "value": "3"
+      },
+      {
+        "value": "4"
+      }
+    ],
+    "someNameInDataNumberWithAttributeVar": [
+      {
+        "value": "1",
+        "_colour": "someAttributeValue3"
+      }
+    ],
+    "nationalSubjectCategoryWithAttibutes": {
+      "value": "recordLinkWithAttrib",
+      "_colour": "someAttributeValue3"
+    },
+    "nationalSubjectCategoryRepeatingWithAttibutes": [
+      {
+        "value": "recordLinkRepeatingWithAttrib",
+        "_colour": "someAttributeValue4"
+      }
+    ]
+  }
+}

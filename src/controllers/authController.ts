@@ -6,12 +6,10 @@ import { requestAuthTokenOnLogin } from '../services/authServices/requestAuthTok
 // @access	Public
 export const getAuthToken = async (req: Request, res: Response) => {
   const { user } = req.params;
-  const APP_TOKEN = req.body.token;
-  // const APP_TOKEN_ADMIN = process.env.APP_TOKEN_ADMIN || req.body.token;
+  const appToken = req.body.token;
 
   try {
-    const authToken = await requestAuthTokenOnLogin(user, APP_TOKEN);
-
+    const authToken = await requestAuthTokenOnLogin(user, appToken);
     res.status(201).json({ authToken });
   } catch (error: any) {
     const errorMessage = error.message;

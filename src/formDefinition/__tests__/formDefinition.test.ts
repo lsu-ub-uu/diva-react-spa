@@ -25,13 +25,10 @@ import {
   BFFPresentation,
   BFFPresentationSurroundingContainer,
   BFFPresentationGroup,
-  BFFValidationType,
+  BFFValidationType
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
-  pSomeMetadataTextVariable,
-  pSomeNewMetadataGroup,
-  pSomeMetadataNumberVar,
   someMetadataTextVariable,
   someMetadataNumberVar,
   someNewMetadataGroup,
@@ -39,34 +36,49 @@ import {
   someRecordInfo,
   someValidationTypeData,
   someValidationTypeDataFaultyChildReference,
-  pSomeMetadataTextVariable2,
   someMetadataTextVariable2,
   someMetadataCollectionVariable,
   someMetadataItemCollection,
   someMetadataCollectionItemBlue,
   someMetadataCollectionItemPink,
   someMetadataCollectionItemYellow,
-  pSomeMetadataCollectionVariable,
-  pSomeMetadataTextVariable3,
-  pSomeMetadataTextVariable4,
-  pSomeMetadataTextVariable5,
   someMetadataTextVariable3,
   someMetadataTextVariable4,
   someMetadataTextVariable5,
   someMetadataCollectionVariableWithAttribute,
-  pSomeMetadataCollectionVariableWithAttribute,
   someMetadataNumberVarWithAttribute,
+  someMetadataTextVariableWithAttributeVar,
+  someMetadataRecordLink,
+  someMetadataChildGroup,
+  someMetadataChildGroupWithSpecifiedHeadlineText,
+  someMetadataChildGroupWithShowHeadlineFalse,
+  pSomeMetadataTextVariable,
+  pSomeNewMetadataGroup,
+  pSomeMetadataNumberVar,
+  pSomeMetadataTextVariable2,
+  pSomeMetadataCollectionVariable,
+  pSomeMetadataTextVariable3,
+  pSomeMetadataTextVariable4,
+  pSomeMetadataTextVariable5,
+  pSomeMetadataCollectionVariableWithAttribute,
   pSomeMetadataNumberWithAttributeVar,
   pSomeMetadataTextVariableWithAttributeVar,
-  someMetadataTextVariableWithAttributeVar,
   pSomeMetadataChildGroup,
-  someMetadataChildGroup,
-  someMetadataRecordLink,
   pSomeMetadataRecordLink,
   pSomeContainer,
-  pSomeGuiElementLink, pSomeRepeatingContainer,
+  pSomeGuiElementLink,
+  pSomeRepeatingContainer,
+  pSomeMetadataChildGroupWithSpecifiedHeadlineText,
+  pSomeMetadataChildGroupWithShowHeadlineFalse,
+  someNewSimpleMetadataGroup,
+  someSimpleValidationTypeData,
 } from '../../__mocks__/form/bffMock';
-import { createFormDefinition } from '../formDefinition';
+import {
+  createFormDefinition,
+  createFormMetaData,
+  createFormMetaDataPathLookup,
+  FormMetaData,
+} from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
 describe('formDefinition', () => {
@@ -83,6 +95,7 @@ describe('formDefinition', () => {
     validationTypePool = listToPool<BFFValidationType>([
       someValidationTypeData,
       someValidationTypeDataFaultyChildReference,
+      someSimpleValidationTypeData
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -104,6 +117,9 @@ describe('formDefinition', () => {
       someMetadataTextVariableWithAttributeVar,
       someMetadataChildGroup,
       someMetadataRecordLink,
+      someMetadataChildGroupWithSpecifiedHeadlineText,
+      someMetadataChildGroupWithShowHeadlineFalse,
+      someNewSimpleMetadataGroup
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -124,11 +140,13 @@ describe('formDefinition', () => {
       pSomeContainer,
       pSomeGuiElementLink,
       pSomeRepeatingContainer,
+      pSomeMetadataChildGroupWithSpecifiedHeadlineText,
+      pSomeMetadataChildGroupWithShowHeadlineFalse
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
       metadataPool: metadataPool,
-      presentationPool: presentationPool,
+      presentationPool: presentationPool
     };
   });
 
@@ -151,7 +169,7 @@ describe('formDefinition', () => {
     } catch (error: unknown) {
       const createFormDefinitionError: Error = <Error>error;
       expect(createFormDefinitionError.message).toStrictEqual(
-        '[someInvalidValidationType] does not exist in Lookup pool',
+        '[someInvalidValidationType] does not exist in Lookup pool'
       );
     }
   });
@@ -168,7 +186,7 @@ describe('formDefinition', () => {
     } catch (error: unknown) {
       const createFormDefinitionError: Error = <Error>error;
       expect(createFormDefinitionError.message).toStrictEqual(
-        'Child reference with childId [someNewMetadataGroupId] does not exist',
+        'Child reference with childId [someNewMetadataGroupId] does not exist'
       );
     }
   });
@@ -176,7 +194,7 @@ describe('formDefinition', () => {
   it('should return a form definition', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.form.components).toHaveLength(14);
+    expect(formDefinition.form.components).toHaveLength(16);
     expect(formDefinition).toStrictEqual({
       validationTypeId: validationTypeId,
       form: {
@@ -186,11 +204,11 @@ describe('formDefinition', () => {
         name: 'someNewMetadataGroupNameInData',
         repeat: {
           repeatMin: 1,
-          repeatMax: 1,
+          repeatMax: 1
         },
         tooltip: {
           title: 'textId345',
-          body: 'defTextId678',
+          body: 'defTextId678'
         },
         attributes: [
           {
@@ -201,30 +219,30 @@ describe('formDefinition', () => {
             options: [
               {
                 label: 'exampleBlueItemText',
-                value: 'blue',
+                value: 'blue'
               },
               {
                 label: 'examplePinkItemText',
-                value: 'pink',
+                value: 'pink'
               },
               {
                 label: 'exampleYellowItemText',
-                value: 'yellow',
-              },
+                value: 'yellow'
+              }
             ],
             placeholder: 'initialEmptyValueText',
             tooltip: {
               body: 'exampleCollectionVarDefText',
-              title: 'exampleCollectionVarText',
+              title: 'exampleCollectionVarText'
             },
-            type: 'collectionVariable',
-          },
+            type: 'collectionVariable'
+          }
         ],
         components: [
           {
             type: 'text',
             name: 'someHeadlineTextId',
-            textStyle: 'bold',
+            textStyle: 'bold'
           },
           {
             type: 'textVariable',
@@ -234,18 +252,18 @@ describe('formDefinition', () => {
             childStyle: ['style3', 'style4'],
             repeat: {
               repeatMin: 1,
-              repeatMax: 3,
+              repeatMax: 3
             },
             tooltip: {
               title: 'someTextId',
-              body: 'someDefTextId',
+              body: 'someDefTextId'
             },
             validation: {
               type: 'regex',
-              pattern: 'someRegex',
+              pattern: 'someRegex'
             },
             mode: 'input',
-            inputType: 'input',
+            inputType: 'input'
           },
           {
             type: 'textVariable',
@@ -255,18 +273,18 @@ describe('formDefinition', () => {
             childStyle: ['style3', 'style4'],
             repeat: {
               repeatMin: 1,
-              repeatMax: Number.MAX_VALUE,
+              repeatMax: Number.MAX_VALUE
             },
             tooltip: {
               title: 'someTextId',
-              body: 'someDefTextId',
+              body: 'someDefTextId'
             },
             validation: {
               type: 'regex',
-              pattern: 'someRegex',
+              pattern: 'someRegex'
             },
             mode: 'input', // output
-            inputType: 'input', //textarea
+            inputType: 'input' //textarea
           },
           {
             type: 'textVariable',
@@ -276,19 +294,19 @@ describe('formDefinition', () => {
             childStyle: ['style3', 'style4'],
             repeat: {
               repeatMin: 1,
-              repeatMax: 1,
+              repeatMax: 1
             },
             tooltip: {
               title: 'someTextId',
-              body: 'someDefTextId',
+              body: 'someDefTextId'
             },
             validation: {
               type: 'regex',
-              pattern: 'someRegex',
+              pattern: 'someRegex'
             },
             mode: 'input', // output
             inputType: 'input', //textarea
-            finalValue: 'someFinalValue',
+            finalValue: 'someFinalValue'
           },
           {
             type: 'numberVariable',
@@ -299,11 +317,11 @@ describe('formDefinition', () => {
             repeat: {
               repeatMin: 0,
               repeatMax: 1,
-              minNumberOfRepeatingToShow: 1,
+              minNumberOfRepeatingToShow: 1
             },
             tooltip: {
               title: 'someNumberVarTextId',
-              body: 'someNumberVarDefTextId',
+              body: 'someNumberVarDefTextId'
             },
             validation: {
               type: 'number',
@@ -311,9 +329,9 @@ describe('formDefinition', () => {
               max: 20,
               warningMin: 2,
               warningMax: 10,
-              numberOfDecimals: 0,
+              numberOfDecimals: 0
             },
-            mode: 'input',
+            mode: 'input'
           },
           {
             type: 'collectionVariable',
@@ -324,18 +342,18 @@ describe('formDefinition', () => {
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
-              repeatMax: 1,
+              repeatMax: 1
             },
             tooltip: {
               title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
+              body: 'exampleCollectionVarDefText'
             },
             options: [
               { value: 'blue', label: 'exampleBlueItemText' },
               { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' }
             ],
-            mode: 'input',
+            mode: 'input'
           },
           {
             type: 'collectionVariable',
@@ -345,11 +363,11 @@ describe('formDefinition', () => {
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
-              repeatMax: 1,
+              repeatMax: 1
             },
             tooltip: {
               title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
+              body: 'exampleCollectionVarDefText'
             },
             attributes: [
               {
@@ -360,22 +378,22 @@ describe('formDefinition', () => {
                 placeholder: 'initialEmptyValueText',
                 tooltip: {
                   title: 'exampleCollectionVarText',
-                  body: 'exampleCollectionVarDefText',
+                  body: 'exampleCollectionVarDefText'
                 },
                 options: [
                   { value: 'blue', label: 'exampleBlueItemText' },
                   { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
                 ],
-                mode: 'input',
-              },
+                mode: 'input'
+              }
             ],
             options: [
               { value: 'blue', label: 'exampleBlueItemText' },
               { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' }
             ],
-            mode: 'input',
+            mode: 'input'
           },
           {
             type: 'numberVariable',
@@ -385,11 +403,11 @@ describe('formDefinition', () => {
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
-              repeatMax: 1,
+              repeatMax: 1
             },
             tooltip: {
               title: 'someNumberVarTextId',
-              body: 'someNumberVarDefTextId',
+              body: 'someNumberVarDefTextId'
             },
             attributes: [
               {
@@ -400,15 +418,15 @@ describe('formDefinition', () => {
                 placeholder: 'initialEmptyValueText',
                 tooltip: {
                   title: 'exampleCollectionVarText',
-                  body: 'exampleCollectionVarDefText',
+                  body: 'exampleCollectionVarDefText'
                 },
                 options: [
                   { value: 'blue', label: 'exampleBlueItemText' },
                   { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
                 ],
-                mode: 'input',
-              },
+                mode: 'input'
+              }
             ],
             validation: {
               type: 'number',
@@ -416,9 +434,9 @@ describe('formDefinition', () => {
               max: 20,
               warningMin: 2,
               warningMax: 10,
-              numberOfDecimals: 0,
+              numberOfDecimals: 0
             },
-            mode: 'input',
+            mode: 'input'
           },
           {
             type: 'textVariable',
@@ -428,11 +446,11 @@ describe('formDefinition', () => {
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
-              repeatMax: 1,
+              repeatMax: 1
             },
             tooltip: {
               title: 'someTextId',
-              body: 'someDefTextId',
+              body: 'someDefTextId'
             },
             attributes: [
               {
@@ -443,22 +461,22 @@ describe('formDefinition', () => {
                 placeholder: 'initialEmptyValueText',
                 tooltip: {
                   title: 'exampleCollectionVarText',
-                  body: 'exampleCollectionVarDefText',
+                  body: 'exampleCollectionVarDefText'
                 },
                 options: [
                   { value: 'blue', label: 'exampleBlueItemText' },
                   { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
                 ],
-                mode: 'input',
-              },
+                mode: 'input'
+              }
             ],
             validation: {
               type: 'regex',
-              pattern: 'someRegex',
+              pattern: 'someRegex'
             },
             mode: 'input',
-            inputType: 'input',
+            inputType: 'input'
           },
           {
             type: 'group',
@@ -468,11 +486,11 @@ describe('formDefinition', () => {
             name: 'someChildGroupNameInData',
             repeat: {
               repeatMin: 1,
-              repeatMax: 1,
+              repeatMax: 1
             },
             tooltip: {
               title: 'someChildGroupTextId',
-              body: 'someChildGroupDefTextId',
+              body: 'someChildGroupDefTextId'
             },
             components: [
               {
@@ -483,21 +501,21 @@ describe('formDefinition', () => {
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
-                  repeatMax: 1,
+                  repeatMax: 1
                 },
                 tooltip: {
                   title: 'someTextId',
-                  body: 'someDefTextId',
+                  body: 'someDefTextId'
                 },
                 validation: {
                   type: 'regex',
-                  pattern: 'someRegex',
+                  pattern: 'someRegex'
                 },
                 mode: 'input',
-                inputType: 'input',
-              },
+                inputType: 'input'
+              }
             ],
-            mode: 'input',
+            mode: 'input'
           },
           {
             type: 'recordLink',
@@ -507,12 +525,12 @@ describe('formDefinition', () => {
             mode: 'input',
             repeat: {
               repeatMin: 1,
-              repeatMax: 1,
+              repeatMax: 1
             },
             tooltip: {
               title: 'nationalSubjectCategoryLinkText',
-              body: 'nationalSubjectCategoryLinkDefText',
-            },
+              body: 'nationalSubjectCategoryLinkDefText'
+            }
           },
           {
             type: 'container',
@@ -530,28 +548,28 @@ describe('formDefinition', () => {
                 repeat: {
                   repeatMin: 1,
                   repeatMax: 3,
-                  minNumberOfRepeatingToShow: 1,
+                  minNumberOfRepeatingToShow: 1
                 },
                 tooltip: {
                   title: 'someTextId',
-                  body: 'someDefTextId',
+                  body: 'someDefTextId'
                 },
                 validation: {
                   type: 'regex',
-                  pattern: 'someRegex',
+                  pattern: 'someRegex'
                 },
                 mode: 'input',
-                inputType: 'input',
-              },
+                inputType: 'input'
+              }
             ],
-            mode: 'input',
+            mode: 'input'
           },
           {
             name: 'pSomeGuiElementLinkId',
             url: 'http://www.google.se',
             elementText: 'demoTestLinkGuiElementText',
             presentAs: 'link',
-            type: 'guiElementLink',
+            type: 'guiElementLink'
           },
           {
             type: 'container',
@@ -569,74 +587,203 @@ describe('formDefinition', () => {
                 repeat: {
                   repeatMin: 1,
                   repeatMax: 3,
-                  minNumberOfRepeatingToShow: 1,
+                  minNumberOfRepeatingToShow: 1
                 },
                 tooltip: {
                   title: 'someTextId',
-                  body: 'someDefTextId',
+                  body: 'someDefTextId'
                 },
                 validation: {
                   type: 'regex',
-                  pattern: 'someRegex',
+                  pattern: 'someRegex'
                 },
                 mode: 'input',
-                inputType: 'input',
-              },
+                inputType: 'input'
+              }
             ],
-            mode: 'input',
+            mode: 'input'
           },
+          {
+            type: 'group',
+            label: 'someOtherHeadlineTextId',
+            headlineLevel: 'h3',
+            childStyle: [],
+            presentationStyle: 'someMetadataChildGroupPresentationStyle',
+            name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someChildGroupTextId',
+              body: 'someChildGroupDefTextId'
+            },
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                childStyle: ['style3', 'style4'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'group',
+            label: '',
+            childStyle: [],
+            presentationStyle: 'someMetadataChildGroupPresentationStyle',
+            name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someChildGroupTextId',
+              body: 'someChildGroupDefTextId'
+            },
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                childStyle: ['style3', 'style4'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
+          }
         ],
-        mode: 'input',
-      },
+        mode: 'input'
+      }
     });
   });
 
-  interface FormComponentRepeat {
-    repeatMin: number;
-    repeatMax: number;
-    minNumberOfRepeatingToShow?: number;
-  }
+  it('should return form meta data for a given validation type', () => {
+    const validationTypeId = 'someSimpleValidationTypeId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
 
-  interface FormComponent {
-    type:
-      | 'recordLink'
-      | 'collectionVariable'
-      | 'numberVariable'
-      | 'textVariable'
-      | 'group'
-      | 'text'
-      | 'container'
-      | 'guiElementLink';
-    name: string;
-    repeat?: FormComponentRepeat;
-    components?: FormComponent[];
-  }
-
-  it.skip('should return a form definition path lookup hashmap', () => {
-    const validationTypeId = 'someValidationTypeId';
-    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-
-    const generatePathToComponentMap = (formComponent: FormComponent, path: string = '', componentMap: Record<string, FormComponent> = {}): Record<string, FormComponent> => {
-      let fullPath = path;
-      if (formComponent.type && formComponent.type !== 'container') {
-        fullPath = path + '/' + formComponent.name;
-        componentMap[fullPath] = formComponent;
-      }
-
-      if (formComponent.components && Array.isArray(formComponent.components)) {
-        formComponent.components.forEach((component) => {
-          const componentPath = fullPath;
-          generatePathToComponentMap(component, componentPath, componentMap);
-        });
-      }
-
-      return componentMap;
+    const expected: FormMetaData = {
+      name: 'someNewMetadataGroupNameInData',
+      type: 'group',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1
+      },
+      children: [
+        {
+          name: 'someNameInData',
+          type: 'textVariable',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          }
+        },
+        {
+          name: 'someChildGroupNameInData',
+          type: 'group',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          children: [
+            {
+              name: 'someNameInData',
+              type: 'textVariable',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1
+              }
+            }
+          ]
+        },
+        {
+          name: 'nationalSubjectCategory',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'recordLink',
+          linkedRecordType: 'nationalSubjectCategory',
+        }
+      ]
     };
 
-    const lookup = generatePathToComponentMap(formDefinition.form);
+    const expectedMetadataLookup = {
+      'someNewMetadataGroupNameInData': {
+        'name': 'someNewMetadataGroupNameInData',
+        'repeat': {
+          'repeatMax': 1,
+          'repeatMin': 1
+        },
+        'type': 'group'
+      },
+      'someNewMetadataGroupNameInData.nationalSubjectCategory': {
+        'name': 'nationalSubjectCategory',
+        'repeat': {
+          'repeatMax': 1,
+          'repeatMin': 1
+        },
+        'type': 'recordLink',
+        'linkedRecordType': 'nationalSubjectCategory'
+      },
+      'someNewMetadataGroupNameInData.someChildGroupNameInData': {
+        'name': 'someChildGroupNameInData',
+        'repeat': {
+          'repeatMax': 1,
+          'repeatMin': 1
+        },
+        'type': 'group'
+      },
+      'someNewMetadataGroupNameInData.someChildGroupNameInData.someNameInData': {
+        'name': 'someNameInData',
+        'repeat': {
+          'repeatMax': 1,
+          'repeatMin': 1
+        },
+        'type': 'textVariable'
+      },
+      'someNewMetadataGroupNameInData.someNameInData': {
+        'name': 'someNameInData',
+        'repeat': {
+          'repeatMax': 3,
+          'repeatMin': 1
+        },
+        'type': 'textVariable'
+      }
+    };
 
-
-    expect(lookup).toHaveLength(1);
+    expect(formMetaData).toStrictEqual(expected);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
-
 });

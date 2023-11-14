@@ -17,71 +17,145 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataAtomic, DataGroup } from '../utils/cora-data/CoraData';
+import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-data/CoraData';
 import { removeEmpty } from '../utils/structs/removeEmpty';
+import { FormMetaData } from '../formDefinition/formDefinition';
+
+export const injectRecordInfoIntoDataGroup = (dataGroup: DataGroup, validationTypeId: string, dataDivider: string): DataGroup => {
+  dataGroup.children = [
+    generateRecordInfo(validationTypeId, dataDivider),
+    ...dataGroup.children
+  ]
+  return dataGroup;
+}
+
+export const generateRecordInfo = (validationType: string, dataDivider: string): DataGroup => {
+  const name = 'recordInfo';
+  const children = [
+    generateRecordLink('dataDivider', 'system', dataDivider),
+    generateRecordLink('validationType', 'validationType', validationType)
+  ];
+  return { name, children } as DataGroup;
+};
 
 const findChildrenAttributes = (obj: any) => {
-  let attributesArray= [];
+  let attributesArray = [];
   for (const key in obj) {
     if (obj.hasOwnProperty(key) && key.startsWith('_')) {
       const value = obj[key];
-      attributesArray.push({ [key.substring(1)]: value })
+      attributesArray.push({ [key.substring(1)]: value });
     }
   }
   if (!attributesArray.length) return undefined;
   return Object.assign({}, ...attributesArray);
-}
+};
 
-export const transformToCoraData = (obj: any, parentName?: string, repeatId?: string): (DataGroup | DataAtomic)[] => {
-  if (typeof obj !== 'object' || obj === null) {
-    return [];
+const generateAtomicValue = (name: string, value: any): DataAtomic => ({
+  name,
+  value
+});
+
+const generateRecordLink = (
+  name: string,
+  linkedRecordType: string,
+  linkedRecordId: string,
+  inAttributes: Attributes | undefined = undefined,
+  repeatId: string | undefined = undefined
+): RecordLink =>
+  removeEmpty({
+    name,
+    attributes: inAttributes,
+    children: [
+      generateAtomicValue('linkedRecordType', linkedRecordType),
+      generateAtomicValue('linkedRecordId', linkedRecordId)
+    ],
+    repeatId
+  });
+
+const createLeaf = (
+  metaData: FormMetaData,
+  name: string,
+  value: string,
+  repeatId: string | undefined = undefined,
+  inAttributes: Attributes | undefined = undefined
+): DataAtomic | RecordLink => {
+  if (['numberVariable', 'textVariable', 'collectionVariable'].includes(metaData.type)) {
+    return removeEmpty({
+      name,
+      value,
+      attributes: inAttributes,
+      repeatId
+    } as DataAtomic);
   }
+  return generateRecordLink(
+    name,
+    metaData.linkedRecordType ?? '',
+    value,
+    inAttributes,
+    repeatId
+  ) as RecordLink;
+};
 
+export const transformToCoraData = (
+  lookup: Record<string, FormMetaData>,
+  obj: any,
+  path?: string,
+  repeatId?: string
+): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
 
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      const value = obj[key];
+  for (const fieldKey in obj) {
+    const value = obj[fieldKey];
+    const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
 
-      if (!key.startsWith('_')) {
-        if (Array.isArray(value)) {
-          value.forEach((item: (DataGroup | DataAtomic), index: number) => {
-            if ('value' in item) {
-              const atomic = item as DataAtomic;
-              result.push({
-                name: key,
-                value: atomic.value,
-                attributes: findChildrenAttributes(atomic),
-                repeatId: index.toString()
-              });
-            } else {
-              const group = item as DataGroup;
-              result.push({
-                name: key,
-                attributes: findChildrenAttributes(group),
-                repeatId: index.toString(),
-                children: transformToCoraData(group, key, repeatId),
-              });
-            }
-          });
-        } else {
-          if (typeof value === 'object' && value !== null && 'value' in value) {
-            result.push({
-              name: key,
-              attributes: findChildrenAttributes(value),
-              value: value.value,
-            } as DataAtomic);
+    if (!fieldKey.startsWith('_')) {
+      const currentMetadataLookup = lookup[currentPath];
+      const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
+
+      if (Array.isArray(value)) {
+        value.forEach((item: DataGroup | DataAtomic, index: number) => {
+          if ('value' in item) {
+            const atomic = item as DataAtomic;
+            const attributes = findChildrenAttributes(atomic);
+            result.push(
+              createLeaf(
+                currentMetadataLookup,
+                fieldKey,
+                atomic.value,
+                shouldDataHaveRepeatId ? index.toString() : undefined,
+                attributes
+              )
+            );
           } else {
-            // If Group
-            result.push(removeEmpty({
-              name: key,
-              attributes: findChildrenAttributes(value),
-              children: transformToCoraData(value, key, repeatId),
-            }));
+            const group = item as DataGroup;
+            result.push(
+              removeEmpty({
+                name: fieldKey,
+                attributes: findChildrenAttributes(group),
+                repeatId: shouldDataHaveRepeatId ? index.toString() : undefined,
+                children: transformToCoraData(lookup, group, currentPath, repeatId)
+              } as DataGroup)
+            );
           }
+        });
+      } else {
+        if (typeof value === 'object' && value !== null && 'value' in value) {
+          const attributes = findChildrenAttributes(value);
+          result.push(
+            createLeaf(currentMetadataLookup, fieldKey, value.value, undefined, attributes)
+          );
+        } else {
+          // If Group
+          result.push(
+            removeEmpty({
+              name: fieldKey,
+              attributes: findChildrenAttributes(value),
+              children: transformToCoraData(lookup, value, currentPath, repeatId)
+            } as DataGroup)
+          );
         }
       }
     }
   }
   return result;
-}
+};

@@ -11,11 +11,93 @@ import {
   BFFPresentationChildReference,
   BFFPresentationSurroundingContainer,
   BFFPresentationGroup,
-  BFFValidationType, 
-  BFFPresentationContainer,
+  BFFValidationType,
+  BFFPresentationContainer, BFFMetadataRecordLink,
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
+
+export const createFormMetaData = (
+  dependencies: Dependencies,
+  validationTypeId: string,
+  mode: string
+): FormMetaData => {
+  const validationPool = dependencies.validationTypePool;
+  const metadataPool = dependencies.metadataPool;
+  const validationType: BFFValidationType = validationPool.get(validationTypeId);
+
+  // TODO we need to check the mode parameter
+  const newMetadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
+
+  const formRootReference: BFFMetadataChildReference = {
+    childId: newMetadataGroup.id,
+    repeatMax: '1',
+    repeatMin: '1'
+  };
+
+  return createMetaDataFromChildReference(formRootReference, metadataPool)
+}
+
+const createMetaDataFromChildReference = (
+  metadataChildReference: BFFMetadataChildReference,
+  metadataPool: any,
+): FormMetaData => {
+  const metadata = metadataPool.get(metadataChildReference.childId) as BFFMetadata;
+  const repeatMin = parseInt(metadataChildReference.repeatMin);
+  const repeatMax = determineRepeatMax(metadataChildReference.repeatMax);
+  let children;
+  let linkedRecordType;
+
+  if (metadata.type === 'group') {
+    const metadataGroup = metadata as BFFMetadataGroup;
+    children = metadataGroup.children.map((childRef) => createMetaDataFromChildReference(childRef, metadataPool))
+  }
+
+  if (metadata.type === 'recordLink') {
+    const metadataRecordLink = metadata as BFFMetadataRecordLink;
+    linkedRecordType = metadataRecordLink.linkedRecordType;
+  }
+
+  return removeEmpty({
+    name: metadata.nameInData,
+    type: metadata.type,
+    repeat: {
+      repeatMin,
+      repeatMax,
+    },
+    children,
+    linkedRecordType
+  } as FormMetaData);
+}
+
+interface FormMetaDataRepeat {
+  repeatMin: number;
+  repeatMax: number;
+}
+
+export interface FormMetaData {
+  type:
+    | 'group'
+    | 'numberVariable'
+    | 'resourceLink'
+    | 'recordLink'
+    | 'textVariable'
+    | 'collectionVariable';
+  name: string;
+  repeat: FormMetaDataRepeat;
+  children?: FormMetaData[];
+  linkedRecordType?: string;
+}
+
+export const createFormMetaDataPathLookup = (obj: FormMetaData, path: string = '', lookup: Record<string, FormMetaData> = {}) => {
+  path = path ? `${path}.${obj.name}` : obj.name;
+
+  obj.children?.forEach((metaData) => {
+    createFormMetaDataPathLookup(metaData, path, lookup);
+  });
+  lookup[path] = removeEmpty({...obj, children: undefined });
+  return lookup;
+}
 
 export const createFormDefinition = (
   dependencies: Dependencies,
@@ -241,7 +323,8 @@ const createPresentation = (
 
     let filteredChildRefs: BFFMetadataChildReference[] = [];
     if (presentationContainer.repeat === 'children') {
-      const metadataIds = (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
+      const metadataIds =
+        (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
       filteredChildRefs = metadataChildReferences.filter((childRef) => {
         return metadataIds.includes(childRef.childId);
       });
@@ -290,7 +373,7 @@ const createPresentation = (
     components,
     presentationStyle,
     containerType,
-    childStyle,
+    childStyle
   });
 };
 
@@ -337,7 +420,10 @@ const getMinNumberOfRepeatingToShow = (
   return minNumberOfRepeatingToShow;
 };
 
-const createCommonParameters = (metadata: BFFMetadata, presentation: BFFPresentation) => {
+const createCommonParameters = (
+  metadata: BFFMetadata,
+  presentation: BFFPresentation | BFFPresentationGroup
+) => {
   const name = metadata.nameInData;
   const type = metadata.type;
   const placeholder = presentation.emptyTextId;
@@ -345,11 +431,31 @@ const createCommonParameters = (metadata: BFFMetadata, presentation: BFFPresenta
   const inputType = presentation.inputType;
   const tooltip = { title: metadata.textId, body: metadata.defTextId };
   let label = metadata.textId;
+  let headlineLevel;
   if (presentation.specifiedLabelTextId) {
     label = presentation.specifiedLabelTextId;
   }
+  if (presentation.hasOwnProperty('specifiedHeadlineTextId')) {
+    const presentationGroup = presentation as BFFPresentationGroup;
+    if (presentationGroup.specifiedHeadlineTextId !== undefined) {
+      label = presentationGroup.specifiedHeadlineTextId;
+    }
+  }
+  if (presentation.hasOwnProperty('specifiedHeadlineLevel')) {
+    const presentationGroup = presentation as BFFPresentationGroup;
+    if (presentationGroup.specifiedHeadlineLevel !== undefined) {
+      headlineLevel = presentationGroup.specifiedHeadlineLevel;
+    }
+  }
+  if (presentation.hasOwnProperty('showHeadline')) {
+    const presentationGroup = presentation as BFFPresentationGroup;
+    if (presentationGroup.showHeadline === 'false') {
+      label = '';
+    }
+  }
+
   if (presentation.showLabel && presentation.showLabel === 'false') {
     label = '';
   }
-  return { name, type, placeholder, mode, inputType, tooltip, label };
+  return removeEmpty({ name, type, placeholder, mode, inputType, tooltip, label, headlineLevel });
 };

@@ -1,0 +1,18 @@
+{
+  "someNewMetadataGroupNameInData": {
+    "someNameInData": [{
+        "value": "firstValue"
+    }],
+    "someChildGroupNameInData": {
+      "someNameInData": {
+        "value": "secondValue"
+      }
+    },
+    "nationalSubjectCategory": {
+      "value": "linkValue"
+    }
+  }
+}
+
+
+

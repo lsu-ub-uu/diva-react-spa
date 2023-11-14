@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import axios from 'axios';
 import { configureServer } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
 import { listToPool } from './utils/structs/listToPool';
@@ -11,16 +12,21 @@ import {
   BFFText,
   BFFValidationType
 } from './config/bffTypes';
-import { getRecordDataListByType } from './cora/cora';
-import { DataListWrapper } from './utils/cora-data/CoraData';
+import { getRecordDataListByType, postRecordData } from './cora/cora';
+import { DataGroup, DataListWrapper, RecordWrapper } from './utils/cora-data/CoraData';
 import { transformCoraTexts } from './config/transformTexts';
 import { transformMetadata } from './config/transformMetadata';
 import { transformCoraPresentations } from './config/transformPresentations';
-import axios from 'axios';
 import { transformCoraValidationTypes } from './config/transformValidationTypes';
 import { Dependencies } from './formDefinition/formDefinitionsDep';
-import { createFormDefinition } from './formDefinition/formDefinition';
+import {
+  createFormDefinition,
+  createFormMetaData,
+  createFormMetaDataPathLookup,
+} from './formDefinition/formDefinition';
 import authRoute from './routes/authRoute';
+import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
+import { generateRecordInfo, injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -48,16 +54,76 @@ app.use('/api/translations/:lang', async (req, res) => {
   }
 });
 
+const getPoolsFromCora = async (poolTypes: string[]) => {
+  const promises = poolTypes.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
+  return await Promise.all(promises);
+}
+
+const errorHandler = (error: unknown) => {
+  //@ts-ignore
+  const message: string = (error.message ?? 'Unknown error') as string;
+  const status = axios.isAxiosError(error) ? error.response?.status : 500;
+  return {
+    message,
+    status: status ?? 500,
+  }
+}
+
+app.post('/api/record/:validationTypeId', async (req, res) => {
+  try {
+    const { validationTypeId } = req.params;
+    const authToken = req.header('authToken') ?? '';
+
+    const payload = req.body;
+    const recordType = Object.keys(payload)[0];
+
+    const types = ['metadata', 'validationType'];
+    const result = await getPoolsFromCora(types);
+    const metadata = transformMetadata(result[0].data);
+    const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
+
+    const validationTypes = transformCoraValidationTypes(result[1].data);
+    const validationTypePool = listToPool<BFFValidationType>(validationTypes);
+
+    if (!validationTypePool.has(validationTypeId)) {
+      throw new Error(`Validation type [${validationTypeId}] does not exist`);
+    }
+
+    const dependencies = {
+      validationTypePool: validationTypePool,
+      metadataPool: metadataPool,
+    } as Dependencies;
+
+    // break out this
+    const FORM_MODE_NEW = 'create'; //  handle this better
+    const dataDivider = 'diva'; // TODO: handle in env file?
+
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(
+      formMetaDataPathLookup,
+      payload
+    );
+    const newGroup = injectRecordInfoIntoDataGroup(transformData[0] as DataGroup, validationTypeId, dataDivider);
+    const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
+    const id = extractIdFromRecordInfo(response.data.record.data);
+
+    res.status(response.status).json({ id }); // return id for now
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();;
+  }
+});
+
 app.use('/api/form/:validationTypeId', async (req, res) => {
   try {
     const { validationTypeId } = req.params;
+    // const authToken = req.header('authToken') ?? '';
     const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
-    const promises = types.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
-    const result = await Promise.all(promises);
+    const result = await getPoolsFromCora(types);
 
     const metadata = transformMetadata(result[0].data);
     const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
-    // console.log(result[3].data);
     const presentation = transformCoraPresentations(result[1].data);
     const guiElements = transformCoraPresentations(result[3].data);
 
@@ -82,9 +148,8 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
     const formDef = createFormDefinition(dependencies, validationTypeId, 'new');
     res.status(200).json(formDef);
   } catch (error: unknown) {
-    //@ts-ignore
-    console.log(error.message);
-    res.status(500).json('Internal server error').send();
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
   }
 });
 

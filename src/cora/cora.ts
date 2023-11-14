@@ -18,10 +18,11 @@
  */
 
 import axios, { AxiosResponse } from 'axios';
+import { DataGroup } from '../utils/cora-data/CoraData';
 
 export async function getRecordDataListByType<T>(
   type: string,
-  authToken: string
+  authToken: string,
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}`;
   const headers = {
@@ -29,5 +30,21 @@ export async function getRecordDataListByType<T>(
   };
 
   const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
+  return response;
+}
+
+export async function postRecordData<T>(
+  payload: DataGroup,
+  type: string,
+  authToken: string,
+): Promise<AxiosResponse<T>> {
+  const apiUrl: string = `/record/${type}`;
+  const headers = {
+    'Accept': 'application/vnd.uub.record+json',
+    'Content-Type': 'application/vnd.uub.record+json',
+    'Authtoken': `${authToken}`,
+  };
+
+  const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
   return response;
 }
