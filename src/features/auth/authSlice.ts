@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const LOCAL_STORAGE_NAME = 'diva_session';
 
 // a temporary user session object
 export interface UserSession {
-  id: string;
+  id: string; // this is the authToken
   validForNoSeconds: string;
   idInUserStorage: string;
   idFromLogin: string;
@@ -29,11 +30,19 @@ export const deleteState = (): void => {
 
 export const createInitialState = (): UserSession | null => {
   if (localStorage.getItem(LOCAL_STORAGE_NAME) == null) {
+    axios.defaults.headers.common = {
+      Authtoken: '',
+    };
     return null;
   }
-  return JSON.parse(
+
+  const session = JSON.parse(
     localStorage.getItem(LOCAL_STORAGE_NAME) as string,
   ) as UserSession;
+  axios.defaults.headers.common = {
+    Authtoken: session.id,
+  };
+  return session;
 };
 
 const initialState = {
@@ -63,6 +72,10 @@ export const authSlice = createSlice({
       state.error = '';
       state.userSession = action.payload;
       writeState(action.payload as UserSession);
+      // setting the auth header for axios client
+      axios.defaults.headers.common = {
+        Authtoken: action.payload.id,
+      };
     },
     logout: (state) => {
       state.hasError = false;
@@ -70,6 +83,9 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.userSession = null;
       deleteState();
+      axios.defaults.headers.common = {
+        Authtoken: '',
+      };
     },
   },
 });
