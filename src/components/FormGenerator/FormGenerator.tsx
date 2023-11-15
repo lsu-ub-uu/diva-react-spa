@@ -304,7 +304,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       );
     }
     return (
-      <div key={reactKey}>
+      <div
+        key={reactKey}
+        style={{ background: 'transparent', width: '100%' }}
+      >
         {createFormComponentAttributes(component, currentComponentNamePath)}
         {renderLeafComponent(
           component,
