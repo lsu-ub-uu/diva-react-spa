@@ -17,6 +17,43 @@ import {
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 
+export const convertStylesToGridColSpan = (styles: string[]): number => {
+  const DEFAULT_COLSPAN = 12;
+  const convertedColSpans = styles.length ? styles.map(style => {
+    switch (style) {
+      case 'oneChildStyle':
+        return 1;
+      case 'twoChildStyle':
+        return 2;
+      case 'threeChildStyle':
+        return 3;
+      case 'fourChildStyle':
+        return 4;
+      case 'fiveChildStyle':
+        return 5;
+      case 'sixChildStyle':
+        return 6;
+      case 'sevenChildStyle':
+        return 7;
+      case 'eightChildStyle':
+        return 8;
+      case 'nineChildStyle':
+        return 9;
+      case 'tenChildStyle':
+        return 10;
+      case 'elevenChildStyle':
+        return 11;
+      case 'twelveChildStyle':
+        return DEFAULT_COLSPAN;
+      default:
+        return null;
+    }
+  }) : [DEFAULT_COLSPAN];
+
+  const cleaned = removeEmpty(convertedColSpans)[0];
+  return cleaned ?? DEFAULT_COLSPAN;
+}
+
 export const createFormMetaData = (
   dependencies: Dependencies,
   validationTypeId: string,
@@ -119,12 +156,14 @@ export const createFormDefinition = (
   const formRootReference: BFFMetadataChildReference = {
     childId: newMetadataGroup.id,
     repeatMax: '1',
-    repeatMin: '1'
+    repeatMin: '1',
+
   };
 
   const formRootPresentationReference: BFFPresentationChildReference = {
     childId: newPresentationGroup.id,
-    type: 'presentation'
+    type: 'presentation',
+    childStyle: [],
   };
 
   const form = createPresentation(
@@ -174,7 +213,9 @@ const createText = (
   return {
     name: presentationChildId,
     type: presentationChildType,
-    textStyle: presentationChildReference.textStyle
+    textStyle: presentationChildReference.textStyle,
+    childStyle: presentationChildReference.childStyle,
+    gridColSpan: convertStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   };
 };
 const createGuiElement = (
@@ -188,7 +229,9 @@ const createGuiElement = (
     type: presentation.type,
     url: presentation.url,
     elementText: presentation.elementText,
-    presentAs: presentation.presentAs
+    presentAs: presentation.presentAs,
+    childStyle: presentationChildReference.childStyle,
+    gridColSpan: convertStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   };
 };
 
@@ -257,8 +300,10 @@ const createPresentation = (
   let metadata;
   let commonParameters;
   let childStyle;
+  let gridColSpan;
 
   childStyle = presentationChildReference.childStyle;
+  gridColSpan = convertStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
 
@@ -373,7 +418,8 @@ const createPresentation = (
     components,
     presentationStyle,
     containerType,
-    childStyle
+    childStyle,
+    gridColSpan
   });
 };
 

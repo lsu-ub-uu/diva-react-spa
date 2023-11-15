@@ -74,6 +74,7 @@ import {
   someSimpleValidationTypeData,
 } from '../../__mocks__/form/bffMock';
 import {
+  convertStylesToGridColSpan,
   createFormDefinition,
   createFormMetaData,
   createFormMetaDataPathLookup,
@@ -200,6 +201,8 @@ describe('formDefinition', () => {
       form: {
         type: 'group',
         label: 'textId345',
+        gridColSpan: 12,
+        childStyle: [],
         presentationStyle: 'card',
         name: 'someNewMetadataGroupNameInData',
         repeat: {
@@ -242,14 +245,17 @@ describe('formDefinition', () => {
           {
             type: 'text',
             name: 'someHeadlineTextId',
-            textStyle: 'bold'
+            textStyle: 'bold',
+            gridColSpan: 12,
+            childStyle: ['twelveChildStyle']
           },
           {
             type: 'textVariable',
             name: 'someNameInData',
             placeholder: 'someEmptyTextId',
             label: 'someTextId',
-            childStyle: ['style3', 'style4'],
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
             repeat: {
               repeatMin: 1,
               repeatMax: 3
@@ -270,7 +276,8 @@ describe('formDefinition', () => {
             name: 'someNameInData2',
             label: 'someOtherLabelTextId', // overridden label
             placeholder: 'someEmptyTextId',
-            childStyle: ['style3', 'style4'],
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
             repeat: {
               repeatMin: 1,
               repeatMax: Number.MAX_VALUE
@@ -291,7 +298,8 @@ describe('formDefinition', () => {
             name: 'someNameInData3',
             label: 'someTextId',
             placeholder: 'someEmptyTextId',
-            childStyle: ['style3', 'style4'],
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
             repeat: {
               repeatMin: 1,
               repeatMax: 1
@@ -312,7 +320,8 @@ describe('formDefinition', () => {
             type: 'numberVariable',
             name: 'someNameInDataNumberVar',
             label: '',
-            childStyle: ['style3', 'style4'],
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 0,
@@ -338,7 +347,8 @@ describe('formDefinition', () => {
             name: 'colour',
             finalValue: 'pink',
             label: 'exampleCollectionVarText',
-            childStyle: ['style3', 'style4'],
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
@@ -359,7 +369,8 @@ describe('formDefinition', () => {
             type: 'collectionVariable',
             name: 'colourAttributeVar',
             label: 'exampleCollectionVarText',
-            childStyle: ['style3', 'style4'],
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
             placeholder: 'someEmptyTextId',
             repeat: {
               repeatMin: 1,
@@ -399,6 +410,7 @@ describe('formDefinition', () => {
             type: 'numberVariable',
             name: 'someNameInDataNumberWithAttributeVar',
             label: 'someNumberVarTextId',
+            gridColSpan: 12,
             childStyle: [],
             placeholder: 'someEmptyTextId',
             repeat: {
@@ -442,6 +454,7 @@ describe('formDefinition', () => {
             type: 'textVariable',
             name: 'someNameInDataTextWithAttrib',
             label: 'someTextId',
+            gridColSpan: 12,
             childStyle: [],
             placeholder: 'someEmptyTextId',
             repeat: {
@@ -481,6 +494,7 @@ describe('formDefinition', () => {
           {
             type: 'group',
             label: 'someChildGroupTextId',
+            gridColSpan: 12,
             childStyle: [],
             presentationStyle: 'someMetadataChildGroupPresentationStyle',
             name: 'someChildGroupNameInData',
@@ -497,7 +511,8 @@ describe('formDefinition', () => {
                 type: 'textVariable',
                 name: 'someNameInData',
                 label: 'someTextId',
-                childStyle: ['style3', 'style4'],
+                gridColSpan: 3,
+                childStyle: ['threeChildStyle'],
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
@@ -521,6 +536,7 @@ describe('formDefinition', () => {
             type: 'recordLink',
             name: 'nationalSubjectCategory',
             label: 'nationalSubjectCategoryLinkText',
+            gridColSpan: 12,
             childStyle: [],
             mode: 'input',
             repeat: {
@@ -537,13 +553,15 @@ describe('formDefinition', () => {
             name: 'pSomeContainerId',
             presentationStyle: 'card', // frame
             containerType: 'surrounding',
+            gridColSpan: 12,
             childStyle: [],
             components: [
               {
                 type: 'textVariable',
                 name: 'someNameInData4',
                 label: 'someTextId',
-                childStyle: ['5'],
+                gridColSpan: 6,
+                childStyle: ['sixChildStyle'],
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
@@ -565,7 +583,9 @@ describe('formDefinition', () => {
             mode: 'input'
           },
           {
+            childStyle: [],
             name: 'pSomeGuiElementLinkId',
+            gridColSpan: 12,
             url: 'http://www.google.se',
             elementText: 'demoTestLinkGuiElementText',
             presentAs: 'link',
@@ -576,13 +596,15 @@ describe('formDefinition', () => {
             name: 'pSomeRepeatingContainerId',
             presentationStyle: 'label',
             containerType: 'repeating',
+            gridColSpan: 12,
             childStyle: [],
             components: [
               {
                 type: 'textVariable',
                 name: 'someNameInData5',
                 label: 'someTextId',
-                childStyle: ['5'],
+                gridColSpan: 6,
+                childStyle: ['sixChildStyle'],
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
@@ -607,6 +629,7 @@ describe('formDefinition', () => {
             type: 'group',
             label: 'someOtherHeadlineTextId',
             headlineLevel: 'h3',
+            gridColSpan: 12,
             childStyle: [],
             presentationStyle: 'someMetadataChildGroupPresentationStyle',
             name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
@@ -623,7 +646,8 @@ describe('formDefinition', () => {
                 type: 'textVariable',
                 name: 'someNameInData',
                 label: 'someTextId',
-                childStyle: ['style3', 'style4'],
+                gridColSpan: 3,
+                childStyle: ['threeChildStyle'],
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
@@ -646,6 +670,7 @@ describe('formDefinition', () => {
           {
             type: 'group',
             label: '',
+            gridColSpan: 12,
             childStyle: [],
             presentationStyle: 'someMetadataChildGroupPresentationStyle',
             name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
@@ -662,7 +687,8 @@ describe('formDefinition', () => {
                 type: 'textVariable',
                 name: 'someNameInData',
                 label: 'someTextId',
-                childStyle: ['style3', 'style4'],
+                gridColSpan: 3,
+                childStyle: ['threeChildStyle'],
                 placeholder: 'someEmptyTextId',
                 repeat: {
                   repeatMin: 1,
@@ -687,6 +713,50 @@ describe('formDefinition', () => {
       }
     });
   });
+
+  describe('childStyles to GridColspan', () => {
+    it('should be able to convert one threeChildStyle to grid col span to be number 3', () => {
+      const styles= ['threeChildStyle'];
+      const expected = 3;
+      const gridColSpan = convertStylesToGridColSpan(styles);
+      expect(gridColSpan).toStrictEqual(expected);
+    });
+
+    it('should be able to convert one twelveChildStyle to grid col span to be number 12', () => {
+      const styles= ['twelveChildStyle'];
+      const expected = 12;
+      const gridColSpan = convertStylesToGridColSpan(styles);
+      expect(gridColSpan).toStrictEqual(expected);
+    });
+
+    it('should be able to convert empty childStyle to grid col span to be default number 12', () => {
+      const styles: string[] = [];
+      const expected = 12;
+      const gridColSpan = convertStylesToGridColSpan(styles);
+      expect(gridColSpan).toStrictEqual(expected);
+    });
+
+    it('should be able to convert childStyle containing other settings to grid col span to be default number 12', () => {
+      const styles: string[] = ['inline', 'frame'];
+      const expected = 12;
+      const gridColSpan = convertStylesToGridColSpan(styles);
+      expect(gridColSpan).toStrictEqual(expected);
+    });
+
+    it('should be able to convert childStyle containing other settings and a fiveChildStyle to grid col span to be default number 5', () => {
+      const styles: string[] = ['inline', 'frame', 'fiveChildStyle'];
+      const expected = 5;
+      const gridColSpan = convertStylesToGridColSpan(styles);
+      expect(gridColSpan).toStrictEqual(expected);
+    });
+
+    it('should be able to convert childStyle containing other settings and multiple numberChildStyle to take the first being 2', () => {
+      const styles: string[] = ['inline', 'twoChildStyle', 'frame', 'fiveChildStyle'];
+      const expected = 2;
+      const gridColSpan = convertStylesToGridColSpan(styles);
+      expect(gridColSpan).toStrictEqual(expected);
+    });
+  })
 
   it('should return form meta data for a given validation type', () => {
     const validationTypeId = 'someSimpleValidationTypeId';
