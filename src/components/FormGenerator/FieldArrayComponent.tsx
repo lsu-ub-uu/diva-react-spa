@@ -80,6 +80,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       tooltipTitle={t(props.component.tooltip?.title as string) as string}
       tooltipBody={t(props.component.tooltip?.body as string) as string}
     >
+      <span id={props.component.name} />
       {fields.map((field, index) => (
         <div
           key={field.id}

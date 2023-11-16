@@ -31,16 +31,19 @@ import {
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useBackdrop, FormGenerator, AsidePortal } from '../components';
-import { useCoraFormSchemaByValidationType } from '../app/hooks';
-import { FormSchema } from '../components/FormGenerator/types';
+import { useNavigate } from 'react-router-dom';
 import {
-  createDefaultValuesFromFormSchema,
-  generateYupSchemaFromFormSchema,
-} from '../components/FormGenerator/utils';
+  useBackdrop,
+  FormGenerator,
+  AsidePortal,
+  ScrollToHashElement,
+} from '../components';
+import { useCoraFormSchemaByValidationType } from '../app/hooks';
+import { FormComponent, FormSchema } from '../components/FormGenerator/types';
 
 export const DynamicFormPage = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
@@ -88,6 +91,7 @@ export const DynamicFormPage = () => {
 
   return (
     <>
+      <ScrollToHashElement />
       <AsidePortal>
         <Stepper
           sx={{
@@ -120,18 +124,21 @@ export const DynamicFormPage = () => {
           }}
           orientation='vertical'
           nonLinear
-          activeStep={5}
         >
-          {schema?.form.components?.map((item) => (
-            <Step key={item.name}>
-              <StepButton
-                disableRipple
-                href='#'
-              >
-                {t(item.label as string) as string}
-              </StepButton>
-            </Step>
-          ))}
+          {schema?.form.components
+            ?.filter((c: FormComponent) => c.type !== 'text')
+            .map((item) => (
+              <Step key={item.name}>
+                <StepButton
+                  disableRipple
+                  onClick={() => {
+                    navigate(`#${item.name}`);
+                  }}
+                >
+                  {t(item.label as string) as string}
+                </StepButton>
+              </Step>
+            ))}
         </Stepper>
       </AsidePortal>
       <Helmet>
@@ -144,24 +151,6 @@ export const DynamicFormPage = () => {
             onInvalid={() => notification(`Form is invalid`, 'error')}
             formSchema={schema as FormSchema}
           />
-          <p>Form def:</p>
-          <pre>{JSON.stringify(schema, null, 2)}</pre>
-          <p>Default values:</p>
-          <pre>
-            {JSON.stringify(
-              schema && createDefaultValuesFromFormSchema(schema),
-              null,
-              2,
-            )}
-          </pre>
-          <p>YUP validations:</p>
-          <pre>
-            {JSON.stringify(
-              schema && generateYupSchemaFromFormSchema(schema).describe(),
-              null,
-              2,
-            )}
-          </pre>
         </Stack>
       </div>
     </>

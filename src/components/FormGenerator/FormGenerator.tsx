@@ -219,6 +219,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               component,
               currentComponentNamePath,
             )}
+          <span id={component.name} />
         </Card>
       ) : (
         <Box key={reactKey}>
@@ -233,6 +234,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               component,
               currentComponentNamePath,
             )}
+          <span id={component.name} />
         </Box>
       );
     }
@@ -262,6 +264,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             text={component?.label ?? ''}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
           />
+          <span id={component.name} />
           <FieldArrayComponent
             control={control}
             component={component}
