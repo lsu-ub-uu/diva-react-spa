@@ -17,9 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, Grid } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
+import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ControlledTextField, ControlledSelectField } from '../Controlled';
 import {
@@ -31,6 +32,7 @@ import {
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
+  isFirstLevel,
 } from './utils';
 import { Typography, LinkButton, Card } from '../index';
 import { FormComponent, FormSchema } from './types';
@@ -105,6 +107,7 @@ export const renderLeafComponent = (
   }
 };
 
+// move to utils
 const headlineLevelToTypographyVariant = (
   headlineLevel: string | undefined,
 ): DivaTypographyVariants['variant'] => {
@@ -120,6 +123,7 @@ const headlineLevelToTypographyVariant = (
 };
 
 export const FormGenerator = (props: FormGeneratorProps) => {
+  const { t } = useTranslation();
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -199,11 +203,26 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         isComponentRepeatingContainer(component)) &&
       !isComponentRepeating(component)
     ) {
-      return (
-        <Box
-          sx={{ mb: 1 }}
+      return isFirstLevel(currentComponentNamePath) ? (
+        <Card
+          sx={{ mb: 2 }}
           key={reactKey}
+          title={t(component.label as string) as string}
+          variant='variant6'
+          tooltipTitle={t(component.tooltip?.title as string) as string}
+          tooltipBody={t(component.tooltip?.body as string) as string}
         >
+          {createFormComponentAttributes(component, currentComponentNamePath)}
+          {component.components &&
+            createFormComponents(
+              component.components,
+              component,
+              currentComponentNamePath,
+            )}
+          <span id={component.name} />
+        </Card>
+      ) : (
+        <Box key={reactKey}>
           <Typography
             text={component?.label ?? ''}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
@@ -215,17 +234,37 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               component,
               currentComponentNamePath,
             )}
+          <span id={component.name} />
         </Box>
       );
     }
 
     if (isComponentGroup(component) && isComponentRepeating(component)) {
-      return (
+      return isFirstLevel(currentComponentNamePath) ? (
+        <FieldArrayComponent
+          key={reactKey}
+          control={control}
+          component={component}
+          parentComponent={parentComponent}
+          name={currentComponentNamePath}
+          renderCallback={(arrayPath: string) => {
+            return [
+              ...createFormComponentAttributes(component, arrayPath),
+              ...createFormComponents(
+                component.components ?? [],
+                component,
+                arrayPath,
+              ),
+            ];
+          }}
+        />
+      ) : (
         <Box key={reactKey}>
           <Typography
             text={component?.label ?? ''}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
           />
+          <span id={component.name} />
           <FieldArrayComponent
             control={control}
             component={component}
@@ -268,7 +307,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       );
     }
     return (
-      <div key={reactKey}>
+      <div
+        key={reactKey}
+        style={{ background: 'transparent', width: '100%' }}
+      >
         {createFormComponentAttributes(component, currentComponentNamePath)}
         {renderLeafComponent(
           component,
@@ -298,41 +340,41 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         () => props.onInvalid && props.onInvalid(),
       )}
     >
-      <Card
-        variant='variant6'
-        title='Manuscript'
-        tooltipTitle='Manuscript body'
-        tooltipBody=''
+      <Grid
+        container
+        direction='row'
+        justifyContent='flex-start'
+        alignItems='flex-start'
       >
         {generateFormComponent(props.formSchema.form, undefined, 0, '')}
-        <Divider sx={{ my: 4 }} />
-        <Box
-          component='span'
-          sx={{ mt: 2, mb: 2 }}
-          display='flex'
-          justifyContent='space-between'
-          alignItems='center'
+      </Grid>
+      <Divider sx={{ my: 4 }} />
+      <Box
+        component='span'
+        sx={{ mt: 2, mb: 2 }}
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+      >
+        <Button
+          disableRipple
+          variant='contained'
+          color='secondary'
+          sx={{ height: 40 }}
+          onClick={() => reset()}
         >
-          <Button
-            disableRipple
-            variant='contained'
-            color='secondary'
-            sx={{ height: 40 }}
-            onClick={() => reset()}
-          >
-            Reset
-          </Button>
-          <Button
-            type='submit'
-            disableRipple
-            variant='contained'
-            color='primary'
-            sx={{ height: 40 }}
-          >
-            Submit
-          </Button>
-        </Box>
-      </Card>
+          Reset
+        </Button>
+        <Button
+          type='submit'
+          disableRipple
+          variant='contained'
+          color='primary'
+          sx={{ height: 40 }}
+        >
+          Submit
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -37,6 +37,17 @@ const removeRootObject = (obj: object) => {
   return obj;
 };
 
+const countStringCharOccurrences = (
+  inputString: string,
+  targetChar: string,
+) => {
+  return inputString.split('').filter((char) => char === targetChar).length;
+};
+
+export const isFirstLevel = (pathName: string) => {
+  return countStringCharOccurrences(pathName, '.') === 1;
+};
+
 export const isComponentVariable = (component: FormComponent) =>
   [
     'numberVariable',

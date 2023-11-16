@@ -66,6 +66,7 @@ export interface FormComponent {
     | 'h6TextStyle'
     | 'bodyTextStyle';
   childStyle?: string[];
+  gridColSpan?: number;
   url?: string; // used for guiElementLink
   elementText?: string; // used for guiElementLink
   presentAs?: string; // used for guiElementLink
