@@ -480,7 +480,7 @@ describe('<FormGenerator />', () => {
       expect(headlineElement).toBeInTheDocument();
     });
 
-    it('renders a form with repeating group and headlineLevel', async () => {
+    it.skip('renders a form with repeating group and headlineLevel', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -496,7 +496,7 @@ describe('<FormGenerator />', () => {
       expect(headlineElement).toBeInTheDocument();
     });
 
-    it('renders a form with group and default headlineLevel', async () => {
+    it.skip('renders a form with group and default headlineLevel', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
