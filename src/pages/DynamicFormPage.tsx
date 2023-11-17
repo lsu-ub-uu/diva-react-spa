@@ -93,7 +93,7 @@ export const DynamicFormPage = () => {
     <>
       <ScrollToHashElement />
       <AsidePortal>
-        <Stepper
+        {/* <Stepper
           sx={{
             '& .MuiStepper-root': {
               width: 'inherit',
@@ -139,7 +139,7 @@ export const DynamicFormPage = () => {
                 </StepButton>
               </Step>
             ))}
-        </Stepper>
+        </Stepper> */}
       </AsidePortal>
       <Helmet>
         <title>{t('Name of form')} | DiVA</title>
