@@ -27,8 +27,16 @@ describe('transformRecord', () => {
     const expected =
     {
       id: 'divaOutput:519333261463755',
+      recordType: 'divaOutput',
+      validationType: 'manuscript',
       createdAt: '2023-10-11T09:24:30.511487Z',
       createdBy: 'coraUser:490742519075086',
+      userRights: [
+        'read',
+        'update',
+        'index',
+        'delete'
+      ],
       updated: [
         {
           updateAt: '2023-10-11T09:24:30.511487Z',

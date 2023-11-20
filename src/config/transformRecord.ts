@@ -49,11 +49,19 @@ export const transformRecord = (
 
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const recordInfo = extractRecordInfoDataGroup(dataRecordGroup);
+
+  const recordType = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'type');
+  const validationType = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'validationType');
   const createdAt = getFirstDataAtomicValueWithNameInData(recordInfo, 'tsCreated');
   const createdBy = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'createdBy');
-
   const updated = extractRecordUpdates(recordInfo);
-  return { id, createdAt, createdBy, updated };
+
+  let userRights: string[] = [];
+  if (coraRecord.actionLinks !== undefined) {
+    userRights = Object.keys(coraRecord.actionLinks);
+  }
+
+  return { id, recordType, validationType, createdAt, createdBy, updated, userRights };
 };
 
 
