@@ -302,6 +302,10 @@
             {
               "name": "mainTitle",
               "value": "bbbbb"
+            },
+            {
+              "name": "subTitle",
+              "value": "subTitle1"
             }
           ],
           "name": "alternativeTitle",
@@ -318,7 +322,7 @@
             },
             {
               "name": "time",
-              "value": "25:30"
+              "value": "15:30"
             }
           ],
           "name": "dateIssued"
