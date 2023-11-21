@@ -17,7 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
+import _ from 'lodash';
+import { Attributes, DataAtomic, DataGroup, RecordLink, RecordWrapper } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import {
   getAllChildrenWithNameInData,
@@ -25,6 +26,18 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
+
+export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
+  return Object.prototype.hasOwnProperty.call(item, 'name') && Object.prototype.hasOwnProperty.call(item, 'children');
+}
+
+export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
+  return Object.prototype.hasOwnProperty.call(item, 'name') && Object.prototype.hasOwnProperty.call(item, 'value');
+}
+
+export function isRepeating(item: DataGroup | DataAtomic | RecordLink) {
+  return Object.prototype.hasOwnProperty.call(item, 'repeatId');
+}
 
 
 const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {
@@ -63,6 +76,46 @@ export const transformRecord = (
 
   return { id, recordType, validationType, createdAt, createdBy, updated, userRights };
 };
+
+const transformObjectAttributes = (attrObject: Attributes | undefined) => {
+  let attributesArray = [];
+  for (const key in attrObject) {
+    attributesArray.push({ [`_${key}`]: attrObject[key] });
+  }
+  return attributesArray;
+};
+
+
+export const traverseDataGroup = (dataGroup: DataGroup) => {
+  const children = dataGroup.children;
+
+  const childNames = children.map((child) => child.name);
+  const uniqueChildNames = _.uniq(childNames);
+  const countChildNames = _.countBy(childNames);
+  // todo check if childNames occur more than on time.
+  // console.log(countChildNames);
+
+  // handle attributes on the current group
+  const groupAttributes = transformObjectAttributes(dataGroup.attributes)
+
+  const object: unknown[] = children.map((child) => {
+    if (isDataGroup(child)) {
+      const childGroup = (child as DataGroup);
+      return traverseDataGroup(childGroup);
+    }
+
+    // handle repeating. 
+
+    // handle leafs // todo recordLinks
+    if (isDataAtomic(child)) {
+      const dataAtomic = child as DataAtomic;
+      const atomicAttributes = transformObjectAttributes(dataAtomic.attributes)
+      const value = (child as DataAtomic).value;
+      return {[child.name]: Object.assign({value}, ...atomicAttributes)};
+    }
+  })
+  return {[dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes])};
+}
 
 
 

@@ -18,100 +18,218 @@
  */
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
-import { transformRecord } from '../transformRecord';
-import { RecordWrapper } from '../../utils/cora-data/CoraData';
+import { isDataAtomic, isDataGroup, transformRecord, traverseDataGroup } from '../transformRecord';
+import { DataAtomic, DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformRecord', () => {
-  it.skip('should return a record id', () => {
+
+  describe('helper methods', () => {
+    it('should be able to detect a DataGroup', () => {
+      const testData = { name: 'test', children: [] } as DataGroup;
+      const expected = isDataGroup(testData);
+      expect(true).toStrictEqual(expected);
+    });
+
+    it('should be able to detect a DataAtomic', () => {
+      const testData = { name: 'test', value: 'someValue' } as DataAtomic;
+      const expected = isDataAtomic(testData);
+      expect(true).toStrictEqual(expected);
+    });
+  });
+
+  it.skip('should return a record', () => {
     const transformData = transformRecord(recordManuscript as RecordWrapper);
     const expected =
-    {
-      id: 'divaOutput:519333261463755',
-      recordType: 'divaOutput',
-      validationType: 'manuscript',
-      createdAt: '2023-10-11T09:24:30.511487Z',
-      createdBy: 'coraUser:490742519075086',
-      userRights: [
-        'read',
-        'update',
-        'index',
-        'delete'
-      ],
-      updated: [
-        {
-          updateAt: '2023-10-11T09:24:30.511487Z',
-          updatedBy: 'coraUser:490742519075086'
-        },
-        {
-          updateAt: '2023-10-18T09:09:13.554736Z',
-          updatedBy: '161616'
-        },
-        {
-          updateAt: '2023-10-26T12:33:22.260532Z',
-          updatedBy: '161616'
-        },
-        {
-          updateAt: '2023-10-26T12:35:28.748398Z',
-          updatedBy: '161616'
-        },
-        {
-          updateAt: '2023-10-26T12:35:40.545698Z',
-          updatedBy: '161616'
-        },
-        {
-          updateAt: '2023-10-26T12:35:52.293623Z',
-          updatedBy: '161616'
-        }
-      ],
-      data: {
-        divaOutput: {
-          title: {
-            mainTitle: {
-              value: 'aaaaaa',
-            },
-            _language: 'kal',
+      {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'manuscript',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: [
+          'read',
+          'update',
+          'index',
+          'delete'
+        ],
+        updated: [
+          {
+            updateAt: '2023-10-11T09:24:30.511487Z',
+            updatedBy: 'coraUser:490742519075086'
           },
-          alternativeTitle: [
-            {
+          {
+            updateAt: '2023-10-18T09:09:13.554736Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2023-10-26T12:33:22.260532Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2023-10-26T12:35:28.748398Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2023-10-26T12:35:40.545698Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2023-10-26T12:35:52.293623Z',
+            updatedBy: '161616'
+          }
+        ],
+        data: {
+          divaOutput: {
+            title: {
               mainTitle: {
-                value: 'bbbbb',
+                value: 'aaaaaa',
               },
-              subTitle: [
-                {
-                  value: 'subTitel1',
-                },
-              ],
-              _language: 'epo',
-              _titleType: 'alternativeTitle',
+              _language: 'kal',
             },
-          ],
-          dateIssued: [
-            {
-              date: {
-                value: '1994',
+            alternativeTitle: [
+              {
+                mainTitle: {
+                  value: 'bbbbb',
+                },
+                subTitle: [
+                  {
+                    value: 'subTitel1',
+                  },
+                ],
+                _language: 'epo',
+                _titleType: 'alternativeTitle',
               },
-              time: [
-                {
-                  value: '15:30',
+            ],
+            dateIssued: [
+              {
+                date: {
+                  value: '1994',
                 },
-              ],
-            },
-          ],
-          nationalSubjectCategory: [
-            {
-              value: 'nationalSubjectCategory:6325370460697648',
-            },
-          ],
-          abstract: [
-            {
-              value: 'hej!',
-              _language: 'fao',
-            },
-          ],
-        },
-      }
+                time: [
+                  {
+                    value: '15:30',
+                  },
+                ],
+              },
+            ],
+            nationalSubjectCategory: [
+              {
+                value: 'nationalSubjectCategory:6325370460697648',
+              },
+            ],
+            abstract: [
+              {
+                value: 'hej!',
+                _language: 'fao',
+              },
+            ],
+          },
+        }
 
+      }
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group', () => {
+    const test = {name: 'divaOutput', children: []}
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {}
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group with a dataAtomic child', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'title',
+          value: 'testTitleVal'
+        }
+      ]
     }
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        title: {
+          value: 'testTitleVal'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group with two dataAtomic children', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'title',
+          value: 'testTitleVal'
+        },
+        {
+          name: 'age',
+          value: '12'
+        }
+      ]
+    }
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        title: {
+          value: 'testTitleVal'
+        },
+        age: {
+          value: '12'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group with a dataGroup as children having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'title',
+          children: [
+            {
+              name: 'subTitle',
+              value: 'mySubTitle'
+            }
+          ],
+          attributes: {
+            language: 'swe',
+            someType: 'someTypeAttributeValue'
+          },
+        },
+        {
+          name: 'age',
+          value: '12',
+          attributes: {
+            language: 'fao'
+          },
+        }
+      ]
+    }
+    const transformData = traverseDataGroup(test as DataGroup);
+    const expected = {
+      divaOutput: {
+        title: {
+          _someType: 'someTypeAttributeValue',
+          _language: 'swe',
+          subTitle: {
+            value: 'mySubTitle'
+          }
+        },
+        age: {
+          value: '12',
+          _language: 'fao'
+        }
+      }
+    };
     expect(transformData).toStrictEqual(expected);
   });
 });
