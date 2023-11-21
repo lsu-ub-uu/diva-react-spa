@@ -1,6 +1,7 @@
 import { useState, MouseEvent } from 'react';
 import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import { useTranslation } from 'react-i18next';
 import { devAccounts } from '../../../utils';
 import { dummyLoginAsync } from '../../../features/auth/actions';
 import { logout } from '../../../features/auth/authSlice';
@@ -19,6 +20,7 @@ export interface Account {
 }
 
 export const Login = (): JSX.Element => {
+  const { t } = useTranslation();
   const { setBackdrop } = useBackdrop();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -67,7 +69,7 @@ export const Login = (): JSX.Element => {
         </Stack>
       ) : (
         <Stack>
-          <Button onClick={handleClick}>Log in</Button>
+          <Button onClick={handleClick}>{t('divaClient_LoginText')}</Button>
           <Menu
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}

@@ -363,7 +363,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           sx={{ height: 40 }}
           onClick={() => reset()}
         >
-          Reset
+          {t('divaClient_ResetButtonText')}
         </Button>
         <Button
           type='submit'
@@ -372,7 +372,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           color='primary'
           sx={{ height: 40 }}
         >
-          Submit
+          {t('divaClient_SubmitButtonText')}
         </Button>
       </Box>
     </Box>
