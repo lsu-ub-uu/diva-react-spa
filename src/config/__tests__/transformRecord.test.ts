@@ -151,6 +151,33 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
+  it('should return a root group with a childGroup with atomic children', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'childGroup',
+          children: [
+            {
+              name: 'title',
+              value: 'testTitleVal'
+            }
+          ]
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        childGroup: {
+          title: {
+            value: 'testTitleVal'
+          }
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
 
   it('should return a root group with two dataAtomic children', () => {
     const test = {
