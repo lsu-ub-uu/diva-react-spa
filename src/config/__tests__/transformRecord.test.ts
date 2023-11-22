@@ -218,4 +218,43 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
+  it('should return a root group with repeating children with attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'exampleNumberVar',
+          value: '12.99',
+          repeatId: '0',
+          attributes: {
+            language: 'kal'
+          }
+        },
+        {
+          name: 'exampleNumberVar',
+          value: '1.34',
+          repeatId: '1',
+          attributes: {
+            language: 'eng'
+          }
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test as DataGroup);
+    const expected = {
+      divaOutput: {
+        exampleNumberVar: [
+          {
+            value: '12.99',
+            _language: 'kal'
+          },
+          {
+            value: '1.34',
+            _language: 'eng'
+          }
+        ]
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
 });

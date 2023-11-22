@@ -100,7 +100,7 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
   const childNames = children.map((child) => child.name);
   const uniqueChildNames = _.uniq(childNames);
   const countChildNames = _.countBy(childNames);
-  // todo check if childNames occur more than on time.
+  // TODO: check if childNames occur more than on time.
 
   // handle attributes on the current group
   const groupAttributes = transformObjectAttributes(dataGroup.attributes);
@@ -115,11 +115,13 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
     // handle repeating.
     if (isDataAtomic(child) && isRepeating(child)) {
       const value = (child as DataAtomic).value;
-      repeatArray.push({ value });
+      const attributes = transformObjectAttributes(child.attributes);
+      repeatArray.push(Object.assign({ value }, ...attributes));
       return { [child.name]: repeatArray };
     }
 
-    // handle leafs // todo recordLinks
+    // handle leafs
+    // TODO: recordLinks
     if (isDataAtomic(child) && !isRepeating(child)) {
       const dataAtomic = child as DataAtomic;
       const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
