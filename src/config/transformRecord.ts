@@ -18,27 +18,38 @@
  */
 
 import _ from 'lodash';
-import { Attributes, DataAtomic, DataGroup, RecordLink, RecordWrapper } from '../utils/cora-data/CoraData';
+import {
+  Attributes,
+  DataAtomic,
+  DataGroup,
+  RecordLink,
+  RecordWrapper
+} from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import {
   getAllChildrenWithNameInData,
-  getFirstDataGroupWithNameInData,
+  getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
-  return Object.prototype.hasOwnProperty.call(item, 'name') && Object.prototype.hasOwnProperty.call(item, 'children');
+  return (
+    Object.prototype.hasOwnProperty.call(item, 'name') &&
+    Object.prototype.hasOwnProperty.call(item, 'children')
+  );
 }
 
 export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
-  return Object.prototype.hasOwnProperty.call(item, 'name') && Object.prototype.hasOwnProperty.call(item, 'value');
+  return (
+    Object.prototype.hasOwnProperty.call(item, 'name') &&
+    Object.prototype.hasOwnProperty.call(item, 'value')
+  );
 }
 
 export function isRepeating(item: DataGroup | DataAtomic | RecordLink) {
   return Object.prototype.hasOwnProperty.call(item, 'repeatId');
 }
-
 
 const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {
   return getFirstDataGroupWithNameInData(coraRecordGroup, 'recordInfo') as DataGroup;
@@ -52,11 +63,9 @@ const extractRecordUpdates = (recordInfo: DataGroup): unknown[] => {
     const updateAt = getFirstDataAtomicValueWithNameInData(updatedGroup, 'tsUpdated');
     return { updateAt, updatedBy };
   });
-}
+};
 
-export const transformRecord = (
-  recordWrapper: RecordWrapper,
-): unknown => {
+export const transformRecord = (recordWrapper: RecordWrapper): unknown => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
 
@@ -85,7 +94,6 @@ const transformObjectAttributes = (attrObject: Attributes | undefined) => {
   return attributesArray;
 };
 
-
 export const traverseDataGroup = (dataGroup: DataGroup) => {
   const children = dataGroup.children;
 
@@ -93,29 +101,31 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
   const uniqueChildNames = _.uniq(childNames);
   const countChildNames = _.countBy(childNames);
   // todo check if childNames occur more than on time.
-  // console.log(countChildNames);
 
   // handle attributes on the current group
-  const groupAttributes = transformObjectAttributes(dataGroup.attributes)
+  const groupAttributes = transformObjectAttributes(dataGroup.attributes);
 
+  let repeatArray: any = [];
   const object: unknown[] = children.map((child) => {
     if (isDataGroup(child)) {
-      const childGroup = (child as DataGroup);
+      const childGroup = child as DataGroup;
       return traverseDataGroup(childGroup);
     }
 
-    // handle repeating. 
+    // handle repeating.
+    if (isDataAtomic(child) && isRepeating(child)) {
+      const value = (child as DataAtomic).value;
+      repeatArray.push({ value });
+      return { [child.name]: repeatArray };
+    }
 
     // handle leafs // todo recordLinks
-    if (isDataAtomic(child)) {
+    if (isDataAtomic(child) && !isRepeating(child)) {
       const dataAtomic = child as DataAtomic;
-      const atomicAttributes = transformObjectAttributes(dataAtomic.attributes)
+      const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
       const value = (child as DataAtomic).value;
-      return {[child.name]: Object.assign({value}, ...atomicAttributes)};
+      return { [child.name]: Object.assign({ value }, ...atomicAttributes) };
     }
-  })
-  return {[dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes])};
-}
-
-
-
+  });
+  return { [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) };
+};

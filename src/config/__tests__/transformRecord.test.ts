@@ -22,7 +22,6 @@ import { isDataAtomic, isDataGroup, transformRecord, traverseDataGroup } from '.
 import { DataAtomic, DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformRecord', () => {
-
   describe('helper methods', () => {
     it('should be able to detect a DataGroup', () => {
       const testData = { name: 'test', children: [] } as DataGroup;
@@ -39,99 +38,92 @@ describe('transformRecord', () => {
 
   it.skip('should return a record', () => {
     const transformData = transformRecord(recordManuscript as RecordWrapper);
-    const expected =
-      {
-        id: 'divaOutput:519333261463755',
-        recordType: 'divaOutput',
-        validationType: 'manuscript',
-        createdAt: '2023-10-11T09:24:30.511487Z',
-        createdBy: 'coraUser:490742519075086',
-        userRights: [
-          'read',
-          'update',
-          'index',
-          'delete'
-        ],
-        updated: [
-          {
-            updateAt: '2023-10-11T09:24:30.511487Z',
-            updatedBy: 'coraUser:490742519075086'
-          },
-          {
-            updateAt: '2023-10-18T09:09:13.554736Z',
-            updatedBy: '161616'
-          },
-          {
-            updateAt: '2023-10-26T12:33:22.260532Z',
-            updatedBy: '161616'
-          },
-          {
-            updateAt: '2023-10-26T12:35:28.748398Z',
-            updatedBy: '161616'
-          },
-          {
-            updateAt: '2023-10-26T12:35:40.545698Z',
-            updatedBy: '161616'
-          },
-          {
-            updateAt: '2023-10-26T12:35:52.293623Z',
-            updatedBy: '161616'
-          }
-        ],
-        data: {
-          divaOutput: {
-            title: {
-              mainTitle: {
-                value: 'aaaaaa',
-              },
-              _language: 'kal',
-            },
-            alternativeTitle: [
-              {
-                mainTitle: {
-                  value: 'bbbbb',
-                },
-                subTitle: [
-                  {
-                    value: 'subTitel1',
-                  },
-                ],
-                _language: 'epo',
-                _titleType: 'alternativeTitle',
-              },
-            ],
-            dateIssued: [
-              {
-                date: {
-                  value: '1994',
-                },
-                time: [
-                  {
-                    value: '15:30',
-                  },
-                ],
-              },
-            ],
-            nationalSubjectCategory: [
-              {
-                value: 'nationalSubjectCategory:6325370460697648',
-              },
-            ],
-            abstract: [
-              {
-                value: 'hej!',
-                _language: 'fao',
-              },
-            ],
-          },
+    const expected = {
+      id: 'divaOutput:519333261463755',
+      recordType: 'divaOutput',
+      validationType: 'manuscript',
+      createdAt: '2023-10-11T09:24:30.511487Z',
+      createdBy: 'coraUser:490742519075086',
+      userRights: ['read', 'update', 'index', 'delete'],
+      updated: [
+        {
+          updateAt: '2023-10-11T09:24:30.511487Z',
+          updatedBy: 'coraUser:490742519075086'
+        },
+        {
+          updateAt: '2023-10-18T09:09:13.554736Z',
+          updatedBy: '161616'
+        },
+        {
+          updateAt: '2023-10-26T12:33:22.260532Z',
+          updatedBy: '161616'
+        },
+        {
+          updateAt: '2023-10-26T12:35:28.748398Z',
+          updatedBy: '161616'
+        },
+        {
+          updateAt: '2023-10-26T12:35:40.545698Z',
+          updatedBy: '161616'
+        },
+        {
+          updateAt: '2023-10-26T12:35:52.293623Z',
+          updatedBy: '161616'
         }
-
+      ],
+      data: {
+        divaOutput: {
+          title: {
+            mainTitle: {
+              value: 'aaaaaa'
+            },
+            _language: 'kal'
+          },
+          alternativeTitle: [
+            {
+              mainTitle: {
+                value: 'bbbbb'
+              },
+              subTitle: [
+                {
+                  value: 'subTitel1'
+                }
+              ],
+              _language: 'epo',
+              _titleType: 'alternativeTitle'
+            }
+          ],
+          dateIssued: [
+            {
+              date: {
+                value: '1994'
+              },
+              time: [
+                {
+                  value: '15:30'
+                }
+              ]
+            }
+          ],
+          nationalSubjectCategory: [
+            {
+              value: 'nationalSubjectCategory:6325370460697648'
+            }
+          ],
+          abstract: [
+            {
+              value: 'hej!',
+              _language: 'fao'
+            }
+          ]
+        }
       }
+    };
     expect(transformData).toStrictEqual(expected);
   });
 
   it('should return a root group', () => {
-    const test = {name: 'divaOutput', children: []}
+    const test = { name: 'divaOutput', children: [] };
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {}
@@ -148,7 +140,7 @@ describe('transformRecord', () => {
           value: 'testTitleVal'
         }
       ]
-    }
+    };
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {
@@ -173,7 +165,7 @@ describe('transformRecord', () => {
           value: '12'
         }
       ]
-    }
+    };
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {
@@ -188,45 +180,39 @@ describe('transformRecord', () => {
     expect(transformData).toStrictEqual(expected);
   });
 
-  it('should return a root group with a dataGroup as children having attributes', () => {
+  it('should return a root group with repeating children', () => {
     const test = {
       name: 'divaOutput',
       children: [
         {
-          name: 'title',
-          children: [
-            {
-              name: 'subTitle',
-              value: 'mySubTitle'
-            }
-          ],
-          attributes: {
-            language: 'swe',
-            someType: 'someTypeAttributeValue'
-          },
+          name: 'exampleNumberVar',
+          value: '12.99',
+          repeatId: '0'
         },
         {
-          name: 'age',
-          value: '12',
-          attributes: {
-            language: 'fao'
-          },
+          name: 'exampleNumberVar',
+          value: '1.34',
+          repeatId: '1'
+        },
+        {
+          name: 'exampleNumberVarTwo',
+          value: '99.00'
         }
       ]
-    }
+    };
     const transformData = traverseDataGroup(test as DataGroup);
     const expected = {
       divaOutput: {
-        title: {
-          _someType: 'someTypeAttributeValue',
-          _language: 'swe',
-          subTitle: {
-            value: 'mySubTitle'
+        exampleNumberVar: [
+          {
+            value: '12.99'
+          },
+          {
+            value: '1.34'
           }
-        },
-        age: {
-          value: '12',
-          _language: 'fao'
+        ],
+        exampleNumberVarTwo: {
+          value: '99.00'
         }
       }
     };
