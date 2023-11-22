@@ -72,13 +72,15 @@ import {
   pSomeMetadataChildGroupWithShowHeadlineFalse,
   someNewSimpleMetadataGroup,
   someSimpleValidationTypeData,
+  pSomeEditMetadataGroup,
+  someEditMetadataGroup
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
   createFormDefinition,
   createFormMetaData,
   createFormMetaDataPathLookup,
-  FormMetaData,
+  FormMetaData
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
@@ -90,6 +92,7 @@ describe('formDefinition', () => {
     BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
   >;
   const FORM_MODE_NEW = 'new'; // todo handle edit
+  const FORM_MODE_EDIT = 'update'; // todo handle edit
   let dependencies: Dependencies;
 
   beforeEach(() => {
@@ -120,7 +123,8 @@ describe('formDefinition', () => {
       someMetadataRecordLink,
       someMetadataChildGroupWithSpecifiedHeadlineText,
       someMetadataChildGroupWithShowHeadlineFalse,
-      someNewSimpleMetadataGroup
+      someNewSimpleMetadataGroup,
+      someEditMetadataGroup
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -142,7 +146,8 @@ describe('formDefinition', () => {
       pSomeGuiElementLink,
       pSomeRepeatingContainer,
       pSomeMetadataChildGroupWithSpecifiedHeadlineText,
-      pSomeMetadataChildGroupWithShowHeadlineFalse
+      pSomeMetadataChildGroupWithShowHeadlineFalse,
+      pSomeEditMetadataGroup
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -192,7 +197,7 @@ describe('formDefinition', () => {
     }
   });
 
-  it('should return a form definition', () => {
+  it('should return a form definition for a new metadata group', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
     expect(formDefinition.form.components).toHaveLength(16);
@@ -714,16 +719,73 @@ describe('formDefinition', () => {
     });
   });
 
-  describe('childStyles to GridColspan', () => {
+  it('should return a form definition for a edit metadata group', () => {
+    const validationTypeId = 'someValidationTypeId';
+    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_EDIT);
+    expect(formDefinition.form.components).toHaveLength(2);
+    expect(formDefinition).toStrictEqual({
+      validationTypeId: validationTypeId,
+      form: {
+        type: 'group',
+        label: 'textId345',
+        gridColSpan: 12,
+        childStyle: [],
+        presentationStyle: 'card',
+        name: 'someEditMetadataGroupNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
+        },
+        tooltip: {
+          title: 'textId345',
+          body: 'defTextId678'
+        },
+        components: [
+          {
+            type: 'text',
+            name: 'someEditHeadlineTextId',
+            textStyle: 'bold',
+            gridColSpan: 12,
+            childStyle: ['twelveChildStyle']
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            placeholder: 'someEmptyTextId',
+            label: 'someTextId',
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 3
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input',
+            inputType: 'input'
+          }
+        ],
+        mode: 'input'
+      }
+    });
+  });
+
+  describe('converting childStyles to gridColspan', () => {
     it('should be able to convert one threeChildStyle to grid col span to be number 3', () => {
-      const styles= ['threeChildStyle'];
+      const styles = ['threeChildStyle'];
       const expected = 3;
       const gridColSpan = convertStylesToGridColSpan(styles);
       expect(gridColSpan).toStrictEqual(expected);
     });
 
     it('should be able to convert one twelveChildStyle to grid col span to be number 12', () => {
-      const styles= ['twelveChildStyle'];
+      const styles = ['twelveChildStyle'];
       const expected = 12;
       const gridColSpan = convertStylesToGridColSpan(styles);
       expect(gridColSpan).toStrictEqual(expected);
@@ -756,7 +818,7 @@ describe('formDefinition', () => {
       const gridColSpan = convertStylesToGridColSpan(styles);
       expect(gridColSpan).toStrictEqual(expected);
     });
-  })
+  });
 
   it('should return form meta data for a given validation type', () => {
     const validationTypeId = 'someSimpleValidationTypeId';
@@ -803,52 +865,52 @@ describe('formDefinition', () => {
             repeatMin: 1
           },
           type: 'recordLink',
-          linkedRecordType: 'nationalSubjectCategory',
+          linkedRecordType: 'nationalSubjectCategory'
         }
       ]
     };
 
     const expectedMetadataLookup = {
-      'someNewMetadataGroupNameInData': {
-        'name': 'someNewMetadataGroupNameInData',
-        'repeat': {
-          'repeatMax': 1,
-          'repeatMin': 1
+      someNewMetadataGroupNameInData: {
+        name: 'someNewMetadataGroupNameInData',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
         },
-        'type': 'group'
+        type: 'group'
       },
       'someNewMetadataGroupNameInData.nationalSubjectCategory': {
-        'name': 'nationalSubjectCategory',
-        'repeat': {
-          'repeatMax': 1,
-          'repeatMin': 1
+        name: 'nationalSubjectCategory',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
         },
-        'type': 'recordLink',
-        'linkedRecordType': 'nationalSubjectCategory'
+        type: 'recordLink',
+        linkedRecordType: 'nationalSubjectCategory'
       },
       'someNewMetadataGroupNameInData.someChildGroupNameInData': {
-        'name': 'someChildGroupNameInData',
-        'repeat': {
-          'repeatMax': 1,
-          'repeatMin': 1
+        name: 'someChildGroupNameInData',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
         },
-        'type': 'group'
+        type: 'group'
       },
       'someNewMetadataGroupNameInData.someChildGroupNameInData.someNameInData': {
-        'name': 'someNameInData',
-        'repeat': {
-          'repeatMax': 1,
-          'repeatMin': 1
+        name: 'someNameInData',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
         },
-        'type': 'textVariable'
+        type: 'textVariable'
       },
       'someNewMetadataGroupNameInData.someNameInData': {
-        'name': 'someNameInData',
-        'repeat': {
-          'repeatMax': 3,
-          'repeatMin': 1
+        name: 'someNameInData',
+        repeat: {
+          repeatMax: 3,
+          repeatMin: 1
         },
-        'type': 'textVariable'
+        type: 'textVariable'
       }
     };
 
