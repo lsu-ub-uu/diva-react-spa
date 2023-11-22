@@ -107,11 +107,10 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
 
   let repeatArray: any = [];
   const object: unknown[] = children.map((child) => {
-    if (isDataGroup(child)) {
+    if (isDataGroup(child) && !isRepeating(child)) {
       const childGroup = child as DataGroup;
       return traverseDataGroup(childGroup);
     }
-
     // handle repeating.
     if (isDataAtomic(child) && isRepeating(child)) {
       const value = (child as DataAtomic).value;

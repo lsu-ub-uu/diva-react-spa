@@ -245,6 +245,7 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
+
   it('should return a root group with repeating children with attributes', () => {
     const test = {
       name: 'divaOutput',
@@ -278,6 +279,52 @@ describe('transformRecord', () => {
           {
             value: '1.34',
             _language: 'eng'
+          }
+        ]
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group with a repeating childGroup with atomic children', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'childGroup',
+          repeatId: '0',
+          children: [
+            {
+              name: 'title',
+              value: 'testTitleVal1'
+            }
+          ]
+        },
+        {
+          name: 'childGroup',
+          repeatId: '1',
+          children: [
+            {
+              name: 'title',
+              value: 'testTitleVal2'
+            }
+          ]
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        childGroup: [
+          {
+            title: {
+              value: 'testTitleVal1'
+            }
+          },
+          {
+            title: {
+              value: 'testTitleVal2'
+            }
           }
         ]
       }
