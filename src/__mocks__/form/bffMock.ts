@@ -677,8 +677,8 @@ export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
 };
 
 export const someMetadataRecordLinkWithAttributes: BFFMetadataRecordLink = {
-  id: 'nationalSubjectCategoryLinkWithAttibutesId',
-  nameInData: 'nationalSubjectCategoryWithAttibutes',
+  id: 'nationalSubjectCategoryLinkWithAttributesId',
+  nameInData: 'nationalSubjectCategoryWithAttributes',
   type: 'recordLink',
   textId: 'nationalSubjectCategoryLinkText',
   defTextId: 'nationalSubjectCategoryLinkDefText',
@@ -691,8 +691,8 @@ export const someMetadataRecordLinkWithAttributes: BFFMetadataRecordLink = {
 };
 
 export const someMetadataRepeatingRecordLinkWithAttributes: BFFMetadataRecordLink = {
-  id: 'nationalSubjectCategoryLinkRepeatingWithAttibutesId',
-  nameInData: 'nationalSubjectCategoryRepeatingWithAttibutes',
+  id: 'nationalSubjectCategoryLinkRepeatingWithAttributesId',
+  nameInData: 'nationalSubjectCategoryRepeatingWithAttributes',
   type: 'recordLink',
   textId: 'nationalSubjectCategoryLinkText',
   defTextId: 'nationalSubjectCategoryLinkDefText',
@@ -795,12 +795,12 @@ export const someNewSimpleMetadataGroupWithAttributes: BFFMetadataGroup = {
       repeatMax: '2'
     },
     {
-      childId: 'nationalSubjectCategoryLinkWithAttibutesId',
+      childId: 'nationalSubjectCategoryLinkWithAttributesId',
       repeatMin: '1',
       repeatMax: '1'
     },
     {
-      childId: 'nationalSubjectCategoryLinkRepeatingWithAttibutesId',
+      childId: 'nationalSubjectCategoryLinkRepeatingWithAttributesId',
       repeatMin: '1',
       repeatMax: '2'
     }
