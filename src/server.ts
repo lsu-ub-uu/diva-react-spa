@@ -27,6 +27,7 @@ import {
 import authRoute from './routes/authRoute';
 import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
 import { generateRecordInfo, injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
+import { cleanJson } from './utils/structs/removeEmpty';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -74,7 +75,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     const { validationTypeId } = req.params;
     const authToken = req.header('authToken') ?? '';
 
-    const payload = req.body;
+    const payload = cleanJson(req.body);
     const recordType = Object.keys(payload)[0];
 
     const types = ['metadata', 'validationType'];
