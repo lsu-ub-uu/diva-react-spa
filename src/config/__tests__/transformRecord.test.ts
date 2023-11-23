@@ -286,6 +286,57 @@ describe('transformRecord', () => {
     expect(transformData).toStrictEqual(expected);
   });
 
+  it('should return a root group with two different repeating children', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'exampleNumberVar',
+          value: '12.99',
+          repeatId: '0'
+        },
+        {
+          name: 'exampleNumberVar',
+          value: '1.34',
+          repeatId: '1'
+        },
+        {
+          name: 'exampleNumberVarTwo',
+          value: '99.00',
+          repeatId: '0'
+        },
+        {
+          name: 'exampleNumberVarTwo',
+          value: '101.00',
+          repeatId: '1'
+        },
+      ]
+    };
+    const transformData = traverseDataGroup(test as DataGroup);
+    const expected = {
+      divaOutput: {
+        exampleNumberVar: [
+          {
+            value: '12.99'
+          },
+          {
+            value: '1.34'
+          }
+        ],
+        exampleNumberVarTwo: [
+          {
+            value: '99.00',
+          },
+          {
+            value: '101.00',
+          }
+        ]
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+
   it('should return a root group with a repeating childGroup with atomic children', () => {
     const test = {
       name: 'divaOutput',

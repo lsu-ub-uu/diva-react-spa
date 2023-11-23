@@ -95,38 +95,45 @@ const transformObjectAttributes = (attrObject: Attributes | undefined) => {
 };
 
 export const traverseDataGroup = (dataGroup: DataGroup) => {
-  const children = dataGroup.children;
-
-  const childNames = children.map((child) => child.name);
-  const uniqueChildNames = _.uniq(childNames);
-  const countChildNames = _.countBy(childNames);
-  // TODO: check if childNames occur more than on time.
+  const groupedByName = _.groupBy(dataGroup.children, 'name');
+  const groupedEntries = Object.entries(groupedByName);
 
   // handle attributes on the current group
   const groupAttributes = transformObjectAttributes(dataGroup.attributes);
 
-  let repeatArray: any = [];
-  const object: unknown[] = children.map((child) => {
-    if (isDataGroup(child) && !isRepeating(child)) {
-      const childGroup = child as DataGroup;
-      return traverseDataGroup(childGroup);
-    }
-    // handle repeating.
-    if (isDataAtomic(child) && isRepeating(child)) {
-      const value = (child as DataAtomic).value;
-      const attributes = transformObjectAttributes(child.attributes);
-      repeatArray.push(Object.assign({ value }, ...attributes));
-      return { [child.name]: repeatArray };
+  let object: unknown[] = [];
+  groupedEntries.forEach(([name, groupedChildren]) => {
+
+    // iterate over the name array
+    let repeating = false;
+    const thisLevelChildren = groupedChildren.map((child) => {
+      if (isDataGroup(child)) {
+        const childGroup = child as DataGroup;
+        return traverseDataGroup(childGroup);
+      }
+      if (isDataAtomic(child) && !isRepeating(child)) {
+        const dataAtomic = child as DataAtomic;
+        const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
+        const value = (child as DataAtomic).value;
+        return { [name]: Object.assign({ value }, ...atomicAttributes) }
+      }
+      if (isDataAtomic(child) && isRepeating(child)) {
+        repeating = true;
+        const dataAtomic = child as DataAtomic;
+        const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
+        const value = (child as DataAtomic).value;
+        return Object.assign({ value }, ...atomicAttributes)
+      }
+    }); // end map
+
+    // each unique name on that level
+    if (repeating) {
+      object.push({ [name]: thisLevelChildren });
+    } else {
+      object.push(Object.assign({}, ...thisLevelChildren));
     }
 
-    // handle leafs
-    // TODO: recordLinks
-    if (isDataAtomic(child) && !isRepeating(child)) {
-      const dataAtomic = child as DataAtomic;
-      const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
-      const value = (child as DataAtomic).value;
-      return { [child.name]: Object.assign({ value }, ...atomicAttributes) };
-    }
   });
+
   return { [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) };
 };
