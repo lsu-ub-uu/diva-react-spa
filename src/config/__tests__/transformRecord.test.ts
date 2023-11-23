@@ -96,32 +96,28 @@ describe('transformRecord', () => {
             },
             _language: 'kal',
           },
-          alternativeTitle: [
+          alternativeTitle:
             {
               mainTitle: {
                 value: 'bbbbb',
               },
-              subTitle: [
+              subTitle:
                 {
-                  value: 'subTitel1',
+                  value: 'subTitle1',
                 },
-              ],
               _language: 'epo',
               _titleType: 'alternativeTitle',
             },
-          ],
-          dateIssued: [
+          dateIssued:
             {
               date: {
                 value: '1994',
               },
-              time: [
+              time:
                 {
                   value: '15:30',
                 },
-              ],
             },
-          ],
           nationalSubjectCategory: [
             {
               value: 'nationalSubjectCategory:6325370460697648',
