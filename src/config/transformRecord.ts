@@ -20,7 +20,7 @@
 import _ from 'lodash';
 import {
   Attributes,
-  DataAtomic, DataElement,
+  DataAtomic,
   DataGroup,
   RecordLink,
   RecordWrapper,
