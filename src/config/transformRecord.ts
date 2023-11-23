@@ -20,10 +20,10 @@
 import _ from 'lodash';
 import {
   Attributes,
-  DataAtomic,
+  DataAtomic, DataElement,
   DataGroup,
   RecordLink,
-  RecordWrapper
+  RecordWrapper,
 } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import {
@@ -46,6 +46,17 @@ export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
     Object.prototype.hasOwnProperty.call(item, 'value')
   );
 }
+
+export function isRecordLink(item: DataGroup | DataAtomic | RecordLink) {
+  if (!isDataGroup(item)) return false;
+  const group = (item as DataGroup);
+  const numberOfChildren = group.children.length;
+  const recordLinkChildren = group.children.filter((child: DataGroup | DataAtomic | RecordLink) => {
+    return (child.name === 'linkedRecordType' || child.name === 'linkedRecordId');
+  });
+  return (numberOfChildren === 2 && recordLinkChildren.length === 2);
+}
+
 
 export function isRepeating(item: DataGroup | DataAtomic | RecordLink) {
   return Object.prototype.hasOwnProperty.call(item, 'repeatId');
@@ -83,7 +94,9 @@ export const transformRecord = (recordWrapper: RecordWrapper): unknown => {
     userRights = Object.keys(coraRecord.actionLinks);
   }
 
-  return { id, recordType, validationType, createdAt, createdBy, updated, userRights };
+  let data = traverseDataGroup(dataRecordGroup);
+
+  return { id, recordType, validationType, createdAt, createdBy, updated, userRights, data };
 };
 
 const transformObjectAttributes = (attrObject: Attributes | undefined) => {
@@ -95,7 +108,8 @@ const transformObjectAttributes = (attrObject: Attributes | undefined) => {
 };
 
 export const traverseDataGroup = (dataGroup: DataGroup) => {
-  const groupedByName = _.groupBy(dataGroup.children, 'name');
+  const validChildren = dataGroup.children.filter((group) => group.name !== 'recordInfo');
+  const groupedByName = _.groupBy(validChildren, 'name');
   const groupedEntries = Object.entries(groupedByName);
 
   // handle attributes on the current group

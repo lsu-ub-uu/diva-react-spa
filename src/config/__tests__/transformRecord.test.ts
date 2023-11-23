@@ -18,8 +18,8 @@
  */
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
-import { isDataAtomic, isDataGroup, transformRecord, traverseDataGroup } from '../transformRecord';
-import { DataAtomic, DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
+import { isDataAtomic, isDataGroup, isRecordLink, transformRecord, traverseDataGroup } from '../transformRecord';
+import { DataAtomic, DataGroup, RecordLink, RecordWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformRecord', () => {
   describe('helper methods', () => {
@@ -32,6 +32,23 @@ describe('transformRecord', () => {
     it('should be able to detect a DataAtomic', () => {
       const testData = { name: 'test', value: 'someValue' } as DataAtomic;
       const expected = isDataAtomic(testData);
+      expect(true).toStrictEqual(expected);
+    });
+
+    it('should be able to detect a RecordLInk', () => {
+      const testData = {
+        name: 'test',
+        children: [
+          {
+            name: "linkedRecordType",
+            value: "someLinkedRecordType"
+          },
+          {
+            name: 'linkedRecordId',
+            value: "someLinkedRecordValue"
+          }],
+      } as RecordLink;
+      const expected = isRecordLink(testData);
       expect(true).toStrictEqual(expected);
     });
   });
