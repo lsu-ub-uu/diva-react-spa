@@ -56,7 +56,6 @@ export function isRecordLink(item: DataGroup | DataAtomic | RecordLink) {
   return recordLinkChildren.length === 2;
 }
 
-
 export function isRepeating(item: DataGroup | DataAtomic | RecordLink) {
   return Object.prototype.hasOwnProperty.call(item, 'repeatId');
 }
@@ -121,6 +120,22 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
     let repeating = false;
     let isGroup = false;
     const thisLevelChildren = groupedChildren.map((child) => {
+
+      if (isRecordLink(child) && !isRepeating(child)) {
+        const childGroup = child as DataGroup;
+        const recordLinkAttributes = transformObjectAttributes(childGroup.attributes);
+        const recordId = getFirstDataAtomicValueWithNameInData(childGroup, 'linkedRecordId')
+        return { [name]: Object.assign({ value: recordId }, ...recordLinkAttributes) }
+      }
+
+      if (isRecordLink(child) && isRepeating(child)) {
+        repeating = true;
+        const childGroup = child as DataGroup;
+        const recordLinkAttributes = transformObjectAttributes(childGroup.attributes);
+        const recordId = getFirstDataAtomicValueWithNameInData(childGroup, 'linkedRecordId')
+        return Object.assign({ value: recordId }, ...recordLinkAttributes);
+      }
+
       if (isDataGroup(child) && !isRepeating(child)) {
         const childGroup = child as DataGroup;
         return traverseDataGroup(childGroup);
