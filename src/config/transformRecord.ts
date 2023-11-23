@@ -106,11 +106,20 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
 
     // iterate over the name array
     let repeating = false;
+    let isGroup = false;
     const thisLevelChildren = groupedChildren.map((child) => {
-      if (isDataGroup(child)) {
+      if (isDataGroup(child) && !isRepeating(child)) {
         const childGroup = child as DataGroup;
         return traverseDataGroup(childGroup);
       }
+
+      if (isDataGroup(child) && isRepeating(child)) {
+        repeating = true;
+        isGroup = true;
+        const childGroup = child as DataGroup;
+        return traverseDataGroup(childGroup);
+      }
+
       if (isDataAtomic(child) && !isRepeating(child)) {
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
@@ -127,8 +136,10 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
     }); // end map
 
     // each unique name on that level
-    if (repeating) {
+    if (repeating && !isGroup) {
       object.push({ [name]: thisLevelChildren });
+    } else if (repeating && isGroup) {
+      object.push({ [name]: thisLevelChildren.map((item) => item[name]) });
     } else {
       object.push(Object.assign({}, ...thisLevelChildren));
     }

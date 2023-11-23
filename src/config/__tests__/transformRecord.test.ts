@@ -36,7 +36,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it.skip('should return a record', () => {
+  it('should return a record', () => {
     const transformData = transformRecord(recordManuscript as RecordWrapper);
     const expected = {
       id: 'divaOutput:519333261463755',
