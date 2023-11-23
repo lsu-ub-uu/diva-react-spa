@@ -177,6 +177,21 @@ export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
 
 const createYupStringRegexpSchema = (component: FormComponent) => {
   const regexpValidation = component.validation as FormRegexValidation;
+
+  if (isComponentSingularAndOptional(component)) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .when('$isNotNull', (isNotNull, field) =>
+        isNotNull
+          ? field.matches(
+              new RegExp(regexpValidation.pattern ?? '.+'),
+              'Invalid input format',
+            )
+          : field,
+      );
+  }
   return yup
     .string()
     .matches(

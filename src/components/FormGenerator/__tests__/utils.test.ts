@@ -67,6 +67,7 @@ const minMaxValidationTests = (min: number, max: number) => [
   { name: 'min', params: { min } },
   { name: 'max', params: { max } },
 ];
+
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
     test('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
