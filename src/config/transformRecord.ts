@@ -154,6 +154,7 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
         const value = (child as DataAtomic).value;
         return { [name]: Object.assign({ value }, ...atomicAttributes) }
       }
+      
       if (isDataAtomic(child) && isRepeating(child)) {
         repeating = true;
         const dataAtomic = child as DataAtomic;
