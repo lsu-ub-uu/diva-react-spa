@@ -50,11 +50,10 @@ export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
 export function isRecordLink(item: DataGroup | DataAtomic | RecordLink) {
   if (!isDataGroup(item)) return false;
   const group = (item as DataGroup);
-  const numberOfChildren = group.children.length;
   const recordLinkChildren = group.children.filter((child: DataGroup | DataAtomic | RecordLink) => {
     return (child.name === 'linkedRecordType' || child.name === 'linkedRecordId');
   });
-  return (numberOfChildren === 2 && recordLinkChildren.length === 2);
+  return recordLinkChildren.length === 2;
 }
 
 
