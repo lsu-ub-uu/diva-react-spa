@@ -5,30 +5,30 @@ export const newCreatedPerson: Person = {
   recordType: 'person', // validationType
   authorisedName: {
     familyName: 'Swenning Leyser',
-    givenName: 'Egil',
+    givenName: 'Egil'
   },
   public: 'yes',
   personDomainParts: [],
-  id: '2',
+  id: '2'
 };
 
 export const personWithDomain: Person = {
   id: '2',
   authorisedName: {
     familyName: 'Enequist',
-    givenName: 'Gerd',
+    givenName: 'Gerd'
   },
   domains: ['Uppsala Universitet', 'Test'],
   recordType: 'person',
   personDomainParts: [],
-  public: 'yes',
+  public: 'yes'
 };
 
 export const formPersonWithDomain: FormPerson = {
   id: '2',
   authorisedName: {
     familyName: 'Enequist',
-    givenName: 'Gerd',
+    givenName: 'Gerd'
   },
   domains: ['Uppsala Universitet', 'Test'],
   personDomainParts: [],
@@ -42,42 +42,42 @@ export const formPersonWithDomain: FormPerson = {
   otherAffiliation: {
     name: '',
     fromYear: '',
-    untilYear: '',
+    untilYear: ''
   },
   orcids: [],
   viafIDs: [],
   librisIDs: [],
   biographyEnglish: '',
-  biographySwedish: '',
+  biographySwedish: ''
 };
 
 export const createPersonObject = (
   id: string = 'someId',
   familyName: string = 'someFamilyName',
-  givenName: string = 'someGivenName',
+  givenName: string = 'someGivenName'
 ): Person => {
   return {
     id,
     authorisedName: {
       familyName,
-      givenName,
+      givenName
     },
     recordType: 'person',
     personDomainParts: [],
-    public: 'yes',
+    public: 'yes'
   };
 };
 
 export const createFormPersonObject = (
   id: string = 'someId',
   familyName: string = 'someFamilyName',
-  givenName: string = 'someGivenName',
+  givenName: string = 'someGivenName'
 ): FormPerson => {
   const person: FormPerson = {
     id,
     authorisedName: {
       familyName,
-      givenName,
+      givenName
     },
     personDomainParts: [],
     public: 'yes',
@@ -91,13 +91,13 @@ export const createFormPersonObject = (
     otherAffiliation: {
       name: '',
       fromYear: '',
-      untilYear: '',
+      untilYear: ''
     },
     orcids: [],
     viafIDs: [],
     librisIDs: [],
     biographyEnglish: '',
-    biographySwedish: '',
+    biographySwedish: ''
   };
   return person;
 };
@@ -105,15 +105,11 @@ export const createFormPersonObject = (
 export const threePersonObjects: Person[] = [
   createPersonObject('1', 'Anka', 'Kalle'),
   personWithDomain,
-  createPersonObject('3', 'Ernman', 'Malena'),
+  createPersonObject('3', 'Ernman', 'Malena')
 ];
 
 export const createCompletePerson = () => {
-  const completePerson: Person = createPersonObject(
-    'somePID',
-    'Celsius',
-    'Anders',
-  );
+  const completePerson: Person = createPersonObject('somePID', 'Celsius', 'Anders');
   completePerson.public = 'yes';
 
   completePerson.academicTitle = 'someTitle';
@@ -127,17 +123,17 @@ export const createCompletePerson = () => {
   completePerson.alternativeNames = [
     {
       familyName: 'someAlternativeFamilyName',
-      givenName: 'someAlternativeGivenName',
+      givenName: 'someAlternativeGivenName'
     },
     {
       familyName: 'someOtherAlternativeFamilyName',
-      givenName: 'someOtherAlternativeGivenName',
-    },
+      givenName: 'someOtherAlternativeGivenName'
+    }
   ];
 
   completePerson.externalURLs = [
     { URL: 'http://du.se', linkTitle: 'DU' },
-    { URL: 'http://uu.se', linkTitle: 'Uppsala Universitet' },
+    { URL: 'http://uu.se', linkTitle: 'Uppsala Universitet' }
   ];
 
   completePerson.biographySwedish = 'A nice biography<br/> foobar';
@@ -146,19 +142,19 @@ export const createCompletePerson = () => {
   completePerson.otherAffiliation = {
     name: 'SomeOtherAffiliation',
     fromYear: '2000',
-    untilYear: '2001',
+    untilYear: '2001'
   };
 
   completePerson.personDomainParts = [
     {
-      recordId: 'personDomainPart1',
+      recordId: 'personDomainPart1'
     },
     {
-      recordId: 'personDomainPart2',
+      recordId: 'personDomainPart2'
     },
     {
-      recordId: 'personDomainPart3',
-    },
+      recordId: 'personDomainPart3'
+    }
   ];
 
   completePerson.yearOfBirth = '1900';
@@ -172,11 +168,7 @@ export const createCompleteFormPerson = () => {
   const formPerson: FormPerson = {
     id: 'somePID',
     authorisedName: { familyName: 'Celsius', givenName: 'Anders' },
-    personDomainParts: [
-      'personDomainPart1',
-      'personDomainPart2',
-      'personDomainPart3',
-    ],
+    personDomainParts: ['personDomainPart1', 'personDomainPart2', 'personDomainPart3'],
     public: 'yes',
     academicTitle: 'someTitle',
     orcids: ['someOrcid', 'someOtherOrcid'],
@@ -188,40 +180,40 @@ export const createCompleteFormPerson = () => {
         repeatId: 0,
         content: {
           familyName: 'someAlternativeFamilyName',
-          givenName: 'someAlternativeGivenName',
-        },
+          givenName: 'someAlternativeGivenName'
+        }
       },
       {
         repeatId: 1,
         content: {
           familyName: 'someOtherAlternativeFamilyName',
-          givenName: 'someOtherAlternativeGivenName',
-        },
-      },
+          givenName: 'someOtherAlternativeGivenName'
+        }
+      }
     ],
     externalURLs: [
       {
         repeatId: 0,
-        content: { URL: 'http://du.se', linkTitle: 'DU' },
+        content: { URL: 'http://du.se', linkTitle: 'DU' }
       },
       {
         repeatId: 1,
         content: {
           URL: 'http://uu.se',
-          linkTitle: 'Uppsala Universitet',
-        },
-      },
+          linkTitle: 'Uppsala Universitet'
+        }
+      }
     ],
     biographySwedish: 'A nice biography<br/> foobar',
     biographyEnglish: 'A nice biography in English<br/> foobar',
     otherAffiliation: {
       name: 'SomeOtherAffiliation',
       fromYear: '2000',
-      untilYear: '2001',
+      untilYear: '2001'
     },
     yearOfBirth: '1900',
     yearOfDeath: '2000',
-    emailAddress: 'foo@bar.com',
+    emailAddress: 'foo@bar.com'
   };
 
   return formPerson;
@@ -230,7 +222,7 @@ export const createCompleteFormPerson = () => {
 export const createMinimumPersonWithIdAndName = (
   id: string = 'someId',
   familyName: string = 'LastName',
-  givenName: string = 'FirstName',
+  givenName: string = 'FirstName'
 ) => {
   return createPersonObject(id, familyName, givenName);
 };
@@ -238,7 +230,7 @@ export const createMinimumPersonWithIdAndName = (
 export const createMinimumFormPersonWithIdAndName = (
   id: string = 'someId',
   familyName: string = 'LastName',
-  givenName: string = 'FirstName',
+  givenName: string = 'FirstName'
 ) => {
   return createFormPersonObject(id, familyName, givenName);
 };

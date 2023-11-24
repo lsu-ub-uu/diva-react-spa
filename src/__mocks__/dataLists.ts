@@ -8,23 +8,23 @@ export const dataListWithTwoRecords: DataListWrapper = {
         record: {
           data: {
             name: 'someNameInData',
-            children: [],
-          },
-        },
+            children: []
+          }
+        }
       },
       {
         record: {
           data: {
             name: 'someNameInData2',
-            children: [],
-          },
-        },
-      },
+            children: []
+          }
+        }
+      }
     ],
     fromNo: '1',
     toNo: '2',
-    totalNo: '2',
-  },
+    totalNo: '2'
+  }
 };
 
 export const dataListWithThreeRecords: DataListWrapper = {
@@ -35,29 +35,29 @@ export const dataListWithThreeRecords: DataListWrapper = {
         record: {
           data: {
             name: 'someNameInData',
-            children: [],
-          },
-        },
+            children: []
+          }
+        }
       },
       {
         record: {
           data: {
             name: 'someNameInData2',
-            children: [],
-          },
-        },
+            children: []
+          }
+        }
       },
       {
         record: {
           data: {
             name: 'someNameInData3',
-            children: [],
-          },
-        },
-      },
+            children: []
+          }
+        }
+      }
     ],
     fromNo: '3',
     toNo: '6',
-    totalNo: '3',
-  },
+    totalNo: '3'
+  }
 };

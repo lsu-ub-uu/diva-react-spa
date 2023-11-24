@@ -12,66 +12,66 @@ export const dataListContainingOnePerson: DataListWrapper = {
                 children: [
                   {
                     name: 'id',
-                    value: 'authority-person:112',
+                    value: 'authority-person:112'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'user',
+                        value: 'user'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'rinst123',
-                      },
+                        value: 'rinst123'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2021-03-23T13:46:04.970Z',
+                    value: '2021-03-23T13:46:04.970Z'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     repeatId: '0',
@@ -80,197 +80,197 @@ export const dataListContainingOnePerson: DataListWrapper = {
                         children: [
                           {
                             name: 'linkedRecordType',
-                            value: 'user',
+                            value: 'user'
                           },
                           {
                             name: 'linkedRecordId',
-                            value: 'rinst123',
-                          },
+                            value: 'rinst123'
+                          }
                         ],
-                        name: 'updatedBy',
+                        name: 'updatedBy'
                       },
                       {
                         name: 'tsUpdated',
-                        value: '2021-03-24T04:25:30.434Z',
-                      },
+                        value: '2021-03-24T04:25:30.434Z'
+                      }
                     ],
-                    name: 'updated',
+                    name: 'updated'
                   },
                   {
                     name: 'public',
-                    value: 'yes',
+                    value: 'yes'
                   },
                   {
                     repeatId: '0',
                     name: 'domain',
-                    value: 'test',
+                    value: 'test'
                   },
                   {
                     repeatId: '1',
                     name: 'domain',
-                    value: 'uu',
-                  },
+                    value: 'uu'
+                  }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Enequist',
+                    value: 'Enequist'
                   },
                   {
                     name: 'givenName',
-                    value: 'Gerd',
-                  },
+                    value: 'Gerd'
+                  }
                 ],
-                name: 'authorisedName',
+                name: 'authorisedName'
               },
               {
                 name: 'academicTitle',
-                value: 'Professor',
+                value: 'Professor'
               },
               {
                 name: 'yearOfBirth',
-                value: '1903',
+                value: '1903'
               },
               {
                 name: 'yearOfDeath',
-                value: '1989',
+                value: '1989'
               },
               {
                 name: 'emailAddress',
-                value: 'gerd@enequist.se',
+                value: 'gerd@enequist.se'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Enequist',
+                    value: 'Enequist'
                   },
                   {
                     name: 'givenName',
-                    value: 'Gerd Margareta',
-                  },
+                    value: 'Gerd Margareta'
+                  }
                 ],
-                name: 'alternativeName',
+                name: 'alternativeName'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'affiliation',
-                    value: 'Fritextorganisation',
+                    value: 'Fritextorganisation'
                   },
                   {
                     name: 'affiliationFromYear',
-                    value: '1949',
+                    value: '1949'
                   },
                   {
                     name: 'affiliationUntilYear',
-                    value: '1950',
-                  },
+                    value: '1950'
+                  }
                 ],
-                name: 'otherAffiliation',
+                name: 'otherAffiliation'
               },
               {
                 repeatId: '0',
                 name: 'ORCID_ID',
-                value: '0000-0003-5342-25345',
+                value: '0000-0003-5342-25345'
               },
               {
                 repeatId: '0',
                 name: 'VIAF_ID',
-                value: '66928422',
+                value: '66928422'
               },
               {
                 repeatId: '0',
                 name: 'Libris_ID',
-                value: '543453',
+                value: '543453'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>',
+                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>'
                   },
                   {
                     name: 'language',
-                    value: 'en',
-                  },
+                    value: 'en'
+                  }
                 ],
-                name: 'biographyEnglish',
+                name: 'biographyEnglish'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>',
+                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>'
                   },
                   {
                     name: 'language',
-                    value: 'sv',
-                  },
+                    value: 'sv'
+                  }
                 ],
-                name: 'biographySwedish',
+                name: 'biographySwedish'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:112:test',
-                  },
+                    value: 'authority-person:112:test'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:112:test',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
+                name: 'personDomainPart'
               },
               {
                 repeatId: '1',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:112:uu',
-                  },
+                    value: 'authority-person:112:uu'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:112:uu',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
-              },
+                name: 'personDomainPart'
+              }
             ],
-            name: 'person',
-          },
-        },
-      },
+            name: 'person'
+          }
+        }
+      }
     ],
     totalNo: '1',
     containDataOfType: 'mix',
-    toNo: '1',
-  },
+    toNo: '1'
+  }
 };
 
 export function getDataListContainingOnePerson(): DataListWrapper {
@@ -289,66 +289,66 @@ export const dataListContainingFourPersons: DataListWrapper = {
                 children: [
                   {
                     name: 'id',
-                    value: 'authority-person:112',
+                    value: 'authority-person:112'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'user',
+                        value: 'user'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'rinst123',
-                      },
+                        value: 'rinst123'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2021-03-23T13:46:04.970Z',
+                    value: '2021-03-23T13:46:04.970Z'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     repeatId: '0',
@@ -357,189 +357,189 @@ export const dataListContainingFourPersons: DataListWrapper = {
                         children: [
                           {
                             name: 'linkedRecordType',
-                            value: 'user',
+                            value: 'user'
                           },
                           {
                             name: 'linkedRecordId',
-                            value: 'rinst123',
-                          },
+                            value: 'rinst123'
+                          }
                         ],
-                        name: 'updatedBy',
+                        name: 'updatedBy'
                       },
                       {
                         name: 'tsUpdated',
-                        value: '2021-03-24T04:25:30.434Z',
-                      },
+                        value: '2021-03-24T04:25:30.434Z'
+                      }
                     ],
-                    name: 'updated',
+                    name: 'updated'
                   },
                   {
                     name: 'public',
-                    value: 'yes',
+                    value: 'yes'
                   },
                   {
                     repeatId: '0',
                     name: 'domain',
-                    value: 'test',
+                    value: 'test'
                   },
                   {
                     repeatId: '1',
                     name: 'domain',
-                    value: 'uu',
-                  },
+                    value: 'uu'
+                  }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Enequist',
+                    value: 'Enequist'
                   },
                   {
                     name: 'givenName',
-                    value: 'Gerd',
-                  },
+                    value: 'Gerd'
+                  }
                 ],
-                name: 'authorisedName',
+                name: 'authorisedName'
               },
               {
                 name: 'academicTitle',
-                value: 'Professor',
+                value: 'Professor'
               },
               {
                 name: 'yearOfBirth',
-                value: '1903',
+                value: '1903'
               },
               {
                 name: 'yearOfDeath',
-                value: '1989',
+                value: '1989'
               },
               {
                 name: 'emailAddress',
-                value: 'gerd@enequist.se',
+                value: 'gerd@enequist.se'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Enequist',
+                    value: 'Enequist'
                   },
                   {
                     name: 'givenName',
-                    value: 'Gerd Margareta',
-                  },
+                    value: 'Gerd Margareta'
+                  }
                 ],
-                name: 'alternativeName',
+                name: 'alternativeName'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'affiliation',
-                    value: 'Fritextorganisation',
+                    value: 'Fritextorganisation'
                   },
                   {
                     name: 'affiliationFromYear',
-                    value: '1949',
+                    value: '1949'
                   },
                   {
                     name: 'affiliationUntilYear',
-                    value: '1950',
-                  },
+                    value: '1950'
+                  }
                 ],
-                name: 'otherAffiliation',
+                name: 'otherAffiliation'
               },
               {
                 repeatId: '0',
                 name: 'ORCID_ID',
-                value: '0000-0003-5342-25345',
+                value: '0000-0003-5342-25345'
               },
               {
                 repeatId: '0',
                 name: 'VIAF_ID',
-                value: '66928422',
+                value: '66928422'
               },
               {
                 repeatId: '0',
                 name: 'Libris_ID',
-                value: '543453',
+                value: '543453'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>',
+                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>'
                   },
                   {
                     name: 'language',
-                    value: 'en',
-                  },
+                    value: 'en'
+                  }
                 ],
-                name: 'biographyEnglish',
+                name: 'biographyEnglish'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>',
+                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>'
                   },
                   {
                     name: 'language',
-                    value: 'sv',
-                  },
+                    value: 'sv'
+                  }
                 ],
-                name: 'biographySwedish',
+                name: 'biographySwedish'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:112:test',
-                  },
+                    value: 'authority-person:112:test'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:112:test',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
+                name: 'personDomainPart'
               },
               {
                 repeatId: '1',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:112:uu',
-                  },
+                    value: 'authority-person:112:uu'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:112:uu',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
-              },
+                name: 'personDomainPart'
+              }
             ],
-            name: 'person',
+            name: 'person'
           },
           permissions: {
             read: [
@@ -563,7 +563,7 @@ export const dataListContainingFourPersons: DataListWrapper = {
               'alternativeName',
               'VIAF_ID',
               'updated',
-              'yearOfBirth',
+              'yearOfBirth'
             ],
             write: [
               'externalURL',
@@ -584,22 +584,22 @@ export const dataListContainingFourPersons: DataListWrapper = {
               'alternativeName',
               'VIAF_ID',
               'updated',
-              'yearOfBirth',
-            ],
+              'yearOfBirth'
+            ]
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:112',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             update: {
               requestMethod: 'POST',
               rel: 'update',
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:112',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             index: {
               requestMethod: 'POST',
@@ -610,37 +610,37 @@ export const dataListContainingFourPersons: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
-                    name: 'recordType',
+                    name: 'recordType'
                   },
                   {
                     name: 'recordId',
-                    value: 'authority-person:112',
+                    value: 'authority-person:112'
                   },
                   {
                     name: 'type',
-                    value: 'index',
-                  },
+                    value: 'index'
+                  }
                 ],
-                name: 'workOrder',
+                name: 'workOrder'
               },
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             delete: {
               requestMethod: 'DELETE',
               rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:112',
-            },
-          },
-        },
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:112'
+            }
+          }
+        }
       },
       {
         record: {
@@ -650,66 +650,66 @@ export const dataListContainingFourPersons: DataListWrapper = {
                 children: [
                   {
                     name: 'id',
-                    value: 'authority-person:111',
+                    value: 'authority-person:111'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'user',
+                        value: 'user'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'rinst123',
-                      },
+                        value: 'rinst123'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2021-03-23T13:01:00.013Z',
+                    value: '2021-03-23T13:01:00.013Z'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     repeatId: '0',
@@ -718,217 +718,217 @@ export const dataListContainingFourPersons: DataListWrapper = {
                         children: [
                           {
                             name: 'linkedRecordType',
-                            value: 'user',
+                            value: 'user'
                           },
                           {
                             name: 'linkedRecordId',
-                            value: 'rinst123',
-                          },
+                            value: 'rinst123'
+                          }
                         ],
-                        name: 'updatedBy',
+                        name: 'updatedBy'
                       },
                       {
                         name: 'tsUpdated',
-                        value: '2021-03-23T14:33:52.976Z',
-                      },
+                        value: '2021-03-23T14:33:52.976Z'
+                      }
                     ],
-                    name: 'updated',
+                    name: 'updated'
                   },
                   {
                     name: 'public',
-                    value: 'no',
+                    value: 'no'
                   },
                   {
                     repeatId: '0',
                     name: 'domain',
-                    value: 'test',
+                    value: 'test'
                   },
                   {
                     repeatId: '1',
                     name: 'domain',
-                    value: 'uu',
-                  },
+                    value: 'uu'
+                  }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Celsius',
+                    value: 'Celsius'
                   },
                   {
                     name: 'givenName',
-                    value: 'Anders',
-                  },
+                    value: 'Anders'
+                  }
                 ],
-                name: 'authorisedName',
+                name: 'authorisedName'
               },
               {
                 name: 'academicTitle',
-                value: 'Professor',
+                value: 'Professor'
               },
               {
                 name: 'yearOfBirth',
-                value: '1701',
+                value: '1701'
               },
               {
                 name: 'yearOfDeath',
-                value: '1744',
+                value: '1744'
               },
               {
                 name: 'emailAddress',
-                value: 'anders@celsius.se',
+                value: 'anders@celsius.se'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Celsius',
+                    value: 'Celsius'
                   },
                   {
                     name: 'givenName',
-                    value: 'Andreas',
-                  },
+                    value: 'Andreas'
+                  }
                 ],
-                name: 'alternativeName',
+                name: 'alternativeName'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'linkTitle',
-                    value: 'Wikipedia',
+                    value: 'Wikipedia'
                   },
                   {
                     name: 'URL',
-                    value: 'https://sv.wikipedia.org/wiki/Anders_Celsius',
-                  },
+                    value: 'https://sv.wikipedia.org/wiki/Anders_Celsius'
+                  }
                 ],
-                name: 'externalURL',
+                name: 'externalURL'
               },
               {
                 repeatId: '1',
                 children: [
                   {
                     name: 'linkTitle',
-                    value: 'Wikipedia English',
+                    value: 'Wikipedia English'
                   },
                   {
                     name: 'URL',
-                    value: 'https://en.wikipedia.org/wiki/Anders_Celsius',
-                  },
+                    value: 'https://en.wikipedia.org/wiki/Anders_Celsius'
+                  }
                 ],
-                name: 'externalURL',
+                name: 'externalURL'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'affiliation',
-                    value: 'Fritextorganisation',
+                    value: 'Fritextorganisation'
                   },
                   {
                     name: 'affiliationFromYear',
-                    value: '1733',
+                    value: '1733'
                   },
                   {
                     name: 'affiliationUntilYear',
-                    value: '1734',
-                  },
+                    value: '1734'
+                  }
                 ],
-                name: 'otherAffiliation',
+                name: 'otherAffiliation'
               },
               {
                 repeatId: '0',
                 name: 'ORCID_ID',
-                value: '0000-0003-3443-5332',
+                value: '0000-0003-3443-5332'
               },
               {
                 repeatId: '0',
                 name: 'VIAF_ID',
-                value: '67259216',
+                value: '67259216'
               },
               {
                 repeatId: '0',
                 name: 'Libris_ID',
-                value: '51233',
+                value: '51233'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Anders Celsius (Swedish pronunciation: [ˌanːdəʂ ˈsɛlːsiɵs], 27 November 1701 – 25 April 1744) was a Swedish astronomer, physicist and mathematician. He was professor of astronomy at Uppsala University from 1730 to 1744, but traveled from 1732 to 1735 visiting notable observatories in Germany, Italy and France. He founded the Uppsala Astronomical Observatory in 1741, and in 1742 proposed (an inverted form of) the Centigrade temperature scale which was later renamed Celsius in his honor. </p>',
+                      '<p>Anders Celsius (Swedish pronunciation: [ˌanːdəʂ ˈsɛlːsiɵs], 27 November 1701 – 25 April 1744) was a Swedish astronomer, physicist and mathematician. He was professor of astronomy at Uppsala University from 1730 to 1744, but traveled from 1732 to 1735 visiting notable observatories in Germany, Italy and France. He founded the Uppsala Astronomical Observatory in 1741, and in 1742 proposed (an inverted form of) the Centigrade temperature scale which was later renamed Celsius in his honor. </p>'
                   },
                   {
                     name: 'language',
-                    value: 'en',
-                  },
+                    value: 'en'
+                  }
                 ],
-                name: 'biographyEnglish',
+                name: 'biographyEnglish'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Anders Celsius, född 27 november 1701 i Uppsala, död 25 april 1744 i Uppsala, var en svensk vetenskapsman och astronom, i tjänst som professor i astronomi vid Uppsala universitet. Han är idag mest känd för Celsiusskalan, den hundragradiga termometerskalan. En enhet för temperatur är därför uppkallad efter honom och betecknas med ett stort C: °C. </p>',
+                      '<p>Anders Celsius, född 27 november 1701 i Uppsala, död 25 april 1744 i Uppsala, var en svensk vetenskapsman och astronom, i tjänst som professor i astronomi vid Uppsala universitet. Han är idag mest känd för Celsiusskalan, den hundragradiga termometerskalan. En enhet för temperatur är därför uppkallad efter honom och betecknas med ett stort C: °C. </p>'
                   },
                   {
                     name: 'language',
-                    value: 'sv',
-                  },
+                    value: 'sv'
+                  }
                 ],
-                name: 'biographySwedish',
+                name: 'biographySwedish'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:111:test',
-                  },
+                    value: 'authority-person:111:test'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:111:test',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
+                name: 'personDomainPart'
               },
               {
                 repeatId: '1',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:111:uu',
-                  },
+                    value: 'authority-person:111:uu'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:111:uu',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
-              },
+                name: 'personDomainPart'
+              }
             ],
-            name: 'person',
+            name: 'person'
           },
           permissions: {
             read: [
@@ -952,7 +952,7 @@ export const dataListContainingFourPersons: DataListWrapper = {
               'alternativeName',
               'VIAF_ID',
               'updated',
-              'yearOfBirth',
+              'yearOfBirth'
             ],
             write: [
               'externalURL',
@@ -973,22 +973,22 @@ export const dataListContainingFourPersons: DataListWrapper = {
               'alternativeName',
               'VIAF_ID',
               'updated',
-              'yearOfBirth',
-            ],
+              'yearOfBirth'
+            ]
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:111',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             update: {
               requestMethod: 'POST',
               rel: 'update',
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:111',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             index: {
               requestMethod: 'POST',
@@ -999,37 +999,37 @@ export const dataListContainingFourPersons: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
-                    name: 'recordType',
+                    name: 'recordType'
                   },
                   {
                     name: 'recordId',
-                    value: 'authority-person:111',
+                    value: 'authority-person:111'
                   },
                   {
                     name: 'type',
-                    value: 'index',
-                  },
+                    value: 'index'
+                  }
                 ],
-                name: 'workOrder',
+                name: 'workOrder'
               },
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             delete: {
               requestMethod: 'DELETE',
               rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:111',
-            },
-          },
-        },
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:111'
+            }
+          }
+        }
       },
       {
         record: {
@@ -1039,111 +1039,111 @@ export const dataListContainingFourPersons: DataListWrapper = {
                 children: [
                   {
                     name: 'id',
-                    value: 'authority-person:124',
+                    value: 'authority-person:124'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'user',
+                        value: 'user'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'rinst123',
-                      },
+                        value: 'rinst123'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2021-04-06T07:58:17.618Z',
+                    value: '2021-04-06T07:58:17.618Z'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     name: 'public',
-                    value: 'yes',
-                  },
+                    value: 'yes'
+                  }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Ernman',
+                    value: 'Ernman'
                   },
                   {
                     name: 'givenName',
-                    value: 'Malena',
-                  },
+                    value: 'Malena'
+                  }
                 ],
-                name: 'authorisedName',
+                name: 'authorisedName'
               },
               {
                 name: 'yearOfBirth',
-                value: '1970',
+                value: '1970'
               },
               {
                 name: 'emailAddress',
-                value: 'malena@ernman.se',
+                value: 'malena@ernman.se'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Sara Magdalena Ernman, känd som Malena Ernman, född 4 november 1970 i Uppsala,[1] är en svensk operasångerska (mezzosopran). Trots att hennes centrala roller återfinns i mezzofacket har hon ett unikt röstomfång upp till en koloratursoprans trestrukna f. Hon har haft återkommande uppdrag utomlands, bland annat på olika scener i Berlin, Wien (främst vid Volksoper) och Amsterdam.[2]</p><p>Ernman fick ett populärmusikaliskt genombrott med deltagandet och vinsten i Melodifestivalen 2009, den svenska uttagningen till Eurovision Song Contest 2009 med bidraget La Voix, skrivet av henne själv och Fredrik Kempe. År 2015 utsågs hon att läsa den traditionella dikten Nyårsklockan av Alfred Tennyson vid Skansens nyårsfirande, vilket också sänds i Sveriges Television.[3]</p>',
+                      '<p>Sara Magdalena Ernman, känd som Malena Ernman, född 4 november 1970 i Uppsala,[1] är en svensk operasångerska (mezzosopran). Trots att hennes centrala roller återfinns i mezzofacket har hon ett unikt röstomfång upp till en koloratursoprans trestrukna f. Hon har haft återkommande uppdrag utomlands, bland annat på olika scener i Berlin, Wien (främst vid Volksoper) och Amsterdam.[2]</p><p>Ernman fick ett populärmusikaliskt genombrott med deltagandet och vinsten i Melodifestivalen 2009, den svenska uttagningen till Eurovision Song Contest 2009 med bidraget La Voix, skrivet av henne själv och Fredrik Kempe. År 2015 utsågs hon att läsa den traditionella dikten Nyårsklockan av Alfred Tennyson vid Skansens nyårsfirande, vilket också sänds i Sveriges Television.[3]</p>'
                   },
                   {
                     name: 'language',
-                    value: 'sv',
-                  },
+                    value: 'sv'
+                  }
                 ],
-                name: 'biographySwedish',
-              },
+                name: 'biographySwedish'
+              }
             ],
-            name: 'person',
+            name: 'person'
           },
           permissions: {
             read: [
@@ -1167,7 +1167,7 @@ export const dataListContainingFourPersons: DataListWrapper = {
               'alternativeName',
               'VIAF_ID',
               'updated',
-              'yearOfBirth',
+              'yearOfBirth'
             ],
             write: [
               'externalURL',
@@ -1188,22 +1188,22 @@ export const dataListContainingFourPersons: DataListWrapper = {
               'alternativeName',
               'VIAF_ID',
               'updated',
-              'yearOfBirth',
-            ],
+              'yearOfBirth'
+            ]
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:124',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             update: {
               requestMethod: 'POST',
               rel: 'update',
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:124',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             index: {
               requestMethod: 'POST',
@@ -1214,37 +1214,37 @@ export const dataListContainingFourPersons: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
-                    name: 'recordType',
+                    name: 'recordType'
                   },
                   {
                     name: 'recordId',
-                    value: 'authority-person:124',
+                    value: 'authority-person:124'
                   },
                   {
                     name: 'type',
-                    value: 'index',
-                  },
+                    value: 'index'
+                  }
                 ],
-                name: 'workOrder',
+                name: 'workOrder'
               },
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             delete: {
               requestMethod: 'DELETE',
               rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:124',
-            },
-          },
-        },
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:124'
+            }
+          }
+        }
       },
       {
         record: {
@@ -1254,176 +1254,176 @@ export const dataListContainingFourPersons: DataListWrapper = {
                 children: [
                   {
                     name: 'id',
-                    value: 'authority-person:110',
+                    value: 'authority-person:110'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'user',
+                        value: 'user'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'rinst123',
-                      },
+                        value: 'rinst123'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2021-03-23T10:55:34.682Z',
+                    value: '2021-03-23T10:55:34.682Z'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     name: 'public',
-                    value: 'yes',
-                  },
+                    value: 'yes'
+                  }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Linné',
+                    value: 'Linné'
                   },
                   {
                     name: 'givenName',
-                    value: 'Carl von',
-                  },
+                    value: 'Carl von'
+                  }
                 ],
-                name: 'authorisedName',
+                name: 'authorisedName'
               },
               {
                 name: 'academicTitle',
-                value: 'Rektor',
+                value: 'Rektor'
               },
               {
                 name: 'yearOfBirth',
-                value: '1744',
+                value: '1744'
               },
               {
                 name: 'yearOfDeath',
-                value: '1778',
+                value: '1778'
               },
               {
                 name: 'emailAddress',
-                value: 'car@linne.se',
+                value: 'car@linne.se'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Linnæus',
+                    value: 'Linnæus'
                   },
                   {
                     name: 'givenName',
-                    value: 'Carolus',
-                  },
+                    value: 'Carolus'
+                  }
                 ],
-                name: 'alternativeName',
+                name: 'alternativeName'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'linkTitle',
-                    value: 'Wikipedia',
+                    value: 'Wikipedia'
                   },
                   {
                     name: 'URL',
-                    value: 'https://sv.wikipedia.org/wiki/Carl_von_Linn%C3%A9',
-                  },
+                    value: 'https://sv.wikipedia.org/wiki/Carl_von_Linn%C3%A9'
+                  }
                 ],
-                name: 'externalURL',
+                name: 'externalURL'
               },
               {
                 repeatId: '0',
                 name: 'ORCID_ID',
-                value: '0000-0002-3234-3243',
+                value: '0000-0002-3234-3243'
               },
               {
                 repeatId: '0',
                 name: 'VIAF_ID',
-                value: '34594730',
+                value: '34594730'
               },
               {
                 repeatId: '0',
                 name: 'Libris_ID',
-                value: '81641',
+                value: '81641'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Carl Linnaeus (/lɪˈniːəs, lɪˈneɪəs/;[1][2] 23 May[note 1] 1707 – 10 January 1778), also known after his ennoblement as Carl von Linné[3] (Swedish pronunciation: [ˈkɑːɭ fɔn lɪˈneː] ( listen)), was a Swedish botanist, zoologist, taxonomist, and physician who formalised binomial nomenclature, the modern system of naming organisms. He is known as the "father of modern taxonomy".[4] Many of his writings were in Latin, and his name is rendered in Latin as Carolus Linnæus (after 1761 Carolus a Linné). </p>',
+                      '<p>Carl Linnaeus (/lɪˈniːəs, lɪˈneɪəs/;[1][2] 23 May[note 1] 1707 – 10 January 1778), also known after his ennoblement as Carl von Linné[3] (Swedish pronunciation: [ˈkɑːɭ fɔn lɪˈneː] ( listen)), was a Swedish botanist, zoologist, taxonomist, and physician who formalised binomial nomenclature, the modern system of naming organisms. He is known as the "father of modern taxonomy".[4] Many of his writings were in Latin, and his name is rendered in Latin as Carolus Linnæus (after 1761 Carolus a Linné). </p>'
                   },
                   {
                     name: 'language',
-                    value: 'en',
-                  },
+                    value: 'en'
+                  }
                 ],
-                name: 'biographyEnglish',
+                name: 'biographyEnglish'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Carl von Linné (info) (före adlandet 1757 Carl Linnæus, Carolus Linnæus), född 13 maj[anm 1][2] 1707 i Råshult, Stenbrohults socken, Småland, död 10 januari 1778 i Uppsala, var en svensk botaniker, läkare, geolog och zoolog[3] som lade grunden till den moderna nomenklaturen inom biologin och den moderna systematiken, som grupperar växter och djur. Många av hans skrifter publicerades på latin, och därför återges hans latinska namn som Carolus Linnæus (Carolus a Linné efter 1761). </p>',
+                      '<p>Carl von Linné (info) (före adlandet 1757 Carl Linnæus, Carolus Linnæus), född 13 maj[anm 1][2] 1707 i Råshult, Stenbrohults socken, Småland, död 10 januari 1778 i Uppsala, var en svensk botaniker, läkare, geolog och zoolog[3] som lade grunden till den moderna nomenklaturen inom biologin och den moderna systematiken, som grupperar växter och djur. Många av hans skrifter publicerades på latin, och därför återges hans latinska namn som Carolus Linnæus (Carolus a Linné efter 1761). </p>'
                   },
                   {
                     name: 'language',
-                    value: 'sv',
-                  },
+                    value: 'sv'
+                  }
                 ],
-                name: 'biographySwedish',
-              },
+                name: 'biographySwedish'
+              }
             ],
-            name: 'person',
+            name: 'person'
           },
           permissions: {
             read: [
@@ -1447,7 +1447,7 @@ export const dataListContainingFourPersons: DataListWrapper = {
               'alternativeName',
               'VIAF_ID',
               'updated',
-              'yearOfBirth',
+              'yearOfBirth'
             ],
             write: [
               'externalURL',
@@ -1468,22 +1468,22 @@ export const dataListContainingFourPersons: DataListWrapper = {
               'alternativeName',
               'VIAF_ID',
               'updated',
-              'yearOfBirth',
-            ],
+              'yearOfBirth'
+            ]
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:110',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             update: {
               requestMethod: 'POST',
               rel: 'update',
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:110',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             index: {
               requestMethod: 'POST',
@@ -1494,43 +1494,43 @@ export const dataListContainingFourPersons: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
-                    name: 'recordType',
+                    name: 'recordType'
                   },
                   {
                     name: 'recordId',
-                    value: 'authority-person:110',
+                    value: 'authority-person:110'
                   },
                   {
                     name: 'type',
-                    value: 'index',
-                  },
+                    value: 'index'
+                  }
                 ],
-                name: 'workOrder',
+                name: 'workOrder'
               },
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/workOrder/',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             delete: {
               requestMethod: 'DELETE',
               rel: 'delete',
-              url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:110',
-            },
-          },
-        },
-      },
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:110'
+            }
+          }
+        }
+      }
     ],
     totalNo: '4',
     containDataOfType: 'mix',
-    toNo: '4',
-  },
+    toNo: '4'
+  }
 };
 
 export function getDataListContainingFourPersons(): DataListWrapper {
@@ -1549,74 +1549,74 @@ export const dataListContainingTwoOfFifteen: DataListWrapper = {
                 children: [
                   {
                     name: 'id',
-                    value: 'authority-person:118',
+                    value: 'authority-person:118'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2021-03-04T14:46:00.463Z',
+                    value: '2021-03-04T14:46:00.463Z'
                   },
                   { name: 'public', value: 'yes' },
                   {
                     repeatId: '0',
                     name: 'domain',
-                    value: 'test',
+                    value: 'test'
                   },
                   {
                     repeatId: '1',
                     name: 'domain',
-                    value: 'uu',
-                  },
+                    value: 'uu'
+                  }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   { name: 'familyName', value: 'Långstrump' },
-                  { name: 'givenName', value: 'Pippi' },
+                  { name: 'givenName', value: 'Pippi' }
                 ],
-                name: 'authorisedName',
+                name: 'authorisedName'
               },
               { name: 'academicTitle', value: 'Doktor' },
               {
@@ -1624,11 +1624,11 @@ export const dataListContainingTwoOfFifteen: DataListWrapper = {
                 children: [
                   {
                     name: 'familyName',
-                    value: 'Efraimsdotter',
+                    value: 'Efraimsdotter'
                   },
-                  { name: 'givenName', value: 'Rullgardina' },
+                  { name: 'givenName', value: 'Rullgardina' }
                 ],
-                name: 'alternativeName',
+                name: 'alternativeName'
               },
               {
                 repeatId: '0',
@@ -1636,10 +1636,10 @@ export const dataListContainingTwoOfFifteen: DataListWrapper = {
                   { name: 'linkTitle', value: 'Facebook' },
                   {
                     name: 'URL',
-                    value: 'http://facebook.se/pippi',
-                  },
+                    value: 'http://facebook.se/pippi'
+                  }
                 ],
-                name: 'externalURL',
+                name: 'externalURL'
               },
               {
                 repeatId: '0',
@@ -1647,88 +1647,88 @@ export const dataListContainingTwoOfFifteen: DataListWrapper = {
                   { name: 'affiliation', value: 'Harvard' },
                   {
                     name: 'affiliationFromYear',
-                    value: '1920',
+                    value: '1920'
                   },
                   {
                     name: 'affiliationUntilYear',
-                    value: '1922',
-                  },
+                    value: '1922'
+                  }
                 ],
-                name: 'otherAffiliation',
+                name: 'otherAffiliation'
               },
               {
                 repeatId: '0',
                 name: 'ORCID_ID',
-                value: '238942+',
+                value: '238942+'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      "<p>Pippi Longstocking (Swedish: Pippi Långstrump) is the fictional main character in an eponymous series of children's books by Swedish author Astrid Lindgren. Pippi was named by Lindgren's daughter Karin, who asked her mother for a get-well story when she was off school.</p><p>Pippi is red-haired, freckled, unconventional and superhumanly strong \u2013 able to lift her horse one-handed. She is playful and unpredictable. She often makes fun of unreasonable adults, especially if they are pompous and condescending. Her anger comes out in extreme cases, such as when a man mistreats his horse. Pippi, like Peter Pan, does not want to grow up. She is the daughter of a buccaneer captain and has adventure stories to tell about that, too. Her four best friends are her horse and monkey, and the neighbours' children, Tommy and Annika.</p><p>After being rejected by Bonnier Publishers in 1944, Lindgren's first manuscript was accepted by Rabén and Sjögren. The three Pippi chapter books (Pippi Longstocking, Pippi Goes on Board, and Pippi in the South Seas) were published from 1945 to 1948, followed by three short stories and a number of picture book adaptations. They have been translated into 76 languages as of 2018[1] and made into several films and television series.</p>",
+                      "<p>Pippi Longstocking (Swedish: Pippi Långstrump) is the fictional main character in an eponymous series of children's books by Swedish author Astrid Lindgren. Pippi was named by Lindgren's daughter Karin, who asked her mother for a get-well story when she was off school.</p><p>Pippi is red-haired, freckled, unconventional and superhumanly strong \u2013 able to lift her horse one-handed. She is playful and unpredictable. She often makes fun of unreasonable adults, especially if they are pompous and condescending. Her anger comes out in extreme cases, such as when a man mistreats his horse. Pippi, like Peter Pan, does not want to grow up. She is the daughter of a buccaneer captain and has adventure stories to tell about that, too. Her four best friends are her horse and monkey, and the neighbours' children, Tommy and Annika.</p><p>After being rejected by Bonnier Publishers in 1944, Lindgren's first manuscript was accepted by Rabén and Sjögren. The three Pippi chapter books (Pippi Longstocking, Pippi Goes on Board, and Pippi in the South Seas) were published from 1945 to 1948, followed by three short stories and a number of picture book adaptations. They have been translated into 76 languages as of 2018[1] and made into several films and television series.</p>"
                   },
-                  { name: 'language', value: 'en' },
+                  { name: 'language', value: 'en' }
                 ],
-                name: 'biographyEnglish',
+                name: 'biographyEnglish'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Pippi Långstrump, Pippilotta Viktualia Rullgardina Krusmynta Efraimsdotter Långstrump,[1] är en av Astrid Lindgrens mest kända litterära figurer och även namnet på den första boken om Pippi och hennes vänner, Tommy och Annika. Lindgren skapade figuren 1941 och första boken kom ut 1945. Pippi-böckerna finns översatta till 77 olika språk (2020).[2]</p><p>Pippi är världens starkaste, har fräknar och röda flätor som står rakt ut, säger emot vuxna och är allmänt ouppfostrad. I början när böckerna kom ut kunde hon upplevas som kontroversiell. Hon bor utan föräldrar i ett hus kallat Villa Villekulla tillsammans med sin prickiga häst Lilla gubben och sin apa Herr Nilsson. Hon äter "krumelurpiller" (som gör att man aldrig blir stor), hennes mamma är i himlen, hennes pappa Efraim Långstrump är kung på söderhavsön Kurrekurreduttön och hon har en kappsäck full med guldpengar. I hennes trädgård finns ett ihåligt träd där det enligt Pippi växer sockerdricka. I böckerna om Pippi myntas begrepp såsom pluttifikationstabellen, spunk och sak-letare.</p>',
+                      '<p>Pippi Långstrump, Pippilotta Viktualia Rullgardina Krusmynta Efraimsdotter Långstrump,[1] är en av Astrid Lindgrens mest kända litterära figurer och även namnet på den första boken om Pippi och hennes vänner, Tommy och Annika. Lindgren skapade figuren 1941 och första boken kom ut 1945. Pippi-böckerna finns översatta till 77 olika språk (2020).[2]</p><p>Pippi är världens starkaste, har fräknar och röda flätor som står rakt ut, säger emot vuxna och är allmänt ouppfostrad. I början när böckerna kom ut kunde hon upplevas som kontroversiell. Hon bor utan föräldrar i ett hus kallat Villa Villekulla tillsammans med sin prickiga häst Lilla gubben och sin apa Herr Nilsson. Hon äter "krumelurpiller" (som gör att man aldrig blir stor), hennes mamma är i himlen, hennes pappa Efraim Långstrump är kung på söderhavsön Kurrekurreduttön och hon har en kappsäck full med guldpengar. I hennes trädgård finns ett ihåligt träd där det enligt Pippi växer sockerdricka. I böckerna om Pippi myntas begrepp såsom pluttifikationstabellen, spunk och sak-letare.</p>'
                   },
-                  { name: 'language', value: 'sv' },
+                  { name: 'language', value: 'sv' }
                 ],
-                name: 'biographySwedish',
+                name: 'biographySwedish'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:118:test',
-                  },
+                    value: 'authority-person:118:test'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:118:test',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
+                name: 'personDomainPart'
               },
               {
                 repeatId: '1',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:118:uu',
-                  },
+                    value: 'authority-person:118:uu'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:118:uu',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
-              },
+                name: 'personDomainPart'
+              }
             ],
-            name: 'person',
+            name: 'person'
           },
           permissions: {
             read: [
@@ -1743,18 +1743,18 @@ export const dataListContainingTwoOfFifteen: DataListWrapper = {
               'ORCID_ID',
               'alternativeName',
               'VIAF_ID',
-              'academicTitle',
-            ],
+              'academicTitle'
+            ]
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:118',
-              accept: 'application/vnd.uub.record+json',
-            },
-          },
-        },
+              accept: 'application/vnd.uub.record+json'
+            }
+          }
+        }
       },
       {
         record: {
@@ -1764,74 +1764,74 @@ export const dataListContainingTwoOfFifteen: DataListWrapper = {
                 children: [
                   {
                     name: 'id',
-                    value: 'authority-person:112',
+                    value: 'authority-person:112'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'person',
-                      },
+                        value: 'person'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2021-03-23T13:46:04.970Z',
+                    value: '2021-03-23T13:46:04.970Z'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   { name: 'public', value: 'yes' },
                   {
                     repeatId: '0',
                     name: 'domain',
-                    value: 'test',
+                    value: 'test'
                   },
                   {
                     repeatId: '1',
                     name: 'domain',
-                    value: 'uu',
-                  },
+                    value: 'uu'
+                  }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   { name: 'familyName', value: 'Enequist' },
-                  { name: 'givenName', value: 'Gerd' },
+                  { name: 'givenName', value: 'Gerd' }
                 ],
-                name: 'authorisedName',
+                name: 'authorisedName'
               },
               { name: 'academicTitle', value: 'Professor' },
               {
@@ -1840,112 +1840,112 @@ export const dataListContainingTwoOfFifteen: DataListWrapper = {
                   { name: 'familyName', value: 'Enequist' },
                   {
                     name: 'givenName',
-                    value: 'Gerd Margareta',
-                  },
+                    value: 'Gerd Margareta'
+                  }
                 ],
-                name: 'alternativeName',
+                name: 'alternativeName'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'affiliation',
-                    value: 'Fritextorganisation',
+                    value: 'Fritextorganisation'
                   },
                   {
                     name: 'affiliationFromYear',
-                    value: '1949',
+                    value: '1949'
                   },
                   {
                     name: 'affiliationUntilYear',
-                    value: '1950',
-                  },
+                    value: '1950'
+                  }
                 ],
-                name: 'otherAffiliation',
+                name: 'otherAffiliation'
               },
               {
                 repeatId: '0',
                 name: 'ORCID_ID',
-                value: '0000-0003-5342-25345',
+                value: '0000-0003-5342-25345'
               },
               {
                 repeatId: '0',
                 name: 'VIAF_ID',
-                value: '66928422',
+                value: '66928422'
               },
               {
                 repeatId: '0',
                 name: 'Libris_ID',
-                value: '543453',
+                value: '543453'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954\u20131958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951\u201357.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>',
+                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954\u20131958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951\u201357.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>'
                   },
-                  { name: 'language', value: 'en' },
+                  { name: 'language', value: 'en' }
                 ],
-                name: 'biographyEnglish',
+                name: 'biographyEnglish'
               },
               {
                 children: [
                   {
                     name: 'biography',
                     value:
-                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954\u20131958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951\u201357.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>',
+                      '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954\u20131958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951\u201357.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>'
                   },
-                  { name: 'language', value: 'sv' },
+                  { name: 'language', value: 'sv' }
                 ],
-                name: 'biographySwedish',
+                name: 'biographySwedish'
               },
               {
                 repeatId: '0',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:112:test',
-                  },
+                    value: 'authority-person:112:test'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:112:test',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
+                name: 'personDomainPart'
               },
               {
                 repeatId: '1',
                 children: [
                   {
                     name: 'linkedRecordType',
-                    value: 'personDomainPart',
+                    value: 'personDomainPart'
                   },
                   {
                     name: 'linkedRecordId',
-                    value: 'authority-person:112:uu',
-                  },
+                    value: 'authority-person:112:uu'
+                  }
                 ],
                 actionLinks: {
                   read: {
                     requestMethod: 'GET',
                     rel: 'read',
                     url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:112:uu',
-                    accept: 'application/vnd.uub.record+json',
-                  },
+                    accept: 'application/vnd.uub.record+json'
+                  }
                 },
-                name: 'personDomainPart',
-              },
+                name: 'personDomainPart'
+              }
             ],
-            name: 'person',
+            name: 'person'
           },
           permissions: {
             read: [
@@ -1960,24 +1960,24 @@ export const dataListContainingTwoOfFifteen: DataListWrapper = {
               'ORCID_ID',
               'alternativeName',
               'VIAF_ID',
-              'academicTitle',
-            ],
+              'academicTitle'
+            ]
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/person/authority-person:112',
-              accept: 'application/vnd.uub.record+json',
-            },
-          },
-        },
-      },
+              accept: 'application/vnd.uub.record+json'
+            }
+          }
+        }
+      }
     ],
     totalNo: '15',
     containDataOfType: 'mix',
-    toNo: '4',
-  },
+    toNo: '4'
+  }
 };
 
 export const onePerson: RecordWrapper = {
@@ -1988,66 +1988,66 @@ export const onePerson: RecordWrapper = {
           children: [
             {
               name: 'id',
-              value: 'authority-person:112',
+              value: 'authority-person:112'
             },
             {
               children: [
                 {
                   name: 'linkedRecordType',
-                  value: 'recordType',
+                  value: 'recordType'
                 },
                 {
                   name: 'linkedRecordId',
-                  value: 'person',
-                },
+                  value: 'person'
+                }
               ],
               actionLinks: {
                 read: {
                   requestMethod: 'GET',
                   rel: 'read',
                   url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/person',
-                  accept: 'application/vnd.uub.record+json',
-                },
+                  accept: 'application/vnd.uub.record+json'
+                }
               },
-              name: 'type',
+              name: 'type'
             },
             {
               children: [
                 {
                   name: 'linkedRecordType',
-                  value: 'user',
+                  value: 'user'
                 },
                 {
                   name: 'linkedRecordId',
-                  value: 'rinst123',
-                },
+                  value: 'rinst123'
+                }
               ],
-              name: 'createdBy',
+              name: 'createdBy'
             },
             {
               name: 'tsCreated',
-              value: '2021-03-23T13:46:04.970Z',
+              value: '2021-03-23T13:46:04.970Z'
             },
             {
               children: [
                 {
                   name: 'linkedRecordType',
-                  value: 'system',
+                  value: 'system'
                 },
                 {
                   name: 'linkedRecordId',
-                  value: 'diva',
-                },
+                  value: 'diva'
+                }
               ],
               actionLinks: {
                 read: {
                   requestMethod: 'GET',
                   rel: 'read',
                   url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/diva',
-                  accept: 'application/vnd.uub.record+json',
-                },
+                  accept: 'application/vnd.uub.record+json'
+                }
               },
-              name: 'dataDivider',
+              name: 'dataDivider'
             },
             {
               repeatId: '0',
@@ -2056,191 +2056,191 @@ export const onePerson: RecordWrapper = {
                   children: [
                     {
                       name: 'linkedRecordType',
-                      value: 'user',
+                      value: 'user'
                     },
                     {
                       name: 'linkedRecordId',
-                      value: 'rinst123',
-                    },
+                      value: 'rinst123'
+                    }
                   ],
-                  name: 'updatedBy',
+                  name: 'updatedBy'
                 },
                 {
                   name: 'tsUpdated',
-                  value: '2021-03-24T04:25:30.434Z',
-                },
+                  value: '2021-03-24T04:25:30.434Z'
+                }
               ],
-              name: 'updated',
+              name: 'updated'
             },
             {
               name: 'public',
-              value: 'yes',
+              value: 'yes'
             },
             {
               repeatId: '0',
               name: 'domain',
-              value: 'test',
+              value: 'test'
             },
             {
               repeatId: '1',
               name: 'domain',
-              value: 'uu',
-            },
+              value: 'uu'
+            }
           ],
-          name: 'recordInfo',
+          name: 'recordInfo'
         },
         {
           children: [
             {
               name: 'familyName',
-              value: 'Enequist',
+              value: 'Enequist'
             },
             {
               name: 'givenName',
-              value: 'Gerd',
-            },
+              value: 'Gerd'
+            }
           ],
-          name: 'authorisedName',
+          name: 'authorisedName'
         },
         {
           name: 'academicTitle',
-          value: 'Professor',
+          value: 'Professor'
         },
         {
           name: 'yearOfBirth',
-          value: '1903',
+          value: '1903'
         },
         {
           name: 'yearOfDeath',
-          value: '1989',
+          value: '1989'
         },
         {
           name: 'emailAddress',
-          value: 'gerd@enequist.se',
+          value: 'gerd@enequist.se'
         },
         {
           repeatId: '0',
           children: [
             {
               name: 'familyName',
-              value: 'Enequist',
+              value: 'Enequist'
             },
             {
               name: 'givenName',
-              value: 'Gerd Margareta',
-            },
+              value: 'Gerd Margareta'
+            }
           ],
-          name: 'alternativeName',
+          name: 'alternativeName'
         },
         {
           repeatId: '0',
           children: [
             {
               name: 'affiliation',
-              value: 'Fritextorganisation',
+              value: 'Fritextorganisation'
             },
             {
               name: 'affiliationFromYear',
-              value: '1949',
+              value: '1949'
             },
             {
               name: 'affiliationUntilYear',
-              value: '1950',
-            },
+              value: '1950'
+            }
           ],
-          name: 'otherAffiliation',
+          name: 'otherAffiliation'
         },
         {
           repeatId: '0',
           name: 'ORCID_ID',
-          value: '0000-0003-5342-25345',
+          value: '0000-0003-5342-25345'
         },
         {
           repeatId: '0',
           name: 'VIAF_ID',
-          value: '66928422',
+          value: '66928422'
         },
         {
           repeatId: '0',
           name: 'Libris_ID',
-          value: '543453',
+          value: '543453'
         },
         {
           children: [
             {
               name: 'biography',
               value:
-                '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>',
+                '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>'
             },
             {
               name: 'language',
-              value: 'en',
-            },
+              value: 'en'
+            }
           ],
-          name: 'biographyEnglish',
+          name: 'biographyEnglish'
         },
         {
           children: [
             {
               name: 'biography',
               value:
-                '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>',
+                '<p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Gerd Margareta Enequist, född 24 februari 1903 i Luleå, död 21 maj 1989 i Uppsala domkyrkoförsamling[1], var en svensk geograf och professor.</p><p>Enequist var dotter till lanträntmästaren Axel Enequist och Anna Hederstedt. Efter studentexamen i Göteborg 1922 och folkskollärarexamen i Luleå 1923 blev Enequist filosofie magister i Uppsala 1929, filosofie licentiat 1934, filosofie doktor och docent i geografi vid Uppsala universitet 1937. Hon var professor i geografi, särskilt kulturgeografi med ekonomisk geografi mellan 1949 och 1968, tillförordnad redan 1947.</p><p>Enequist var ledamot delegationen för vägplanering 1954–1958 och av redaktionskommittén för Atlas över Sverige, i vilken hon medverkade med kartor som beskrev befolkning, bebyggelse och näringsliv. Hon var inspektor vid kommunala flickskolan i Uppsala och Uppsala högre elementarläroverk samt ledamot av kyrkofullmäktige 1951–57.</p><p>Enequist blev korresponderande ledamot av Österreichische Gesellschaft zur Förderung von Landesforschung und Landesplanung 1955, ledamot av Kungliga Humanistiska vetenskapssamfundet i Uppsala 1956, av Kungliga Skytteanska samfundet 1956, hedersledamot av Upplands fornminnesförening 1976 och av Olaus Magnus-sällskapet 1976. Hon blev filosofie hedersdoktor i Umeå 1982 och var ledamot av Nordstjärneorden.</p>'
             },
             {
               name: 'language',
-              value: 'sv',
-            },
+              value: 'sv'
+            }
           ],
-          name: 'biographySwedish',
+          name: 'biographySwedish'
         },
         {
           repeatId: '0',
           children: [
             {
               name: 'linkedRecordType',
-              value: 'personDomainPart',
+              value: 'personDomainPart'
             },
             {
               name: 'linkedRecordId',
-              value: 'authority-person:112:test',
-            },
+              value: 'authority-person:112:test'
+            }
           ],
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:112:test',
-              accept: 'application/vnd.uub.record+json',
-            },
+              accept: 'application/vnd.uub.record+json'
+            }
           },
-          name: 'personDomainPart',
+          name: 'personDomainPart'
         },
         {
           repeatId: '1',
           children: [
             {
               name: 'linkedRecordType',
-              value: 'personDomainPart',
+              value: 'personDomainPart'
             },
             {
               name: 'linkedRecordId',
-              value: 'authority-person:112:uu',
-            },
+              value: 'authority-person:112:uu'
+            }
           ],
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.epc.ub.uu.se/diva/rest/record/personDomainPart/authority-person:112:uu',
-              accept: 'application/vnd.uub.record+json',
-            },
+              accept: 'application/vnd.uub.record+json'
+            }
           },
-          name: 'personDomainPart',
-        },
+          name: 'personDomainPart'
+        }
       ],
-      name: 'person',
-    },
-  },
+      name: 'person'
+    }
+  }
 };
 
 export const dataListContainingOneOrganisation: DataListWrapper = {
@@ -2258,60 +2258,60 @@ export const dataListContainingOneOrganisation: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'subOrganisation',
-                      },
+                        value: 'subOrganisation'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/recordType/subOrganisation',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'coraUser',
+                        value: 'coraUser'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'coraUser:4412982402853626',
-                      },
+                        value: 'coraUser:4412982402853626'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2017-01-01T00:00:00.000000Z',
+                    value: '2017-01-01T00:00:00.000000Z'
                   },
                   {
                     repeatId: '0',
@@ -2320,46 +2320,46 @@ export const dataListContainingOneOrganisation: DataListWrapper = {
                         children: [
                           {
                             name: 'linkedRecordType',
-                            value: 'coraUser',
+                            value: 'coraUser'
                           },
                           {
                             name: 'linkedRecordId',
-                            value: 'coraUser:4412982402853626',
-                          },
+                            value: 'coraUser:4412982402853626'
+                          }
                         ],
-                        name: 'updatedBy',
+                        name: 'updatedBy'
                       },
                       {
                         name: 'tsUpdated',
-                        value: '2017-01-01T00:00:00.000000Z',
-                      },
+                        value: '2017-01-01T00:00:00.000000Z'
+                      }
                     ],
-                    name: 'updated',
+                    name: 'updated'
                   },
                   { name: 'domain', value: 'uu' },
-                  { name: 'selectable', value: 'yes' },
+                  { name: 'selectable', value: 'yes' }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'name',
-                    value: 'Universitetsbiblioteket',
+                    value: 'Universitetsbiblioteket'
                   },
-                  { name: 'language', value: 'sv' },
+                  { name: 'language', value: 'sv' }
                 ],
-                name: 'organisationName',
+                name: 'organisationName'
               },
               {
                 children: [
                   { name: 'language', value: 'en' },
                   {
                     name: 'name',
-                    value: 'University Library',
-                  },
+                    value: 'University Library'
+                  }
                 ],
-                name: 'organisationAlternativeName',
+                name: 'organisationAlternativeName'
               },
               { name: 'organisationType', value: 'unit' },
               {
@@ -2367,9 +2367,9 @@ export const dataListContainingOneOrganisation: DataListWrapper = {
                   { name: 'city', value: 'Uppsala' },
                   { name: 'box', value: 'Box 510' },
                   { name: 'postcode', value: '75120' },
-                  { name: 'country', value: 'SE' },
+                  { name: 'country', value: 'SE' }
                 ],
-                name: 'address',
+                name: 'address'
               },
               {
                 repeatId: '0',
@@ -2378,42 +2378,42 @@ export const dataListContainingOneOrganisation: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'topOrganisation',
+                        value: 'topOrganisation'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: '978',
-                      },
+                        value: '978'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/topOrganisation/978',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'organisationLink',
-                  },
+                    name: 'organisationLink'
+                  }
                 ],
-                name: 'parentOrganisation',
-              },
+                name: 'parentOrganisation'
+              }
             ],
-            name: 'organisation',
+            name: 'organisation'
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/985',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             update: {
               requestMethod: 'POST',
               rel: 'update',
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/985',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             index: {
               requestMethod: 'POST',
@@ -2424,32 +2424,32 @@ export const dataListContainingOneOrganisation: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'subOrganisation',
-                      },
+                        value: 'subOrganisation'
+                      }
                     ],
-                    name: 'recordType',
+                    name: 'recordType'
                   },
                   { name: 'recordId', value: '985' },
-                  { name: 'type', value: 'index' },
+                  { name: 'type', value: 'index' }
                 ],
-                name: 'workOrder',
+                name: 'workOrder'
               },
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/workOrder/',
-              accept: 'application/vnd.uub.record+json',
-            },
-          },
-        },
-      },
+              accept: 'application/vnd.uub.record+json'
+            }
+          }
+        }
+      }
     ],
     totalNo: '1',
     containDataOfType: 'mix',
-    toNo: '1',
-  },
+    toNo: '1'
+  }
 };
 
 export const dataListContainingThreeOrganisations: DataListWrapper = {
@@ -2467,60 +2467,60 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'subOrganisation',
-                      },
+                        value: 'subOrganisation'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/recordType/subOrganisation',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'coraUser',
+                        value: 'coraUser'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'coraUser:4412982402853626',
-                      },
+                        value: 'coraUser:4412982402853626'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2017-01-01T00:00:00.000000Z',
+                    value: '2017-01-01T00:00:00.000000Z'
                   },
                   {
                     repeatId: '0',
@@ -2529,46 +2529,46 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                         children: [
                           {
                             name: 'linkedRecordType',
-                            value: 'coraUser',
+                            value: 'coraUser'
                           },
                           {
                             name: 'linkedRecordId',
-                            value: 'coraUser:4412982402853626',
-                          },
+                            value: 'coraUser:4412982402853626'
+                          }
                         ],
-                        name: 'updatedBy',
+                        name: 'updatedBy'
                       },
                       {
                         name: 'tsUpdated',
-                        value: '2017-01-01T00:00:00.000000Z',
-                      },
+                        value: '2017-01-01T00:00:00.000000Z'
+                      }
                     ],
-                    name: 'updated',
+                    name: 'updated'
                   },
                   { name: 'domain', value: 'uu' },
-                  { name: 'selectable', value: 'yes' },
+                  { name: 'selectable', value: 'yes' }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'name',
-                    value: 'Universitetsförvaltningen',
+                    value: 'Universitetsförvaltningen'
                   },
-                  { name: 'language', value: 'sv' },
+                  { name: 'language', value: 'sv' }
                 ],
-                name: 'organisationName',
+                name: 'organisationName'
               },
               {
                 children: [
                   { name: 'language', value: 'en' },
                   {
                     name: 'name',
-                    value: 'University Administration',
-                  },
+                    value: 'University Administration'
+                  }
                 ],
-                name: 'organisationAlternativeName',
+                name: 'organisationAlternativeName'
               },
               { name: 'organisationType', value: 'unit' },
               {
@@ -2576,9 +2576,9 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                   { name: 'city', value: 'Uppsala' },
                   { name: 'box', value: 'Box 256' },
                   { name: 'postcode', value: '75105' },
-                  { name: 'country', value: 'SE' },
+                  { name: 'country', value: 'SE' }
                 ],
-                name: 'address',
+                name: 'address'
               },
               { name: 'organisationCode', value: 'TEST2' },
               {
@@ -2588,42 +2588,42 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'topOrganisation',
+                        value: 'topOrganisation'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: '978',
-                      },
+                        value: '978'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/topOrganisation/978',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'organisationLink',
-                  },
+                    name: 'organisationLink'
+                  }
                 ],
-                name: 'parentOrganisation',
-              },
+                name: 'parentOrganisation'
+              }
             ],
-            name: 'organisation',
+            name: 'organisation'
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/979',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             update: {
               requestMethod: 'POST',
               rel: 'update',
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/979',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             index: {
               requestMethod: 'POST',
@@ -2634,26 +2634,26 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'subOrganisation',
-                      },
+                        value: 'subOrganisation'
+                      }
                     ],
-                    name: 'recordType',
+                    name: 'recordType'
                   },
                   { name: 'recordId', value: '979' },
-                  { name: 'type', value: 'index' },
+                  { name: 'type', value: 'index' }
                 ],
-                name: 'workOrder',
+                name: 'workOrder'
               },
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/workOrder/',
-              accept: 'application/vnd.uub.record+json',
-            },
-          },
-        },
+              accept: 'application/vnd.uub.record+json'
+            }
+          }
+        }
       },
       {
         record: {
@@ -2666,60 +2666,60 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'subOrganisation',
-                      },
+                        value: 'subOrganisation'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/recordType/subOrganisation',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'coraUser',
+                        value: 'coraUser'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'coraUser:4412982402853626',
-                      },
+                        value: 'coraUser:4412982402853626'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2017-01-01T00:00:00.000000Z',
+                    value: '2017-01-01T00:00:00.000000Z'
                   },
                   {
                     repeatId: '0',
@@ -2728,46 +2728,46 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                         children: [
                           {
                             name: 'linkedRecordType',
-                            value: 'coraUser',
+                            value: 'coraUser'
                           },
                           {
                             name: 'linkedRecordId',
-                            value: 'coraUser:4412982402853626',
-                          },
+                            value: 'coraUser:4412982402853626'
+                          }
                         ],
-                        name: 'updatedBy',
+                        name: 'updatedBy'
                       },
                       {
                         name: 'tsUpdated',
-                        value: '2017-01-01T00:00:00.000000Z',
-                      },
+                        value: '2017-01-01T00:00:00.000000Z'
+                      }
                     ],
-                    name: 'updated',
+                    name: 'updated'
                   },
                   { name: 'domain', value: 'uu' },
-                  { name: 'selectable', value: 'yes' },
+                  { name: 'selectable', value: 'yes' }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'name',
-                    value: 'Universitetsbiblioteket',
+                    value: 'Universitetsbiblioteket'
                   },
-                  { name: 'language', value: 'sv' },
+                  { name: 'language', value: 'sv' }
                 ],
-                name: 'organisationName',
+                name: 'organisationName'
               },
               {
                 children: [
                   { name: 'language', value: 'en' },
                   {
                     name: 'name',
-                    value: 'University Library',
-                  },
+                    value: 'University Library'
+                  }
                 ],
-                name: 'organisationAlternativeName',
+                name: 'organisationAlternativeName'
               },
               { name: 'organisationType', value: 'unit' },
               {
@@ -2775,9 +2775,9 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                   { name: 'city', value: 'Uppsala' },
                   { name: 'box', value: 'Box 510' },
                   { name: 'postcode', value: '75120' },
-                  { name: 'country', value: 'SE' },
+                  { name: 'country', value: 'SE' }
                 ],
-                name: 'address',
+                name: 'address'
               },
               {
                 repeatId: '0',
@@ -2786,42 +2786,42 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'topOrganisation',
+                        value: 'topOrganisation'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: '978',
-                      },
+                        value: '978'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/topOrganisation/978',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'organisationLink',
-                  },
+                    name: 'organisationLink'
+                  }
                 ],
-                name: 'parentOrganisation',
-              },
+                name: 'parentOrganisation'
+              }
             ],
-            name: 'organisation',
+            name: 'organisation'
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/985',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             update: {
               requestMethod: 'POST',
               rel: 'update',
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/985',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             index: {
               requestMethod: 'POST',
@@ -2832,26 +2832,26 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'subOrganisation',
-                      },
+                        value: 'subOrganisation'
+                      }
                     ],
-                    name: 'recordType',
+                    name: 'recordType'
                   },
                   { name: 'recordId', value: '985' },
-                  { name: 'type', value: 'index' },
+                  { name: 'type', value: 'index' }
                 ],
-                name: 'workOrder',
+                name: 'workOrder'
               },
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/workOrder/',
-              accept: 'application/vnd.uub.record+json',
-            },
-          },
-        },
+              accept: 'application/vnd.uub.record+json'
+            }
+          }
+        }
       },
       {
         record: {
@@ -2864,60 +2864,60 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'subOrganisation',
-                      },
+                        value: 'subOrganisation'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/recordType/subOrganisation',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'type',
+                    name: 'type'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'system',
+                        value: 'system'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'diva',
-                      },
+                        value: 'diva'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/system/diva',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'dataDivider',
+                    name: 'dataDivider'
                   },
                   {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'coraUser',
+                        value: 'coraUser'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'coraUser:4412982402853626',
-                      },
+                        value: 'coraUser:4412982402853626'
+                      }
                     ],
-                    name: 'createdBy',
+                    name: 'createdBy'
                   },
                   {
                     name: 'tsCreated',
-                    value: '2017-01-01T00:00:00.000000Z',
+                    value: '2017-01-01T00:00:00.000000Z'
                   },
                   {
                     repeatId: '0',
@@ -2926,47 +2926,46 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                         children: [
                           {
                             name: 'linkedRecordType',
-                            value: 'coraUser',
+                            value: 'coraUser'
                           },
                           {
                             name: 'linkedRecordId',
-                            value: 'coraUser:4412982402853626',
-                          },
+                            value: 'coraUser:4412982402853626'
+                          }
                         ],
-                        name: 'updatedBy',
+                        name: 'updatedBy'
                       },
                       {
                         name: 'tsUpdated',
-                        value: '2017-01-01T00:00:00.000000Z',
-                      },
+                        value: '2017-01-01T00:00:00.000000Z'
+                      }
                     ],
-                    name: 'updated',
+                    name: 'updated'
                   },
                   { name: 'domain', value: 'uu' },
-                  { name: 'selectable', value: 'yes' },
+                  { name: 'selectable', value: 'yes' }
                 ],
-                name: 'recordInfo',
+                name: 'recordInfo'
               },
               {
                 children: [
                   {
                     name: 'name',
-                    value:
-                      'Avdelningen för universitetspedagogisk utveckling (PU)',
+                    value: 'Avdelningen för universitetspedagogisk utveckling (PU)'
                   },
-                  { name: 'language', value: 'sv' },
+                  { name: 'language', value: 'sv' }
                 ],
-                name: 'organisationName',
+                name: 'organisationName'
               },
               {
                 children: [
                   { name: 'language', value: 'en' },
                   {
                     name: 'name',
-                    value: 'Division for Development of Teaching and Learning',
-                  },
+                    value: 'Division for Development of Teaching and Learning'
+                  }
                 ],
-                name: 'organisationAlternativeName',
+                name: 'organisationAlternativeName'
               },
               { name: 'closedDate', value: '2013-12-31' },
               { name: 'organisationType', value: 'division' },
@@ -2974,9 +2973,9 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                 children: [
                   { name: 'city', value: 'Uppsala' },
                   { name: 'box', value: '2136' },
-                  { name: 'postcode', value: '750 02' },
+                  { name: 'postcode', value: '750 02' }
                 ],
-                name: 'address',
+                name: 'address'
               },
               {
                 repeatId: '0',
@@ -2985,42 +2984,42 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'subOrganisation',
+                        value: 'subOrganisation'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: '979',
-                      },
+                        value: '979'
+                      }
                     ],
                     actionLinks: {
                       read: {
                         requestMethod: 'GET',
                         rel: 'read',
                         url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/979',
-                        accept: 'application/vnd.uub.record+json',
-                      },
+                        accept: 'application/vnd.uub.record+json'
+                      }
                     },
-                    name: 'organisationLink',
-                  },
+                    name: 'organisationLink'
+                  }
                 ],
-                name: 'parentOrganisation',
-              },
+                name: 'parentOrganisation'
+              }
             ],
-            name: 'organisation',
+            name: 'organisation'
           },
           actionLinks: {
             read: {
               requestMethod: 'GET',
               rel: 'read',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/11211',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             update: {
               requestMethod: 'POST',
               rel: 'update',
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/subOrganisation/11211',
-              accept: 'application/vnd.uub.record+json',
+              accept: 'application/vnd.uub.record+json'
             },
             index: {
               requestMethod: 'POST',
@@ -3031,30 +3030,30 @@ export const dataListContainingThreeOrganisations: DataListWrapper = {
                     children: [
                       {
                         name: 'linkedRecordType',
-                        value: 'recordType',
+                        value: 'recordType'
                       },
                       {
                         name: 'linkedRecordId',
-                        value: 'subOrganisation',
-                      },
+                        value: 'subOrganisation'
+                      }
                     ],
-                    name: 'recordType',
+                    name: 'recordType'
                   },
                   { name: 'recordId', value: '11211' },
-                  { name: 'type', value: 'index' },
+                  { name: 'type', value: 'index' }
                 ],
-                name: 'workOrder',
+                name: 'workOrder'
               },
               contentType: 'application/vnd.uub.record+json',
               url: 'https://cora.test.diva-portal.org/diva/rest/record/workOrder/',
-              accept: 'application/vnd.uub.record+json',
-            },
-          },
-        },
-      },
+              accept: 'application/vnd.uub.record+json'
+            }
+          }
+        }
+      }
     ],
     totalNo: '3',
     containDataOfType: 'mix',
-    toNo: '3',
-  },
+    toNo: '3'
+  }
 };

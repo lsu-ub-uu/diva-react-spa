@@ -777,14 +777,12 @@
             "sv": "Kryssa i rutan om arbetet utgör forskning på konstnärlig grund"
           },
           "children": [
-
-              {
-                "value": "true",
-                "name": {
-                  "sv": "Forskning på konstnärlig grund"
-                }
+            {
+              "value": "true",
+              "name": {
+                "sv": "Forskning på konstnärlig grund"
               }
-
+            }
           ]
         }
       ]
@@ -833,7 +831,6 @@
               "\\end{document}"
             ]
           }
-          
         }
       ]
     },
@@ -891,6 +888,5 @@
         }
       ]
     }
-    
   ]
 }

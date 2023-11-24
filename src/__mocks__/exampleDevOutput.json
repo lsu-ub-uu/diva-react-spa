@@ -1,6 +1,6 @@
 {
-	"record": {
-		"data": {
+  "record": {
+    "data": {
       "children": [
         {
           "children": [
@@ -451,58 +451,58 @@
       ],
       "name": "example"
     },
-		"actionLinks": {
-			"read": {
-				"requestMethod": "GET",
-				"rel": "read",
-				"url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548",
-				"accept": "application/vnd.uub.record+json"
-			},
-			"update": {
-				"requestMethod": "POST",
-				"rel": "update",
-				"contentType": "application/vnd.uub.record+json",
-				"url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548",
-				"accept": "application/vnd.uub.record+json"
-			},
-			"index": {
-				"requestMethod": "POST",
-				"rel": "index",
-				"body": {
-					"children": [
-						{
-							"children": [
-								{
-									"name": "linkedRecordType",
-									"value": "recordType"
-								},
-								{
-									"name": "linkedRecordId",
-									"value": "exampleDevOutput"
-								}
-							],
-							"name": "recordType"
-						},
-						{
-							"name": "recordId",
-							"value": "exampleDevOutput:5538156835926548"
-						},
-						{
-							"name": "type",
-							"value": "index"
-						}
-					],
-					"name": "workOrder"
-				},
-				"contentType": "application/vnd.uub.record+json",
-				"url": "http://localhost:38082/diva/rest/record/workOrder/",
-				"accept": "application/vnd.uub.record+json"
-			},
-			"delete": {
-				"requestMethod": "DELETE",
-				"rel": "delete",
-				"url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548"
-			}
-		}
-	}
+    "actionLinks": {
+      "read": {
+        "requestMethod": "GET",
+        "rel": "read",
+        "url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548",
+        "accept": "application/vnd.uub.record+json"
+      },
+      "update": {
+        "requestMethod": "POST",
+        "rel": "update",
+        "contentType": "application/vnd.uub.record+json",
+        "url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548",
+        "accept": "application/vnd.uub.record+json"
+      },
+      "index": {
+        "requestMethod": "POST",
+        "rel": "index",
+        "body": {
+          "children": [
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "recordType"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "exampleDevOutput"
+                }
+              ],
+              "name": "recordType"
+            },
+            {
+              "name": "recordId",
+              "value": "exampleDevOutput:5538156835926548"
+            },
+            {
+              "name": "type",
+              "value": "index"
+            }
+          ],
+          "name": "workOrder"
+        },
+        "contentType": "application/vnd.uub.record+json",
+        "url": "http://localhost:38082/diva/rest/record/workOrder/",
+        "accept": "application/vnd.uub.record+json"
+      },
+      "delete": {
+        "requestMethod": "DELETE",
+        "rel": "delete",
+        "url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548"
+      }
+    }
+  }
 }

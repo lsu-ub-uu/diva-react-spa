@@ -5,14 +5,14 @@ export const minimalPersonDomainPart: PersonDomainPart = {
   domain: 'uu',
   affiliations: [],
   id: 'someMinimalId',
-  recordType: 'personDomainPart',
+  recordType: 'personDomainPart'
 };
 
 export const minimalFormPersonDomainPart: FormPersonDomainPart = {
   id: 'someMinimalId',
   identifiers: [],
   domain: 'uu',
-  affiliations: [],
+  affiliations: []
 };
 
 export const completePersonDomainPart: PersonDomainPart = {
@@ -21,12 +21,12 @@ export const completePersonDomainPart: PersonDomainPart = {
     {
       id: 'someAffiliationid',
       fromYear: '1990',
-      untilYear: '2000',
-    },
+      untilYear: '2000'
+    }
   ],
   identifiers: ['someIdentifier'],
   id: 'someCompleteId',
-  recordType: 'personDomainPart',
+  recordType: 'personDomainPart'
 };
 
 export const completeFormPersonDomainpart: FormPersonDomainPart = {
@@ -37,7 +37,7 @@ export const completeFormPersonDomainpart: FormPersonDomainPart = {
     {
       id: 'someAffiliationid',
       fromYear: '1990',
-      untilYear: '2000',
-    },
-  ],
+      untilYear: '2000'
+    }
+  ]
 };
