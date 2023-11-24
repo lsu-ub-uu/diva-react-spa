@@ -54,7 +54,7 @@ import {
 describe('transformToCora', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
   let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
-  const FORM_MODE_NEW = 'new'; // todo handle edit
+  const FORM_MODE_NEW = 'create';
   let dependencies: Dependencies;
 
   beforeEach(() => {

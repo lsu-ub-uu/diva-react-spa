@@ -720,6 +720,7 @@ describe('formDefinition', () => {
   });
 
   it('should return a form definition for a edit metadata group', () => {
+    // TODO: Add all the combinations from the newMetadataGroup
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_EDIT);
     expect(formDefinition.form.components).toHaveLength(2);
