@@ -10,7 +10,7 @@ import {
   BFFPresentation,
   BFFPresentationGroup,
   BFFText,
-  BFFValidationType
+  BFFValidationType,
 } from './config/bffTypes';
 import { getRecordDataListByType, postRecordData } from './cora/cora';
 import { DataGroup, DataListWrapper, RecordWrapper } from './utils/cora-data/CoraData';
@@ -26,7 +26,7 @@ import {
 } from './formDefinition/formDefinition';
 import authRoute from './routes/authRoute';
 import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
-import { generateRecordInfo, injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
+import { injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
 import { cleanJson } from './utils/structs/removeEmpty';
 
 const PORT = process.env.PORT || 8080;
@@ -46,7 +46,7 @@ app.use('/api/translations/:lang', async (req, res) => {
     const texts = transformCoraTexts(response.data);
     const textPool = listToPool<BFFText>(texts);
     const dependencies = {
-      textPool: textPool
+      textPool: textPool,
     };
     const textDefinitions = createTextDefinition(dependencies, req.params.lang);
     res.status(200).json(textDefinitions);
@@ -58,7 +58,7 @@ app.use('/api/translations/:lang', async (req, res) => {
 const getPoolsFromCora = async (poolTypes: string[]) => {
   const promises = poolTypes.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
   return await Promise.all(promises);
-}
+};
 
 const errorHandler = (error: unknown) => {
   //@ts-ignore
@@ -67,8 +67,8 @@ const errorHandler = (error: unknown) => {
   return {
     message,
     status: status ?? 500,
-  }
-}
+  };
+};
 
 app.post('/api/record/:validationTypeId', async (req, res) => {
   try {
@@ -103,7 +103,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(
       formMetaDataPathLookup,
-      payload
+      payload,
     );
     const newGroup = injectRecordInfoIntoDataGroup(transformData[0] as DataGroup, validationTypeId, dataDivider);
     const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
@@ -112,7 +112,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     res.status(response.status).json({ id }); // return id for now
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();;
+    res.status(errorResponse.status).json(errorResponse).send();
   }
 });
 
@@ -130,7 +130,7 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
 
     const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup | BFFGuiElement>([
       ...presentation,
-      ...guiElements
+      ...guiElements,
     ]);
 
     const validationTypes = transformCoraValidationTypes(result[2].data);
@@ -143,10 +143,10 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
     const dependencies = {
       validationTypePool: validationTypePool,
       metadataPool: metadataPool,
-      presentationPool: presentationPool
+      presentationPool: presentationPool,
     } as Dependencies;
 
-    const formDef = createFormDefinition(dependencies, validationTypeId, 'new');
+    const formDef = createFormDefinition(dependencies, validationTypeId, 'create');
     res.status(200).json(formDef);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
