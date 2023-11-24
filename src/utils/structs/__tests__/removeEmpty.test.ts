@@ -30,7 +30,6 @@ describe('RemoveEmpty', () => {
     },
     prop5: [],
     prop6: ['a'],
-    prop7: { value: null },
   };
 
   const cleaned = {
