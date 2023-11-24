@@ -18,10 +18,13 @@
  */
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
+import manuscriptUpdateFormLookup from '../../__mocks__/manuscriptUpdateFormLookup.json';
 import { isDataAtomic, isDataGroup, isRecordLink, transformRecord, traverseDataGroup } from '../transformRecord';
 import { DataAtomic, DataGroup, RecordLink, RecordWrapper } from '../../utils/cora-data/CoraData';
 
+
 describe('transformRecord', () => {
+
   describe('helper methods', () => {
     it('should be able to detect a DataGroup', () => {
       const testData = { name: 'test', children: [] } as DataGroup;
@@ -54,7 +57,8 @@ describe('transformRecord', () => {
   });
 
   it('should return a record', () => {
-    const transformData = transformRecord(recordManuscript as RecordWrapper);
+    const formLookup = manuscriptUpdateFormLookup;
+    const transformData = transformRecord(recordManuscript as RecordWrapper, formLookup);
     const expected = {
       id: 'divaOutput:519333261463755',
       recordType: 'divaOutput',
@@ -96,28 +100,31 @@ describe('transformRecord', () => {
             },
             _language: 'kal',
           },
-          alternativeTitle:
+          alternativeTitle: [
             {
               mainTitle: {
                 value: 'bbbbb',
               },
-              subTitle:
+              subTitle: [
                 {
                   value: 'subTitle1',
                 },
+              ],
               _language: 'epo',
               _titleType: 'alternativeTitle',
             },
-          dateIssued:
+          ],
+          dateIssued: [
             {
               date: {
                 value: '1994',
               },
-              time:
+              time: [
                 {
                   value: '15:30',
                 },
-            },
+              ],
+            }],
           nationalSubjectCategory: [
             {
               value: 'nationalSubjectCategory:6325370460697648',
@@ -164,6 +171,7 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
+
   it('should return a root group with a childGroup with atomic children', () => {
     const test = {
       name: 'divaOutput',
@@ -348,7 +356,6 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
-
 
   it('should return a root group with a repeating childGroup with atomic children', () => {
     const test = {

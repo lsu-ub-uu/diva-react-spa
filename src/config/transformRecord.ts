@@ -73,8 +73,12 @@ const extractRecordUpdates = (recordInfo: DataGroup): unknown[] => {
     return { updateAt, updatedBy };
   });
 };
-
-export const transformRecord = (recordWrapper: RecordWrapper): unknown => {
+/**
+ * Transform a Record from Cora to DiVA3 Client BFF - GUI
+ * @param recordWrapper
+ * @param formPathLookup
+ */
+export const transformRecord = (recordWrapper: RecordWrapper, formPathLookup: unknown = undefined): unknown => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
 
@@ -92,6 +96,7 @@ export const transformRecord = (recordWrapper: RecordWrapper): unknown => {
     userRights = Object.keys(coraRecord.actionLinks);
   }
 
+  console.log(formPathLookup);
   let data = traverseDataGroup(dataRecordGroup);
 
   return { id, recordType, validationType, createdAt, createdBy, updated, userRights, data };
@@ -105,16 +110,18 @@ const transformObjectAttributes = (attrObject: Attributes | undefined) => {
   return attributesArray;
 };
 
-export const traverseDataGroup = (dataGroup: DataGroup) => {
+export const traverseDataGroup = (dataGroup: DataGroup, path?: string,) => {
   const validChildren = dataGroup.children.filter((group) => group.name !== 'recordInfo');
   const groupedByName = _.groupBy(validChildren, 'name');
   const groupedEntries = Object.entries(groupedByName);
+  path = path === undefined ? dataGroup.name : path;
 
   // handle attributes on the current group
   const groupAttributes = transformObjectAttributes(dataGroup.attributes);
 
   let object: unknown[] = [];
   groupedEntries.forEach(([name, groupedChildren]) => {
+    const currentPath = path ? `${path}.${name}` : name;
 
     // iterate over the name array
     let repeating = false;
@@ -137,18 +144,22 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
       }
 
       if (isDataGroup(child) && !isRepeating(child)) {
+        repeating = false;
+        isGroup = true;
         const childGroup = child as DataGroup;
-        return traverseDataGroup(childGroup);
+        return traverseDataGroup(childGroup, currentPath);
       }
 
       if (isDataGroup(child) && isRepeating(child)) {
         repeating = true;
         isGroup = true;
         const childGroup = child as DataGroup;
-        return traverseDataGroup(childGroup);
+        return traverseDataGroup(childGroup, currentPath);
       }
 
       if (isDataAtomic(child) && !isRepeating(child)) {
+        repeating = false;
+        isGroup = false;
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
         const value = (child as DataAtomic).value;
@@ -157,6 +168,7 @@ export const traverseDataGroup = (dataGroup: DataGroup) => {
       
       if (isDataAtomic(child) && isRepeating(child)) {
         repeating = true;
+        isGroup =  false;
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
         const value = (child as DataAtomic).value;

@@ -1,0 +1,309 @@
+{
+  "divaOutput.recordInfo.id": {
+    "name": "id",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.recordInfo.type": {
+    "name": "type",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 },
+    "linkedRecordType": "recordType"
+  },
+  "divaOutput.recordInfo.createdBy": {
+    "name": "createdBy",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 },
+    "linkedRecordType": "user"
+  },
+  "divaOutput.recordInfo.dataDivider": {
+    "name": "dataDivider",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 },
+    "linkedRecordType": "system"
+  },
+  "divaOutput.recordInfo.tsCreated": {
+    "name": "tsCreated",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.recordInfo.updated.updatedBy": {
+    "name": "updatedBy",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 },
+    "linkedRecordType": "user"
+  },
+  "divaOutput.recordInfo.updated.tsUpdated": {
+    "name": "tsUpdated",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.recordInfo.updated": {
+    "name": "updated",
+    "type": "group",
+    "repeat": { "repeatMin": 1, "repeatMax": 1.7976931348623157e308 }
+  },
+  "divaOutput.recordInfo.validationType": {
+    "name": "validationType",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 },
+    "linkedRecordType": "validationType"
+  },
+  "divaOutput.recordInfo": {
+    "name": "recordInfo",
+    "type": "group",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.title.mainTitle": {
+    "name": "mainTitle",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.title.subTitle": {
+    "name": "subTitle",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.title": {
+    "name": "title",
+    "type": "group",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.alternativeTitle.mainTitle": {
+    "name": "mainTitle",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.alternativeTitle.subTitle": {
+    "name": "subTitle",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.alternativeTitle": {
+    "name": "alternativeTitle",
+    "type": "group",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.divaPerson": {
+    "name": "divaPerson",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 },
+    "linkedRecordType": "person"
+  },
+  "divaOutput.contributors.author.givenName": {
+    "name": "givenName",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.familyName": {
+    "name": "familyName",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.birthYear": {
+    "name": "birthYear",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.deathYear": {
+    "name": "deathYear",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.email": {
+    "name": "email",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.localUserID": {
+    "name": "localUserID",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.ORCID": {
+    "name": "ORCID",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.organisationLink": {
+    "name": "organisationLink",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 },
+    "linkedRecordType": "organisation"
+  },
+  "divaOutput.contributors.author.otherOrganisation.otherOrganisation": {
+    "name": "otherOrganisation",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.otherOrganisation": {
+    "name": "otherOrganisation",
+    "type": "group",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author.researchGroup": {
+    "name": "researchGroup",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 },
+    "linkedRecordType": "researchGroup"
+  },
+  "divaOutput.contributors.author.otherResearchGroup": {
+    "name": "otherResearchGroup",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.contributors.author": {
+    "name": "author",
+    "type": "group",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 }
+  },
+  "divaOutput.contributors": {
+    "name": "contributors",
+    "type": "group",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.numberOfContributors": {
+    "name": "numberOfContributors",
+    "type": "numberVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.dateIssued.date": {
+    "name": "date",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.dateIssued.time": {
+    "name": "time",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.dateIssued": {
+    "name": "dateIssued",
+    "type": "group",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.nationalSubjectCategory": {
+    "name": "nationalSubjectCategory",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 1, "repeatMax": 1.7976931348623157e308 },
+    "linkedRecordType": "nationalSubjectCategory"
+  },
+  "divaOutput.researchSubject": {
+    "name": "researchSubject",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 },
+    "linkedRecordType": "researchSubject"
+  },
+  "divaOutput.abstract": {
+    "name": "abstract",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 }
+  },
+  "divaOutput.keywords": {
+    "name": "keywords",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 }
+  },
+  "divaOutput.project": {
+    "name": "project",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 },
+    "linkedRecordType": "project"
+  },
+  "divaOutput.otherProject.projectTitle": {
+    "name": "projectTitle",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.otherProject.projectDOI": {
+    "name": "projectDOI",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.otherProject.projectRAID": {
+    "name": "projectRAID",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.otherProject.projectURL": {
+    "name": "projectURL",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.otherProject": {
+    "name": "otherProject",
+    "type": "group",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 }
+  },
+  "divaOutput.funders.funder": {
+    "name": "funder",
+    "type": "recordLink",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 },
+    "linkedRecordType": "funder"
+  },
+  "divaOutput.funders.awardNumber": {
+    "name": "awardNumber",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.funders": {
+    "name": "funders",
+    "type": "group",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 }
+  },
+  "divaOutput.otherFunder.funderName": {
+    "name": "funderName",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  },
+  "divaOutput.otherFunder.awardNumber": {
+    "name": "awardNumber",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.otherFunder.funderDOI": {
+    "name": "funderDOI",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.otherFunder": {
+    "name": "otherFunder",
+    "type": "group",
+    "repeat": { "repeatMin": 0, "repeatMax": 1.7976931348623157e308 }
+  },
+  "divaOutput.externalNote": {
+    "name": "externalNote",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.administrativeNote": {
+    "name": "administrativeNote",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.archiveNumber": {
+    "name": "archiveNumber",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.localId": {
+    "name": "localId",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.otherOrganisation.otherOrganisation": {
+    "name": "otherOrganisation",
+    "type": "textVariable",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput.otherOrganisation": {
+    "name": "otherOrganisation",
+    "type": "group",
+    "repeat": { "repeatMin": 0, "repeatMax": 1 }
+  },
+  "divaOutput": {
+    "name": "divaOutput",
+    "type": "group",
+    "repeat": { "repeatMin": 1, "repeatMax": 1 }
+  }
+}
