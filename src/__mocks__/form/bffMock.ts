@@ -117,12 +117,18 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
     }
   ]
 };
+
 export const someEditMetadataGroup: BFFMetadataGroup = {
   id: 'someEditMetadataGroupId',
   nameInData: 'someEditMetadataGroupNameInData',
   type: 'group',
   textId: 'textId345',
   defTextId: 'defTextId678',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ],
   children: [
     {
       childId: 'someRecordInfoId',
@@ -133,6 +139,71 @@ export const someEditMetadataGroup: BFFMetadataGroup = {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
       repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataTextVariable2Id',
+      repeatMin: '1',
+      repeatMax: 'X'
+    },
+    {
+      childId: 'someMetadataTextVariable3Id',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataTextVariable4Id',
+      repeatMin: '1',
+      repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataTextVariable5Id',
+      repeatMin: '1',
+      repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataNumberVarId',
+      repeatMin: '0',
+      repeatMax: '1'
+    },
+    {
+      childId: 'exampleCollectionVarId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataCollectionVariableWithAttributeId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataNumberWithAttributeVarId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataTextVariableWithAttributeVarId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataChildGroupId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'nationalSubjectCategoryLinkId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataChildGroupWithSpecifiedHeadlineTextId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataChildGroupWithShowHeadlineFalseId',
+      repeatMin: '1',
+      repeatMax: '1'
     }
   ]
 };
@@ -587,6 +658,77 @@ export const pSomeEditMetadataGroup: BFFPresentationGroup = {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
       childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataTextVariable2Id',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataTextVariable3Id',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataNumberVariableId',
+      type: 'presentation',
+      minNumberOfRepeatingToShow: '1',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataCollectionVariableId',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataCollectionVariableWithAttributeId',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataNumberWithAttributeVarId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataTextVariableWithAttributeVarId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataChildGroupId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'nationalSubjectCategoryPLinkId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeContainerId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeGuiElementLinkId',
+      type: 'guiElement',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeRepeatingContainerId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
+      type: 'presentation',
+      childStyle: []
     }
   ]
 };
