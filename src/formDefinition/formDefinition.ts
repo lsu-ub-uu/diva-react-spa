@@ -60,15 +60,14 @@ export const convertStylesToGridColSpan = (styles: string[]): number => {
 export const createFormMetaData = (
   dependencies: Dependencies,
   validationTypeId: string,
-  mode: string
+  mode: 'update' | 'create'
 ): FormMetaData => {
   const validationPool = dependencies.validationTypePool;
   const metadataPool = dependencies.metadataPool;
   const validationType: BFFValidationType = validationPool.get(validationTypeId);
 
-  // TODO we need to check the mode parameter
   let metadataGroup: BFFMetadataGroup;
-  if (mode === 'new') {
+  if (mode === 'create') {
     metadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
   } else {
     metadataGroup = metadataPool.get(validationType.metadataGroupId) as BFFMetadataGroup;
@@ -142,7 +141,7 @@ export const createFormMetaDataPathLookup = (
   return lookup;
 };
 
-export const createFormDefinition = (dependencies: Dependencies, validationTypeId: string, mode: string) => {
+export const createFormDefinition = (dependencies: Dependencies, validationTypeId: string, mode: 'create' | 'update') => {
   const validationPool = dependencies.validationTypePool;
   const metadataPool = dependencies.metadataPool;
   const presentationPool = dependencies.presentationPool;
@@ -151,7 +150,7 @@ export const createFormDefinition = (dependencies: Dependencies, validationTypeI
   // we need to check the mode parameter
   let metadataGroup;
   let presentationGroup;
-  if (mode === 'new') {
+  if (mode === 'create') {
     metadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
     presentationGroup = presentationPool.get(validationType.newPresentationGroupId) as BFFPresentationGroup;
   } else {
