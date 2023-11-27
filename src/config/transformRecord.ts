@@ -32,7 +32,8 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
-import { FormMetaData } from '../formDefinition/formDefinition';
+import { createFormMetaData, createFormMetaDataPathLookup, FormMetaData } from '../formDefinition/formDefinition';
+import { Dependencies } from '../formDefinition/formDefinitionsDep';
 
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (
@@ -87,11 +88,10 @@ const extractRecordUpdates = (recordInfo: DataGroup): unknown[] => {
 /**
  * Transform a Record from Cora to DiVA3 Client BFF - GUI
  * @param recordWrapper
- * @param formPathLookup
  */
 export const transformRecord = (
-  recordWrapper: RecordWrapper,
-  formPathLookup: Record<string, FormMetaData> = {}
+  dependencies: Dependencies,
+  recordWrapper: RecordWrapper
 ): unknown => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
@@ -104,6 +104,10 @@ export const transformRecord = (
   const createdAt = getFirstDataAtomicValueWithNameInData(recordInfo, 'tsCreated');
   const createdBy = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'createdBy');
   const updated = extractRecordUpdates(recordInfo);
+
+  // create a form definition by validationType
+  const formMetadata = createFormMetaData(dependencies, validationType, 'update')
+  const formPathLookup = createFormMetaDataPathLookup(formMetadata);
 
   let userRights: string[] = [];
   if (coraRecord.actionLinks !== undefined) {

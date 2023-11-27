@@ -10,9 +10,9 @@ import {
   BFFPresentation,
   BFFPresentationGroup,
   BFFText,
-  BFFValidationType,
+  BFFValidationType
 } from './config/bffTypes';
-import { getRecordDataListByType, postRecordData } from './cora/cora';
+import { getRecordById, getRecordDataListByType, postRecordData } from './cora/cora';
 import { DataGroup, DataListWrapper, RecordWrapper } from './utils/cora-data/CoraData';
 import { transformCoraTexts } from './config/transformTexts';
 import { transformMetadata } from './config/transformMetadata';
@@ -22,12 +22,13 @@ import { Dependencies } from './formDefinition/formDefinitionsDep';
 import {
   createFormDefinition,
   createFormMetaData,
-  createFormMetaDataPathLookup,
+  createFormMetaDataPathLookup
 } from './formDefinition/formDefinition';
 import authRoute from './routes/authRoute';
 import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
 import { injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
 import { cleanJson } from './utils/structs/removeEmpty';
+import { transformRecord } from './config/transformRecord';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -46,7 +47,7 @@ app.use('/api/translations/:lang', async (req, res) => {
     const texts = transformCoraTexts(response.data);
     const textPool = listToPool<BFFText>(texts);
     const dependencies = {
-      textPool: textPool,
+      textPool: textPool
     };
     const textDefinitions = createTextDefinition(dependencies, req.params.lang);
     res.status(200).json(textDefinitions);
@@ -66,7 +67,7 @@ const errorHandler = (error: unknown) => {
   const status = axios.isAxiosError(error) ? error.response?.status : 500;
   return {
     message,
-    status: status ?? 500,
+    status: status ?? 500
   };
 };
 
@@ -92,24 +93,56 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
 
     const dependencies = {
       validationTypePool: validationTypePool,
-      metadataPool: metadataPool,
+      metadataPool: metadataPool
     } as Dependencies;
 
-    // break out this
-    const FORM_MODE_NEW = 'create'; //  handle this better
-    const dataDivider = 'diva'; // TODO: handle in env file?
+    const FORM_MODE_NEW = 'create';
+    const dataDivider = 'diva';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(
-      formMetaDataPathLookup,
-      payload,
+    const transformData = transformToCoraData(formMetaDataPathLookup, payload);
+    const newGroup = injectRecordInfoIntoDataGroup(
+      transformData[0] as DataGroup,
+      validationTypeId,
+      dataDivider
     );
-    const newGroup = injectRecordInfoIntoDataGroup(transformData[0] as DataGroup, validationTypeId, dataDivider);
     const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
     const id = extractIdFromRecordInfo(response.data.record.data);
 
     res.status(response.status).json({ id }); // return id for now
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+});
+
+app.get('/api/record/:recordType/:recordId', async (req, res) => {
+  try {
+    const { recordType, recordId } = req.params;
+
+    //const authToken = req.header('authToken') ?? '';
+    const authToken = 'd308ee8e-777f-4f92-8985-090b1fcc5f89';
+
+    // start loading dependencies
+    const types = ['metadata', 'validationType'];
+    const result = await getPoolsFromCora(types);
+    const metadata = transformMetadata(result[0].data);
+    const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
+
+    const validationTypes = transformCoraValidationTypes(result[1].data);
+    const validationTypePool = listToPool<BFFValidationType>(validationTypes);
+
+    const dependencies = {
+      validationTypePool: validationTypePool,
+      metadataPool: metadataPool
+    } as Dependencies;
+    // end dependencies
+
+    const response = await getRecordById<RecordWrapper>(recordType, recordId, authToken);
+    const recordWrapper = response.data;
+    const record = transformRecord(dependencies, recordWrapper);
+    res.status(response.status).json(record);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
@@ -130,7 +163,7 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
 
     const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup | BFFGuiElement>([
       ...presentation,
-      ...guiElements,
+      ...guiElements
     ]);
 
     const validationTypes = transformCoraValidationTypes(result[2].data);
@@ -143,7 +176,7 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
     const dependencies = {
       validationTypePool: validationTypePool,
       metadataPool: metadataPool,
-      presentationPool: presentationPool,
+      presentationPool: presentationPool
     } as Dependencies;
 
     const formDef = createFormDefinition(dependencies, validationTypeId, 'create');

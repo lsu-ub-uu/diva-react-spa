@@ -19,12 +19,13 @@
 
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { getRecordDataListByType, postRecordData } from '../cora';
+import { getRecordById, getRecordDataListByType, postRecordData } from '../cora';
 import { DataGroup, DataListWrapper, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';
 import { BFFText } from '../../config/bffTypes';
 import { createTextDefinition } from '../../textDefinition/textDefinition';
+import { extractIdFromRecordInfo } from '../../utils/cora-data/CoraDataTransforms';
 
 describe('getRecordDataListByType', () => {
   let mockAxios: MockAdapter;
@@ -181,7 +182,23 @@ describe.skip('real', () => {
 
       const response = await postRecordData<RecordWrapper>(payload, 'divaOutput', authToken);
       expect(response.status).toBe(201);
-      // const id = extractIdFromRecordInfo(response.data.record.data);
+    });
+  });
+
+  describe('real getRecord', () => {
+    // @ts-ignore
+    it('should make a real API call to get fetch record with authToken', async () => {
+      const { CORA_API_URL } = process.env;
+      axios.defaults.baseURL = CORA_API_URL;
+      console.log(axios.defaults.baseURL);
+      const recordType = 'divaOutput';
+      const recordId = 'divaOutput:519333261463755';
+      const authToken = 'd308ee8e-777f-4f92-8985-090b1fcc5f89';
+
+      const response = await getRecordById<RecordWrapper>(recordType, recordId, authToken);
+      const id = extractIdFromRecordInfo(response.data.record.data);
+      console.log(response);
+
     });
   });
 });

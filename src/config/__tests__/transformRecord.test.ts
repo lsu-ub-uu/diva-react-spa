@@ -58,8 +58,8 @@ describe('transformRecord', () => {
   });
 
   it('should return a record', () => {
-    const formLookup = manuscriptUpdateFormLookup as Record<string, FormMetaData>;
-    const transformData = transformRecord(recordManuscript as RecordWrapper, formLookup);
+    const dependencies = {};
+    const transformData = transformRecord(dependencies, recordManuscript as RecordWrapper);
     const expected = {
       id: 'divaOutput:519333261463755',
       recordType: 'divaOutput',
