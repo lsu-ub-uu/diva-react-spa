@@ -21,6 +21,7 @@ import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
 import manuscriptUpdateFormLookup from '../../__mocks__/manuscriptUpdateFormLookup.json';
 import { isDataAtomic, isDataGroup, isRecordLink, transformRecord, traverseDataGroup } from '../transformRecord';
 import { DataAtomic, DataGroup, RecordLink, RecordWrapper } from '../../utils/cora-data/CoraData';
+import { FormMetaData } from '../../formDefinition/formDefinition';
 
 
 describe('transformRecord', () => {
@@ -38,7 +39,7 @@ describe('transformRecord', () => {
       expect(true).toStrictEqual(expected);
     });
 
-    it('should be able to detect a RecordLInk', () => {
+    it('should be able to detect a RecordLink', () => {
       const testData = {
         name: 'test',
         children: [
@@ -57,7 +58,7 @@ describe('transformRecord', () => {
   });
 
   it('should return a record', () => {
-    const formLookup = manuscriptUpdateFormLookup;
+    const formLookup = manuscriptUpdateFormLookup as Record<string, FormMetaData>;
     const transformData = transformRecord(recordManuscript as RecordWrapper, formLookup);
     const expected = {
       id: 'divaOutput:519333261463755',

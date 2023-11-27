@@ -23,7 +23,7 @@ import {
   DataAtomic,
   DataGroup,
   RecordLink,
-  RecordWrapper,
+  RecordWrapper
 } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import {
@@ -32,6 +32,7 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
+import { FormMetaData } from '../formDefinition/formDefinition';
 
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (
@@ -49,15 +50,25 @@ export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
 
 export function isRecordLink(item: DataGroup | DataAtomic | RecordLink) {
   if (!isDataGroup(item)) return false;
-  const group = (item as DataGroup);
+  const group = item as DataGroup;
   const recordLinkChildren = group.children.filter((child: DataGroup | DataAtomic | RecordLink) => {
-    return (child.name === 'linkedRecordType' || child.name === 'linkedRecordId');
+    return child.name === 'linkedRecordType' || child.name === 'linkedRecordId';
   });
   return recordLinkChildren.length === 2;
 }
 
-export function isRepeating(item: DataGroup | DataAtomic | RecordLink) {
-  return Object.prototype.hasOwnProperty.call(item, 'repeatId');
+export function isRepeating(
+  item: DataGroup | DataAtomic | RecordLink,
+  currentPath: string,
+  formPathLookup?: Record<string, FormMetaData>
+) {
+  const lookup = formPathLookup ?? {};
+  const formComponent = lookup[currentPath];
+  let isFormDataRepeating = false;
+  if (formComponent) {
+    isFormDataRepeating = (formComponent.repeat.repeatMin === 0)
+  }
+  return Object.prototype.hasOwnProperty.call(item, 'repeatId') || isFormDataRepeating;
 }
 
 const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {
@@ -78,7 +89,10 @@ const extractRecordUpdates = (recordInfo: DataGroup): unknown[] => {
  * @param recordWrapper
  * @param formPathLookup
  */
-export const transformRecord = (recordWrapper: RecordWrapper, formPathLookup: unknown = undefined): unknown => {
+export const transformRecord = (
+  recordWrapper: RecordWrapper,
+  formPathLookup: Record<string, FormMetaData> = {}
+): unknown => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
 
@@ -96,9 +110,7 @@ export const transformRecord = (recordWrapper: RecordWrapper, formPathLookup: un
     userRights = Object.keys(coraRecord.actionLinks);
   }
 
-  console.log(formPathLookup);
-  let data = traverseDataGroup(dataRecordGroup);
-
+  let data = traverseDataGroup(dataRecordGroup, formPathLookup);
   return { id, recordType, validationType, createdAt, createdBy, updated, userRights, data };
 };
 
@@ -110,7 +122,11 @@ const transformObjectAttributes = (attrObject: Attributes | undefined) => {
   return attributesArray;
 };
 
-export const traverseDataGroup = (dataGroup: DataGroup, path?: string,) => {
+export const traverseDataGroup = (
+  dataGroup: DataGroup,
+  formPathLookup?: Record<string, FormMetaData>,
+  path?: string
+) => {
   const validChildren = dataGroup.children.filter((group) => group.name !== 'recordInfo');
   const groupedByName = _.groupBy(validChildren, 'name');
   const groupedEntries = Object.entries(groupedByName);
@@ -127,54 +143,53 @@ export const traverseDataGroup = (dataGroup: DataGroup, path?: string,) => {
     let repeating = false;
     let isGroup = false;
     const thisLevelChildren = groupedChildren.map((child) => {
-
-      if (isRecordLink(child) && !isRepeating(child)) {
+      if (isRecordLink(child) && !isRepeating(child, currentPath, formPathLookup)) {
         const childGroup = child as DataGroup;
         const recordLinkAttributes = transformObjectAttributes(childGroup.attributes);
-        const recordId = getFirstDataAtomicValueWithNameInData(childGroup, 'linkedRecordId')
-        return { [name]: Object.assign({ value: recordId }, ...recordLinkAttributes) }
+        const recordId = getFirstDataAtomicValueWithNameInData(childGroup, 'linkedRecordId');
+        return { [name]: Object.assign({ value: recordId }, ...recordLinkAttributes) };
       }
 
-      if (isRecordLink(child) && isRepeating(child)) {
+      if (isRecordLink(child) && isRepeating(child, currentPath, formPathLookup)) {
         repeating = true;
         const childGroup = child as DataGroup;
         const recordLinkAttributes = transformObjectAttributes(childGroup.attributes);
-        const recordId = getFirstDataAtomicValueWithNameInData(childGroup, 'linkedRecordId')
+        const recordId = getFirstDataAtomicValueWithNameInData(childGroup, 'linkedRecordId');
         return Object.assign({ value: recordId }, ...recordLinkAttributes);
       }
 
-      if (isDataGroup(child) && !isRepeating(child)) {
+      if (isDataGroup(child) && !isRepeating(child, currentPath, formPathLookup)) {
         repeating = false;
         isGroup = true;
         const childGroup = child as DataGroup;
-        return traverseDataGroup(childGroup, currentPath);
+        return traverseDataGroup(childGroup, formPathLookup, currentPath);
       }
 
-      if (isDataGroup(child) && isRepeating(child)) {
+      if (isDataGroup(child) && isRepeating(child, currentPath, formPathLookup)) {
         repeating = true;
         isGroup = true;
         const childGroup = child as DataGroup;
-        return traverseDataGroup(childGroup, currentPath);
+        return traverseDataGroup(childGroup, formPathLookup, currentPath);
       }
 
-      if (isDataAtomic(child) && !isRepeating(child)) {
+      if (isDataAtomic(child) && !isRepeating(child, currentPath, formPathLookup)) {
         repeating = false;
         isGroup = false;
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
         const value = (child as DataAtomic).value;
-        return { [name]: Object.assign({ value }, ...atomicAttributes) }
+        return { [name]: Object.assign({ value }, ...atomicAttributes) };
       }
-      
-      if (isDataAtomic(child) && isRepeating(child)) {
+
+      if (isDataAtomic(child) && isRepeating(child, currentPath, formPathLookup)) {
         repeating = true;
-        isGroup =  false;
+        isGroup = false;
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
         const value = (child as DataAtomic).value;
-        return Object.assign({ value }, ...atomicAttributes)
+        return Object.assign({ value }, ...atomicAttributes);
       }
-    }); // end map
+    });
 
     // each unique name on that level
     if (repeating && !isGroup) {
@@ -184,7 +199,6 @@ export const traverseDataGroup = (dataGroup: DataGroup, path?: string,) => {
     } else {
       object.push(Object.assign({}, ...thisLevelChildren));
     }
-
   });
 
   return { [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) };
