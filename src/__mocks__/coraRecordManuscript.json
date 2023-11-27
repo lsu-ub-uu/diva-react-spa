@@ -315,19 +315,6 @@
           }
         },
         {
-          "children": [
-            {
-              "name": "date",
-              "value": "1994"
-            },
-            {
-              "name": "time",
-              "value": "15:30"
-            }
-          ],
-          "name": "dateIssued"
-        },
-        {
           "repeatId": "0",
           "children": [
             {

@@ -18,13 +18,40 @@
  */
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
-import manuscriptUpdateFormLookup from '../../__mocks__/manuscriptUpdateFormLookup.json';
 import { isDataAtomic, isDataGroup, isRecordLink, transformRecord, traverseDataGroup } from '../transformRecord';
 import { DataAtomic, DataGroup, RecordLink, RecordWrapper } from '../../utils/cora-data/CoraData';
-import { FormMetaData } from '../../formDefinition/formDefinition';
-
+import { Lookup } from '../../utils/structs/lookup';
+import { BFFMetadata, BFFMetadataItemCollection, BFFValidationType } from '../bffTypes';
+import { Dependencies } from '../../formDefinition/formDefinitionsDep';
+import { listToPool } from '../../utils/structs/listToPool';
+import {
+  someAlternativeTitleMetadataChildGroup, someMainTitleTextVariable,
+  someManuscriptEditMetadataGroup,
+  someManuscriptValidationTypeData, someSubTitleTextVariable,
+} from '../../__mocks__/form/bffMock';
 
 describe('transformRecord', () => {
+  let validationTypePool: Lookup<string, BFFValidationType>;
+  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
+  let dependencies: Dependencies;
+
+  beforeEach(() => {
+    validationTypePool = listToPool<BFFValidationType>([
+      someManuscriptValidationTypeData
+    ]);
+    metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
+      someManuscriptEditMetadataGroup,
+      someAlternativeTitleMetadataChildGroup,
+      someMainTitleTextVariable,
+      someSubTitleTextVariable
+    ]);
+
+    dependencies = {
+      validationTypePool: validationTypePool,
+      metadataPool: metadataPool,
+    };
+  });
+
 
   describe('helper methods', () => {
     it('should be able to detect a DataGroup', () => {
@@ -58,7 +85,6 @@ describe('transformRecord', () => {
   });
 
   it('should return a record', () => {
-    const dependencies = {};
     const transformData = transformRecord(dependencies, recordManuscript as RecordWrapper);
     const expected = {
       id: 'divaOutput:519333261463755',
@@ -115,17 +141,6 @@ describe('transformRecord', () => {
               _titleType: 'alternativeTitle',
             },
           ],
-          dateIssued: [
-            {
-              date: {
-                value: '1994',
-              },
-              time: [
-                {
-                  value: '15:30',
-                },
-              ],
-            }],
           nationalSubjectCategory: [
             {
               value: 'nationalSubjectCategory:6325370460697648',

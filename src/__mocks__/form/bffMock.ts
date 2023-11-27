@@ -28,6 +28,74 @@ export const someValidationTypeData: BFFValidationType = {
   defTextId: 'defName456'
 };
 
+export const someManuscriptValidationTypeData: BFFValidationType = {
+  id: 'manuscript',
+  validatesRecordTypeId: 'divaOutput',
+  // New
+  newMetadataGroupId: '',
+  newPresentationGroupId: '',
+  // Update/Edit
+  metadataGroupId: 'someManuscriptEditMetadataGroupId',
+  presentationGroupId: '',
+  nameTextId: '',
+  defTextId: ''
+};
+
+export const someManuscriptEditMetadataGroup: BFFMetadataGroup = {
+  id: 'someManuscriptEditMetadataGroupId',
+  nameInData: 'divaOutput',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'alternativeTitle',
+      repeatMin: '0',
+      repeatMax: '1'
+    },
+  ]
+};
+
+export const someAlternativeTitleMetadataChildGroup: BFFMetadataGroup = {
+  id: 'alternativeTitle',
+  nameInData: 'alternativeTitle',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'mainTitle',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'subTitle',
+      repeatMin: '0',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someMainTitleTextVariable: BFFMetadataTextVariable = {
+  id: 'mainTitle',
+  nameInData: 'mainTitle',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+export const someSubTitleTextVariable: BFFMetadataTextVariable = {
+  id: 'subTitle',
+  nameInData: 'subTitle',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+
+
 export const someNewMetadataGroup: BFFMetadataGroup = {
   id: 'someNewMetadataGroupId',
   nameInData: 'someNewMetadataGroupNameInData',
