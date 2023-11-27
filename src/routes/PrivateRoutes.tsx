@@ -11,7 +11,7 @@ const PrivateRoutes = () => {
   ) : (
     <Alert severity='error'>
       <AlertTitle>Not Authorized</AlertTitle>
-      You need to be logged in to be able to create publications.
+      You need to be logged in to be able to perform this action.
       <Stack
         sx={{ pt: 4 }}
         direction='column'
