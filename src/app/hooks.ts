@@ -15,6 +15,7 @@ interface UseFormSchemaByValidationType {
 
 export const useCoraFormSchemaByValidationType = (
   validationType: string,
+  mode: 'create' | 'update',
 ): UseFormSchemaByValidationType => {
   const [schema, setSchema] = useState<FormSchema>();
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,7 @@ export const useCoraFormSchemaByValidationType = (
 
     const fetchFormSchema = async () => {
       try {
-        const response = await axios.get(`/form/${validationType}`);
+        const response = await axios.get(`/form/${validationType}/${mode}`);
         if (isMounted) {
           setError(null);
           setSchema(response.data as FormSchema);
@@ -48,7 +49,7 @@ export const useCoraFormSchemaByValidationType = (
     return () => {
       isMounted = false;
     };
-  }, [validationType]);
+  }, [validationType, mode]);
 
   return { isLoading, schema, error };
 };

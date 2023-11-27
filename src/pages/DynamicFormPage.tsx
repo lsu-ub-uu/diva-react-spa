@@ -33,8 +33,10 @@ export const DynamicFormPage = () => {
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
-  const { error, isLoading, schema } =
-    useCoraFormSchemaByValidationType('manuscript');
+  const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
+    'manuscript',
+    'create',
+  );
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {

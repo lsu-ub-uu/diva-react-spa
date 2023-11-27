@@ -80,12 +80,12 @@ describe('useCoraFormSchemaByValidationType', () => {
     };
 
     const validationType = 'someValidationTypeId';
-    const apiUrl = `form/${validationType}`;
+    const apiUrl = `form/${validationType}/create`;
 
     mockAxios.onGet(apiUrl).reply(200, expectedFormSchema);
 
     const { result } = renderHook(() =>
-      useCoraFormSchemaByValidationType(validationType),
+      useCoraFormSchemaByValidationType(validationType, 'create'),
     );
 
     await waitFor(() => {
@@ -101,11 +101,11 @@ describe('useCoraFormSchemaByValidationType', () => {
       status: 500,
     };
     const validationType = 'someFaultyValidationTypeId';
-    const apiUrl = `form/${validationType}`;
+    const apiUrl = `form/${validationType}/create`;
     mockAxios.onGet(apiUrl).reply(500, expected500Response);
 
     const { result } = renderHook(() =>
-      useCoraFormSchemaByValidationType(validationType),
+      useCoraFormSchemaByValidationType(validationType, 'create'),
     );
 
     await waitFor(() => {
