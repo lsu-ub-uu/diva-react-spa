@@ -147,10 +147,13 @@ app.get('/api/record/:recordType/:recordId', async (req, res) => {
   }
 });
 
-app.use('/api/form/:validationTypeId', async (req, res) => {
+app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
   try {
-    const { validationTypeId } = req.params;
-    // const authToken = req.header('authToken') ?? '';
+    const { validationTypeId, mode } = req.params;
+
+    if (!['create', 'update'].includes(mode)) {
+      throw new Error(`Mode [${mode}] is not supported`);
+    }
     const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
     const result = await getPoolsFromCora(types);
 
@@ -177,7 +180,11 @@ app.use('/api/form/:validationTypeId', async (req, res) => {
       presentationPool: presentationPool
     } as Dependencies;
 
-    const formDef = createFormDefinition(dependencies, validationTypeId, 'create');
+    const formDef = createFormDefinition(
+      dependencies,
+      validationTypeId,
+      mode as 'create' | 'update'
+    );
     res.status(200).json(formDef);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
