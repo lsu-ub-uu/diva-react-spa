@@ -120,9 +120,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
 app.get('/api/record/:recordType/:recordId', async (req, res) => {
   try {
     const { recordType, recordId } = req.params;
-
-    //const authToken = req.header('authToken') ?? '';
-    const authToken = 'd308ee8e-777f-4f92-8985-090b1fcc5f89';
+    const authToken = req.header('authToken') ?? '';
 
     // start loading dependencies
     const types = ['metadata', 'validationType'];
