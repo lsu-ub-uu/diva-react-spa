@@ -72,14 +72,12 @@ export const UpdateRecordPage = () => {
   const handleSubmit = async (values: FieldValues) => {
     try {
       setIsSubmitting(true);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.post(
         `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,
         values,
       );
-      notification(
-        `Record was successfully updated ${response.data.id}`,
-        'success',
-      );
+      notification(`Record was successfully updated!`, 'success');
     } catch (err: any) {
       setIsSubmitting(false);
       notification(`${err.message}`, 'error');
