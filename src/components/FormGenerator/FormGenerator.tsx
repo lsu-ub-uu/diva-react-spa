@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Divider, Grid } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -347,14 +347,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         () => props.onInvalid && props.onInvalid(),
       )}
     >
-      <Grid
-        container
-        direction='row'
-        justifyContent='flex-start'
-        alignItems='flex-start'
-      >
-        {generateFormComponent(props.formSchema.form, undefined, 0, '')}
-      </Grid>
+      {generateFormComponent(props.formSchema.form, undefined, 0, '')}
       <Divider sx={{ my: 4 }} />
       <Box
         component='span'
