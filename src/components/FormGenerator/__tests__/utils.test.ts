@@ -663,6 +663,54 @@ describe('FormGenerator Utils', () => {
 
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
+
+      test('should take a more complex formDef with groups and make default values object with overrides', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'testBookTitle',
+            },
+            keeptHis: [
+              {
+                value: 'override',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '12',
+              },
+              exampleTextVar: {
+                value: '',
+              },
+            },
+            recordInfo: {},
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'testBookTitle',
+            },
+            keeptHis: [
+              {
+                value: 'override',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '12',
+              },
+            },
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemo as FormSchema,
+          existingRecordData,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
   });
 
