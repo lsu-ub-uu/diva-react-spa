@@ -38,22 +38,22 @@ export const UpdateRecordPage = () => {
   );
 
   useEffect(() => {
-    setBackdrop(coraRecord.isLoading || coraSchema.isLoading);
-  }, [coraRecord.isLoading, coraSchema.isLoading, setBackdrop]);
+    setBackdrop(coraRecord.isLoading);
+  }, [coraRecord.isLoading, setBackdrop]);
 
-  if (coraRecord.error)
-    return <Alert severity='error'>{coraRecord.error}</Alert>;
-
-  if (coraSchema.error)
-    return <Alert severity='error'>{coraSchema.error}</Alert>;
-
-  if (coraRecord.isLoading || coraSchema.isLoading)
+  if (coraRecord.isLoading)
     return (
       <Skeleton
         variant='rectangular'
         height={800}
       />
     );
+
+  if (coraRecord.error)
+    return <Alert severity='error'>{coraRecord.error}</Alert>;
+
+  if (coraSchema.error)
+    return <Alert severity='error'>{coraSchema.error}</Alert>;
 
   return (
     <>
