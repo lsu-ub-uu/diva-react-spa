@@ -176,10 +176,8 @@ export const createDefaultValuesFromFormSchema = (
 ) => {
   let defaultValues = createDefaultValuesFromComponent(formSchema.form);
   if (existingRecordData !== undefined) {
-    // we probably need to recursively replace overrides.
     defaultValues = mergeObjects(defaultValues, existingRecordData);
   }
-  // merge existingRecordData over the already created defaultValues
   return defaultValues;
 };
 

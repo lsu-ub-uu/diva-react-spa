@@ -836,6 +836,44 @@ describe('FormGenerator Utils', () => {
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
+
+      test.skip('should take a more complex formDef with finalValue default values object without overrides taking effect', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'someFinalValue',
+            },
+            keeptHis: [
+              {
+                value: '12',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '55',
+              },
+              exampleTextVar: {
+                value: 'someText',
+              },
+            },
+            recordInfo: {},
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'someValueFromServerThatWillNeverBeSavedEverAgain',
+            },
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithFinalValues as FormSchema,
+          existingRecordData,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
   });
 
