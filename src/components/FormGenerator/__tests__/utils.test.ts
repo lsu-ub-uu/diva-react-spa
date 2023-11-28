@@ -44,6 +44,7 @@ import {
   formDefWithTwoRepeatingVarsAndCollectionVar,
   formDefWithARepeatingContainer,
   formDefWithOneRepeatingTextVariable,
+  formDefRealDemoWithAttributesButWithoutFinalValue,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
@@ -709,6 +710,68 @@ describe('FormGenerator Utils', () => {
           formDefRealDemo as FormSchema,
           existingRecordData,
         );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      test('should take a more complex formDef with groups and attributes and make default values object with overrides', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: '',
+              _colour: 'yellow',
+            },
+            keeptHis: [
+              {
+                value: '',
+                _colour: 'blue',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '',
+              },
+              exampleTextVar: {
+                _colour: 'yellow',
+                _colourAgain: 'pink',
+                value: 'someEditedValue',
+              },
+              _groupColour: 'pink',
+              _groupColourAgain: 'blue',
+            },
+            recordInfo: {},
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            bookTitle: {
+              value: '',
+              _colour: 'yellow',
+            },
+            keeptHis: [
+              {
+                value: '',
+                _colour: 'blue',
+              },
+            ],
+            firstChildGroup: {
+              exampleTextVar: {
+                _colour: 'yellow',
+                _colourAgain: 'pink',
+                value: 'someEditedValue',
+              },
+              _groupColour: 'pink',
+              _groupColourAgain: 'blue',
+            },
+            recordInfo: {},
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithAttributesButWithoutFinalValue as FormSchema,
+          existingRecordData,
+        );
+
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
     });

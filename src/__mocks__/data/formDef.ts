@@ -1187,6 +1187,238 @@ export const formDefRealDemoWithFinalValues = {
   },
 };
 
+export const formDefRealDemoWithAttributesButWithoutFinalValue = {
+  validationTypeId: 'demo',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    mode: 'input',
+
+    components: [
+      {
+        name: 'recordInfo',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'recordInfoText',
+          body: 'recordInfoDefText',
+        },
+        label: 'recordInfoText',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        name: 'bookTitle',
+        type: 'textVariable',
+        mode: 'input',
+        inputType: 'input',
+        tooltip: {
+          title: 'bookTitletextVarText',
+          body: 'bookTitletextVarDefText',
+        },
+        label: 'bookTitletextVarText',
+        validation: {
+          type: 'regex',
+          pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{2,50}$)',
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'colour',
+            placeholder: 'emptyTextId',
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText',
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+      },
+      {
+        name: 'keeptHis',
+        type: 'numberVariable',
+        mode: 'input',
+        tooltip: {
+          title: 'keepThisNumberVarText',
+          body: 'keepThisNumberVarDefText',
+        },
+        label: 'keepThisNumberVarText',
+        validation: {
+          type: 'number',
+          min: 0,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'colour',
+            placeholder: 'emptyTextId',
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText',
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+      },
+      {
+        name: 'firstChildGroup',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'exampleFirstChildGroupText',
+          body: 'exampleFirstChildGroupDefText',
+        },
+        label: 'exampleFirstChildGroupText',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'groupColour',
+            placeholder: 'emptyTextId',
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText',
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+          {
+            type: 'collectionVariable',
+            name: 'groupColourAgain',
+            placeholder: 'emptyTextId',
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText',
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+        components: [
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            name: 'exampleTextVar',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'exampleMetadataTextVarText',
+              body: 'exampleMetadataTextVarDefText',
+            },
+            label: 'exampleMetadataTextVarText',
+            validation: {
+              type: 'regex',
+              pattern: '.*',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                type: 'collectionVariable',
+                name: 'colour',
+                placeholder: 'emptyTextId',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText',
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' },
+                ],
+                mode: 'input',
+              },
+              {
+                type: 'collectionVariable',
+                name: 'colourAgain',
+                placeholder: 'emptyTextId',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText',
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' },
+                ],
+                mode: 'input',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+};
+
 export const formDefRealDemoWithAttributes = {
   validationTypeId: 'demo',
   form: {
