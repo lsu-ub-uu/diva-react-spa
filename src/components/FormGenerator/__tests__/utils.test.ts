@@ -725,6 +725,10 @@ describe('FormGenerator Utils', () => {
                 value: '',
                 _colour: 'blue',
               },
+              {
+                value: '',
+                _colour: '',
+              },
             ],
             firstChildGroup: {
               exampleNumberVar: {

@@ -1272,9 +1272,9 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue = {
           numberOfDecimals: 0,
         },
         repeat: {
-          minNumberOfRepeatingToShow: 1,
+          minNumberOfRepeatingToShow: 2,
           repeatMin: 0,
-          repeatMax: 1,
+          repeatMax: 2,
         },
         attributes: [
           {
