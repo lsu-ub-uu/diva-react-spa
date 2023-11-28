@@ -25,7 +25,8 @@ import {
   useCoraFormSchemaByValidationType,
   useCoraRecordByTypeAndId,
 } from '../app/hooks';
-import { useBackdrop } from '../components';
+import { FormGenerator, useBackdrop } from '../components';
+import { FormSchema } from '../components/FormGenerator/types';
 
 export const UpdateRecordPage = () => {
   const { recordId } = useParams();
@@ -62,8 +63,14 @@ export const UpdateRecordPage = () => {
       </Helmet>
       <div>
         <Stack spacing={2}>
-          <pre>{JSON.stringify(coraRecord.record, null, 1)}</pre>
-          <pre>{JSON.stringify(coraSchema.schema, null, 1)}</pre>
+          {coraSchema.schema && coraRecord.record && (
+            <FormGenerator
+              record={coraRecord.record}
+              onSubmit={(values) => console.log(values)}
+              onInvalid={() => console.error(`Form is invalid`)}
+              formSchema={coraSchema.schema as FormSchema}
+            />
+          )}
         </Stack>
       </div>
     </>

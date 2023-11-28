@@ -28,6 +28,10 @@ import {
   FormSchema,
 } from './types';
 
+export interface RecordData {
+  [key: string]: any;
+}
+
 const removeRootObject = (obj: object) => {
   const childKeys = Object.keys(obj);
   if (childKeys.length === 1) {
@@ -165,10 +169,6 @@ export const createDefaultValuesFromComponents = (
     .map((formComponent) => createDefaultValuesFromComponent(formComponent));
   return Object.assign({}, ...formDefaultValuesArray);
 };
-
-interface RecordData {
-  [key: string]: any;
-}
 
 export const createDefaultValuesFromFormSchema = (
   formSchema: FormSchema,

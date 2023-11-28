@@ -33,13 +33,16 @@ import {
   isComponentSurroundingContainer,
   isComponentVariable,
   isFirstLevel,
+  RecordData,
 } from './utils';
 import { Typography, LinkButton, Card } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
+import { CoraRecord } from '../../app/hooks';
 
 interface FormGeneratorProps {
+  record?: CoraRecord;
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
   onInvalid?: () => void;
@@ -128,7 +131,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: true,
-    defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
+    defaultValues: createDefaultValuesFromFormSchema(
+      props.formSchema,
+      props.record?.data as RecordData,
+    ),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
 
@@ -335,6 +341,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   return (
     <Box
       component='form'
+      sx={{ width: '100%' }}
       onSubmit={handleSubmit(
         (values) => props.onSubmit(values),
         () => props.onInvalid && props.onInvalid(),

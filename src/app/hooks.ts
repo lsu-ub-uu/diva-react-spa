@@ -65,7 +65,7 @@ interface CoraUpdate {
   updatedBy: string;
 }
 
-interface CoraRecord {
+export interface CoraRecord {
   id: string;
   recordType: string;
   validationType: string;
