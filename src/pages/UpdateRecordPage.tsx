@@ -17,10 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useSnackbar, VariantType } from 'notistack';
+import { FieldValues } from 'react-hook-form';
 import {
   useCoraFormSchemaByValidationType,
   useCoraRecordByTypeAndId,
@@ -30,6 +33,9 @@ import { FormSchema } from '../components/FormGenerator/types';
 
 export const UpdateRecordPage = () => {
   const { recordId } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
+  // const { t } = useTranslation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
   // const { t } = useTranslation();
   const coraRecord = useCoraRecordByTypeAndId('divaOutput', recordId);
@@ -39,8 +45,8 @@ export const UpdateRecordPage = () => {
   );
 
   useEffect(() => {
-    setBackdrop(coraRecord.isLoading);
-  }, [coraRecord.isLoading, setBackdrop]);
+    setBackdrop(coraRecord.isLoading || isSubmitting);
+  }, [coraRecord.isLoading, isSubmitting, setBackdrop]);
 
   if (coraRecord.isLoading)
     return (
@@ -56,6 +62,32 @@ export const UpdateRecordPage = () => {
   if (coraSchema.error)
     return <Alert severity='error'>{coraSchema.error}</Alert>;
 
+  const notification = (message: string, variant: VariantType) => {
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { vertical: 'top', horizontal: 'right' },
+    });
+  };
+
+  const handleSubmit = async (values: FieldValues) => {
+    try {
+      setIsSubmitting(true);
+      const response = await axios.post(
+        `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,
+        values,
+      );
+      notification(
+        `Record was successfully updated ${response.data.id}`,
+        'success',
+      );
+    } catch (err: any) {
+      setIsSubmitting(false);
+      notification(`${err.message}`, 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -66,8 +98,8 @@ export const UpdateRecordPage = () => {
           {coraSchema.schema && coraRecord.record && (
             <FormGenerator
               record={coraRecord.record}
-              onSubmit={(values) => console.log(values)}
-              onInvalid={() => console.error(`Form is invalid`)}
+              onSubmit={handleSubmit}
+              onInvalid={() => notification(`Update Form is invalid`, 'error')}
               formSchema={coraSchema.schema as FormSchema}
             />
           )}
