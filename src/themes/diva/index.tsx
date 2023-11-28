@@ -62,14 +62,17 @@ export const divaTheme = createTheme({
     create: () => 'none',
   },
   typography: {
+    fontFamily: 'Arial',
     button: {
       textTransform: 'none',
     },
     h1TextStyle: {
-      fontSize: '4rem',
+      fontSize: '2rem',
+      fontWeight: '600',
     },
     h2TextStyle: {
-      fontSize: '3rem',
+      fontSize: '1.5rem',
+      fontWeight: '400',
     },
     h3TextStyle: {
       fontSize: '3rem',
