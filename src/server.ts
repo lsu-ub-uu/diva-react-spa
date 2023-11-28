@@ -71,6 +71,23 @@ const errorHandler = (error: unknown) => {
   };
 };
 
+app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
+  try {
+    const { validationTypeId, recordId } = req.params;
+    const authToken = req.header('authToken') ?? '';
+
+    const payload = cleanJson(req.body);
+    console.log(validationTypeId);
+    console.log(recordId);
+    console.log(payload);
+
+    res.status(200).json({});
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+});
+
 app.post('/api/record/:validationTypeId', async (req, res) => {
   try {
     const { validationTypeId } = req.params;
