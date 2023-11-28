@@ -166,10 +166,56 @@ export const createDefaultValuesFromComponents = (
   return Object.assign({}, ...formDefaultValuesArray);
 };
 
-export const createDefaultValuesFromFormSchema = (formSchema: FormSchema) => {
-  // do we need some more stuff here?
-  return createDefaultValuesFromComponent(formSchema.form);
+interface RecordData {
+  [key: string]: any;
+}
+
+export const createDefaultValuesFromFormSchema = (
+  formSchema: FormSchema,
+  existingRecordData: RecordData | undefined = undefined,
+) => {
+  let defaultValues = createDefaultValuesFromComponent(formSchema.form);
+  if (existingRecordData !== undefined) {
+    // we probably need to recursively replace overrides.
+    defaultValues = mergeObjects(defaultValues, existingRecordData);
+  }
+  // merge existingRecordData over the already created defaultValues
+  return defaultValues;
 };
+
+function mergeObjects(target: RecordData, overlay: RecordData): RecordData {
+  Object.entries(overlay).forEach(([key]) => {
+    if (Object.prototype.hasOwnProperty.call(overlay, key)) {
+      if (
+        typeof overlay[key] === 'object' &&
+        overlay[key] !== null &&
+        !Array.isArray(overlay[key])
+      ) {
+        // Recursively merge nested objects
+        target[key] = mergeObjects(target[key] || {}, overlay[key]);
+      } else if (Array.isArray(overlay[key])) {
+        // Handle arrays
+        target[key] = mergeArrays(target[key] || [], overlay[key]);
+      } else {
+        // Assign non-object values directly
+        target[key] = overlay[key];
+      }
+    }
+  });
+  return target;
+}
+
+function mergeArrays(target: any[], overlay: any[]): any[] {
+  const result = [...target];
+
+  overlay.forEach((item, index) => {
+    if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
+      result[index] = item;
+    }
+  });
+
+  return result;
+}
 
 /**
  * YUP Validation

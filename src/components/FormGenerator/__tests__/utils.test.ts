@@ -43,6 +43,7 @@ import {
   formDefWithSurroundingContainerAroundTextVariable,
   formDefWithTwoRepeatingVarsAndCollectionVar,
   formDefWithARepeatingContainer,
+  formDefWithOneRepeatingTextVariable,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
@@ -596,6 +597,72 @@ describe('FormGenerator Utils', () => {
 
       const actual = createFormDefWithPaths(rootComponents);
       expect(actual).toStrictEqual(expected);
+    });
+
+    // edit form
+    describe('generate overrides from existing record', () => {
+      test('should take a formDef and make default values object but also take defaultValue override', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            someNameInData: {
+              value: 'testValue',
+            },
+            someNumberVariableNameInData: {
+              value: '',
+            },
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            someNameInData: {
+              value: 'testValue',
+            },
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDef as FormSchema,
+          existingRecordData,
+        );
+
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      test('should take a formDef with repeating textVar and make default values object but also take defaultValue override', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            someNameInData: [
+              {
+                value: 'testValue',
+              },
+              {
+                value: '',
+              },
+              {
+                value: '',
+              },
+            ],
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            someNameInData: [
+              {
+                value: 'testValue',
+              },
+            ],
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithOneRepeatingTextVariable as FormSchema,
+          existingRecordData,
+        );
+
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
   });
 

@@ -473,6 +473,45 @@ export const formDefWithOneTextVariable = {
   },
 };
 
+export const formDefWithOneRepeatingTextVariable = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'text',
+        name: 'presentationTypeTextCollectionVarDefText',
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          minNumberOfRepeatingToShow: 3,
+          repeatMin: 1,
+          repeatMax: 3,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefWithOneTextVariableHavingFinalValue = {
   validationTypeId: 'someValidationTypeId',
   form: {
