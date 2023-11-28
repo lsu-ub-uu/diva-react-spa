@@ -138,7 +138,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             disableRipple
             endIcon={<AddCircleOutlineIcon />}
           >
-            Add {props.component.name}
+            {t(props.component.label as string)}
           </Button>
         )}
       </>
