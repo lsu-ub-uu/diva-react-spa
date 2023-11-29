@@ -33,6 +33,23 @@ export async function getRecordDataListByType<T>(
   return response;
 }
 
+export async function getRecordDataById<T>(
+  type: string,
+  id:  string,
+  authToken: string,
+): Promise<AxiosResponse<T>> {
+  const apiUrl: string = `/record/${type}/${id}`;
+  const headers = {
+    'Accept': 'application/vnd.uub.record+json',
+    'Content-Type': 'application/vnd.uub.record+json',
+    'Authtoken': `${authToken}`,
+  };
+
+  const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
+  return response;
+}
+
+
 export async function postRecordData<T>(
   payload: DataGroup,
   type: string,
@@ -48,3 +65,21 @@ export async function postRecordData<T>(
   const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
   return response;
 }
+
+export async function updateRecordDataById<T>(
+  recordId: string,
+  payload: DataGroup,
+  type: string,
+  authToken: string,
+): Promise<AxiosResponse<T>> {
+  const apiUrl: string = `/record/${type}/${recordId}`;
+  const headers = {
+    'Accept': 'application/vnd.uub.record+json',
+    'Content-Type': 'application/vnd.uub.record+json',
+    'Authtoken': `${authToken}`,
+  };
+
+  const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
+  return response;
+}
+

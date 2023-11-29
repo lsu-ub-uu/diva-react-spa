@@ -19,12 +19,13 @@
 
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { getRecordDataListByType, postRecordData } from '../cora';
+import { getRecordDataById, getRecordDataListByType, postRecordData } from '../cora';
 import { DataGroup, DataListWrapper, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';
 import { BFFText } from '../../config/bffTypes';
 import { createTextDefinition } from '../../textDefinition/textDefinition';
+import { extractIdFromRecordInfo } from '../../utils/cora-data/CoraDataTransforms';
 
 describe('getRecordDataListByType', () => {
   let mockAxios: MockAdapter;
@@ -72,7 +73,7 @@ describe('getRecordDataListByType', () => {
   });
 });
 
-describe('real', () => {
+describe.skip('real', () => {
   describe('real getRecordDataListByType', () => {
     // @ts-ignore
     it.skip('should make a real API call without authToken', async () => {
@@ -97,95 +98,107 @@ describe('real', () => {
       console.log(axios.defaults.baseURL);
 
       const payload: DataGroup = {
-          "name": "divaOutput",
-          "children": [
-            {
-              "name": "recordInfo",
-              "children": [
-                {
-                  "name": "dataDivider",
-                  "children": [
-                    {
-                      "name": "linkedRecordType",
-                      "value": "system"
-                    },
-                    {
-                      "name": "linkedRecordId",
-                      "value": "diva"
-                    }
-                  ]
-                },
-                {
-                  "name": "validationType",
-                  "children": [
-                    {
-                      "name": "linkedRecordType",
-                      "value": "validationType"
-                    },
-                    {
-                      "name": "linkedRecordId",
-                      "value": "manuscript"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "title",
-              "children": [
-                {
-                  "name": "mainTitle",
-                  "value": "Moby Dick"
-                }
-              ],
-              "attributes": {
-                "language": "swe"
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'recordInfo',
+            children: [
+              {
+                name: 'dataDivider',
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'system'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'diva'
+                  }
+                ]
+              },
+              {
+                name: 'validationType',
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'validationType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'manuscript'
+                  }
+                ]
               }
-            },
-            {
-              "name": "contributors",
-              "children": [
-                {
-                  "name": "author",
-                  "repeatId": "0",
-                  "children": [
-                    {
-                      "name": "givenName",
-                      "value": "Kalle"
-                    },
-                    {
-                      "name": "familyName",
-                      "value": "Kulasson"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "nationalSubjectCategory",
-              "repeatId": "0",
-              "children": [
-                {
-                  "name": "linkedRecordType",
-                  "value": "nationalSubjectCategory"
-                },
-                {
-                  "name": "linkedRecordId",
-                  "value": "nationalSubjectCategory:6325359248717964"
-                }
-              ]
+            ]
+          },
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'Moby Dick'
+              }
+            ],
+            attributes: {
+              language: 'swe'
             }
-          ]
-        }
-      ;
+          },
+          {
+            name: 'contributors',
+            children: [
+              {
+                name: 'author',
+                repeatId: '0',
+                children: [
+                  {
+                    name: 'givenName',
+                    value: 'Kalle'
+                  },
+                  {
+                    name: 'familyName',
+                    value: 'Kulasson'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: 'nationalSubjectCategory',
+            repeatId: '0',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'nationalSubjectCategory'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'nationalSubjectCategory:6325359248717964'
+              }
+            ]
+          }
+        ]
+      };
       const authToken = '4acc77dd-c486-42f8-b56a-c79585509112';
 
       const response = await postRecordData<RecordWrapper>(payload, 'divaOutput', authToken);
       expect(response.status).toBe(201);
-      // const id = extractIdFromRecordInfo(response.data.record.data);
+    });
+  });
+
+  describe('real getRecord', () => {
+    // @ts-ignore
+    it('should make a real API call to get fetch record with authToken', async () => {
+      const { CORA_API_URL } = process.env;
+      axios.defaults.baseURL = CORA_API_URL;
+      console.log(axios.defaults.baseURL);
+      const recordType = 'divaOutput';
+      const recordId = 'divaOutput:519333261463755';
+      const authToken = 'd308ee8e-777f-4f92-8985-090b1fcc5f89';
+
+      const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
+      const id = extractIdFromRecordInfo(response.data.record.data);
+      console.log(response);
 
     });
   });
 });
-
-

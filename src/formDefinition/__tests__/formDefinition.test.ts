@@ -72,13 +72,15 @@ import {
   pSomeMetadataChildGroupWithShowHeadlineFalse,
   someNewSimpleMetadataGroup,
   someSimpleValidationTypeData,
+  pSomeEditMetadataGroup,
+  someEditMetadataGroup
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
   createFormDefinition,
   createFormMetaData,
   createFormMetaDataPathLookup,
-  FormMetaData,
+  FormMetaData
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
@@ -89,7 +91,8 @@ describe('formDefinition', () => {
     string,
     BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
   >;
-  const FORM_MODE_NEW = 'new'; // todo handle edit
+  const FORM_MODE_NEW = 'create';
+  const FORM_MODE_EDIT = 'update';
   let dependencies: Dependencies;
 
   beforeEach(() => {
@@ -120,7 +123,8 @@ describe('formDefinition', () => {
       someMetadataRecordLink,
       someMetadataChildGroupWithSpecifiedHeadlineText,
       someMetadataChildGroupWithShowHeadlineFalse,
-      someNewSimpleMetadataGroup
+      someNewSimpleMetadataGroup,
+      someEditMetadataGroup
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -142,7 +146,8 @@ describe('formDefinition', () => {
       pSomeGuiElementLink,
       pSomeRepeatingContainer,
       pSomeMetadataChildGroupWithSpecifiedHeadlineText,
-      pSomeMetadataChildGroupWithShowHeadlineFalse
+      pSomeMetadataChildGroupWithShowHeadlineFalse,
+      pSomeEditMetadataGroup
     ]);
     dependencies = {
       validationTypePool: validationTypePool,
@@ -192,7 +197,7 @@ describe('formDefinition', () => {
     }
   });
 
-  it('should return a form definition', () => {
+  it('should return a form definition for a new metadata group', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
     expect(formDefinition.form.components).toHaveLength(16);
@@ -714,16 +719,539 @@ describe('formDefinition', () => {
     });
   });
 
-  describe('childStyles to GridColspan', () => {
+  it('should return a form definition for a edit metadata group', () => {
+    // TODO: Add all the combinations from the newMetadataGroup
+    const validationTypeId = 'someValidationTypeId';
+    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_EDIT);
+    expect(formDefinition.form.components).toHaveLength(16);
+    expect(formDefinition).toStrictEqual({
+      validationTypeId: validationTypeId,
+      form: {
+        type: 'group',
+        label: 'textId345',
+        gridColSpan: 12,
+        childStyle: [],
+        presentationStyle: 'card',
+        name: 'someEditMetadataGroupNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
+        },
+        tooltip: {
+          title: 'textId345',
+          body: 'defTextId678'
+        },
+        attributes: [
+          {
+            finalValue: 'pink',
+            label: 'exampleCollectionVarText',
+            mode: 'input',
+            name: 'colour',
+            options: [
+              {
+                label: 'exampleBlueItemText',
+                value: 'blue'
+              },
+              {
+                label: 'examplePinkItemText',
+                value: 'pink'
+              },
+              {
+                label: 'exampleYellowItemText',
+                value: 'yellow'
+              }
+            ],
+            placeholder: 'initialEmptyValueText',
+            tooltip: {
+              body: 'exampleCollectionVarDefText',
+              title: 'exampleCollectionVarText'
+            },
+            type: 'collectionVariable'
+          }
+        ],
+        components: [
+          {
+            type: 'text',
+            name: 'someEditHeadlineTextId',
+            textStyle: 'bold',
+            gridColSpan: 12,
+            childStyle: ['twelveChildStyle']
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData',
+            placeholder: 'someEmptyTextId',
+            label: 'someTextId',
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 3
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input',
+            inputType: 'input'
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData2',
+            label: 'someOtherLabelTextId', // overridden label
+            placeholder: 'someEmptyTextId',
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
+            repeat: {
+              repeatMin: 1,
+              repeatMax: Number.MAX_VALUE
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input', // output
+            inputType: 'input' //textarea
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData3',
+            label: 'someTextId',
+            placeholder: 'someEmptyTextId',
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input', // output
+            inputType: 'input', //textarea
+            finalValue: 'someFinalValue'
+          },
+          {
+            type: 'numberVariable',
+            name: 'someNameInDataNumberVar',
+            label: '',
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1,
+              minNumberOfRepeatingToShow: 1
+            },
+            tooltip: {
+              title: 'someNumberVarTextId',
+              body: 'someNumberVarDefTextId'
+            },
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 20,
+              warningMin: 2,
+              warningMax: 10,
+              numberOfDecimals: 0
+            },
+            mode: 'input'
+          },
+          {
+            type: 'collectionVariable',
+            name: 'colour',
+            finalValue: 'pink',
+            label: 'exampleCollectionVarText',
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText'
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'collectionVariable',
+            name: 'colourAttributeVar',
+            label: 'exampleCollectionVarText',
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText'
+            },
+            attributes: [
+              {
+                finalValue: 'pink',
+                type: 'collectionVariable',
+                name: 'colour',
+                label: 'exampleCollectionVarText',
+                placeholder: 'initialEmptyValueText',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText'
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
+                ],
+                mode: 'input'
+              }
+            ],
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'numberVariable',
+            name: 'someNameInDataNumberWithAttributeVar',
+            label: 'someNumberVarTextId',
+            gridColSpan: 12,
+            childStyle: [],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someNumberVarTextId',
+              body: 'someNumberVarDefTextId'
+            },
+            attributes: [
+              {
+                finalValue: 'pink',
+                type: 'collectionVariable',
+                name: 'colour',
+                label: 'exampleCollectionVarText',
+                placeholder: 'initialEmptyValueText',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText'
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
+                ],
+                mode: 'input'
+              }
+            ],
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 20,
+              warningMin: 2,
+              warningMax: 10,
+              numberOfDecimals: 0
+            },
+            mode: 'input'
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInDataTextWithAttrib',
+            label: 'someTextId',
+            gridColSpan: 12,
+            childStyle: [],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            attributes: [
+              {
+                type: 'collectionVariable',
+                name: 'colour',
+                finalValue: 'pink',
+                label: 'exampleCollectionVarText',
+                placeholder: 'initialEmptyValueText',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText'
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' }
+                ],
+                mode: 'input'
+              }
+            ],
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'input',
+            inputType: 'input'
+          },
+          {
+            type: 'group',
+            label: 'someChildGroupTextId',
+            gridColSpan: 12,
+            childStyle: [],
+            presentationStyle: 'someMetadataChildGroupPresentationStyle',
+            name: 'someChildGroupNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someChildGroupTextId',
+              body: 'someChildGroupDefTextId'
+            },
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                gridColSpan: 3,
+                childStyle: ['threeChildStyle'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'recordLink',
+            name: 'nationalSubjectCategory',
+            label: 'nationalSubjectCategoryLinkText',
+            gridColSpan: 12,
+            childStyle: [],
+            mode: 'input',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'nationalSubjectCategoryLinkText',
+              body: 'nationalSubjectCategoryLinkDefText'
+            }
+          },
+          {
+            type: 'container',
+            name: 'pSomeContainerId',
+            presentationStyle: 'card', // frame
+            containerType: 'surrounding',
+            gridColSpan: 12,
+            childStyle: [],
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData4',
+                label: 'someTextId',
+                gridColSpan: 6,
+                childStyle: ['sixChildStyle'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 3,
+                  minNumberOfRepeatingToShow: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
+          },
+          {
+            childStyle: [],
+            name: 'pSomeGuiElementLinkId',
+            gridColSpan: 12,
+            url: 'http://www.google.se',
+            elementText: 'demoTestLinkGuiElementText',
+            presentAs: 'link',
+            type: 'guiElementLink'
+          },
+          {
+            type: 'container',
+            name: 'pSomeRepeatingContainerId',
+            presentationStyle: 'label',
+            containerType: 'repeating',
+            gridColSpan: 12,
+            childStyle: [],
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData5',
+                label: 'someTextId',
+                gridColSpan: 6,
+                childStyle: ['sixChildStyle'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 3,
+                  minNumberOfRepeatingToShow: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'group',
+            label: 'someOtherHeadlineTextId',
+            headlineLevel: 'h3',
+            gridColSpan: 12,
+            childStyle: [],
+            presentationStyle: 'someMetadataChildGroupPresentationStyle',
+            name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someChildGroupTextId',
+              body: 'someChildGroupDefTextId'
+            },
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                gridColSpan: 3,
+                childStyle: ['threeChildStyle'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
+          },
+          {
+            type: 'group',
+            label: '',
+            gridColSpan: 12,
+            childStyle: [],
+            presentationStyle: 'someMetadataChildGroupPresentationStyle',
+            name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someChildGroupTextId',
+              body: 'someChildGroupDefTextId'
+            },
+            components: [
+              {
+                type: 'textVariable',
+                name: 'someNameInData',
+                label: 'someTextId',
+                gridColSpan: 3,
+                childStyle: ['threeChildStyle'],
+                placeholder: 'someEmptyTextId',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                },
+                tooltip: {
+                  title: 'someTextId',
+                  body: 'someDefTextId'
+                },
+                validation: {
+                  type: 'regex',
+                  pattern: 'someRegex'
+                },
+                mode: 'input',
+                inputType: 'input'
+              }
+            ],
+            mode: 'input'
+          }
+        ],
+        mode: 'input'
+      }
+    });
+  });
+
+  describe('converting childStyles to gridColspan', () => {
     it('should be able to convert one threeChildStyle to grid col span to be number 3', () => {
-      const styles= ['threeChildStyle'];
+      const styles = ['threeChildStyle'];
       const expected = 3;
       const gridColSpan = convertStylesToGridColSpan(styles);
       expect(gridColSpan).toStrictEqual(expected);
     });
 
     it('should be able to convert one twelveChildStyle to grid col span to be number 12', () => {
-      const styles= ['twelveChildStyle'];
+      const styles = ['twelveChildStyle'];
       const expected = 12;
       const gridColSpan = convertStylesToGridColSpan(styles);
       expect(gridColSpan).toStrictEqual(expected);
@@ -756,7 +1284,7 @@ describe('formDefinition', () => {
       const gridColSpan = convertStylesToGridColSpan(styles);
       expect(gridColSpan).toStrictEqual(expected);
     });
-  })
+  });
 
   it('should return form meta data for a given validation type', () => {
     const validationTypeId = 'someSimpleValidationTypeId';
@@ -803,52 +1331,52 @@ describe('formDefinition', () => {
             repeatMin: 1
           },
           type: 'recordLink',
-          linkedRecordType: 'nationalSubjectCategory',
+          linkedRecordType: 'nationalSubjectCategory'
         }
       ]
     };
 
     const expectedMetadataLookup = {
-      'someNewMetadataGroupNameInData': {
-        'name': 'someNewMetadataGroupNameInData',
-        'repeat': {
-          'repeatMax': 1,
-          'repeatMin': 1
+      someNewMetadataGroupNameInData: {
+        name: 'someNewMetadataGroupNameInData',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
         },
-        'type': 'group'
+        type: 'group'
       },
       'someNewMetadataGroupNameInData.nationalSubjectCategory': {
-        'name': 'nationalSubjectCategory',
-        'repeat': {
-          'repeatMax': 1,
-          'repeatMin': 1
+        name: 'nationalSubjectCategory',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
         },
-        'type': 'recordLink',
-        'linkedRecordType': 'nationalSubjectCategory'
+        type: 'recordLink',
+        linkedRecordType: 'nationalSubjectCategory'
       },
       'someNewMetadataGroupNameInData.someChildGroupNameInData': {
-        'name': 'someChildGroupNameInData',
-        'repeat': {
-          'repeatMax': 1,
-          'repeatMin': 1
+        name: 'someChildGroupNameInData',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
         },
-        'type': 'group'
+        type: 'group'
       },
       'someNewMetadataGroupNameInData.someChildGroupNameInData.someNameInData': {
-        'name': 'someNameInData',
-        'repeat': {
-          'repeatMax': 1,
-          'repeatMin': 1
+        name: 'someNameInData',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
         },
-        'type': 'textVariable'
+        type: 'textVariable'
       },
       'someNewMetadataGroupNameInData.someNameInData': {
-        'name': 'someNameInData',
-        'repeat': {
-          'repeatMax': 3,
-          'repeatMin': 1
+        name: 'someNameInData',
+        repeat: {
+          repeatMax: 3,
+          repeatMin: 1
         },
-        'type': 'textVariable'
+        type: 'textVariable'
       }
     };
 

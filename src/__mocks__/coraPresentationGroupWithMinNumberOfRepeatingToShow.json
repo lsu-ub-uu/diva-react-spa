@@ -408,9 +408,8 @@
                                 "name": "linkedRecordId",
                                 "value": "bookTitleTextVarText"
                               }
-                              
                             ],
-                          
+
                             "actionLinks": {
                               "read": {
                                 "requestMethod": "GET",

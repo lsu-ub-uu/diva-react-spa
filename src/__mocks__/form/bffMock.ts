@@ -12,7 +12,7 @@ import {
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
   BFFGuiElement,
-  BFFPresentationContainer,
+  BFFPresentationContainer
 } from '../../config/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
@@ -22,11 +22,79 @@ export const someValidationTypeData: BFFValidationType = {
   newMetadataGroupId: 'someNewMetadataGroupId',
   newPresentationGroupId: 'pSomeNewMetadataGroupId',
   // Update/Edit
-  metadataGroupId: 'todo',
-  presentationGroupId: 'todo',
+  metadataGroupId: 'someEditMetadataGroupId',
+  presentationGroupId: 'pSomeEditMetadataGroupId',
   nameTextId: 'name123',
-  defTextId: 'defName456',
+  defTextId: 'defName456'
 };
+
+export const someManuscriptValidationTypeData: BFFValidationType = {
+  id: 'manuscript',
+  validatesRecordTypeId: 'divaOutput',
+  // New
+  newMetadataGroupId: '',
+  newPresentationGroupId: '',
+  // Update/Edit
+  metadataGroupId: 'someManuscriptEditMetadataGroupId',
+  presentationGroupId: '',
+  nameTextId: '',
+  defTextId: ''
+};
+
+export const someManuscriptEditMetadataGroup: BFFMetadataGroup = {
+  id: 'someManuscriptEditMetadataGroupId',
+  nameInData: 'divaOutput',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'alternativeTitle',
+      repeatMin: '0',
+      repeatMax: '1'
+    },
+  ]
+};
+
+export const someAlternativeTitleMetadataChildGroup: BFFMetadataGroup = {
+  id: 'alternativeTitle',
+  nameInData: 'alternativeTitle',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'mainTitle',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'subTitle',
+      repeatMin: '0',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someMainTitleTextVariable: BFFMetadataTextVariable = {
+  id: 'mainTitle',
+  nameInData: 'mainTitle',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+export const someSubTitleTextVariable: BFFMetadataTextVariable = {
+  id: 'subTitle',
+  nameInData: 'subTitle',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+
 
 export const someNewMetadataGroup: BFFMetadataGroup = {
   id: 'someNewMetadataGroupId',
@@ -36,86 +104,176 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
   defTextId: 'defTextId678',
   attributeReferences: [
     {
-      refCollectionVarId: 'exampleCollectionVarId',
-    },
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
   ],
   children: [
     {
       childId: 'someRecordInfoId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
-      repeatMax: '3',
+      repeatMax: '3'
     },
     {
       childId: 'someMetadataTextVariable2Id',
       repeatMin: '1',
-      repeatMax: 'X',
+      repeatMax: 'X'
     },
     {
       childId: 'someMetadataTextVariable3Id',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataTextVariable4Id',
       repeatMin: '1',
-      repeatMax: '3',
+      repeatMax: '3'
     },
     {
       childId: 'someMetadataTextVariable5Id',
       repeatMin: '1',
-      repeatMax: '3',
+      repeatMax: '3'
     },
     {
       childId: 'someMetadataNumberVarId',
       repeatMin: '0',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'exampleCollectionVarId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataCollectionVariableWithAttributeId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataNumberWithAttributeVarId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataTextVariableWithAttributeVarId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataChildGroupId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'nationalSubjectCategoryLinkId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataChildGroupWithSpecifiedHeadlineTextId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataChildGroupWithShowHeadlineFalseId',
       repeatMin: '1',
-      repeatMax: '1',
-    },
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someEditMetadataGroup: BFFMetadataGroup = {
+  id: 'someEditMetadataGroupId',
+  nameInData: 'someEditMetadataGroupNameInData',
+  type: 'group',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
   ],
+  children: [
+    {
+      childId: 'someRecordInfoId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataTextVariableId',
+      repeatMin: '1',
+      repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataTextVariable2Id',
+      repeatMin: '1',
+      repeatMax: 'X'
+    },
+    {
+      childId: 'someMetadataTextVariable3Id',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataTextVariable4Id',
+      repeatMin: '1',
+      repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataTextVariable5Id',
+      repeatMin: '1',
+      repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataNumberVarId',
+      repeatMin: '0',
+      repeatMax: '1'
+    },
+    {
+      childId: 'exampleCollectionVarId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataCollectionVariableWithAttributeId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataNumberWithAttributeVarId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataTextVariableWithAttributeVarId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataChildGroupId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'nationalSubjectCategoryLinkId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataChildGroupWithSpecifiedHeadlineTextId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someMetadataChildGroupWithShowHeadlineFalseId',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
 };
 
 export const someMetadataChildGroup: BFFMetadataGroup = {
@@ -128,9 +286,9 @@ export const someMetadataChildGroup: BFFMetadataGroup = {
     {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
+      repeatMax: '1'
+    }
+  ]
 };
 
 export const someMetadataChildGroupWithSpecifiedHeadlineText: BFFMetadataGroup = {
@@ -143,9 +301,9 @@ export const someMetadataChildGroupWithSpecifiedHeadlineText: BFFMetadataGroup =
     {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
+      repeatMax: '1'
+    }
+  ]
 };
 export const someMetadataChildGroupWithShowHeadlineFalse: BFFMetadataGroup = {
   id: 'someMetadataChildGroupWithShowHeadlineFalseId',
@@ -157,9 +315,9 @@ export const someMetadataChildGroupWithShowHeadlineFalse: BFFMetadataGroup = {
     {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
+      repeatMax: '1'
+    }
+  ]
 };
 
 export const someMetadataTextVariable: BFFMetadataTextVariable = {
@@ -168,7 +326,7 @@ export const someMetadataTextVariable: BFFMetadataTextVariable = {
   type: 'textVariable',
   textId: 'someTextId',
   defTextId: 'someDefTextId',
-  regEx: 'someRegex',
+  regEx: 'someRegex'
 };
 
 export const someMetadataTextVariable2: BFFMetadataTextVariable = {
@@ -177,7 +335,7 @@ export const someMetadataTextVariable2: BFFMetadataTextVariable = {
   type: 'textVariable',
   textId: 'someTextId',
   defTextId: 'someDefTextId',
-  regEx: 'someRegex',
+  regEx: 'someRegex'
 };
 
 export const someMetadataTextVariable3: BFFMetadataTextVariable = {
@@ -187,7 +345,7 @@ export const someMetadataTextVariable3: BFFMetadataTextVariable = {
   textId: 'someTextId',
   defTextId: 'someDefTextId',
   regEx: 'someRegex',
-  finalValue: 'someFinalValue',
+  finalValue: 'someFinalValue'
 };
 export const someMetadataTextVariable4: BFFMetadataTextVariable = {
   id: 'someMetadataTextVariable4Id',
@@ -195,7 +353,7 @@ export const someMetadataTextVariable4: BFFMetadataTextVariable = {
   type: 'textVariable',
   textId: 'someTextId',
   defTextId: 'someDefTextId',
-  regEx: 'someRegex',
+  regEx: 'someRegex'
 };
 export const someMetadataTextVariable5: BFFMetadataTextVariable = {
   id: 'someMetadataTextVariable5Id',
@@ -203,7 +361,7 @@ export const someMetadataTextVariable5: BFFMetadataTextVariable = {
   type: 'textVariable',
   textId: 'someTextId',
   defTextId: 'someDefTextId',
-  regEx: 'someRegex',
+  regEx: 'someRegex'
 };
 
 export const someMetadataTextVariableWithAttributeVar: BFFMetadataTextVariable = {
@@ -215,9 +373,9 @@ export const someMetadataTextVariableWithAttributeVar: BFFMetadataTextVariable =
   regEx: 'someRegex',
   attributeReferences: [
     {
-      refCollectionVarId: 'exampleCollectionVarId',
-    },
-  ],
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ]
 };
 
 export const someMetadataNumberVar: BFFMetadataNumberVariable = {
@@ -230,7 +388,7 @@ export const someMetadataNumberVar: BFFMetadataNumberVariable = {
   max: '20',
   warningMin: '2',
   warningMax: '10',
-  numberOfDecimals: '0',
+  numberOfDecimals: '0'
 };
 
 export const someMetadataNumberVarWithAttribute: BFFMetadataNumberVariable = {
@@ -246,9 +404,9 @@ export const someMetadataNumberVarWithAttribute: BFFMetadataNumberVariable = {
   numberOfDecimals: '0',
   attributeReferences: [
     {
-      refCollectionVarId: 'exampleCollectionVarId',
-    },
-  ],
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ]
 };
 
 export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
@@ -258,7 +416,7 @@ export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
   textId: 'exampleCollectionVarText',
   defTextId: 'exampleCollectionVarDefText',
   refCollection: 'exampleCollection',
-  finalValue: 'pink', // added this for now
+  finalValue: 'pink' // added this for now
 };
 
 export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionVariable = {
@@ -270,9 +428,9 @@ export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionV
   refCollection: 'exampleCollection',
   attributeReferences: [
     {
-      refCollectionVarId: 'exampleCollectionVarId',
-    },
-  ],
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ]
 };
 
 export const someMetadataItemCollection: BFFMetadataItemCollection = {
@@ -284,8 +442,8 @@ export const someMetadataItemCollection: BFFMetadataItemCollection = {
   collectionItemReferences: [
     { refCollectionItemId: 'exampleBlueItem' },
     { refCollectionItemId: 'examplePinkItem' },
-    { refCollectionItemId: 'exampleYellowItem' },
-  ],
+    { refCollectionItemId: 'exampleYellowItem' }
+  ]
 };
 
 export const someMetadataCollectionItemBlue: BFFMetadata = {
@@ -293,7 +451,7 @@ export const someMetadataCollectionItemBlue: BFFMetadata = {
   nameInData: 'blue',
   type: 'collectionItem',
   textId: 'exampleBlueItemText',
-  defTextId: 'exampleBlueItemDefText',
+  defTextId: 'exampleBlueItemDefText'
 };
 
 export const someMetadataCollectionItemPink: BFFMetadata = {
@@ -301,7 +459,7 @@ export const someMetadataCollectionItemPink: BFFMetadata = {
   nameInData: 'pink',
   type: 'collectionItem',
   textId: 'examplePinkItemText',
-  defTextId: 'examplePinkItemDefText',
+  defTextId: 'examplePinkItemDefText'
 };
 
 export const someMetadataCollectionItemYellow: BFFMetadata = {
@@ -309,7 +467,7 @@ export const someMetadataCollectionItemYellow: BFFMetadata = {
   nameInData: 'yellow',
   type: 'collectionItem',
   textId: 'exampleYellowItemText',
-  defTextId: 'exampleYellowItemDefText',
+  defTextId: 'exampleYellowItemDefText'
 };
 
 export const someRecordInfo: BFFMetadataGroup = {
@@ -322,9 +480,9 @@ export const someRecordInfo: BFFMetadataGroup = {
     {
       childId: 'someMetadataTextVariableId', // change this!
       repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
+      repeatMax: '1'
+    }
+  ]
 };
 
 export const pSomeMetadataNumberVar: BFFPresentation = {
@@ -333,7 +491,7 @@ export const pSomeMetadataNumberVar: BFFPresentation = {
   mode: 'input',
   type: 'pNumVar',
   emptyTextId: 'someEmptyTextId',
-  showLabel: 'false',
+  showLabel: 'false'
 };
 
 export const pSomeMetadataNumberWithAttributeVar: BFFPresentation = {
@@ -341,7 +499,7 @@ export const pSomeMetadataNumberWithAttributeVar: BFFPresentation = {
   presentationOf: 'someMetadataNumberWithAttributeVarId',
   mode: 'input',
   type: 'pNumVar',
-  emptyTextId: 'someEmptyTextId',
+  emptyTextId: 'someEmptyTextId'
 };
 
 export const pSomeMetadataTextVariable: BFFPresentation = {
@@ -350,7 +508,7 @@ export const pSomeMetadataTextVariable: BFFPresentation = {
   mode: 'input',
   inputType: 'input',
   type: 'pVar',
-  emptyTextId: 'someEmptyTextId',
+  emptyTextId: 'someEmptyTextId'
 };
 
 export const pSomeMetadataTextVariableWithAttributeVar: BFFPresentation = {
@@ -359,7 +517,7 @@ export const pSomeMetadataTextVariableWithAttributeVar: BFFPresentation = {
   mode: 'input',
   inputType: 'input',
   type: 'pVar',
-  emptyTextId: 'someEmptyTextId',
+  emptyTextId: 'someEmptyTextId'
 };
 
 // used for repeatMax X (infinite test)
@@ -371,7 +529,7 @@ export const pSomeMetadataTextVariable2: BFFPresentation = {
   inputType: 'input',
   type: 'pVar',
   emptyTextId: 'someEmptyTextId',
-  specifiedLabelTextId: 'someOtherLabelTextId',
+  specifiedLabelTextId: 'someOtherLabelTextId'
 };
 export const pSomeMetadataTextVariable3: BFFPresentation = {
   id: 'pSomeMetadataTextVariable3Id',
@@ -379,7 +537,7 @@ export const pSomeMetadataTextVariable3: BFFPresentation = {
   mode: 'input',
   inputType: 'input',
   type: 'pVar',
-  emptyTextId: 'someEmptyTextId',
+  emptyTextId: 'someEmptyTextId'
 };
 export const pSomeMetadataTextVariable4: BFFPresentation = {
   id: 'pSomeMetadataTextVariable4Id',
@@ -387,7 +545,7 @@ export const pSomeMetadataTextVariable4: BFFPresentation = {
   mode: 'input',
   inputType: 'input',
   type: 'pVar',
-  emptyTextId: 'someEmptyTextId',
+  emptyTextId: 'someEmptyTextId'
 };
 export const pSomeMetadataTextVariable5: BFFPresentation = {
   id: 'pSomeMetadataTextVariable5Id',
@@ -395,7 +553,7 @@ export const pSomeMetadataTextVariable5: BFFPresentation = {
   mode: 'input',
   inputType: 'input',
   type: 'pVar',
-  emptyTextId: 'someEmptyTextId',
+  emptyTextId: 'someEmptyTextId'
 };
 
 export const pSomeMetadataCollectionVariable: BFFPresentation = {
@@ -403,7 +561,7 @@ export const pSomeMetadataCollectionVariable: BFFPresentation = {
   presentationOf: 'exampleCollectionVarId',
   mode: 'input',
   type: 'pCollVar',
-  emptyTextId: 'someEmptyTextId',
+  emptyTextId: 'someEmptyTextId'
 };
 
 export const pSomeMetadataCollectionVariableWithAttribute: BFFPresentation = {
@@ -411,7 +569,7 @@ export const pSomeMetadataCollectionVariableWithAttribute: BFFPresentation = {
   presentationOf: 'someMetadataCollectionVariableWithAttributeId',
   mode: 'input',
   type: 'pCollVar',
-  emptyTextId: 'someEmptyTextId',
+  emptyTextId: 'someEmptyTextId'
 };
 
 export const pSomeMetadataChildGroup: BFFPresentationGroup = {
@@ -424,9 +582,9 @@ export const pSomeMetadataChildGroup: BFFPresentationGroup = {
     {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
-      childStyle: ['threeChildStyle'],
-    },
-  ],
+      childStyle: ['threeChildStyle']
+    }
+  ]
 };
 export const pSomeMetadataChildGroupWithSpecifiedHeadlineText: BFFPresentationGroup = {
   id: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
@@ -440,9 +598,9 @@ export const pSomeMetadataChildGroupWithSpecifiedHeadlineText: BFFPresentationGr
     {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
-      childStyle: ['threeChildStyle'],
-    },
-  ],
+      childStyle: ['threeChildStyle']
+    }
+  ]
 };
 export const pSomeMetadataChildGroupWithShowHeadlineFalse: BFFPresentationGroup = {
   id: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
@@ -455,9 +613,9 @@ export const pSomeMetadataChildGroupWithShowHeadlineFalse: BFFPresentationGroup 
     {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
-      childStyle: ['threeChildStyle'],
-    },
-  ],
+      childStyle: ['threeChildStyle']
+    }
+  ]
 };
 
 export const pSomeNewMetadataGroup: BFFPresentationGroup = {
@@ -471,85 +629,176 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       childId: 'someHeadlineTextId',
       type: 'text',
       textStyle: 'bold',
-      childStyle: ['twelveChildStyle'],
+      childStyle: ['twelveChildStyle']
     },
     {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
-      childStyle: ['threeChildStyle'],
+      childStyle: ['threeChildStyle']
     },
     {
       childId: 'pSomeMetadataTextVariable2Id',
       type: 'presentation',
-      childStyle: ['threeChildStyle'],
+      childStyle: ['threeChildStyle']
     },
     {
       childId: 'pSomeMetadataTextVariable3Id',
       type: 'presentation',
-      childStyle: ['threeChildStyle'],
+      childStyle: ['threeChildStyle']
     },
     {
       childId: 'pSomeMetadataNumberVariableId',
       type: 'presentation',
       minNumberOfRepeatingToShow: '1',
-      childStyle: ['threeChildStyle'],
+      childStyle: ['threeChildStyle']
     },
     {
       childId: 'pSomeMetadataCollectionVariableId',
       type: 'presentation',
-      childStyle: ['threeChildStyle'],
+      childStyle: ['threeChildStyle']
     },
     {
       childId: 'pSomeMetadataCollectionVariableWithAttributeId',
       type: 'presentation',
-      childStyle: ['threeChildStyle'],
+      childStyle: ['threeChildStyle']
     },
     {
       childId: 'pSomeMetadataNumberWithAttributeVarId',
       type: 'presentation',
-      childStyle: [],
+      childStyle: []
     },
     {
       childId: 'pSomeMetadataTextVariableWithAttributeVarId',
       type: 'presentation',
-      childStyle: [],
+      childStyle: []
     },
     {
       childId: 'pSomeMetadataChildGroupId',
       type: 'presentation',
-      childStyle: [],
+      childStyle: []
     },
     {
       childId: 'nationalSubjectCategoryPLinkId',
       type: 'presentation',
-      childStyle: [],
+      childStyle: []
     },
     {
       childId: 'pSomeContainerId',
       type: 'presentation',
-      childStyle: [],
+      childStyle: []
     },
     {
       childId: 'pSomeGuiElementLinkId',
       type: 'guiElement',
-      childStyle: [],
+      childStyle: []
     },
     {
       childId: 'pSomeRepeatingContainerId',
       type: 'presentation',
-      childStyle: [],
+      childStyle: []
     },
     {
       childId: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
       type: 'presentation',
-      childStyle: [],
+      childStyle: []
     },
     {
       childId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
       type: 'presentation',
-      childStyle: [],
+      childStyle: []
+    }
+  ]
+};
+export const pSomeEditMetadataGroup: BFFPresentationGroup = {
+  id: 'pSomeEditMetadataGroupId',
+  type: 'pGroup',
+  presentationOf: 'someEditMetadataGroupId', // metadata
+  mode: 'input',
+  presentationStyle: 'card',
+  children: [
+    {
+      childId: 'someEditHeadlineTextId',
+      type: 'text',
+      textStyle: 'bold',
+      childStyle: ['twelveChildStyle']
     },
-  ],
+    {
+      childId: 'pSomeMetadataTextVariableId',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataTextVariable2Id',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataTextVariable3Id',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataNumberVariableId',
+      type: 'presentation',
+      minNumberOfRepeatingToShow: '1',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataCollectionVariableId',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataCollectionVariableWithAttributeId',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataNumberWithAttributeVarId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataTextVariableWithAttributeVarId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataChildGroupId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'nationalSubjectCategoryPLinkId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeContainerId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeGuiElementLinkId',
+      type: 'guiElement',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeRepeatingContainerId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataChildGroupWithSpecifiedHeadlineTextId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
+      type: 'presentation',
+      childStyle: []
+    }
+  ]
 };
 
 export const pSomeContainer: BFFPresentationSurroundingContainer = {
@@ -563,10 +812,10 @@ export const pSomeContainer: BFFPresentationSurroundingContainer = {
       childId: 'pSomeMetadataTextVariable4Id',
       type: 'presentation',
       childStyle: ['sixChildStyle'],
-      minNumberOfRepeatingToShow: '1',
-    },
+      minNumberOfRepeatingToShow: '1'
+    }
   ],
-  repeat: 'children',
+  repeat: 'children'
 };
 
 export const pSomeRepeatingContainer: BFFPresentationContainer = {
@@ -580,10 +829,10 @@ export const pSomeRepeatingContainer: BFFPresentationContainer = {
       childId: 'pSomeMetadataTextVariable5Id',
       type: 'presentation',
       childStyle: ['sixChildStyle'],
-      minNumberOfRepeatingToShow: '1',
-    },
+      minNumberOfRepeatingToShow: '1'
+    }
   ],
-  repeat: 'this',
+  repeat: 'this'
 };
 
 export const someValidationTypeDataFaultyChildReference: BFFValidationType = {
@@ -596,7 +845,7 @@ export const someValidationTypeDataFaultyChildReference: BFFValidationType = {
   metadataGroupId: 'todo',
   presentationGroupId: 'todo',
   nameTextId: 'name123',
-  defTextId: 'defName456',
+  defTextId: 'defName456'
 };
 
 export const someNewMetadataGroupFaultyChildReference: BFFMetadataGroup = {
@@ -609,14 +858,14 @@ export const someNewMetadataGroupFaultyChildReference: BFFMetadataGroup = {
     {
       childId: 'someRecordInfoId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someFaultyIdNotExistingInMetadataPool',
       repeatMin: '1',
-      repeatMax: '3',
-    },
-  ],
+      repeatMax: '3'
+    }
+  ]
 };
 
 export const someMetadataRecordLink: BFFMetadataRecordLink = {
@@ -625,44 +874,44 @@ export const someMetadataRecordLink: BFFMetadataRecordLink = {
   type: 'recordLink',
   textId: 'nationalSubjectCategoryLinkText',
   defTextId: 'nationalSubjectCategoryLinkDefText',
-  linkedRecordType: 'nationalSubjectCategory',
+  linkedRecordType: 'nationalSubjectCategory'
 };
 
 export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
   id: 'nationalSubjectCategoryPLinkId',
   type: 'pRecordLink',
   presentationOf: 'nationalSubjectCategoryLinkId',
-  mode: 'input',
+  mode: 'input'
   // TODO linkedRecordPresentations?
   // TODO Search ?
 };
 
 export const someMetadataRecordLinkWithAttributes: BFFMetadataRecordLink = {
-  id: 'nationalSubjectCategoryLinkWithAttibutesId',
-  nameInData: 'nationalSubjectCategoryWithAttibutes',
+  id: 'nationalSubjectCategoryLinkWithAttributesId',
+  nameInData: 'nationalSubjectCategoryWithAttributes',
   type: 'recordLink',
   textId: 'nationalSubjectCategoryLinkText',
   defTextId: 'nationalSubjectCategoryLinkDefText',
   linkedRecordType: 'nationalSubjectCategory2',
   attributeReferences: [
     {
-      refCollectionVarId: 'exampleCollectionVarId',
-    },
-  ],
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ]
 };
 
 export const someMetadataRepeatingRecordLinkWithAttributes: BFFMetadataRecordLink = {
-  id: 'nationalSubjectCategoryLinkRepeatingWithAttibutesId',
-  nameInData: 'nationalSubjectCategoryRepeatingWithAttibutes',
+  id: 'nationalSubjectCategoryLinkRepeatingWithAttributesId',
+  nameInData: 'nationalSubjectCategoryRepeatingWithAttributes',
   type: 'recordLink',
   textId: 'nationalSubjectCategoryLinkText',
   defTextId: 'nationalSubjectCategoryLinkDefText',
   linkedRecordType: 'nationalSubjectCategory2',
   attributeReferences: [
     {
-      refCollectionVarId: 'exampleCollectionVarId',
-    },
-  ],
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ]
 };
 
 export const pSomeGuiElementLink: BFFGuiElement = {
@@ -670,7 +919,7 @@ export const pSomeGuiElementLink: BFFGuiElement = {
   url: 'http://www.google.se',
   elementText: 'demoTestLinkGuiElementText',
   presentAs: 'link',
-  type: 'guiElementLink',
+  type: 'guiElementLink'
 };
 
 export const someSimpleValidationTypeData: BFFValidationType = {
@@ -683,7 +932,7 @@ export const someSimpleValidationTypeData: BFFValidationType = {
   metadataGroupId: 'todo',
   presentationGroupId: 'todo',
   nameTextId: 'name123',
-  defTextId: 'defName456',
+  defTextId: 'defName456'
 };
 
 export const someNewSimpleMetadataGroup: BFFMetadataGroup = {
@@ -696,19 +945,19 @@ export const someNewSimpleMetadataGroup: BFFMetadataGroup = {
     {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
-      repeatMax: '3',
+      repeatMax: '3'
     },
     {
       childId: 'someMetadataChildGroupId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'nationalSubjectCategoryLinkId',
       repeatMin: '1',
-      repeatMax: '1',
-    },
-  ],
+      repeatMax: '1'
+    }
+  ]
 };
 export const someSimpleValidationTypeDataWithAttributes: BFFValidationType = {
   id: 'someSimpleValidationTypeWithAttributesId',
@@ -720,7 +969,7 @@ export const someSimpleValidationTypeDataWithAttributes: BFFValidationType = {
   metadataGroupId: 'todo',
   presentationGroupId: 'todo',
   nameTextId: 'name123',
-  defTextId: 'defName456',
+  defTextId: 'defName456'
 };
 
 export const someNewSimpleMetadataGroupWithAttributes: BFFMetadataGroup = {
@@ -731,41 +980,41 @@ export const someNewSimpleMetadataGroupWithAttributes: BFFMetadataGroup = {
   defTextId: 'defTextId678',
   attributeReferences: [
     {
-      refCollectionVarId: 'exampleCollectionVarId',
-    },
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
   ],
   children: [
     {
       childId: 'someMetadataTextVariableId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataTextVariableWithAttributeVarId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataNumberVarId',
       repeatMin: '1',
-      repeatMax: 'X',
+      repeatMax: 'X'
     },
     {
       childId: 'someMetadataNumberWithAttributeVarId',
       repeatMin: '1',
-      repeatMax: '2',
+      repeatMax: '2'
     },
     {
-      childId: 'nationalSubjectCategoryLinkWithAttibutesId',
+      childId: 'nationalSubjectCategoryLinkWithAttributesId',
       repeatMin: '1',
-      repeatMax: '1',
+      repeatMax: '1'
     },
     {
-      childId: 'nationalSubjectCategoryLinkRepeatingWithAttibutesId',
+      childId: 'nationalSubjectCategoryLinkRepeatingWithAttributesId',
       repeatMin: '1',
-      repeatMax: '2',
-    },
-  ],
+      repeatMax: '2'
+    }
+  ]
 };
 
 export const someSimpleValidationTypeRepeatingGroups: BFFValidationType = {
@@ -778,7 +1027,7 @@ export const someSimpleValidationTypeRepeatingGroups: BFFValidationType = {
   metadataGroupId: 'todo',
   presentationGroupId: 'todo',
   nameTextId: 'name123',
-  defTextId: 'defName456',
+  defTextId: 'defName456'
 };
 
 export const someNewSimpleMetadataGroupRepeatingGroups: BFFMetadataGroup = {
@@ -791,7 +1040,7 @@ export const someNewSimpleMetadataGroupRepeatingGroups: BFFMetadataGroup = {
     {
       childId: 'someMetadataChildGroupId',
       repeatMin: '1',
-      repeatMax: '2',
-    },
-  ],
+      repeatMax: '2'
+    }
+  ]
 };

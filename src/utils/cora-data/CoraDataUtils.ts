@@ -29,11 +29,8 @@ export function getAllRecordLinksWithNameInData(
     if (Object.prototype.hasOwnProperty.call(child, 'children')) {
       const dGChild = child as DataGroup;
       return dGChild.children.filter((grandChild: DataElement) => {
-        return (
-          Object.prototype.hasOwnProperty.call(grandChild, 'linkedRecordType') &&
-          Object.prototype.hasOwnProperty.call(grandChild, 'linkedRecordId')
-        );
-      });
+        return (grandChild.name === 'linkedRecordType' || grandChild.name === 'linkedRecordId');
+      }).length > 0;
     }
     return false;
   });
@@ -51,6 +48,7 @@ export function getAllRecordLinksWithNameInData(
     };
   });
 }
+
 export function getFirstRecordLinkWithNameInData(dataGroup: DataGroup, nameInData: string) {
   throw new Error(`RecordLink with name [${nameInData}] does not exist`);
 }

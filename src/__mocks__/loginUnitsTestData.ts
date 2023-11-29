@@ -7,8 +7,8 @@ const loginUnits: LoginUnit[] = [
     loginInfo: {
       loginType: 'loginWebRedirect',
       loginName: 'someLoginName1',
-      loginDescriptionName: 'someLoginDescription1',
-    },
+      loginDescriptionName: 'someLoginDescription1'
+    }
   },
   {
     id: '1',
@@ -16,8 +16,8 @@ const loginUnits: LoginUnit[] = [
     loginInfo: {
       loginType: 'someOtherLoginType',
       loginName: 'someLoginName2',
-      loginDescriptionName: 'someLoginDescription2',
-    },
+      loginDescriptionName: 'someLoginDescription2'
+    }
   },
   {
     id: '1',
@@ -25,16 +25,16 @@ const loginUnits: LoginUnit[] = [
     loginInfo: {
       loginType: 'loginWebRedirect',
       loginName: 'someLoginName3',
-      loginDescriptionName: 'someLoginDescription3',
-    },
-  },
+      loginDescriptionName: 'someLoginDescription3'
+    }
+  }
 ];
 
 const listWithThreeLoginUnits: List = {
   fromNumber: 1,
   toNumber: 3,
   totalNumber: 3,
-  data: loginUnits,
+  data: loginUnits
 };
 
 export default listWithThreeLoginUnits;

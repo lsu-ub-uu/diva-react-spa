@@ -28,11 +28,11 @@
         "_colour": "someAttributeValue3"
       }
     ],
-    "nationalSubjectCategoryWithAttibutes": {
+    "nationalSubjectCategoryWithAttributes": {
       "value": "recordLinkWithAttrib",
       "_colour": "someAttributeValue3"
     },
-    "nationalSubjectCategoryRepeatingWithAttibutes": [
+    "nationalSubjectCategoryRepeatingWithAttributes": [
       {
         "value": "recordLinkRepeatingWithAttrib",
         "_colour": "someAttributeValue4"

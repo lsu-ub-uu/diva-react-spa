@@ -1,8 +1,10 @@
 {
   "someNewMetadataGroupNameInData": {
-    "someNameInData": [{
+    "someNameInData": [
+      {
         "value": "firstValue"
-    }],
+      }
+    ],
     "someChildGroupNameInData": {
       "someNameInData": {
         "value": "secondValue"
@@ -13,6 +15,3 @@
     }
   }
 }
-
-
-
