@@ -289,6 +289,47 @@ describe('transformToCora', () => {
     expect(recordInfo).toStrictEqual(expected);
   });
 
+  it('should be able to generate a record info from data with id', () => {
+    const expected: DataGroup = {
+      name: 'recordInfo',
+      children: [
+        {
+          name: 'id',
+          value: 'someRecordId',
+        },
+        {
+          name: 'dataDivider',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'system'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'diva'
+            }
+          ]
+        },
+        {
+          name: 'validationType',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'validationType'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'divaOutput'
+            }
+          ]
+        }
+      ]
+    };
+    const recordInfo = generateRecordInfo('divaOutput', 'diva', 'someRecordId');
+    expect(recordInfo).toStrictEqual(expected);
+  });
+
+
   it('should be able to generate a complete new group for a validation type', () => {
     const expected = {
       attributes: {

@@ -19,7 +19,7 @@
 
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { getRecordById, getRecordDataListByType, postRecordData } from '../cora';
+import { getRecordDataById, getRecordDataListByType, postRecordData } from '../cora';
 import { DataGroup, DataListWrapper, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';
@@ -195,7 +195,7 @@ describe.skip('real', () => {
       const recordId = 'divaOutput:519333261463755';
       const authToken = 'd308ee8e-777f-4f92-8985-090b1fcc5f89';
 
-      const response = await getRecordById<RecordWrapper>(recordType, recordId, authToken);
+      const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
       const id = extractIdFromRecordInfo(response.data.record.data);
       console.log(response);
 

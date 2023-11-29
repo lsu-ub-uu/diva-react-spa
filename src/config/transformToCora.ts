@@ -21,21 +21,34 @@ import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-dat
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
 
-export const injectRecordInfoIntoDataGroup = (dataGroup: DataGroup, validationTypeId: string, dataDivider: string): DataGroup => {
+export const injectRecordInfoIntoDataGroup = (
+  dataGroup: DataGroup,
+  validationTypeId: string,
+  dataDivider: string,
+  recordId?: string,
+  recordType?: string
+): DataGroup => {
   dataGroup.children = [
-    generateRecordInfo(validationTypeId, dataDivider),
+    generateRecordInfo(validationTypeId, dataDivider, recordId, recordType),
     ...dataGroup.children
-  ]
+  ];
   return dataGroup;
-}
+};
 
-export const generateRecordInfo = (validationType: string, dataDivider: string): DataGroup => {
+export const generateRecordInfo = (
+  validationType: string,
+  dataDivider: string,
+  recordId?: string,
+  recordType?: string
+): DataGroup => {
   const name = 'recordInfo';
   const children = [
+    recordId ? generateAtomicValue('id', recordId) : undefined,
     generateRecordLink('dataDivider', 'system', dataDivider),
-    generateRecordLink('validationType', 'validationType', validationType)
+    generateRecordLink('validationType', 'validationType', validationType),
+    recordType ? generateRecordLink('type', 'recordType', recordType) : undefined
   ];
-  return { name, children } as DataGroup;
+  return removeEmpty({ name, children }) as DataGroup;
 };
 
 const findChildrenAttributes = (obj: any) => {
