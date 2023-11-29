@@ -83,7 +83,9 @@ describe('<FormGenerator />', () => {
           formSchema={formDefWithOneTextVariable as FormSchema}
         />,
       );
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
       expect(submitButton).toBeInTheDocument();
 
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
@@ -108,7 +110,9 @@ describe('<FormGenerator />', () => {
           formSchema={formDef as FormSchema}
         />,
       );
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
       const inputElement = screen.getByRole('textbox', {
         name: 'someLabelTextId',
       });
@@ -144,7 +148,9 @@ describe('<FormGenerator />', () => {
           formSchema={formDefWithOneNumberVariable as FormSchema}
         />,
       );
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
 
       const inputNumberElement = screen.getByPlaceholderText(
         'someNumberPlaceholderTextId',
@@ -166,7 +172,9 @@ describe('<FormGenerator />', () => {
           formSchema={formDefWithOneNumberVariable as FormSchema}
         />,
       );
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
 
       const inputNumberElement = screen.getByPlaceholderText(
         'someNumberPlaceholderTextId',
@@ -188,7 +196,9 @@ describe('<FormGenerator />', () => {
           formSchema={formDefWithOneNumberVariable as FormSchema}
         />,
       );
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
 
       const inputNumberElement = screen.getByPlaceholderText(
         'someNumberPlaceholderTextId',
@@ -210,7 +220,9 @@ describe('<FormGenerator />', () => {
           formSchema={formDefWithOneNumberVariableHavingDecimals as FormSchema}
         />,
       );
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
 
       const inputNumberElement = screen.getByPlaceholderText(
         'someNumberPlaceholderTextId',
@@ -232,7 +244,9 @@ describe('<FormGenerator />', () => {
           formSchema={formDefWithOneNumberVariableHavingDecimals as FormSchema}
         />,
       );
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
 
       const inputNumberElement = screen.getByPlaceholderText(
         'someNumberPlaceholderTextId',
@@ -265,7 +279,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('repeatMax', () => {
-    it('Add button should be disabled when repeatMax is reached', async () => {
+    it('Add button should not be rendered when repeatMax is reached', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -277,7 +291,7 @@ describe('<FormGenerator />', () => {
       );
 
       const buttonElement = screen.getByRole('button', {
-        name: 'Add someNameInData',
+        name: 'someNameInDataLabel',
       });
 
       const inputElements = screen.getAllByPlaceholderText('someEmptyTextId');
@@ -377,7 +391,9 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
 
       const expandButton = screen.getByRole('button', { expanded: false });
       expect(expandButton).toBeInTheDocument();
@@ -403,7 +419,9 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
 
       const user = userEvent.setup();
       await user.click(submitButton);
@@ -438,7 +456,9 @@ describe('<FormGenerator />', () => {
 
       await user.selectOptions(listBoxElement, '<em>option.none</em>');
 
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
       await waitFor(() => {
         expect(submitButton).toBeInTheDocument();
       });

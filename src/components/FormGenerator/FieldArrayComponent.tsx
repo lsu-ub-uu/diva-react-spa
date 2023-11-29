@@ -71,6 +71,80 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     return { backgroundColor: '' };
   };
 
+  function getContent() {
+    return (
+      <>
+        {fields.map((field, index) => (
+          <div
+            key={field.id}
+            id='dummy-repeating-container'
+            style={dummyRepeatingStyles()}
+          >
+            <Grid
+              container
+              direction='row'
+              justifyContent='space-between'
+              alignItems='center'
+            >
+              <Grid
+                item
+                xs={12}
+              >
+                {!isComponentSingularAndOptional(props.component) && (
+                  <Divider sx={{ mb: 2 }}>
+                    <Chip
+                      label={`${t(props.component.label ?? '')} ${index + 1}`}
+                    />
+                  </Divider>
+                )}
+              </Grid>
+              <Grid
+                item
+                xs={10}
+              >
+                {
+                  props.renderCallback(
+                    `${props.name}[${index}]` as const,
+                  ) as JSX.Element
+                }
+              </Grid>
+              <Grid
+                item
+                xs={2}
+              >
+                <ActionButtonGroup
+                  hideMoveButtons={isComponentSingularAndOptional(
+                    props.component,
+                  )}
+                  moveUpButtonDisabled={index === 0}
+                  moveUpButtonAction={() => handleMove(index, index - 1)}
+                  moveDownButtonDisabled={index === fields.length - 1}
+                  moveDownButtonAction={() => handleMove(index, index + 1)}
+                  deleteButtonDisabled={
+                    fields.length <= (props.component.repeat?.repeatMin ?? 1)
+                  }
+                  deleteButtonAction={() => handleRemove(index)}
+                />
+              </Grid>
+            </Grid>
+          </div>
+        ))}
+        {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
+          <Button
+            sx={{ mt: 1, mb: 1 }}
+            variant='outlined'
+            disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
+            onClick={handleAppend}
+            disableRipple
+            endIcon={<AddCircleOutlineIcon />}
+          >
+            {t(props.component.label as string)}
+          </Button>
+        )}
+      </>
+    );
+  }
+
   return isFirstLevel(props.name) ? (
     <Card
       sx={{ mb: 2 }}
@@ -80,144 +154,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       tooltipTitle={t(props.component.tooltip?.title as string) as string}
       tooltipBody={t(props.component.tooltip?.body as string) as string}
     >
-      <span id={props.component.name} />
-      {fields.map((field, index) => (
-        <div
-          key={field.id}
-          id='dummy-repeating-container'
-          style={dummyRepeatingStyles()}
-        >
-          <Grid
-            container
-            direction='row'
-            justifyContent='space-between'
-            alignItems='center'
-          >
-            <Grid
-              item
-              xs={12}
-            >
-              {!isComponentSingularAndOptional(props.component) && (
-                <Divider sx={{ mb: 2 }}>
-                  <Chip
-                    label={`${t(props.component.label ?? '')} ${index + 1}`}
-                  />
-                </Divider>
-              )}
-            </Grid>
-            <Grid
-              item
-              xs={10}
-            >
-              {
-                props.renderCallback(
-                  `${props.name}[${index}]` as const,
-                ) as JSX.Element
-              }
-            </Grid>
-            <Grid
-              item
-              xs={2}
-            >
-              <ActionButtonGroup
-                hideMoveButtons={isComponentSingularAndOptional(
-                  props.component,
-                )}
-                moveUpButtonDisabled={index === 0}
-                moveUpButtonAction={() => handleMove(index, index - 1)}
-                moveDownButtonDisabled={index === fields.length - 1}
-                moveDownButtonAction={() => handleMove(index, index + 1)}
-                deleteButtonDisabled={
-                  fields.length <= (props.component.repeat?.repeatMin ?? 1)
-                }
-                deleteButtonAction={() => handleRemove(index)}
-              />
-            </Grid>
-          </Grid>
-        </div>
-      ))}
-      {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
-        <Button
-          sx={{ mt: 1, mb: 1 }}
-          variant='outlined'
-          disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
-          onClick={handleAppend}
-          disableRipple
-          endIcon={<AddCircleOutlineIcon />}
-        >
-          Add {props.component.name}
-        </Button>
-      )}
+      {getContent()}
     </Card>
   ) : (
-    <Box key={props.name}>
-      {fields.map((field, index) => (
-        <div
-          key={field.id}
-          id='dummy-repeating-container'
-          style={dummyRepeatingStyles()}
-        >
-          <Grid
-            container
-            direction='row'
-            justifyContent='space-between'
-            alignItems='center'
-          >
-            <Grid
-              item
-              xs={12}
-            >
-              {!isComponentSingularAndOptional(props.component) && (
-                <Divider sx={{ mb: 2 }}>
-                  <Chip
-                    label={`${t(props.component.label ?? '')} ${index + 1}`}
-                  />
-                </Divider>
-              )}
-            </Grid>
-            <Grid
-              item
-              xs={10}
-            >
-              {
-                props.renderCallback(
-                  `${props.name}[${index}]` as const,
-                ) as JSX.Element
-              }
-            </Grid>
-            <Grid
-              item
-              xs={2}
-            >
-              <ActionButtonGroup
-                hideMoveButtons={isComponentSingularAndOptional(
-                  props.component,
-                )}
-                moveUpButtonDisabled={index === 0}
-                moveUpButtonAction={() => handleMove(index, index - 1)}
-                moveDownButtonDisabled={index === fields.length - 1}
-                moveDownButtonAction={() => handleMove(index, index + 1)}
-                deleteButtonDisabled={
-                  fields.length <= (props.component.repeat?.repeatMin ?? 1)
-                }
-                deleteButtonAction={() => handleRemove(index)}
-              />
-            </Grid>
-          </Grid>
-        </div>
-      ))}
-      {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
-        <Button
-          sx={{ mt: 1, mb: 1 }}
-          variant='outlined'
-          disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
-          onClick={handleAppend}
-          disableRipple
-          endIcon={<AddCircleOutlineIcon />}
-        >
-          Add {props.component.name}
-        </Button>
-      )}
-    </Box>
+    <Box key={props.name}>{getContent()}</Box>
   );
 };

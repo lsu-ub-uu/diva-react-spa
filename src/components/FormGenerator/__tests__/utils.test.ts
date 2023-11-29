@@ -43,6 +43,8 @@ import {
   formDefWithSurroundingContainerAroundTextVariable,
   formDefWithTwoRepeatingVarsAndCollectionVar,
   formDefWithARepeatingContainer,
+  formDefWithOneRepeatingTextVariable,
+  formDefRealDemoWithAttributesButWithoutFinalValue,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 
@@ -67,6 +69,7 @@ const minMaxValidationTests = (min: number, max: number) => [
   { name: 'min', params: { min } },
   { name: 'max', params: { max } },
 ];
+
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
     test('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
@@ -595,6 +598,282 @@ describe('FormGenerator Utils', () => {
 
       const actual = createFormDefWithPaths(rootComponents);
       expect(actual).toStrictEqual(expected);
+    });
+
+    // edit form
+    describe('generate overrides from existing record', () => {
+      test('should take a formDef and make default values object but also take defaultValue override', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            someNameInData: {
+              value: 'testValue',
+            },
+            someNumberVariableNameInData: {
+              value: '',
+            },
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            someNameInData: {
+              value: 'testValue',
+            },
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDef as FormSchema,
+          existingRecordData,
+        );
+
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      test('should take a formDef with repeating textVar and make default values object but also take defaultValue override', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            someNameInData: [
+              {
+                value: 'testValue',
+              },
+              {
+                value: '',
+              },
+              {
+                value: '',
+              },
+            ],
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            someNameInData: [
+              {
+                value: 'testValue',
+              },
+            ],
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithOneRepeatingTextVariable as FormSchema,
+          existingRecordData,
+        );
+
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      test('should take a more complex formDef with groups and make default values object with overrides', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'testBookTitle',
+            },
+            keeptHis: [
+              {
+                value: 'override',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '12',
+              },
+              exampleTextVar: {
+                value: '',
+              },
+            },
+            recordInfo: {},
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'testBookTitle',
+            },
+            keeptHis: [
+              {
+                value: 'override',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '12',
+              },
+            },
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemo as FormSchema,
+          existingRecordData,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      test('should take a more complex formDef with groups and attributes and make default values object with overrides', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: '',
+              _colour: 'yellow',
+            },
+            keeptHis: [
+              {
+                value: '',
+                _colour: 'blue',
+              },
+              {
+                value: '',
+                _colour: '',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '',
+              },
+              exampleTextVar: {
+                _colour: 'yellow',
+                _colourAgain: 'pink',
+                value: 'someEditedValue',
+              },
+              _groupColour: 'pink',
+              _groupColourAgain: 'blue',
+            },
+            recordInfo: {},
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            bookTitle: {
+              value: '',
+              _colour: 'yellow',
+            },
+            keeptHis: [
+              {
+                value: '',
+                _colour: 'blue',
+              },
+            ],
+            firstChildGroup: {
+              exampleTextVar: {
+                _colour: 'yellow',
+                _colourAgain: 'pink',
+                value: 'someEditedValue',
+              },
+              _groupColour: 'pink',
+              _groupColourAgain: 'blue',
+            },
+            recordInfo: {},
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithAttributesButWithoutFinalValue as FormSchema,
+          existingRecordData,
+        );
+
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      test('should take a more complex formDef with repeating groups and make default values object with overrides', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'Moby Dick',
+            },
+            keeptHis: [
+              {
+                value: '',
+              },
+            ],
+            firstChildGroup: [
+              {
+                exampleNumberVar: {
+                  value: '12',
+                },
+                exampleTextVar: {
+                  value: 'SomeTextVar',
+                },
+              },
+              {
+                exampleNumberVar: {
+                  value: '',
+                },
+                exampleTextVar: {
+                  value: '',
+                },
+              },
+            ],
+            recordInfo: {},
+          },
+        };
+
+        const existingDataRecord = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'Moby Dick',
+            },
+            firstChildGroup: [
+              {
+                exampleNumberVar: {
+                  value: '12',
+                },
+                exampleTextVar: {
+                  value: 'SomeTextVar',
+                },
+              },
+            ],
+            recordInfo: {},
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithRepeatingGroups as FormSchema,
+          existingDataRecord,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      test.skip('should take a more complex formDef with finalValue default values object without overrides taking effect', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'someFinalValue',
+            },
+            keeptHis: [
+              {
+                value: '12',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '55',
+              },
+              exampleTextVar: {
+                value: 'someText',
+              },
+            },
+            recordInfo: {},
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'someValueFromServerThatWillNeverBeSavedEverAgain',
+            },
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithFinalValues as FormSchema,
+          existingRecordData,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
   });
 

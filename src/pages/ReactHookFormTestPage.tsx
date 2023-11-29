@@ -14,7 +14,13 @@ import { ActionButtonGroup } from '../components/FormGenerator/ActionButtonGroup
 const validationSchema = yup.object().shape({
   title: yup.object().shape({
     main: yup.object().shape({
-      value: yup.string().required(),
+      value: yup
+        .string()
+        .nullable()
+        .transform((value) => (value === '' ? null : value))
+        .when('$isNotNull', (isNotNull, field) =>
+          isNotNull ? field.matches(/^(1\d{2}|200)$/, 'Regexp fail') : field,
+        ),
     }),
     tagLine: yup.object().shape({
       value: yup.string().required(),

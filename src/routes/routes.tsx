@@ -10,6 +10,7 @@ import {
   PersonSearchPage,
   PersonCreatePage,
   DynamicFormPage,
+  UpdateRecordPage,
 } from '../pages';
 import PrivateRoutes from './PrivateRoutes';
 
@@ -37,6 +38,10 @@ export const routes = [
           {
             path: '/form',
             element: <DynamicFormPage />,
+          },
+          {
+            path: '/update/record/:recordId',
+            element: <UpdateRecordPage />,
           },
         ],
       },

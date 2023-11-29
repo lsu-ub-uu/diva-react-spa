@@ -17,7 +17,9 @@ describe('<Login />', () => {
   it('shows the account in a list', async () => {
     const user = userEvent.setup();
     reduxRender(<Login />);
-    const loginButton = screen.getByRole('button', { name: 'Log in' });
+    const loginButton = screen.getByRole('button', {
+      name: 'divaClient_LoginText',
+    });
     await user.click(loginButton);
     const userNameList = screen.getAllByRole('menuitem');
     // screen.debug(userNameList);
@@ -27,7 +29,9 @@ describe('<Login />', () => {
   it.todo('saves to LocalStorage when loggin in', async () => {
     const user = userEvent.setup();
     reduxRender(<Login />);
-    const loginButton = screen.getByRole('button', { name: 'Log in' });
+    const loginButton = screen.getByRole('button', {
+      name: 'Log in',
+    });
     await user.click(loginButton);
     const userButton = screen.getByRole('menuitem', {
       name: 'divaSystemAdmin',

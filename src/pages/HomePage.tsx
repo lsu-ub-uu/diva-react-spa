@@ -1,7 +1,6 @@
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import SearchIcon from '@mui/icons-material/Search';
 import { Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -37,10 +36,9 @@ export const HomePage = () => {
               disableRipple
               variant='contained'
               component={RouterLink}
-              to='/person-search'
-              endIcon={<SearchIcon />}
+              to='/update/record/divaOutput:519333261463755'
             >
-              Find persons
+              Update existing record
             </Button>
             <Button
               disableRipple

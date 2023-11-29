@@ -17,26 +17,50 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
 import React, { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useBackdrop, FormGenerator } from '../components';
-import { useCoraFormSchemaByValidationType } from '../app/hooks';
+import {
+  useCoraFormSchemaByValidationType,
+  useCoraRecordByTypeAndId,
+} from '../app/hooks';
+import { FormGenerator, useBackdrop } from '../components';
 import { FormSchema } from '../components/FormGenerator/types';
 
-export const DynamicFormPage = () => {
+export const UpdateRecordPage = () => {
+  const { recordId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
-  const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
-    'manuscript',
-    'create',
+  // const { t } = useTranslation();
+  const coraRecord = useCoraRecordByTypeAndId('divaOutput', recordId);
+  const coraSchema = useCoraFormSchemaByValidationType(
+    coraRecord.record?.validationType,
+    'update',
   );
+
+  useEffect(() => {
+    setBackdrop(coraRecord.isLoading || isSubmitting);
+  }, [coraRecord.isLoading, isSubmitting, setBackdrop]);
+
+  if (coraRecord.isLoading)
+    return (
+      <Skeleton
+        variant='rectangular'
+        height={800}
+      />
+    );
+
+  if (coraRecord.error)
+    return <Alert severity='error'>{coraRecord.error}</Alert>;
+
+  if (coraSchema.error)
+    return <Alert severity='error'>{coraSchema.error}</Alert>;
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
@@ -45,21 +69,15 @@ export const DynamicFormPage = () => {
     });
   };
 
-  useEffect(() => {
-    setBackdrop(isLoading || isSubmitting);
-  }, [isLoading, setBackdrop, isSubmitting]);
-
   const handleSubmit = async (values: FieldValues) => {
     try {
       setIsSubmitting(true);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.post(
-        `/record/${schema?.validationTypeId}`,
+        `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,
         values,
       );
-      notification(
-        `Record was successfully created ${response.data.id}`,
-        'success',
-      );
+      notification(`Record was successfully updated!`, 'success');
     } catch (err: any) {
       setIsSubmitting(false);
       notification(`${err.message}`, 'error');
@@ -68,27 +86,21 @@ export const DynamicFormPage = () => {
     }
   };
 
-  if (error) return <Alert severity='error'>{error}</Alert>;
-  if (isLoading)
-    return (
-      <Skeleton
-        variant='rectangular'
-        height={800}
-      />
-    );
-
   return (
     <>
       <Helmet>
-        <title>{t(schema?.form.label as string)} | DiVA</title>
+        <title>{coraRecord.record?.id ?? 'not found'} | DiVA</title>
       </Helmet>
       <div>
         <Stack spacing={2}>
-          <FormGenerator
-            onSubmit={handleSubmit}
-            onInvalid={() => notification(`Form is invalid`, 'error')}
-            formSchema={schema as FormSchema}
-          />
+          {coraSchema.schema && coraRecord.record && (
+            <FormGenerator
+              record={coraRecord.record}
+              onSubmit={handleSubmit}
+              onInvalid={() => notification(`Update Form is invalid`, 'error')}
+              formSchema={coraSchema.schema as FormSchema}
+            />
+          )}
         </Stack>
       </div>
     </>

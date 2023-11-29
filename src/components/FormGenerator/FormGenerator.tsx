@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Divider, Grid } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -33,13 +33,16 @@ import {
   isComponentSurroundingContainer,
   isComponentVariable,
   isFirstLevel,
+  RecordData,
 } from './utils';
 import { Typography, LinkButton, Card } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
+import { CoraRecord } from '../../app/hooks';
 
 interface FormGeneratorProps {
+  record?: CoraRecord;
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
   onInvalid?: () => void;
@@ -128,7 +131,10 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: true,
-    defaultValues: createDefaultValuesFromFormSchema(props.formSchema),
+    defaultValues: createDefaultValuesFromFormSchema(
+      props.formSchema,
+      props.record?.data as RecordData,
+    ),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
 
@@ -335,19 +341,13 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   return (
     <Box
       component='form'
+      sx={{ width: '100%' }}
       onSubmit={handleSubmit(
         (values) => props.onSubmit(values),
         () => props.onInvalid && props.onInvalid(),
       )}
     >
-      <Grid
-        container
-        direction='row'
-        justifyContent='flex-start'
-        alignItems='flex-start'
-      >
-        {generateFormComponent(props.formSchema.form, undefined, 0, '')}
-      </Grid>
+      {generateFormComponent(props.formSchema.form, undefined, 0, '')}
       <Divider sx={{ my: 4 }} />
       <Box
         component='span'
@@ -363,7 +363,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           sx={{ height: 40 }}
           onClick={() => reset()}
         >
-          Reset
+          {t('divaClient_ResetButtonText')}
         </Button>
         <Button
           type='submit'
@@ -372,7 +372,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           color='primary'
           sx={{ height: 40 }}
         >
-          Submit
+          {t('divaClient_SubmitButtonText')}
         </Button>
       </Box>
     </Box>

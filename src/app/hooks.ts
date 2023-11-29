@@ -14,7 +14,8 @@ interface UseFormSchemaByValidationType {
 }
 
 export const useCoraFormSchemaByValidationType = (
-  validationType: string,
+  validationType: string | undefined,
+  mode: 'create' | 'update',
 ): UseFormSchemaByValidationType => {
   const [schema, setSchema] = useState<FormSchema>();
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,7 @@ export const useCoraFormSchemaByValidationType = (
 
     const fetchFormSchema = async () => {
       try {
-        const response = await axios.get(`/form/${validationType}`);
+        const response = await axios.get(`/form/${validationType}/${mode}`);
         if (isMounted) {
           setError(null);
           setSchema(response.data as FormSchema);
@@ -43,12 +44,78 @@ export const useCoraFormSchemaByValidationType = (
       }
     };
 
-    fetchFormSchema().then();
+    if (validationType !== undefined) fetchFormSchema().then();
 
     return () => {
       isMounted = false;
     };
-  }, [validationType]);
+  }, [validationType, mode]);
 
   return { isLoading, schema, error };
+};
+
+interface UseCoraRecordByTypeAndId {
+  record?: CoraRecord;
+  isLoading: boolean;
+  error: string | null;
+}
+
+interface CoraUpdate {
+  updateAt: string;
+  updatedBy: string;
+}
+
+export interface CoraRecord {
+  id: string;
+  recordType: string;
+  validationType: string;
+  createdAt: string;
+  createdBy: string;
+  updated: CoraUpdate[];
+  userRights: string[];
+  data: unknown;
+}
+
+export const useCoraRecordByTypeAndId = (
+  recordType: string,
+  recordId: string | undefined,
+): UseCoraRecordByTypeAndId => {
+  const [record, setRecord] = useState<CoraRecord>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchRecord = async () => {
+      try {
+        const response = await axios.get<CoraRecord>(
+          `/record/${recordType}/${recordId}`,
+        );
+        if (isMounted) {
+          setError(null);
+          setRecord(response.data as CoraRecord);
+          setIsLoading(false);
+        }
+      } catch (err: unknown) {
+        setRecord(undefined);
+        if (isMounted) {
+          if (axios.isAxiosError(err)) {
+            setError(err.message);
+          } else {
+            setError('Unexpected error occurred');
+          }
+          setIsLoading(false);
+        }
+      }
+    };
+
+    if (recordId !== undefined) fetchRecord().then();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [recordType, recordId]);
+
+  return { isLoading, error, record };
 };
