@@ -279,7 +279,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('repeatMax', () => {
-    it('Add button should be disabled when repeatMax is reached', async () => {
+    it('Add button should not be rendered when repeatMax is reached', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -291,7 +291,7 @@ describe('<FormGenerator />', () => {
       );
 
       const buttonElement = screen.getByRole('button', {
-        name: 'Add someNameInData',
+        name: 'someNameInDataLabel',
       });
 
       const inputElements = screen.getAllByPlaceholderText('someEmptyTextId');
