@@ -30,8 +30,7 @@ export interface BFFBase {
   id: string;
 }
 
-export interface BFFRecordType extends BFFBase {
-}
+export interface BFFRecordType extends BFFBase {}
 
 export abstract interface BFFMetadata extends BFFBase {
   nameInData: string;
@@ -107,14 +106,21 @@ export interface BFFMetadataChildReference {
 
 export interface BFFPresentation extends BFFBase {
   // Types below are a little bit weird, metadata definitions needs to checked up on (attributes)
-  type: 'pGroup' | 'pVar' | 'pNumVar' | 'pCollVar' | 'container' | 'pRecordLink' | 'pResourceLink' | 'presentation';
+  type:
+    | 'pGroup'
+    | 'pVar'
+    | 'pNumVar'
+    | 'pCollVar'
+    | 'container'
+    | 'pRecordLink'
+    | 'pResourceLink'
+    | 'presentation';
   presentationOf: string;
   mode: 'input' | 'output';
   inputType?: string;
   emptyTextId?: string;
   specifiedLabelTextId?: string;
   showLabel?: string;
-
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentation {}
@@ -137,7 +143,7 @@ export interface BFFPresentationGroup extends BFFPresentation {
   children: BFFPresentationChildReference[];
   specifiedHeadlineTextId?: string;
   specifiedHeadlineLevel?: string;
-  showHeadline?: string
+  showHeadline?: string;
 }
 
 export interface BFFPresentationChildReference {

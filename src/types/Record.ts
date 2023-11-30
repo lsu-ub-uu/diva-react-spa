@@ -12,5 +12,5 @@ export enum RecordType {
   CoraText = 'coraText',
   LoginUnit = 'loginUnit',
   LoginWebRedirect = 'loginWebRedirect',
-  LoginLDAP = 'loginLDAP',
+  LoginLDAP = 'loginLDAP'
 }

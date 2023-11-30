@@ -22,7 +22,7 @@ import {
   extractAttributeValueByName,
   extractIdFromRecordInfo
 } from '../utils/cora-data/CoraDataTransforms';
-import { extractLinkedRecordIdFromNamedRecordLink } from '../config/transformValidationTypes';
+import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import {
   BFFPresentationSurroundingContainer,
@@ -92,7 +92,6 @@ const transformCoraPresentationToBFFPresentation = (
       return transformCoraPresentationGuiElementLinkToBFFGuiElement(coraRecordWrapper);
     }
     default: {
-      return;
     }
   }
 };

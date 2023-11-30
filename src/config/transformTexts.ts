@@ -65,5 +65,5 @@ const extractLanguageTextCombinationsFromTextParts = (textParts: DataGroup[]) =>
 const extractLanguageTextCombinationFromTextPart = (textPart: DataGroup) => {
   const lang = extractAttributeValueByName(textPart, 'lang');
   const text = getFirstDataAtomicValueWithNameInData(textPart, 'text');
-  return { lang: lang, text: text };
+  return { lang, text };
 };

@@ -8,8 +8,8 @@ export const configureServer = (app: Application) => {
   app.use(express.urlencoded({ extended: true }));
   app.use(
     cors<Request>({
-      origin: '*',
-    }),
+      origin: '*'
+    })
   );
 
   return app;

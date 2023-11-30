@@ -32,7 +32,11 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
-import { createFormMetaData, createFormMetaDataPathLookup, FormMetaData } from '../formDefinition/formDefinition';
+import {
+  createFormMetaData,
+  createFormMetaDataPathLookup,
+  FormMetaData
+} from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
@@ -67,7 +71,7 @@ export function isRepeating(
   const formComponent = lookup[currentPath];
   let isFormDataRepeating = false;
   if (formComponent) {
-    isFormDataRepeating = (formComponent.repeat.repeatMin === 0)
+    isFormDataRepeating = formComponent.repeat.repeatMin === 0;
   }
   return Object.prototype.hasOwnProperty.call(item, 'repeatId') || isFormDataRepeating;
 }
@@ -106,7 +110,7 @@ export const transformRecord = (
   const updated = extractRecordUpdates(recordInfo);
 
   // create a form definition by validationType
-  const formMetadata = createFormMetaData(dependencies, validationType, 'update')
+  const formMetadata = createFormMetaData(dependencies, validationType, 'update');
   const formPathLookup = createFormMetaDataPathLookup(formMetadata);
 
   let userRights: string[] = [];
@@ -114,12 +118,12 @@ export const transformRecord = (
     userRights = Object.keys(coraRecord.actionLinks);
   }
 
-  let data = traverseDataGroup(dataRecordGroup, formPathLookup);
+  const data = traverseDataGroup(dataRecordGroup, formPathLookup);
   return { id, recordType, validationType, createdAt, createdBy, updated, userRights, data };
 };
 
 const transformObjectAttributes = (attrObject: Attributes | undefined) => {
-  let attributesArray = [];
+  const attributesArray = [];
   for (const key in attrObject) {
     attributesArray.push({ [`_${key}`]: attrObject[key] });
   }
@@ -139,7 +143,7 @@ export const traverseDataGroup = (
   // handle attributes on the current group
   const groupAttributes = transformObjectAttributes(dataGroup.attributes);
 
-  let object: unknown[] = [];
+  const object: unknown[] = [];
   groupedEntries.forEach(([name, groupedChildren]) => {
     const currentPath = path ? `${path}.${name}` : name;
 
@@ -181,7 +185,7 @@ export const traverseDataGroup = (
         isGroup = false;
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
-        const value = (child as DataAtomic).value;
+        const { value } = child as DataAtomic;
         return { [name]: Object.assign({ value }, ...atomicAttributes) };
       }
 
@@ -190,7 +194,7 @@ export const traverseDataGroup = (
         isGroup = false;
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
-        const value = (child as DataAtomic).value;
+        const { value } = child as DataAtomic;
         return Object.assign({ value }, ...atomicAttributes);
       }
     });
