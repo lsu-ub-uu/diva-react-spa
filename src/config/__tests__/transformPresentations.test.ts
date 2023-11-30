@@ -19,6 +19,8 @@
 import emptyDataList from '../../__mocks__/emptyDataList.json';
 import { transformCoraPresentations } from '../transformPresentations';
 import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
+import presentationListWithPVarsModeOutput from '../../__mocks__/coraPresentationWithTextVariableModeOutput.json';
+
 import presentationListWithTwoPNumVar from '../../__mocks__/coraPresentationWithTwoNumberVariables.json';
 import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
@@ -102,6 +104,7 @@ describe('transformCoraPresentations', () => {
       });
     });
   });
+
   describe('pNumVar', () => {
     it('Returns one BFFPresentation for one pNumVar entry', () => {
       const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
@@ -332,6 +335,7 @@ describe('transformCoraPresentations', () => {
       expect(transformData).toHaveLength(6);
     });
   });
+
   describe('pCollVar', () => {
     it('Returns one BFFPresentation for one pCollVar entry', () => {
       const transformData = transformCoraPresentations(coraPresentationWithOneCollectionVariable);
@@ -420,6 +424,7 @@ describe('transformCoraPresentations', () => {
       });
     });
   });
+
   describe('Repeating Container', () => {
     it('Returns one BFFPresentation for one RContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationRepeatingContainer);
@@ -457,6 +462,22 @@ describe('transformCoraPresentations', () => {
         elementText: 'demoTestLinkGuiElementText',
         presentAs: 'link',
         type: 'guiElementLink'
+      });
+    });
+  });
+
+  describe('mode: output', () => {
+    describe('pVar', () => {
+      it('Returns one BFFPresentation for one pVar entry', () => {
+        const transformData = transformCoraPresentations(presentationListWithPVarsModeOutput);
+        expect(transformData[0]).toStrictEqual({
+          id: 'someTextVarPVar',
+          type: 'pVar',
+          presentationOf: 'someTextVar',
+          mode: 'output',
+          inputType: 'someInputType',
+          emptyTextId: 'somePlaceholderText'
+        });
       });
     });
   });
