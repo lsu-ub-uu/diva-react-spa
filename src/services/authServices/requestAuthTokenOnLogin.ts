@@ -5,7 +5,7 @@ import { IHttpClientRequestParameters } from '../../utils/http/IHttpClient';
 
 export const requestAuthTokenOnLogin = async (
   user: string,
-  APP_TOKEN_ADMIN: string | undefined,
+  APP_TOKEN_ADMIN: string | undefined
 ): Promise<Auth> => {
   return new Promise((resolve, reject) => {
     if (user === '' && user === undefined) {
@@ -13,12 +13,11 @@ export const requestAuthTokenOnLogin = async (
     } else if (APP_TOKEN_ADMIN === '' || APP_TOKEN_ADMIN === undefined) {
       Error('No appToken was passed to requestAuthTokenOnLogin');
     }
-    const rootUrl =
-      'https://cora.epc.ub.uu.se/diva/apptokenverifier/rest/apptoken/';
+    const rootUrl = 'https://cora.epc.ub.uu.se/diva/apptokenverifier/rest/apptoken/';
     const parameters: IHttpClientRequestParameters = {
       contentType: 'text/plain;charset=UTF-8',
       url: `${rootUrl}${user}`,
-      body: APP_TOKEN_ADMIN,
+      body: APP_TOKEN_ADMIN
     };
     httpClient
       .post<AuthToken>(parameters)
@@ -65,13 +64,6 @@ const extractDataFromResult = (newAuthToken: AuthToken) => {
     console.log(error);
   }
 
-  const auth = new Auth(
-    id,
-    validForNoSeconds,
-    idInUserStorage,
-    idFromLogin,
-    firstName,
-    lastName,
-  );
+  const auth = new Auth(id, validForNoSeconds, idInUserStorage, idFromLogin, firstName, lastName);
   return auth;
 };

@@ -20,15 +20,14 @@
 import { Attributes, DataGroup } from './CoraData';
 import {
   getAllDataAtomicsWithNameInData,
-  getAllDataGroupsWithNameInDataAndAttributes,
   getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
-  getFirstDataGroupWithNameInDataAndAttributes,
+  getFirstDataGroupWithNameInDataAndAttributes
 } from './CoraDataUtils';
 
 export function getFirstDataAtomicValueWithNameInData(
   dataGroup: DataGroup,
-  nameInData: string,
+  nameInData: string
 ): string {
   const dataAtomic = getFirstDataAtomicWithNameInData(dataGroup, nameInData);
 
@@ -37,7 +36,7 @@ export function getFirstDataAtomicValueWithNameInData(
 
 export function getAllDataAtomicValuesWithNameInData(
   dataGroup: DataGroup,
-  nameInData: string,
+  nameInData: string
 ): string[] {
   const dataAtomics = getAllDataAtomicsWithNameInData(dataGroup, nameInData);
   return dataAtomics.map((dataAtomic) => {
@@ -48,7 +47,7 @@ export function getAllDataAtomicValuesWithNameInData(
 export const extractFirstDataGroupWithAttributesFollowingNameInDatas = (
   dataGroup: DataGroup,
   nameInDatas: string[],
-  attributesToMatch?: Attributes,
+  attributesToMatch?: Attributes
 ): DataGroup | undefined => {
   if (nameInDatas.length === 0 || dataGroup.children.length === 0) {
     return undefined;
@@ -64,7 +63,7 @@ export const extractFirstDataGroupWithAttributesFollowingNameInDatas = (
   return getFirstDataGroupWithNameInDataAndAttributes(
     finalDataGroup,
     lastNameInData,
-    attributesToMatch,
+    attributesToMatch
   );
 };
 const getLastNameInData = (nameInDatas: string[]) => {
@@ -82,16 +81,13 @@ const getFinalDataGroup = (dataGroup: DataGroup, nameInDatas: string[]) => {
 
 export const extractDataGroupFollowingNameInDatas = (
   dataGroup: DataGroup,
-  nameInDatas: string[],
+  nameInDatas: string[]
 ): DataGroup | undefined => {
   if (nameInDatas.length === 0 || dataGroup.children.length === 0) {
     return undefined;
   }
 
-  const nextDataGroup = getFirstDataGroupWithNameInData(
-    dataGroup,
-    nameInDatas[0],
-  );
+  const nextDataGroup = getFirstDataGroupWithNameInData(dataGroup, nameInDatas[0]);
 
   if (nameInDatas.length === 1 || nextDataGroup === undefined) {
     return nextDataGroup;
@@ -105,6 +101,6 @@ export default {
   getFirstDataAtomicWithNameInData,
   getAllDataAtomicValuesWithNameInData,
   extractDataGroupFollowingNameInDatas,
-  extractFirstDataGroupWithAttributesFollowingNameInDatas,
+  extractFirstDataGroupWithAttributesFollowingNameInDatas
   // extractAllDataGroupsWithAttributesFollowingNameInDatas,
 };

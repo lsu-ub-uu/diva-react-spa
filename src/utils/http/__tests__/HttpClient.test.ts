@@ -8,13 +8,13 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 beforeAll(() => {
   mockedAxios.get.mockResolvedValue({
-    data: { someField: 'someDefaultData' },
+    data: { someField: 'someDefaultData' }
   });
   mockedAxios.post.mockResolvedValue({
-    data: { someField: 'someDefaultData' },
+    data: { someField: 'someDefaultData' }
   });
   mockedAxios.delete.mockResolvedValue({
-    data: { someField: 'someDefaultData' },
+    data: { someField: 'someDefaultData' }
   });
 });
 
@@ -23,14 +23,14 @@ describe('The HttpClient', () => {
     it('should exist and take IHttpClientRequestParameters', () => {
       const parameters: IHttpClientRequestParameters = {
         url: 'someUrl',
-        authToken: 'someAuthToken',
+        authToken: 'someAuthToken'
       };
       httpClient.get(parameters);
     });
 
     it('should call axios.get with url', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: 'someUrl',
+        url: 'someUrl'
       };
 
       expect.assertions(4);
@@ -41,7 +41,7 @@ describe('The HttpClient', () => {
       expect(mockedAxios.get).toHaveBeenCalledWith(parameters.url, {});
 
       const parameters2: IHttpClientRequestParameters = {
-        url: 'someOtherUrl',
+        url: 'someOtherUrl'
       };
       httpClient.get(parameters2);
 
@@ -52,7 +52,7 @@ describe('The HttpClient', () => {
     it('should call axios.get with authToken if authToken set', async () => {
       const parameters: IHttpClientRequestParameters = {
         url: 'someUrl',
-        authToken: 'someAuthToken',
+        authToken: 'someAuthToken'
       };
 
       expect.assertions(4);
@@ -61,24 +61,24 @@ describe('The HttpClient', () => {
 
       expect(mockedAxios.get).toHaveBeenCalledTimes(1);
       expect(mockedAxios.get).toHaveBeenCalledWith(parameters.url, {
-        headers: { authToken: 'someAuthToken' },
+        headers: { authToken: 'someAuthToken' }
       });
 
       const parameters2: IHttpClientRequestParameters = {
         url: 'someOtherUrl',
-        authToken: 'someOtherToken',
+        authToken: 'someOtherToken'
       };
       httpClient.get(parameters2);
 
       expect(mockedAxios.get).toHaveBeenCalledTimes(2);
       expect(mockedAxios.get).toHaveBeenCalledWith(parameters2.url, {
-        headers: { authToken: 'someOtherToken' },
+        headers: { authToken: 'someOtherToken' }
       });
     });
 
     it('should reject with error if url is empty', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: '',
+        url: ''
       };
 
       expect.assertions(1);
@@ -92,7 +92,7 @@ describe('The HttpClient', () => {
 
     it('should not call axios.get if url is empty', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: '',
+        url: ''
       };
 
       expect.assertions(2);
@@ -107,7 +107,7 @@ describe('The HttpClient', () => {
 
     it('should return data from axios if call is successful', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: 'someUrl',
+        url: 'someUrl'
       };
       expect.assertions(1);
 
@@ -153,7 +153,7 @@ describe('The HttpClient', () => {
         [504, 'Gateway Timeout'],
         [505, 'HTTP Version Not Supported'],
         [510, 'Not Extended'],
-        [511, 'Network Authentication Required'],
+        [511, 'Network Authentication Required']
       ])(
         'should reject with error code %p if axios throws with response %p',
         async (errorCode, errorMessage) => {
@@ -161,14 +161,14 @@ describe('The HttpClient', () => {
             response: {
               data: errorMessage,
               status: errorCode,
-              headers: {},
+              headers: {}
             },
             request: 'XMLHttpRequest',
-            message: 'Some general error message',
+            message: 'Some general error message'
           });
 
           const parameters: IHttpClientRequestParameters = {
-            url: 'someUrl',
+            url: 'someUrl'
           };
 
           expect.assertions(1);
@@ -178,20 +178,20 @@ describe('The HttpClient', () => {
             const axiosError: AxiosError = <AxiosError>error;
 
             expect(axiosError.message).toEqual(
-              `Request returned status code ${errorCode} with message '${errorMessage}'`,
+              `Request returned status code ${errorCode} with message '${errorMessage}'`
             );
           }
-        },
+        }
       );
 
       it('should reject with error if axios throws with XMLHttpRequest', async () => {
         mockedAxios.get.mockRejectedValueOnce({
           request: 'XMLHttpRequest',
-          message: 'Some general error message',
+          message: 'Some general error message'
         });
 
         const parameters: IHttpClientRequestParameters = {
-          url: 'someUrl',
+          url: 'someUrl'
         };
 
         expect.assertions(2);
@@ -200,17 +200,17 @@ describe('The HttpClient', () => {
         } catch (error: unknown) {
           const castError: Error = <Error>error;
           expect(castError.message).toStrictEqual(
-            "The request was made to URL 'someUrl' but no response was received.",
+            "The request was made to URL 'someUrl' but no response was received."
           );
         }
 
         mockedAxios.get.mockRejectedValueOnce({
           request: 'XMLHttpRequest',
-          message: 'Some general error message',
+          message: 'Some general error message'
         });
 
         const parameters2: IHttpClientRequestParameters = {
-          url: 'someOtherUrl',
+          url: 'someOtherUrl'
         };
 
         try {
@@ -218,18 +218,18 @@ describe('The HttpClient', () => {
         } catch (error: unknown) {
           const castError: Error = <Error>error;
           expect(castError.message).toStrictEqual(
-            "The request was made to URL 'someOtherUrl' but no response was received.",
+            "The request was made to URL 'someOtherUrl' but no response was received."
           );
         }
       });
 
       it('should reject with error if axios throws general error', async () => {
         mockedAxios.get.mockRejectedValueOnce({
-          message: 'Some general error message.',
+          message: 'Some general error message.'
         });
 
         const parameters: IHttpClientRequestParameters = {
-          url: 'someUrl',
+          url: 'someUrl'
         };
 
         expect.assertions(1);
@@ -237,9 +237,7 @@ describe('The HttpClient', () => {
           await httpClient.get(parameters);
         } catch (error: unknown) {
           const castError: Error = <Error>error;
-          expect(castError.message).toStrictEqual(
-            'Some general error message.',
-          );
+          expect(castError.message).toStrictEqual('Some general error message.');
         }
       });
     });
@@ -249,7 +247,7 @@ describe('The HttpClient', () => {
       const parameters: IHttpClientRequestParameters = {
         contentType: 'application/vnd.uub.record+json',
         url: 'someUrl',
-        authToken: 'someAuthToken',
+        authToken: 'someAuthToken'
       };
 
       httpClient.post(parameters);
@@ -260,7 +258,7 @@ describe('The HttpClient', () => {
         url: 'someUrl',
         body: 'someBody',
         contentType: 'application/vnd.uub.record+json',
-        authToken: 'someAuthToken',
+        authToken: 'someAuthToken'
       };
 
       expect.assertions(4);
@@ -268,36 +266,28 @@ describe('The HttpClient', () => {
       await httpClient.post(parameters);
 
       expect(mockedAxios.post).toHaveBeenCalledTimes(1);
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        parameters.url,
-        parameters.body,
-        {
-          headers: {
-            'Content-Type': 'application/vnd.uub.record+json',
-            authToken: 'someAuthToken',
-          },
-        },
-      );
+      expect(mockedAxios.post).toHaveBeenCalledWith(parameters.url, parameters.body, {
+        headers: {
+          'Content-Type': 'application/vnd.uub.record+json',
+          authToken: 'someAuthToken'
+        }
+      });
       const parameters2: IHttpClientRequestParameters = {
         url: 'someOtherUrl',
         body: 'someBody',
         contentType: 'application/vnd.uub.record+json',
-        authToken: 'someAuthToken',
+        authToken: 'someAuthToken'
       };
 
       await httpClient.post(parameters2);
 
       expect(mockedAxios.post).toHaveBeenCalledTimes(2);
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        parameters2.url,
-        parameters2.body,
-        {
-          headers: {
-            'Content-Type': 'application/vnd.uub.record+json',
-            authToken: 'someAuthToken',
-          },
-        },
-      );
+      expect(mockedAxios.post).toHaveBeenCalledWith(parameters2.url, parameters2.body, {
+        headers: {
+          'Content-Type': 'application/vnd.uub.record+json',
+          authToken: 'someAuthToken'
+        }
+      });
     });
 
     it('should call axios.post with authToken if authToken set', async () => {
@@ -305,7 +295,7 @@ describe('The HttpClient', () => {
         url: 'someUrl',
         body: 'someBody',
         contentType: 'application/vnd.uub.record+json',
-        authToken: 'someAuthToken',
+        authToken: 'someAuthToken'
       };
 
       expect.assertions(4);
@@ -313,36 +303,28 @@ describe('The HttpClient', () => {
       await httpClient.post(parameters);
 
       expect(mockedAxios.post).toHaveBeenCalledTimes(1);
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        parameters.url,
-        parameters.body,
-        {
-          headers: {
-            'Content-Type': 'application/vnd.uub.record+json',
-            authToken: 'someAuthToken',
-          },
-        },
-      );
+      expect(mockedAxios.post).toHaveBeenCalledWith(parameters.url, parameters.body, {
+        headers: {
+          'Content-Type': 'application/vnd.uub.record+json',
+          authToken: 'someAuthToken'
+        }
+      });
 
       const parameters2: IHttpClientRequestParameters = {
         url: 'someOtherUrl',
-        authToken: 'someOtherToken',
+        authToken: 'someOtherToken'
       };
       httpClient.post(parameters2);
 
       expect(mockedAxios.post).toHaveBeenCalledTimes(2);
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        parameters2.url,
-        parameters2.body,
-        {
-          headers: { authToken: 'someOtherToken' },
-        },
-      );
+      expect(mockedAxios.post).toHaveBeenCalledWith(parameters2.url, parameters2.body, {
+        headers: { authToken: 'someOtherToken' }
+      });
     });
 
     it('should reject with error if url is empty', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: '',
+        url: ''
       };
 
       expect.assertions(1);
@@ -356,7 +338,7 @@ describe('The HttpClient', () => {
 
     it('should not call axios.post if url is empty', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: '',
+        url: ''
       };
 
       expect.assertions(2);
@@ -371,7 +353,7 @@ describe('The HttpClient', () => {
 
     it('should return data from axios if call is successful', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: 'someUrl',
+        url: 'someUrl'
       };
       expect.assertions(1);
 
@@ -417,7 +399,7 @@ describe('The HttpClient', () => {
         [504, 'Gateway Timeout'],
         [505, 'HTTP Version Not Supported'],
         [510, 'Not Extended'],
-        [511, 'Network Authentication Required'],
+        [511, 'Network Authentication Required']
       ])(
         'should reject with error code %p if axios throws with response %p',
         async (errorCode, errorMessage) => {
@@ -425,14 +407,14 @@ describe('The HttpClient', () => {
             response: {
               data: errorMessage,
               status: errorCode,
-              headers: {},
+              headers: {}
             },
             request: 'XMLHttpRequest',
-            message: 'Some general error message',
+            message: 'Some general error message'
           });
 
           const parameters: IHttpClientRequestParameters = {
-            url: 'someUrl',
+            url: 'someUrl'
           };
 
           expect.assertions(1);
@@ -441,20 +423,20 @@ describe('The HttpClient', () => {
           } catch (error: unknown) {
             const axiosError: AxiosError = <AxiosError>error;
             expect(axiosError.message).toStrictEqual(
-              `Request returned status code ${errorCode} with message '${errorMessage}'`,
+              `Request returned status code ${errorCode} with message '${errorMessage}'`
             );
           }
-        },
+        }
       );
 
       it('should reject with error if axios throws with XMLHttpRequest', async () => {
         mockedAxios.post.mockRejectedValueOnce({
           request: 'XMLHttpRequest',
-          message: 'Some general error message',
+          message: 'Some general error message'
         });
 
         const parameters: IHttpClientRequestParameters = {
-          url: 'someUrl',
+          url: 'someUrl'
         };
 
         expect.assertions(2);
@@ -463,17 +445,17 @@ describe('The HttpClient', () => {
         } catch (error: unknown) {
           const castError: Error = <Error>error;
           expect(castError.message).toStrictEqual(
-            "The request was made to URL 'someUrl' but no response was received.",
+            "The request was made to URL 'someUrl' but no response was received."
           );
         }
 
         mockedAxios.post.mockRejectedValueOnce({
           request: 'XMLHttpRequest',
-          message: 'Some general error message',
+          message: 'Some general error message'
         });
 
         const parameters2: IHttpClientRequestParameters = {
-          url: 'someOtherUrl',
+          url: 'someOtherUrl'
         };
 
         try {
@@ -481,18 +463,18 @@ describe('The HttpClient', () => {
         } catch (error: unknown) {
           const castError: Error = <Error>error;
           expect(castError.message).toStrictEqual(
-            "The request was made to URL 'someOtherUrl' but no response was received.",
+            "The request was made to URL 'someOtherUrl' but no response was received."
           );
         }
       });
 
       it('should reject with error if axios throws general error', async () => {
         mockedAxios.post.mockRejectedValueOnce({
-          message: 'Some general error message.',
+          message: 'Some general error message.'
         });
 
         const parameters: IHttpClientRequestParameters = {
-          url: 'someUrl',
+          url: 'someUrl'
         };
 
         expect.assertions(1);
@@ -500,9 +482,7 @@ describe('The HttpClient', () => {
           await httpClient.post(parameters);
         } catch (error: unknown) {
           const castError: Error = <Error>error;
-          expect(castError.message).toStrictEqual(
-            'Some general error message.',
-          );
+          expect(castError.message).toStrictEqual('Some general error message.');
         }
       });
     });
@@ -511,14 +491,14 @@ describe('The HttpClient', () => {
     it('should exist and take IHttpClientRequestParameters', () => {
       const parameters: IHttpClientRequestParameters = {
         url: 'someUrl',
-        authToken: 'someAuthToken',
+        authToken: 'someAuthToken'
       };
       httpClient.delete(parameters);
     });
 
     it('should call axios.delete with url', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: 'someUrl',
+        url: 'someUrl'
       };
 
       expect.assertions(4);
@@ -529,7 +509,7 @@ describe('The HttpClient', () => {
       expect(mockedAxios.delete).toHaveBeenCalledWith(parameters.url, {});
 
       const parameters2: IHttpClientRequestParameters = {
-        url: 'someOtherUrl',
+        url: 'someOtherUrl'
       };
       httpClient.delete(parameters2);
 
@@ -540,7 +520,7 @@ describe('The HttpClient', () => {
     it('should call axios.delete with authToken if authToken set', async () => {
       const parameters: IHttpClientRequestParameters = {
         url: 'someUrl',
-        authToken: 'someAuthToken',
+        authToken: 'someAuthToken'
       };
 
       expect.assertions(4);
@@ -549,24 +529,24 @@ describe('The HttpClient', () => {
 
       expect(mockedAxios.delete).toHaveBeenCalledTimes(1);
       expect(mockedAxios.delete).toHaveBeenCalledWith(parameters.url, {
-        headers: { authToken: 'someAuthToken' },
+        headers: { authToken: 'someAuthToken' }
       });
 
       const parameters2: IHttpClientRequestParameters = {
         url: 'someOtherUrl',
-        authToken: 'someOtherToken',
+        authToken: 'someOtherToken'
       };
       httpClient.delete(parameters2);
 
       expect(mockedAxios.delete).toHaveBeenCalledTimes(2);
       expect(mockedAxios.delete).toHaveBeenCalledWith(parameters2.url, {
-        headers: { authToken: 'someOtherToken' },
+        headers: { authToken: 'someOtherToken' }
       });
     });
 
     it('should reject with error if url is empty', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: '',
+        url: ''
       };
 
       expect.assertions(1);
@@ -580,7 +560,7 @@ describe('The HttpClient', () => {
 
     it('should not call axios.delete if url is empty', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: '',
+        url: ''
       };
 
       expect.assertions(2);
@@ -595,7 +575,7 @@ describe('The HttpClient', () => {
 
     it('should return data from axios if call is successful', async () => {
       const parameters: IHttpClientRequestParameters = {
-        url: 'someUrl',
+        url: 'someUrl'
       };
       expect.assertions(1);
 
@@ -641,7 +621,7 @@ describe('The HttpClient', () => {
         [504, 'Gateway Timeout'],
         [505, 'HTTP Version Not Supported'],
         [510, 'Not Extended'],
-        [511, 'Network Authentication Required'],
+        [511, 'Network Authentication Required']
       ])(
         'should reject with error code %p if axios throws with response %p',
         async (errorCode, errorMessage) => {
@@ -649,14 +629,14 @@ describe('The HttpClient', () => {
             response: {
               data: errorMessage,
               status: errorCode,
-              headers: {},
+              headers: {}
             },
             request: 'XMLHttpRequest',
-            message: 'Some general error message',
+            message: 'Some general error message'
           });
 
           const parameters: IHttpClientRequestParameters = {
-            url: 'someUrl',
+            url: 'someUrl'
           };
 
           expect.assertions(1);
@@ -666,20 +646,20 @@ describe('The HttpClient', () => {
             const axiosError: AxiosError = <AxiosError>error;
 
             expect(axiosError.message).toEqual(
-              `Request returned status code ${errorCode} with message '${errorMessage}'`,
+              `Request returned status code ${errorCode} with message '${errorMessage}'`
             );
           }
-        },
+        }
       );
 
       it('should reject with error if axios throws with XMLHttpRequest', async () => {
         mockedAxios.delete.mockRejectedValueOnce({
           request: 'XMLHttpRequest',
-          message: 'Some general error message',
+          message: 'Some general error message'
         });
 
         const parameters: IHttpClientRequestParameters = {
-          url: 'someUrl',
+          url: 'someUrl'
         };
 
         expect.assertions(2);
@@ -688,17 +668,17 @@ describe('The HttpClient', () => {
         } catch (error: unknown) {
           const castError: Error = <Error>error;
           expect(castError.message).toStrictEqual(
-            "The request was made to URL 'someUrl' but no response was received.",
+            "The request was made to URL 'someUrl' but no response was received."
           );
         }
 
         mockedAxios.delete.mockRejectedValueOnce({
           request: 'XMLHttpRequest',
-          message: 'Some general error message',
+          message: 'Some general error message'
         });
 
         const parameters2: IHttpClientRequestParameters = {
-          url: 'someOtherUrl',
+          url: 'someOtherUrl'
         };
 
         try {
@@ -706,18 +686,18 @@ describe('The HttpClient', () => {
         } catch (error: unknown) {
           const castError: Error = <Error>error;
           expect(castError.message).toStrictEqual(
-            "The request was made to URL 'someOtherUrl' but no response was received.",
+            "The request was made to URL 'someOtherUrl' but no response was received."
           );
         }
       });
 
       it('should reject with error if axios throws general error', async () => {
         mockedAxios.delete.mockRejectedValueOnce({
-          message: 'Some general error message.',
+          message: 'Some general error message.'
         });
 
         const parameters: IHttpClientRequestParameters = {
-          url: 'someUrl',
+          url: 'someUrl'
         };
 
         expect.assertions(1);
@@ -725,9 +705,7 @@ describe('The HttpClient', () => {
           await httpClient.delete(parameters);
         } catch (error: unknown) {
           const castError: Error = <Error>error;
-          expect(castError.message).toStrictEqual(
-            'Some general error message.',
-          );
+          expect(castError.message).toStrictEqual('Some general error message.');
         }
       });
     });

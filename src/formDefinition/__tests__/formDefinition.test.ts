@@ -154,9 +154,9 @@ describe('formDefinition', () => {
       pSomeEditMetadataGroup
     ]);
     dependencies = {
-      validationTypePool: validationTypePool,
-      metadataPool: metadataPool,
-      presentationPool: presentationPool
+      validationTypePool,
+      metadataPool,
+      presentationPool
     };
   });
 
@@ -206,7 +206,7 @@ describe('formDefinition', () => {
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
     expect(formDefinition.form.components).toHaveLength(17);
     expect(formDefinition).toStrictEqual({
-      validationTypeId: validationTypeId,
+      validationTypeId,
       form: {
         type: 'group',
         label: 'textId345',
@@ -751,7 +751,7 @@ describe('formDefinition', () => {
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_EDIT);
     expect(formDefinition.form.components).toHaveLength(16);
     expect(formDefinition).toStrictEqual({
-      validationTypeId: validationTypeId,
+      validationTypeId,
       form: {
         type: 'group',
         label: 'textId345',
@@ -867,7 +867,7 @@ describe('formDefinition', () => {
               pattern: 'someRegex'
             },
             mode: 'input', // output
-            inputType: 'input', // extarea
+            inputType: 'input', // textarea
             finalValue: 'someFinalValue'
           },
           {

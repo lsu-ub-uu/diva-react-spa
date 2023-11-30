@@ -197,8 +197,7 @@ describe.skip('real', () => {
 
       const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
       const id = extractIdFromRecordInfo(response.data.record.data);
-      console.log(response);
-
+      console.log(id, response);
     });
   });
 });

@@ -18,9 +18,7 @@ describe('transformCoraValidationType', () => {
     expect(firstRecordType.id).toEqual('someValidationTypeId');
   });
   it('Returns two entries with id', () => {
-    const transformData = transformCoraValidationTypes(
-      validationTypeListWithTwo,
-    );
+    const transformData = transformCoraValidationTypes(validationTypeListWithTwo);
     const firstRecordType = transformData[0];
     expect(firstRecordType.id).toEqual('someValidationTypeId1');
     const secondRecordType = transformData[1];
@@ -37,13 +35,11 @@ describe('transformCoraValidationType', () => {
       newPresentationGroupId: 'someNewPGroup',
       presentationGroupId: 'somePGroup',
       nameTextId: 'someText',
-      defTextId: 'someDefText',
+      defTextId: 'someDefText'
     });
   });
   it('Returns two BFFValidationTypes for two validationTypes', () => {
-    const transformData = transformCoraValidationTypes(
-      validationTypeListWithTwo,
-    );
+    const transformData = transformCoraValidationTypes(validationTypeListWithTwo);
     expect(transformData).toHaveLength(2);
     expect(transformData[0]).toEqual({
       id: 'someValidationTypeId1',
@@ -53,7 +49,7 @@ describe('transformCoraValidationType', () => {
       newPresentationGroupId: 'someNewPGroup',
       presentationGroupId: 'somePGroup',
       nameTextId: 'someText',
-      defTextId: 'someDefText',
+      defTextId: 'someDefText'
     });
     expect(transformData[1]).toEqual({
       id: 'someValidationTypeId2',
@@ -63,7 +59,7 @@ describe('transformCoraValidationType', () => {
       newPresentationGroupId: 'someNewPGroup2',
       presentationGroupId: 'somePGroup2',
       nameTextId: 'someText2',
-      defTextId: 'someDefText2',
+      defTextId: 'someDefText2'
     });
   });
 });

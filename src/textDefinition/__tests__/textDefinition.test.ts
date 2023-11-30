@@ -23,17 +23,16 @@ import { listToPool } from '../../utils/structs/listToPool';
 import { createTextDefinition } from '../textDefinition';
 
 describe('textDefinition', () => {
-
   let textPool: Lookup<string, BFFText>;
   let dependencies: { textPool: Lookup<string, BFFText> };
 
   beforeEach(() => {
     textPool = listToPool<BFFText>([
-      {id: 'someTextId', en: 'someEnText', sv: 'someSvText'},
-      {id: 'someText2Id', sv: 'someSv2Text'}
+      { id: 'someTextId', en: 'someEnText', sv: 'someSvText' },
+      { id: 'someText2Id', sv: 'someSv2Text' }
     ]);
     dependencies = {
-      textPool: textPool
+      textPool
     };
   });
 
@@ -42,7 +41,7 @@ describe('textDefinition', () => {
     const textDefinition = createTextDefinition(dependencies, lang);
     const expectedSv = {
       someTextId: 'someSvText',
-      someText2Id : 'someSv2Text'
+      someText2Id: 'someSv2Text'
     };
     expect(textDefinition).toStrictEqual(expectedSv);
   });
@@ -50,7 +49,7 @@ describe('textDefinition', () => {
   it('should generate an object with id value pair for english', () => {
     const lang = 'en';
     const textDefinition = createTextDefinition(dependencies, lang);
-    const expectedEn = {someTextId: 'someEnText'};
+    const expectedEn = { someTextId: 'someEnText' };
     expect(textDefinition).toStrictEqual(expectedEn);
   });
 
@@ -59,5 +58,4 @@ describe('textDefinition', () => {
     const textDefinition = createTextDefinition(dependencies, lang);
     expect(textDefinition).toStrictEqual({});
   });
-
 });

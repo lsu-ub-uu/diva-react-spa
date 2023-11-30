@@ -52,7 +52,7 @@ app.use('/api/translations/:lang', async (req, res) => {
     const texts = transformCoraTexts(response.data);
     const textPool = listToPool<BFFText>(texts);
     const dependencies = {
-      textPool: textPool
+      textPool
     };
     const textDefinitions = createTextDefinition(dependencies, req.params.lang);
     res.status(200).json(textDefinitions);
@@ -76,8 +76,8 @@ const assembleCommonDependencies = async () => {
   const validationTypePool = listToPool<BFFValidationType>(validationTypes);
 
   return {
-    validationTypePool: validationTypePool,
-    metadataPool: metadataPool
+    validationTypePool,
+    metadataPool
   } as Dependencies;
 };
 
@@ -100,7 +100,7 @@ app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
     const recordType = Object.keys(payload)[0];
 
     const dependencies = await assembleCommonDependencies();
-    const validationTypePool = dependencies.validationTypePool;
+    const { validationTypePool } = dependencies;
 
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
@@ -143,7 +143,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     const recordType = Object.keys(payload)[0];
 
     const dependencies = await assembleCommonDependencies();
-    const validationTypePool = dependencies.validationTypePool;
+    const { validationTypePool } = dependencies;
 
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
@@ -185,8 +185,8 @@ app.get('/api/record/:recordType/:recordId', async (req, res) => {
     const validationTypePool = listToPool<BFFValidationType>(validationTypes);
 
     const dependencies = {
-      validationTypePool: validationTypePool,
-      metadataPool: metadataPool
+      validationTypePool,
+      metadataPool
     } as Dependencies;
     // end dependencies
 
@@ -228,9 +228,9 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
     }
 
     const dependencies = {
-      validationTypePool: validationTypePool,
-      metadataPool: metadataPool,
-      presentationPool: presentationPool
+      validationTypePool,
+      metadataPool,
+      presentationPool
     } as Dependencies;
 
     const formDef = createFormDefinition(

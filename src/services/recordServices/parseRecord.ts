@@ -1,7 +1,7 @@
 import { DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 import {
   getFirstDataAtomicWithNameInData,
-  getFirstDataGroupWithNameInData,
+  getFirstDataGroupWithNameInData
 } from '../../utils/cora-data/CoraDataUtils';
 
 const getIdFromRecordInfo = (recordInfo: DataGroup | undefined) => {
@@ -16,20 +16,14 @@ const getIdFromRecordInfo = (recordInfo: DataGroup | undefined) => {
 
 export const parseRecord = (recordWrapper: RecordWrapper) => {
   const dataRecordGroup = recordWrapper.record.data;
-  const recordInfo = getFirstDataGroupWithNameInData(
-    dataRecordGroup,
-    'recordInfo',
-  );
+  const recordInfo = getFirstDataGroupWithNameInData(dataRecordGroup, 'recordInfo');
 
-  const titleAtomic = getFirstDataAtomicWithNameInData(
-    dataRecordGroup,
-    'title',
-  );
+  const titleAtomic = getFirstDataAtomicWithNameInData(dataRecordGroup, 'title');
   const title = titleAtomic?.value;
   const id = getIdFromRecordInfo(recordInfo);
   return {
     id,
     title,
-    images: [],
+    images: []
   };
 };

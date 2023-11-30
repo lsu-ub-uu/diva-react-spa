@@ -1,7 +1,6 @@
-import testMetaData from '../../../__mocks__/coraMetadata.json';
 import {
   extractIdFromRecordInfo,
-  extractAttributeValueByName,
+  extractAttributeValueByName
   // extractLinkedRecordIdFromNamedRecordLink,
 } from '../CoraDataTransforms';
 
@@ -13,11 +12,11 @@ const someRecordGroup = {
       children: [
         {
           name: 'id',
-          value: 'someTextVar',
-        },
-      ],
-    },
-  ],
+          value: 'someTextVar'
+        }
+      ]
+    }
+  ]
 };
 
 const someGroupWithAttribute = {
@@ -25,31 +24,12 @@ const someGroupWithAttribute = {
   children: [
     {
       name: 'id',
-      value: 'someTextVar',
-    },
+      value: 'someTextVar'
+    }
   ],
   attributes: {
-    type: 'someTextVariable',
-  },
-};
-
-const someGroupWithRecordLink = {
-  name: 'parent',
-  children: [
-    {
-    "children": [
-      {
-        "name": "linkedRecordType",
-        "value": "someLinkedRecordType"
-      },
-      {
-        "name": "linkedRecordId",
-        "value": "someLinkedRecordId"
-      }
-    ],
-    "name": "someLinkName"
+    type: 'someTextVariable'
   }
-  ]
 };
 
 describe('CoraDataTransform', () => {
@@ -62,30 +42,21 @@ describe('CoraDataTransform', () => {
 
   describe('extractAttributeValueByName', () => {
     it('returns an attribute from DataGroup', () => {
-      const attribute = extractAttributeValueByName(
-        someGroupWithAttribute,
-        'type',
-      );
+      const attribute = extractAttributeValueByName(someGroupWithAttribute, 'type');
       expect(attribute).toEqual('someTextVariable');
     });
 
     it('throw error when attribute does not exist for DataGroup', () => {
       expect(() => {
-        extractAttributeValueByName(
-          someGroupWithAttribute,
-          'wrongAttributeName',
-        );
+        extractAttributeValueByName(someGroupWithAttribute, 'wrongAttributeName');
       }).toThrow(Error);
 
       try {
-        extractAttributeValueByName(
-          someGroupWithAttribute,
-          'wrongAttributeName',
-        );
+        extractAttributeValueByName(someGroupWithAttribute, 'wrongAttributeName');
       } catch (error: unknown) {
         const attributeError: Error = <Error>error;
         expect(attributeError.message).toStrictEqual(
-          'Attribute with name [wrongAttributeName] does not exist',
+          'Attribute with name [wrongAttributeName] does not exist'
         );
       }
     });
@@ -99,12 +70,12 @@ describe('CoraDataTransform', () => {
       } catch (error: unknown) {
         const attributeError: Error = <Error>error;
         expect(attributeError.message).toStrictEqual(
-          'Attribute with name [someAttributeName] does not exist',
+          'Attribute with name [someAttributeName] does not exist'
         );
       }
     });
   });
-/*   describe.only('extractLinkedRecordIdFromNamedRecordLink', () => {
+  /*   describe.only('extractLinkedRecordIdFromNamedRecordLink', () => {
     it('Throws error when linkedRecordId does not exist', () => {
       expect(() => {
         extractLinkedRecordIdFromNamedRecordLink(someGroupWithRecordLink, 'notSomeLinkName');

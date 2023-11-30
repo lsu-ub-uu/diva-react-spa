@@ -13,7 +13,7 @@ import testTextWithOneAttribute from '../../__mocks__/coraMetadataTextVarWithOne
 import testTestWithTwoAttributes from '../../__mocks__/coraMetadataTextVarWithTwoAttributes.json';
 import testNumberWithTwoAttributes from '../../__mocks__/coraMetadataNumberVarWithTwoAttributes.json';
 import testCollectionWithTwoAttributes from '../../__mocks__/coraMetadataCollectionVarWithTwoAttributes.json';
-import testMetadataGroupWithAttribute  from '../../__mocks__/coraMetadataGroupWithAttribute.json';
+import testMetadataGroupWithAttribute from '../../__mocks__/coraMetadataGroupWithAttribute.json';
 import testMetadataRecordLink from '../../__mocks__/coraMetadataRecordLink.json';
 import testMetadataRecordLinkWithFinalValue from '../../__mocks__/coraMetadataRecordLinkWithFinalValue.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
@@ -53,7 +53,7 @@ describe('transformMetadata', () => {
         defTextId: 'someTextVarDefText',
         regEx: '.*'
       });
-      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
+      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
     });
 
     it('Returns one BFFMetadata for textVariable with finalValue', () => {
@@ -102,7 +102,7 @@ describe('transformMetadata', () => {
         ]
       });
 
-      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
+      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
     });
   });
 
@@ -122,7 +122,7 @@ describe('transformMetadata', () => {
         warningMax: '10',
         numberOfDecimals: '3'
       });
-      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
+      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
     });
 
     it('Returns one BFFMetadata for numberVariable with finalValue', () => {
@@ -141,7 +141,7 @@ describe('transformMetadata', () => {
         numberOfDecimals: '3',
         finalValue: '50.123'
       });
-      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(true);
+      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(true);
     });
   });
 
@@ -157,7 +157,7 @@ describe('transformMetadata', () => {
         defTextId: 'exampleCollectionVarDefText',
         refCollection: 'exampleCollection'
       });
-      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(false);
+      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
     });
 
     it('Returns one BFFMetadata for collectionVariable with finalValue', () => {
@@ -174,7 +174,7 @@ describe('transformMetadata', () => {
         refCollection: 'exampleCollection',
         finalValue: 'blue'
       });
-      expect(metadataList[0].hasOwnProperty('finalValue')).toBe(true);
+      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(true);
     });
   });
 
@@ -231,8 +231,8 @@ describe('transformMetadata', () => {
           {
             childId: 'recordInfoNewGroup',
             repeatMin: '1',
-            repeatMax: '1',
-          },
+            repeatMax: '1'
+          }
         ]
       });
     });
@@ -335,7 +335,9 @@ describe('transformMetadata', () => {
     });
 
     it('Returns one BFFMetadata for recordLink with finalValue and one attribute', () => {
-      const metadataList = transformMetadata(testMetadataRecordLinkWithFinalValue as DataListWrapper);
+      const metadataList = transformMetadata(
+        testMetadataRecordLinkWithFinalValue as DataListWrapper
+      );
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toStrictEqual({
         id: 'nationalSubjectCategoryLink',
@@ -349,7 +351,7 @@ describe('transformMetadata', () => {
           {
             refCollectionVarId: 'exampleAttributeFinalCollectionVar'
           }
-        ],
+        ]
       });
     });
   });

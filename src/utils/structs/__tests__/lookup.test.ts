@@ -2,7 +2,6 @@ import { Lookup } from '../lookup';
 import { LookupError } from '../error';
 
 describe('Lookup', () => {
-
   let lookup: Lookup<string, string>;
 
   beforeEach(() => {
@@ -20,11 +19,11 @@ describe('Lookup', () => {
 
   it('should throw error when key does not exist', () => {
     expect(() => {
-      lookup.get('nonExistingKey')
-    }).toThrow(LookupError)
+      lookup.get('nonExistingKey');
+    }).toThrow(LookupError);
 
     try {
-      lookup.get('nonExistingKey')
+      lookup.get('nonExistingKey');
     } catch (error: unknown) {
       const castError: LookupError = <LookupError>error;
       expect(castError.message).toStrictEqual('[nonExistingKey] does not exist in Lookup pool');
@@ -63,5 +62,4 @@ describe('Lookup', () => {
     }
     expect(arr).toEqual(['testKey1', 'testKey2']);
   });
-
-})
+});

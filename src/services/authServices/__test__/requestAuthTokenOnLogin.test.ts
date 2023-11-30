@@ -57,7 +57,7 @@ describe('requestAuthTokenOnLogin', () => {
     requestAuthTokenOnLogin('authDataForOnePerson', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
   });
   it('should reject with error if username is empty and not call httpClient', async () => {
-    //expect.assertions(2);
+    // expect.assertions(2);
 
     try {
       await requestAuthTokenOnLogin('' as any, 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
@@ -68,7 +68,7 @@ describe('requestAuthTokenOnLogin', () => {
     }
   });
   it('should reject with error if apptoken is empty and not call httpClient', async () => {
-    //expect.assertions(2);
+    // expect.assertions(2);
     const coraUser = 'coraUser:490742519075086';
     try {
       await requestAuthTokenOnLogin(coraUser, '');

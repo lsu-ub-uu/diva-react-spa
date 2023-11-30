@@ -29,7 +29,7 @@ describe('RemoveEmpty', () => {
       innerProp2: 'world'
     },
     prop5: [],
-    prop6: ['a'],
+    prop6: ['a']
   };
 
   const cleaned = {
@@ -58,7 +58,7 @@ describe('CleanJson', () => {
     prop5: [],
     prop6: ['a'],
     prop7: { value: null },
-    prop8: { test: { value: null },  _attr: "2" },
+    prop8: { test: { value: null }, _attr: '2' }
   };
 
   const cleaned = {
@@ -67,11 +67,10 @@ describe('CleanJson', () => {
       innerProp2: 'world'
     },
     prop6: ['a'],
-    prop8: { _attr: '2' },
+    prop8: { _attr: '2' }
   };
 
   it('should return a data object with cleaned json ready to be converted to cora format', () => {
     expect(cleanJson(data)).toStrictEqual(cleaned);
   });
 });
-
