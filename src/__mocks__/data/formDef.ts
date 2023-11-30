@@ -374,6 +374,58 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
   ],
 };
 
+export const formComponentTextVariableWithModeOutput: FormComponent = {
+  name: 'exampleTextVar',
+  type: 'collectionVariable',
+  mode: 'output',
+  inputType: 'input',
+  tooltip: {
+    title: 'exampleMetadataTextVarText',
+    body: 'exampleMetadataTextVarDefText',
+  },
+  label: 'exampleMetadataTextVarText',
+  validation: {
+    type: 'regex',
+    pattern: '.*',
+  },
+  repeat: {
+    repeatMin: 0,
+    repeatMax: 1,
+  },
+};
+
+export const formComponentCollectionVariableWithModeOutput: FormComponent = {
+  name: 'someCollectionVariableModeOutput',
+  type: 'collectionVariable',
+  mode: 'output',
+  inputType: 'input',
+  tooltip: {
+    title: 'someCollectionVariableModeOutputText',
+    body: 'someCollectionVariableModeOutputDefText',
+  },
+  label: 'someCollectionVariableModeOutputText',
+
+  placeholder: 'initialEmptyValueText',
+  repeat: {
+    repeatMin: 1,
+    repeatMax: 1,
+  },
+  options: [
+    {
+      value: 'blue',
+      label: 'exampleBlueItemText',
+    },
+    {
+      value: 'pink',
+      label: 'examplePinkItemText',
+    },
+    {
+      value: 'yellow',
+      label: 'exampleYellowItemText',
+    },
+  ],
+};
+
 export const formDef = {
   validationTypeId: 'someValidationTypeId',
   form: {
