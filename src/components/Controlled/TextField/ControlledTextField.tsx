@@ -19,7 +19,8 @@ interface ControlledTextFieldProps {
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
-
+  const displayMode =
+    props.displayMode !== undefined ? props.displayMode : 'input';
   return (
     <Controller
       control={props.control}
@@ -52,7 +53,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 </Tooltip>
               )}
             </FormLabel>
-            {props.displayMode === 'input' ? (
+            {displayMode === 'input' ? (
               <TextField
                 multiline={props.multiline ?? false}
                 rows={props.multiline ? 3 : 1}
