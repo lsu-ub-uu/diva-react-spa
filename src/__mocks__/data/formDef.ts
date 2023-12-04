@@ -376,7 +376,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
 
 export const formComponentTextVariableWithModeOutput: FormComponent = {
   name: 'exampleTextVar',
-  type: 'collectionVariable',
+  type: 'textVariable',
   mode: 'output',
   inputType: 'input',
   tooltip: {
@@ -398,7 +398,6 @@ export const formComponentCollectionVariableWithModeOutput: FormComponent = {
   name: 'someCollectionVariableModeOutput',
   type: 'collectionVariable',
   mode: 'output',
-  inputType: 'input',
   tooltip: {
     title: 'someCollectionVariableModeOutputText',
     body: 'someCollectionVariableModeOutputDefText',
@@ -558,6 +557,44 @@ export const formDefWithOneRepeatingTextVariable = {
           pattern: '^[a-zA-Z]$',
         },
         inputType: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+export const formDefWithOneRepeatingTextVariableWithModeOutput = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'exampleTextVar',
+        type: 'textVariable',
+        mode: 'output',
+        inputType: 'input',
+        tooltip: {
+          title: 'exampleMetadataTextVarText',
+          body: 'exampleMetadataTextVarDefText',
+        },
+        label: 'exampleMetadataTextVarText',
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
       },
     ],
     mode: 'input',

@@ -34,6 +34,7 @@ import {
   formDefWithOneNumberVariableAndGuiElementLink,
   formDefWithGroupWithSpecifiedHeadlineLevel,
   formDefWithGroupWithDefaultHeadlineLevel,
+  formDefWithOneRepeatingTextVariableWithModeOutput,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -135,6 +136,37 @@ describe('<FormGenerator />', () => {
       );
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
       expect(inputElement).toHaveValue('someFinalValue');
+    });
+
+    test('Renders a form with TextVariable with mode output', async () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            exampleTextVar: {
+              value: 'someTestText',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOneRepeatingTextVariableWithModeOutput as FormSchema
+          }
+          record={coraRecord}
+        />,
+      );
+      const inputElement = screen.getByText('someTestText');
+      expect(inputElement).toBeInTheDocument();
     });
   });
 
