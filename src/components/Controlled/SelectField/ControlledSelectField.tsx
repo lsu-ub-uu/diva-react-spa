@@ -120,7 +120,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             </Select>
           ) : (
             <>
-              <span>{findOptionLabelByValue(props.options, value)}</span>
+              <span>{t(findOptionLabelByValue(props.options, value))}</span>
               <input
                 type='hidden'
                 value={value}
