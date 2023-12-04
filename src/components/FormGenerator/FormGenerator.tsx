@@ -68,6 +68,7 @@ export const renderLeafComponent = (
           tooltip={component.tooltip}
           control={control}
           readOnly={!!component.finalValue}
+          displayMode={component.mode}
         />
       );
     }

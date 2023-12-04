@@ -14,6 +14,7 @@ interface ControlledTextFieldProps {
   readOnly?: boolean;
   multiline?: boolean;
   tooltip?: { title: string; body: string };
+  displayMode?: string;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
@@ -51,36 +52,48 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 </Tooltip>
               )}
             </FormLabel>
-            <TextField
-              multiline={props.multiline ?? false}
-              rows={props.multiline ? 3 : 1}
-              id={field.name}
-              size='small'
-              error={error !== undefined}
-              {...fieldWithoutRef}
-              inputRef={field.ref}
-              onBlur={field.onBlur}
-              autoComplete='off'
-              placeholder={
-                props.placeholder !== undefined
-                  ? (t(props.placeholder) as string)
-                  : ''
-              }
-              fullWidth
-              variant='outlined'
-              helperText={error !== undefined ? error.message : ' '}
-              InputProps={{
-                readOnly: props.readOnly,
-                endAdornment: (
-                  <ErrorIcon
-                    sx={{
-                      color: '#ff0000',
-                      visibility: error !== undefined ? 'visible' : 'hidden',
-                    }}
-                  />
-                ),
-              }}
-            />
+            {props.displayMode === 'input' ? (
+              <TextField
+                multiline={props.multiline ?? false}
+                rows={props.multiline ? 3 : 1}
+                id={field.name}
+                size='small'
+                error={error !== undefined}
+                {...fieldWithoutRef}
+                inputRef={field.ref}
+                onBlur={field.onBlur}
+                autoComplete='off'
+                placeholder={
+                  props.placeholder !== undefined
+                    ? (t(props.placeholder) as string)
+                    : ''
+                }
+                fullWidth
+                variant='outlined'
+                helperText={error !== undefined ? error.message : ' '}
+                InputProps={{
+                  readOnly: props.readOnly,
+                  endAdornment: (
+                    <ErrorIcon
+                      sx={{
+                        color: '#ff0000',
+                        visibility: error !== undefined ? 'visible' : 'hidden',
+                      }}
+                    />
+                  ),
+                }}
+              />
+            ) : (
+              <>
+                <span>{field.value}</span>
+
+                <input
+                  type='hidden'
+                  value={field.value}
+                  name={field.name}
+                />
+              </>
+            )}
           </FormControl>
         );
       }}
