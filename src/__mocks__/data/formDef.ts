@@ -888,6 +888,54 @@ export const formDefWithOneCollectionVariable = {
     mode: 'input',
   },
 };
+export const formDefWithOneCollectionVariableWithModeOutput = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'colour',
+        type: 'collectionVariable',
+        label: 'Colour',
+        placeholder: 'initialEmptyValueText',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        mode: 'output',
+        tooltip: {
+          title: 'exampleCollectionVarText',
+          body: 'exampleCollectionVarDefText',
+        },
+        options: [
+          {
+            value: 'blue',
+            label: 'exampleBlueItemText',
+          },
+          {
+            value: 'pink',
+            label: 'examplePinkItemText',
+          },
+          {
+            value: 'yellow',
+            label: 'exampleYellowItemText',
+          },
+        ],
+      },
+    ],
+    mode: 'input',
+  },
+};
 
 export const formDefWithOneNumberVariableWithAttributeCollection = {
   validationTypeId: 'someValidationTypeId',

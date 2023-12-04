@@ -85,6 +85,7 @@ export const renderLeafComponent = (
           control={control}
           options={component.options}
           readOnly={!!component.finalValue}
+          displayMode={component.mode}
         />
       );
     }
