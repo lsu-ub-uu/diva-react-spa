@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useState, useEffect } from 'react';
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Stepper from '@mui/material/Stepper';
@@ -29,7 +30,12 @@ export interface NavigationPanelProps {
 }
 
 export const NavigationPanel = (props: NavigationPanelProps) => {
+  const [activeLinkName, setActiveLinkName] = useState(props.activeLinkName);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setActiveLinkName(props.activeLinkName);
+  }, [props.activeLinkName]);
 
   const findActiveLinkNameIndex = (linkName: string | undefined): number => {
     if (linkName === undefined) return 0;
@@ -73,13 +79,16 @@ export const NavigationPanel = (props: NavigationPanelProps) => {
       }}
       orientation='vertical'
       nonLinear
-      activeStep={findActiveLinkNameIndex(props.activeLinkName)}
+      activeStep={findActiveLinkNameIndex(activeLinkName)}
     >
       {props.links.map((item) => (
         <Step key={item.name}>
           <StepButton
             disableRipple
             href={`#anchor_${item.name}`}
+            onClick={() => {
+              setActiveLinkName(item.name);
+            }}
           >
             {t(item.label)}
           </StepButton>

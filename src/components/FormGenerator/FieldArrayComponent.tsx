@@ -147,8 +147,11 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   }
 
   return isFirstLevel(props.name) ? (
-    <React.Fragment key={props.name}>
-      <span id={`anchor_${props.component.name}`} />
+    <span
+      key={props.name}
+      className='anchorLink'
+      id={`anchor_${props.component.name}`}
+    >
       <Card
         sx={{ mb: 2 }}
         title={t(props.component.label as string) as string}
@@ -158,7 +161,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       >
         {getContent()}
       </Card>
-    </React.Fragment>
+    </span>
   ) : (
     <Box key={props.name}>{getContent()}</Box>
   );

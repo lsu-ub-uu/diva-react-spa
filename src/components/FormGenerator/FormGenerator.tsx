@@ -213,8 +213,11 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       !isComponentRepeating(component)
     ) {
       return isFirstLevel(currentComponentNamePath) ? (
-        <React.Fragment key={reactKey}>
-          <span id={`anchor_${component.name}`} />
+        <span
+          key={reactKey}
+          className='anchorLink'
+          id={`anchor_${component.name}`}
+        >
           <Card
             sx={{ mb: 2 }}
             title={t(component.label as string) as string}
@@ -230,7 +233,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
                 currentComponentNamePath,
               )}
           </Card>
-        </React.Fragment>
+        </span>
       ) : (
         <Box key={reactKey}>
           <Typography
@@ -244,7 +247,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               component,
               currentComponentNamePath,
             )}
-          <span id={component.name} />
         </Box>
       );
     }
