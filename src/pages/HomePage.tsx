@@ -44,10 +44,10 @@ export const HomePage = () => {
               disableRipple
               variant='contained'
               component={RouterLink}
-              to='/form'
+              to='/create/record/manuscript'
               endIcon={<FileUploadIcon />}
             >
-              Dynamic Cora Form Page
+              Skapa ett nytt manuskript
             </Button>
           </Stack>
         </AsidePortal>
