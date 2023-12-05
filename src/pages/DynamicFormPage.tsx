@@ -24,11 +24,18 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useBackdrop, FormGenerator } from '../components';
+import {
+  useBackdrop,
+  FormGenerator,
+  AsidePortal,
+  NavigationPanel,
+  NavigationPanelLink,
+} from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 
 export const DynamicFormPage = () => {
+  const [activeSection, setActiveSection] = useState<string>('');
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,6 +55,46 @@ export const DynamicFormPage = () => {
   useEffect(() => {
     setBackdrop(isLoading || isSubmitting);
   }, [isLoading, setBackdrop, isSubmitting]);
+
+  useEffect(() => {
+    const debounce = (func: () => void, wait: number) => {
+      // @ts-ignore
+      let timeoutId;
+
+      // eslint-disable-next-line func-names
+      return function (this: any, ...args: unknown[]) {
+        // @ts-ignore
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          // @ts-ignore
+          func.apply(this, args);
+        }, wait);
+      };
+    };
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const sections =
+        document.querySelectorAll<HTMLSpanElement>('span.anchorLink');
+
+      sections.forEach((section) => {
+        const sectionBottom = section.offsetHeight + section.offsetTop;
+        if (
+          scrollPosition >= section.offsetTop - 5 &&
+          scrollPosition <= sectionBottom + 5
+        ) {
+          setActiveSection(section.id.replace('anchor_', ''));
+        }
+      });
+    };
+
+    window.addEventListener('scroll', debounce(handleScroll, 10));
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const handleSubmit = async (values: FieldValues) => {
     try {
@@ -77,12 +124,25 @@ export const DynamicFormPage = () => {
       />
     );
 
+  const linksFromFormSchema = (
+    formSchema: FormSchema,
+  ): NavigationPanelLink[] | undefined =>
+    formSchema?.form.components
+      ?.filter((c) => c.type !== 'text')
+      .map((c) => ({ name: c.name, label: c.label } as NavigationPanelLink));
+
   return (
     <>
       <Helmet>
         <title>{t(schema?.form.label as string)} | DiVA</title>
       </Helmet>
-      <div>
+      <AsidePortal>
+        <NavigationPanel
+          links={schema ? linksFromFormSchema(schema) || [] : []}
+          activeLinkName={activeSection}
+        />
+      </AsidePortal>
+      <div style={{ marginBottom: '1000px' }}>
         <Stack spacing={2}>
           <FormGenerator
             onSubmit={handleSubmit}

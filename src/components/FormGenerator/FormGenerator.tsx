@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import { Box, Divider } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
@@ -68,6 +69,7 @@ export const renderLeafComponent = (
           tooltip={component.tooltip}
           control={control}
           readOnly={!!component.finalValue}
+          displayMode={component.mode}
         />
       );
     }
@@ -84,6 +86,7 @@ export const renderLeafComponent = (
           control={control}
           options={component.options}
           readOnly={!!component.finalValue}
+          displayMode={component.mode}
         />
       );
     }
@@ -210,23 +213,27 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       !isComponentRepeating(component)
     ) {
       return isFirstLevel(currentComponentNamePath) ? (
-        <Card
-          sx={{ mb: 2 }}
+        <span
           key={reactKey}
-          title={t(component.label as string) as string}
-          variant='variant6'
-          tooltipTitle={t(component.tooltip?.title as string) as string}
-          tooltipBody={t(component.tooltip?.body as string) as string}
+          className='anchorLink'
+          id={`anchor_${component.name}`}
         >
-          {createFormComponentAttributes(component, currentComponentNamePath)}
-          {component.components &&
-            createFormComponents(
-              component.components,
-              component,
-              currentComponentNamePath,
-            )}
-          <span id={component.name} />
-        </Card>
+          <Card
+            sx={{ mb: 2 }}
+            title={t(component.label as string) as string}
+            variant='variant6'
+            tooltipTitle={t(component.tooltip?.title as string) as string}
+            tooltipBody={t(component.tooltip?.body as string) as string}
+          >
+            {createFormComponentAttributes(component, currentComponentNamePath)}
+            {component.components &&
+              createFormComponents(
+                component.components,
+                component,
+                currentComponentNamePath,
+              )}
+          </Card>
+        </span>
       ) : (
         <Box key={reactKey}>
           <Typography
@@ -240,7 +247,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               component,
               currentComponentNamePath,
             )}
-          <span id={component.name} />
         </Box>
       );
     }
@@ -270,7 +276,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             text={component?.label ?? ''}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
           />
-          <span id={component.name} />
           <FieldArrayComponent
             control={control}
             component={component}

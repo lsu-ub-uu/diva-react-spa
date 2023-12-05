@@ -22,10 +22,22 @@ interface ControlledSelectFieldProps {
   required?: boolean;
   readOnly?: boolean;
   tooltip?: { title: string; body: string };
+  displayMode?: string;
 }
 
 export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
   const { t } = useTranslation();
+  const displayMode =
+    props.displayMode !== undefined ? props.displayMode : 'input';
+
+  const findOptionLabelByValue = (
+    array: Option[] | undefined,
+    value: string,
+  ): string => {
+    if (array === undefined) return 'Failed to translate';
+    const option = array.find((opt) => opt.value === value);
+    return option?.label ?? 'Failed to translate';
+  };
 
   return (
     <Controller
@@ -60,51 +72,62 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
               </Tooltip>
             )}
           </FormLabel>
-          <Select
-            sx={{
-              '& .MuiSelect-select .notranslate::after': props.placeholder
-                ? {
-                    content: `"${t(props.placeholder)}"`,
-                    opacity: 0.42,
-                  }
-                : {},
-            }}
-            inputProps={{
-              id: props.name,
-              inputRef: ref,
-              readOnly: props.readOnly,
-            }}
-            labelId={name}
-            onBlur={onBlur}
-            size='small'
-            value={props.options?.length ? value : ''}
-            onChange={onChange}
-            /* ref={ref} */
-            fullWidth
-            loadingError={props.loadingError}
-            error={error !== undefined}
-            loading={props.isLoading}
-          >
-            <MenuItem
-              value=''
-              disableRipple
+          {displayMode === 'input' ? (
+            <Select
+              sx={{
+                '& .MuiSelect-select .notranslate::after': props.placeholder
+                  ? {
+                      content: `"${t(props.placeholder)}"`,
+                      opacity: 0.42,
+                    }
+                  : {},
+              }}
+              inputProps={{
+                id: props.name,
+                inputRef: ref,
+                readOnly: props.readOnly,
+              }}
+              labelId={name}
+              onBlur={onBlur}
+              size='small'
+              value={props.options?.length ? value : ''}
+              onChange={onChange}
+              /* ref={ref} */
+              fullWidth
+              loadingError={props.loadingError}
+              error={error !== undefined}
+              loading={props.isLoading}
             >
-              <em>{t('option.none')}</em>
-            </MenuItem>
-            {props.options &&
-              props.options.map((item, index) => {
-                return (
-                  <MenuItem
-                    disabled={item.disabled}
-                    key={`${props.name}_$option-${index}`}
-                    disableRipple
-                    value={item.value}
-                  >
-                    {t(item.label)}
-                  </MenuItem>
-                );
-              })}
-          </Select>
+              <MenuItem
+                value=''
+                disableRipple
+              >
+                <em>{t('option.none')}</em>
+              </MenuItem>
+              {props.options &&
+                props.options.map((item, index) => {
+                  return (
+                    <MenuItem
+                      disabled={item.disabled}
+                      key={`${props.name}_$option-${index}`}
+                      disableRipple
+                      value={item.value}
+                    >
+                      {t(item.label)}
+                    </MenuItem>
+                  );
+                })}
+            </Select>
+          ) : (
+            <>
+              <span>{t(findOptionLabelByValue(props.options, value))}</span>
+              <input
+                type='hidden'
+                value={value}
+                name={name}
+              />
+            </>
+          )}
           <FormHelperText error={error !== undefined}>
             {error !== undefined ? error.message : ' '}
           </FormHelperText>

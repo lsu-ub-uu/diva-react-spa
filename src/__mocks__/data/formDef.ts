@@ -374,6 +374,57 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
   ],
 };
 
+export const formComponentTextVariableWithModeOutput: FormComponent = {
+  name: 'exampleTextVar',
+  type: 'textVariable',
+  mode: 'output',
+  inputType: 'input',
+  tooltip: {
+    title: 'exampleMetadataTextVarText',
+    body: 'exampleMetadataTextVarDefText',
+  },
+  label: 'exampleMetadataTextVarText',
+  validation: {
+    type: 'regex',
+    pattern: '.*',
+  },
+  repeat: {
+    repeatMin: 0,
+    repeatMax: 1,
+  },
+};
+
+export const formComponentCollectionVariableWithModeOutput: FormComponent = {
+  name: 'someCollectionVariableModeOutput',
+  type: 'collectionVariable',
+  mode: 'output',
+  tooltip: {
+    title: 'someCollectionVariableModeOutputText',
+    body: 'someCollectionVariableModeOutputDefText',
+  },
+  label: 'someCollectionVariableModeOutputText',
+
+  placeholder: 'initialEmptyValueText',
+  repeat: {
+    repeatMin: 1,
+    repeatMax: 1,
+  },
+  options: [
+    {
+      value: 'blue',
+      label: 'exampleBlueItemText',
+    },
+    {
+      value: 'pink',
+      label: 'examplePinkItemText',
+    },
+    {
+      value: 'yellow',
+      label: 'exampleYellowItemText',
+    },
+  ],
+};
+
 export const formDef = {
   validationTypeId: 'someValidationTypeId',
   form: {
@@ -506,6 +557,44 @@ export const formDefWithOneRepeatingTextVariable = {
           pattern: '^[a-zA-Z]$',
         },
         inputType: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+export const formDefWithOneRepeatingTextVariableWithModeOutput = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'exampleTextVar',
+        type: 'textVariable',
+        mode: 'output',
+        inputType: 'input',
+        tooltip: {
+          title: 'exampleMetadataTextVarText',
+          body: 'exampleMetadataTextVarDefText',
+        },
+        label: 'exampleMetadataTextVarText',
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
       },
     ],
     mode: 'input',
@@ -776,6 +865,54 @@ export const formDefWithOneCollectionVariable = {
           repeatMax: 1,
         },
         mode: 'input',
+        tooltip: {
+          title: 'exampleCollectionVarText',
+          body: 'exampleCollectionVarDefText',
+        },
+        options: [
+          {
+            value: 'blue',
+            label: 'exampleBlueItemText',
+          },
+          {
+            value: 'pink',
+            label: 'examplePinkItemText',
+          },
+          {
+            value: 'yellow',
+            label: 'exampleYellowItemText',
+          },
+        ],
+      },
+    ],
+    mode: 'input',
+  },
+};
+export const formDefWithOneCollectionVariableWithModeOutput = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'colour',
+        type: 'collectionVariable',
+        label: 'Colour',
+        placeholder: 'initialEmptyValueText',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        mode: 'output',
         tooltip: {
           title: 'exampleCollectionVarText',
           body: 'exampleCollectionVarDefText',

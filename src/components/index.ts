@@ -29,6 +29,7 @@ export { FormGenerator } from './FormGenerator/FormGenerator';
 export { Typography } from './Typography/Typography';
 export { LinkButton } from './LinkButton/LinkButton';
 export { ScrollToHashElement } from './ScrollToHashElement/ScrollToHashElement';
+export { NavigationPanel } from './NavigationPanel/NavigationPanel';
 
 export interface SelectItem {
   id: string;
@@ -41,4 +42,9 @@ export interface Option {
   value: string;
   label: string;
   disabled?: boolean;
+}
+
+export interface NavigationPanelLink {
+  name: string;
+  label: string;
 }

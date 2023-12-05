@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import { Control, useFieldArray } from 'react-hook-form';
 import { Box, Chip, Divider, Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -146,16 +147,21 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   }
 
   return isFirstLevel(props.name) ? (
-    <Card
-      sx={{ mb: 2 }}
+    <span
       key={props.name}
-      title={t(props.component.label as string) as string}
-      variant='variant6'
-      tooltipTitle={t(props.component.tooltip?.title as string) as string}
-      tooltipBody={t(props.component.tooltip?.body as string) as string}
+      className='anchorLink'
+      id={`anchor_${props.component.name}`}
     >
-      {getContent()}
-    </Card>
+      <Card
+        sx={{ mb: 2 }}
+        title={t(props.component.label as string) as string}
+        variant='variant6'
+        tooltipTitle={t(props.component.tooltip?.title as string) as string}
+        tooltipBody={t(props.component.tooltip?.body as string) as string}
+      >
+        {getContent()}
+      </Card>
+    </span>
   ) : (
     <Box key={props.name}>{getContent()}</Box>
   );
