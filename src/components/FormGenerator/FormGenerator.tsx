@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React from 'react';
 import { Box, Divider } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
@@ -212,23 +213,24 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       !isComponentRepeating(component)
     ) {
       return isFirstLevel(currentComponentNamePath) ? (
-        <Card
-          sx={{ mb: 2 }}
-          key={reactKey}
-          title={t(component.label as string) as string}
-          variant='variant6'
-          tooltipTitle={t(component.tooltip?.title as string) as string}
-          tooltipBody={t(component.tooltip?.body as string) as string}
-        >
-          {createFormComponentAttributes(component, currentComponentNamePath)}
-          {component.components &&
-            createFormComponents(
-              component.components,
-              component,
-              currentComponentNamePath,
-            )}
-          <span id={component.name} />
-        </Card>
+        <React.Fragment key={reactKey}>
+          <span id={`anchor_${component.name}`} />
+          <Card
+            sx={{ mb: 2 }}
+            title={t(component.label as string) as string}
+            variant='variant6'
+            tooltipTitle={t(component.tooltip?.title as string) as string}
+            tooltipBody={t(component.tooltip?.body as string) as string}
+          >
+            {createFormComponentAttributes(component, currentComponentNamePath)}
+            {component.components &&
+              createFormComponents(
+                component.components,
+                component,
+                currentComponentNamePath,
+              )}
+          </Card>
+        </React.Fragment>
       ) : (
         <Box key={reactKey}>
           <Typography
@@ -272,7 +274,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             text={component?.label ?? ''}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
           />
-          <span id={component.name} />
           <FieldArrayComponent
             control={control}
             component={component}

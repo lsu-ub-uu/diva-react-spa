@@ -20,6 +20,7 @@
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Stepper from '@mui/material/Stepper';
+import { useTranslation } from 'react-i18next';
 import { NavigationPanelLink } from '../index';
 
 export interface NavigationPanelProps {
@@ -28,6 +29,8 @@ export interface NavigationPanelProps {
 }
 
 export const NavigationPanel = (props: NavigationPanelProps) => {
+  const { t } = useTranslation();
+
   const findActiveLinkNameIndex = (linkName: string | undefined): number => {
     if (linkName === undefined) return 0;
     return props.links.findIndex((link) => link.name === linkName);
@@ -52,6 +55,11 @@ export const NavigationPanel = (props: NavigationPanelProps) => {
           fill: '#613985',
           display: 'none',
         },
+        '& .MuiStepConnector-line': {
+          minHeight: '12px',
+          marginTop: '-6px',
+          marginBottom: '-6px !important',
+        },
         '& .MuiSvgIcon-root.Mui-active': {
           color: '#613985',
           stroke: '#613985',
@@ -71,9 +79,9 @@ export const NavigationPanel = (props: NavigationPanelProps) => {
         <Step key={item.name}>
           <StepButton
             disableRipple
-            href={`#${item.name}`}
+            href={`#anchor_${item.name}`}
           >
-            {item.label}
+            {t(item.label)}
           </StepButton>
         </Step>
       ))}

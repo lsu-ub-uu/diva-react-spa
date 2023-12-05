@@ -24,7 +24,13 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useBackdrop, FormGenerator } from '../components';
+import {
+  useBackdrop,
+  FormGenerator,
+  AsidePortal,
+  NavigationPanel,
+  NavigationPanelLink,
+} from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 
@@ -77,11 +83,24 @@ export const DynamicFormPage = () => {
       />
     );
 
+  const linksFromFormSchema = (
+    formSchema: FormSchema,
+  ): NavigationPanelLink[] | undefined =>
+    formSchema?.form.components
+      ?.filter((c) => c.type !== 'text')
+      .map((c) => ({ name: c.name, label: c.label } as NavigationPanelLink));
+
   return (
     <>
       <Helmet>
         <title>{t(schema?.form.label as string)} | DiVA</title>
       </Helmet>
+      <AsidePortal>
+        <NavigationPanel
+          links={schema ? linksFromFormSchema(schema) || [] : []}
+          activeLinkName='title'
+        />
+      </AsidePortal>
       <div>
         <Stack spacing={2}>
           <FormGenerator
