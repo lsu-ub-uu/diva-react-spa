@@ -24,6 +24,7 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import {
   useBackdrop,
   FormGenerator,
@@ -34,14 +35,15 @@ import {
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 
-export const DynamicFormPage = () => {
+export const CreateRecordPage = () => {
+  const { validationType } = useParams();
   const [activeSection, setActiveSection] = useState<string>('');
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
   const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
-    'manuscript',
+    validationType,
     'create',
   );
 

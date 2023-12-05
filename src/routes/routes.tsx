@@ -9,7 +9,7 @@ import {
   ReactHookFormTestPage,
   PersonSearchPage,
   PersonCreatePage,
-  DynamicFormPage,
+  CreateRecordPage,
   UpdateRecordPage,
 } from '../pages';
 import PrivateRoutes from './PrivateRoutes';
@@ -36,8 +36,8 @@ export const routes = [
         element: <PrivateRoutes />,
         children: [
           {
-            path: '/form',
-            element: <DynamicFormPage />,
+            path: '/create/record/:validationType',
+            element: <CreateRecordPage />,
           },
           {
             path: '/update/record/:recordId',
@@ -59,7 +59,7 @@ export const routes = [
       },
       {
         path: '/form',
-        element: <DynamicFormPage />,
+        element: <CreateRecordPage />,
       },
       { path: '*', element: <div>404 not found</div> },
     ],
