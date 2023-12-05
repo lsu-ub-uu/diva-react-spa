@@ -37,7 +37,7 @@ import {
   BFFMetadataTextVariable,
   BFFMetadataNumberVariable,
   BFFMetadataCollectionVariable,
-  BFFMetadataRecordLink,
+  BFFMetadataRecordLink
 } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
@@ -57,7 +57,7 @@ const transformCoraRecordToBFFMetaData = (coraRecordWrapper: RecordWrapper): BFF
 };
 
 const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
-  let metadata = transformBasicMetadata(dataRecordGroup);
+  const metadata = transformBasicMetadata(dataRecordGroup);
   switch (metadata.type) {
     case 'group': {
       return transformMetadataGroup(dataRecordGroup, metadata);
@@ -83,7 +83,6 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     }
     // TODO add more types
     default: {
-      return;
     }
   }
 };
@@ -141,7 +140,11 @@ const transformCollectionVariable = (
   const attributeReferences = extractAttributesReferences(dataRecordGroup);
   const refCollection = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'refCollection');
 
-  return removeEmpty({ ...metadata, refCollection, attributeReferences }) as BFFMetadataCollectionVariable;
+  return removeEmpty({
+    ...metadata,
+    refCollection,
+    attributeReferences
+  }) as BFFMetadataCollectionVariable;
 };
 
 const transformRecordLink = (
@@ -154,9 +157,16 @@ const transformRecordLink = (
   }
 
   const attributeReferences = extractAttributesReferences(dataRecordGroup);
-  const linkedRecordType = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'linkedRecordType');
+  const linkedRecordType = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'linkedRecordType'
+  );
 
-  return removeEmpty({ ...metadata, linkedRecordType, attributeReferences }) as BFFMetadataRecordLink;
+  return removeEmpty({
+    ...metadata,
+    linkedRecordType,
+    attributeReferences
+  }) as BFFMetadataRecordLink;
 };
 
 const transformItemCollection = (dataRecordGroup: DataGroup, metadata: BFFMetadata) => {

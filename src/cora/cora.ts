@@ -22,11 +22,11 @@ import { DataGroup } from '../utils/cora-data/CoraData';
 
 export async function getRecordDataListByType<T>(
   type: string,
-  authToken: string,
+  authToken: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}`;
   const headers = {
-    // Authtoken: `${authToken}`
+    Authtoken: `${authToken}`
   };
 
   const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
@@ -35,31 +35,30 @@ export async function getRecordDataListByType<T>(
 
 export async function getRecordDataById<T>(
   type: string,
-  id:  string,
-  authToken: string,
+  id: string,
+  authToken: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${id}`;
   const headers = {
-    'Accept': 'application/vnd.uub.record+json',
+    Accept: 'application/vnd.uub.record+json',
     'Content-Type': 'application/vnd.uub.record+json',
-    'Authtoken': `${authToken}`,
+    Authtoken: `${authToken}`
   };
 
   const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
   return response;
 }
 
-
 export async function postRecordData<T>(
   payload: DataGroup,
   type: string,
-  authToken: string,
+  authToken: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}`;
   const headers = {
-    'Accept': 'application/vnd.uub.record+json',
+    Accept: 'application/vnd.uub.record+json',
     'Content-Type': 'application/vnd.uub.record+json',
-    'Authtoken': `${authToken}`,
+    Authtoken: `${authToken}`
   };
 
   const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
@@ -70,16 +69,15 @@ export async function updateRecordDataById<T>(
   recordId: string,
   payload: DataGroup,
   type: string,
-  authToken: string,
+  authToken: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${recordId}`;
   const headers = {
-    'Accept': 'application/vnd.uub.record+json',
+    Accept: 'application/vnd.uub.record+json',
     'Content-Type': 'application/vnd.uub.record+json',
-    'Authtoken': `${authToken}`,
+    Authtoken: `${authToken}`
   };
 
   const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
   return response;
 }
-

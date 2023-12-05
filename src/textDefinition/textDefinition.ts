@@ -27,17 +27,17 @@ export const createTextDefinition = (dependencies: Dependencies, lang: string) =
   for (let [key, text] of textPool.entries()) {
     // @ts-ignore
     const value = text[lang];
-    let obj = {}
+    let obj = {};
     // @ts-ignore
     obj[key] = value;
-    if (value !== undefined) textItemDefinitions.push(obj)
+    if (value !== undefined) textItemDefinitions.push(obj);
   }
 
   return textItemDefinitions.reduce(
     (obj, item) =>
       Object.assign(obj, {
-        [Object.keys(item)[0]]: Object.values(item)[0],
+        [Object.keys(item)[0]]: Object.values(item)[0]
       }),
-    {},
-  )
-}
+    {}
+  );
+};

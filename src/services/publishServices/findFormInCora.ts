@@ -15,14 +15,11 @@ export const findFormInCora = (validationType: string, authToken?: string) => {
 //   return 'Newarticle';
 // };
 
-export const findNewFormInCora = async (
-  validationType: string,
-  authToken?: string,
-) => {
+export const findNewFormInCora = async (validationType: string, authToken?: string) => {
   const urlForNewForm = `https://cora.epc.ub.uu.se/diva/rest/record/metadata/${validationType}NewGroup`;
   const parameters: IHttpClientRequestParameters = {
     url: urlForNewForm,
-    authToken,
+    authToken
   };
   const returnedForm: any = await httpClient.get(parameters);
   // console.log('get', returnedForm.record.data);

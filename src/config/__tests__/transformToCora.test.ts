@@ -78,8 +78,8 @@ describe('transformToCora', () => {
     ]);
 
     dependencies = {
-      validationTypePool: validationTypePool,
-      metadataPool: metadataPool
+      validationTypePool,
+      metadataPool
     };
   });
 
@@ -295,7 +295,7 @@ describe('transformToCora', () => {
       children: [
         {
           name: 'id',
-          value: 'someRecordId',
+          value: 'someRecordId'
         },
         {
           name: 'dataDivider',
@@ -328,7 +328,6 @@ describe('transformToCora', () => {
     const recordInfo = generateRecordInfo('divaOutput', 'diva', 'someRecordId');
     expect(recordInfo).toStrictEqual(expected);
   });
-
 
   it('should be able to generate a complete new group for a validation type', () => {
     const expected = {

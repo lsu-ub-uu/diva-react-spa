@@ -1,8 +1,5 @@
 import express from 'express';
-import {
-  getPublicationForm,
-  getNewPublicationForm,
-} from '../controllers/publishController';
+import { getPublicationForm, getNewPublicationForm } from '../controllers/publishController';
 
 const publishRoute = express.Router();
 

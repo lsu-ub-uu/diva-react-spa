@@ -11,7 +11,7 @@ class HttpClient implements IHttpClient {
         let axiosRequestConfig = {};
         if (authToken !== undefined) {
           axiosRequestConfig = {
-            headers: { authToken },
+            headers: { authToken }
           };
         }
         axios
@@ -24,14 +24,12 @@ class HttpClient implements IHttpClient {
             if (axiosError.response) {
               reject(
                 new Error(
-                  `Request returned status code ${axiosError.response.status} with message '${axiosError.response.data}'`,
-                ),
+                  `Request returned status code ${axiosError.response.status} with message '${axiosError.response.data}'`
+                )
               );
             } else if (axiosError.request) {
               reject(
-                new Error(
-                  `The request was made to URL '${url}' but no response was received.`,
-                ),
+                new Error(`The request was made to URL '${url}' but no response was received.`)
               );
             } else {
               reject(new Error(axiosError.message));
@@ -50,7 +48,7 @@ class HttpClient implements IHttpClient {
         let axiosRequestConfig = {};
         if (authToken !== undefined) {
           axiosRequestConfig = {
-            headers: { authToken, 'Content-Type': contentType },
+            headers: { authToken, 'Content-Type': contentType }
           };
         }
 
@@ -65,19 +63,17 @@ class HttpClient implements IHttpClient {
             if (axiosError.response) {
               error = {
                 status: axiosError.response.status,
-                data: axiosError.response.data,
+                data: axiosError.response.data
               };
               // console.log(error);
               reject(
                 new Error(
-                  `Request returned status code ${axiosError.response.status} with message '${axiosError.response.data}'`,
-                ),
+                  `Request returned status code ${axiosError.response.status} with message '${axiosError.response.data}'`
+                )
               );
             } else if (axiosError.request) {
               reject(
-                new Error(
-                  `The request was made to URL '${url}' but no response was received.`,
-                ),
+                new Error(`The request was made to URL '${url}' but no response was received.`)
               );
             } else {
               reject(new Error(axiosError.message));
@@ -96,7 +92,7 @@ class HttpClient implements IHttpClient {
         let axiosRequestConfig = {};
         if (authToken !== undefined) {
           axiosRequestConfig = {
-            headers: { authToken },
+            headers: { authToken }
           };
         }
         axios
@@ -109,14 +105,12 @@ class HttpClient implements IHttpClient {
             if (axiosError.response) {
               reject(
                 new Error(
-                  `Request returned status code ${axiosError.response.status} with message '${axiosError.response.data}'`,
-                ),
+                  `Request returned status code ${axiosError.response.status} with message '${axiosError.response.data}'`
+                )
               );
             } else if (axiosError.request) {
               reject(
-                new Error(
-                  `The request was made to URL '${url}' but no response was received.`,
-                ),
+                new Error(`The request was made to URL '${url}' but no response was received.`)
               );
             } else {
               reject(new Error(axiosError.message));

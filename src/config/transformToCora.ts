@@ -52,13 +52,13 @@ export const generateRecordInfo = (
 };
 
 const findChildrenAttributes = (obj: any) => {
-  let attributesArray = [];
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key) && key.startsWith('_')) {
+  const attributesArray: Record<string, string>[] = [];
+  Object.keys(obj).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(obj, key) && key.startsWith('_')) {
       const value = obj[key];
       attributesArray.push({ [key.substring(1)]: value });
     }
-  }
+  });
   if (!attributesArray.length) return undefined;
   return Object.assign({}, ...attributesArray);
 };
@@ -116,8 +116,7 @@ export const transformToCoraData = (
   repeatId?: string
 ): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
-
-  for (const fieldKey in obj) {
+  Object.keys(obj).forEach((fieldKey) => {
     const value = obj[fieldKey];
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
 
@@ -151,24 +150,22 @@ export const transformToCoraData = (
             );
           }
         });
+      } else if (typeof value === 'object' && value !== null && 'value' in value) {
+        const attributes = findChildrenAttributes(value);
+        result.push(
+          createLeaf(currentMetadataLookup, fieldKey, value.value, undefined, attributes)
+        );
       } else {
-        if (typeof value === 'object' && value !== null && 'value' in value) {
-          const attributes = findChildrenAttributes(value);
-          result.push(
-            createLeaf(currentMetadataLookup, fieldKey, value.value, undefined, attributes)
-          );
-        } else {
-          // If Group
-          result.push(
-            removeEmpty({
-              name: fieldKey,
-              attributes: findChildrenAttributes(value),
-              children: transformToCoraData(lookup, value, currentPath, repeatId)
-            } as DataGroup)
-          );
-        }
+        // If Group
+        result.push(
+          removeEmpty({
+            name: fieldKey,
+            attributes: findChildrenAttributes(value),
+            children: transformToCoraData(lookup, value, currentPath, repeatId)
+          } as DataGroup)
+        );
       }
     }
-  }
+  });
   return result;
 };

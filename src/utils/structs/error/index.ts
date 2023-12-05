@@ -1,3 +1,1 @@
-export class LookupError extends Error {
-
-}
+export class LookupError extends Error {}

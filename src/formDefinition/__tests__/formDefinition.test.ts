@@ -45,6 +45,7 @@ import {
   someMetadataTextVariable3,
   someMetadataTextVariable4,
   someMetadataTextVariable5,
+  someMetadataTextVariable6,
   someMetadataCollectionVariableWithAttribute,
   someMetadataNumberVarWithAttribute,
   someMetadataTextVariableWithAttributeVar,
@@ -60,6 +61,7 @@ import {
   pSomeMetadataTextVariable3,
   pSomeMetadataTextVariable4,
   pSomeMetadataTextVariable5,
+  pSomeMetadataTextVariable6,
   pSomeMetadataCollectionVariableWithAttribute,
   pSomeMetadataNumberWithAttributeVar,
   pSomeMetadataTextVariableWithAttributeVar,
@@ -107,6 +109,7 @@ describe('formDefinition', () => {
       someMetadataTextVariable3,
       someMetadataTextVariable4,
       someMetadataTextVariable5,
+      someMetadataTextVariable6,
       someMetadataNumberVar,
       someNewMetadataGroup,
       someRecordInfo,
@@ -134,6 +137,7 @@ describe('formDefinition', () => {
       pSomeMetadataTextVariable3,
       pSomeMetadataTextVariable4,
       pSomeMetadataTextVariable5,
+      pSomeMetadataTextVariable6,
       pSomeMetadataNumberVar,
       pSomeNewMetadataGroup,
       pSomeMetadataCollectionVariable,
@@ -150,9 +154,9 @@ describe('formDefinition', () => {
       pSomeEditMetadataGroup
     ]);
     dependencies = {
-      validationTypePool: validationTypePool,
-      metadataPool: metadataPool,
-      presentationPool: presentationPool
+      validationTypePool,
+      metadataPool,
+      presentationPool
     };
   });
 
@@ -200,9 +204,9 @@ describe('formDefinition', () => {
   it('should return a form definition for a new metadata group', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.form.components).toHaveLength(16);
+    expect(formDefinition.form.components).toHaveLength(17);
     expect(formDefinition).toStrictEqual({
-      validationTypeId: validationTypeId,
+      validationTypeId,
       form: {
         type: 'group',
         label: 'textId345',
@@ -296,7 +300,7 @@ describe('formDefinition', () => {
               pattern: 'someRegex'
             },
             mode: 'input', // output
-            inputType: 'input' //textarea
+            inputType: 'input' // textarea
           },
           {
             type: 'textVariable',
@@ -318,8 +322,30 @@ describe('formDefinition', () => {
               pattern: 'someRegex'
             },
             mode: 'input', // output
-            inputType: 'input', //textarea
+            inputType: 'input', // textarea
             finalValue: 'someFinalValue'
+          },
+          {
+            type: 'textVariable',
+            name: 'someNameInData6',
+            label: 'someTextId',
+            placeholder: 'someEmptyTextId',
+            gridColSpan: 12,
+            childStyle: [],
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'someTextId',
+              body: 'someDefTextId'
+            },
+            validation: {
+              type: 'regex',
+              pattern: 'someRegex'
+            },
+            mode: 'output', // output
+            inputType: 'input' // textarea
           },
           {
             type: 'numberVariable',
@@ -725,7 +751,7 @@ describe('formDefinition', () => {
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_EDIT);
     expect(formDefinition.form.components).toHaveLength(16);
     expect(formDefinition).toStrictEqual({
-      validationTypeId: validationTypeId,
+      validationTypeId,
       form: {
         type: 'group',
         label: 'textId345',
@@ -819,7 +845,7 @@ describe('formDefinition', () => {
               pattern: 'someRegex'
             },
             mode: 'input', // output
-            inputType: 'input' //textarea
+            inputType: 'input' // textarea
           },
           {
             type: 'textVariable',
@@ -841,7 +867,7 @@ describe('formDefinition', () => {
               pattern: 'someRegex'
             },
             mode: 'input', // output
-            inputType: 'input', //textarea
+            inputType: 'input', // textarea
             finalValue: 'someFinalValue'
           },
           {

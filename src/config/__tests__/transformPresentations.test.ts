@@ -19,6 +19,10 @@
 import emptyDataList from '../../__mocks__/emptyDataList.json';
 import { transformCoraPresentations } from '../transformPresentations';
 import presentationListWithTwoPVars from '../../__mocks__/coraPresentationWithTwoTextVariables.json';
+import presentationListWithPVarsModeOutput from '../../__mocks__/coraPresentationWithTextVariableModeOutput.json';
+import presentationListWithPCollVarsModeOutput from '../../__mocks__/coraPresentationWithOneCollectionVariableWithModeOutput.json';
+import presentationPGroupModeOutput from '../../__mocks__/coraPresentationGroupWithModeOutput.json';
+
 import presentationListWithTwoPNumVar from '../../__mocks__/coraPresentationWithTwoNumberVariables.json';
 import coraPresentationGroupWithMissingEmptyTextId from '../../__mocks__/coraPresentationGroupWithMissingEmptyTextId.json';
 import coraPresentationGroup from '../../__mocks__/coraPresentationGroup.json';
@@ -102,6 +106,7 @@ describe('transformCoraPresentations', () => {
       });
     });
   });
+
   describe('pNumVar', () => {
     it('Returns one BFFPresentation for one pNumVar entry', () => {
       const transformData = transformCoraPresentations(presentationListWithTwoPNumVar);
@@ -332,6 +337,7 @@ describe('transformCoraPresentations', () => {
       expect(transformData).toHaveLength(6);
     });
   });
+
   describe('pCollVar', () => {
     it('Returns one BFFPresentation for one pCollVar entry', () => {
       const transformData = transformCoraPresentations(coraPresentationWithOneCollectionVariable);
@@ -420,6 +426,7 @@ describe('transformCoraPresentations', () => {
       });
     });
   });
+
   describe('Repeating Container', () => {
     it('Returns one BFFPresentation for one RContainer', () => {
       const transformData = transformCoraPresentations(coraPresentationRepeatingContainer);
@@ -457,6 +464,68 @@ describe('transformCoraPresentations', () => {
         elementText: 'demoTestLinkGuiElementText',
         presentAs: 'link',
         type: 'guiElementLink'
+      });
+    });
+  });
+
+  describe('mode: output', () => {
+    it('Returns one BFFPresentation for one pVar entry with mode output', () => {
+      const transformData = transformCoraPresentations(presentationListWithPVarsModeOutput);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someTextVarPVar',
+        type: 'pVar',
+        presentationOf: 'someTextVar',
+        mode: 'output',
+        inputType: 'someInputType',
+        emptyTextId: 'somePlaceholderText'
+      });
+    });
+
+    it('Returns one BFFPresentation for one pCollVar entry  with mode output', () => {
+      const transformData = transformCoraPresentations(presentationListWithPCollVarsModeOutput);
+      expect(transformData[0]).toStrictEqual({
+        id: 'examplePCollVar',
+        type: 'pCollVar',
+        presentationOf: 'exampleCollectionVar',
+        mode: 'output',
+        emptyTextId: 'initialEmptyValueText'
+      });
+    });
+
+    it('Returns one BFFPresentationGroup for one entry with mode output', () => {
+      const transformData = transformCoraPresentations(presentationPGroupModeOutput);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someNewPGroup',
+        type: 'pGroup',
+        presentationOf: 'someNewGroup',
+        mode: 'output',
+        children: [
+          {
+            childId: 'demoText',
+            type: 'text',
+            textStyle: 'h1TextStyle',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1'
+          },
+          {
+            childId: 'recordInfoNewPGroup',
+            type: 'presentation',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1'
+          },
+          {
+            childId: 'bookTitleTextVarText',
+            type: 'text',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1'
+          },
+          {
+            childId: 'bookTitleTextVarPVar',
+            type: 'presentation',
+            childStyle: [],
+            minNumberOfRepeatingToShow: '1'
+          }
+        ]
       });
     });
   });

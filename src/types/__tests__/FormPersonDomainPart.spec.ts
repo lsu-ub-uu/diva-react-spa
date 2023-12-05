@@ -1,27 +1,23 @@
 import {
   completePersonDomainPart,
-  minimalPersonDomainPart,
+  minimalPersonDomainPart
 } from '../../__mocks__/personDomainPartObjectData';
 import { convertToFormPersonDomainPart } from '../FormPersonDomainPart';
 
 describe('FormPersonDomainPart', () => {
   it('converts a minimal PersonDomainPart', () => {
-    const formPersonDomainPart = convertToFormPersonDomainPart(
-      minimalPersonDomainPart,
-    );
+    const formPersonDomainPart = convertToFormPersonDomainPart(minimalPersonDomainPart);
 
     expect(formPersonDomainPart).toStrictEqual({
       id: 'someMinimalId',
       identifiers: [],
       domain: 'uu',
-      affiliations: [],
+      affiliations: []
     });
   });
 
   it('converts a complete personDomainPart', () => {
-    const formPersonDomainPart = convertToFormPersonDomainPart(
-      completePersonDomainPart,
-    );
+    const formPersonDomainPart = convertToFormPersonDomainPart(completePersonDomainPart);
 
     expect(formPersonDomainPart).toStrictEqual({
       id: 'someCompleteId',
@@ -31,9 +27,9 @@ describe('FormPersonDomainPart', () => {
         {
           id: 'someAffiliationid',
           fromYear: '1990',
-          untilYear: '2000',
-        },
-      ],
+          untilYear: '2000'
+        }
+      ]
     });
   });
 });

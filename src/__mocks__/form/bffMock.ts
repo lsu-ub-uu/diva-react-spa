@@ -52,7 +52,7 @@ export const someManuscriptEditMetadataGroup: BFFMetadataGroup = {
       childId: 'alternativeTitle',
       repeatMin: '0',
       repeatMax: '1'
-    },
+    }
   ]
 };
 
@@ -93,8 +93,6 @@ export const someSubTitleTextVariable: BFFMetadataTextVariable = {
   defTextId: 'someDefTextId',
   regEx: 'someRegex'
 };
-
-
 
 export const someNewMetadataGroup: BFFMetadataGroup = {
   id: 'someNewMetadataGroupId',
@@ -137,6 +135,11 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
       childId: 'someMetadataTextVariable5Id',
       repeatMin: '1',
       repeatMax: '3'
+    },
+    {
+      childId: 'someMetadataTextVariable6Id',
+      repeatMin: '1',
+      repeatMax: '1'
     },
     {
       childId: 'someMetadataNumberVarId',
@@ -363,6 +366,14 @@ export const someMetadataTextVariable5: BFFMetadataTextVariable = {
   defTextId: 'someDefTextId',
   regEx: 'someRegex'
 };
+export const someMetadataTextVariable6: BFFMetadataTextVariable = {
+  id: 'someMetadataTextVariable6Id',
+  nameInData: 'someNameInData6',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
 
 export const someMetadataTextVariableWithAttributeVar: BFFMetadataTextVariable = {
   id: 'someMetadataTextVariableWithAttributeVarId',
@@ -555,6 +566,14 @@ export const pSomeMetadataTextVariable5: BFFPresentation = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId'
 };
+export const pSomeMetadataTextVariable6: BFFPresentation = {
+  id: 'pSomeMetadataTextVariable6Id',
+  presentationOf: 'someMetadataTextVariable6Id',
+  mode: 'output',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId'
+};
 
 export const pSomeMetadataCollectionVariable: BFFPresentation = {
   id: 'pSomeMetadataCollectionVariableId',
@@ -645,6 +664,11 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       childId: 'pSomeMetadataTextVariable3Id',
       type: 'presentation',
       childStyle: ['threeChildStyle']
+    },
+    {
+      childId: 'pSomeMetadataTextVariable6Id',
+      type: 'presentation',
+      childStyle: []
     },
     {
       childId: 'pSomeMetadataNumberVariableId',

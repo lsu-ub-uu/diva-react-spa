@@ -18,16 +18,24 @@
  */
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
-import { isDataAtomic, isDataGroup, isRecordLink, transformRecord, traverseDataGroup } from '../transformRecord';
+import {
+  isDataAtomic,
+  isDataGroup,
+  isRecordLink,
+  transformRecord,
+  traverseDataGroup
+} from '../transformRecord';
 import { DataAtomic, DataGroup, RecordLink, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
 import { BFFMetadata, BFFMetadataItemCollection, BFFValidationType } from '../bffTypes';
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
-  someAlternativeTitleMetadataChildGroup, someMainTitleTextVariable,
+  someAlternativeTitleMetadataChildGroup,
+  someMainTitleTextVariable,
   someManuscriptEditMetadataGroup,
-  someManuscriptValidationTypeData, someSubTitleTextVariable,
+  someManuscriptValidationTypeData,
+  someSubTitleTextVariable
 } from '../../__mocks__/form/bffMock';
 
 describe('transformRecord', () => {
@@ -36,9 +44,7 @@ describe('transformRecord', () => {
   let dependencies: Dependencies;
 
   beforeEach(() => {
-    validationTypePool = listToPool<BFFValidationType>([
-      someManuscriptValidationTypeData
-    ]);
+    validationTypePool = listToPool<BFFValidationType>([someManuscriptValidationTypeData]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someManuscriptEditMetadataGroup,
       someAlternativeTitleMetadataChildGroup,
@@ -47,11 +53,10 @@ describe('transformRecord', () => {
     ]);
 
     dependencies = {
-      validationTypePool: validationTypePool,
-      metadataPool: metadataPool,
+      validationTypePool,
+      metadataPool
     };
   });
-
 
   describe('helper methods', () => {
     it('should be able to detect a DataGroup', () => {
@@ -72,12 +77,13 @@ describe('transformRecord', () => {
         children: [
           {
             name: 'linkedRecordType',
-            value: 'someLinkedRecordType',
+            value: 'someLinkedRecordType'
           },
           {
             name: 'linkedRecordId',
-            value: 'someLinkedRecordValue',
-          }],
+            value: 'someLinkedRecordValue'
+          }
+        ]
       } as RecordLink;
       const expected = isRecordLink(testData);
       expect(true).toStrictEqual(expected);
@@ -96,64 +102,64 @@ describe('transformRecord', () => {
       updated: [
         {
           updateAt: '2023-10-11T09:24:30.511487Z',
-          updatedBy: 'coraUser:490742519075086',
+          updatedBy: 'coraUser:490742519075086'
         },
         {
           updateAt: '2023-10-18T09:09:13.554736Z',
-          updatedBy: '161616',
+          updatedBy: '161616'
         },
         {
           updateAt: '2023-10-26T12:33:22.260532Z',
-          updatedBy: '161616',
+          updatedBy: '161616'
         },
         {
           updateAt: '2023-10-26T12:35:28.748398Z',
-          updatedBy: '161616',
+          updatedBy: '161616'
         },
         {
           updateAt: '2023-10-26T12:35:40.545698Z',
-          updatedBy: '161616',
+          updatedBy: '161616'
         },
         {
           updateAt: '2023-10-26T12:35:52.293623Z',
-          updatedBy: '161616',
-        },
+          updatedBy: '161616'
+        }
       ],
       data: {
         divaOutput: {
           title: {
             mainTitle: {
-              value: 'aaaaaa',
+              value: 'aaaaaa'
             },
-            _language: 'kal',
+            _language: 'kal'
           },
           alternativeTitle: [
             {
               mainTitle: {
-                value: 'bbbbb',
+                value: 'bbbbb'
               },
               subTitle: [
                 {
-                  value: 'subTitle1',
-                },
+                  value: 'subTitle1'
+                }
               ],
               _language: 'epo',
-              _titleType: 'alternativeTitle',
-            },
+              _titleType: 'alternativeTitle'
+            }
           ],
           nationalSubjectCategory: [
             {
-              value: 'nationalSubjectCategory:6325370460697648',
-            },
+              value: 'nationalSubjectCategory:6325370460697648'
+            }
           ],
           abstract: [
             {
               value: 'hej!',
-              _language: 'fao',
-            },
-          ],
-        },
-      },
+              _language: 'fao'
+            }
+          ]
+        }
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -162,7 +168,7 @@ describe('transformRecord', () => {
     const test = { name: 'divaOutput', children: [] };
     const transformData = traverseDataGroup(test);
     const expected = {
-      divaOutput: {},
+      divaOutput: {}
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -173,17 +179,17 @@ describe('transformRecord', () => {
       children: [
         {
           name: 'title',
-          value: 'testTitleVal',
-        },
-      ],
+          value: 'testTitleVal'
+        }
+      ]
     };
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {
         title: {
-          value: 'testTitleVal',
-        },
-      },
+          value: 'testTitleVal'
+        }
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -197,21 +203,21 @@ describe('transformRecord', () => {
           children: [
             {
               name: 'title',
-              value: 'testTitleVal',
-            },
-          ],
-        },
-      ],
+              value: 'testTitleVal'
+            }
+          ]
+        }
+      ]
     };
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {
         childGroup: {
           title: {
-            value: 'testTitleVal',
-          },
-        },
-      },
+            value: 'testTitleVal'
+          }
+        }
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -222,24 +228,24 @@ describe('transformRecord', () => {
       children: [
         {
           name: 'title',
-          value: 'testTitleVal',
+          value: 'testTitleVal'
         },
         {
           name: 'age',
-          value: '12',
-        },
-      ],
+          value: '12'
+        }
+      ]
     };
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {
         title: {
-          value: 'testTitleVal',
+          value: 'testTitleVal'
         },
         age: {
-          value: '12',
-        },
-      },
+          value: '12'
+        }
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -251,34 +257,34 @@ describe('transformRecord', () => {
         {
           name: 'exampleNumberVar',
           value: '12.99',
-          repeatId: '0',
+          repeatId: '0'
         },
         {
           name: 'exampleNumberVar',
           value: '1.34',
-          repeatId: '1',
+          repeatId: '1'
         },
         {
           name: 'exampleNumberVarTwo',
-          value: '99.00',
-        },
-      ],
+          value: '99.00'
+        }
+      ]
     };
     const transformData = traverseDataGroup(test as DataGroup);
     const expected = {
       divaOutput: {
         exampleNumberVar: [
           {
-            value: '12.99',
+            value: '12.99'
           },
           {
-            value: '1.34',
-          },
+            value: '1.34'
+          }
         ],
         exampleNumberVarTwo: {
-          value: '99.00',
-        },
-      },
+          value: '99.00'
+        }
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -292,18 +298,18 @@ describe('transformRecord', () => {
           value: '12.99',
           repeatId: '0',
           attributes: {
-            language: 'kal',
-          },
+            language: 'kal'
+          }
         },
         {
           name: 'exampleNumberVar',
           value: '1.34',
           repeatId: '1',
           attributes: {
-            language: 'eng',
-          },
-        },
-      ],
+            language: 'eng'
+          }
+        }
+      ]
     };
     const transformData = traverseDataGroup(test as DataGroup);
     const expected = {
@@ -311,14 +317,14 @@ describe('transformRecord', () => {
         exampleNumberVar: [
           {
             value: '12.99',
-            _language: 'kal',
+            _language: 'kal'
           },
           {
             value: '1.34',
-            _language: 'eng',
-          },
-        ],
-      },
+            _language: 'eng'
+          }
+        ]
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -330,45 +336,45 @@ describe('transformRecord', () => {
         {
           name: 'exampleNumberVar',
           value: '12.99',
-          repeatId: '0',
+          repeatId: '0'
         },
         {
           name: 'exampleNumberVar',
           value: '1.34',
-          repeatId: '1',
+          repeatId: '1'
         },
         {
           name: 'exampleNumberVarTwo',
           value: '99.00',
-          repeatId: '0',
+          repeatId: '0'
         },
         {
           name: 'exampleNumberVarTwo',
           value: '101.00',
-          repeatId: '1',
-        },
-      ],
+          repeatId: '1'
+        }
+      ]
     };
     const transformData = traverseDataGroup(test as DataGroup);
     const expected = {
       divaOutput: {
         exampleNumberVar: [
           {
-            value: '12.99',
+            value: '12.99'
           },
           {
-            value: '1.34',
-          },
+            value: '1.34'
+          }
         ],
         exampleNumberVarTwo: [
           {
-            value: '99.00',
+            value: '99.00'
           },
           {
-            value: '101.00',
-          },
-        ],
-      },
+            value: '101.00'
+          }
+        ]
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -383,9 +389,9 @@ describe('transformRecord', () => {
           children: [
             {
               name: 'title',
-              value: 'testTitleVal1',
-            },
-          ],
+              value: 'testTitleVal1'
+            }
+          ]
         },
         {
           name: 'childGroup',
@@ -393,11 +399,11 @@ describe('transformRecord', () => {
           children: [
             {
               name: 'title',
-              value: 'testTitleVal2',
-            },
-          ],
-        },
-      ],
+              value: 'testTitleVal2'
+            }
+          ]
+        }
+      ]
     };
     const transformData = traverseDataGroup(test);
     const expected = {
@@ -405,16 +411,16 @@ describe('transformRecord', () => {
         childGroup: [
           {
             title: {
-              value: 'testTitleVal1',
-            },
+              value: 'testTitleVal1'
+            }
           },
           {
             title: {
-              value: 'testTitleVal2',
-            },
-          },
-        ],
-      },
+              value: 'testTitleVal2'
+            }
+          }
+        ]
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -428,23 +434,23 @@ describe('transformRecord', () => {
           children: [
             {
               name: 'linkedRecordType',
-              value: 'nationalSubjectCategory',
+              value: 'nationalSubjectCategory'
             },
             {
               name: 'linkedRecordId',
-              value: 'nationalSubjectCategory:6325370460697648',
-            },
-          ],
-        },
-      ],
+              value: 'nationalSubjectCategory:6325370460697648'
+            }
+          ]
+        }
+      ]
     };
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {
         nationalSubjectCategory: {
-          value: 'nationalSubjectCategory:6325370460697648',
-        },
-      },
+          value: 'nationalSubjectCategory:6325370460697648'
+        }
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });
@@ -456,38 +462,38 @@ describe('transformRecord', () => {
         {
           repeatId: '0',
           attributes: {
-            language: 'eng',
+            language: 'eng'
           },
           name: 'nationalSubjectCategory',
           children: [
             {
               name: 'linkedRecordType',
-              value: 'nationalSubjectCategory',
+              value: 'nationalSubjectCategory'
             },
             {
               name: 'linkedRecordId',
-              value: 'nationalSubjectCategory:6325370460697648',
-            },
-          ],
+              value: 'nationalSubjectCategory:6325370460697648'
+            }
+          ]
         },
         {
           repeatId: '1',
           attributes: {
-            language: 'swe',
+            language: 'swe'
           },
           name: 'nationalSubjectCategory',
           children: [
             {
               name: 'linkedRecordType',
-              value: 'nationalSubjectCategory',
+              value: 'nationalSubjectCategory'
             },
             {
               name: 'linkedRecordId',
-              value: 'nationalSubjectCategory:6325370460697641',
-            },
-          ],
-        },
-      ],
+              value: 'nationalSubjectCategory:6325370460697641'
+            }
+          ]
+        }
+      ]
     };
     const transformData = traverseDataGroup(test);
     const expected = {
@@ -495,13 +501,14 @@ describe('transformRecord', () => {
         nationalSubjectCategory: [
           {
             value: 'nationalSubjectCategory:6325370460697648',
-            _language: 'eng',
+            _language: 'eng'
           },
           {
             value: 'nationalSubjectCategory:6325370460697641',
-            _language: 'swe',
-          }],
-      },
+            _language: 'swe'
+          }
+        ]
+      }
     };
     expect(transformData).toStrictEqual(expected);
   });

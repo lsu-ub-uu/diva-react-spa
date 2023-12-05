@@ -28,9 +28,11 @@ export function getAllRecordLinksWithNameInData(
   const recordLinks = <RecordLink[]>dataGroup.children.filter((child) => {
     if (Object.prototype.hasOwnProperty.call(child, 'children')) {
       const dGChild = child as DataGroup;
-      return dGChild.children.filter((grandChild: DataElement) => {
-        return (grandChild.name === 'linkedRecordType' || grandChild.name === 'linkedRecordId');
-      }).length > 0;
+      return (
+        dGChild.children.filter((grandChild: DataElement) => {
+          return grandChild.name === 'linkedRecordType' || grandChild.name === 'linkedRecordId';
+        }).length > 0
+      );
     }
     return false;
   });

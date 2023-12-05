@@ -52,7 +52,7 @@ export const cleanJson = (data: any): any => {
       const cleanedValue = typeof value === 'object' ? cleanJson(value) : value;
       return [key, cleanedValue];
     });
-    const filteredClean = clean.filter(([key, value]) => {
+    const filteredClean = clean.filter(([, value]) => {
       if (typeof value === 'object') {
         return Object.keys(value).length > 0; // Filter out empty objects
       }

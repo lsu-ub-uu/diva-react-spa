@@ -14,7 +14,7 @@ export interface FormPersonDomainPart {
 }
 
 export const convertToFormPersonDomainPart = (
-  personDomainPart: PersonDomainPart,
+  personDomainPart: PersonDomainPart
 ): FormPersonDomainPart => {
   let affiliations: FormAffiliationLink[] = [];
 
@@ -23,7 +23,7 @@ export const convertToFormPersonDomainPart = (
       return {
         fromYear: '',
         untilYear: '',
-        ...affiliation,
+        ...affiliation
       };
     });
   }
@@ -32,6 +32,6 @@ export const convertToFormPersonDomainPart = (
     id: personDomainPart.id,
     domain: personDomainPart.domain,
     affiliations,
-    identifiers: personDomainPart.identifiers || [],
+    identifiers: personDomainPart.identifiers || []
   };
 };

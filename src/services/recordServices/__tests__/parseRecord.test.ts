@@ -21,17 +21,13 @@ describe('parseRecords', () => {
     //     images: [],
     //   });
     // });
-    it.each([exampleDevOutput, exampleDevOutput2])(
-      `should parse records %#`,
-      (devOutput) => {
-        const output = parseRecord(devOutput);
-        expect(output).toStrictEqual({
-          id: 'exampleDevOutput:5538156835926548',
-          title: 'my funny title',
-          images: [],
-        });
-      },
-    );
+    it.each([exampleDevOutput, exampleDevOutput2])(`should parse records %#`, (devOutput) => {
+      const output = parseRecord(devOutput);
+      expect(output).toStrictEqual({
+        id: 'exampleDevOutput:5538156835926548',
+        title: 'my funny title',
+        images: []
+      });
+    });
   });
-  
 });

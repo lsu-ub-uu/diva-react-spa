@@ -3,12 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "extends": [
-    "airbnb",
-    "airbnb/hooks",
-    "airbnb-typescript",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["airbnb", "airbnb/hooks", "airbnb-typescript", "plugin:prettier/recommended"],
   "overrides": [],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -16,18 +11,14 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-one-expression-per-line": "off",
-    "react/destructuring-assignment": "off",
     "unused-vars": "off",
     "import/prefer-default-export": "off",
-    "react/function-component-definition": "off",
-    "react/jsx-props-no-spreading": "off",
     "no-param-reassign": "off",
-    "react/require-default-props": "off",
-    "react/no-array-index-key": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "import/no-cycle": "off",
+    "no-console": "off"
   }
 }

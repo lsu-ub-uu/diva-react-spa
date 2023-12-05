@@ -9,12 +9,7 @@ export class List {
 
   data: Record[];
 
-  constructor(
-    data: Record[],
-    fromNumber: number,
-    toNumber: number,
-    totalNumber: number,
-  ) {
+  constructor(data: Record[], fromNumber: number, toNumber: number, totalNumber: number) {
     this.data = data;
     this.fromNumber = fromNumber;
     this.toNumber = toNumber;

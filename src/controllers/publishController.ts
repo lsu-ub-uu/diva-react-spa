@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
-import {
-  findFormInCora,
-  findNewFormInCora,
-} from '../services/publishServices/findFormInCora';
+import { findFormInCora, findNewFormInCora } from '../services/publishServices/findFormInCora';
 
 // @desc		Get new person with name
 // @route		GET /api/publish/:validationType
@@ -11,10 +8,7 @@ export const getPublicationForm = async (req: Request, res: Response) => {
   const { validationType } = req.params;
 
   let authToken;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     authToken = req.headers.authorization?.split(' ')[1];
   }
 
@@ -35,10 +29,7 @@ export const getNewPublicationForm = async (req: Request, res: Response) => {
   const { validationType } = req.params;
 
   let authToken;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     authToken = req.headers.authorization?.split(' ')[1];
   }
 

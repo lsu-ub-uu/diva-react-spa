@@ -18,5 +18,5 @@ export type LoginUnitObject = {
 
 export enum LoginType {
   LoginWebRedirect = RecordType.LoginWebRedirect,
-  LoginLDAP = RecordType.LoginLDAP,
+  LoginLDAP = RecordType.LoginLDAP
 }

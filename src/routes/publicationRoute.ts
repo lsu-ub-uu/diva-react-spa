@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   getSpecificPublication,
-  getAllPublicationsTypes,
+  getAllPublicationsTypes
 } from '../controllers/publicationController';
 
 const publicationRouter = express.Router();

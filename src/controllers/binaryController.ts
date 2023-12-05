@@ -8,10 +8,7 @@ export const postBinary = async (req: Request, res: Response) => {
   const newBinary = req.body;
 
   let authToken;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     authToken = req.headers.authorization?.split(' ')[1];
   }
 

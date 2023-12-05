@@ -20,7 +20,6 @@
 import { DataGroup } from '../CoraData';
 import {
   getAllDataAtomicsWithNameInData,
-  getAllDataGroupsWithNameInDataAndAttributes,
   getFirstDataAtomicWithNameInData,
   getFirstDataGroupWithNameInData,
   getFirstDataGroupWithNameInDataAndAttributes
@@ -39,11 +38,6 @@ const mockGetAllDataAtomicsWithNameInData = getAllDataAtomicsWithNameInData as j
 const mockGetFirstDataGroupWithNameInDataAndAttributes =
   getFirstDataGroupWithNameInDataAndAttributes as jest.MockedFunction<
     typeof getFirstDataGroupWithNameInDataAndAttributes
-  >;
-
-const mockGetAllDataGroupsWithNameInDataAndAttributes =
-  getAllDataGroupsWithNameInDataAndAttributes as jest.MockedFunction<
-    typeof getAllDataGroupsWithNameInDataAndAttributes
   >;
 
 const mockGetFirstDataGroupWithNameInData = getFirstDataGroupWithNameInData as jest.MockedFunction<
