@@ -113,27 +113,27 @@ export const Card = (props: CardProps) => {
         action={props.action}
         sx={{
           ...(props.variant === 'variant1' && {
-            backgroundColor: '#d6e7f3;',
+            backgroundColor: '#d6e7f3',
             borderBottom: '2px solid #5389c0',
           }),
           ...(props.variant === 'variant2' && {
-            backgroundColor: '#eedcdb;',
+            backgroundColor: '#eedcdb',
             borderBottom: '2px solid #cc908c',
           }),
           ...(props.variant === 'variant3' && {
-            backgroundColor: '#d9eadb;',
+            backgroundColor: '#d9eadb',
             borderBottom: '2px solid #a6c9a4',
           }),
           ...(props.variant === 'variant4' && {
-            backgroundColor: '#ded5e7;',
+            backgroundColor: '#ded5e7',
             borderBottom: '2px solid #8566a1',
           }),
           ...(props.variant === 'variant5' && {
-            backgroundColor: '#f8e7d8;',
+            backgroundColor: '#f8e7d8',
             borderBottom: '2px solid #e09b60',
           }),
           ...(props.variant === 'variant6' && {
-            backgroundColor: '#e6f0f7;',
+            backgroundColor: '#e6f0f7',
             border: 'none',
           }),
         }}
@@ -173,11 +173,11 @@ export const Card = (props: CardProps) => {
       <Collapse in={expand}>
         <StyledCardContent
           sx={{
-            ...(props.variant !== 'variant6' && {
-              backgroundColor: '#fff;',
+            ...(props.variant === 'variant1' && {
+              backgroundColor: '#D6E7F333',
             }),
             ...(props.variant === 'variant6' && {
-              backgroundColor: '#f7fafd;',
+              backgroundColor: '#f7fafd',
             }),
           }}
         >
