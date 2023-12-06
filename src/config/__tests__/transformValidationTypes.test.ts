@@ -1,6 +1,7 @@
 import emptyTestData from '../../__mocks__/emptyDataList.json';
 import validationTypeList from '../../__mocks__/validationTypeList.json';
 import validationTypeListWithTwo from '../../__mocks__/validationTypeListWithTwo.json';
+import coraValidationTypeDataListSearch from '../../__mocks__/coraValidationTypeDataListSearch.json';
 import { transformCoraValidationTypes } from '../transformValidationTypes';
 
 describe('transformCoraValidationType', () => {
@@ -60,6 +61,21 @@ describe('transformCoraValidationType', () => {
       presentationGroupId: 'somePGroup2',
       nameTextId: 'someText2',
       defTextId: 'someDefText2'
+    });
+  });
+
+  it('Returns BFFValidationTypes for a validationType datalist search', () => {
+    const transformData = transformCoraValidationTypes(coraValidationTypeDataListSearch);
+    expect(transformData).toHaveLength(1);
+    expect(transformData[0]).toEqual({
+      defTextId: 'manuscriptValidationDefText',
+      id: 'manuscript',
+      metadataGroupId: 'manuscriptUpdateGroup',
+      nameTextId: 'manuscriptText',
+      newMetadataGroupId: 'manuscript2NewGroup',
+      newPresentationGroupId: 'manuscript2NewPGroup',
+      presentationGroupId: 'manuscriptUpdatePGroup',
+      validatesRecordTypeId: 'divaOutput'
     });
   });
 });
