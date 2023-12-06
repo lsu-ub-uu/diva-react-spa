@@ -33,6 +33,24 @@ export async function getRecordDataListByType<T>(
   return response;
 }
 
+export async function getSearchResultDataListBySearchType<T>(
+  searchType: string,
+  searchData: DataGroup,
+  authToken: string
+): Promise<AxiosResponse<T>> {
+  const apiUrl: string = `/record/searchResult/${searchType}`;
+
+  const queryString = ''; // todo handle searchData
+  const finalUrl = `${apiUrl}?${queryString}`;
+
+  const headers = {
+    Authtoken: `${authToken}`
+  };
+
+  const response: AxiosResponse<T> = await axios.get(finalUrl, { headers });
+  return response;
+}
+
 export async function getRecordDataById<T>(
   type: string,
   id: string,
