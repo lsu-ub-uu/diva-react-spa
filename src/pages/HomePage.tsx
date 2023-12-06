@@ -52,7 +52,7 @@ export const HomePage = () => {
                     value='manuscript'
                     disableRipple
                   >
-                    Manuskript i avhandling
+                    {t('manuscriptText')}
                   </MenuItem>
                 </Select>
               </Grid>
