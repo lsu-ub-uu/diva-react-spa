@@ -40,8 +40,8 @@ export async function getSearchResultDataListBySearchType<T>(
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/searchResult/${searchType}`;
 
-  const queryString = ''; // todo handle searchData
-  const finalUrl = `${apiUrl}?${queryString}`;
+  const searchDataString = JSON.stringify(searchData);
+  const finalUrl = encodeURI(`${apiUrl}?searchData=${searchDataString}`);
 
   const headers = {
     Authtoken: `${authToken}`
