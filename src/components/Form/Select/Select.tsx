@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useTranslation } from 'react-i18next';
 
 interface ExtendedSelectProps extends SelectProps {
   loading: boolean;
@@ -14,6 +15,7 @@ interface ExtendedSelectProps extends SelectProps {
 }
 
 export const Select = React.forwardRef((props: ExtendedSelectProps, ref) => {
+  const { t } = useTranslation();
   const { loading, role, loadingError, ...remainingProps } = props;
 
   if (loadingError)
@@ -21,9 +23,21 @@ export const Select = React.forwardRef((props: ExtendedSelectProps, ref) => {
 
   return loading ? (
     <OutlinedInput
+      placeholder={t('divaClient_loadingText') as string}
       size='small'
       fullWidth
-      endAdornment={<CircularProgress size={20} />}
+      endAdornment={
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '20px',
+          }}
+        >
+          <CircularProgress size={20} />
+        </div>
+      }
       readOnly
     />
   ) : (
@@ -31,7 +45,7 @@ export const Select = React.forwardRef((props: ExtendedSelectProps, ref) => {
       role={role}
       ref={ref}
       {...remainingProps}
-      IconComponent={!loading ? ExpandMoreIcon : undefined}
+      IconComponent={ExpandMoreIcon}
     />
   );
 });

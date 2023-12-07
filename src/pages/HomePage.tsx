@@ -45,7 +45,7 @@ export const HomePage = () => {
                   name='publication-select'
                   size='small'
                   value='manuscript'
-                  loading
+                  loading={false}
                   fullWidth
                 >
                   <MenuItem
@@ -56,7 +56,6 @@ export const HomePage = () => {
                   </MenuItem>
                 </Select>
               </Grid>
-
               <Grid
                 item
                 xs={12}
