@@ -45,7 +45,7 @@ export const HomePage = () => {
                   name='publication-select'
                   size='small'
                   value='manuscript'
-                  loading={false}
+                  loading
                   fullWidth
                 >
                   <MenuItem

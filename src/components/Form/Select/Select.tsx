@@ -1,6 +1,12 @@
-import { Alert, Select as MuiSelect, SelectProps } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
+import {
+  Alert,
+  OutlinedInput,
+  Select as MuiSelect,
+  SelectProps,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface ExtendedSelectProps extends SelectProps {
   loading: boolean;
@@ -10,16 +16,22 @@ interface ExtendedSelectProps extends SelectProps {
 export const Select = React.forwardRef((props: ExtendedSelectProps, ref) => {
   const { loading, role, loadingError, ...remainingProps } = props;
 
-  if (loading) return <span>Loading...</span>;
   if (loadingError)
     return <Alert severity='error'>Loading error occurred</Alert>;
 
-  return (
+  return loading ? (
+    <OutlinedInput
+      size='small'
+      fullWidth
+      endAdornment={<CircularProgress size={20} />}
+      readOnly
+    />
+  ) : (
     <MuiSelect
       role={role}
       ref={ref}
       {...remainingProps}
-      IconComponent={ExpandMoreIcon}
+      IconComponent={!loading ? ExpandMoreIcon : undefined}
     />
   );
 });
