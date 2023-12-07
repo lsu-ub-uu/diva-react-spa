@@ -8,7 +8,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import store from './app/store';
 import { divaTheme } from './themes/diva';
 import App from './App';
-
 import { BackdropProvider, SnackbarProvider } from './components';
 
 // Setup axios baseUrl from env variable

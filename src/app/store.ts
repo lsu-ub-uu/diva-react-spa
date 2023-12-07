@@ -4,24 +4,17 @@ import {
   ThunkAction,
   combineReducers,
 } from '@reduxjs/toolkit';
-import dummyReducer from '../features/dummy/dummySlice';
+
 import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
 import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
 import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
-import recordTypeReducer from '../features/recordType/recordTypeSlice';
-import searchReducer from '../features/search/searchSlice';
 import authReducer from '../features/auth/authSlice';
-import formReducer from '../features/form/formSlice';
 
 const combinedReducer = combineReducers({
   auth: authReducer,
-  dummy: dummyReducer,
   publicationType: publicationTypeReducer,
   subjectCategory: subjectCategoryReducer,
   researchSubject: researchSubjectReducer,
-  recordType: recordTypeReducer,
-  search: searchReducer,
-  form: formReducer,
 });
 
 const store = configureStore({

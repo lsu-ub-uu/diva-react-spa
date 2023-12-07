@@ -1,32 +1,16 @@
-import { Helmet } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
-import './app/i18n';
 import Router from './routes/routes';
+import useI18n from './app/i18n';
 
 const App = () => {
-  const location = window.location.href;
-  return (
-    <>
-      <Helmet>
-        {location.startsWith('http://localhost') === true ? (
-          <link
-            rel='icon'
-            type='image/svg+xml'
-            href='/dev_favicon.svg'
-          />
-        ) : (
-          <link
-            rel='icon'
-            type='image/svg+xml'
-            href='/favicon.svg'
-          />
-        )}
-      </Helmet>
+  const { loading } = useI18n();
 
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
-        <Router />
-      </BrowserRouter>
-    </>
+  if (loading) return <h3>Waiting for DiVA 3 GUI to load...</h3>;
+
+  return (
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <Router />
+    </BrowserRouter>
   );
 };
 

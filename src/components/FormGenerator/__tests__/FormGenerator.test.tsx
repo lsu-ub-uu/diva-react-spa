@@ -518,7 +518,10 @@ describe('<FormGenerator />', () => {
 
       expect(listBoxElement.children).toHaveLength(4);
 
-      await user.selectOptions(listBoxElement, '<em>option.none</em>');
+      await user.selectOptions(
+        listBoxElement,
+        '<em>divaClient_optionNoneText</em>',
+      );
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',

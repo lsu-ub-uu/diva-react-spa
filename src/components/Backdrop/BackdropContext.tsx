@@ -29,7 +29,7 @@ const BackdropProvider = (props: BackdropProviderProps) => {
       backdrop,
       setBackdrop,
     }),
-    [backdrop],
+    [backdrop, setBackdrop],
   );
 
   return (
