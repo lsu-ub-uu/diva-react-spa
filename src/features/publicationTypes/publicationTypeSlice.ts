@@ -1,12 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface PublicationType {
-  value: string;
-  label: string;
-}
+import { Option } from '../../components';
 
 interface PublicationTypeState {
-  publicationTypes: PublicationType[];
+  publicationTypes: Option[];
   isLoading: boolean;
   isError: boolean;
   message: string;
@@ -26,7 +22,7 @@ export const publicationTypeSlice = createSlice({
       state.publicationTypes = [];
       state.isLoading = true;
     },
-    update: (state, action: PayloadAction<PublicationType[]>) => {
+    update: (state, action: PayloadAction<Option[]>) => {
       state.publicationTypes = action.payload;
       state.isLoading = false;
     },
