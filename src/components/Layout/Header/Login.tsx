@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useBackdrop } from '../../Backdrop/BackdropContext';
 import { authStateSelector } from '../../../features/auth/selectors';
 
+// TODO should be moved
 export interface Account {
   appToken: string;
   id?: string;

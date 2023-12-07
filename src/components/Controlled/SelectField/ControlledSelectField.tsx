@@ -102,7 +102,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 value=''
                 disableRipple
               >
-                <em>{t('option.none')}</em>
+                <em>{t('divaClient_optionNoneText')}</em>
               </MenuItem>
               {props.options &&
                 props.options.map((item, index) => {

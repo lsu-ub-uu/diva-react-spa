@@ -1,11 +1,10 @@
 import Button from '@mui/material/Button';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Grid, MenuItem, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import React from 'react';
-import { AsidePortal, Card, Select } from '../components';
+import { AsidePortal, Card } from '../components';
+import { CreatePublicationCard } from '../partials';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -24,55 +23,7 @@ export const HomePage = () => {
           </p>
         </AsidePortal>
         <Stack spacing={2}>
-          <Card
-            title='Skapa publikation'
-            variant='variant1'
-            tooltipTitle='Publication'
-            tooltipBody='Publications help body text tooltip'
-          >
-            <Grid
-              container
-              spacing={2}
-              justifyContent='space-between'
-              alignItems='flex-start'
-            >
-              <Grid
-                item
-                xs={12}
-                sm={6}
-              >
-                <Select
-                  name='publication-select'
-                  size='small'
-                  value='manuscript'
-                  loading={false}
-                  fullWidth
-                >
-                  <MenuItem
-                    value='manuscript'
-                    disableRipple
-                  >
-                    {t('manuscriptText')}
-                  </MenuItem>
-                </Select>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-              >
-                <Button
-                  disableRipple
-                  variant='contained'
-                  component={RouterLink}
-                  to='/create/record/manuscript'
-                  endIcon={<ArrowForwardIcon />}
-                >
-                  Fortsätt
-                </Button>
-              </Grid>
-            </Grid>
-          </Card>
+          <CreatePublicationCard />
           <Card
             title='Editera manuskript'
             variant='variant2'

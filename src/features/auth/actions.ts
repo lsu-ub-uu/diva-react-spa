@@ -3,8 +3,6 @@ import { AppThunk } from 'app/store';
 import { authenticated, authenticating, hasError } from './authSlice';
 import { Account } from '../../components/Layout/Header/Login';
 
-const BFF_API_URL = import.meta.env.VITE_BFF_API_URL;
-
 export const dummyLoginAsync =
   (account: Account, callback?: Function): AppThunk =>
   async (dispatch) => {
@@ -14,7 +12,7 @@ export const dummyLoginAsync =
         headers: { 'Content-Type': 'application/json' },
       };
       const response = await axios.post(
-        `${BFF_API_URL}/auth/${account.idFromLogin}`,
+        `/auth/${account.idFromLogin}`,
         { token: account.appToken },
         options,
       );
