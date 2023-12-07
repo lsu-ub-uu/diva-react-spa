@@ -15,6 +15,7 @@ import {
 import {
   getRecordDataById,
   getRecordDataListByType,
+  getSearchResultDataListBySearchType,
   postRecordData,
   updateRecordDataById
 } from './cora/cora';
@@ -58,6 +59,46 @@ app.use('/api/translations/:lang', async (req, res) => {
     res.status(200).json(textDefinitions);
   } catch (error: unknown) {
     res.status(500).json('Internal server error');
+  }
+});
+
+app.use('/api/validationTypes', async (req, res) => {
+  try {
+    const authToken = req.header('authToken') ?? '';
+    const searchQuery: DataGroup = {
+      name: 'validationTypeSearch',
+      children: [
+        {
+          name: 'include',
+          children: [
+            {
+              name: 'includePart',
+              children: [
+                {
+                  name: 'validatesRecordTypeSearchTerm',
+                  value: 'recordType_divaOutput'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
+      'validationTypeSearch',
+      searchQuery,
+      authToken
+    );
+    const validationTypes = transformCoraValidationTypes(response.data);
+    const optionList = validationTypes.map((validationType) => ({
+      value: validationType.id,
+      label: validationType.nameTextId
+    }));
+    res.status(200).json(optionList);
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
   }
 });
 
