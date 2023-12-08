@@ -29,6 +29,7 @@ const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
     fontSize: 16,
     border: '2px solid #2988D1',
     borderRadius: 8,
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.4)',
   },
   [`& .${tooltipClasses.arrow}`]: {
     '&:before': {
