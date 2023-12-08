@@ -522,6 +522,16 @@ export const pSomeMetadataTextVariable: BFFPresentation = {
   emptyTextId: 'someEmptyTextId'
 };
 
+export const pSomeMetadataTextVariableWithMissingMetadata: BFFPresentation = {
+  id: 'pSomeMissingMetadataTextVariableId',
+  presentationOf: 'someMissingMetaDataId',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId'
+};
+
+
 export const pSomeMetadataTextVariableWithAttributeVar: BFFPresentation = {
   id: 'pSomeMetadataTextVariableWithAttributeVarId',
   presentationOf: 'someMetadataTextVariableWithAttributeVarId',
@@ -602,7 +612,12 @@ export const pSomeMetadataChildGroup: BFFPresentationGroup = {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
       childStyle: ['threeChildStyle']
-    }
+    },
+    {
+      childId: 'pSomeMissingMetadataTextVariableId',
+      type: 'presentation',
+      childStyle: []
+    },
   ]
 };
 export const pSomeMetadataChildGroupWithSpecifiedHeadlineText: BFFPresentationGroup = {

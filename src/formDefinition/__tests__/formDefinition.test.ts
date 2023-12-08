@@ -75,7 +75,8 @@ import {
   someNewSimpleMetadataGroup,
   someSimpleValidationTypeData,
   pSomeEditMetadataGroup,
-  someEditMetadataGroup
+  someEditMetadataGroup,
+  pSomeMetadataTextVariableWithMissingMetadata,
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -127,7 +128,7 @@ describe('formDefinition', () => {
       someMetadataChildGroupWithSpecifiedHeadlineText,
       someMetadataChildGroupWithShowHeadlineFalse,
       someNewSimpleMetadataGroup,
-      someEditMetadataGroup
+      someEditMetadataGroup,
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -151,7 +152,8 @@ describe('formDefinition', () => {
       pSomeRepeatingContainer,
       pSomeMetadataChildGroupWithSpecifiedHeadlineText,
       pSomeMetadataChildGroupWithShowHeadlineFalse,
-      pSomeEditMetadataGroup
+      pSomeEditMetadataGroup,
+      pSomeMetadataTextVariableWithMissingMetadata
     ]);
     dependencies = {
       validationTypePool,
