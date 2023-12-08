@@ -18,8 +18,9 @@
  */
 
 import React from 'react';
-import { Box, Divider } from '@mui/material';
+import { Box, Container, Grid, Toolbar } from '@mui/material';
 import { Control, FieldValues, useForm } from 'react-hook-form';
+import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -353,33 +354,53 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       )}
     >
       {generateFormComponent(props.formSchema.form, undefined, 0, '')}
-      <Divider sx={{ my: 4 }} />
-      <Box
-        component='span'
-        sx={{ mt: 2, mb: 2 }}
-        display='flex'
-        justifyContent='space-between'
-        alignItems='center'
+
+      <AppBar
+        position='fixed'
+        style={{ backgroundColor: '#eee', top: 'auto', bottom: 0 }}
       >
-        <Button
-          disableRipple
-          variant='contained'
-          color='secondary'
-          sx={{ height: 40 }}
-          onClick={() => reset()}
-        >
-          {t('divaClient_ResetButtonText')}
-        </Button>
-        <Button
-          type='submit'
-          disableRipple
-          variant='contained'
-          color='primary'
-          sx={{ height: 40 }}
-        >
-          {t('divaClient_SubmitButtonText')}
-        </Button>
-      </Box>
+        <Container maxWidth='lg'>
+          <Grid container>
+            <Grid
+              item
+              xs={3}
+            />
+            <Grid
+              item
+              xs={9}
+            >
+              <Toolbar>
+                <Box
+                  component='div'
+                  sx={{ mt: 1, mb: 1, width: '100%' }}
+                  display='flex'
+                  justifyContent='space-between'
+                  alignItems='center'
+                >
+                  <Button
+                    disableRipple
+                    variant='contained'
+                    color='secondary'
+                    sx={{ height: 40 }}
+                    onClick={() => reset()}
+                  >
+                    {t('divaClient_ResetButtonText')}
+                  </Button>
+                  <Button
+                    type='submit'
+                    disableRipple
+                    variant='contained'
+                    color='primary'
+                    sx={{ height: 40 }}
+                  >
+                    {t('divaClient_SubmitButtonText')}
+                  </Button>
+                </Box>
+              </Toolbar>
+            </Grid>
+          </Grid>
+        </Container>
+      </AppBar>
     </Box>
   );
 };
