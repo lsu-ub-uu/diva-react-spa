@@ -24,4 +24,17 @@ describe('transformCoraRecordType', () => {
     const secondRecordType = transformData[1];
     expect(secondRecordType.id).toEqual('someOtherId2');
   });
+
+  it('Returns one recordType with presentations group for view, list, autocomplete and menu', () => {
+    const transformData = transformCoraRecordTypes(testData);
+    const firstRecordType = transformData[0];
+    const expected = {
+      id: 'someId',
+      presentationViewId: 'exampleDevOutputOutputPGroup',
+      listPresentationViewId: 'exampleDevOutputListPGroup',
+      menuPresentationViewId: 'exampleDevOutputMenuPGroup',
+      autocompletePresentationView: 'exampleDevOutputAutocompletePGroup'
+    };
+    expect(firstRecordType).toStrictEqual(expected);
+  });
 });
