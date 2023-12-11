@@ -217,6 +217,16 @@ const createComponentsFromChildReferences = (
       return createGuiElement(presentationChildReference, presentationPool);
     }
 
+    if (presentationChildType === 'presentation') {
+      const presentationChildId = presentationChildReference.childId;
+      const presentation: BFFPresentation = presentationPool.get(presentationChildId);
+      if (presentation.type !== 'container') {
+        if (!metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf)) {
+          return undefined;
+        }
+      }
+    }
+
     return createPresentation(
       metadataChildReferences,
       presentationChildReference,
