@@ -185,6 +185,11 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
       childId: 'someMetadataChildGroupWithShowHeadlineFalseId',
       repeatMin: '1',
       repeatMax: '1'
+    },
+    {
+      childId: 'someManuscriptGroupId',
+      repeatMin: '1',
+      repeatMax: '1'
     }
   ]
 };
@@ -522,8 +527,6 @@ export const pSomeMetadataTextVariable: BFFPresentation = {
   emptyTextId: 'someEmptyTextId'
 };
 
-
-
 export const pSomeMetadataTextVariableWithAttributeVar: BFFPresentation = {
   id: 'pSomeMetadataTextVariableWithAttributeVarId',
   presentationOf: 'someMetadataTextVariableWithAttributeVarId',
@@ -730,6 +733,11 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
     },
     {
       childId: 'pSomeMetadataChildGroupWithShowHeadlineFalseId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
+      childId: 'pSomeManuscriptGroupId',
       type: 'presentation',
       childStyle: []
     }
@@ -1084,10 +1092,15 @@ export const someManuscriptGroup: BFFMetadataGroup = {
       repeatMax: '1'
     },
     {
-      childId: 'localIdTextVar',
+      childId: 'localIdTextVarId',
       repeatMin: '1',
       repeatMax: '1'
     }
+    // {
+    //   childId: 'scopusIdTextVarId',
+    //   repeatMin: '1',
+    //   repeatMax: '1'
+    // }
   ]
 };
 
@@ -1095,13 +1108,94 @@ export const pSomeManuscriptGroup: BFFPresentationGroup = {
   id: 'pSomeManuscriptGroupId',
   type: 'pGroup',
   presentationOf: 'someManuscriptGroupId', // metadata
-  presentationStyle: 'someMetadataChildGroupPresentationStyle',
+  presentationStyle: '',
   mode: 'input',
   children: [
     {
-      childId: 'pSomeMetadataTextVariableId',
+      childId: 'pSomeManuscriptIdContainer',
       type: 'presentation',
-      childStyle: ['threeChildStyle']
+      childStyle: []
     }
   ]
+};
+
+export const pSomeManuscriptContainer: BFFPresentationSurroundingContainer = {
+  id: 'pSomeManuscriptIdContainer',
+  type: 'container',
+  presentationStyle: '',
+  presentationsOf: ['archiveNumberTextVarId', 'localIdTextVarId', 'scopusIdTextVarId'], // metadata
+  mode: 'input',
+  children: [
+    {
+      childId: 'pArchiveNumberTextVarId',
+      type: 'presentation',
+      childStyle: [],
+      minNumberOfRepeatingToShow: '1'
+    },
+    {
+      childId: 'pLocalIdTextVarId',
+      type: 'presentation',
+      childStyle: [],
+      minNumberOfRepeatingToShow: '1'
+    },
+    {
+      childId: 'pScopusIdTextVarId',
+      type: 'presentation',
+      childStyle: [],
+      minNumberOfRepeatingToShow: '1'
+    }
+  ],
+  repeat: 'children'
+};
+
+export const someArchiveNumberTextVar: BFFMetadataTextVariable = {
+  id: 'archiveNumberTextVarId',
+  nameInData: 'archiveNumber',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+export const someLocalIdTextVar: BFFMetadataTextVariable = {
+  id: 'localIdTextVarId',
+  nameInData: 'localId',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+export const someScopusIdTextVar: BFFMetadataTextVariable = {
+  id: 'scopusIdTextVarId',
+  nameInData: 'scopusId',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+export const pSomeArchiveNumberTextVar: BFFPresentation = {
+  id: 'pArchiveNumberTextVarId',
+  presentationOf: 'archiveNumberTextVarId',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId'
+};
+export const pSomeLocalIdTextVar: BFFPresentation = {
+  id: 'pLocalIdTextVarId',
+  presentationOf: 'localIdTextVarId',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId'
+};
+export const pSomeScopusIdTextVar: BFFPresentation = {
+  id: 'pScopusIdTextVarId',
+  presentationOf: 'scopusIdTextVarId',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId'
 };

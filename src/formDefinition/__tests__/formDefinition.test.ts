@@ -75,7 +75,16 @@ import {
   someNewSimpleMetadataGroup,
   someSimpleValidationTypeData,
   pSomeEditMetadataGroup,
-  someEditMetadataGroup
+  someEditMetadataGroup,
+  someManuscriptGroup,
+  pSomeManuscriptGroup,
+  pSomeManuscriptContainer,
+  someArchiveNumberTextVar,
+  someLocalIdTextVar,
+  someScopusIdTextVar,
+  pSomeArchiveNumberTextVar,
+  pSomeLocalIdTextVar,
+  pSomeScopusIdTextVar
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -127,7 +136,11 @@ describe('formDefinition', () => {
       someMetadataChildGroupWithSpecifiedHeadlineText,
       someMetadataChildGroupWithShowHeadlineFalse,
       someNewSimpleMetadataGroup,
-      someEditMetadataGroup
+      someEditMetadataGroup,
+      someArchiveNumberTextVar,
+      someManuscriptGroup,
+      someLocalIdTextVar,
+      someScopusIdTextVar
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -151,7 +164,12 @@ describe('formDefinition', () => {
       pSomeRepeatingContainer,
       pSomeMetadataChildGroupWithSpecifiedHeadlineText,
       pSomeMetadataChildGroupWithShowHeadlineFalse,
-      pSomeEditMetadataGroup
+      pSomeEditMetadataGroup,
+      pSomeManuscriptGroup,
+      pSomeManuscriptContainer,
+      pSomeArchiveNumberTextVar,
+      pSomeLocalIdTextVar,
+      pSomeScopusIdTextVar
     ]);
     dependencies = {
       validationTypePool,
@@ -204,7 +222,7 @@ describe('formDefinition', () => {
   it('should return a form definition for a new metadata group', () => {
     const validationTypeId = 'someValidationTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    expect(formDefinition.form.components).toHaveLength(17);
+    expect(formDefinition.form.components).toHaveLength(18);
     expect(formDefinition).toStrictEqual({
       validationTypeId,
       form: {
@@ -738,6 +756,105 @@ describe('formDefinition', () => {
               }
             ],
             mode: 'input'
+          },
+          {
+            gridColSpan: 12,
+            label: 'textId345',
+            mode: 'input',
+            name: 'someManuscriptGroupNameInData',
+            presentationStyle: '',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1
+            },
+            tooltip: {
+              body: 'defTextId678',
+              title: 'textId345'
+            },
+            type: 'group',
+            childStyle: [],
+            components: [
+              {
+                containerType: 'surrounding',
+                gridColSpan: 12,
+                mode: 'input',
+                name: 'pSomeManuscriptIdContainer',
+                presentationStyle: '',
+                type: 'container',
+                childStyle: [],
+                components: [
+                  {
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                    label: 'someTextId',
+                    mode: 'input',
+                    name: 'archiveNumber',
+                    placeholder: 'someEmptyTextId',
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMax: 1,
+                      repeatMin: 1
+                    },
+                    tooltip: {
+                      body: 'someDefTextId',
+                      title: 'someTextId'
+                    },
+                    type: 'textVariable',
+                    validation: {
+                      pattern: 'someRegex',
+                      type: 'regex'
+                    }
+                  },
+                  {
+                    childStyle: [],
+                    gridColSpan: 12,
+                    inputType: 'input',
+                    label: 'someTextId',
+                    mode: 'input',
+                    name: 'localId',
+                    placeholder: 'someEmptyTextId',
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMax: 1,
+                      repeatMin: 1
+                    },
+                    tooltip: {
+                      body: 'someDefTextId',
+                      title: 'someTextId'
+                    },
+                    type: 'textVariable',
+                    validation: {
+                      pattern: 'someRegex',
+                      type: 'regex'
+                    }
+                  }
+                  // {
+                  //   childStyle: [],
+                  //   gridColSpan: 12,
+                  //   inputType: 'input',
+                  //   label: 'someTextId',
+                  //   mode: 'input',
+                  //   name: 'scopusId',
+                  //   placeholder: 'someEmptyTextId',
+                  //   repeat: {
+                  //     minNumberOfRepeatingToShow: 1,
+                  //     repeatMax: 1,
+                  //     repeatMin: 1
+                  //   },
+                  //   tooltip: {
+                  //     body: 'someDefTextId',
+                  //     title: 'someTextId'
+                  //   },
+                  //   type: 'textVariable',
+                  //   validation: {
+                  //     pattern: 'someRegex',
+                  //     type: 'regex'
+                  //   }
+                  // }
+                ]
+              }
+            ]
           }
         ],
         mode: 'input'
