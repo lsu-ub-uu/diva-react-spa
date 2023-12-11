@@ -522,14 +522,6 @@ export const pSomeMetadataTextVariable: BFFPresentation = {
   emptyTextId: 'someEmptyTextId'
 };
 
-export const pSomeMetadataTextVariableWithMissingMetadata: BFFPresentation = {
-  id: 'pSomeMissingMetadataTextVariableId',
-  presentationOf: 'someMissingMetaDataId',
-  mode: 'input',
-  inputType: 'input',
-  type: 'pVar',
-  emptyTextId: 'someEmptyTextId'
-};
 
 
 export const pSomeMetadataTextVariableWithAttributeVar: BFFPresentation = {
@@ -612,12 +604,7 @@ export const pSomeMetadataChildGroup: BFFPresentationGroup = {
       childId: 'pSomeMetadataTextVariableId',
       type: 'presentation',
       childStyle: ['threeChildStyle']
-    },
-    {
-      childId: 'pSomeMissingMetadataTextVariableId',
-      type: 'presentation',
-      childStyle: []
-    },
+    }
   ]
 };
 export const pSomeMetadataChildGroupWithSpecifiedHeadlineText: BFFPresentationGroup = {
@@ -1080,6 +1067,41 @@ export const someNewSimpleMetadataGroupRepeatingGroups: BFFMetadataGroup = {
       childId: 'someMetadataChildGroupId',
       repeatMin: '1',
       repeatMax: '2'
+    }
+  ]
+};
+
+export const someManuscriptGroup: BFFMetadataGroup = {
+  id: 'someManuscriptGroupId',
+  nameInData: 'someManuscriptGroupNameInData',
+  type: 'group',
+  textId: 'textId345',
+  defTextId: 'defTextId678',
+  children: [
+    {
+      childId: 'archiveNumberTextVarId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'localIdTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const pSomeManuscriptGroup: BFFPresentationGroup = {
+  id: 'pSomeManuscriptGroupId',
+  type: 'pGroup',
+  presentationOf: 'someManuscriptGroupId', // metadata
+  presentationStyle: 'someMetadataChildGroupPresentationStyle',
+  mode: 'input',
+  children: [
+    {
+      childId: 'pSomeMetadataTextVariableId',
+      type: 'presentation',
+      childStyle: ['threeChildStyle']
     }
   ]
 };
