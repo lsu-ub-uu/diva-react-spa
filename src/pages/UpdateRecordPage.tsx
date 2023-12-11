@@ -34,10 +34,8 @@ import { FormSchema } from '../components/FormGenerator/types';
 export const UpdateRecordPage = () => {
   const { recordId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
-  // const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
-  // const { t } = useTranslation();
   const coraRecord = useCoraRecordByTypeAndId('divaOutput', recordId);
   const coraSchema = useCoraFormSchemaByValidationType(
     coraRecord.record?.validationType,
