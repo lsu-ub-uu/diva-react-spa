@@ -30,7 +30,12 @@ export interface BFFBase {
   id: string;
 }
 
-export interface BFFRecordType extends BFFBase {}
+export interface BFFRecordType extends BFFBase {
+  presentationViewId: string;
+  listPresentationViewId: string;
+  menuPresentationViewId: string;
+  autocompletePresentationView: string;
+}
 
 export abstract interface BFFMetadata extends BFFBase {
   nameInData: string;

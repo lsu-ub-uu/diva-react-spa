@@ -20,7 +20,30 @@
 import { BFFRecordType, BFFText } from '../../../config/bffTypes';
 import { listToPool } from '../listToPool';
 
-const someListWithThreeRecordTypes: BFFRecordType[] = [{ id: '1' }, { id: '2' }, { id: '3' }];
+const someListWithThreeRecordTypes: BFFRecordType[] = [
+  {
+    id: '1',
+    presentationViewId: '',
+    listPresentationViewId: '',
+    menuPresentationViewId: '',
+    autocompletePresentationView: ''
+  },
+  {
+    id: '2',
+    presentationViewId: '',
+    listPresentationViewId: '',
+    menuPresentationViewId: '',
+    autocompletePresentationView: ''
+  },
+  {
+    id: '3',
+    presentationViewId: '',
+    listPresentationViewId: '',
+    menuPresentationViewId: '',
+    autocompletePresentationView: ''
+  },
+];
+
 const someListWithTwoTexts: BFFText[] = [
   { id: '1', en: 'hello', sv: 'hej' },
   { id: '2', en: 'good bye', sv: 'hej då' }

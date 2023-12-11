@@ -217,6 +217,16 @@ const createComponentsFromChildReferences = (
       return createGuiElement(presentationChildReference, presentationPool);
     }
 
+    if (presentationChildType === 'presentation') {
+      const presentationChildId = presentationChildReference.childId;
+      const presentation: BFFPresentation = presentationPool.get(presentationChildId);
+      if (presentation.type !== 'container') {
+        if (!metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf)) {
+          return undefined;
+        }
+      }
+    }
+
     return createPresentation(
       metadataChildReferences,
       presentationChildReference,
@@ -388,13 +398,13 @@ const createPresentation = (
     presentationStyle = presentationContainer.presentationStyle;
 
     let filteredChildRefs: BFFMetadataChildReference[] = [];
-    if (presentationContainer.repeat === 'children') {
+    if (presentationContainer.repeat === 'children') { // surrounding Container
       const metadataIds =
         (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
       filteredChildRefs = metadataChildReferences.filter((childRef) => {
         return metadataIds.includes(childRef.childId);
       });
-    } else if (presentationContainer.repeat === 'this') {
+    } else if (presentationContainer.repeat === 'this') { // repeating Container
       metadataId = presentationContainer.presentationOf;
       metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
       filteredChildRefs = [metaDataChildRef];
