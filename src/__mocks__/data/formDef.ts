@@ -3470,3 +3470,32 @@ export const formDefWithOneRecordLinkBeingOptional = {
     mode: 'input',
   },
 };
+
+export const formDefWithOneRecordLinkBeingRequired = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'recordLink',
+        name: 'nationalSubjectCategory',
+        mode: 'input',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+    ],
+    mode: 'input',
+  },
+};

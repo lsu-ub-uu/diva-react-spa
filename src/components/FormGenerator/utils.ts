@@ -302,10 +302,10 @@ const createYupNumberSchema = (component: FormComponent) => {
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull
           ? field
+              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
               .test(testDecimals)
               .test(testMax)
               .test(testMin)
-              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
           : field,
       );
   }
@@ -333,6 +333,19 @@ const createValidationForAttributesFromComponent = (
   };
 };
 
+const createYupStringSchema = (component: FormComponent) => {
+  if (isComponentSingularAndOptional(component)) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .when('$isNotNull', (isNotNull, field) =>
+        isNotNull[0] ? field.required() : field,
+      );
+  }
+  return yup.string().required();
+};
+
 const createValidationFromComponentType = (
   component: FormComponent | FormAttributeCollection,
 ) => {
@@ -342,7 +355,7 @@ const createValidationFromComponentType = (
     case 'numberVariable':
       return createYupNumberSchema(component as FormComponent);
     default: // collectionVariable, recordLink
-      return yup.string().required('field is required');
+      return createYupStringSchema(component as FormComponent);
   }
 };
 
