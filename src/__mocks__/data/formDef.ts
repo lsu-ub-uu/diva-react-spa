@@ -3440,3 +3440,38 @@ export const formDefWithOneTextVariableBeingOptional = {
     mode: 'input',
   },
 };
+
+export const formDefWithOneRecordLinkBeingOptional = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'recordInfo',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'recordInfoText',
+          body: 'recordInfoDefText',
+        },
+        label: 'recordInfoText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
+        },
+      },
+    ],
+    mode: 'input',
+  },
+};

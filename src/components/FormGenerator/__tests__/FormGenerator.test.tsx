@@ -38,6 +38,7 @@ import {
   formDefWithOneCollectionVariableWithModeOutput,
   formDefWithOneNumberVariableBeingOptional,
   formDefWithOneTextVariableBeingOptional,
+  formDefWithOneRecordLinkBeingOptional,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -98,6 +99,27 @@ describe('<FormGenerator />', () => {
 
       const user = userEvent.setup();
       await user.type(inputElement, 'a');
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('recordLink', () => {
+    test('Validates recordLink being optional and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneRecordLinkBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);
