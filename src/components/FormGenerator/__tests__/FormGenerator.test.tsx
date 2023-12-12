@@ -36,6 +36,8 @@ import {
   formDefWithGroupWithDefaultHeadlineLevel,
   formDefWithOneRepeatingTextVariableWithModeOutput,
   formDefWithOneCollectionVariableWithModeOutput,
+  formDefWithOneNumberVariableBeingOptional,
+  formDefWithOneTextVariableBeingOptional,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -169,6 +171,25 @@ describe('<FormGenerator />', () => {
       const inputElement = screen.getByText('someTestText');
       expect(inputElement).toBeInTheDocument();
     });
+
+    test('Validates textVariable being optional and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('numberVariable', () => {
@@ -287,6 +308,50 @@ describe('<FormGenerator />', () => {
 
       const user = userEvent.setup();
       await user.type(inputNumberElement, '12.00');
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    test('Validates numberVariable being optional and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    test('Validates numberVariable being optional (having minNumberToShow 1) and the user enters a valid range value ', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputElement = screen.getByPlaceholderText(
+        'someNumberPlaceholderTextId',
+      );
+      expect(inputElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(inputElement, '10');
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);
