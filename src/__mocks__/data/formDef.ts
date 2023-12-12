@@ -3457,14 +3457,9 @@ export const formDefWithOneRecordLinkBeingOptional = {
     },
     components: [
       {
-        name: 'recordInfo',
-        type: 'group',
+        type: 'recordLink',
+        name: 'nationalSubjectCategory',
         mode: 'input',
-        tooltip: {
-          title: 'recordInfoText',
-          body: 'recordInfoDefText',
-        },
-        label: 'recordInfoText',
         repeat: {
           repeatMin: 0,
           repeatMax: 1,
