@@ -3499,3 +3499,38 @@ export const formDefWithOneRecordLinkBeingRequired = {
     mode: 'input',
   },
 };
+
+export const formDefWithOneTextVariableBeingRepeating = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 2,
+          minNumberOfRepeatingToShow: 2,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};

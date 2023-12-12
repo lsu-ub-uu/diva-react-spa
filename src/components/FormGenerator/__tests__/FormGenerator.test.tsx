@@ -40,6 +40,7 @@ import {
   formDefWithOneTextVariableBeingOptional,
   formDefWithOneRecordLinkBeingOptional,
   formDefWithOneRecordLinkBeingRequired,
+  formDefWithOneTextVariableBeingRepeating,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -221,6 +222,25 @@ describe('<FormGenerator />', () => {
         <FormGenerator
           onSubmit={mockSubmit}
           formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    test('Validates textVariable being optional with repeatMax > 1 and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableBeingRepeating as FormSchema}
         />,
       );
       const submitButton = screen.getByRole('button', {
