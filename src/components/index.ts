@@ -30,6 +30,11 @@ export { LinkButton } from './LinkButton/LinkButton';
 export { ScrollToHashElement } from './ScrollToHashElement/ScrollToHashElement';
 export { NavigationPanel } from './NavigationPanel/NavigationPanel';
 
+export {
+  useSectionScroller,
+  linksFromFormSchema,
+} from './NavigationPanel/useSectionScroller';
+
 export interface SelectItem {
   id: string;
   name: string;
