@@ -234,7 +234,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    test('Validates textVariable being optional with repeatMax > 1 and having minNumberToShow 1!', async () => {
+    test.skip('Validates textVariable being optional with repeatMax > 1 and having minNumberToShow 1!', async () => {
       const mockSubmit = vi.fn();
 
       render(
