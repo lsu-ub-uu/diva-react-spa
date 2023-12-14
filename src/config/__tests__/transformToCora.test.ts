@@ -329,6 +329,89 @@ describe('transformToCora', () => {
     expect(recordInfo).toStrictEqual(expected);
   });
 
+  it('should be able to generate a record info from data with id, validationType, record and last updated', () => {
+    const expected: DataGroup = {
+      name: 'recordInfo',
+      children: [
+        {
+          name: 'id',
+          value: 'someRecordId'
+        },
+        {
+          name: 'dataDivider',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'system'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'diva'
+            }
+          ]
+        },
+        {
+          name: 'validationType',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'validationType'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'manuscript'
+            }
+          ]
+        },
+        {
+          name: 'type',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'recordType'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'divaOutput'
+            }
+          ]
+        },
+        {
+          children: [
+            {
+              children: [
+                {
+                  name: 'linkedRecordType',
+                  value: 'user'
+                },
+                {
+                  name: 'linkedRecordId',
+                  value: 'coraUser:490742519075086'
+                }
+              ],
+              name: 'updatedBy'
+            },
+            {
+              name: 'tsUpdated',
+              value: '2023-12-12T13:25:11.145501Z'
+            }
+          ],
+          name: 'updated',
+          repeatId: '0'
+        }
+      ]
+    };
+    const recordInfo = generateRecordInfo(
+      'manuscript',
+      'diva',
+      'someRecordId',
+      'divaOutput',
+      'coraUser:490742519075086',
+      '2023-12-12T13:25:11.145501Z'
+    );
+    expect(recordInfo).toStrictEqual(expected);
+  });
+
   it('should be able to generate a complete new group for a validation type', () => {
     const expected = {
       attributes: {

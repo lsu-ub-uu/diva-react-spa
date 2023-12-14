@@ -138,7 +138,8 @@ app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
-    const recordType = Object.keys(payload)[0];
+    const { lastUpdate, values } = payload;
+    const recordType = Object.keys(values)[0];
 
     const dependencies = await assembleCommonDependencies();
     const { validationTypePool } = dependencies;
@@ -152,13 +153,15 @@ app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(formMetaDataPathLookup, payload);
+    const transformData = transformToCoraData(formMetaDataPathLookup, values);
     const updateGroup = injectRecordInfoIntoDataGroup(
       transformData[0] as DataGroup,
       validationTypeId,
       dataDivider,
       recordId,
-      recordType
+      recordType,
+      lastUpdate.updatedBy,
+      lastUpdate.updateAt
     );
 
     const response = await updateRecordDataById<RecordWrapper>(
@@ -278,7 +281,7 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
       dependencies,
       validationTypeId,
       mode as 'create' | 'update'
-    );
+    );1
     res.status(200).json(formDef);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);

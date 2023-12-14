@@ -20,16 +20,19 @@
 import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-data/CoraData';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
+import { update } from 'lodash';
 
 export const injectRecordInfoIntoDataGroup = (
   dataGroup: DataGroup,
   validationTypeId: string,
   dataDivider: string,
   recordId?: string,
-  recordType?: string
+  recordType?: string,
+  userId?: string,
+  lastUpdate?: string
 ): DataGroup => {
   dataGroup.children = [
-    generateRecordInfo(validationTypeId, dataDivider, recordId, recordType),
+    generateRecordInfo(validationTypeId, dataDivider, recordId, recordType, userId, lastUpdate),
     ...dataGroup.children
   ];
   return dataGroup;
@@ -39,16 +42,28 @@ export const generateRecordInfo = (
   validationType: string,
   dataDivider: string,
   recordId?: string,
-  recordType?: string
+  recordType?: string,
+  userId?: string,
+  lastUpdate?: string
 ): DataGroup => {
   const name = 'recordInfo';
   const children = [
     recordId ? generateAtomicValue('id', recordId) : undefined,
     generateRecordLink('dataDivider', 'system', dataDivider),
     generateRecordLink('validationType', 'validationType', validationType),
-    recordType ? generateRecordLink('type', 'recordType', recordType) : undefined
+    recordType ? generateRecordLink('type', 'recordType', recordType) : undefined,
+    userId && lastUpdate ? generateLastUpdateInfo(userId, lastUpdate) : undefined
   ];
   return removeEmpty({ name, children }) as DataGroup;
+};
+
+export const generateLastUpdateInfo = (userId: string, updatedAt: string) => {
+  const name = 'updated';
+  const children = [
+    generateRecordLink('updatedBy', 'user', userId),
+    generateAtomicValue('tsUpdated', updatedAt)
+  ];
+  return removeEmpty({ name, children, repeatId: '0' }) as DataGroup;
 };
 
 const findChildrenAttributes = (obj: any) => {
