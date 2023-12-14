@@ -1,6 +1,11 @@
 import { useRoutes } from 'react-router-dom';
 import { Layout } from '../components';
-import { HomePage, CreateRecordPage, UpdateRecordPage } from '../pages';
+import {
+  HomePage,
+  CreateRecordPage,
+  UpdateRecordPage,
+  ReactHookFormTestPage,
+} from '../pages';
 import PrivateRoutes from './PrivateRoutes';
 
 export const routes = [
@@ -25,6 +30,7 @@ export const routes = [
           },
         ],
       },
+      { path: '/test', element: <ReactHookFormTestPage /> },
       { path: '*', element: <div>404 not found</div> },
     ],
   },

@@ -36,6 +36,11 @@ import {
   formDefWithGroupWithDefaultHeadlineLevel,
   formDefWithOneRepeatingTextVariableWithModeOutput,
   formDefWithOneCollectionVariableWithModeOutput,
+  formDefWithOneNumberVariableBeingOptional,
+  formDefWithOneTextVariableBeingOptional,
+  formDefWithOneRecordLinkBeingOptional,
+  formDefWithOneRecordLinkBeingRequired,
+  formDefWithOneTextVariableBeingRepeating,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -99,6 +104,46 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('recordLink', () => {
+    test('Validates recordLink being optional and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneRecordLinkBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    test('Do not validate an empty recordLink being required', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneRecordLinkBeingRequired as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -168,6 +213,68 @@ describe('<FormGenerator />', () => {
       );
       const inputElement = screen.getByText('someTestText');
       expect(inputElement).toBeInTheDocument();
+    });
+
+    test('Validates textVariable being optional and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    test('Validates textVariable being optional with repeatMax > 1 and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableBeingRepeating as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    test('Does not validates a textVariable being optional and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+
+      const user = userEvent.setup();
+      await user.type(inputElement, '????');
+      await user.click(submitButton);
+
+      await waitFor(() => {
+        expect(mockSubmit).toHaveBeenCalledTimes(0);
+      });
     });
   });
 
@@ -244,6 +351,35 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
+    test('Not validating an numberVariable not having correct value', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputNumberElement = screen.getByPlaceholderText(
+        'someNumberPlaceholderTextId',
+      );
+
+      expect(inputNumberElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(inputNumberElement, 'aaa');
+      await user.click(submitButton);
+
+      await waitFor(() => {
+        expect(mockSubmit).toHaveBeenCalledTimes(0);
+        expect((inputNumberElement as HTMLInputElement).value).toBe('aaa');
+      });
+    });
+
     test('Validates numberVariable to have correct number of decimals', async () => {
       const mockSubmit = vi.fn();
 
@@ -287,6 +423,50 @@ describe('<FormGenerator />', () => {
 
       const user = userEvent.setup();
       await user.type(inputNumberElement, '12.00');
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    test('Validates numberVariable being optional and having minNumberToShow 1!', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    test('Validates numberVariable being optional (having minNumberToShow 1) and the user enters a valid range value ', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputElement = screen.getByPlaceholderText(
+        'someNumberPlaceholderTextId',
+      );
+      expect(inputElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(inputElement, '10');
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);

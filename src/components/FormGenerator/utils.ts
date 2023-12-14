@@ -261,7 +261,7 @@ const createYupNumberSchema = (component: FormComponent) => {
   const numberValidation = component.validation as FormNumberValidation;
   const { numberOfDecimals, min, max } = numberValidation;
 
-  const testDecimals: TestConfig<string | undefined, AnyObject> = {
+  const testDecimals: TestConfig<string | null | undefined, AnyObject> = {
     name: 'decimal-places',
     message: 'Invalid number of decimals', // todo translation
     params: { numberOfDecimals },
@@ -272,7 +272,7 @@ const createYupNumberSchema = (component: FormComponent) => {
     },
   };
 
-  const testMin: TestConfig<string | undefined, AnyObject> = {
+  const testMin: TestConfig<string | null | undefined, AnyObject> = {
     name: 'min',
     message: 'Invalid range (min)',
     params: { min },
@@ -283,7 +283,7 @@ const createYupNumberSchema = (component: FormComponent) => {
     },
   };
 
-  const testMax: TestConfig<string | undefined, AnyObject> = {
+  const testMax: TestConfig<string | null | undefined, AnyObject> = {
     name: 'max',
     message: 'Invalid range (max)',
     params: { max },
@@ -293,6 +293,22 @@ const createYupNumberSchema = (component: FormComponent) => {
       return max >= numValue;
     },
   };
+
+  if (isComponentSingularAndOptional(component)) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .when('$isNotNull', (isNotNull, field) =>
+        isNotNull
+          ? field
+              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .test(testDecimals)
+              .test(testMax)
+              .test(testMin)
+          : field,
+      );
+  }
 
   return yup
     .string()
@@ -317,6 +333,19 @@ const createValidationForAttributesFromComponent = (
   };
 };
 
+const createYupStringSchema = (component: FormComponent) => {
+  if (isComponentSingularAndOptional(component)) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .when('$isNotNull', (isNotNull, field) =>
+        isNotNull[0] ? field.required() : field,
+      );
+  }
+  return yup.string().required();
+};
+
 const createValidationFromComponentType = (
   component: FormComponent | FormAttributeCollection,
 ) => {
@@ -326,7 +355,7 @@ const createValidationFromComponentType = (
     case 'numberVariable':
       return createYupNumberSchema(component as FormComponent);
     default: // collectionVariable, recordLink
-      return yup.string().required('field is required');
+      return createYupStringSchema(component as FormComponent);
   }
 };
 

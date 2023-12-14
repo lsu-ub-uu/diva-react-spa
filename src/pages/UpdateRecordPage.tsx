@@ -28,11 +28,19 @@ import {
   useCoraFormSchemaByValidationType,
   useCoraRecordByTypeAndId,
 } from '../app/hooks';
-import { FormGenerator, useBackdrop } from '../components';
+import {
+  AsidePortal,
+  FormGenerator,
+  NavigationPanel,
+  useBackdrop,
+  linksFromFormSchema,
+  useSectionScroller,
+} from '../components';
 import { FormSchema } from '../components/FormGenerator/types';
 
 export const UpdateRecordPage = () => {
   const { recordId } = useParams();
+  const activeSection = useSectionScroller();
   const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
@@ -70,10 +78,14 @@ export const UpdateRecordPage = () => {
   const handleSubmit = async (values: FieldValues) => {
     try {
       setIsSubmitting(true);
+      const { record } = coraRecord;
+      const coraUpdates = record ? record.updated : [];
+      const lastUpdate = coraUpdates[coraUpdates.length - 1];
+      const payload = { lastUpdate, values };
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.post(
         `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,
-        values,
+        payload,
       );
       notification(`Record was successfully updated!`, 'success');
     } catch (err: any) {
@@ -84,11 +96,29 @@ export const UpdateRecordPage = () => {
     }
   };
 
+  if (coraSchema.isLoading)
+    return (
+      <Skeleton
+        variant='rectangular'
+        height={800}
+      />
+    );
+
   return (
     <>
       <Helmet>
         <title>{coraRecord.record?.id ?? 'not found'} | DiVA</title>
       </Helmet>
+      <AsidePortal>
+        <NavigationPanel
+          links={
+            coraSchema.schema
+              ? linksFromFormSchema(coraSchema.schema) || []
+              : []
+          }
+          activeLinkName={activeSection}
+        />
+      </AsidePortal>
       <div>
         <Stack spacing={2}>
           {coraSchema.schema && coraRecord.record && (
