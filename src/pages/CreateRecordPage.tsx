@@ -130,7 +130,7 @@ export const CreateRecordPage = () => {
     formSchema: FormSchema,
   ): NavigationPanelLink[] | undefined =>
     formSchema?.form.components
-      ?.filter((c) => c.type !== 'text')
+      ?.filter((c) => !['text', 'container'].includes(c.type))
       .map((c) => ({ name: c.name, label: c.label } as NavigationPanelLink));
 
   return (
