@@ -17,6 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { test } from 'vitest';
+import * as yup from 'yup';
+
 import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
@@ -1245,5 +1247,45 @@ describe('FormGenerator Utils', () => {
 
       expect(actualSchema).toMatchObject(expectedSchema);
     });
+  });
+
+  describe('custom validate yupSchemas for array schemas', () => {
+    test('should validate a list with a simple leaf value object being empty in the array', async () => {
+      const optionalStringSchema = yup
+        .string()
+        .nullable()
+        .transform((value) => (value === '' ? null : value))
+        .when('$isNotNull', (isNotNull, field) =>
+          isNotNull[0] ? field.required() : field,
+        );
+
+      const schema = yup.object({
+        testArray: yup
+          .array()
+          .min(1)
+          .max(3)
+          .transform((array) =>
+            array.filter((obj: { value: string }) => obj.value !== ''),
+          )
+          .of(
+            yup.object().shape({
+              value: optionalStringSchema,
+            }),
+          ),
+      });
+      const data = {
+        testArray: [{ value: 'test' }, { value: '' }, { value: '' }],
+      };
+
+      try {
+        const actualData = await schema.validate(data);
+        const expectedData = {
+          testArray: [{ value: 'test' }],
+        };
+        expect(expectedData).toStrictEqual(actualData);
+      } catch (error: unknown) {
+        expect(error).toBeInstanceOf(yup.ValidationError);
+      }
+    }); // test ends
   });
 });
