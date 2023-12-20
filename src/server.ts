@@ -34,7 +34,7 @@ import authRoute from './routes/authRoute';
 import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
 import { injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
 import { cleanJson } from './utils/structs/removeEmpty';
-import { transformRecord } from './config/transformRecord';
+import { transformRecord, transformRecords } from './config/transformRecord';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -59,6 +59,37 @@ app.use('/api/translations/:lang', async (req, res) => {
     res.status(200).json(textDefinitions);
   } catch (error: unknown) {
     res.status(500).json('Internal server error');
+  }
+});
+
+app.use('/api/divaOutputs', async (req, res) => {
+  try {
+    const authToken = req.header('authToken') ?? '';
+    const searchQuery: DataGroup = {
+      name: 'search',
+      children: [
+        {
+          name: 'include',
+          children: [
+            { name: 'includePart', children: [{ name: 'outputGenericSearchTerm', value: '**' }] }
+          ]
+        }
+      ]
+    };
+
+    const dependencies = await assembleCommonDependencies();
+
+    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
+      'divaOutputSearch',
+      searchQuery,
+      authToken
+    );
+
+    const temp = transformRecords(dependencies, response.data);
+    res.status(200).json(temp);
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
   }
 });
 
@@ -281,7 +312,8 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
       dependencies,
       validationTypeId,
       mode as 'create' | 'update'
-    );1
+    );
+    1;
     res.status(200).json(formDef);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
