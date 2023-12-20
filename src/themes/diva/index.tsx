@@ -55,6 +55,7 @@ declare module '@mui/material/Typography' {
     bodyTextStyle: true;
   }
 }
+
 const { palette } = createTheme();
 export const divaTheme = createTheme({
   shadows: Array(25).fill('none') as Shadows,

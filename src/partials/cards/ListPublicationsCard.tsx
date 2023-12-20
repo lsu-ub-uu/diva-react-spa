@@ -19,6 +19,11 @@
 
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { Link as RouterLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Card } from '../../components';
 import {
@@ -35,6 +40,36 @@ export const ListPublicationsCard = () => {
     dispatch(loadPublicationsAsync());
   }, [dispatch]);
 
+  const columns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 230 },
+    { field: 'validationType', headerName: 'Type', width: 120 },
+    { field: 'title', headerName: 'Title', width: 220 },
+    {
+      field: 'createdAt',
+      headerName: 'Created',
+      sortable: true,
+      width: 200,
+      valueGetter: (params: GridValueGetterParams) =>
+        dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss') || '-',
+    },
+    {
+      field: 'action',
+      headerName: '',
+      width: 50,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => (
+        <IconButton
+          aria-label='edit'
+          component={RouterLink}
+          to={`/update/record/${params.id}`}
+        >
+          <EditIcon />
+        </IconButton>
+      ),
+    },
+  ];
+
   return (
     <Card
       title={t('divaClient_listPublicationsText') as string}
@@ -44,7 +79,23 @@ export const ListPublicationsCard = () => {
         t('divaClient_listPublicationsTooltipTitleBodyText') as string
       }
     >
-      <pre>{JSON.stringify(publicationsState.publications, null, 1)}</pre>
+      <div style={{ height: 600, width: '100%' }}>
+        <DataGrid
+          sx={{
+            '& .MuiDataGrid-cell:focus': {
+              outline: 'none',
+            },
+          }}
+          autoHeight
+          disableColumnMenu
+          disableColumnSelector
+          disableSelectionOnClick
+          loading={publicationsState.isLoading}
+          rows={publicationsState.publications}
+          columns={columns}
+          hideFooter
+        />
+      </div>
     </Card>
   );
 };

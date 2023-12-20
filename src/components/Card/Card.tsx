@@ -176,6 +176,10 @@ export const Card = (props: CardProps) => {
             ...(props.variant === 'variant1' && {
               backgroundColor: '#D6E7F333',
             }),
+            ...(props.variant === 'variant5' && {
+              backgroundColor: '#fff',
+              padding: 0,
+            }),
             ...(props.variant === 'variant6' && {
               backgroundColor: '#f7fafd',
             }),
