@@ -25,7 +25,6 @@ export const publicationsSlice = createSlice({
     update: (state, action: PayloadAction<DivaOutput[]>) => {
       state.publications = action.payload;
       state.isLoading = false;
-      state.publications = [];
     },
     hasError: (state, action: PayloadAction<string>) => {
       state.isError = true;
