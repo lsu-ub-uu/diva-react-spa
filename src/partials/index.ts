@@ -18,3 +18,4 @@
  */
 
 export { CreatePublicationCard } from './cards/CreatePublicationCard';
+export { ListPublicationsCard } from './cards/ListPublicationsCard';
