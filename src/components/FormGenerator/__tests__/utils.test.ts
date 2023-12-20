@@ -1250,6 +1250,60 @@ describe('FormGenerator Utils', () => {
   });
 
   describe('custom validate yupSchemas for array schemas', () => {
+    const removeEmpty = (obj: any) => {
+      const keys = Object.keys(obj);
+      keys.forEach((key) => {
+        if (Array.isArray(obj[key])) {
+          const arr = obj[key]
+            .map(removeEmpty)
+            .filter((o: any) => Object.keys(o).length > 0);
+          if (arr.length === 0) {
+            delete obj[key];
+          } else {
+            obj[key] = arr;
+          }
+        }
+        if (
+          obj[key] === undefined ||
+          obj[key] === null ||
+          obj[key] === '' ||
+          Object.keys(obj[key]).length === 0
+        ) {
+          delete obj[key];
+        } else if (
+          typeof obj[key] === 'object' &&
+          Object.keys(obj[key]).length > 0
+        ) {
+          const newObj = removeEmpty(obj[key]);
+          if (Object.keys(newObj).length > 0) {
+            obj[key] = newObj;
+          } else {
+            delete obj[key];
+          }
+        }
+      });
+      return obj;
+    };
+
+    test('clear objects before validation', () => {
+      const testObject = {
+        property1: null,
+        property2: undefined,
+        property3: '',
+        property4: [],
+        property5: {},
+        property6: [{ value: '' }, { value: '' }],
+        property7: {
+          value: '',
+          testGroup: { value: '' },
+          testArray: [{}, { value: '' }],
+        },
+      };
+      const actual = removeEmpty(testObject);
+      const expected = {};
+      expect(expected).toStrictEqual(actual);
+    });
+
     test('should validate a list with a simple leaf value object being empty in the array', async () => {
       const optionalStringSchema = yup
         .string()
@@ -1265,7 +1319,9 @@ describe('FormGenerator Utils', () => {
           .min(1)
           .max(3)
           .transform((array) =>
-            array.filter((obj: { value: string }) => obj.value !== ''),
+            array
+              .map(removeEmpty)
+              .filter((o: any) => Object.keys(o).length > 0),
           )
           .of(
             yup.object().shape({
@@ -1274,7 +1330,7 @@ describe('FormGenerator Utils', () => {
           ),
       });
       const data = {
-        testArray: [{ value: 'test' }, { value: '' }, { value: '' }],
+        testArray: [{ value: '' }, { value: '' }, { value: 'test' }],
       };
 
       try {
