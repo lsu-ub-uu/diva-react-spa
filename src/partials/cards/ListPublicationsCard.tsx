@@ -93,6 +93,9 @@ export const ListPublicationsCard = () => {
           loading={publicationsState.isLoading}
           rows={publicationsState.publications}
           columns={columns}
+          /* components={{
+            NoRowsOverlay: () => <p>TODO: better no data message</p>,
+          }} */
           hideFooter
         />
       </div>

@@ -40,12 +40,10 @@ export const AsidePortal = (props: AsidePortalProps) => {
     setElement(attachElement);
   }, [props.element]);
 
-  return element ? (
-    createPortal(
-      <StyledAsidePortal fixed={fixed}>{props.children}</StyledAsidePortal>,
-      element,
-    )
-  ) : (
-    <p>Error portal</p>
-  );
+  return element
+    ? createPortal(
+        <StyledAsidePortal fixed={fixed}>{props.children}</StyledAsidePortal>,
+        element,
+      )
+    : null;
 };
