@@ -75,9 +75,7 @@ export const ListPublicationsCard = () => {
       title={t('divaClient_listPublicationsText') as string}
       variant='variant5'
       tooltipTitle={t('divaClient_listPublicationsTooltipTitleText') as string}
-      tooltipBody={
-        t('divaClient_listPublicationsTooltipTitleBodyText') as string
-      }
+      tooltipBody={t('divaClient_listPublicationsTooltipBodyText') as string}
     >
       <div style={{ height: 600, width: '100%' }}>
         <DataGrid
