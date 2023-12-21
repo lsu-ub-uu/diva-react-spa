@@ -1,1 +1,0 @@
-export { listSubjectCategories } from './listSubjectCategories';

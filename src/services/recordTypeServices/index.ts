@@ -1,1 +1,0 @@
-export { findRecordTypeByName } from './findRecordTypeByName';

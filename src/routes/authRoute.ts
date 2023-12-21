@@ -1,8 +1,8 @@
 import express from 'express';
 import { getAuthToken } from '../controllers/authController';
 
-const searchRoute = express.Router();
+const authRoute = express.Router();
 
-searchRoute.route('/:user').post(getAuthToken);
+authRoute.route('/:user').post(getAuthToken);
 
-export default searchRoute;
+export default authRoute;
