@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, Grid, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Control, useFieldArray, useForm } from 'react-hook-form';
@@ -9,12 +10,23 @@ import { ControlledTextField } from '../components/Controlled';
 const validationSchema = yup.object().shape({
   nationalSubjectCategory: yup
     .array()
-    .min(1)
-    .max(5)
 
+    // .test('testName', 'error', (array) => {
+    //   return array?.length === 0;
+    // })
+    .min(2)
     .of(
       yup.object().shape({
-        value: yup.string().required(),
+        value: yup
+          .string()
+          .nullable()
+          .transform((value) => (value === '' ? null : value))
+          .when('$isNotNull', (isNotNull, field) =>
+            isNotNull
+              ? // eslint-disable-next-line prefer-regex-literals
+                field.matches(new RegExp('.+'), 'Invalid input format')
+              : field,
+          ),
       }),
     ),
 });
@@ -32,18 +44,31 @@ interface NFProps {
 
 const NestedFieldArray = (props: NFProps): JSX.Element => {
   const { control, name } = props;
-  const { fields, append } = useFieldArray({ control, name });
+  const { fields, append, remove } = useFieldArray({ control, name });
 
   return (
     <div id={props.name}>
       {fields.map((field, index) => {
         return (
-          <ControlledTextField
-            key={field.id}
-            label='nationalSubjectCategory.value'
-            name={`nationalSubjectCategory[${index}].value`}
-            control={control}
-          />
+          <React.Fragment key={index}>
+            <ControlledTextField
+              key={field.id}
+              label='nationalSubjectCategory.value'
+              name={`nationalSubjectCategory[${index}].value`}
+              control={control}
+            />
+            <Button
+              sx={{ mt: 3, mb: 3 }}
+              variant='outlined'
+              color='info'
+              fullWidth
+              disableRipple
+              disabled={fields.length >= 5}
+              onClick={() => remove(index)}
+            >
+              Remove
+            </Button>
+          </React.Fragment>
         );
       })}
       <Button
@@ -118,7 +143,6 @@ export const ReactHookFormTestPage = () => {
             >
               <pre>{JSON.stringify(getValues(), null, 1)}</pre>
               <Button
-                disabled={!formState.isValid}
                 fullWidth
                 type='submit'
                 disableRipple

@@ -17,6 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { test } from 'vitest';
+import * as yup from 'yup';
+
 import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
@@ -1245,5 +1247,101 @@ describe('FormGenerator Utils', () => {
 
       expect(actualSchema).toMatchObject(expectedSchema);
     });
+  });
+
+  describe('custom validate yupSchemas for array schemas', () => {
+    const removeEmpty = (obj: any) => {
+      const keys = Object.keys(obj);
+      keys.forEach((key) => {
+        if (Array.isArray(obj[key])) {
+          const arr = obj[key]
+            .map(removeEmpty)
+            .filter((o: any) => Object.keys(o).length > 0);
+          if (arr.length === 0) {
+            delete obj[key];
+          } else {
+            obj[key] = arr;
+          }
+        }
+        if (
+          obj[key] === undefined ||
+          obj[key] === null ||
+          obj[key] === '' ||
+          Object.keys(obj[key]).length === 0
+        ) {
+          delete obj[key];
+        } else if (
+          typeof obj[key] === 'object' &&
+          Object.keys(obj[key]).length > 0
+        ) {
+          const newObj = removeEmpty(obj[key]);
+          if (Object.keys(newObj).length > 0) {
+            obj[key] = newObj;
+          } else {
+            delete obj[key];
+          }
+        }
+      });
+      return obj;
+    };
+
+    test('clear objects before validation', () => {
+      const testObject = {
+        property1: null,
+        property2: undefined,
+        property3: '',
+        property4: [],
+        property5: {},
+        property6: [{ value: '' }, { value: '' }],
+        property7: {
+          value: '',
+          testGroup: { value: '' },
+          testArray: [{}, { value: '' }],
+        },
+      };
+      const actual = removeEmpty(testObject);
+      const expected = {};
+      expect(expected).toStrictEqual(actual);
+    });
+
+    test('should validate a list with a simple leaf value object being empty in the array', async () => {
+      const optionalStringSchema = yup
+        .string()
+        .nullable()
+        .transform((value) => (value === '' ? null : value))
+        .when('$isNotNull', (isNotNull, field) =>
+          isNotNull[0] ? field.required() : field,
+        );
+
+      const schema = yup.object({
+        testArray: yup
+          .array()
+          .min(1)
+          .max(3)
+          .transform((array) =>
+            array
+              .map(removeEmpty)
+              .filter((o: any) => Object.keys(o).length > 0),
+          )
+          .of(
+            yup.object().shape({
+              value: optionalStringSchema,
+            }),
+          ),
+      });
+      const data = {
+        testArray: [{ value: '' }, { value: '' }, { value: 'test' }],
+      };
+
+      try {
+        const actualData = await schema.validate(data);
+        const expectedData = {
+          testArray: [{ value: 'test' }],
+        };
+        expect(expectedData).toStrictEqual(actualData);
+      } catch (error: unknown) {
+        expect(error).toBeInstanceOf(yup.ValidationError);
+      }
+    }); // test ends
   });
 });

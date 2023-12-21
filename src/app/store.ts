@@ -8,6 +8,7 @@ import {
 import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
 import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
 import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
+import publicationsReducer from '../features/publications/publicationsSlice';
 import authReducer from '../features/auth/authSlice';
 
 const combinedReducer = combineReducers({
@@ -15,6 +16,7 @@ const combinedReducer = combineReducers({
   publicationType: publicationTypeReducer,
   subjectCategory: subjectCategoryReducer,
   researchSubject: researchSubjectReducer,
+  publications: publicationsReducer,
 });
 
 const store = configureStore({

@@ -61,49 +61,68 @@ export const renderLeafComponent = (
     case 'numberVariable':
     case 'recordLink': {
       return (
-        <ControlledTextField
+        <Grid
           key={reactKey}
-          multiline={component.inputType === 'textarea'}
-          label={component.label ?? ''}
-          name={name}
-          placeholder={component.placeholder}
-          tooltip={component.tooltip}
-          control={control}
-          readOnly={!!component.finalValue}
-          displayMode={component.mode}
-        />
+          item
+          xs={12}
+          sm={component.gridColSpan}
+        >
+          <ControlledTextField
+            multiline={component.inputType === 'textarea'}
+            label={component.label ?? ''}
+            name={name}
+            placeholder={component.placeholder}
+            tooltip={component.tooltip}
+            control={control}
+            readOnly={!!component.finalValue}
+            displayMode={component.mode}
+          />
+        </Grid>
       );
     }
     case 'collectionVariable': {
       return (
-        <ControlledSelectField
+        <Grid
           key={reactKey}
-          name={name}
-          isLoading={false}
-          loadingError={false}
-          label={component.label ?? ''}
-          placeholder={component.placeholder}
-          tooltip={component.tooltip}
-          control={control}
-          options={component.options}
-          readOnly={!!component.finalValue}
-          displayMode={component.mode}
-        />
+          item
+          xs={12}
+          sm={component.gridColSpan}
+        >
+          <ControlledSelectField
+            name={name}
+            isLoading={false}
+            loadingError={false}
+            label={component.label ?? ''}
+            placeholder={component.placeholder}
+            tooltip={component.tooltip}
+            control={control}
+            options={component.options}
+            readOnly={!!component.finalValue}
+            displayMode={component.mode}
+          />
+        </Grid>
       );
     }
     case 'text': {
       return (
-        <Typography
+        <Grid
           key={reactKey}
-          variant={component.textStyle ?? 'bodyTextStyle'}
-          text={component.name}
-        />
+          item
+          xs={12}
+          sm={component.gridColSpan}
+        >
+          <Typography
+            variant={component.textStyle ?? 'bodyTextStyle'}
+            text={component.name}
+          />
+        </Grid>
       );
     }
     case 'guiElementLink': {
       // TODO If needed take component.presentAs in consideration
       return (
         <LinkButton
+          key={reactKey}
           href={component.url ?? ''}
           text={component.elementText ?? ''}
         />
@@ -147,7 +166,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (
     component: FormComponent,
-    parentComponent: FormComponent | undefined,
+    // parentComponent: FormComponent | undefined,
     idx: number,
     path: string,
   ) => {
@@ -168,18 +187,24 @@ export const FormGenerator = (props: FormGeneratorProps) => {
     ) => {
       return (aComponent.attributes ?? []).map((attribute, index) => {
         return (
-          <ControlledSelectField
-            key={`${attribute.name}_${index}`}
-            name={`${aPath}._${attribute.name}`}
-            isLoading={false}
-            loadingError={false}
-            label={attribute.label ?? ''}
-            placeholder={attribute.placeholder}
-            tooltip={attribute.tooltip}
-            control={control}
-            options={attribute.options}
-            readOnly={!!attribute.finalValue}
-          />
+          <Grid
+            key={attribute.name}
+            item
+            xs={12}
+          >
+            <ControlledSelectField
+              key={`${attribute.name}_${index}`}
+              name={`${aPath}._${attribute.name}`}
+              isLoading={false}
+              loadingError={false}
+              label={attribute.label ?? ''}
+              placeholder={attribute.placeholder}
+              tooltip={attribute.tooltip}
+              control={control}
+              options={attribute.options}
+              readOnly={!!attribute.finalValue}
+            />
+          </Grid>
         );
       });
     };
@@ -201,7 +226,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           {component.components &&
             createFormComponents(
               component.components,
-              component,
               currentComponentNamePath,
             )}
         </div>
@@ -226,17 +250,29 @@ export const FormGenerator = (props: FormGeneratorProps) => {
             tooltipTitle={t(component.tooltip?.title as string) as string}
             tooltipBody={t(component.tooltip?.body as string) as string}
           >
-            {createFormComponentAttributes(component, currentComponentNamePath)}
-            {component.components &&
-              createFormComponents(
-                component.components,
+            <Grid
+              container
+              spacing={2}
+              justifyContent='space-between'
+              alignItems='flex-start'
+            >
+              {createFormComponentAttributes(
                 component,
                 currentComponentNamePath,
               )}
+              {component.components &&
+                createFormComponents(
+                  component.components,
+                  currentComponentNamePath,
+                )}
+            </Grid>
           </Card>
         </span>
       ) : (
-        <Box key={reactKey}>
+        <Box
+          key={reactKey}
+          id='outer-start-form'
+        >
           <Typography
             text={component?.label ?? ''}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
@@ -245,7 +281,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           {component.components &&
             createFormComponents(
               component.components,
-              component,
               currentComponentNamePath,
             )}
         </Box>
@@ -258,21 +293,21 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           key={reactKey}
           control={control}
           component={component}
-          parentComponent={parentComponent}
           name={currentComponentNamePath}
           renderCallback={(arrayPath: string) => {
             return [
               ...createFormComponentAttributes(component, arrayPath),
-              ...createFormComponents(
-                component.components ?? [],
-                component,
-                arrayPath,
-              ),
+              ...createFormComponents(component.components ?? [], arrayPath),
             ];
           }}
         />
       ) : (
-        <Box key={reactKey}>
+        <Grid
+          item
+          xs={12}
+          sm={component.gridColSpan}
+          key={reactKey}
+        >
           <Typography
             text={component?.label ?? ''}
             variant={headlineLevelToTypographyVariant(component.headlineLevel)}
@@ -280,20 +315,15 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           <FieldArrayComponent
             control={control}
             component={component}
-            parentComponent={parentComponent}
             name={currentComponentNamePath}
             renderCallback={(arrayPath: string) => {
               return [
                 ...createFormComponentAttributes(component, arrayPath),
-                ...createFormComponents(
-                  component.components ?? [],
-                  component,
-                  arrayPath,
-                ),
+                ...createFormComponents(component.components ?? [], arrayPath),
               ];
             }}
           />
-        </Box>
+        </Grid>
       );
     }
     if (isComponentVariable(component) && isComponentRepeating(component)) {
@@ -302,7 +332,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           key={reactKey}
           control={control}
           component={component}
-          parentComponent={parentComponent}
           name={currentComponentNamePath}
           renderCallback={(variableArrayPath: string) => {
             return [
@@ -319,10 +348,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       );
     }
     return (
-      <div
-        key={reactKey}
-        style={{ background: 'transparent', width: '100%' }}
-      >
+      <React.Fragment key={reactKey}>
         {createFormComponentAttributes(component, currentComponentNamePath)}
         {renderLeafComponent(
           component,
@@ -330,18 +356,16 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           control,
           `${currentComponentNamePath}.value`,
         )}
-      </div>
+      </React.Fragment>
     );
   };
 
   const createFormComponents = (
     components: FormComponent[],
-    parentComponent: FormComponent | undefined,
+    // parentComponent: FormComponent | undefined,
     path = '',
   ): JSX.Element[] => {
-    return components.map((c, i) =>
-      generateFormComponent(c, parentComponent, i, path),
-    );
+    return components.map((c, i) => generateFormComponent(c, i, path));
   };
 
   return (
@@ -353,7 +377,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         () => props.onInvalid && props.onInvalid(),
       )}
     >
-      {generateFormComponent(props.formSchema.form, undefined, 0, '')}
+      {generateFormComponent(props.formSchema.form, 0, '')}
 
       <AppBar
         position='fixed'

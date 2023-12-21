@@ -19,7 +19,7 @@
 
 import React from 'react';
 import { Control, useFieldArray } from 'react-hook-form';
-import { Box, Chip, Divider, Grid } from '@mui/material';
+import { Chip, Divider, Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,6 @@ import { ActionButtonGroup } from './ActionButtonGroup';
 import { FormComponent } from './types';
 import {
   createDefaultValuesFromComponent,
-  isComponentRepeatingContainer,
   isComponentSingularAndOptional,
   isFirstLevel,
 } from './utils';
@@ -37,7 +36,7 @@ interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
   component: FormComponent;
-  parentComponent: FormComponent | undefined;
+  // parentComponent?: FormComponent | undefined;
   renderCallback: (path: string) => unknown;
 }
 
@@ -60,75 +59,49 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     remove(index);
   };
 
-  const dummyRepeatingStyles = () => {
-    if (isComponentRepeatingContainer(props.parentComponent)) {
-      return {
-        background: '#FEFEFE',
-        border: '1px solid black',
-        padding: '10px',
-        marginBottom: '8px',
-      };
-    }
-    return { backgroundColor: '' };
-  };
-
   function getContent() {
     return (
-      <>
+      <Grid
+        item
+        xs={12}
+        sm={props.component.gridColSpan}
+      >
         {fields.map((field, index) => (
-          <div
-            key={field.id}
-            id='dummy-repeating-container'
-            style={dummyRepeatingStyles()}
-          >
+          <React.Fragment key={field.id}>
+            {!isComponentSingularAndOptional(props.component) && (
+              <Divider sx={{ mb: 2 }}>
+                <Chip
+                  label={`${t(props.component.label ?? '')} ${index + 1}`}
+                />
+              </Divider>
+            )}
+            <ActionButtonGroup
+              hideMoveButtons={isComponentSingularAndOptional(props.component)}
+              moveUpButtonDisabled={index === 0}
+              moveUpButtonAction={() => handleMove(index, index - 1)}
+              moveDownButtonDisabled={index === fields.length - 1}
+              moveDownButtonAction={() => handleMove(index, index + 1)}
+              deleteButtonDisabled={
+                fields.length <= (props.component.repeat?.repeatMin ?? 1)
+              }
+              deleteButtonAction={() => handleRemove(index)}
+            />
             <Grid
               container
-              direction='row'
-              justifyContent='space-between'
+              item
+              xs={12}
+              spacing={2}
+              justifyContent='flex-start'
               alignItems='center'
+              direction='row'
             >
-              <Grid
-                item
-                xs={12}
-              >
-                {!isComponentSingularAndOptional(props.component) && (
-                  <Divider sx={{ mb: 2 }}>
-                    <Chip
-                      label={`${t(props.component.label ?? '')} ${index + 1}`}
-                    />
-                  </Divider>
-                )}
-              </Grid>
-              <Grid
-                item
-                xs={10}
-              >
-                {
-                  props.renderCallback(
-                    `${props.name}[${index}]` as const,
-                  ) as JSX.Element
-                }
-              </Grid>
-              <Grid
-                item
-                xs={2}
-              >
-                <ActionButtonGroup
-                  hideMoveButtons={isComponentSingularAndOptional(
-                    props.component,
-                  )}
-                  moveUpButtonDisabled={index === 0}
-                  moveUpButtonAction={() => handleMove(index, index - 1)}
-                  moveDownButtonDisabled={index === fields.length - 1}
-                  moveDownButtonAction={() => handleMove(index, index + 1)}
-                  deleteButtonDisabled={
-                    fields.length <= (props.component.repeat?.repeatMin ?? 1)
-                  }
-                  deleteButtonAction={() => handleRemove(index)}
-                />
-              </Grid>
+              {
+                props.renderCallback(
+                  `${props.name}[${index}]` as const,
+                ) as JSX.Element
+              }
             </Grid>
-          </div>
+          </React.Fragment>
         ))}
         {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
           <Button
@@ -142,7 +115,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             {t(props.component.label as string)}
           </Button>
         )}
-      </>
+      </Grid>
     );
   }
 
@@ -163,6 +136,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       </Card>
     </span>
   ) : (
-    <Box key={props.name}>{getContent()}</Box>
+    <Grid
+      item
+      xs={12}
+      sm={props.component.gridColSpan}
+    >
+      {getContent()}
+    </Grid>
   );
 };
