@@ -44,7 +44,36 @@ axios.defaults.baseURL = CORA_API_URL;
 const app: Application = express();
 
 configureServer(app);
-// loadCoraDefinitions()  // keeps them in memory some way... redis, node-cache
+
+const getPoolsFromCora = async (poolTypes: string[]) => {
+  const promises = poolTypes.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
+  return await Promise.all(promises);
+};
+
+const assembleCommonDependencies = async () => {
+  const types = ['metadata', 'validationType'];
+  const result = await getPoolsFromCora(types);
+  const metadata = transformMetadata(result[0].data);
+  const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
+
+  const validationTypes = transformCoraValidationTypes(result[1].data);
+  const validationTypePool = listToPool<BFFValidationType>(validationTypes);
+
+  return {
+    validationTypePool,
+    metadataPool
+  } as Dependencies;
+};
+
+const errorHandler = (error: unknown) => {
+  //@ts-ignore
+  const message: string = (error.message ?? 'Unknown error') as string;
+  const status = axios.isAxiosError(error) ? error.response?.status : 500;
+  return {
+    message,
+    status: status ?? 500
+  };
+};
 
 app.use('/api/auth', authRoute);
 app.use('/api/translations/:lang', async (req, res) => {
@@ -132,36 +161,6 @@ app.use('/api/validationTypes', async (req, res) => {
     res.status(errorResponse.status).json(errorResponse).send();
   }
 });
-
-const getPoolsFromCora = async (poolTypes: string[]) => {
-  const promises = poolTypes.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
-  return await Promise.all(promises);
-};
-
-const assembleCommonDependencies = async () => {
-  const types = ['metadata', 'validationType'];
-  const result = await getPoolsFromCora(types);
-  const metadata = transformMetadata(result[0].data);
-  const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
-
-  const validationTypes = transformCoraValidationTypes(result[1].data);
-  const validationTypePool = listToPool<BFFValidationType>(validationTypes);
-
-  return {
-    validationTypePool,
-    metadataPool
-  } as Dependencies;
-};
-
-const errorHandler = (error: unknown) => {
-  //@ts-ignore
-  const message: string = (error.message ?? 'Unknown error') as string;
-  const status = axios.isAxiosError(error) ? error.response?.status : 500;
-  return {
-    message,
-    status: status ?? 500
-  };
-};
 
 app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
   try {
