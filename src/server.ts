@@ -50,21 +50,6 @@ const getPoolsFromCora = async (poolTypes: string[]) => {
   return await Promise.all(promises);
 };
 
-const assembleCommonDependencies = async () => {
-  const types = ['metadata', 'validationType'];
-  const result = await getPoolsFromCora(types);
-  const metadata = transformMetadata(result[0].data);
-  const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
-
-  const validationTypes = transformCoraValidationTypes(result[1].data);
-  const validationTypePool = listToPool<BFFValidationType>(validationTypes);
-
-  return {
-    validationTypePool,
-    metadataPool
-  } as Dependencies;
-};
-
 const errorHandler = (error: unknown) => {
   //@ts-ignore
   const message: string = (error.message ?? 'Unknown error') as string;
