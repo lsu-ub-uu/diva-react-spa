@@ -75,16 +75,39 @@ const errorHandler = (error: unknown) => {
   };
 };
 
+const testDependencies: Dependencies = {};
+
+const loadStuffOnServerStart = async () => {
+  const response = await getRecordDataListByType<DataListWrapper>('text', '');
+  const texts = transformCoraTexts(response.data);
+
+
+  const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
+  const result = await getPoolsFromCora(types);
+
+  const metadata = transformMetadata(result[0].data);
+  const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
+  const presentation = transformCoraPresentations(result[1].data);
+  const guiElements = transformCoraPresentations(result[3].data);
+
+  const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup | BFFGuiElement>([
+    ...presentation,
+    ...guiElements
+  ]);
+
+  const validationTypes = transformCoraValidationTypes(result[2].data);
+  const validationTypePool = listToPool<BFFValidationType>(validationTypes);
+
+  testDependencies.validationTypePool = validationTypePool;
+  testDependencies.metadataPool = metadataPool;
+  testDependencies.presentationPool = presentationPool;
+  testDependencies.textPool = listToPool<BFFText>(texts);
+};
+
 app.use('/api/auth', authRoute);
 app.use('/api/translations/:lang', async (req, res) => {
   try {
-    const response = await getRecordDataListByType<DataListWrapper>('text', '');
-    const texts = transformCoraTexts(response.data);
-    const textPool = listToPool<BFFText>(texts);
-    const dependencies = {
-      textPool
-    };
-    const textDefinitions = createTextDefinition(dependencies, req.params.lang);
+    const textDefinitions = createTextDefinition(testDependencies, req.params.lang);
     res.status(200).json(textDefinitions);
   } catch (error: unknown) {
     res.status(500).json('Internal server error');
@@ -106,15 +129,13 @@ app.use('/api/divaOutputs', async (req, res) => {
       ]
     };
 
-    const dependencies = await assembleCommonDependencies();
-
     const response = await getSearchResultDataListBySearchType<DataListWrapper>(
       'divaOutputSearch',
       searchQuery,
       authToken
     );
 
-    const temp = transformRecords(dependencies, response.data);
+    const temp = transformRecords(testDependencies, response.data);
     res.status(200).json(temp);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
@@ -171,8 +192,7 @@ app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
     const { lastUpdate, values } = payload;
     const recordType = Object.keys(values)[0];
 
-    const dependencies = await assembleCommonDependencies();
-    const { validationTypePool } = dependencies;
+    const { validationTypePool } = testDependencies;
 
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
@@ -181,7 +201,7 @@ app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
     const FORM_MODE_UPDATE = 'update';
     const dataDivider = 'diva';
 
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
+    const formMetaData = createFormMetaData(testDependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, values);
     const updateGroup = injectRecordInfoIntoDataGroup(
@@ -216,8 +236,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     const payload = cleanJson(req.body);
     const recordType = Object.keys(payload)[0];
 
-    const dependencies = await assembleCommonDependencies();
-    const { validationTypePool } = dependencies;
+    const { validationTypePool } = testDependencies;
 
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
@@ -226,7 +245,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     const FORM_MODE_NEW = 'create';
     const dataDivider = 'diva';
 
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaData = createFormMetaData(testDependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
     const newGroup = injectRecordInfoIntoDataGroup(
@@ -249,24 +268,9 @@ app.get('/api/record/:recordType/:recordId', async (req, res) => {
     const { recordType, recordId } = req.params;
     const authToken = req.header('authToken') ?? '';
 
-    // start loading dependencies
-    const types = ['metadata', 'validationType'];
-    const result = await getPoolsFromCora(types);
-    const metadata = transformMetadata(result[0].data);
-    const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
-
-    const validationTypes = transformCoraValidationTypes(result[1].data);
-    const validationTypePool = listToPool<BFFValidationType>(validationTypes);
-
-    const dependencies = {
-      validationTypePool,
-      metadataPool
-    } as Dependencies;
-    // end dependencies
-
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
     const recordWrapper = response.data;
-    const record = transformRecord(dependencies, recordWrapper);
+    const record = transformRecord(testDependencies, recordWrapper);
     res.status(response.status).json(record);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
@@ -281,39 +285,28 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
     if (!['create', 'update'].includes(mode)) {
       throw new Error(`Mode [${mode}] is not supported`);
     }
-    const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
-    const result = await getPoolsFromCora(types);
 
-    const metadata = transformMetadata(result[0].data);
-    const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
-    const presentation = transformCoraPresentations(result[1].data);
-    const guiElements = transformCoraPresentations(result[3].data);
-
-    const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup | BFFGuiElement>([
-      ...presentation,
-      ...guiElements
-    ]);
-
-    const validationTypes = transformCoraValidationTypes(result[2].data);
-    const validationTypePool = listToPool<BFFValidationType>(validationTypes);
-
-    if (!validationTypePool.has(validationTypeId)) {
+    if (!testDependencies.validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
 
-    const dependencies = {
-      validationTypePool,
-      metadataPool,
-      presentationPool
-    } as Dependencies;
-
     const formDef = createFormDefinition(
-      dependencies,
+      testDependencies,
       validationTypeId,
       mode as 'create' | 'update'
     );
-    1;
+
     res.status(200).json(formDef);
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+});
+
+app.get('/api/refreshDefinitions', async (req, res) => {
+  try {
+    await loadStuffOnServerStart();
+    res.status(200).json({ message: 'Refreshed cora defs'} );
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
@@ -323,4 +316,5 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
   console.log(`Cora API-url ${CORA_API_URL}`);
+  loadStuffOnServerStart().then(() => console.log('Loaded stuff from cora'));
 });
