@@ -3,6 +3,7 @@ import { AppThunk } from 'app/store';
 import { authenticated, authenticating, hasError } from './authSlice';
 import { Account } from '../../components/Layout/Header/Login';
 import { loadPublicationTypesAsync } from '../publicationTypes';
+import { loadPublicationsAsync } from '../publications';
 
 export const dummyLoginAsync =
   (account: Account, callback?: Function): AppThunk =>
@@ -20,6 +21,7 @@ export const dummyLoginAsync =
 
       dispatch(authenticated(response.data.authToken));
       dispatch(loadPublicationTypesAsync());
+      dispatch(loadPublicationsAsync());
     } catch (e) {
       dispatch(hasError('login error'));
     } finally {

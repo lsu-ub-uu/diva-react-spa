@@ -8,6 +8,7 @@ export interface DivaOutput {
   validationType: string;
   createdAt: string;
   createdBy: string;
+  userRights: string[];
 }
 
 export const loadPublicationsAsync =
@@ -22,6 +23,7 @@ export const loadPublicationsAsync =
         validationType: record.validationType,
         createdAt: record.createdAt,
         createdBy: record.createdBy,
+        userRights: record.userRights,
       }));
       dispatch(update(transformed as DivaOutput[]));
     } catch (e) {
