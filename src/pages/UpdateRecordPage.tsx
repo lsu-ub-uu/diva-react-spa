@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
