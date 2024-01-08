@@ -55,6 +55,7 @@ export const renderLeafComponent = (
   reactKey: string,
   control: Control<any>,
   name: string,
+  renderElementGridWrapper: boolean,
 ): JSX.Element | null => {
   switch (component.type) {
     case 'textVariable':
@@ -65,7 +66,7 @@ export const renderLeafComponent = (
           key={reactKey}
           item
           xs={12}
-          sm={component.gridColSpan}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
         >
           <ControlledTextField
             multiline={component.inputType === 'textarea'}
@@ -305,7 +306,6 @@ export const FormGenerator = (props: FormGeneratorProps) => {
         <Grid
           item
           xs={12}
-          sm={component.gridColSpan}
           key={reactKey}
         >
           <Typography
@@ -341,6 +341,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
                 variableArrayPath,
                 control,
                 `${variableArrayPath}.value`,
+                false,
               ),
             ];
           }}
@@ -355,6 +356,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           reactKey,
           control,
           `${currentComponentNamePath}.value`,
+          true,
         )}
       </React.Fragment>
     );
