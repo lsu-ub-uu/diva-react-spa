@@ -30,5 +30,6 @@
     "react/no-array-index-key": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "import/no-cycle": "off"
-  }
+  },
+  "ignorePatterns": ["setupTest.js", "vitest.config.ts", "vite.config.ts"]
 }
