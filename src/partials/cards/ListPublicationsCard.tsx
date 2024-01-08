@@ -30,6 +30,7 @@ import {
   loadPublicationsAsync,
   publicationsSelector,
 } from '../../features/publications';
+import { DivaOutput } from '../../features/publications/actions';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
@@ -60,6 +61,7 @@ export const ListPublicationsCard = () => {
       filterable: false,
       renderCell: (params) => (
         <IconButton
+          disabled={!params.row.userRights.includes('update')}
           aria-label='edit'
           component={RouterLink}
           to={`/update/record/${params.id}`}
@@ -78,9 +80,15 @@ export const ListPublicationsCard = () => {
       tooltipBody={t('divaClient_listPublicationsTooltipBodyText') as string}
     >
       <div style={{ height: 600, width: '100%' }}>
-        <DataGrid
+        <DataGrid<DivaOutput>
           sx={{
             '& .MuiDataGrid-cell:focus': {
+              outline: 'none',
+            },
+            '& .MuiDataGrid-columnHeader:focus': {
+              outline: 'none',
+            },
+            '& .MuiDataGrid-columnHeader:focus-within': {
               outline: 'none',
             },
           }}

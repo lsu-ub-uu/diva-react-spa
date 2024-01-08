@@ -8,6 +8,8 @@ import { logout } from '../../../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useBackdrop } from '../../Backdrop/BackdropContext';
 import { authStateSelector } from '../../../features/auth/selectors';
+import { loadPublicationsAsync } from '../../../features/publications';
+import { loadPublicationTypesAsync } from '../../../features/publicationTypes';
 
 // TODO should be moved
 export interface Account {
@@ -48,6 +50,8 @@ export const Login = (): JSX.Element => {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(loadPublicationTypesAsync());
+    dispatch(loadPublicationsAsync());
   };
 
   return (

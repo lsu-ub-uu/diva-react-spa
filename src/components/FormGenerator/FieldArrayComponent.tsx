@@ -61,11 +61,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
 
   function getContent() {
     return (
-      <Grid
-        item
-        xs={12}
-        sm={props.component.gridColSpan}
-      >
+      <>
         {fields.map((field, index) => (
           <React.Fragment key={field.id}>
             {!isComponentSingularAndOptional(props.component) && (
@@ -115,7 +111,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             {t(props.component.label as string)}
           </Button>
         )}
-      </Grid>
+      </>
     );
   }
 
