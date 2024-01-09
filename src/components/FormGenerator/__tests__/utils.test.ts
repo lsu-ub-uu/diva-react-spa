@@ -69,10 +69,7 @@ const stringValidationTests = (regex: RegExp) => [
 
 const requiredValidationTests = [{ name: 'required' }];
 
-const minMaxValidationTests = (min: number, max: number) => [
-  { name: 'min', params: { min } },
-  { name: 'max', params: { max } },
-];
+const minMaxValidationTests = () => [{ name: 'is-min-max' }];
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
@@ -974,19 +971,20 @@ describe('FormGenerator Utils', () => {
           fields: {
             someNameInData: {
               type: 'array',
-              tests: minMaxValidationTests(0, 2),
+              tests: minMaxValidationTests(), // 0, 2
               innerType: {
                 fields: {
                   value: {
                     type: 'string',
-                    tests: stringValidationTests(/^[a-zA-Z]$/),
+                    nullable: true,
+                    optional: true,
                   },
                 },
               },
             },
             someNumberVariableNameInData: {
               type: 'array',
-              tests: minMaxValidationTests(1, 5),
+              tests: minMaxValidationTests(), // 1, 5
               innerType: {
                 fields: {
                   value: {
@@ -1020,12 +1018,13 @@ describe('FormGenerator Utils', () => {
           fields: {
             colour: {
               type: 'array',
-              tests: minMaxValidationTests(0, 3),
+              tests: minMaxValidationTests(), // 0, 3
               innerType: {
                 fields: {
                   value: {
                     type: 'string',
-                    tests: requiredValidationTests,
+                    nullable: true,
+                    optional: true,
                   },
                 },
               },
@@ -1077,7 +1076,7 @@ describe('FormGenerator Utils', () => {
           fields: {
             firstChildGroup: {
               type: 'array',
-              tests: minMaxValidationTests(0, 10),
+              tests: minMaxValidationTests(), // 0, 10
               innerType: {
                 fields: {
                   exampleNumberVar: {
@@ -1111,12 +1110,12 @@ describe('FormGenerator Utils', () => {
           fields: {
             author: {
               type: 'array',
-              tests: minMaxValidationTests(1, 10),
+              tests: minMaxValidationTests(), // 1, 10
               innerType: {
                 fields: {
                   name: {
                     type: 'array',
-                    tests: minMaxValidationTests(1, 100),
+                    tests: minMaxValidationTests(), // 1, 100
                     innerType: {
                       fields: {
                         firstName: {
@@ -1169,7 +1168,7 @@ describe('FormGenerator Utils', () => {
           fields: {
             grade: {
               type: 'array',
-              tests: minMaxValidationTests(1, 12),
+              tests: minMaxValidationTests(), // 1, 12
               innerType: {
                 type: 'object',
                 fields: {
@@ -1195,7 +1194,7 @@ describe('FormGenerator Utils', () => {
             },
             author: {
               type: 'array',
-              tests: minMaxValidationTests(1, 10),
+              tests: minMaxValidationTests(), // 1, 10
               innerType: {
                 fields: {
                   _colourAttribute: {
@@ -1205,7 +1204,7 @@ describe('FormGenerator Utils', () => {
                   },
                   name: {
                     type: 'array',
-                    tests: minMaxValidationTests(1, 100),
+                    tests: minMaxValidationTests(), // 1, 100
                     innerType: {
                       fields: {
                         firstName: {

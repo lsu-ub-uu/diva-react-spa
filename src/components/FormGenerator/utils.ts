@@ -252,23 +252,21 @@ function mergeArrays(target: any[], overlay: any[]): any[] {
 
 /**
  * YUP Validation
+ * OBS! In the Yup library, the transform method is executed after the validation process.
+ * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 
 const createYupStringRegexpSchema = (component: FormComponent) => {
   const regexpValidation = component.validation as FormRegexValidation;
 
-  if (isComponentSingularAndOptional(component)) {
+  if (isComponentRepeating(component)) {
     return yup
       .string()
       .nullable()
       .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull
-          ? field.matches(
-              new RegExp(regexpValidation.pattern ?? '.+'),
-              'Invalid input format',
-            )
-          : field,
+      .matches(
+        new RegExp(regexpValidation.pattern ?? '.+'),
+        'Invalid input format',
       );
   }
   return yup
@@ -285,14 +283,17 @@ export const createYupArrayFromSchema = (
     | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
   repeat: FormComponentRepeat | undefined,
 ) => {
+  const maxLen = repeat?.repeatMax ?? 1;
+  const minLen = repeat?.repeatMin ?? 1;
   return yup
     .array()
     .of(schema)
-    .min(repeat?.repeatMin ?? 1)
-    .max(repeat?.repeatMax ?? 1)
-    .transform((array) =>
-      array.map(removeEmpty).filter((o: any) => Object.keys(o).length > 0),
-    );
+    .test('is-min-max', `is not valid length`, (value) => {
+      const testableValues =
+        value?.map(removeEmpty).filter((o: any) => Object.keys(o).length > 0) ??
+        [];
+      return testableValues.length <= maxLen && testableValues.length >= minLen;
+    });
 };
 
 const createYupNumberSchema = (component: FormComponent) => {
@@ -372,13 +373,13 @@ const createValidationForAttributesFromComponent = (
 };
 
 const createYupStringSchema = (component: FormComponent) => {
-  if (isComponentSingularAndOptional(component)) {
+  if (isComponentRepeating(component)) {
     return yup
       .string()
       .nullable()
       .transform((value) => (value === '' ? null : value))
       .when('$isNotNull', (isNotNull, field) =>
-        isNotNull[0] ? field.required() : field,
+        isNotNull[0] ? field.required('not valid') : field,
       );
   }
   return yup.string().required();
