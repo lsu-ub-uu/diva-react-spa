@@ -102,7 +102,9 @@ export const CreateRecordPage = () => {
         <Stack spacing={2}>
           <FormGenerator
             onSubmit={handleSubmit}
-            onInvalid={() => notification(`Form is invalid`, 'error')}
+            onInvalid={() => {
+              notification(`Form is invalid`, 'error');
+            }}
             formSchema={schema as FormSchema}
           />
         </Stack>

@@ -289,7 +289,10 @@ export const createYupArrayFromSchema = (
     .array()
     .of(schema)
     .min(repeat?.repeatMin ?? 1)
-    .max(repeat?.repeatMax ?? 1);
+    .max(repeat?.repeatMax ?? 1)
+    .transform((array) =>
+      array.map(removeEmpty).filter((o: any) => Object.keys(o).length > 0),
+    );
 };
 
 const createYupNumberSchema = (component: FormComponent) => {

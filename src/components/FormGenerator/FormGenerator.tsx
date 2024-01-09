@@ -19,7 +19,7 @@
 
 import React from 'react';
 import { Box, Container, Grid, Toolbar } from '@mui/material';
-import { Control, FieldValues, useForm } from 'react-hook-form';
+import { Control, FieldErrors, FieldValues, useForm } from 'react-hook-form';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -47,7 +47,7 @@ interface FormGeneratorProps {
   record?: CoraRecord;
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
-  onInvalid?: () => void;
+  onInvalid?: (fieldErrors: FieldErrors) => void;
 }
 
 export const renderLeafComponent = (
@@ -376,7 +376,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       sx={{ width: '100%' }}
       onSubmit={handleSubmit(
         (values) => props.onSubmit(values),
-        () => props.onInvalid && props.onInvalid(),
+        (errors) => props.onInvalid && props.onInvalid(errors),
       )}
     >
       {generateFormComponent(props.formSchema.form, 0, '')}

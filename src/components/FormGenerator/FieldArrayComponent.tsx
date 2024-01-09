@@ -18,7 +18,7 @@
  */
 
 import React from 'react';
-import { Control, useFieldArray } from 'react-hook-form';
+import { Control, Controller, useFieldArray } from 'react-hook-form';
 import { Chip, Divider, Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
@@ -36,7 +36,6 @@ interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
   component: FormComponent;
-  // parentComponent?: FormComponent | undefined;
   renderCallback: (path: string) => unknown;
 }
 
@@ -62,6 +61,13 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   function getContent() {
     return (
       <>
+        <Controller
+          control={props.control}
+          name={props.name}
+          render={({ fieldState }) => (
+            <span style={{ color: 'red' }}>{fieldState.error?.message}</span>
+          )}
+        />
         {fields.map((field, index) => (
           <React.Fragment key={field.id}>
             {!isComponentSingularAndOptional(props.component) && (
