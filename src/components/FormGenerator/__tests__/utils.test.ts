@@ -24,6 +24,7 @@ import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
   generateYupSchemaFromFormSchema,
+  removeEmpty,
 } from '../utils';
 import {
   formComponentGroup,
@@ -1251,41 +1252,6 @@ describe('FormGenerator Utils', () => {
   });
 
   describe('custom validate yupSchemas for array schemas', () => {
-    const removeEmpty = (obj: any) => {
-      const keys = Object.keys(obj);
-      keys.forEach((key) => {
-        if (Array.isArray(obj[key])) {
-          const arr = obj[key]
-            .map(removeEmpty)
-            .filter((o: any) => Object.keys(o).length > 0);
-          if (arr.length === 0) {
-            delete obj[key];
-          } else {
-            obj[key] = arr;
-          }
-        }
-        if (
-          obj[key] === undefined ||
-          obj[key] === null ||
-          obj[key] === '' ||
-          Object.keys(obj[key]).length === 0
-        ) {
-          delete obj[key];
-        } else if (
-          typeof obj[key] === 'object' &&
-          Object.keys(obj[key]).length > 0
-        ) {
-          const newObj = removeEmpty(obj[key]);
-          if (Object.keys(newObj).length > 0) {
-            obj[key] = newObj;
-          } else {
-            delete obj[key];
-          }
-        }
-      });
-      return obj;
-    };
-
     test('clear objects before validation', () => {
       const testObject = {
         property1: null,
