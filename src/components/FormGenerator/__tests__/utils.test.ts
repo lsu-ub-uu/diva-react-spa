@@ -1341,7 +1341,7 @@ describe('FormGenerator Utils', () => {
         };
         expect(expectedData).toStrictEqual(actualData);
       } catch (error: unknown) {
-        expect(error).toBeInstanceOf(yup.ValidationError);
+        expect(false).toBe(true);
       }
     }); // test ends
   });
