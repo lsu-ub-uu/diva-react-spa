@@ -122,6 +122,11 @@ export const isComponentRepeating = (component: FormComponent) => {
   return !(rMax === 1 && rMin === 1);
 };
 
+export const isComponentRequired = (component: FormComponent) => {
+  const rMin = component.repeat?.repeatMin ?? 1;
+  return rMin > 0;
+};
+
 export const isComponentSingularAndOptional = (component: FormComponent) => {
   const rMax = component.repeat?.repeatMax ?? 1;
   const rMin = component.repeat?.repeatMin ?? 1;
@@ -444,10 +449,21 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
       const innerSchema = generateYupSchema(component.components);
-      validationRule[component.name] = yup.object().shape({
-        ...innerSchema.fields,
-        ...createValidationForAttributesFromComponent(component),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      validationRule[component.name] = yup
+        .object()
+        .nullable()
+        .shape({
+          ...innerSchema.fields,
+          ...createValidationForAttributesFromComponent(component),
+        }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      /*
+        .test('required-group', `${component.name} is required`, (value) => {
+          if (isComponentRequired(component) && value !== undefined) {
+            const clean = removeEmpty(value);
+            return Object.keys(clean).length > 0;
+          }
+          return true;
+        }) */
     } else {
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(component),

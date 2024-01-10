@@ -778,6 +778,25 @@ describe('<FormGenerator />', () => {
       });
       expect(headlineElement).toBeInTheDocument();
     });
+
+    it.skip('validates a group having min 1 and max 1 with optional numberVar child', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
   });
 
   describe('guiElementLink', () => {
