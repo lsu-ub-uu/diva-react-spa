@@ -94,7 +94,8 @@ export const divaTheme = createTheme({
       fontWeight: '400',
     },
     h3TextStyle: {
-      fontSize: '3rem',
+      fontSize: '1.4rem',
+      fontWeight: '400',
     },
     h4TextStyle: {
       fontSize: '2rem',

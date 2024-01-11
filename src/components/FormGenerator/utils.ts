@@ -33,6 +33,7 @@ export interface RecordData {
 }
 
 export const removeEmpty = (obj: any) => {
+  // const obj = JSON.parse(JSON.stringify(originalObject));
   const keys = Object.keys(obj);
   keys.forEach((key) => {
     if (Array.isArray(obj[key])) {
@@ -449,13 +450,10 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
       const innerSchema = generateYupSchema(component.components);
-      validationRule[component.name] = yup
-        .object()
-        .nullable()
-        .shape({
-          ...innerSchema.fields,
-          ...createValidationForAttributesFromComponent(component),
-        }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      validationRule[component.name] = yup.object().shape({
+        ...innerSchema.fields,
+        ...createValidationForAttributesFromComponent(component),
+      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
       /*
         .test('required-group', `${component.name} is required`, (value) => {
           if (isComponentRequired(component) && value !== undefined) {

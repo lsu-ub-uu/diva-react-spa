@@ -108,6 +108,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
           <Button
             sx={{ mt: 1, mb: 1 }}
+            fullWidth
             variant='outlined'
             disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
             onClick={handleAppend}
