@@ -307,6 +307,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           item
           xs={12}
           key={reactKey}
+          sx={{ position: 'relative' }}
         >
           <Typography
             text={component?.label ?? ''}

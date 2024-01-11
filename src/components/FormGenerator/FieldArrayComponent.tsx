@@ -69,7 +69,10 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
           )}
         />
         {fields.map((field, index) => (
-          <React.Fragment key={field.id}>
+          <div
+            key={field.id}
+            style={{ position: 'relative' }}
+          >
             {!isComponentSingularAndOptional(props.component) && (
               <Divider sx={{ mb: 2 }}>
                 <Chip
@@ -78,6 +81,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               </Divider>
             )}
             <ActionButtonGroup
+              entityName={`${t(props.component.label ?? '')}`}
               hideMoveButtons={isComponentSingularAndOptional(props.component)}
               moveUpButtonDisabled={index === 0}
               moveUpButtonAction={() => handleMove(index, index - 1)}
@@ -103,7 +107,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                 ) as JSX.Element
               }
             </Grid>
-          </React.Fragment>
+          </div>
         ))}
         {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
           <Button
@@ -143,6 +147,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       item
       xs={12}
       sm={props.component.gridColSpan}
+      sx={{ position: 'relative' }}
     >
       {getContent()}
     </Grid>
