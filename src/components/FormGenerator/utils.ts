@@ -289,17 +289,11 @@ export const createYupArrayFromSchema = (
     | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
   repeat: FormComponentRepeat | undefined,
 ) => {
-  const maxLen = repeat?.repeatMax ?? 1;
-  const minLen = repeat?.repeatMin ?? 1;
   return yup
     .array()
     .of(schema)
-    .test('is-min-max', `is not valid length`, (value) => {
-      const testableValues =
-        value?.map(removeEmpty).filter((o: any) => Object.keys(o).length > 0) ??
-        [];
-      return testableValues.length <= maxLen && testableValues.length >= minLen;
-    });
+    .min(repeat?.repeatMin ?? 1)
+    .max(repeat?.repeatMax ?? 1);
 };
 
 const createYupNumberSchema = (component: FormComponent) => {
