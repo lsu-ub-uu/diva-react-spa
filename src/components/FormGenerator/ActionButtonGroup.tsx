@@ -17,12 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ButtonGroup, IconButton } from '@mui/material';
+import { ButtonGroup, IconButton, Tooltip } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import DeleteIcon from '@mui/icons-material/Delete';
+import ClearIcon from '@mui/icons-material/Clear';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 interface ActionButtonGroupProps {
+  entityName?: string;
   hideMoveButtons: boolean;
   moveUpButtonDisabled: boolean;
   moveUpButtonAction: () => void;
@@ -38,6 +39,7 @@ export const ActionButtonGroup = (
   return (
     <ButtonGroup
       size='small'
+      sx={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}
       orientation='horizontal'
       variant='text'
     >
@@ -51,14 +53,18 @@ export const ActionButtonGroup = (
           <ArrowUpwardIcon />
         </IconButton>
       )}
-      <IconButton
-        size='small'
-        aria-label='delete'
-        disabled={props.deleteButtonDisabled}
-        onClick={props.deleteButtonAction}
-      >
-        <DeleteIcon />
-      </IconButton>
+      <Tooltip title={`Ta bort ${props.entityName ?? 'entity'}`}>
+        <span>
+          <IconButton
+            size='small'
+            aria-label='delete'
+            disabled={props.deleteButtonDisabled}
+            onClick={props.deleteButtonAction}
+          >
+            <ClearIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
       {!props.hideMoveButtons && (
         <IconButton
           size='small'

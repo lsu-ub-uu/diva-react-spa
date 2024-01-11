@@ -41,6 +41,7 @@ import {
   formDefWithOneRecordLinkBeingOptional,
   formDefWithOneRecordLinkBeingRequired,
   formDefWithOneTextVariableBeingRepeating,
+  formDefContributorGroupWithAuthorGroupAuthor,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -253,7 +254,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    test('Does not validates a textVariable being optional and having minNumberToShow 1!', async () => {
+    test('Does not validate a textVariable being optional and having minNumberToShow 1 with bad input', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -269,7 +270,7 @@ describe('<FormGenerator />', () => {
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
 
       const user = userEvent.setup();
-      await user.type(inputElement, '????');
+      await user.type(inputElement, '????'); // enter some invalid text
       await user.click(submitButton);
 
       await waitFor(() => {
@@ -777,6 +778,46 @@ describe('<FormGenerator />', () => {
         level: 2,
       });
       expect(headlineElement).toBeInTheDocument();
+    });
+
+    it.skip('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it.skip('validation should fail a group having min 1 and max 1 and sub groups being optional', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefContributorGroupWithAuthorGroupAuthor as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
 

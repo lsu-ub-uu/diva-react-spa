@@ -18,7 +18,7 @@
  */
 
 import React from 'react';
-import { Control, useFieldArray } from 'react-hook-form';
+import { Control, Controller, useFieldArray } from 'react-hook-form';
 import { Chip, Divider, Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
@@ -36,7 +36,6 @@ interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
   component: FormComponent;
-  // parentComponent?: FormComponent | undefined;
   renderCallback: (path: string) => unknown;
 }
 
@@ -62,8 +61,18 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   function getContent() {
     return (
       <>
+        <Controller
+          control={props.control}
+          name={props.name}
+          render={({ fieldState }) => (
+            <span style={{ color: 'red' }}>{fieldState.error?.message}</span>
+          )}
+        />
         {fields.map((field, index) => (
-          <React.Fragment key={field.id}>
+          <div
+            key={field.id}
+            style={{ position: 'relative' }}
+          >
             {!isComponentSingularAndOptional(props.component) && (
               <Divider sx={{ mb: 2 }}>
                 <Chip
@@ -72,6 +81,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               </Divider>
             )}
             <ActionButtonGroup
+              entityName={`${t(props.component.label ?? '')}`}
               hideMoveButtons={isComponentSingularAndOptional(props.component)}
               moveUpButtonDisabled={index === 0}
               moveUpButtonAction={() => handleMove(index, index - 1)}
@@ -97,11 +107,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                 ) as JSX.Element
               }
             </Grid>
-          </React.Fragment>
+          </div>
         ))}
         {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
           <Button
             sx={{ mt: 1, mb: 1 }}
+            fullWidth
             variant='outlined'
             disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
             onClick={handleAppend}
@@ -136,6 +147,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       item
       xs={12}
       sm={props.component.gridColSpan}
+      sx={{ position: 'relative' }}
     >
       {getContent()}
     </Grid>

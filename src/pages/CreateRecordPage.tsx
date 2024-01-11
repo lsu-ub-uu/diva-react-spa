@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
@@ -102,7 +102,9 @@ export const CreateRecordPage = () => {
         <Stack spacing={2}>
           <FormGenerator
             onSubmit={handleSubmit}
-            onInvalid={() => notification(`Form is invalid`, 'error')}
+            onInvalid={() => {
+              notification(`Form is invalid`, 'error');
+            }}
             formSchema={schema as FormSchema}
           />
         </Stack>

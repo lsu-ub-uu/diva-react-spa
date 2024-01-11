@@ -5,8 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "server": "npm run dev --prefix ../diva-react-spa-bff",
-    "both": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "tsc && vite build",
     "build:prod": "tsc && vite build --base=$BASENAME",
     "preview": "vite preview",
@@ -76,7 +74,6 @@
     "axios-mock-adapter": "^1.22.0",
     "babel-loader": "^8.3.0",
     "c8": "^7.13.0",
-    "concurrently": "^8.0.1",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -88,13 +85,9 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-storybook": "^0.6.10",
     "jsdom": "^21.1.0",
-    "msw": "^1.0.1",
     "prettier": "^2.8.4",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
     "vitest": "^0.31.0"
-  },
-  "msw": {
-    "workerDirectory": "public"
   }
 }

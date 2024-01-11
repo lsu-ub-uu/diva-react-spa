@@ -32,6 +32,42 @@ export interface RecordData {
   [key: string]: any;
 }
 
+export const removeEmpty = (obj: any) => {
+  // const obj = JSON.parse(JSON.stringify(originalObject));
+  const keys = Object.keys(obj);
+  keys.forEach((key) => {
+    if (Array.isArray(obj[key])) {
+      const arr = obj[key]
+        .map(removeEmpty)
+        .filter((o: any) => Object.keys(o).length > 0);
+      if (arr.length === 0) {
+        delete obj[key];
+      } else {
+        obj[key] = arr;
+      }
+    }
+    if (
+      obj[key] === undefined ||
+      obj[key] === null ||
+      obj[key] === '' ||
+      Object.keys(obj[key]).length === 0
+    ) {
+      delete obj[key];
+    } else if (
+      typeof obj[key] === 'object' &&
+      Object.keys(obj[key]).length > 0
+    ) {
+      const newObj = removeEmpty(obj[key]);
+      if (Object.keys(newObj).length > 0) {
+        obj[key] = newObj;
+      } else {
+        delete obj[key];
+      }
+    }
+  });
+  return obj;
+};
+
 const removeRootObject = (obj: object) => {
   const childKeys = Object.keys(obj);
   if (childKeys.length === 1) {
@@ -85,6 +121,11 @@ export const isComponentRepeating = (component: FormComponent) => {
   const rMax = component.repeat?.repeatMax ?? 1;
   const rMin = component.repeat?.repeatMin ?? 1;
   return !(rMax === 1 && rMin === 1);
+};
+
+export const isComponentRequired = (component: FormComponent) => {
+  const rMin = component.repeat?.repeatMin ?? 1;
+  return rMin > 0;
 };
 
 export const isComponentSingularAndOptional = (component: FormComponent) => {
@@ -217,23 +258,21 @@ function mergeArrays(target: any[], overlay: any[]): any[] {
 
 /**
  * YUP Validation
+ * OBS! In the Yup library, the transform method is executed after the validation process.
+ * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 
 const createYupStringRegexpSchema = (component: FormComponent) => {
   const regexpValidation = component.validation as FormRegexValidation;
 
-  if (isComponentSingularAndOptional(component)) {
+  if (isComponentRepeating(component)) {
     return yup
       .string()
       .nullable()
       .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull
-          ? field.matches(
-              new RegExp(regexpValidation.pattern ?? '.+'),
-              'Invalid input format',
-            )
-          : field,
+      .matches(
+        new RegExp(regexpValidation.pattern ?? '.+'),
+        'Invalid input format',
       );
   }
   return yup
@@ -250,11 +289,17 @@ export const createYupArrayFromSchema = (
     | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
   repeat: FormComponentRepeat | undefined,
 ) => {
+  const maxLen = repeat?.repeatMax ?? 1;
+  const minLen = repeat?.repeatMin ?? 1;
   return yup
     .array()
     .of(schema)
-    .min(repeat?.repeatMin ?? 1)
-    .max(repeat?.repeatMax ?? 1);
+    .test('is-min-max', `is not valid length`, (value) => {
+      const testableValues =
+        value?.map(removeEmpty).filter((o: any) => Object.keys(o).length > 0) ??
+        [];
+      return testableValues.length <= maxLen && testableValues.length >= minLen;
+    });
 };
 
 const createYupNumberSchema = (component: FormComponent) => {
@@ -334,13 +379,13 @@ const createValidationForAttributesFromComponent = (
 };
 
 const createYupStringSchema = (component: FormComponent) => {
-  if (isComponentSingularAndOptional(component)) {
+  if (isComponentRepeating(component)) {
     return yup
       .string()
       .nullable()
       .transform((value) => (value === '' ? null : value))
       .when('$isNotNull', (isNotNull, field) =>
-        isNotNull[0] ? field.required() : field,
+        isNotNull[0] ? field.required('not valid') : field,
       );
   }
   return yup.string().required();
@@ -409,6 +454,14 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
         ...innerSchema.fields,
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      /*
+        .test('required-group', `${component.name} is required`, (value) => {
+          if (isComponentRequired(component) && value !== undefined) {
+            const clean = removeEmpty(value);
+            return Object.keys(clean).length > 0;
+          }
+          return true;
+        }) */
     } else {
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(component),

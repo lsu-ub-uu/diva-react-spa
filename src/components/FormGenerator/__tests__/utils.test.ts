@@ -16,6 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import { test } from 'vitest';
 import * as yup from 'yup';
 
@@ -23,6 +24,7 @@ import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
   generateYupSchemaFromFormSchema,
+  removeEmpty,
 } from '../utils';
 import {
   formComponentGroup,
@@ -67,10 +69,7 @@ const stringValidationTests = (regex: RegExp) => [
 
 const requiredValidationTests = [{ name: 'required' }];
 
-const minMaxValidationTests = (min: number, max: number) => [
-  { name: 'min', params: { min } },
-  { name: 'max', params: { max } },
-];
+const minMaxValidationTests = () => [{ name: 'is-min-max' }];
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
@@ -972,19 +971,20 @@ describe('FormGenerator Utils', () => {
           fields: {
             someNameInData: {
               type: 'array',
-              tests: minMaxValidationTests(0, 2),
+              tests: minMaxValidationTests(), // 0, 2
               innerType: {
                 fields: {
                   value: {
                     type: 'string',
-                    tests: stringValidationTests(/^[a-zA-Z]$/),
+                    nullable: true,
+                    optional: true,
                   },
                 },
               },
             },
             someNumberVariableNameInData: {
               type: 'array',
-              tests: minMaxValidationTests(1, 5),
+              tests: minMaxValidationTests(), // 1, 5
               innerType: {
                 fields: {
                   value: {
@@ -1018,12 +1018,13 @@ describe('FormGenerator Utils', () => {
           fields: {
             colour: {
               type: 'array',
-              tests: minMaxValidationTests(0, 3),
+              tests: minMaxValidationTests(), // 0, 3
               innerType: {
                 fields: {
                   value: {
                     type: 'string',
-                    tests: requiredValidationTests,
+                    nullable: true,
+                    optional: true,
                   },
                 },
               },
@@ -1075,7 +1076,7 @@ describe('FormGenerator Utils', () => {
           fields: {
             firstChildGroup: {
               type: 'array',
-              tests: minMaxValidationTests(0, 10),
+              tests: minMaxValidationTests(), // 0, 10
               innerType: {
                 fields: {
                   exampleNumberVar: {
@@ -1109,12 +1110,12 @@ describe('FormGenerator Utils', () => {
           fields: {
             author: {
               type: 'array',
-              tests: minMaxValidationTests(1, 10),
+              tests: minMaxValidationTests(), // 1, 10
               innerType: {
                 fields: {
                   name: {
                     type: 'array',
-                    tests: minMaxValidationTests(1, 100),
+                    tests: minMaxValidationTests(), // 1, 100
                     innerType: {
                       fields: {
                         firstName: {
@@ -1167,7 +1168,7 @@ describe('FormGenerator Utils', () => {
           fields: {
             grade: {
               type: 'array',
-              tests: minMaxValidationTests(1, 12),
+              tests: minMaxValidationTests(), // 1, 12
               innerType: {
                 type: 'object',
                 fields: {
@@ -1193,7 +1194,7 @@ describe('FormGenerator Utils', () => {
             },
             author: {
               type: 'array',
-              tests: minMaxValidationTests(1, 10),
+              tests: minMaxValidationTests(), // 1, 10
               innerType: {
                 fields: {
                   _colourAttribute: {
@@ -1203,7 +1204,7 @@ describe('FormGenerator Utils', () => {
                   },
                   name: {
                     type: 'array',
-                    tests: minMaxValidationTests(1, 100),
+                    tests: minMaxValidationTests(), // 1, 100
                     innerType: {
                       fields: {
                         firstName: {
@@ -1250,41 +1251,6 @@ describe('FormGenerator Utils', () => {
   });
 
   describe('custom validate yupSchemas for array schemas', () => {
-    const removeEmpty = (obj: any) => {
-      const keys = Object.keys(obj);
-      keys.forEach((key) => {
-        if (Array.isArray(obj[key])) {
-          const arr = obj[key]
-            .map(removeEmpty)
-            .filter((o: any) => Object.keys(o).length > 0);
-          if (arr.length === 0) {
-            delete obj[key];
-          } else {
-            obj[key] = arr;
-          }
-        }
-        if (
-          obj[key] === undefined ||
-          obj[key] === null ||
-          obj[key] === '' ||
-          Object.keys(obj[key]).length === 0
-        ) {
-          delete obj[key];
-        } else if (
-          typeof obj[key] === 'object' &&
-          Object.keys(obj[key]).length > 0
-        ) {
-          const newObj = removeEmpty(obj[key]);
-          if (Object.keys(newObj).length > 0) {
-            obj[key] = newObj;
-          } else {
-            delete obj[key];
-          }
-        }
-      });
-      return obj;
-    };
-
     test('clear objects before validation', () => {
       const testObject = {
         property1: null,
@@ -1340,7 +1306,7 @@ describe('FormGenerator Utils', () => {
         };
         expect(expectedData).toStrictEqual(actualData);
       } catch (error: unknown) {
-        expect(error).toBeInstanceOf(yup.ValidationError);
+        expect(false).toBe(true);
       }
     }); // test ends
   });
