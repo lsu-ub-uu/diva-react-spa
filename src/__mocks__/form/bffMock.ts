@@ -1199,3 +1199,16 @@ export const pSomeScopusIdTextVar: BFFPresentation = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId'
 };
+
+export const nationSubjectCategoryValidationTypeData: BFFValidationType = {
+  id: 'nationalSubjectCategory',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupId',
+  newPresentationGroupId: 'pSomeNewMetadataGroupId',
+  // Update/Edit
+  metadataGroupId: 'someEditMetadataGroupId',
+  presentationGroupId: 'pSomeEditMetadataGroupId',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
