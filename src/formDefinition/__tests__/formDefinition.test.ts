@@ -84,7 +84,13 @@ import {
   someScopusIdTextVar,
   pSomeArchiveNumberTextVar,
   pSomeLocalIdTextVar,
-  pSomeScopusIdTextVar
+  pSomeScopusIdTextVar,
+  someValidationTypeForMissingChildIdTypeData,
+  someNewMetadataGroupForMissingChildId,
+  pSomeNewMetadataGroupForMissingChildId,
+  pSomeOtherMetadataCollectionVariableWithMissingChildId,
+  exampleOtherCollectionVarId,
+  someMainTitleTextVariable
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -110,7 +116,8 @@ describe('formDefinition', () => {
     validationTypePool = listToPool<BFFValidationType>([
       someValidationTypeData,
       someValidationTypeDataFaultyChildReference,
-      someSimpleValidationTypeData
+      someSimpleValidationTypeData,
+      someValidationTypeForMissingChildIdTypeData
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -140,7 +147,10 @@ describe('formDefinition', () => {
       someArchiveNumberTextVar,
       someManuscriptGroup,
       someLocalIdTextVar,
-      someScopusIdTextVar
+      someScopusIdTextVar,
+      someNewMetadataGroupForMissingChildId,
+      exampleOtherCollectionVarId,
+      someMainTitleTextVariable
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -169,7 +179,9 @@ describe('formDefinition', () => {
       pSomeManuscriptContainer,
       pSomeArchiveNumberTextVar,
       pSomeLocalIdTextVar,
-      pSomeScopusIdTextVar
+      pSomeScopusIdTextVar,
+      pSomeNewMetadataGroupForMissingChildId,
+      pSomeOtherMetadataCollectionVariableWithMissingChildId
     ]);
     dependencies = {
       validationTypePool,
@@ -1376,6 +1388,58 @@ describe('formDefinition', () => {
                 mode: 'input',
                 inputType: 'input'
               }
+            ],
+            mode: 'input'
+          }
+        ],
+        mode: 'input'
+      }
+    });
+  });
+  it('should return a form definition for a new metadata group matching nameInData and attributes when childId does not match', () => {
+    // TODO: Add all the combinations from the newMetadataGroup
+    const validationTypeId = 'someValidationTypeForMissingChildIdTypeId';
+    const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
+    expect(formDefinition.form.components).toHaveLength(1);
+    expect(formDefinition).toStrictEqual({
+      validationTypeId,
+      form: {
+        type: 'group',
+        gridColSpan: 12,
+        childStyle: [],
+        presentationStyle: 'card',
+        name: 'divaOutput',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
+        },
+        tooltip: {
+          title: '',
+          body: ''
+        },
+        label: '',
+        components: [
+          {
+            type: 'collectionVariable',
+            name: 'colour',
+            label: 'exampleCollectionVarText',
+            gridColSpan: 12,
+            finalValue: 'pink',
+            childStyle: ['twelveChildStyle'],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1
+            },
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText'
+            },
+
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' }
             ],
             mode: 'input'
           }

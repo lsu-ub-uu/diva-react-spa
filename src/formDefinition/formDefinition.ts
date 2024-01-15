@@ -187,7 +187,7 @@ export const createFormDefinition = (
     childStyle: []
   };
 
-  const form = createPresentation(
+  const form = createPresentationWithStuff(
     [formRootReference],
     formRootPresentationReference,
     metadataPool,
@@ -217,22 +217,57 @@ const createComponentsFromChildReferences = (
       return createGuiElement(presentationChildReference, presentationPool);
     }
 
-    if (presentationChildType === 'presentation') {
-      const presentationChildId = presentationChildReference.childId;
-      const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-      if (presentation.type !== 'container') {
-        if (!metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf)) {
-          return undefined;
-        }
-      }
-    }
-
     return createPresentation(
       metadataChildReferences,
       presentationChildReference,
       metadataPool,
       presentationPool
     );
+  });
+};
+
+const createPresentation = (
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReference: BFFPresentationChildReference,
+  metadataPool: any,
+  presentationPool: any
+) => {
+  let metadataOverrideId;
+  const presentationChildId = presentationChildReference.childId;
+  const presentation: BFFPresentation = presentationPool.get(presentationChildId);
+  if (presentation.type !== 'container') {
+    if (!metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf)) {
+      const metadataFromCurrentPresentation = metadataPool.get(presentation.presentationOf);
+      const foundMetadataChildReference = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataChildReferences,
+        metadataPool,
+        metadataFromCurrentPresentation
+      );
+
+      if (!foundMetadataChildReference) {
+        return undefined;
+      }
+      const foundMetadata = metadataPool.get(foundMetadataChildReference.childId);
+      metadataOverrideId = foundMetadata.id;
+    }
+  }
+  return createPresentationWithStuff(
+    metadataChildReferences,
+    presentationChildReference,
+    metadataPool,
+    presentationPool,
+    metadataOverrideId
+  );
+};
+
+const findMetadataChildReferenceByNameInDataAndAttributes = (
+  metadataChildReferences: BFFMetadataChildReference[],
+  metadataPool: any,
+  metadataFromCurrentPresentation: any
+) => {
+  return metadataChildReferences.find((metadataChildReferenceCandidate) => {
+    const metadataCandidate = metadataPool.get(metadataChildReferenceCandidate.childId);
+    return metadataCandidate.nameInData === metadataFromCurrentPresentation.nameInData;
   });
 };
 
@@ -311,11 +346,12 @@ function createAttributes(
   });
 }
 
-const createPresentation = (
+const createPresentationWithStuff = (
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
   metadataPool: any,
-  presentationPool: any
+  presentationPool: any,
+  metadataOverrideId?: string
 ) => {
   let validation;
   let options;
@@ -340,7 +376,7 @@ const createPresentation = (
 
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
-    metadataId = presentation.presentationOf;
+    metadataId = metadataOverrideId ?? presentation.presentationOf;
     metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
     metadata = metadataPool.get(metadataId) as BFFMetadata;

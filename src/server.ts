@@ -291,7 +291,7 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
 app.get('/api/refreshDefinitions', async (req, res) => {
   try {
     await loadStuffOnServerStart();
-    res.status(200).json({ message: 'Refreshed cora defs'} );
+    res.status(200).json({ message: 'Refreshed cora defs' });
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();

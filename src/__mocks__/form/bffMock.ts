@@ -28,6 +28,54 @@ export const someValidationTypeData: BFFValidationType = {
   defTextId: 'defName456'
 };
 
+export const someValidationTypeForMissingChildIdTypeData: BFFValidationType = {
+  id: 'someValidationTypeForMissingChildIdTypeId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupForMissingChildIdId',
+  newPresentationGroupId: 'pSomeNewMetadataGroupForMissingChildIdId',
+  // Update/Edit
+  metadataGroupId: 'someEditMetadataGroupForMissingChildIdId',
+  presentationGroupId: 'pSomeEditMetadataGroupForMissingChildIdId',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupForMissingChildId: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupForMissingChildIdId',
+  nameInData: 'divaOutput',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'mainTitle',
+      repeatMin: '0',
+      repeatMax: '1'
+    },
+    {
+      childId: 'exampleCollectionVarId',
+      repeatMin: '0',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const pSomeNewMetadataGroupForMissingChildId: BFFPresentationGroup = {
+  id: 'pSomeNewMetadataGroupForMissingChildIdId',
+  type: 'pGroup',
+  presentationOf: 'someNewMetadataGroupForMissingChildIdId', // metadata
+  mode: 'input',
+  presentationStyle: 'card',
+  children: [
+    {
+      childId: 'pSomeOtherMetadataCollectionVariableWithMissingChildIdId',
+      type: 'presentation',
+      childStyle: ['twelveChildStyle']
+    } // pSomeMetadataCollectionVariableId
+  ]
+};
+
 export const someManuscriptValidationTypeData: BFFValidationType = {
   id: 'manuscript',
   validatesRecordTypeId: 'divaOutput',
@@ -435,6 +483,16 @@ export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
   finalValue: 'pink' // added this for now
 };
 
+export const exampleOtherCollectionVarId: BFFMetadataCollectionVariable = {
+  id: 'exampleOtherCollectionVarId',
+  nameInData: 'colour',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'pink' // added this for now
+};
+
 export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionVariable = {
   id: 'someMetadataCollectionVariableWithAttributeId',
   nameInData: 'colourAttributeVar',
@@ -583,6 +641,14 @@ export const pSomeMetadataTextVariable6: BFFPresentation = {
 export const pSomeMetadataCollectionVariable: BFFPresentation = {
   id: 'pSomeMetadataCollectionVariableId',
   presentationOf: 'exampleCollectionVarId',
+  mode: 'input',
+  type: 'pCollVar',
+  emptyTextId: 'someEmptyTextId'
+};
+
+export const pSomeOtherMetadataCollectionVariableWithMissingChildId: BFFPresentation = {
+  id: 'pSomeOtherMetadataCollectionVariableWithMissingChildIdId',
+  presentationOf: 'exampleOtherCollectionVarId',
   mode: 'input',
   type: 'pCollVar',
   emptyTextId: 'someEmptyTextId'
