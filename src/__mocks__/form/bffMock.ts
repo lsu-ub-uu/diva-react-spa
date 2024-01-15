@@ -489,6 +489,23 @@ export const someMetadataNumberVarWithAttributeAndOtherId: BFFMetadataNumberVari
     }
   ]
 };
+export const someMetadataNumberVarWithOtherAttributeId: BFFMetadataNumberVariable = {
+  id: 'someMetadataNumberWithAttributeVar2Id',
+  nameInData: 'someNameInDataNumberWithAttributeVar',
+  type: 'numberVariable',
+  textId: 'someNumberVarTextId',
+  defTextId: 'someNumberVarDefTextId',
+  min: '0',
+  max: '20',
+  warningMin: '2',
+  warningMax: '10',
+  numberOfDecimals: '0',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarOtherId'
+    }
+  ]
+};
 
 export const someMetadataNumberVarWithoutAttribute: BFFMetadataNumberVariable = {
   id: 'someMetadataNumberVarWithoutAttributeId',
@@ -505,6 +522,15 @@ export const someMetadataNumberVarWithoutAttribute: BFFMetadataNumberVariable = 
 
 export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
   id: 'exampleCollectionVarId',
+  nameInData: 'colour',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'pink' // added this for now
+};
+export const someMetadataCollectionWithOtherIdVariable: BFFMetadataCollectionVariable = {
+  id: 'exampleCollectionVarOtherId',
   nameInData: 'colour',
   type: 'collectionVariable',
   textId: 'exampleCollectionVarText',

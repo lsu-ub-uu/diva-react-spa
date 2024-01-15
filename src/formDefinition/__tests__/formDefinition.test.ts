@@ -92,7 +92,9 @@ import {
   exampleOtherCollectionVarId,
   someMainTitleTextVariable,
   someMetadataNumberVarWithoutAttribute,
-  someMetadataNumberVarWithAttributeAndOtherId
+  someMetadataNumberVarWithAttributeAndOtherId,
+  someMetadataNumberVarWithOtherAttributeId,
+  someMetadataCollectionWithOtherIdVariable
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -155,7 +157,9 @@ describe('formDefinition', () => {
       exampleOtherCollectionVarId,
       someMainTitleTextVariable,
       someMetadataNumberVarWithoutAttribute,
-      someMetadataNumberVarWithAttributeAndOtherId
+      someMetadataNumberVarWithAttributeAndOtherId,
+      someMetadataNumberVarWithOtherAttributeId,
+      someMetadataCollectionWithOtherIdVariable
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -1624,5 +1628,29 @@ describe('formDefinition', () => {
       someMetadataNumberVarWithoutAttribute
     );
     expect(test).toBe(undefined);
+  });
+  it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same attribute', () => {
+    const test = findMetadataChildReferenceByNameInDataAndAttributes(
+      someNewMetadataGroup.children,
+      dependencies.metadataPool,
+      someMetadataNumberVarWithAttributeAndOtherId
+    );
+    expect(test).toStrictEqual({
+      childId: 'someMetadataNumberWithAttributeVarId',
+      repeatMax: '1',
+      repeatMin: '1'
+    });
+  });
+  it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same attribute but other id', () => {
+    const test = findMetadataChildReferenceByNameInDataAndAttributes(
+      someNewMetadataGroup.children,
+      dependencies.metadataPool,
+      someMetadataNumberVarWithOtherAttributeId
+    );
+    expect(test).toStrictEqual({
+      childId: 'someMetadataNumberWithAttributeVarId',
+      repeatMax: '1',
+      repeatMin: '1'
+    });
   });
 });
