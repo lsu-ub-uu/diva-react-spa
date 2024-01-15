@@ -260,14 +260,18 @@ const createPresentation = (
   );
 };
 
-const findMetadataChildReferenceByNameInDataAndAttributes = (
+export const findMetadataChildReferenceByNameInDataAndAttributes = (
   metadataChildReferences: BFFMetadataChildReference[],
   metadataPool: any,
   metadataFromCurrentPresentation: any
 ) => {
   return metadataChildReferences.find((metadataChildReferenceCandidate) => {
     const metadataCandidate = metadataPool.get(metadataChildReferenceCandidate.childId);
-    return metadataCandidate.nameInData === metadataFromCurrentPresentation.nameInData;
+    return (
+      metadataCandidate.nameInData === metadataFromCurrentPresentation.nameInData &&
+      !metadataCandidate.attributeReferences?.length ===
+        !metadataFromCurrentPresentation.attributeReferences?.length
+    );
   });
 };
 

@@ -90,13 +90,16 @@ import {
   pSomeNewMetadataGroupForMissingChildId,
   pSomeOtherMetadataCollectionVariableWithMissingChildId,
   exampleOtherCollectionVarId,
-  someMainTitleTextVariable
+  someMainTitleTextVariable,
+  someMetadataNumberVarWithoutAttribute,
+  someMetadataNumberVarWithAttributeAndOtherId
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
   createFormDefinition,
   createFormMetaData,
   createFormMetaDataPathLookup,
+  findMetadataChildReferenceByNameInDataAndAttributes,
   FormMetaData
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
@@ -150,7 +153,9 @@ describe('formDefinition', () => {
       someScopusIdTextVar,
       someNewMetadataGroupForMissingChildId,
       exampleOtherCollectionVarId,
-      someMainTitleTextVariable
+      someMainTitleTextVariable,
+      someMetadataNumberVarWithoutAttribute,
+      someMetadataNumberVarWithAttributeAndOtherId
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -1396,7 +1401,8 @@ describe('formDefinition', () => {
       }
     });
   });
-  it('should return a form definition for a new metadata group matching nameInData and attributes when childId does not match', () => {
+
+  it('should return a form definition for a new metadata group matching nameInData when childId does not match', () => {
     // TODO: Add all the combinations from the newMetadataGroup
     const validationTypeId = 'someValidationTypeForMissingChildIdTypeId';
     const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
@@ -1590,5 +1596,33 @@ describe('formDefinition', () => {
     expect(formMetaData).toStrictEqual(expected);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+  it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
+    const test = findMetadataChildReferenceByNameInDataAndAttributes(
+      someNewMetadataGroupForMissingChildId.children,
+      dependencies.metadataPool,
+      someMetadataCollectionVariable
+    );
+    expect(test).toStrictEqual({
+      childId: 'exampleCollectionVarId',
+      repeatMax: '1',
+      repeatMin: '0'
+    });
+  });
+  it('findMetadataChildReferenceByNameInDataAndAttributes with wrong nameInData', () => {
+    const test = findMetadataChildReferenceByNameInDataAndAttributes(
+      someNewMetadataGroupForMissingChildId.children,
+      dependencies.metadataPool,
+      someMetadataTextVariable
+    );
+    expect(test).toBe(undefined);
+  });
+  it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and unequal number of attributes', () => {
+    const test = findMetadataChildReferenceByNameInDataAndAttributes(
+      someNewMetadataGroup.children,
+      dependencies.metadataPool,
+      someMetadataNumberVarWithoutAttribute
+    );
+    expect(test).toBe(undefined);
   });
 });
