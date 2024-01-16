@@ -25,7 +25,8 @@ import {
   BFFPresentation,
   BFFPresentationSurroundingContainer,
   BFFPresentationGroup,
-  BFFValidationType
+  BFFValidationType,
+  BFFAttributeReference
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -94,7 +95,8 @@ import {
   someMetadataNumberVarWithoutAttribute,
   someMetadataNumberVarWithAttributeAndOtherId,
   someMetadataNumberVarWithOtherAttributeId,
-  someMetadataCollectionWithOtherIdVariable
+  someMetadataCollectionWithOtherIdVariable,
+  someMetadataCollectionVariable2
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -102,7 +104,9 @@ import {
   createFormMetaData,
   createFormMetaDataPathLookup,
   findMetadataChildReferenceByNameInDataAndAttributes,
-  FormMetaData
+  firstAttributesExistsInSecond,
+  FormMetaData,
+  getAttributesForAttributeReferences
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
@@ -159,7 +163,8 @@ describe('formDefinition', () => {
       someMetadataNumberVarWithoutAttribute,
       someMetadataNumberVarWithAttributeAndOtherId,
       someMetadataNumberVarWithOtherAttributeId,
-      someMetadataCollectionWithOtherIdVariable
+      someMetadataCollectionWithOtherIdVariable,
+      someMetadataCollectionVariable2
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -1601,56 +1606,256 @@ describe('formDefinition', () => {
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
-  it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
-    const test = findMetadataChildReferenceByNameInDataAndAttributes(
-      someNewMetadataGroupForMissingChildId.children,
-      dependencies.metadataPool,
-      someMetadataCollectionVariable
-    );
-    expect(test).toStrictEqual({
-      childId: 'exampleCollectionVarId',
-      repeatMax: '1',
-      repeatMin: '0'
+  describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
+    it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
+      const test = findMetadataChildReferenceByNameInDataAndAttributes(
+        someNewMetadataGroupForMissingChildId.children,
+        dependencies.metadataPool,
+        someMetadataCollectionVariable
+      );
+      expect(test).toStrictEqual({
+        childId: 'exampleCollectionVarId',
+        repeatMax: '1',
+        repeatMin: '0'
+      });
     });
-  });
-  it('findMetadataChildReferenceByNameInDataAndAttributes with wrong nameInData', () => {
-    const test = findMetadataChildReferenceByNameInDataAndAttributes(
-      someNewMetadataGroupForMissingChildId.children,
-      dependencies.metadataPool,
-      someMetadataTextVariable
-    );
-    expect(test).toBe(undefined);
-  });
-  it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and unequal number of attributes', () => {
-    const test = findMetadataChildReferenceByNameInDataAndAttributes(
-      someNewMetadataGroup.children,
-      dependencies.metadataPool,
-      someMetadataNumberVarWithoutAttribute
-    );
-    expect(test).toBe(undefined);
-  });
-  it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same attribute', () => {
-    const test = findMetadataChildReferenceByNameInDataAndAttributes(
-      someNewMetadataGroup.children,
-      dependencies.metadataPool,
-      someMetadataNumberVarWithAttributeAndOtherId
-    );
-    expect(test).toStrictEqual({
-      childId: 'someMetadataNumberWithAttributeVarId',
-      repeatMax: '1',
-      repeatMin: '1'
+
+    it('findMetadataChildReferenceByNameInDataAndAttributes with wrong nameInData', () => {
+      const test = findMetadataChildReferenceByNameInDataAndAttributes(
+        someNewMetadataGroupForMissingChildId.children,
+        dependencies.metadataPool,
+        someMetadataTextVariable
+      );
+      expect(test).toBe(undefined);
     });
-  });
-  it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same attribute but other id', () => {
-    const test = findMetadataChildReferenceByNameInDataAndAttributes(
-      someNewMetadataGroup.children,
-      dependencies.metadataPool,
-      someMetadataNumberVarWithOtherAttributeId
-    );
-    expect(test).toStrictEqual({
-      childId: 'someMetadataNumberWithAttributeVarId',
-      repeatMax: '1',
-      repeatMin: '1'
+
+    it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and unequal number of attributes', () => {
+      const test = findMetadataChildReferenceByNameInDataAndAttributes(
+        someNewMetadataGroup.children,
+        dependencies.metadataPool,
+        someMetadataNumberVarWithoutAttribute
+      );
+      expect(test).toBe(undefined);
+    });
+
+    it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same attribute', () => {
+      const test = findMetadataChildReferenceByNameInDataAndAttributes(
+        someNewMetadataGroup.children,
+        dependencies.metadataPool,
+        someMetadataNumberVarWithAttributeAndOtherId
+      );
+      expect(test).toStrictEqual({
+        childId: 'someMetadataNumberWithAttributeVarId',
+        repeatMax: '1',
+        repeatMin: '1'
+      });
+    });
+
+    it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same attribute but other id', () => {
+      const test = findMetadataChildReferenceByNameInDataAndAttributes(
+        someNewMetadataGroup.children,
+        dependencies.metadataPool,
+        someMetadataNumberVarWithOtherAttributeId
+      );
+      expect(test).toStrictEqual({
+        childId: 'someMetadataNumberWithAttributeVarId',
+        repeatMax: '1',
+        repeatMin: '1'
+      });
+    });
+
+    describe('firstAttributesExistsInSecond', () => {
+      it('testSameAttributeUndefined', () => {
+        const actual = firstAttributesExistsInSecond(undefined, undefined);
+        expect(actual).toBe(true);
+      });
+
+      it('testSameAttributeOneUndefined', () => {
+        const actual = firstAttributesExistsInSecond({}, undefined);
+        expect(actual).toBe(true);
+        const actual2 = firstAttributesExistsInSecond(undefined, {});
+        expect(actual2).toBe(true);
+      });
+
+      it('testSameAttributeEmpty', () => {
+        const actual = firstAttributesExistsInSecond({}, {});
+        expect(actual).toBe(true);
+      });
+
+      it('testSameAttributeOneEmpty', () => {
+        const attribute1 = {
+          anAttribute: ['aFinalValue']
+        };
+        const attribute2 = {};
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(false);
+      });
+
+      it('testfirstAttributesExistsInSecond', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(true);
+      });
+
+      it('testfirstAttributesExistsInSecondReversedAttributes', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(true);
+      });
+
+      it('testSameAttributeDifferentAttributeValues', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(false);
+      });
+
+      it('testSameAttributeDifferentAttributeValues2', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aOtherFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(false);
+      });
+
+      it('testSameAttributeDifferentAttributeValues3', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(true);
+      });
+
+      it('testSameAttributeDifferentAttributeValues4', () => {
+        const attribute1 = {
+          someNameInData: ['aOtherFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(true);
+      });
+
+      it('testSameAttributeDifferentAttributeValues5', () => {
+        const attribute1 = {
+          someNameInData: ['aOtherFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aOtherFinalValue', 'aFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(true);
+      });
+
+      it('testSameAttributeDifferentAttributeValues6', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aOtherFinalValue', 'aFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(true);
+      });
+
+      it('testSameAttributeDifferent', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue', 'aOtherFinalValue']
+        };
+        const attribute2 = {
+          someNameInDataNOT: ['aFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(false);
+      });
+
+      it('testSameAttributeDifferentName', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue']
+        };
+        const attribute2 = {
+          someNameInDataNOT: ['aFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(false);
+      });
+
+      it('testMultipleAttributesDifferentName', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue'],
+          someOtherNameInData: ['aFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aFinalValue'],
+          someOtherNameInData: ['aFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(true);
+      });
+
+      it('testMultipleAttributesDifferentName2', () => {
+        const attribute1 = {
+          someNameInData: ['aFinalValue'],
+          someOtherNameInData: ['aOtherFinalValue']
+        };
+        const attribute2 = {
+          someNameInData: ['aFinalValue'],
+          someOtherNameInData: ['aFinalValue']
+        };
+        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        expect(actual).toBe(false);
+      });
+    });
+
+    describe('getAttributesForAttributeReferences', () => {
+      it('should return an object with nameInData and item values', () => {
+        const attributeReferences: BFFAttributeReference[] = [
+          { refCollectionVarId: 'exampleCollectionVarId' }
+        ];
+        const actual = getAttributesForAttributeReferences(
+          dependencies.metadataPool,
+          attributeReferences
+        );
+        const expected = { colour: ['blue', 'pink', 'yellow'] };
+        expect(actual).toStrictEqual(expected);
+      });
+
+      it('should return an object with nameInData and item values for multiple attributes', () => {
+        const attributeReferences: BFFAttributeReference[] = [
+          { refCollectionVarId: 'exampleCollectionVarId' },
+          { refCollectionVarId: 'exampleCollectionVarId2' }
+        ];
+        const actual = getAttributesForAttributeReferences(
+          dependencies.metadataPool,
+          attributeReferences
+        );
+        const expected = {
+          colour: ['blue', 'pink', 'yellow'],
+          colour2: ['blue', 'pink', 'yellow']
+        };
+        expect(actual).toStrictEqual(expected);
+      });
     });
   });
 });

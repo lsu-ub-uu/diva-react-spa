@@ -66,7 +66,6 @@ const loadStuffOnServerStart = async () => {
   const response = await getRecordDataListByType<DataListWrapper>('text', '');
   const texts = transformCoraTexts(response.data);
 
-
   const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
   const result = await getPoolsFromCora(types);
 

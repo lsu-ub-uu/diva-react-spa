@@ -529,6 +529,15 @@ export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
   refCollection: 'exampleCollection',
   finalValue: 'pink' // added this for now
 };
+export const someMetadataCollectionVariable2: BFFMetadataCollectionVariable = {
+  id: 'exampleCollectionVarId2',
+  nameInData: 'colour2',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'pink' // added this for now
+};
 export const someMetadataCollectionWithOtherIdVariable: BFFMetadataCollectionVariable = {
   id: 'exampleCollectionVarOtherId',
   nameInData: 'colour',
@@ -562,6 +571,22 @@ export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionV
     }
   ]
 };
+export const someMetadataCollectionVariableWithTwoAttributes: BFFMetadataCollectionVariable = {
+  id: 'someMetadataCollectionVariableWithAttributeId2',
+  nameInData: 'colourAttributeVar',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    },
+    {
+      refCollectionVarId: 'exampleCollectionVarId2'
+    }
+  ]
+};
 
 export const someMetadataItemCollection: BFFMetadataItemCollection = {
   id: 'exampleCollection',
@@ -575,7 +600,6 @@ export const someMetadataItemCollection: BFFMetadataItemCollection = {
     { refCollectionItemId: 'exampleYellowItem' }
   ]
 };
-
 export const someMetadataCollectionItemBlue: BFFMetadata = {
   id: 'exampleBlueItem',
   nameInData: 'blue',
