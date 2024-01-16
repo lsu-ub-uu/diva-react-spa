@@ -507,6 +507,24 @@ export const someMetadataNumberVarWithOtherAttributeId: BFFMetadataNumberVariabl
   ]
 };
 
+export const someMetadataNumberVarWithAttributeExampleCollectionVarId2: BFFMetadataNumberVariable = {
+  id: 'someMetadataNumberWithAttributeVar2Id',
+  nameInData: 'someNameInDataNumberWithAttributeVar',
+  type: 'numberVariable',
+  textId: 'someNumberVarTextId',
+  defTextId: 'someNumberVarDefTextId',
+  min: '0',
+  max: '20',
+  warningMin: '2',
+  warningMax: '10',
+  numberOfDecimals: '0',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId2'
+    }
+  ]
+};
+
 export const someMetadataNumberVarWithoutAttribute: BFFMetadataNumberVariable = {
   id: 'someMetadataNumberVarWithoutAttributeId',
   nameInData: 'someNameInDataNumberWithAttributeVar',
@@ -571,6 +589,7 @@ export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionV
     }
   ]
 };
+
 export const someMetadataCollectionVariableWithTwoAttributes: BFFMetadataCollectionVariable = {
   id: 'someMetadataCollectionVariableWithAttributeId2',
   nameInData: 'colourAttributeVar',

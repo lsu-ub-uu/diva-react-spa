@@ -96,7 +96,8 @@ import {
   someMetadataNumberVarWithAttributeAndOtherId,
   someMetadataNumberVarWithOtherAttributeId,
   someMetadataCollectionWithOtherIdVariable,
-  someMetadataCollectionVariable2
+  someMetadataCollectionVariable2,
+  someMetadataNumberVarWithAttributeExampleCollectionVarId2,
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -1606,6 +1607,7 @@ describe('formDefinition', () => {
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
+
   describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
     it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
       const test = findMetadataChildReferenceByNameInDataAndAttributes(
@@ -1656,6 +1658,20 @@ describe('formDefinition', () => {
         someNewMetadataGroup.children,
         dependencies.metadataPool,
         someMetadataNumberVarWithOtherAttributeId
+      );
+      expect(test).toStrictEqual({
+        childId: 'someMetadataNumberWithAttributeVarId',
+        repeatMax: '1',
+        repeatMin: '1'
+      });
+    });
+
+    // HERE
+    it.skip('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same number of attributes but different nameInData of attribute', () => {
+      const test = findMetadataChildReferenceByNameInDataAndAttributes(
+        someNewMetadataGroup.children,
+        dependencies.metadataPool,
+        someMetadataNumberVarWithAttributeExampleCollectionVarId2
       );
       expect(test).toStrictEqual({
         childId: 'someMetadataNumberWithAttributeVarId',

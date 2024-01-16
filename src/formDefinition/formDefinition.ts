@@ -267,7 +267,7 @@ export const findMetadataChildReferenceByNameInDataAndAttributes = (
   metadataChildReferences: BFFMetadataChildReference[],
   metadataPool: any,
   metadataFromCurrentPresentation: any
-) => {
+): BFFMetadataChildReference | undefined => {
   return metadataChildReferences.find((metadataChildReferenceCandidate) => {
     const metadataCandidate = metadataPool.get(metadataChildReferenceCandidate.childId);
     return (
