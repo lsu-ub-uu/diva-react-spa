@@ -26,7 +26,10 @@ import {
   BFFPresentationSurroundingContainer,
   BFFPresentationGroup,
   BFFValidationType,
-  BFFAttributeReference
+  BFFAttributeReference,
+  BFFMetadataTextVariable,
+  BFFMetadataCollectionVariable,
+  BFFMetadataChildReference
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -96,8 +99,7 @@ import {
   someMetadataNumberVarWithAttributeAndOtherId,
   someMetadataNumberVarWithOtherAttributeId,
   someMetadataCollectionWithOtherIdVariable,
-  someMetadataCollectionVariable2,
-  someMetadataNumberVarWithAttributeExampleCollectionVarId2,
+  someMetadataCollectionVariable2
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -129,7 +131,7 @@ describe('formDefinition', () => {
       someSimpleValidationTypeData,
       someValidationTypeForMissingChildIdTypeData
     ]);
-    metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
+    metadataPool = listToPool<BFFMetadata>([
       someMetadataTextVariable,
       someMetadataTextVariable2,
       someMetadataTextVariable3,
@@ -204,6 +206,114 @@ describe('formDefinition', () => {
       presentationPool
     };
   });
+  const createTextVar = (
+    id: string,
+    nameInData: string,
+    attributeReferenceIds: string[]
+  ): BFFMetadataTextVariable => {
+    const metadata: BFFMetadataTextVariable = {
+      id,
+      nameInData,
+      type: 'textVariable',
+      textId: 'someTextId',
+      defTextId: 'someDefTextId',
+      regEx: '.*'
+    };
+    if (attributeReferenceIds.length > 0) {
+      const attributeIds = attributeReferenceIds?.map((attrId) => {
+        return {
+          refCollectionVarId: attrId
+        };
+      });
+      metadata.attributeReferences = attributeIds;
+    }
+    addToPool(metadata);
+    return metadata;
+  };
+
+  const createCollItem = (nameInData: string): BFFMetadata => {
+    const metadata: BFFMetadata = {
+      id: `${nameInData}Item`,
+      nameInData,
+      type: 'collectionItem',
+      textId: 'someTextId',
+      defTextId: 'someDefTextId'
+    };
+
+    addToPool(metadata);
+    return metadata;
+  };
+
+  const createItemCollection = (
+    id: string,
+    nameInData: string,
+    itemIds: string[]
+  ): BFFMetadataItemCollection => {
+    const metadata: BFFMetadataItemCollection = {
+      id,
+      nameInData,
+      type: 'itemCollection',
+      textId: 'someTextId',
+      defTextId: 'someDefTextId',
+      collectionItemReferences: []
+    };
+    const collectionItemReferences = itemIds?.map((itemId) => {
+      return {
+        refCollectionItemId: itemId
+      };
+    });
+    metadata.collectionItemReferences = collectionItemReferences;
+
+    addToPool(metadata);
+    return metadata;
+  };
+
+  const createCollVar = (
+    id: string,
+    nameInData: string,
+    values: string[],
+    attributeReferenceIds: string[]
+  ): BFFMetadataCollectionVariable => {
+    const metadata: BFFMetadataCollectionVariable = {
+      id,
+      nameInData,
+      type: 'collectionVariable',
+      textId: 'someTextId',
+      defTextId: 'someDefTextId',
+      refCollection: `${id}Collection`
+    };
+
+    if (attributeReferenceIds.length > 0) {
+      const attributeIds = attributeReferenceIds?.map((attrId) => {
+        return {
+          refCollectionVarId: attrId
+        };
+      });
+      metadata.attributeReferences = attributeIds;
+    }
+    addToPool(metadata);
+
+    const itemIds = values.map((value: string) => `${value}Item`);
+    createItemCollection(`${id}Collection`, 'someNameInData', itemIds);
+
+    values.forEach((value: string) => createCollItem(value));
+
+    return metadata;
+  };
+
+  const addToPool = (metadata: BFFMetadata) => {
+    metadataPool.set(metadata.id, metadata);
+  };
+
+  const createChildReferences = (childrenIds: string[]): BFFMetadataChildReference[] => {
+    return childrenIds.map((childId) => {
+      return {
+        childId,
+        repeatMin: '1',
+        repeatMax: '3'
+      };
+    });
+  };
 
   it('should generate something', () => {
     expect(validationTypePool.get('someValidationTypeId')).toBeDefined();
@@ -856,29 +966,6 @@ describe('formDefinition', () => {
                       type: 'regex'
                     }
                   }
-                  // {
-                  //   childStyle: [],
-                  //   gridColSpan: 12,
-                  //   inputType: 'input',
-                  //   label: 'someTextId',
-                  //   mode: 'input',
-                  //   name: 'scopusId',
-                  //   placeholder: 'someEmptyTextId',
-                  //   repeat: {
-                  //     minNumberOfRepeatingToShow: 1,
-                  //     repeatMax: 1,
-                  //     repeatMin: 1
-                  //   },
-                  //   tooltip: {
-                  //     body: 'someDefTextId',
-                  //     title: 'someTextId'
-                  //   },
-                  //   type: 'textVariable',
-                  //   validation: {
-                  //     pattern: 'someRegex',
-                  //     type: 'regex'
-                  //   }
-                  // }
                 ]
               }
             ]
@@ -1611,8 +1698,8 @@ describe('formDefinition', () => {
   describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
     it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
       const test = findMetadataChildReferenceByNameInDataAndAttributes(
-        someNewMetadataGroupForMissingChildId.children,
         dependencies.metadataPool,
+        someNewMetadataGroupForMissingChildId.children,
         someMetadataCollectionVariable
       );
       expect(test).toStrictEqual({
@@ -1622,63 +1709,172 @@ describe('formDefinition', () => {
       });
     });
 
-    it('findMetadataChildReferenceByNameInDataAndAttributes with wrong nameInData', () => {
-      const test = findMetadataChildReferenceByNameInDataAndAttributes(
-        someNewMetadataGroupForMissingChildId.children,
-        dependencies.metadataPool,
-        someMetadataTextVariable
+    it(`findMetadataChildReferenceByNameInDataAndAttributes equal nameInData`, () => {
+      const textVar1 = createTextVar('textVar1', 'someNameInData', []);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', []);
+      const childRefs = createChildReferences([textVar1.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefs,
+        textVar2
       );
-      expect(test).toBe(undefined);
+
+      expect(actual).toStrictEqual(childRefs[0]);
     });
 
-    it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and unequal number of attributes', () => {
-      const test = findMetadataChildReferenceByNameInDataAndAttributes(
-        someNewMetadataGroup.children,
-        dependencies.metadataPool,
-        someMetadataNumberVarWithoutAttribute
+    it(`findMetadataChildReferenceByNameInDataAndAttributes unequal nameInData`, () => {
+      const textVar1 = createTextVar('textVar1', 'someNameInData', []);
+      const textVar2 = createTextVar('textVar2', 'someNameInDataNOT', []);
+      const childRefs = createChildReferences([textVar1.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefs,
+        textVar2
       );
-      expect(test).toBe(undefined);
+
+      expect(actual).toBe(undefined);
     });
 
-    it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same attribute', () => {
-      const test = findMetadataChildReferenceByNameInDataAndAttributes(
-        someNewMetadataGroup.children,
-        dependencies.metadataPool,
-        someMetadataNumberVarWithAttributeAndOtherId
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+    and unequal number of attributes`, () => {
+      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
+      const attribute11 = createCollVar('attribute11', 'attributeName11', ['value1', 'value2'], []);
+      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id, attribute11.id]);
+      const attribute2 = createCollVar('attribute2', 'attributeName', ['value1', 'value2'], []);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
+      const childRefs = createChildReferences([textVar1.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefs,
+        textVar2
       );
-      expect(test).toStrictEqual({
-        childId: 'someMetadataNumberWithAttributeVarId',
-        repeatMax: '1',
-        repeatMin: '1'
-      });
+
+      expect(actual).toBe(undefined);
     });
 
-    it('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same attribute but other id', () => {
-      const test = findMetadataChildReferenceByNameInDataAndAttributes(
-        someNewMetadataGroup.children,
-        dependencies.metadataPool,
-        someMetadataNumberVarWithOtherAttributeId
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes and same attributes`, () => {
+      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
+      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute1.id]);
+      const childRefs = createChildReferences([textVar1.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefs,
+        textVar2
       );
-      expect(test).toStrictEqual({
-        childId: 'someMetadataNumberWithAttributeVarId',
-        repeatMax: '1',
-        repeatMin: '1'
-      });
+
+      expect(actual).toStrictEqual(childRefs[0]);
     });
 
-    // HERE
-    it.skip('findMetadataChildReferenceByNameInDataAndAttributes same nameInData and same number of attributes but different nameInData of attribute', () => {
-      const test = findMetadataChildReferenceByNameInDataAndAttributes(
-        someNewMetadataGroup.children,
-        dependencies.metadataPool,
-        someMetadataNumberVarWithAttributeExampleCollectionVarId2
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes and equal attributes`, () => {
+      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
+      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
+      const attribute2 = createCollVar('attribute2', 'attributeName', ['value1', 'value2'], []);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
+      const children = createChildReferences([textVar1.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        children,
+        textVar2
       );
-      expect(test).toStrictEqual({
-        childId: 'someMetadataNumberWithAttributeVarId',
-        repeatMax: '1',
-        repeatMin: '1'
-      });
+
+      expect(actual).toStrictEqual(children[0]);
     });
+
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes and equal attributes multiple children to find in`, () => {
+      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
+      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
+      const attribute2 = createCollVar('attribute2', 'attributeName', ['value1', 'value2'], []);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
+      const textVar3 = createTextVar('textVar3', 'someNameInData3', [attribute2.id]);
+      const childRefs = createChildReferences([textVar1.id, textVar3.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefs,
+        textVar2
+      );
+
+      expect(actual).toStrictEqual(childRefs[0]);
+    });
+
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+        and same number of attributes but different nameInData of attribute`, () => {
+      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
+      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
+      const attribute2 = createCollVar('attribute2', 'attributeNameNOT', ['value1', 'value2'], []);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
+      const childRefs = createChildReferences([textVar1.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefs,
+        textVar2
+      );
+
+      expect(actual).toBe(undefined);
+    });
+
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes but different value of attribute`, () => {
+      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
+      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
+      const attribute2 = createCollVar('attribute2', 'attributeName', ['valueNOT1', 'value2'], []);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
+      const childRefs = createChildReferences([textVar1.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefs,
+        textVar2
+      );
+      expect(actual).toBe(undefined);
+    });
+
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes but different wider value of attribute in presentation`, () => {
+      const attribute1 = createCollVar('attribute1', 'attributeName', ['value2'], []);
+      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
+      const attribute2 = createCollVar('attribute2', 'attributeName', ['value1', 'value2'], []);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
+      const childRefsForCurrentGroup = createChildReferences([textVar1.id]);
+      const metadataFromPresentation = textVar2;
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefsForCurrentGroup,
+        metadataFromPresentation
+      );
+      expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
+    });
+
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes but different more specific value of attribute in 
+      presentation`, () => {
+      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
+      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
+      const attribute2 = createCollVar('attribute2', 'attributeName', ['value2'], []);
+      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
+      const childRefsForCurrentGroup = createChildReferences([textVar1.id]);
+      const metadataFromPresentation = textVar2;
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefsForCurrentGroup,
+        metadataFromPresentation
+      );
+      expect(actual).toBe(undefined);
+    });
+
+    // FINAL VALUE FOR ATTRIBUTES
 
     describe('firstAttributesExistsInSecond', () => {
       it('testSameAttributeUndefined', () => {

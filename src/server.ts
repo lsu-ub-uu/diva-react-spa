@@ -70,7 +70,7 @@ const loadStuffOnServerStart = async () => {
   const result = await getPoolsFromCora(types);
 
   const metadata = transformMetadata(result[0].data);
-  const metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>(metadata);
+  const metadataPool = listToPool<BFFMetadata>(metadata);
   const presentation = transformCoraPresentations(result[1].data);
   const guiElements = transformCoraPresentations(result[3].data);
 

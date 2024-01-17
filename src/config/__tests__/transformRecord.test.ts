@@ -35,7 +35,7 @@ import {
   RecordWrapper
 } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
-import { BFFMetadata, BFFMetadataItemCollection, BFFValidationType } from '../bffTypes';
+import { BFFMetadata, BFFValidationType } from '../bffTypes';
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
@@ -49,7 +49,7 @@ import {
 
 describe('transformRecord', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
-  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
+  let metadataPool: Lookup<string, BFFMetadata>;
   let dependencies: Dependencies;
 
   beforeEach(() => {
@@ -57,7 +57,7 @@ describe('transformRecord', () => {
       someManuscriptValidationTypeData,
       nationSubjectCategoryValidationTypeData
     ]);
-    metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
+    metadataPool = listToPool<BFFMetadata>([
       someManuscriptEditMetadataGroup,
       someAlternativeTitleMetadataChildGroup,
       someMainTitleTextVariable,

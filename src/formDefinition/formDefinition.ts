@@ -242,8 +242,8 @@ const createPresentation = (
     if (!metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf)) {
       const metadataFromCurrentPresentation = metadataPool.get(presentation.presentationOf);
       const foundMetadataChildReference = findMetadataChildReferenceByNameInDataAndAttributes(
-        metadataChildReferences,
         metadataPool,
+        metadataChildReferences,
         metadataFromCurrentPresentation
       );
 
@@ -264,19 +264,64 @@ const createPresentation = (
 };
 
 export const findMetadataChildReferenceByNameInDataAndAttributes = (
-  metadataChildReferences: BFFMetadataChildReference[],
   metadataPool: any,
+  metadataChildReferences: BFFMetadataChildReference[],
   metadataFromCurrentPresentation: any
 ): BFFMetadataChildReference | undefined => {
   return metadataChildReferences.find((metadataChildReferenceCandidate) => {
     const metadataCandidate = metadataPool.get(metadataChildReferenceCandidate.childId);
-    return (
-      metadataCandidate.nameInData === metadataFromCurrentPresentation.nameInData &&
-      !metadataCandidate.attributeReferences?.length ===
-        !metadataFromCurrentPresentation.attributeReferences?.length
-      //get attributes for metadataCandiate and metadataFromCurrentPresentation
-    );
+
+    if (differentNameInData(metadataCandidate, metadataFromCurrentPresentation)) {
+      return false;
+    }
+
+    if (differentNumberOfAttributes(metadataCandidate, metadataFromCurrentPresentation)) {
+      return false;
+    }
+
+    if (noAttributesToCompare(metadataCandidate)) {
+      return true;
+    }
+
+    return attributesMatch(metadataPool, metadataCandidate, metadataFromCurrentPresentation);
   });
+};
+
+const differentNameInData = (metadataCandidate: any, metadataFromCurrentPresentation: any) => {
+  return metadataCandidate.nameInData !== metadataFromCurrentPresentation.nameInData;
+};
+
+const differentNumberOfAttributes = (
+  metadataCandidate: any,
+  metadataFromCurrentPresentation: any
+) => {
+  return (
+    metadataCandidate.attributeReferences?.length !==
+    metadataFromCurrentPresentation.attributeReferences?.length
+  );
+};
+
+const noAttributesToCompare = (metadataCandidate: any) => {
+  return (
+    metadataCandidate.attributeReferences?.length === undefined ||
+    metadataCandidate.attributeReferences?.length === 0
+  );
+};
+
+const attributesMatch = (
+  metadataPool: any,
+  metadataCandidate: any,
+  metadataFromCurrentPresentation: any
+) => {
+  const currentPresentationAttributes = getAttributesForAttributeReferences(
+    metadataPool,
+    metadataFromCurrentPresentation.attributeReferences
+  );
+  const candidateAttributes = getAttributesForAttributeReferences(
+    metadataPool,
+    metadataCandidate.attributeReferences
+  );
+  return firstAttributesExistsInSecond(candidateAttributes, currentPresentationAttributes);
 };
 
 export const getAttributesForAttributeReferences = (
@@ -390,7 +435,7 @@ const createCollectionVariableOptions = (
   });
 };
 
-function createAttributes(
+const createAttributes = (
   metadataVariable:
     | BFFMetadataCollectionVariable
     | BFFMetadataNumberVariable
@@ -398,7 +443,7 @@ function createAttributes(
     | BFFMetadataGroup,
   metadataPool: any,
   options: unknown[] | undefined
-) {
+) => {
   return metadataVariable.attributeReferences?.map((attributeReference) => {
     const refCollectionVar = metadataPool.get(
       attributeReference.refCollectionVarId
@@ -417,7 +462,7 @@ function createAttributes(
     options = createCollectionVariableOptions(metadataPool, refCollectionVar);
     return removeEmpty({ ...commonParameters, options, finalValue });
   });
-}
+};
 
 const createPresentationWithStuff = (
   metadataChildReferences: BFFMetadataChildReference[],

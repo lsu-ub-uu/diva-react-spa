@@ -88,12 +88,7 @@ export interface BFFCollectionItemReference {
   refCollectionItemId: string;
 }
 
-export interface BFFMetadataItemCollection {
-  id: string;
-  nameInData: string;
-  type: string;
-  textId: string;
-  defTextId: string;
+export interface BFFMetadataItemCollection extends BFFMetadata {
   collectionItemReferences: BFFCollectionItemReference[];
 }
 
