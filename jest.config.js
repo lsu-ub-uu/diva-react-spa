@@ -4,7 +4,7 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   setupFiles: ['dotenv/config'],
-  testPathIgnorePatterns: ['./node_modules/', './lists/', './dist/'],
+  testPathIgnorePatterns: ['./node_modules/', './lists/', './dist/', ['./src/__mocks__'],
   collectCoverage: false,
   collectCoverageFrom: ['./src/**'],
   coveragePathIgnorePatterns: ['./src/index.tsx'],

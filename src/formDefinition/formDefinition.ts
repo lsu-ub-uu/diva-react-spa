@@ -1,5 +1,3 @@
-import _isEqual from 'lodash/isEqual';
-
 import {
   BFFGuiElement,
   BFFMetadata,
@@ -332,6 +330,11 @@ export const getAttributesForAttributeReferences = (
     const attributeCollectionVar = metadataPool.get(
       attributeReference.refCollectionVarId
     ) as BFFMetadataCollectionVariable;
+
+    if (attributeCollectionVar.finalValue) {
+      return { [attributeCollectionVar.nameInData]: [attributeCollectionVar.finalValue] };
+    }
+
     const itemCollection = createCollectionVariableOptions(metadataPool, attributeCollectionVar);
     const itemCollectionValues = itemCollection.map((item) => item.value);
     return { [attributeCollectionVar.nameInData]: itemCollectionValues };

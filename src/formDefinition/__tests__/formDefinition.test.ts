@@ -301,6 +301,35 @@ describe('formDefinition', () => {
     return metadata;
   };
 
+  const createCollVarFinal = (
+    id: string,
+    nameInData: string,
+    finalValue: string,
+    attributeReferenceIds: string[]
+  ): BFFMetadataCollectionVariable => {
+    const metadata: BFFMetadataCollectionVariable = {
+      id,
+      nameInData,
+      type: 'collectionVariable',
+      textId: 'someTextId',
+      defTextId: 'someDefTextId',
+      refCollection: `${id}Collection`,
+      finalValue
+    };
+
+    if (attributeReferenceIds.length > 0) {
+      const attributeIds = attributeReferenceIds?.map((attrId) => {
+        return {
+          refCollectionVarId: attrId
+        };
+      });
+      metadata.attributeReferences = attributeIds;
+    }
+    addToPool(metadata);
+
+    return metadata;
+  };
+
   const addToPool = (metadata: BFFMetadata) => {
     metadataPool.set(metadata.id, metadata);
   };
@@ -1710,28 +1739,28 @@ describe('formDefinition', () => {
     });
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes equal nameInData`, () => {
-      const textVar1 = createTextVar('textVar1', 'someNameInData', []);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', []);
-      const childRefs = createChildReferences([textVar1.id]);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', []);
+      const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefs,
-        textVar2
+        pmTextVar
       );
 
       expect(actual).toStrictEqual(childRefs[0]);
     });
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes unequal nameInData`, () => {
-      const textVar1 = createTextVar('textVar1', 'someNameInData', []);
-      const textVar2 = createTextVar('textVar2', 'someNameInDataNOT', []);
-      const childRefs = createChildReferences([textVar1.id]);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInDataNOT', []);
+      const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefs,
-        textVar2
+        pmTextVar
       );
 
       expect(actual).toBe(undefined);
@@ -1739,17 +1768,25 @@ describe('formDefinition', () => {
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
     and unequal number of attributes`, () => {
-      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
-      const attribute11 = createCollVar('attribute11', 'attributeName11', ['value1', 'value2'], []);
-      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id, attribute11.id]);
-      const attribute2 = createCollVar('attribute2', 'attributeName', ['value1', 'value2'], []);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
-      const childRefs = createChildReferences([textVar1.id]);
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const mmAttribute1 = createCollVar(
+        'mmAttribute1',
+        'attributeName11',
+        ['value1', 'value2'],
+        []
+      );
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [
+        mmAttribute.id,
+        mmAttribute1.id
+      ]);
+      const pmAttribute = createCollVar('pmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefs,
-        textVar2
+        pmTextVar
       );
 
       expect(actual).toBe(undefined);
@@ -1757,15 +1794,15 @@ describe('formDefinition', () => {
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
       and same number of attributes and same attributes`, () => {
-      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
-      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute1.id]);
-      const childRefs = createChildReferences([textVar1.id]);
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [mmAttribute.id]);
+      const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefs,
-        textVar2
+        pmTextVar
       );
 
       expect(actual).toStrictEqual(childRefs[0]);
@@ -1773,16 +1810,16 @@ describe('formDefinition', () => {
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
       and same number of attributes and equal attributes`, () => {
-      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
-      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
-      const attribute2 = createCollVar('attribute2', 'attributeName', ['value1', 'value2'], []);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
-      const children = createChildReferences([textVar1.id]);
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVar('pmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const children = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         children,
-        textVar2
+        pmTextVar
       );
 
       expect(actual).toStrictEqual(children[0]);
@@ -1790,17 +1827,17 @@ describe('formDefinition', () => {
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
       and same number of attributes and equal attributes multiple children to find in`, () => {
-      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
-      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
-      const attribute2 = createCollVar('attribute2', 'attributeName', ['value1', 'value2'], []);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
-      const textVar3 = createTextVar('textVar3', 'someNameInData3', [attribute2.id]);
-      const childRefs = createChildReferences([textVar1.id, textVar3.id]);
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVar('pmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const textVar3 = createTextVar('textVar3', 'someNameInData3', [pmAttribute.id]);
+      const childRefs = createChildReferences([mmTextVar.id, textVar3.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefs,
-        textVar2
+        pmTextVar
       );
 
       expect(actual).toStrictEqual(childRefs[0]);
@@ -1808,16 +1845,21 @@ describe('formDefinition', () => {
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
         and same number of attributes but different nameInData of attribute`, () => {
-      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
-      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
-      const attribute2 = createCollVar('attribute2', 'attributeNameNOT', ['value1', 'value2'], []);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
-      const childRefs = createChildReferences([textVar1.id]);
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVar(
+        'pmAttribute',
+        'attributeNameNOT',
+        ['value1', 'value2'],
+        []
+      );
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefs,
-        textVar2
+        pmTextVar
       );
 
       expect(actual).toBe(undefined);
@@ -1825,33 +1867,37 @@ describe('formDefinition', () => {
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
       and same number of attributes but different value of attribute`, () => {
-      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
-      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
-      const attribute2 = createCollVar('attribute2', 'attributeName', ['valueNOT1', 'value2'], []);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
-      const childRefs = createChildReferences([textVar1.id]);
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVar(
+        'pmAttribute',
+        'attributeName',
+        ['valueNOT1', 'value2'],
+        []
+      );
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefs = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefs,
-        textVar2
+        pmTextVar
       );
       expect(actual).toBe(undefined);
     });
 
     it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
       and same number of attributes but different wider value of attribute in presentation`, () => {
-      const attribute1 = createCollVar('attribute1', 'attributeName', ['value2'], []);
-      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
-      const attribute2 = createCollVar('attribute2', 'attributeName', ['value1', 'value2'], []);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
-      const childRefsForCurrentGroup = createChildReferences([textVar1.id]);
-      const metadataFromPresentation = textVar2;
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value2'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVar('pmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefsForCurrentGroup = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefsForCurrentGroup,
-        metadataFromPresentation
+        pmTextVar
       );
       expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
     });
@@ -1859,22 +1905,85 @@ describe('formDefinition', () => {
     it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
       and same number of attributes but different more specific value of attribute in 
       presentation`, () => {
-      const attribute1 = createCollVar('attribute1', 'attributeName', ['value1', 'value2'], []);
-      const textVar1 = createTextVar('textVar1', 'someNameInData', [attribute1.id]);
-      const attribute2 = createCollVar('attribute2', 'attributeName', ['value2'], []);
-      const textVar2 = createTextVar('textVar2', 'someNameInData', [attribute2.id]);
-      const childRefsForCurrentGroup = createChildReferences([textVar1.id]);
-      const metadataFromPresentation = textVar2;
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVar('pmAttribute', 'attributeName', ['value2'], []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefsForCurrentGroup = createChildReferences([mmTextVar.id]);
 
       const actual = findMetadataChildReferenceByNameInDataAndAttributes(
         metadataPool,
         childRefsForCurrentGroup,
-        metadataFromPresentation
+        pmTextVar
       );
       expect(actual).toBe(undefined);
     });
 
     // FINAL VALUE FOR ATTRIBUTES
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes but finalValue of attribute in metadata`, () => {
+      const mmAttribute = createCollVarFinal('mmAttribute', 'attributeName', 'value1', []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVar('pmAttribute', 'attributeName', ['value1'], []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefsForCurrentGroup = createChildReferences([mmTextVar.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefsForCurrentGroup,
+        pmTextVar
+      );
+      expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
+    });
+
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes but finalValue of attribute in presentation`, () => {
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVarFinal('pmAttribute', 'attributeName', 'value1', []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefsForCurrentGroup = createChildReferences([mmTextVar.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefsForCurrentGroup,
+        pmTextVar
+      );
+      expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
+    });
+
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes but finalValue of attribute in metadata`, () => {
+      const mmAttribute = createCollVarFinal('mmAttribute', 'attributeName', 'value1', []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVar('pmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefsForCurrentGroup = createChildReferences([mmTextVar.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefsForCurrentGroup,
+        pmTextVar
+      );
+      expect(actual).toStrictEqual(childRefsForCurrentGroup[0]);
+    });
+
+    it(`findMetadataChildReferenceByNameInDataAndAttributes same nameInData 
+      and same number of attributes but finalValue of attribute in presentation
+      is more specific`, () => {
+      const mmAttribute = createCollVar('mmAttribute', 'attributeName', ['value1', 'value2'], []);
+      const mmTextVar = createTextVar('mmTextVar', 'someNameInData', [mmAttribute.id]);
+      const pmAttribute = createCollVarFinal('pmAttribute', 'attributeName', 'value2', []);
+      const pmTextVar = createTextVar('pmTextVar', 'someNameInData', [pmAttribute.id]);
+      const childRefsForCurrentGroup = createChildReferences([mmTextVar.id]);
+
+      const actual = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        childRefsForCurrentGroup,
+        pmTextVar
+      );
+      expect(actual).toBe(undefined);
+    });
 
     describe('firstAttributesExistsInSecond', () => {
       it('testSameAttributeUndefined', () => {
@@ -1895,176 +2004,213 @@ describe('formDefinition', () => {
       });
 
       it('testSameAttributeOneEmpty', () => {
-        const attribute1 = {
+        const mmAttribute = {
           anAttribute: ['aFinalValue']
         };
-        const attribute2 = {};
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const pmAttribute = {};
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(false);
       });
 
       it('testfirstAttributesExistsInSecond', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(true);
       });
 
       it('testfirstAttributesExistsInSecondReversedAttributes', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(true);
       });
 
       it('testSameAttributeDifferentAttributeValues', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(false);
       });
 
       it('testSameAttributeDifferentAttributeValues2', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aOtherFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(false);
       });
 
       it('testSameAttributeDifferentAttributeValues3', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(true);
       });
 
       it('testSameAttributeDifferentAttributeValues4', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aOtherFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(true);
       });
 
       it('testSameAttributeDifferentAttributeValues5', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aOtherFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aOtherFinalValue', 'aFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(true);
       });
 
       it('testSameAttributeDifferentAttributeValues6', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aOtherFinalValue', 'aFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(true);
       });
 
       it('testSameAttributeDifferent', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue', 'aOtherFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInDataNOT: ['aFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(false);
       });
 
       it('testSameAttributeDifferentName', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInDataNOT: ['aFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(false);
       });
 
       it('testMultipleAttributesDifferentName', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue'],
           someOtherNameInData: ['aFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aFinalValue'],
           someOtherNameInData: ['aFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(true);
       });
 
       it('testMultipleAttributesDifferentName2', () => {
-        const attribute1 = {
+        const mmAttribute = {
           someNameInData: ['aFinalValue'],
           someOtherNameInData: ['aOtherFinalValue']
         };
-        const attribute2 = {
+        const pmAttribute = {
           someNameInData: ['aFinalValue'],
           someOtherNameInData: ['aFinalValue']
         };
-        const actual = firstAttributesExistsInSecond(attribute1, attribute2);
+        const actual = firstAttributesExistsInSecond(mmAttribute, pmAttribute);
         expect(actual).toBe(false);
       });
     });
 
     describe('getAttributesForAttributeReferences', () => {
       it('should return an object with nameInData and item values', () => {
+        const mmAttribute = createCollVar(
+          'mmAttribute',
+          'attributeName',
+          ['blue', 'pink', 'yellow'],
+          []
+        );
+
         const attributeReferences: BFFAttributeReference[] = [
-          { refCollectionVarId: 'exampleCollectionVarId' }
+          { refCollectionVarId: mmAttribute.id }
         ];
         const actual = getAttributesForAttributeReferences(
           dependencies.metadataPool,
           attributeReferences
         );
-        const expected = { colour: ['blue', 'pink', 'yellow'] };
+
+        const expected = { [mmAttribute.nameInData]: ['blue', 'pink', 'yellow'] };
+        expect(actual).toStrictEqual(expected);
+      });
+
+      it('should return an object with nameInData and item values for finalValue', () => {
+        const mmAttribute = createCollVarFinal('mmAttribute', 'attributeName', 'blue', []);
+        const attributeReferences: BFFAttributeReference[] = [
+          { refCollectionVarId: mmAttribute.id }
+        ];
+
+        const actual = getAttributesForAttributeReferences(
+          dependencies.metadataPool,
+          attributeReferences
+        );
+
+        const expected = { [mmAttribute.nameInData]: ['blue'] };
         expect(actual).toStrictEqual(expected);
       });
 
       it('should return an object with nameInData and item values for multiple attributes', () => {
+        const mmAttribute = createCollVar(
+          'mmAttribute',
+          'attributeName',
+          ['blue', 'pink', 'yellow'],
+          []
+        );
+        const pmAttribute = createCollVar(
+          'pmAttribute',
+          'attributeName',
+          ['green', 'red', 'black'],
+          []
+        );
         const attributeReferences: BFFAttributeReference[] = [
-          { refCollectionVarId: 'exampleCollectionVarId' },
-          { refCollectionVarId: 'exampleCollectionVarId2' }
+          { refCollectionVarId: mmAttribute.id },
+          { refCollectionVarId: pmAttribute.id }
         ];
+
         const actual = getAttributesForAttributeReferences(
           dependencies.metadataPool,
           attributeReferences
         );
+
         const expected = {
-          colour: ['blue', 'pink', 'yellow'],
-          colour2: ['blue', 'pink', 'yellow']
+          [mmAttribute.nameInData]: ['blue', 'pink', 'yellow'],
+          [pmAttribute.nameInData]: ['green', 'red', 'black']
         };
         expect(actual).toStrictEqual(expected);
       });
