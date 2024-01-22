@@ -14,7 +14,8 @@ import {
   BFFValidationType,
   BFFPresentationContainer,
   BFFMetadataRecordLink,
-  BFFAttributeReference
+  BFFAttributeReference,
+  BFFRecordType
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -155,11 +156,9 @@ export const createFormDefinition = (
   validationTypeId: string,
   mode: 'create' | 'update'
 ) => {
-  const validationPool = dependencies.validationTypePool;
-  const { metadataPool } = dependencies;
-  const { presentationPool } = dependencies;
-  const validationType: BFFValidationType = validationPool.get(validationTypeId);
-
+  const { validationTypePool, metadataPool, presentationPool } = dependencies;
+  const validationType: BFFValidationType = validationTypePool.get(validationTypeId);
+  // getRecordTypeFromValidationType('nationalSubjectCategory', recordTypePool, validationTypePool);
   // we need to check the mode parameter
   let metadataGroup;
   let presentationGroup;
@@ -199,6 +198,16 @@ export const createFormDefinition = (
     validationTypeId: validationType.id,
     form
   };
+};
+
+export const getRecordTypeFromValidationType = (
+  id: string,
+  recordTypePool?: any,
+  validationTypePool?: any
+) => {
+  const { validatesRecordTypeId } = validationTypePool.get(id);
+
+  return recordTypePool.get(validatesRecordTypeId);
 };
 
 const createComponentsFromChildReferences = (

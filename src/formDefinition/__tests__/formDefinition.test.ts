@@ -30,7 +30,8 @@ import {
   BFFMetadataTextVariable,
   BFFMetadataCollectionVariable,
   BFFMetadataChildReference,
-  BFFRecordType
+  BFFRecordType,
+  BFFMetadataGroup
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -100,7 +101,8 @@ import {
   someMetadataNumberVarWithAttributeAndOtherId,
   someMetadataNumberVarWithOtherAttributeId,
   someMetadataCollectionWithOtherIdVariable,
-  someMetadataCollectionVariable2
+  someMetadataCollectionVariable2,
+  nationSubjectCategoryValidationTypeData
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -110,10 +112,10 @@ import {
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
   FormMetaData,
-  getAttributesForAttributeReferences
+  getAttributesForAttributeReferences,
+  getRecordTypeFromValidationType
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
-import { RecordType } from 'types';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -134,7 +136,7 @@ describe('formDefinition', () => {
       someSimpleValidationTypeData,
       someValidationTypeForMissingChildIdTypeData
     ]);
-    metadataPool = listToPool<BFFMetadata>([
+    metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
       someMetadataTextVariable,
       someMetadataTextVariable2,
       someMetadataTextVariable3,
@@ -210,6 +212,8 @@ describe('formDefinition', () => {
       presentationPool,
       recordTypePool
     };
+
+    createRecordType('testRecordType');
   });
   const createTextVar = (
     id: string,
@@ -335,7 +339,7 @@ describe('formDefinition', () => {
     return metadata;
   };
 
-  const addToPool = (metadata: BFFMetadata) => {
+  const addToPool = (metadata: BFFMetadata | BFFMetadataGroup) => {
     metadataPool.set(metadata.id, metadata);
   };
 
@@ -359,6 +363,38 @@ describe('formDefinition', () => {
     };
 
     recordTypePool.set(metadata.id, metadata);
+    return metadata;
+  };
+
+  const createGroup = (id: string, nameInData: string, children: string[]): BFFMetadataGroup => {
+    const metadata: BFFMetadataGroup = {
+      id,
+      nameInData,
+      type: 'group',
+      textId: 'someTextId',
+      defTextId: 'someDefTextId',
+      children: []
+    };
+
+    metadata.children = createChildReferences(children);
+    addToPool(metadata);
+    return metadata;
+  };
+
+  const createValidationType = (id: string): BFFValidationType => {
+    const metadata = {
+      id,
+      validatesRecordTypeId: id,
+      newMetadataGroupId: `some${id}MetadataGroupId`,
+      newPresentationGroupId: `pSome${id}NewMetadataGroupId`,
+      // Update/Edit
+      metadataGroupId: `some${id}EditMetadataGroupId`,
+      presentationGroupId: `pSome${id}EditMetadataGroupId`,
+      nameTextId: `some${id}TextId`,
+      defTextId: `some${id}DefTextId`
+    };
+
+    validationTypePool.set(metadata.id, metadata);
     return metadata;
   };
 
@@ -404,9 +440,32 @@ describe('formDefinition', () => {
   });
 
   describe('recordType', () => {
-    it('createRecordType', () => {
+    it('createRecordType creates a recordType and adds it to the pool', () => {
       createRecordType('testRecordType');
       expect(recordTypePool.get('testRecordType')).toBeDefined();
+    });
+    it('getRecordTypeFromValidationType', () => {
+      const name = 'testName';
+      createGroup(name, `${name}NameInData`, ['child1']);
+      createValidationType(name);
+      createRecordType(name);
+
+      // console.log('t', recordTypePool.get('testName'));
+      expect(recordTypePool.get(name)).toBeDefined();
+      const actual = getRecordTypeFromValidationType(name, recordTypePool, validationTypePool);
+      const expected = {
+        id: 'testName',
+        presentationViewId: 'testNameOutputPGroup',
+        listPresentationViewId: 'testNameListPGroup',
+        menuPresentationViewId: 'testNameMenuPGroup',
+        autocompletePresentationView: 'testNameAutocompletePGroup'
+      };
+      expect(actual).toStrictEqual(expected);
+
+      // console.log('mP', metadataPool.get(name));
+      // console.log('vP', validationTypePool.get(name));
+      // // console.log('vP', validationTypePool.get(name).validatesRecordTypeId);
+      // console.log('rP', recordTypePool.get(validationTypePool.get(name).validatesRecordTypeId));
     });
   });
 
