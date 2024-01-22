@@ -158,7 +158,7 @@ export const createFormDefinition = (
 ) => {
   const { validationTypePool, metadataPool, presentationPool } = dependencies;
   const validationType: BFFValidationType = validationTypePool.get(validationTypeId);
-  // getRecordTypeFromValidationType('nationalSubjectCategory', recordTypePool, validationTypePool);
+
   // we need to check the mode parameter
   let metadataGroup;
   let presentationGroup;

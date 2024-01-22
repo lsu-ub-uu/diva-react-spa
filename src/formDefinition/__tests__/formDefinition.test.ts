@@ -450,7 +450,6 @@ describe('formDefinition', () => {
       createValidationType(name);
       createRecordType(name);
 
-      // console.log('t', recordTypePool.get('testName'));
       expect(recordTypePool.get(name)).toBeDefined();
       const actual = getRecordTypeFromValidationType(name, recordTypePool, validationTypePool);
       const expected = {
@@ -461,11 +460,6 @@ describe('formDefinition', () => {
         autocompletePresentationView: 'testNameAutocompletePGroup'
       };
       expect(actual).toStrictEqual(expected);
-
-      // console.log('mP', metadataPool.get(name));
-      // console.log('vP', validationTypePool.get(name));
-      // // console.log('vP', validationTypePool.get(name).validatesRecordTypeId);
-      // console.log('rP', recordTypePool.get(validationTypePool.get(name).validatesRecordTypeId));
     });
   });
 
