@@ -4,4 +4,5 @@ export interface Dependencies {
   metadataPool?: Lookup<string, BFFMetadata>;
   presentationPool?: Lookup<string, BFFPresentation | BFFPresentationGroup>;
   textPool?: Lookup<string, BFFText>;
+  recordTypePool?: Lookup<string, BFFRecordType>;
 }
