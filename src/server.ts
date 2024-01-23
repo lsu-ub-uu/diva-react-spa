@@ -59,7 +59,7 @@ const errorHandler = (error: unknown) => {
   };
 };
 
-const testDependencies: Dependencies = {};
+const dependencies: Dependencies = {};
 
 const loadStuffOnServerStart = async () => {
   const response = await getRecordDataListByType<DataListWrapper>('text', '');
@@ -81,16 +81,16 @@ const loadStuffOnServerStart = async () => {
   const validationTypes = transformCoraValidationTypes(result[2].data);
   const validationTypePool = listToPool<BFFValidationType>(validationTypes);
 
-  testDependencies.validationTypePool = validationTypePool;
-  testDependencies.metadataPool = metadataPool;
-  testDependencies.presentationPool = presentationPool;
-  testDependencies.textPool = listToPool<BFFText>(texts);
+  dependencies.validationTypePool = validationTypePool;
+  dependencies.metadataPool = metadataPool;
+  dependencies.presentationPool = presentationPool;
+  dependencies.textPool = listToPool<BFFText>(texts);
 };
 
 app.use('/api/auth', authRoute);
 app.use('/api/translations/:lang', async (req, res) => {
   try {
-    const textDefinitions = createTextDefinition(testDependencies, req.params.lang);
+    const textDefinitions = createTextDefinition(dependencies, req.params.lang);
     res.status(200).json(textDefinitions);
   } catch (error: unknown) {
     res.status(500).json('Internal server error');
@@ -118,7 +118,7 @@ app.use('/api/divaOutputs', async (req, res) => {
       authToken
     );
 
-    const temp = transformRecords(testDependencies, response.data);
+    const temp = transformRecords(dependencies, response.data);
     res.status(200).json(temp);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
@@ -175,7 +175,7 @@ app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
     const { lastUpdate, values } = payload;
     const recordType = Object.keys(values)[0];
 
-    const { validationTypePool } = testDependencies;
+    const { validationTypePool } = dependencies;
 
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
@@ -184,7 +184,7 @@ app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
     const FORM_MODE_UPDATE = 'update';
     const dataDivider = 'diva';
 
-    const formMetaData = createFormMetaData(testDependencies, validationTypeId, FORM_MODE_UPDATE);
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, values);
     const updateGroup = injectRecordInfoIntoDataGroup(
@@ -219,7 +219,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     const payload = cleanJson(req.body);
     const recordType = Object.keys(payload)[0];
 
-    const { validationTypePool } = testDependencies;
+    const { validationTypePool } = dependencies;
 
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
@@ -228,7 +228,7 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
     const FORM_MODE_NEW = 'create';
     const dataDivider = 'diva';
 
-    const formMetaData = createFormMetaData(testDependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
     const newGroup = injectRecordInfoIntoDataGroup(
@@ -253,7 +253,7 @@ app.get('/api/record/:recordType/:recordId', async (req, res) => {
 
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
     const recordWrapper = response.data;
-    const record = transformRecord(testDependencies, recordWrapper);
+    const record = transformRecord(dependencies, recordWrapper);
     res.status(response.status).json(record);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
@@ -269,12 +269,12 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
       throw new Error(`Mode [${mode}] is not supported`);
     }
 
-    if (!testDependencies.validationTypePool.has(validationTypeId)) {
+    if (!dependencies.validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
 
     const formDef = createFormDefinition(
-      testDependencies,
+      dependencies,
       validationTypeId,
       mode as 'create' | 'update'
     );
