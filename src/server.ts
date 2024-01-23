@@ -6,7 +6,6 @@ import { listToPool } from './utils/structs/listToPool';
 import {
   BFFGuiElement,
   BFFMetadata,
-  BFFMetadataItemCollection,
   BFFPresentation,
   BFFPresentationGroup,
   BFFText,
