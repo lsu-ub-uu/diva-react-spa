@@ -23,6 +23,7 @@ import { listToPool } from '../listToPool';
 const someListWithThreeRecordTypes: BFFRecordType[] = [
   {
     id: '1',
+    metadataId: '',
     presentationViewId: '',
     listPresentationViewId: '',
     menuPresentationViewId: '',
@@ -30,6 +31,7 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
   },
   {
     id: '2',
+    metadataId: '',
     presentationViewId: '',
     listPresentationViewId: '',
     menuPresentationViewId: '',
@@ -37,11 +39,12 @@ const someListWithThreeRecordTypes: BFFRecordType[] = [
   },
   {
     id: '3',
+    metadataId: '',
     presentationViewId: '',
     listPresentationViewId: '',
     menuPresentationViewId: '',
     autocompletePresentationView: ''
-  },
+  }
 ];
 
 const someListWithTwoTexts: BFFText[] = [

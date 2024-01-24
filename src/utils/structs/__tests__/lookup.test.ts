@@ -57,7 +57,7 @@ describe('Lookup', () => {
     lookup.set('testKey1', 'testValue1');
     lookup.set('testKey2', 'testValue2');
     const arr = [];
-    for (let [key, value] of lookup.entries()) {
+    for (const [key, value] of lookup.entries()) {
       arr.push(key);
     }
     expect(arr).toEqual(['testKey1', 'testKey2']);

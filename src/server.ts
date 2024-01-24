@@ -8,6 +8,7 @@ import {
   BFFMetadata,
   BFFPresentation,
   BFFPresentationGroup,
+  BFFRecordType,
   BFFText,
   BFFValidationType
 } from './config/bffTypes';
@@ -34,6 +35,7 @@ import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
 import { injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
 import { cleanJson } from './utils/structs/removeEmpty';
 import { transformRecord, transformRecords } from './config/transformRecord';
+import { transformCoraRecordTypes } from './config/transformRecordTypes';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -44,13 +46,13 @@ const app: Application = express();
 
 configureServer(app);
 
-const getPoolsFromCora = async (poolTypes: string[]) => {
+const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
-  return await Promise.all(promises);
+  return Promise.all(promises);
 };
 
 const errorHandler = (error: unknown) => {
-  //@ts-ignore
+  // @ts-ignore
   const message: string = (error.message ?? 'Unknown error') as string;
   const status = axios.isAxiosError(error) ? error.response?.status : 500;
   return {
@@ -65,7 +67,7 @@ const loadStuffOnServerStart = async () => {
   const response = await getRecordDataListByType<DataListWrapper>('text', '');
   const texts = transformCoraTexts(response.data);
 
-  const types = ['metadata', 'presentation', 'validationType', 'guiElement'];
+  const types = ['metadata', 'presentation', 'validationType', 'guiElement', 'recordType'];
   const result = await getPoolsFromCora(types);
 
   const metadata = transformMetadata(result[0].data);
@@ -81,7 +83,11 @@ const loadStuffOnServerStart = async () => {
   const validationTypes = transformCoraValidationTypes(result[2].data);
   const validationTypePool = listToPool<BFFValidationType>(validationTypes);
 
+  const recordTypes = transformCoraRecordTypes(result[4].data);
+  const recordTypePool = listToPool<BFFRecordType>(recordTypes);
+
   dependencies.validationTypePool = validationTypePool;
+  dependencies.recordTypePool = recordTypePool;
   dependencies.metadataPool = metadataPool;
   dependencies.presentationPool = presentationPool;
   dependencies.textPool = listToPool<BFFText>(texts);
@@ -265,7 +271,7 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
   try {
     const { validationTypeId, mode } = req.params;
 
-    if (!['create', 'update'].includes(mode)) {
+    if (!['create', 'update', 'view'].includes(mode)) {
       throw new Error(`Mode [${mode}] is not supported`);
     }
 
@@ -276,11 +282,12 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
     const formDef = createFormDefinition(
       dependencies,
       validationTypeId,
-      mode as 'create' | 'update'
+      mode as 'create' | 'update' | 'view'
     );
 
     res.status(200).json(formDef);
   } catch (error: unknown) {
+    console.log(error);
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }

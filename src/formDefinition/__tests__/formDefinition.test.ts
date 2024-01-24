@@ -31,7 +31,8 @@ import {
   BFFMetadataCollectionVariable,
   BFFMetadataChildReference,
   BFFRecordType,
-  BFFMetadataGroup
+  BFFMetadataGroup,
+  BFFPresentationChildReference
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -101,8 +102,7 @@ import {
   someMetadataNumberVarWithAttributeAndOtherId,
   someMetadataNumberVarWithOtherAttributeId,
   someMetadataCollectionWithOtherIdVariable,
-  someMetadataCollectionVariable2,
-  nationSubjectCategoryValidationTypeData
+  someMetadataCollectionVariable2
 } from '../../__mocks__/form/bffMock';
 import {
   convertStylesToGridColSpan,
@@ -112,8 +112,7 @@ import {
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
   FormMetaData,
-  getAttributesForAttributeReferences,
-  getRecordTypeFromValidationType
+  getAttributesForAttributeReferences
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
@@ -127,6 +126,9 @@ describe('formDefinition', () => {
   let recordTypePool: Lookup<string, BFFRecordType>;
   const FORM_MODE_NEW = 'create';
   const FORM_MODE_EDIT = 'update';
+  const FORM_MODE_VIEW = 'view'; // used to present the record
+  // TODO list_view, menu_view, autocomplete_view
+
   let dependencies: Dependencies;
 
   beforeEach(() => {
@@ -356,6 +358,7 @@ describe('formDefinition', () => {
   const createRecordType = (id: string): BFFRecordType => {
     const metadata: BFFRecordType = {
       id,
+      metadataId: `${id}OutputGroup`,
       presentationViewId: `${id}OutputPGroup`,
       listPresentationViewId: `${id}ListPGroup`,
       menuPresentationViewId: `${id}MenuPGroup`,
@@ -396,6 +399,23 @@ describe('formDefinition', () => {
 
     validationTypePool.set(metadata.id, metadata);
     return metadata;
+  };
+
+  const createBFFPresentationGroup = (
+    id: string,
+    presentationOf: string,
+    children: BFFPresentationChildReference[]
+  ): BFFPresentationGroup => {
+    const pGroup = {
+      id,
+      type: 'pGroup',
+      presentationOf,
+      presentationStyle: '',
+      mode: 'output',
+      children
+    } as BFFPresentationGroup;
+    dependencies.presentationPool.set(id, pGroup);
+    return pGroup;
   };
 
   it('should generate something', () => {
@@ -443,23 +463,6 @@ describe('formDefinition', () => {
     it('createRecordType creates a recordType and adds it to the pool', () => {
       createRecordType('testRecordType');
       expect(recordTypePool.get('testRecordType')).toBeDefined();
-    });
-    it('getRecordTypeFromValidationType', () => {
-      const name = 'testName';
-      createGroup(name, `${name}NameInData`, ['child1']);
-      createValidationType(name);
-      createRecordType(name);
-
-      expect(recordTypePool.get(name)).toBeDefined();
-      const actual = getRecordTypeFromValidationType(name, recordTypePool, validationTypePool);
-      const expected = {
-        id: 'testName',
-        presentationViewId: 'testNameOutputPGroup',
-        listPresentationViewId: 'testNameListPGroup',
-        menuPresentationViewId: 'testNameMenuPGroup',
-        autocompletePresentationView: 'testNameAutocompletePGroup'
-      };
-      expect(actual).toStrictEqual(expected);
     });
   });
 
@@ -1608,7 +1611,6 @@ describe('formDefinition', () => {
     });
 
     it('should return a form definition for a new metadata group matching nameInData when childId does not match', () => {
-      // TODO: Add all the combinations from the newMetadataGroup
       const validationTypeId = 'someValidationTypeForMissingChildIdTypeId';
       const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
       expect(formDefinition.form.components).toHaveLength(1);
@@ -1656,6 +1658,70 @@ describe('formDefinition', () => {
             }
           ],
           mode: 'input'
+        }
+      });
+    });
+
+    it('should return a form definition for (output) view presentation metadata group', () => {
+      const validationTypeId = 'validationTypeId';
+      const validationType = createValidationType(validationTypeId);
+      const recordType = createRecordType(validationType.validatesRecordTypeId);
+
+      const metaDataGroup = createGroup(recordType.metadataId, 'validationTypeIdOutputGroup', [
+        'someMetadataTextVariable6Id'
+      ]);
+
+      const presentationChild = {
+        childId: 'pSomeMetadataTextVariable6Id',
+        type: 'presentation'
+      } as BFFPresentationChildReference;
+      createBFFPresentationGroup(recordType.presentationViewId, metaDataGroup.nameInData, [
+        presentationChild
+      ]);
+
+      const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_VIEW);
+      expect(formDefinition.form.components).toHaveLength(1);
+      expect(formDefinition).toStrictEqual({
+        validationTypeId,
+        form: {
+          childStyle: [],
+          components: [
+            {
+              gridColSpan: 12,
+              inputType: 'input',
+              label: 'someTextId',
+              mode: 'output',
+              name: 'someNameInData6',
+              placeholder: 'someEmptyTextId',
+              repeat: {
+                repeatMax: 3,
+                repeatMin: 1
+              },
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId'
+              },
+              type: 'textVariable',
+              validation: {
+                pattern: 'someRegex',
+                type: 'regex'
+              }
+            }
+          ],
+          gridColSpan: 12,
+          label: 'someTextId',
+          mode: 'output',
+          name: 'validationTypeIdOutputGroup',
+          presentationStyle: '',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          tooltip: {
+            body: 'someDefTextId',
+            title: 'someTextId'
+          },
+          type: 'group'
         }
       });
     });

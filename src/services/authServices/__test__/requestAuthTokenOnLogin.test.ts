@@ -8,7 +8,7 @@ jest.mock('../../../utils/http/HttpClient');
 const mockHttpClientPost = httpClient.post as jest.MockedFunction<typeof httpClient.post>;
 
 beforeEach(() => {
-  //process.env.REST_API_BASE_URL = 'baseUrl/';
+  // process.env.REST_API_BASE_URL = 'baseUrl/';
   mockHttpClientPost.mockResolvedValueOnce({
     data: {
       children: [

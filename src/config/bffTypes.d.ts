@@ -31,10 +31,11 @@ export interface BFFBase {
 }
 
 export interface BFFRecordType extends BFFBase {
+  metadataId: string;
   presentationViewId: string;
   listPresentationViewId: string;
   menuPresentationViewId: string;
-  autocompletePresentationView: string;
+  autocompletePresentationView?: string;
 }
 
 export abstract interface BFFMetadata extends BFFBase {

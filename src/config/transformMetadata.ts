@@ -83,6 +83,7 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     }
     // TODO add more types
     default: {
+      return undefined;
     }
   }
 };

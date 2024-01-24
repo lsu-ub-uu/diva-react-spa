@@ -154,27 +154,38 @@ export const createFormMetaDataPathLookup = (
 export const createFormDefinition = (
   dependencies: Dependencies,
   validationTypeId: string,
-  mode: 'create' | 'update'
+  mode: 'create' | 'update' | 'view'
 ) => {
-  const { validationTypePool, metadataPool, presentationPool } = dependencies;
+  const { validationTypePool, metadataPool, presentationPool, recordTypePool } = dependencies;
   const validationType: BFFValidationType = validationTypePool.get(validationTypeId);
 
-  // we need to check the mode parameter
   let metadataGroup;
   let presentationGroup;
-  if (mode === 'create') {
-    metadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
-    presentationGroup = presentationPool.get(
-      validationType.newPresentationGroupId
-    ) as BFFPresentationGroup;
-  } else {
-    metadataGroup = metadataPool.get(validationType.metadataGroupId) as BFFMetadataGroup;
-    presentationGroup = presentationPool.get(
-      validationType.presentationGroupId
-    ) as BFFPresentationGroup;
+
+  switch (mode) {
+    case 'create':
+      metadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
+      presentationGroup = presentationPool.get(
+        validationType.newPresentationGroupId
+      ) as BFFPresentationGroup;
+      break;
+
+    case 'update':
+      metadataGroup = metadataPool.get(validationType.metadataGroupId) as BFFMetadataGroup;
+      presentationGroup = presentationPool.get(
+        validationType.presentationGroupId
+      ) as BFFPresentationGroup;
+      break;
+
+    default: // handles view for now
+      const recordType: BFFRecordType = recordTypePool.get(validationType.validatesRecordTypeId);
+      metadataGroup = metadataPool.get(recordType.metadataId) as BFFMetadataGroup;
+      presentationGroup = presentationPool.get(
+        recordType.presentationViewId
+      ) as BFFPresentationGroup;
+      break;
   }
 
-  // construct the metadata childReference
   const formRootReference: BFFMetadataChildReference = {
     childId: metadataGroup.id,
     repeatMax: '1',
@@ -198,16 +209,6 @@ export const createFormDefinition = (
     validationTypeId: validationType.id,
     form
   };
-};
-
-export const getRecordTypeFromValidationType = (
-  id: string,
-  recordTypePool?: any,
-  validationTypePool?: any
-) => {
-  const { validatesRecordTypeId } = validationTypePool.get(id);
-
-  return recordTypePool.get(validatesRecordTypeId);
 };
 
 const createComponentsFromChildReferences = (
@@ -465,7 +466,7 @@ const createAttributes = (
       id: 'someFakeId',
       presentationOf: refCollectionVar.id,
       type: 'pCollVar',
-      mode: 'input',
+      mode: 'input', // TODO take the mode from the presentationVariable for this attribute
       emptyTextId: 'initialEmptyValueText'
     };
 
