@@ -87,7 +87,7 @@ export const renderLeafComponent = (
           key={reactKey}
           item
           xs={12}
-          sm={component.gridColSpan}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
         >
           <ControlledSelectField
             name={name}
@@ -110,7 +110,7 @@ export const renderLeafComponent = (
           key={reactKey}
           item
           xs={12}
-          sm={component.gridColSpan}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
         >
           <Typography
             variant={component.textStyle ?? 'bodyTextStyle'}
@@ -221,7 +221,9 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           style={{
             background: 'lightgray',
             border: '2px solid black',
-            padding: '10px',
+            padding: '16px',
+            marginTop: '16px',
+            marginBottom: '16px',
           }}
         >
           {component.components &&
@@ -384,7 +386,12 @@ export const FormGenerator = (props: FormGeneratorProps) => {
 
       <AppBar
         position='fixed'
-        style={{ backgroundColor: '#eee', top: 'auto', bottom: 0 }}
+        style={{
+          backgroundColor: '#eee',
+          top: 'auto',
+          bottom: 0,
+          display: 'block',
+        }}
       >
         <Container maxWidth='lg'>
           <Grid container>

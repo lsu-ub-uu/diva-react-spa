@@ -80,18 +80,23 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                 />
               </Divider>
             )}
-            <ActionButtonGroup
-              entityName={`${t(props.component.label ?? '')}`}
-              hideMoveButtons={isComponentSingularAndOptional(props.component)}
-              moveUpButtonDisabled={index === 0}
-              moveUpButtonAction={() => handleMove(index, index - 1)}
-              moveDownButtonDisabled={index === fields.length - 1}
-              moveDownButtonAction={() => handleMove(index, index + 1)}
-              deleteButtonDisabled={
-                fields.length <= (props.component.repeat?.repeatMin ?? 1)
-              }
-              deleteButtonAction={() => handleRemove(index)}
-            />
+            {props.component.mode === 'input' && (
+              <ActionButtonGroup
+                entityName={`${t(props.component.label ?? '')}`}
+                hideMoveButtons={isComponentSingularAndOptional(
+                  props.component,
+                )}
+                moveUpButtonDisabled={index === 0}
+                moveUpButtonAction={() => handleMove(index, index - 1)}
+                moveDownButtonDisabled={index === fields.length - 1}
+                moveDownButtonAction={() => handleMove(index, index + 1)}
+                deleteButtonDisabled={
+                  fields.length <= (props.component.repeat?.repeatMin ?? 1)
+                }
+                deleteButtonAction={() => handleRemove(index)}
+              />
+            )}
+
             <Grid
               container
               item
@@ -109,19 +114,22 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             </Grid>
           </div>
         ))}
-        {fields.length < (props.component.repeat?.repeatMax ?? 1) && (
-          <Button
-            sx={{ mt: 1, mb: 1 }}
-            fullWidth
-            variant='outlined'
-            disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
-            onClick={handleAppend}
-            disableRipple
-            endIcon={<AddCircleOutlineIcon />}
-          >
-            {t(props.component.label as string)}
-          </Button>
-        )}
+        {props.component.mode === 'input' &&
+          fields.length < (props.component.repeat?.repeatMax ?? 1) && (
+            <Button
+              sx={{ mt: 1, mb: 1 }}
+              fullWidth
+              variant='outlined'
+              disabled={
+                fields.length >= (props.component.repeat?.repeatMax ?? 1)
+              }
+              onClick={handleAppend}
+              disableRipple
+              endIcon={<AddCircleOutlineIcon />}
+            >
+              {t(props.component.label as string)}
+            </Button>
+          )}
       </>
     );
   }
