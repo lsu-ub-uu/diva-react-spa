@@ -497,6 +497,8 @@ const createPresentationWithStuff = (
   let repeat;
   let metadata;
   let commonParameters;
+
+  let recordLinkType;
   // let childStyle;
   // let gridColSpan;
 
@@ -551,8 +553,10 @@ const createPresentationWithStuff = (
   }
 
   if (presentation.type === 'pRecordLink') {
+    const recordLink = metadata as BFFMetadataRecordLink;
     // todo more stuff around the record link presentation
     // what about linkedRecordType
+    recordLinkType = recordLink.linkedRecordType;
   }
 
   if (presentation.type === 'container') {
@@ -619,7 +623,8 @@ const createPresentationWithStuff = (
     presentationStyle,
     containerType,
     childStyle,
-    gridColSpan
+    gridColSpan,
+    recordLinkType
   });
 };
 

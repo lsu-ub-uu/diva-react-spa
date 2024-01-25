@@ -836,6 +836,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               childStyle: [],
               mode: 'input',
+              recordLinkType: 'nationalSubjectCategory',
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1
@@ -1435,6 +1436,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               childStyle: [],
               mode: 'input',
+              recordLinkType: 'nationalSubjectCategory',
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1
