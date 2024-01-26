@@ -19,7 +19,7 @@
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { AsidePortal } from '../components';
+import { AsidePortal, LinkedRecord } from '../components';
 import { CreatePublicationCard, ListPublicationsCard } from '../partials';
 
 export const HomePage = () => {
@@ -41,6 +41,10 @@ export const HomePage = () => {
         <Stack spacing={2}>
           <CreatePublicationCard />
           <ListPublicationsCard />
+          <LinkedRecord
+            recordType='nationalSubjectCategory'
+            id='nationalSubjectCategory:6325370460697648'
+          />
         </Stack>
       </div>
     </>
