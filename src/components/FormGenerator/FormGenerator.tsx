@@ -204,6 +204,7 @@ export const FormGenerator = (props: FormGeneratorProps) => {
               control={control}
               options={attribute.options}
               readOnly={!!attribute.finalValue}
+              displayMode={attribute.mode}
             />
           </Grid>
         );
