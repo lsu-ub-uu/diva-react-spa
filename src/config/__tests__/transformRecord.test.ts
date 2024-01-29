@@ -18,16 +18,24 @@
  */
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
+import coraNationalSubjectCategories from '../../__mocks__/coraNationalSubjectCategories.json';
 import {
   isDataAtomic,
   isDataGroup,
   isRecordLink,
   transformRecord,
+  transformRecords,
   traverseDataGroup
 } from '../transformRecord';
-import { DataAtomic, DataGroup, RecordLink, RecordWrapper } from '../../utils/cora-data/CoraData';
+import {
+  DataAtomic,
+  DataGroup,
+  DataListWrapper,
+  RecordLink,
+  RecordWrapper
+} from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
-import { BFFMetadata, BFFMetadataItemCollection, BFFValidationType } from '../bffTypes';
+import { BFFMetadata, BFFValidationType } from '../bffTypes';
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
@@ -35,17 +43,21 @@ import {
   someMainTitleTextVariable,
   someManuscriptEditMetadataGroup,
   someManuscriptValidationTypeData,
-  someSubTitleTextVariable
+  someSubTitleTextVariable,
+  nationSubjectCategoryValidationTypeData
 } from '../../__mocks__/form/bffMock';
 
 describe('transformRecord', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
-  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
+  let metadataPool: Lookup<string, BFFMetadata>;
   let dependencies: Dependencies;
 
   beforeEach(() => {
-    validationTypePool = listToPool<BFFValidationType>([someManuscriptValidationTypeData]);
-    metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
+    validationTypePool = listToPool<BFFValidationType>([
+      someManuscriptValidationTypeData,
+      nationSubjectCategoryValidationTypeData
+    ]);
+    metadataPool = listToPool<BFFMetadata>([
       someManuscriptEditMetadataGroup,
       someAlternativeTitleMetadataChildGroup,
       someMainTitleTextVariable,
@@ -511,5 +523,15 @@ describe('transformRecord', () => {
       }
     };
     expect(transformData).toStrictEqual(expected);
+  });
+
+  describe('transformRecords', () => {
+    it.skip('should be able to transform a DataListWrapper to something', () => {
+      const expected = transformRecords(
+        dependencies,
+        coraNationalSubjectCategories as DataListWrapper
+      );
+      console.log(JSON.stringify(expected, null, 4));
+    });
   });
 });

@@ -13,7 +13,9 @@ import {
   BFFPresentationGroup,
   BFFValidationType,
   BFFPresentationContainer,
-  BFFMetadataRecordLink
+  BFFMetadataRecordLink,
+  BFFAttributeReference,
+  BFFRecordType
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -152,29 +154,38 @@ export const createFormMetaDataPathLookup = (
 export const createFormDefinition = (
   dependencies: Dependencies,
   validationTypeId: string,
-  mode: 'create' | 'update'
+  mode: 'create' | 'update' | 'view'
 ) => {
-  const validationPool = dependencies.validationTypePool;
-  const { metadataPool } = dependencies;
-  const { presentationPool } = dependencies;
-  const validationType: BFFValidationType = validationPool.get(validationTypeId);
+  const { validationTypePool, metadataPool, presentationPool, recordTypePool } = dependencies;
+  const validationType: BFFValidationType = validationTypePool.get(validationTypeId);
 
-  // we need to check the mode parameter
   let metadataGroup;
   let presentationGroup;
-  if (mode === 'create') {
-    metadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
-    presentationGroup = presentationPool.get(
-      validationType.newPresentationGroupId
-    ) as BFFPresentationGroup;
-  } else {
-    metadataGroup = metadataPool.get(validationType.metadataGroupId) as BFFMetadataGroup;
-    presentationGroup = presentationPool.get(
-      validationType.presentationGroupId
-    ) as BFFPresentationGroup;
+
+  switch (mode) {
+    case 'create':
+      metadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
+      presentationGroup = presentationPool.get(
+        validationType.newPresentationGroupId
+      ) as BFFPresentationGroup;
+      break;
+
+    case 'update':
+      metadataGroup = metadataPool.get(validationType.metadataGroupId) as BFFMetadataGroup;
+      presentationGroup = presentationPool.get(
+        validationType.presentationGroupId
+      ) as BFFPresentationGroup;
+      break;
+
+    default: // handles view for now
+      const recordType: BFFRecordType = recordTypePool.get(validationType.validatesRecordTypeId);
+      metadataGroup = metadataPool.get(recordType.metadataId) as BFFMetadataGroup;
+      presentationGroup = presentationPool.get(
+        recordType.presentationViewId
+      ) as BFFPresentationGroup;
+      break;
   }
 
-  // construct the metadata childReference
   const formRootReference: BFFMetadataChildReference = {
     childId: metadataGroup.id,
     repeatMax: '1',
@@ -187,7 +198,7 @@ export const createFormDefinition = (
     childStyle: []
   };
 
-  const form = createPresentation(
+  const form = createPresentationWithStuff(
     [formRootReference],
     formRootPresentationReference,
     metadataPool,
@@ -217,16 +228,6 @@ const createComponentsFromChildReferences = (
       return createGuiElement(presentationChildReference, presentationPool);
     }
 
-    if (presentationChildType === 'presentation') {
-      const presentationChildId = presentationChildReference.childId;
-      const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-      if (presentation.type !== 'container') {
-        if (!metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf)) {
-          return undefined;
-        }
-      }
-    }
-
     return createPresentation(
       metadataChildReferences,
       presentationChildReference,
@@ -234,6 +235,171 @@ const createComponentsFromChildReferences = (
       presentationPool
     );
   });
+};
+
+const createPresentation = (
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReference: BFFPresentationChildReference,
+  metadataPool: any,
+  presentationPool: any
+) => {
+  let metadataOverrideId;
+  const presentationChildId = presentationChildReference.childId;
+  const presentation: BFFPresentation = presentationPool.get(presentationChildId);
+  if (presentation.type !== 'container') {
+    if (!metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf)) {
+      const metadataFromCurrentPresentation = metadataPool.get(presentation.presentationOf);
+      const foundMetadataChildReference = findMetadataChildReferenceByNameInDataAndAttributes(
+        metadataPool,
+        metadataChildReferences,
+        metadataFromCurrentPresentation
+      );
+
+      if (!foundMetadataChildReference) {
+        return undefined;
+      }
+      const foundMetadata = metadataPool.get(foundMetadataChildReference.childId);
+      metadataOverrideId = foundMetadata.id;
+    }
+  }
+  return createPresentationWithStuff(
+    metadataChildReferences,
+    presentationChildReference,
+    metadataPool,
+    presentationPool,
+    metadataOverrideId
+  );
+};
+
+export const findMetadataChildReferenceByNameInDataAndAttributes = (
+  metadataPool: any,
+  metadataChildReferences: BFFMetadataChildReference[],
+  metadataFromCurrentPresentation: any
+): BFFMetadataChildReference | undefined => {
+  return metadataChildReferences.find((metadataChildReferenceCandidate) => {
+    const metadataCandidate = metadataPool.get(metadataChildReferenceCandidate.childId);
+
+    if (differentNameInData(metadataCandidate, metadataFromCurrentPresentation)) {
+      return false;
+    }
+
+    if (differentNumberOfAttributes(metadataCandidate, metadataFromCurrentPresentation)) {
+      return false;
+    }
+
+    if (noAttributesToCompare(metadataCandidate)) {
+      return true;
+    }
+
+    return attributesMatch(metadataPool, metadataCandidate, metadataFromCurrentPresentation);
+  });
+};
+
+const differentNameInData = (metadataCandidate: any, metadataFromCurrentPresentation: any) => {
+  return metadataCandidate.nameInData !== metadataFromCurrentPresentation.nameInData;
+};
+
+const differentNumberOfAttributes = (
+  metadataCandidate: any,
+  metadataFromCurrentPresentation: any
+) => {
+  return (
+    metadataCandidate.attributeReferences?.length !==
+    metadataFromCurrentPresentation.attributeReferences?.length
+  );
+};
+
+const noAttributesToCompare = (metadataCandidate: any) => {
+  return (
+    metadataCandidate.attributeReferences?.length === undefined ||
+    metadataCandidate.attributeReferences?.length === 0
+  );
+};
+
+const attributesMatch = (
+  metadataPool: any,
+  metadataCandidate: any,
+  metadataFromCurrentPresentation: any
+) => {
+  const currentPresentationAttributes = getAttributesForAttributeReferences(
+    metadataPool,
+    metadataFromCurrentPresentation.attributeReferences
+  );
+  const candidateAttributes = getAttributesForAttributeReferences(
+    metadataPool,
+    metadataCandidate.attributeReferences
+  );
+  return firstAttributesExistsInSecond(candidateAttributes, currentPresentationAttributes);
+};
+
+export const getAttributesForAttributeReferences = (
+  metadataPool: any,
+  attributeReferences: BFFAttributeReference[]
+): Record<string, string[]> => {
+  const attributesArray = attributeReferences.map((attributeReference) => {
+    const attributeCollectionVar = metadataPool.get(
+      attributeReference.refCollectionVarId
+    ) as BFFMetadataCollectionVariable;
+
+    if (attributeCollectionVar.finalValue) {
+      return { [attributeCollectionVar.nameInData]: [attributeCollectionVar.finalValue] };
+    }
+
+    const itemCollection = createCollectionVariableOptions(metadataPool, attributeCollectionVar);
+    const itemCollectionValues = itemCollection.map((item) => item.value);
+    return { [attributeCollectionVar.nameInData]: itemCollectionValues };
+  });
+  return Object.assign({}, ...attributesArray);
+};
+
+export const firstAttributesExistsInSecond = (
+  inAttributes1: Record<string, string[]> | undefined,
+  inAttributes2: Record<string, string[]> | undefined
+) => {
+  const attributes1 = inAttributes1 ?? {};
+  const attributes2 = inAttributes2 ?? {};
+
+  const attributeKeys1 = Object.keys(attributes1);
+  const attributeKeys2 = Object.keys(attributes2);
+
+  if (attributeKeys1.length !== attributeKeys2.length) {
+    return false;
+  }
+  if (attributeKeys1.length === 0) {
+    return true;
+  }
+
+  return existingFirstAttributesExistsInSecond(attributes1, attributes2);
+};
+
+const existingFirstAttributesExistsInSecond = (
+  attributes1: Record<string, string[]>,
+  attributes2: Record<string, string[]>
+) => {
+  const attributeKeys1 = Object.keys(attributes1);
+  const checkAttributeExistsInAttributes2 = createCheckFunction(attributes1, attributes2);
+  return attributeKeys1.every(checkAttributeExistsInAttributes2);
+};
+
+const createCheckFunction = (
+  attributes1: Record<string, string[]>,
+  attributes2: Record<string, string[]>
+) => {
+  return (attributeKey: string) => {
+    const attributeValues1 = attributes1[attributeKey];
+    const attributeValues2 = attributes2[attributeKey];
+    if (attributeValues2 === undefined) {
+      return false;
+    }
+    const functionAttribute2ContainsValue = createValueCheckFunction(attributeValues2);
+    return attributeValues1.every(functionAttribute2ContainsValue);
+  };
+};
+
+const createValueCheckFunction = (attributeValues2: string[]) => {
+  return (attributeValue: string) => {
+    return attributeValues2.indexOf(attributeValue) > -1;
+  };
 };
 
 const createText = (
@@ -282,15 +448,16 @@ const createCollectionVariableOptions = (
   });
 };
 
-function createAttributes(
+const createAttributes = (
   metadataVariable:
     | BFFMetadataCollectionVariable
     | BFFMetadataNumberVariable
     | BFFMetadataTextVariable
     | BFFMetadataGroup,
   metadataPool: any,
-  options: unknown[] | undefined
-) {
+  options: unknown[] | undefined,
+  variablePresentationMode: 'input' | 'output',
+) => {
   return metadataVariable.attributeReferences?.map((attributeReference) => {
     const refCollectionVar = metadataPool.get(
       attributeReference.refCollectionVarId
@@ -300,7 +467,7 @@ function createAttributes(
       id: 'someFakeId',
       presentationOf: refCollectionVar.id,
       type: 'pCollVar',
-      mode: 'input',
+      mode: variablePresentationMode,
       emptyTextId: 'initialEmptyValueText'
     };
 
@@ -309,13 +476,14 @@ function createAttributes(
     options = createCollectionVariableOptions(metadataPool, refCollectionVar);
     return removeEmpty({ ...commonParameters, options, finalValue });
   });
-}
+};
 
-const createPresentation = (
+const createPresentationWithStuff = (
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
   metadataPool: any,
-  presentationPool: any
+  presentationPool: any,
+  metadataOverrideId?: string
 ) => {
   let validation;
   let options;
@@ -330,6 +498,8 @@ const createPresentation = (
   let repeat;
   let metadata;
   let commonParameters;
+
+  let recordLinkType;
   // let childStyle;
   // let gridColSpan;
 
@@ -340,7 +510,7 @@ const createPresentation = (
 
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
-    metadataId = presentation.presentationOf;
+    metadataId = metadataOverrideId ?? presentation.presentationOf;
     metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
     metadata = metadataPool.get(metadataId) as BFFMetadata;
@@ -354,7 +524,7 @@ const createPresentation = (
     validation = { type: 'regex', pattern };
 
     if (textVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(textVariable, metadataPool, undefined);
+      attributes = createAttributes(textVariable, metadataPool, undefined, presentation.mode);
     }
   }
 
@@ -369,7 +539,7 @@ const createPresentation = (
     validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
 
     if (numberVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(numberVariable, metadataPool, undefined);
+      attributes = createAttributes(numberVariable, metadataPool, undefined, presentation.mode);
     }
   }
 
@@ -379,13 +549,15 @@ const createPresentation = (
     options = createCollectionVariableOptions(metadataPool, collectionVariable);
 
     if (collectionVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(collectionVariable, metadataPool, options);
+      attributes = createAttributes(collectionVariable, metadataPool, options, presentation.mode);
     }
   }
 
   if (presentation.type === 'pRecordLink') {
+    const recordLink = metadata as BFFMetadataRecordLink;
     // todo more stuff around the record link presentation
     // what about linkedRecordType
+    recordLinkType = recordLink.linkedRecordType;
   }
 
   if (presentation.type === 'container') {
@@ -398,13 +570,15 @@ const createPresentation = (
     presentationStyle = presentationContainer.presentationStyle;
 
     let filteredChildRefs: BFFMetadataChildReference[] = [];
-    if (presentationContainer.repeat === 'children') { // surrounding Container
+    if (presentationContainer.repeat === 'children') {
+      // surrounding Container
       const metadataIds =
         (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
       filteredChildRefs = metadataChildReferences.filter((childRef) => {
         return metadataIds.includes(childRef.childId);
       });
-    } else if (presentationContainer.repeat === 'this') { // repeating Container
+    } else if (presentationContainer.repeat === 'this') {
+      // repeating Container
       metadataId = presentationContainer.presentationOf;
       metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
       filteredChildRefs = [metaDataChildRef];
@@ -425,7 +599,7 @@ const createPresentation = (
     presentationStyle = presentationGroup.presentationStyle;
 
     if (group.attributeReferences !== undefined) {
-      attributes = createAttributes(group, metadataPool, undefined);
+      attributes = createAttributes(group, metadataPool, undefined, presentation.mode);
     }
 
     // skip children for recordInfo group for now
@@ -450,7 +624,8 @@ const createPresentation = (
     presentationStyle,
     containerType,
     childStyle,
-    gridColSpan
+    gridColSpan,
+    recordLinkType
   });
 };
 

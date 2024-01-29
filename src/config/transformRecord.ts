@@ -21,9 +21,10 @@ import _ from 'lodash';
 import {
   Attributes,
   DataAtomic,
-  DataGroup, DataListWrapper,
+  DataGroup,
+  DataListWrapper,
   RecordLink,
-  RecordWrapper,
+  RecordWrapper
 } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import {
@@ -38,7 +39,6 @@ import {
   FormMetaData
 } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
-import { BFFValidationType } from './bffTypes';
 
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (
@@ -102,7 +102,6 @@ export const transformRecords = (
   const coraRecords = dataListWrapper.dataList.data;
   return coraRecords.map((recordWrapper) => transformRecord(dependencies, recordWrapper));
 };
-
 
 /**
  * Transform a Record from Cora to DiVA3 Client BFF - GUI

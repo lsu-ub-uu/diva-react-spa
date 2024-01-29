@@ -28,6 +28,54 @@ export const someValidationTypeData: BFFValidationType = {
   defTextId: 'defName456'
 };
 
+export const someValidationTypeForMissingChildIdTypeData: BFFValidationType = {
+  id: 'someValidationTypeForMissingChildIdTypeId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupForMissingChildIdId',
+  newPresentationGroupId: 'pSomeNewMetadataGroupForMissingChildIdId',
+  // Update/Edit
+  metadataGroupId: 'someEditMetadataGroupForMissingChildIdId',
+  presentationGroupId: 'pSomeEditMetadataGroupForMissingChildIdId',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupForMissingChildId: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupForMissingChildIdId',
+  nameInData: 'divaOutput',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'mainTitle',
+      repeatMin: '0',
+      repeatMax: '1'
+    },
+    {
+      childId: 'exampleCollectionVarId',
+      repeatMin: '0',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const pSomeNewMetadataGroupForMissingChildId: BFFPresentationGroup = {
+  id: 'pSomeNewMetadataGroupForMissingChildIdId',
+  type: 'pGroup',
+  presentationOf: 'someNewMetadataGroupForMissingChildIdId', // metadata
+  mode: 'input',
+  presentationStyle: 'card',
+  children: [
+    {
+      childId: 'pSomeOtherMetadataCollectionVariableWithMissingChildIdId',
+      type: 'presentation',
+      childStyle: ['twelveChildStyle']
+    } // pSomeMetadataCollectionVariableId
+  ]
+};
+
 export const someManuscriptValidationTypeData: BFFValidationType = {
   id: 'manuscript',
   validatesRecordTypeId: 'divaOutput',
@@ -424,9 +472,103 @@ export const someMetadataNumberVarWithAttribute: BFFMetadataNumberVariable = {
     }
   ]
 };
+export const someMetadataNumberVarWithAttributeAndOtherId: BFFMetadataNumberVariable = {
+  id: 'someMetadataNumberWithAttributeVar2Id',
+  nameInData: 'someNameInDataNumberWithAttributeVar',
+  type: 'numberVariable',
+  textId: 'someNumberVarTextId',
+  defTextId: 'someNumberVarDefTextId',
+  min: '0',
+  max: '20',
+  warningMin: '2',
+  warningMax: '10',
+  numberOfDecimals: '0',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    }
+  ]
+};
+export const someMetadataNumberVarWithOtherAttributeId: BFFMetadataNumberVariable = {
+  id: 'someMetadataNumberWithAttributeVar2Id',
+  nameInData: 'someNameInDataNumberWithAttributeVar',
+  type: 'numberVariable',
+  textId: 'someNumberVarTextId',
+  defTextId: 'someNumberVarDefTextId',
+  min: '0',
+  max: '20',
+  warningMin: '2',
+  warningMax: '10',
+  numberOfDecimals: '0',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarOtherId'
+    }
+  ]
+};
+
+export const someMetadataNumberVarWithAttributeExampleCollectionVarId2: BFFMetadataNumberVariable =
+  {
+    id: 'someMetadataNumberWithAttributeVar2Id',
+    nameInData: 'someNameInDataNumberWithAttributeVar',
+    type: 'numberVariable',
+    textId: 'someNumberVarTextId',
+    defTextId: 'someNumberVarDefTextId',
+    min: '0',
+    max: '20',
+    warningMin: '2',
+    warningMax: '10',
+    numberOfDecimals: '0',
+    attributeReferences: [
+      {
+        refCollectionVarId: 'exampleCollectionVarId2'
+      }
+    ]
+  };
+
+export const someMetadataNumberVarWithoutAttribute: BFFMetadataNumberVariable = {
+  id: 'someMetadataNumberVarWithoutAttributeId',
+  nameInData: 'someNameInDataNumberWithAttributeVar',
+  type: 'numberVariable',
+  textId: 'someNumberVarTextId',
+  defTextId: 'someNumberVarDefTextId',
+  min: '0',
+  max: '20',
+  warningMin: '2',
+  warningMax: '10',
+  numberOfDecimals: '0'
+};
 
 export const someMetadataCollectionVariable: BFFMetadataCollectionVariable = {
   id: 'exampleCollectionVarId',
+  nameInData: 'colour',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'pink' // added this for now
+};
+export const someMetadataCollectionVariable2: BFFMetadataCollectionVariable = {
+  id: 'exampleCollectionVarId2',
+  nameInData: 'colour2',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'pink' // added this for now
+};
+export const someMetadataCollectionWithOtherIdVariable: BFFMetadataCollectionVariable = {
+  id: 'exampleCollectionVarOtherId',
+  nameInData: 'colour',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'pink' // added this for now
+};
+
+export const exampleOtherCollectionVarId: BFFMetadataCollectionVariable = {
+  id: 'exampleOtherCollectionVarId',
   nameInData: 'colour',
   type: 'collectionVariable',
   textId: 'exampleCollectionVarText',
@@ -449,6 +591,23 @@ export const someMetadataCollectionVariableWithAttribute: BFFMetadataCollectionV
   ]
 };
 
+export const someMetadataCollectionVariableWithTwoAttributes: BFFMetadataCollectionVariable = {
+  id: 'someMetadataCollectionVariableWithAttributeId2',
+  nameInData: 'colourAttributeVar',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'exampleCollectionVarId'
+    },
+    {
+      refCollectionVarId: 'exampleCollectionVarId2'
+    }
+  ]
+};
+
 export const someMetadataItemCollection: BFFMetadataItemCollection = {
   id: 'exampleCollection',
   nameInData: 'colour',
@@ -461,7 +620,6 @@ export const someMetadataItemCollection: BFFMetadataItemCollection = {
     { refCollectionItemId: 'exampleYellowItem' }
   ]
 };
-
 export const someMetadataCollectionItemBlue: BFFMetadata = {
   id: 'exampleBlueItem',
   nameInData: 'blue',
@@ -583,6 +741,14 @@ export const pSomeMetadataTextVariable6: BFFPresentation = {
 export const pSomeMetadataCollectionVariable: BFFPresentation = {
   id: 'pSomeMetadataCollectionVariableId',
   presentationOf: 'exampleCollectionVarId',
+  mode: 'input',
+  type: 'pCollVar',
+  emptyTextId: 'someEmptyTextId'
+};
+
+export const pSomeOtherMetadataCollectionVariableWithMissingChildId: BFFPresentation = {
+  id: 'pSomeOtherMetadataCollectionVariableWithMissingChildIdId',
+  presentationOf: 'exampleOtherCollectionVarId',
   mode: 'input',
   type: 'pCollVar',
   emptyTextId: 'someEmptyTextId'
@@ -1198,4 +1364,17 @@ export const pSomeScopusIdTextVar: BFFPresentation = {
   inputType: 'input',
   type: 'pVar',
   emptyTextId: 'someEmptyTextId'
+};
+
+export const nationSubjectCategoryValidationTypeData: BFFValidationType = {
+  id: 'nationalSubjectCategory',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupId',
+  newPresentationGroupId: 'pSomeNewMetadataGroupId',
+  // Update/Edit
+  metadataGroupId: 'someEditMetadataGroupId',
+  presentationGroupId: 'pSomeEditMetadataGroupId',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
 };

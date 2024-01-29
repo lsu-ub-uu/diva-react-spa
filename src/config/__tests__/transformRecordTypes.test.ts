@@ -30,6 +30,7 @@ describe('transformCoraRecordType', () => {
     const firstRecordType = transformData[0];
     const expected = {
       id: 'someId',
+      metadataId: 'exampleDevOutputGroup',
       presentationViewId: 'exampleDevOutputOutputPGroup',
       listPresentationViewId: 'exampleDevOutputListPGroup',
       menuPresentationViewId: 'exampleDevOutputMenuPGroup',

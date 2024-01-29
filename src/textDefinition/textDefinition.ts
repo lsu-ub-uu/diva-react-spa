@@ -22,12 +22,12 @@ import { BFFText } from '../config/bffTypes';
 import { Lookup } from '../utils/structs/lookup';
 
 export const createTextDefinition = (dependencies: Dependencies, lang: string) => {
-  const textPool: Lookup<string, BFFText> = dependencies.textPool;
-  let textItemDefinitions = [];
-  for (let [key, text] of textPool.entries()) {
+  const { textPool } = dependencies;
+  const textItemDefinitions = [];
+  for (const [key, text] of textPool.entries()) {
     // @ts-ignore
     const value = text[lang];
-    let obj = {};
+    const obj = {};
     // @ts-ignore
     obj[key] = value;
     if (value !== undefined) textItemDefinitions.push(obj);

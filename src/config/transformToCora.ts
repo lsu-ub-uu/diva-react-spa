@@ -20,7 +20,6 @@
 import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-data/CoraData';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
-import { update } from 'lodash';
 
 export const injectRecordInfoIntoDataGroup = (
   dataGroup: DataGroup,
