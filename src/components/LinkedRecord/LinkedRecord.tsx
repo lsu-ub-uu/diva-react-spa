@@ -28,9 +28,31 @@ interface LinkedRecordProps {
 export const LinkedRecord: FC<LinkedRecordProps> = (
   props: LinkedRecordProps,
 ) => {
-  const [record, setRecord] = useState<unknown>(null);
+  const [record, setRecord] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const extractData = (object: any, propertyName: string) => {
+    // @ts-ignore
+    return propertyName.split('.').reduce((obj, key) => obj[key], object);
+  };
+
+  const template = (inRecord: any) => {
+    const name = extractData(
+      inRecord.data as any,
+      'nationalSubjectCategory.name.nationalSubjectCategoryName.value',
+    );
+
+    const alternativeName = extractData(
+      inRecord.data as any,
+      'nationalSubjectCategory.alternativeName.nationalSubjectCategoryName.value',
+    );
+    const code = extractData(
+      inRecord.data as any,
+      'nationalSubjectCategory.subjectCode.value',
+    );
+    return `${name}; ${alternativeName} (kod: ${code})`;
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -73,5 +95,5 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
   }
 
   // @ts-ignore
-  return <pre>{JSON.stringify(record.data, null, 1)}</pre>;
+  return <span>{template(record)}</span>;
 };
