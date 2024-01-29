@@ -78,7 +78,7 @@ export const MultiAutoComplete = (
             startAdornment: (
               <>
                 <IconButton
-                  title='Browse research subjects'
+                  title='Browse'
                   aria-label='browse'
                   onClick={() => {
                     if (props.onBrowseButtonClicked) {
