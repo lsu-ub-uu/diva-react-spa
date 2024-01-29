@@ -19,6 +19,7 @@
 
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 interface LinkedRecordProps {
   recordType: string;
@@ -28,6 +29,7 @@ interface LinkedRecordProps {
 export const LinkedRecord: FC<LinkedRecordProps> = (
   props: LinkedRecordProps,
 ) => {
+  const { t } = useTranslation();
   const [record, setRecord] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +44,6 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
       inRecord.data as any,
       'nationalSubjectCategory.name.nationalSubjectCategoryName.value',
     );
-
     const alternativeName = extractData(
       inRecord.data as any,
       'nationalSubjectCategory.alternativeName.nationalSubjectCategoryName.value',
@@ -51,7 +52,8 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
       inRecord.data as any,
       'nationalSubjectCategory.subjectCode.value',
     );
-    return `${name}; ${alternativeName} (kod: ${code})`;
+    const codeText = t('subjectCodeTextVarText');
+    return `${name}; ${alternativeName} (${codeText}: ${code})`;
   };
 
   useEffect(() => {
