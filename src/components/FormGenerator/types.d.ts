@@ -73,6 +73,7 @@ export interface FormComponent {
   containerType?: 'repeating' | 'surrounding';
   presentationStyle?: string; // frame etc
   headlineLevel?: string;
+  recordLinkType?: string;
 }
 
 type FormAttributeCollection = Omit<

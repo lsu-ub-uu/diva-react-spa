@@ -662,6 +662,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow = {
       },
       {
         type: 'textVariable',
+        mode: 'input',
         name: 'someNameInData',
         label: 'someNameInDataLabel',
         placeholder: 'someEmptyTextId',
@@ -704,6 +705,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMi
         },
         {
           type: 'textVariable',
+          mode: 'input',
           name: 'someNameInData',
           placeholder: 'someEmptyTextId',
           repeat: {

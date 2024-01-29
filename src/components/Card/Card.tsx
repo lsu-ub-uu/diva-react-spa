@@ -121,6 +121,7 @@ export const Card = (props: CardProps) => {
     <MuiCard
       sx={[
         {
+          overflow: 'visible',
           maxWidth: '100%',
           borderRadius: 0,
         },

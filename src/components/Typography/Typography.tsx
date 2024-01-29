@@ -29,7 +29,8 @@ export interface DivaTypographyVariants {
     | 'h4TextStyle'
     | 'h5TextStyle'
     | 'h6TextStyle'
-    | 'bodyTextStyle';
+    | 'bodyTextStyle'
+    | 'boldTextStyle';
 }
 
 interface TypographyProps extends DivaTypographyVariants {
@@ -47,7 +48,7 @@ export const Typography = (props: TypographyProps) => {
   return (
     <MuiTypography
       component={
-        props.variant === 'bodyTextStyle'
+        props.variant.startsWith('bo')
           ? 'p'
           : mapHeaderStyleToComponent(props.variant)
       }

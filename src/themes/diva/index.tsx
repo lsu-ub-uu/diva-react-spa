@@ -32,6 +32,7 @@ declare module '@mui/material/styles' {
     h5TextStyle: CSSProperties;
     h6TextStyle: CSSProperties;
     bodyTextStyle: CSSProperties;
+    boldTextStyle: CSSProperties;
   }
 
   interface TypographyVariantsOptions {
@@ -42,6 +43,7 @@ declare module '@mui/material/styles' {
     h5TextStyle?: CSSProperties;
     h6TextStyle?: CSSProperties;
     bodyTextStyle?: CSSProperties;
+    boldTextStyle: CSSProperties;
   }
 
   interface Palette {
@@ -71,6 +73,7 @@ declare module '@mui/material/Typography' {
     h5TextStyle: true;
     h6TextStyle: true;
     bodyTextStyle: true;
+    boldTextStyle: true;
   }
 }
 
@@ -108,6 +111,10 @@ export const divaTheme = createTheme({
     },
     bodyTextStyle: {
       fontSize: '1rem',
+    },
+    boldTextStyle: {
+      fontSize: '1rem',
+      fontWeight: '800',
     },
   },
   shape: {

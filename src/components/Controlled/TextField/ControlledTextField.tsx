@@ -105,7 +105,6 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             ) : (
               <>
                 <span>{field.value}</span>
-
                 <input
                   type='hidden'
                   value={field.value}

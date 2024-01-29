@@ -33,7 +33,7 @@ interface UseFormSchemaByValidationType {
 
 export const useCoraFormSchemaByValidationType = (
   validationType: string | undefined,
-  mode: 'create' | 'update',
+  mode: 'create' | 'update' | 'view',
 ): UseFormSchemaByValidationType => {
   const [schema, setSchema] = useState<FormSchema>();
   const [isLoading, setIsLoading] = useState(true);
