@@ -455,7 +455,8 @@ const createAttributes = (
     | BFFMetadataTextVariable
     | BFFMetadataGroup,
   metadataPool: any,
-  options: unknown[] | undefined
+  options: unknown[] | undefined,
+  variablePresentationMode: 'input' | 'output',
 ) => {
   return metadataVariable.attributeReferences?.map((attributeReference) => {
     const refCollectionVar = metadataPool.get(
@@ -466,7 +467,7 @@ const createAttributes = (
       id: 'someFakeId',
       presentationOf: refCollectionVar.id,
       type: 'pCollVar',
-      mode: 'input', // TODO take the mode from the presentationVariable for this attribute
+      mode: variablePresentationMode,
       emptyTextId: 'initialEmptyValueText'
     };
 
@@ -523,7 +524,7 @@ const createPresentationWithStuff = (
     validation = { type: 'regex', pattern };
 
     if (textVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(textVariable, metadataPool, undefined);
+      attributes = createAttributes(textVariable, metadataPool, undefined, presentation.mode);
     }
   }
 
@@ -538,7 +539,7 @@ const createPresentationWithStuff = (
     validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
 
     if (numberVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(numberVariable, metadataPool, undefined);
+      attributes = createAttributes(numberVariable, metadataPool, undefined, presentation.mode);
     }
   }
 
@@ -548,7 +549,7 @@ const createPresentationWithStuff = (
     options = createCollectionVariableOptions(metadataPool, collectionVariable);
 
     if (collectionVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(collectionVariable, metadataPool, options);
+      attributes = createAttributes(collectionVariable, metadataPool, options, presentation.mode);
     }
   }
 
@@ -598,7 +599,7 @@ const createPresentationWithStuff = (
     presentationStyle = presentationGroup.presentationStyle;
 
     if (group.attributeReferences !== undefined) {
-      attributes = createAttributes(group, metadataPool, undefined);
+      attributes = createAttributes(group, metadataPool, undefined, presentation.mode);
     }
 
     // skip children for recordInfo group for now
