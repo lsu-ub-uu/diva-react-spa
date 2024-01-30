@@ -694,7 +694,9 @@ const createCommonParameters = (
   const { inputType } = presentation;
   const tooltip = { title: metadata.textId, body: metadata.defTextId };
   let label = metadata.textId;
+  let showLabel = true;
   let headlineLevel;
+
   if (presentation.specifiedLabelTextId) {
     label = presentation.specifiedLabelTextId;
   }
@@ -713,12 +715,22 @@ const createCommonParameters = (
   if (Object.prototype.hasOwnProperty.call(presentation, 'showHeadline')) {
     const presentationGroup = presentation as BFFPresentationGroup;
     if (presentationGroup.showHeadline === 'false') {
-      label = '';
+      showLabel = false;
     }
   }
 
   if (presentation.showLabel && presentation.showLabel === 'false') {
-    label = '';
+    showLabel = false;
   }
-  return removeEmpty({ name, type, placeholder, mode, inputType, tooltip, label, headlineLevel });
+  return removeEmpty({
+    name,
+    type,
+    placeholder,
+    mode,
+    inputType,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel
+  });
 };
