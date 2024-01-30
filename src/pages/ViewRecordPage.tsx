@@ -97,6 +97,7 @@ export const ViewRecordPage = () => {
             />
           )}
         </Stack>
+        <pre>{JSON.stringify(coraSchema.schema?.form, null, 1)}</pre>
       </div>
     </>
   );

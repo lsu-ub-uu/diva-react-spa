@@ -16,11 +16,32 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export { ControlledTextField } from './TextField/ControlledTextField';
-export { ControlledSelectField } from './SelectField/ControlledSelectField';
-export { ControlledMultiCheckboxField } from './MultiCheckboxField/ControlledMultiCheckboxField';
-export { ControlledRadioButtons } from './RadioButtons/ControlledRadioButtons';
-export { ControlledDatePicker } from './DatePicker/ControlledDatePicker';
-export { ControlledDateTimePicker } from './DateTimePicker/ControlledDateTimePicker';
-export { ControlledEditor } from './Editor/ControlledEditor';
-export { ControlledLinkedRecord } from './LinkedRecord/ControlledLinkedRecord';
+import { Control, Controller } from 'react-hook-form';
+import { LinkedRecord } from '../../LinkedRecord/LinkedRecord';
+
+interface ControlledLinkedRecordProps {
+  recordType: string;
+  name: string;
+  control?: Control<any>;
+}
+
+export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
+  return (
+    <Controller
+      control={props.control}
+      name={props.name}
+      render={({ field }) => {
+        return (
+          <b>
+            {field.value && (
+              <LinkedRecord
+                recordType={props.recordType}
+                id={field.value}
+              />
+            )}
+          </b>
+        );
+      }}
+    />
+  );
+};
