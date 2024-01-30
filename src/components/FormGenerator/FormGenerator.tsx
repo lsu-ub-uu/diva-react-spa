@@ -277,10 +277,14 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           key={reactKey}
           id='outer-start-form'
         >
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
+          {component?.showLabel && (
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
+          )}
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             createFormComponents(
@@ -312,10 +316,14 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           key={reactKey}
           sx={{ position: 'relative' }}
         >
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
+          {component?.showLabel && (
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
+          )}
           <FieldArrayComponent
             control={control}
             component={component}

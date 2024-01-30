@@ -47,6 +47,7 @@ export interface FormComponent {
     | 'guiElementLink';
   name: string;
   label?: string;
+  showLabel?: boolean;
   finalValue?: string;
   placeholder?: string;
   validation?: FormRegexValidation | FormNumberValidation;
