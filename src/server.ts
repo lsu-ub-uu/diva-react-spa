@@ -260,7 +260,13 @@ app.get('/api/record/:recordType/:recordId', async (req, res) => {
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
     const recordWrapper = response.data;
     const record = transformRecord(dependencies, recordWrapper);
-    res.status(response.status).json(record);
+
+    const presentation = createFormDefinition(dependencies, recordType, 'list');
+
+    const returnObject = Object.assign({ record }, { presentation });
+    console.log(JSON.stringify(returnObject, null, 1));
+
+    res.status(response.status).json(returnObject);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
