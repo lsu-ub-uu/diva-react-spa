@@ -252,6 +252,27 @@ app.post('/api/record/:validationTypeId', async (req, res) => {
   }
 });
 
+// app.get('/api/record/:recordType/:recordId', async (req, res) => {
+//   try {
+//     const { recordType, recordId } = req.params;
+//     const authToken = req.header('authToken') ?? '';
+
+//     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
+//     const recordWrapper = response.data;
+//     const record = transformRecord(dependencies, recordWrapper);
+
+//     const presentation = createFormDefinition(dependencies, recordType, 'list');
+
+//     const returnObject = Object.assign({ record }, { presentation });
+//     console.log(JSON.stringify(returnObject, null, 1));
+
+//     res.status(response.status).json(record);
+//   } catch (error: unknown) {
+//     const errorResponse = errorHandler(error);
+//     res.status(errorResponse.status).json(errorResponse).send();
+//   }
+// });
+
 app.get('/api/record/:recordType/:recordId', async (req, res) => {
   try {
     const { recordType, recordId } = req.params;
@@ -260,13 +281,7 @@ app.get('/api/record/:recordType/:recordId', async (req, res) => {
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
     const recordWrapper = response.data;
     const record = transformRecord(dependencies, recordWrapper);
-
-    const presentation = createFormDefinition(dependencies, recordType, 'list');
-
-    const returnObject = Object.assign({ record }, { presentation });
-    console.log(JSON.stringify(returnObject, null, 1));
-
-    res.status(response.status).json(returnObject);
+    res.status(response.status).json(record);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
