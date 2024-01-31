@@ -19,7 +19,6 @@
 
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
-import { useTranslation } from 'react-i18next';
 
 interface LinkedRecordProps {
   recordType: string;
@@ -29,32 +28,9 @@ interface LinkedRecordProps {
 export const LinkedRecord: FC<LinkedRecordProps> = (
   props: LinkedRecordProps,
 ) => {
-  const { t } = useTranslation();
   const [record, setRecord] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const extractData = (object: any, propertyName: string) => {
-    // @ts-ignore
-    return propertyName.split('.').reduce((obj, key) => obj[key], object);
-  };
-
-  const template = (inRecord: any) => {
-    const name = extractData(
-      inRecord.data as any,
-      'nationalSubjectCategory.name.nationalSubjectCategoryName.value',
-    );
-    const alternativeName = extractData(
-      inRecord.data as any,
-      'nationalSubjectCategory.alternativeName.nationalSubjectCategoryName.value',
-    );
-    const code = extractData(
-      inRecord.data as any,
-      'nationalSubjectCategory.subjectCode.value',
-    );
-    const codeText = t('subjectCodeTextVarText');
-    return `${name}; ${alternativeName} (${codeText}: ${code})`;
-  };
 
   useEffect(() => {
     let isMounted = true;
@@ -96,6 +72,16 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
     return <div>{error}</div>;
   }
 
-  // @ts-ignore
-  return <span>{template(record)}</span>;
+  return (
+    <pre
+      style={{
+        maxWidth: '800px',
+        overflow: 'auto',
+        height: '200px',
+        background: 'white',
+      }}
+    >
+      {JSON.stringify(record, null, 1)}
+    </pre>
+  );
 };

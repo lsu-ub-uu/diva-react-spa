@@ -23,3 +23,4 @@ export { ControlledRadioButtons } from './RadioButtons/ControlledRadioButtons';
 export { ControlledDatePicker } from './DatePicker/ControlledDatePicker';
 export { ControlledDateTimePicker } from './DateTimePicker/ControlledDateTimePicker';
 export { ControlledEditor } from './Editor/ControlledEditor';
+export { ControlledLinkedRecord } from './LinkedRecord/ControlledLinkedRecord';

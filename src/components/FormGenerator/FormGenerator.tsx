@@ -24,7 +24,11 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ControlledTextField, ControlledSelectField } from '../Controlled';
+import {
+  ControlledTextField,
+  ControlledSelectField,
+  ControlledLinkedRecord,
+} from '../Controlled';
 import {
   createDefaultValuesFromFormSchema,
   generateYupSchemaFromFormSchema,
@@ -59,8 +63,7 @@ export const renderLeafComponent = (
 ): JSX.Element | null => {
   switch (component.type) {
     case 'textVariable':
-    case 'numberVariable':
-    case 'recordLink': {
+    case 'numberVariable': {
       return (
         <Grid
           key={reactKey}
@@ -78,6 +81,35 @@ export const renderLeafComponent = (
             readOnly={!!component.finalValue}
             displayMode={component.mode}
           />
+        </Grid>
+      );
+    }
+    case 'recordLink': {
+      return (
+        <Grid
+          key={reactKey}
+          item
+          xs={12}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
+        >
+          {component.mode === 'input' ? (
+            <ControlledTextField
+              multiline={component.inputType === 'textarea'}
+              label={component.label ?? ''}
+              name={name}
+              placeholder={component.placeholder}
+              tooltip={component.tooltip}
+              control={control}
+              readOnly={!!component.finalValue}
+              displayMode={component.mode}
+            />
+          ) : (
+            <ControlledLinkedRecord
+              control={control}
+              name={name}
+              recordType={component.recordLinkType ?? ''}
+            />
+          )}
         </Grid>
       );
     }
@@ -277,10 +309,14 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           key={reactKey}
           id='outer-start-form'
         >
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
+          {component?.showLabel && (
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
+          )}
           {createFormComponentAttributes(component, currentComponentNamePath)}
           {component.components &&
             createFormComponents(
@@ -312,10 +348,14 @@ export const FormGenerator = (props: FormGeneratorProps) => {
           key={reactKey}
           sx={{ position: 'relative' }}
         >
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
+          {component?.showLabel && (
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
+          )}
           <FieldArrayComponent
             control={control}
             component={component}

@@ -16,9 +16,32 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export { HomePage } from './HomePage';
-export { CreateRecordPage } from './CreateRecordPage';
-export { UpdateRecordPage } from './UpdateRecordPage';
-export { ViewRecordPage } from './ViewRecordPage';
+import { Control, Controller } from 'react-hook-form';
+import { LinkedRecord } from '../../LinkedRecord/LinkedRecord';
 
-export { ReactHookFormTestPage } from './ReactHookFormTestPage';
+interface ControlledLinkedRecordProps {
+  recordType: string;
+  name: string;
+  control?: Control<any>;
+}
+
+export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
+  return (
+    <Controller
+      control={props.control}
+      name={props.name}
+      render={({ field }) => {
+        return (
+          <b>
+            {field.value && (
+              <LinkedRecord
+                recordType={props.recordType}
+                id={field.value}
+              />
+            )}
+          </b>
+        );
+      }}
+    />
+  );
+};

@@ -21,8 +21,9 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { IconButton } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import FeedIcon from '@mui/icons-material/Feed';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Card } from '../../components';
@@ -49,25 +50,35 @@ export const ListPublicationsCard = () => {
       field: 'createdAt',
       headerName: 'Created',
       sortable: true,
-      width: 200,
+      width: 160,
       valueGetter: (params: GridValueGetterParams) =>
         dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss') || '-',
     },
     {
       field: 'action',
       headerName: '',
-      width: 50,
+      width: 120,
       sortable: false,
       filterable: false,
       renderCell: (params) => (
-        <IconButton
-          disabled={!params.row.userRights.includes('update')}
-          aria-label='edit'
-          component={RouterLink}
-          to={`/update/record/${params.id}`}
-        >
-          <EditIcon />
-        </IconButton>
+        <Stack direction='row'>
+          <IconButton
+            disabled={!params.row.userRights.includes('update')}
+            aria-label='edit'
+            component={RouterLink}
+            to={`/update/record/${params.id}`}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            disabled={!params.row.userRights.includes('read')}
+            aria-label='view'
+            component={RouterLink}
+            to={`/view/record/${params.id}`}
+          >
+            <FeedIcon />
+          </IconButton>
+        </Stack>
       ),
     },
   ];

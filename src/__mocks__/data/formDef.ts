@@ -27,6 +27,7 @@ export const formComponentGroup: FormComponent = {
         body: 'exampleMetadataNumberVarDefText',
       },
       label: 'exampleMetadataNumberVarText',
+      showLabel: true,
       validation: {
         type: 'number',
         min: 0,
@@ -50,6 +51,7 @@ export const formComponentGroup: FormComponent = {
         body: 'exampleMetadataTextVarDefText',
       },
       label: 'exampleMetadataTextVarText',
+      showLabel: true,
       validation: {
         type: 'regex',
         pattern: '.*',
@@ -106,6 +108,7 @@ export const formComponentGroupWithChildren: FormComponent = {
         body: 'exampleMetadataNumberVarDefText',
       },
       label: 'exampleMetadataNumberVarText',
+      showLabel: true,
       validation: {
         type: 'number',
         min: 0,
@@ -130,6 +133,7 @@ export const formComponentGroupWithChildren: FormComponent = {
         body: 'exampleMetadataTextVarDefText',
       },
       label: 'exampleMetadataTextVarText',
+      showLabel: true,
       validation: {
         type: 'regex',
         pattern: '.*',
@@ -3224,6 +3228,7 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel = {
   form: {
     type: 'group',
     label: 'someRootFormGroupText',
+    showLabel: true,
     headlineLevel: 'h1',
     name: 'someRootNameInData',
     repeat: {
@@ -3240,6 +3245,7 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel = {
         type: 'group',
         mode: 'input',
         headlineLevel: 'h3',
+        showLabel: true,
         tooltip: {
           title: 'authorGroupText',
           body: 'authorGroupDefText',
@@ -3548,6 +3554,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
       body: 'contributorGroupDefText',
     },
     label: 'contributorGroupText',
+    showLabel: true,
     repeat: {
       minNumberOfRepeatingToShow: 1,
       repeatMin: 1,
@@ -3563,6 +3570,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
           body: 'authorGroupDefText',
         },
         label: 'authorGroupText',
+        showLabel: true,
         headlineLevel: 'h3',
         repeat: {
           minNumberOfRepeatingToShow: 1,
@@ -3579,6 +3587,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'divaPersonLinkDefText',
             },
             label: 'divaPersonLinkText',
+            showLabel: true,
             repeat: {
               minNumberOfRepeatingToShow: 1,
               repeatMin: 0,
@@ -3597,6 +3606,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'givenNameTextVarDefText',
             },
             label: 'givenNameTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '.+',
@@ -3619,6 +3629,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'familyNameTextVarDefText',
             },
             label: 'familyNameTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '.+',
@@ -3641,6 +3652,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'correspondingAuthorCollectionVarDefText',
             },
             label: 'correspondingAuthorCollectionVarText',
+            showLabel: true,
             repeat: {
               minNumberOfRepeatingToShow: 1,
               repeatMin: 0,
