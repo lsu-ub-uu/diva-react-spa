@@ -19,7 +19,8 @@
 
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { FormGenerator } from '../../components';
+import { FormSchema } from 'components/FormGenerator/types';
 interface LinkedRecordProps {
   recordType: string;
   id: string;
@@ -38,7 +39,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `/record/${props.recordType}/${props.id}`,
+          `/record/${props.recordType}/${props.id}?mode=list`,
         );
         if (isMounted) {
           setError(null);
@@ -73,15 +74,22 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
   }
 
   return (
+    <>
+    <FormGenerator
+      record={record.record}
+      onSubmit={() => {}}
+      onInvalid={() => {}}
+      formSchema={record.presentation as FormSchema}/>
     <pre
       style={{
         maxWidth: '800px',
         overflow: 'auto',
-        height: '200px',
+        height: '400px',
         background: 'white',
       }}
-    >
+      >
       {JSON.stringify(record, null, 1)}
     </pre>
+      </>
   );
 };
