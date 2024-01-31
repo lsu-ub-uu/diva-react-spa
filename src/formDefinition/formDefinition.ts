@@ -14,8 +14,7 @@ import {
   BFFValidationType,
   BFFPresentationContainer,
   BFFMetadataRecordLink,
-  BFFAttributeReference,
-  BFFRecordType
+  BFFAttributeReference
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -154,13 +153,14 @@ export const createFormMetaDataPathLookup = (
 export const createFormDefinition = (
   dependencies: Dependencies,
   validationTypeId: string,
-  mode: 'create' | 'update' | 'view'
+  mode: 'create' | 'update' | 'view' | 'list'
 ) => {
   const { validationTypePool, metadataPool, presentationPool, recordTypePool } = dependencies;
   const validationType: BFFValidationType = validationTypePool.get(validationTypeId);
 
   let metadataGroup;
   let presentationGroup;
+  let recordType;
 
   switch (mode) {
     case 'create':
@@ -177,8 +177,16 @@ export const createFormDefinition = (
       ) as BFFPresentationGroup;
       break;
 
+    case 'list': // test list
+      recordType = recordTypePool.get(validationType.validatesRecordTypeId);
+      metadataGroup = metadataPool.get(recordType.metadataId) as BFFMetadataGroup;
+      presentationGroup = presentationPool.get(
+        recordType.listPresentationViewId
+      ) as BFFPresentationGroup;
+      break;
+
     default: // handles view for now
-      const recordType: BFFRecordType = recordTypePool.get(validationType.validatesRecordTypeId);
+      recordType = recordTypePool.get(validationType.validatesRecordTypeId);
       metadataGroup = metadataPool.get(recordType.metadataId) as BFFMetadataGroup;
       presentationGroup = presentationPool.get(
         recordType.presentationViewId
@@ -456,7 +464,7 @@ const createAttributes = (
     | BFFMetadataGroup,
   metadataPool: any,
   options: unknown[] | undefined,
-  variablePresentationMode: 'input' | 'output',
+  variablePresentationMode: 'input' | 'output'
 ) => {
   return metadataVariable.attributeReferences?.map((attributeReference) => {
     const refCollectionVar = metadataPool.get(
@@ -686,7 +694,9 @@ const createCommonParameters = (
   const { inputType } = presentation;
   const tooltip = { title: metadata.textId, body: metadata.defTextId };
   let label = metadata.textId;
+  let showLabel = true;
   let headlineLevel;
+
   if (presentation.specifiedLabelTextId) {
     label = presentation.specifiedLabelTextId;
   }
@@ -705,12 +715,22 @@ const createCommonParameters = (
   if (Object.prototype.hasOwnProperty.call(presentation, 'showHeadline')) {
     const presentationGroup = presentation as BFFPresentationGroup;
     if (presentationGroup.showHeadline === 'false') {
-      label = '';
+      showLabel = false;
     }
   }
 
   if (presentation.showLabel && presentation.showLabel === 'false') {
-    label = '';
+    showLabel = false;
   }
-  return removeEmpty({ name, type, placeholder, mode, inputType, tooltip, label, headlineLevel });
+  return removeEmpty({
+    name,
+    type,
+    placeholder,
+    mode,
+    inputType,
+    tooltip,
+    label,
+    headlineLevel,
+    showLabel
+  });
 };
