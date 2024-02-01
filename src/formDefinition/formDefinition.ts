@@ -14,7 +14,8 @@ import {
   BFFValidationType,
   BFFPresentationContainer,
   BFFMetadataRecordLink,
-  BFFAttributeReference
+  BFFAttributeReference,
+  BFFPresentationRecordLink
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -148,6 +149,45 @@ export const createFormMetaDataPathLookup = (
   });
   lookup[path] = removeEmpty({ ...obj, children: undefined });
   return lookup;
+};
+
+export const createLinkedRecordDefinition = (
+  dependencies: Dependencies,
+  presentationLinkId: string
+) => {
+  const { metadataPool, presentationPool } = dependencies;
+
+  const presentationLink = dependencies.presentationPool.get(
+    presentationLinkId
+  ) as BFFPresentationRecordLink;
+  const presentationId = presentationLink.linkedRecordPresentations[0].presentationId;
+  const presentationGroup = dependencies.presentationPool.get(presentationId);
+  const metadataGroup = dependencies.metadataPool.get(
+    presentationGroup.presentationOf
+  ) as BFFMetadataGroup;
+
+  const formRootReference: BFFMetadataChildReference = {
+    childId: metadataGroup.id,
+    repeatMax: '1',
+    repeatMin: '1'
+  };
+
+  const formRootPresentationReference: BFFPresentationChildReference = {
+    childId: presentationGroup.id,
+    type: 'presentation',
+    childStyle: []
+  };
+
+  const form = createPresentationWithStuff(
+    [formRootReference],
+    formRootPresentationReference,
+    metadataPool,
+    presentationPool
+  );
+
+  return {
+    form
+  };
 };
 
 export const createFormDefinition = (
@@ -579,7 +619,8 @@ const createPresentationWithStuff = (
     presentationStyle = presentationContainer.presentationStyle;
 
     let filteredChildRefs: BFFMetadataChildReference[] = [];
-    if (presentationContainer.repeat === 'children') {
+
+    if (presentationContainer.repeat === 'children') { // surrounding Container
       // surrounding Container
       const metadataIds =
         (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];

@@ -10,7 +10,7 @@ import {
   BFFPresentationGroup,
   BFFRecordType,
   BFFText,
-  BFFValidationType
+  BFFValidationType,
 } from './config/bffTypes';
 import {
   getRecordDataById,
@@ -28,7 +28,7 @@ import { Dependencies } from './formDefinition/formDefinitionsDep';
 import {
   createFormDefinition,
   createFormMetaData,
-  createFormMetaDataPathLookup
+  createFormMetaDataPathLookup, createLinkedRecordDefinition,
 } from './formDefinition/formDefinition';
 import authRoute from './routes/authRoute';
 import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
@@ -327,5 +327,7 @@ app.get('/api/refreshDefinitions', async (req, res) => {
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
   console.log(`Cora API-url ${CORA_API_URL}`);
-  loadStuffOnServerStart().then(() => console.log('Loaded stuff from cora'));
+  loadStuffOnServerStart().then(() => {
+    console.log('Loaded stuff from cora');
+  });
 });
