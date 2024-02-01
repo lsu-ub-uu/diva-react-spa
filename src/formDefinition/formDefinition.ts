@@ -565,6 +565,7 @@ const createPresentationWithStuff = (
     const recordLink = metadata as BFFMetadataRecordLink;
     // todo more stuff around the record link presentation
     // what about linkedRecordType
+    // const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.);
     recordLinkType = recordLink.linkedRecordType;
   }
 

@@ -124,7 +124,14 @@ export interface BFFPresentation extends BFFBase {
   showLabel?: string;
 }
 
-export interface BFFPresentationRecordLink extends BFFPresentation {}
+export interface BFFPresentationRecordLink extends BFFPresentation {
+  linkedRecordPresentations: BFFLinkedRecordPresentation[];
+}
+
+export interface BFFLinkedRecordPresentation {
+  presentedRecordType: string;
+  presentationId: string;
+}
 
 export interface BFFPresentationContainer extends BFFPresentation {
   repeat: 'children' | 'this';
