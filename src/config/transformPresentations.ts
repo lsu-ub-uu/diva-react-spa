@@ -147,21 +147,24 @@ const transformCoraPresentationPLinkToBFFPresentation = (
 ): BFFPresentation => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const basic = transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
+  let linkedRecordPresentations;
 
-  const linkedPresentationsGroup = getFirstDataGroupWithNameInDataAndAttributes(
-    dataRecordGroup,
-    'linkedRecordPresentations'
-  );
-
-  const linkedRecordPresentations = linkedPresentationsGroup.children.map((linkedPresentation) => {
-    const group = linkedPresentation as DataGroup;
-    const presentedRecordType = extractLinkedRecordIdFromNamedRecordLink(
-      group,
-      'presentedRecordType'
+  if (containsChildWithNameInData(dataRecordGroup, 'linkedRecordPresentations')) {
+    const linkedPresentationsGroup = getFirstDataGroupWithNameInDataAndAttributes(
+      dataRecordGroup,
+      'linkedRecordPresentations'
     );
-    const presentationId = extractLinkedRecordIdFromNamedRecordLink(group, 'presentation');
-    return { presentedRecordType, presentationId } as BFFLinkedRecordPresentation;
-  });
+
+    linkedRecordPresentations = linkedPresentationsGroup.children.map((linkedPresentation) => {
+      const group = linkedPresentation as DataGroup;
+      const presentedRecordType = extractLinkedRecordIdFromNamedRecordLink(
+        group,
+        'presentedRecordType'
+      );
+      const presentationId = extractLinkedRecordIdFromNamedRecordLink(group, 'presentation');
+      return { presentedRecordType, presentationId } as BFFLinkedRecordPresentation;
+    });
+  }
 
   return removeEmpty({ ...basic, linkedRecordPresentations } as BFFPresentationRecordLink);
 };
