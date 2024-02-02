@@ -15,7 +15,7 @@ import {
   BFFPresentationContainer,
   BFFMetadataRecordLink,
   BFFAttributeReference,
-  BFFPresentationRecordLink
+  BFFPresentationRecordLink, BFFRecordLink,
 } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -501,6 +501,7 @@ const createAttributes = (
     | BFFMetadataCollectionVariable
     | BFFMetadataNumberVariable
     | BFFMetadataTextVariable
+    | BFFMetadataRecordLink
     | BFFMetadataGroup,
   metadataPool: any,
   options: unknown[] | undefined,
@@ -607,6 +608,10 @@ const createPresentationWithStuff = (
     // what about linkedRecordType
     // const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.);
     recordLinkType = recordLink.linkedRecordType;
+
+    if (recordLink.attributeReferences !== undefined) {
+      attributes = createAttributes(recordLink, metadataPool, options, presentation.mode);
+    }
   }
 
   if (presentation.type === 'container') {
@@ -621,9 +626,10 @@ const createPresentationWithStuff = (
     let filteredChildRefs: BFFMetadataChildReference[] = [];
 
     if (presentationContainer.repeat === 'children') { // surrounding Container
-      // surrounding Container
       const metadataIds =
         (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
+
+      // perform nameInData lookup
       filteredChildRefs = metadataChildReferences.filter((childRef) => {
         return metadataIds.includes(childRef.childId);
       });
