@@ -28,6 +28,7 @@ import {
 } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import {
+  containsChildWithNameInData,
   getAllChildrenWithNameInData,
   getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
@@ -39,6 +40,7 @@ import {
   FormMetaData
 } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import { removeEmpty } from '../utils/structs/removeEmpty';
 
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (
@@ -113,14 +115,21 @@ export const transformRecord = (
 ): unknown => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
+  let createdAt, createdBy;
 
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const recordInfo = extractRecordInfoDataGroup(dataRecordGroup);
 
   const recordType = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'type');
   const validationType = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'validationType');
-  const createdAt = getFirstDataAtomicValueWithNameInData(recordInfo, 'tsCreated');
-  const createdBy = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'createdBy');
+
+  if (containsChildWithNameInData(recordInfo, 'tsCreated')) {
+    createdAt = getFirstDataAtomicValueWithNameInData(recordInfo, 'tsCreated');
+  }
+
+  if (containsChildWithNameInData(recordInfo, 'createdBy')) {
+    createdBy = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'createdBy');
+  }
   const updated = extractRecordUpdates(recordInfo);
 
   // create a form definition by validationType
@@ -133,7 +142,16 @@ export const transformRecord = (
   }
 
   const data = traverseDataGroup(dataRecordGroup, formPathLookup);
-  return { id, recordType, validationType, createdAt, createdBy, updated, userRights, data };
+  return removeEmpty({
+    id,
+    recordType,
+    validationType,
+    createdAt,
+    createdBy,
+    updated,
+    userRights,
+    data
+  });
 };
 
 const transformObjectAttributes = (attrObject: Attributes | undefined) => {
