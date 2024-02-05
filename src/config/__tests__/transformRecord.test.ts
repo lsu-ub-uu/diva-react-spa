@@ -36,7 +36,14 @@ import {
   RecordWrapper
 } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
-import { BFFMetadata, BFFValidationType } from '../bffTypes';
+import {
+  BFFMetadata,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFRecordType,
+  BFFText,
+  BFFValidationType
+} from '../bffTypes';
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
@@ -66,8 +73,11 @@ describe('transformRecord', () => {
     ]);
 
     dependencies = {
+      textPool: listToPool<BFFText>([]),
       validationTypePool,
-      metadataPool
+      metadataPool,
+      presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
+      recordTypePool: listToPool<BFFRecordType>([])
     };
   });
 

@@ -61,7 +61,7 @@ const errorHandler = (error: unknown) => {
   };
 };
 
-const dependencies: Dependencies = {};
+let dependencies: Dependencies;
 
 const loadStuffOnServerStart = async () => {
   const response = await getRecordDataListByType<DataListWrapper>('text', '');

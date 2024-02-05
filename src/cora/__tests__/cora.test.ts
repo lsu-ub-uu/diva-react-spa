@@ -23,7 +23,14 @@ import { getRecordDataById, getRecordDataListByType, postRecordData } from '../c
 import { DataGroup, DataListWrapper, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';
-import { BFFText } from '../../config/bffTypes';
+import {
+  BFFMetadata,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFRecordType,
+  BFFText,
+  BFFValidationType
+} from '../../config/bffTypes';
 import { createTextDefinition } from '../../textDefinition/textDefinition';
 import { extractIdFromRecordInfo } from '../../utils/cora-data/CoraDataTransforms';
 
@@ -83,8 +90,15 @@ describe.skip('real', () => {
       const response = await getRecordDataListByType<DataListWrapper>('text', '');
       expect(response.status).toBe(200);
       const texts = transformCoraTexts(response.data);
+      const dependencies = {
+        textPool: listToPool<BFFText>(texts),
+        validationTypePool: listToPool<BFFValidationType>([]),
+        metadataPool: listToPool<BFFMetadata>([]),
+        presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
+        recordTypePool: listToPool<BFFRecordType>([])
+      };
       const textPool = listToPool<BFFText>(texts);
-      const defs = createTextDefinition({ textPool }, 'en');
+      const defs = createTextDefinition(dependencies, 'en');
       expect(Object.keys(defs).length).toBe(6030);
       expect(response.data.dataList.containDataOfType).toBe('text');
     });

@@ -18,21 +18,33 @@
  */
 
 import { Lookup } from '../../utils/structs/lookup';
-import { BFFText } from '../../config/bffTypes';
+import {
+  BFFMetadata,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFRecordType,
+  BFFText,
+  BFFValidationType
+} from '../../config/bffTypes';
 import { listToPool } from '../../utils/structs/listToPool';
 import { createTextDefinition } from '../textDefinition';
+import { Dependencies } from 'formDefinition/formDefinitionsDep';
 
 describe('textDefinition', () => {
-  let textPool: Lookup<string, BFFText>;
-  let dependencies: { textPool: Lookup<string, BFFText> };
+  let dependencies: Dependencies;
 
   beforeEach(() => {
-    textPool = listToPool<BFFText>([
+    let textPool = listToPool<BFFText>([
       { id: 'someTextId', en: 'someEnText', sv: 'someSvText' },
       { id: 'someText2Id', sv: 'someSv2Text' }
     ]);
+
     dependencies = {
-      textPool
+      textPool,
+      validationTypePool: listToPool<BFFValidationType>([]),
+      metadataPool: listToPool<BFFMetadata>([]),
+      presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
+      recordTypePool: listToPool<BFFRecordType>([])
     };
   });
 

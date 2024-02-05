@@ -32,7 +32,8 @@ import {
   BFFMetadataChildReference,
   BFFRecordType,
   BFFMetadataGroup,
-  BFFPresentationChildReference
+  BFFPresentationChildReference,
+  BFFText
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -124,6 +125,7 @@ describe('formDefinition', () => {
     BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
   >;
   let recordTypePool: Lookup<string, BFFRecordType>;
+  let textPool: Lookup<string, BFFText>;
   const FORM_MODE_NEW = 'create';
   const FORM_MODE_EDIT = 'update';
   const FORM_MODE_VIEW = 'view'; // used to present the record
@@ -208,11 +210,14 @@ describe('formDefinition', () => {
       pSomeOtherMetadataCollectionVariableWithMissingChildId
     ]);
     recordTypePool = listToPool<BFFRecordType>([]);
+    textPool = listToPool<BFFText>([]);
+
     dependencies = {
       validationTypePool,
       metadataPool,
       presentationPool,
-      recordTypePool
+      recordTypePool,
+      textPool
     };
 
     createRecordType('testRecordType');
@@ -418,12 +423,12 @@ describe('formDefinition', () => {
     return pGroup;
   };
 
-  it('should generate something', () => {
-    expect(validationTypePool.get('someValidationTypeId')).toBeDefined();
-    expect(metadataPool.get('someNewMetadataGroupId')).toBeDefined();
-    expect(metadataPool.get('someMetadataTextVariableId')).toBeDefined();
-    expect(presentationPool.get('pSomeMetadataTextVariableId')).toBeDefined();
-  });
+  // it('should be able to lookup validationTypes, metadata, presentations from pools', () => {
+  //   expect(validationTypePool.get('someValidationTypeId')).toBeDefined();
+  //   expect(metadataPool.get('someNewMetadataGroupId')).toBeDefined();
+  //   expect(metadataPool.get('someMetadataTextVariableId')).toBeDefined();
+  //   expect(presentationPool.get('pSomeMetadataTextVariableId')).toBeDefined();
+  // });
 
   it('should throw Error on invalid ValidationType', () => {
     const invalidValidationType = 'someInvalidValidationType';

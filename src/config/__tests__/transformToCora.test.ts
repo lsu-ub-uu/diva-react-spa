@@ -27,7 +27,15 @@ import testFormPayloadWithGroupWithAttributesAndTextVar from '../../__mocks__/pa
 import testFormPayloadWithGroupWithGroupWithRepeatingGroups from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithRepeatingGroups.json';
 import { DataGroup } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
-import { BFFMetadata, BFFMetadataItemCollection, BFFValidationType } from '../bffTypes';
+import {
+  BFFMetadata,
+  BFFMetadataItemCollection,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFRecordType,
+  BFFText,
+  BFFValidationType
+} from '../bffTypes';
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
@@ -79,7 +87,10 @@ describe('transformToCora', () => {
 
     dependencies = {
       validationTypePool,
-      metadataPool
+      metadataPool,
+      textPool: listToPool<BFFText>([]),
+      presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
+      recordTypePool: listToPool<BFFRecordType>([])
     };
   });
 
