@@ -498,8 +498,6 @@ const createPresentationWithStuff = (
   let commonParameters;
 
   let recordLinkType;
-  // let childStyle;
-  // let gridColSpan;
 
   const { childStyle } = presentationChildReference;
   const gridColSpan = convertStylesToGridColSpan(presentationChildReference.childStyle ?? []);
