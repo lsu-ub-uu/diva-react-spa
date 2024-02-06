@@ -16,6 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import {
   BFFAttributeReference,
   BFFGuiElement,
@@ -35,48 +36,10 @@ import {
   BFFPresentationSurroundingContainer,
   BFFRecordType,
   BFFValidationType
-} from "config/bffTypes";
-import { removeEmpty } from "../utils/structs/removeEmpty";
-import { Dependencies } from "./formDefinitionsDep";
-
-export const convertStylesToGridColSpan = (styles: string[]): number => {
-  const DEFAULT_COLSPAN = 12;
-  const convertedColSpans = styles.length
-    ? styles.map((style) => {
-        switch (style) {
-          case 'oneChildStyle':
-            return 1;
-          case 'twoChildStyle':
-            return 2;
-          case 'threeChildStyle':
-            return 3;
-          case 'fourChildStyle':
-            return 4;
-          case 'fiveChildStyle':
-            return 5;
-          case 'sixChildStyle':
-            return 6;
-          case 'sevenChildStyle':
-            return 7;
-          case 'eightChildStyle':
-            return 8;
-          case 'nineChildStyle':
-            return 9;
-          case 'tenChildStyle':
-            return 10;
-          case 'elevenChildStyle':
-            return 11;
-          case 'twelveChildStyle':
-            return DEFAULT_COLSPAN;
-          default:
-            return null;
-        }
-      })
-    : [DEFAULT_COLSPAN];
-
-  const cleaned = removeEmpty(convertedColSpans)[0];
-  return cleaned ?? DEFAULT_COLSPAN;
-};
+} from 'config/bffTypes';
+import { removeEmpty } from '../utils/structs/removeEmpty';
+import { Dependencies } from './formDefinitionsDep';
+import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
 
 interface FormMetaDataRepeat {
   repeatMin: number;

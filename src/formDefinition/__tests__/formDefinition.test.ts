@@ -106,7 +106,6 @@ import {
   someMetadataCollectionVariable2
 } from '../../__mocks__/form/bffMock';
 import {
-  convertStylesToGridColSpan,
   createFormDefinition,
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
@@ -116,6 +115,7 @@ import {
 import { Dependencies } from '../formDefinitionsDep';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from "../formMetadata";
+import { convertStylesToGridColSpan } from "../../utils/cora-data/CoraDataUtilsPresentations";
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -1786,49 +1786,7 @@ describe('formDefinition', () => {
     });
   });
 
-  describe('converting childStyles to gridColspan', () => {
-    it('should be able to convert one threeChildStyle to grid col span to be number 3', () => {
-      const styles = ['threeChildStyle'];
-      const expected = 3;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
 
-    it('should be able to convert one twelveChildStyle to grid col span to be number 12', () => {
-      const styles = ['twelveChildStyle'];
-      const expected = 12;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert empty childStyle to grid col span to be default number 12', () => {
-      const styles: string[] = [];
-      const expected = 12;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert childStyle containing other settings to grid col span to be default number 12', () => {
-      const styles: string[] = ['inline', 'frame'];
-      const expected = 12;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert childStyle containing other settings and a fiveChildStyle to grid col span to be default number 5', () => {
-      const styles: string[] = ['inline', 'frame', 'fiveChildStyle'];
-      const expected = 5;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert childStyle containing other settings and multiple numberChildStyle to take the first being 2', () => {
-      const styles: string[] = ['inline', 'twoChildStyle', 'frame', 'fiveChildStyle'];
-      const expected = 2;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-  });
 
 
 

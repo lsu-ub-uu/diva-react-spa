@@ -33,34 +33,12 @@ import {
   BFFValidationType
 } from '../../config/bffTypes';
 import {
-  someEditMetadataGroup,
   someMetadataChildGroup,
-  someMetadataChildGroupWithShowHeadlineFalse,
-  someMetadataChildGroupWithSpecifiedHeadlineText,
-  someMetadataCollectionVariable2,
-  someMetadataCollectionVariableWithAttribute,
-  someMetadataCollectionWithOtherIdVariable,
-  someMetadataNumberVar,
-  someMetadataNumberVarWithAttribute,
-  someMetadataNumberVarWithAttributeAndOtherId,
-  someMetadataNumberVarWithOtherAttributeId,
-  someMetadataNumberVarWithoutAttribute,
   someMetadataRecordLink,
   someMetadataTextVariable,
-  someMetadataTextVariable2,
-  someMetadataTextVariable3,
-  someMetadataTextVariable4,
-  someMetadataTextVariable5,
-  someMetadataTextVariable6,
-  someMetadataTextVariableWithAttributeVar,
-  someNewMetadataGroup,
-  someNewMetadataGroupFaultyChildReference,
   someNewSimpleMetadataGroup,
   someRecordInfo,
-  someSimpleValidationTypeData,
-  someValidationTypeData,
-  someValidationTypeDataFaultyChildReference,
-  someValidationTypeForMissingChildIdTypeData
+  someSimpleValidationTypeData
 } from '../../__mocks__/form/bffMock';
 import { Lookup } from '../../utils/structs/lookup';
 import { Dependencies } from '../formDefinitionsDep';
@@ -76,39 +54,13 @@ describe('', () => {
   let textPool: Lookup<string, BFFText>;
   let dependencies: Dependencies;
   beforeEach(() => {
-    validationTypePool = listToPool<BFFValidationType>([
-      someValidationTypeData,
-      someValidationTypeDataFaultyChildReference,
-      someSimpleValidationTypeData,
-      someValidationTypeForMissingChildIdTypeData
-    ]);
+    validationTypePool = listToPool<BFFValidationType>([someSimpleValidationTypeData]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
       someMetadataTextVariable,
-      someMetadataTextVariable2,
-      someMetadataTextVariable3,
-      someMetadataTextVariable4,
-      someMetadataTextVariable5,
-      someMetadataTextVariable6,
-      someMetadataNumberVar,
-      someNewMetadataGroup,
       someRecordInfo,
-      someNewMetadataGroupFaultyChildReference,
-
-      someMetadataCollectionVariableWithAttribute,
-      someMetadataNumberVarWithAttribute,
-      someMetadataTextVariableWithAttributeVar,
       someMetadataChildGroup,
       someMetadataRecordLink,
-      someMetadataChildGroupWithSpecifiedHeadlineText,
-      someMetadataChildGroupWithShowHeadlineFalse,
-      someNewSimpleMetadataGroup,
-      someEditMetadataGroup,
-
-      someMetadataNumberVarWithoutAttribute,
-      someMetadataNumberVarWithAttributeAndOtherId,
-      someMetadataNumberVarWithOtherAttributeId,
-      someMetadataCollectionWithOtherIdVariable,
-      someMetadataCollectionVariable2
+      someNewSimpleMetadataGroup
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
