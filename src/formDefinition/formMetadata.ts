@@ -42,11 +42,7 @@ export const createFormMetaData = (
     metadataGroup = metadataPool.get(validationType.metadataGroupId) as BFFMetadataGroup;
   }
 
-  const formRootReference: BFFMetadataChildReference = {
-    childId: metadataGroup.id,
-    repeatMax: '1',
-    repeatMin: '1'
-  };
+  const formRootReference = createBFFMetadataReference(metadataGroup.id);
 
   return createMetaDataFromChildReference(formRootReference, metadataPool);
 };
@@ -83,3 +79,13 @@ const createMetaDataFromChildReference = (
     linkedRecordType
   } as FormMetaData);
 };
+
+export const createBFFMetadataReference = (
+  childId: string,
+  repeatMax = '1',
+  repeatMin = '1'
+): BFFMetadataChildReference => ({
+  childId,
+  repeatMax,
+  repeatMin
+});

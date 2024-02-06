@@ -40,6 +40,7 @@ import {
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
+import { createBFFMetadataReference } from './formMetadata';
 
 interface FormMetaDataRepeat {
   repeatMin: number;
@@ -71,11 +72,7 @@ export const createLinkedRecordDefinition = (
   const presentationGroup = presentationPool.get(presentationId);
   const metadataGroup = metadataPool.get(presentationGroup.presentationOf) as BFFMetadataGroup;
 
-  const formRootReference: BFFMetadataChildReference = {
-    childId: metadataGroup.id,
-    repeatMax: '1',
-    repeatMin: '1'
-  };
+  const formRootReference = createBFFMetadataReference(metadataGroup.id);
 
   const formRootPresentationReference: BFFPresentationChildReference = {
     childId: presentationGroup.id,
@@ -215,11 +212,7 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
   metadataGroup: BFFMetadataGroup,
   presentationGroup: BFFPresentationGroup
 ) => {
-  const formRootReference: BFFMetadataChildReference = {
-    childId: metadataGroup.id,
-    repeatMax: '1',
-    repeatMin: '1'
-  };
+  const formRootReference = createBFFMetadataReference(metadataGroup.id);
 
   const formRootPresentationReference: BFFPresentationChildReference = {
     childId: presentationGroup.id,
