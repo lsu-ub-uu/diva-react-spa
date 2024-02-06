@@ -108,14 +108,14 @@ import {
 import {
   convertStylesToGridColSpan,
   createFormDefinition,
-  createFormMetaData,
-  createFormMetaDataPathLookup,
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
   FormMetaData,
   getAttributesForAttributeReferences
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
+import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
+import { createFormMetaData } from "../formMetadata";
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -1830,104 +1830,7 @@ describe('formDefinition', () => {
     });
   });
 
-  it('should return form meta data for a given validation type', () => {
-    const validationTypeId = 'someSimpleValidationTypeId';
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
 
-    const expected: FormMetaData = {
-      name: 'someNewMetadataGroupNameInData',
-      type: 'group',
-      repeat: {
-        repeatMin: 1,
-        repeatMax: 1
-      },
-      children: [
-        {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3
-          }
-        },
-        {
-          name: 'someChildGroupNameInData',
-          type: 'group',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          children: [
-            {
-              name: 'someNameInData',
-              type: 'textVariable',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1
-              }
-            }
-          ]
-        },
-        {
-          name: 'nationalSubjectCategory',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1
-          },
-          type: 'recordLink',
-          linkedRecordType: 'nationalSubjectCategory'
-        }
-      ]
-    };
-
-    const expectedMetadataLookup = {
-      someNewMetadataGroupNameInData: {
-        name: 'someNewMetadataGroupNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'group'
-      },
-      'someNewMetadataGroupNameInData.nationalSubjectCategory': {
-        name: 'nationalSubjectCategory',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'recordLink',
-        linkedRecordType: 'nationalSubjectCategory'
-      },
-      'someNewMetadataGroupNameInData.someChildGroupNameInData': {
-        name: 'someChildGroupNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'group'
-      },
-      'someNewMetadataGroupNameInData.someChildGroupNameInData.someNameInData': {
-        name: 'someNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'textVariable'
-      },
-      'someNewMetadataGroupNameInData.someNameInData': {
-        name: 'someNameInData',
-        repeat: {
-          repeatMax: 3,
-          repeatMin: 1
-        },
-        type: 'textVariable'
-      }
-    };
-
-    expect(formMetaData).toStrictEqual(expected);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
-  });
 
   describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
     it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {

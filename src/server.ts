@@ -27,8 +27,7 @@ import { transformCoraValidationTypes } from './config/transformValidationTypes'
 import { Dependencies } from './formDefinition/formDefinitionsDep';
 import {
   createFormDefinition,
-  createFormMetaData,
-  createFormMetaDataPathLookup, createLinkedRecordDefinition,
+  createLinkedRecordDefinition,
 } from './formDefinition/formDefinition';
 import authRoute from './routes/authRoute';
 import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
@@ -36,6 +35,8 @@ import { injectRecordInfoIntoDataGroup, transformToCoraData } from './config/tra
 import { cleanJson } from './utils/structs/removeEmpty';
 import { transformRecord, transformRecords } from './config/transformRecord';
 import { transformCoraRecordTypes } from './config/transformRecordTypes';
+import { createFormMetaDataPathLookup } from "./utils/structs/metadataPathLookup";
+import { createFormMetaData } from "./formDefinition/formMetadata";
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;

@@ -54,10 +54,8 @@ import {
   someMetadataRepeatingRecordLinkWithAttributes,
   someMetadataRecordLinkWithAttributes
 } from '../../__mocks__/form/bffMock';
-import {
-  createFormMetaData,
-  createFormMetaDataPathLookup
-} from '../../formDefinition/formDefinition';
+import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
+import { createFormMetaData } from "../../formDefinition/formMetadata";
 
 describe('transformToCora', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

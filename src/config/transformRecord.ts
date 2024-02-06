@@ -35,12 +35,12 @@ import {
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import {
-  createFormMetaData,
-  createFormMetaDataPathLookup,
   FormMetaData
 } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
+import { createFormMetaDataPathLookup } from "../utils/structs/metadataPathLookup";
+import { createFormMetaData } from "../formDefinition/formMetadata";
 
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (

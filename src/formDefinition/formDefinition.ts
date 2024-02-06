@@ -1,4 +1,23 @@
+/*
+ * Copyright 2023 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
+ */
 import {
+  BFFAttributeReference,
   BFFGuiElement,
   BFFMetadata,
   BFFMetadataChildReference,
@@ -6,20 +25,19 @@ import {
   BFFMetadataGroup,
   BFFMetadataItemCollection,
   BFFMetadataNumberVariable,
+  BFFMetadataRecordLink,
   BFFMetadataTextVariable,
   BFFPresentation,
   BFFPresentationChildReference,
-  BFFPresentationSurroundingContainer,
-  BFFPresentationGroup,
-  BFFValidationType,
   BFFPresentationContainer,
-  BFFMetadataRecordLink,
-  BFFAttributeReference,
+  BFFPresentationGroup,
   BFFPresentationRecordLink,
-  BFFRecordType
-} from 'config/bffTypes';
-import { removeEmpty } from '../utils/structs/removeEmpty';
-import { Dependencies } from './formDefinitionsDep';
+  BFFPresentationSurroundingContainer,
+  BFFRecordType,
+  BFFValidationType
+} from "config/bffTypes";
+import { removeEmpty } from "../utils/structs/removeEmpty";
+import { Dependencies } from "./formDefinitionsDep";
 
 export const convertStylesToGridColSpan = (styles: string[]): number => {
   const DEFAULT_COLSPAN = 12;
@@ -60,65 +78,6 @@ export const convertStylesToGridColSpan = (styles: string[]): number => {
   return cleaned ?? DEFAULT_COLSPAN;
 };
 
-export const createFormMetaData = (
-  dependencies: Dependencies,
-  validationTypeId: string,
-  mode: 'update' | 'create'
-): FormMetaData => {
-  const validationPool = dependencies.validationTypePool;
-  const { metadataPool } = dependencies;
-  const validationType: BFFValidationType = validationPool.get(validationTypeId);
-
-  let metadataGroup: BFFMetadataGroup;
-  if (mode === 'create') {
-    metadataGroup = metadataPool.get(validationType.newMetadataGroupId) as BFFMetadataGroup;
-  } else {
-    metadataGroup = metadataPool.get(validationType.metadataGroupId) as BFFMetadataGroup;
-  }
-
-  const formRootReference: BFFMetadataChildReference = {
-    childId: metadataGroup.id,
-    repeatMax: '1',
-    repeatMin: '1'
-  };
-
-  return createMetaDataFromChildReference(formRootReference, metadataPool);
-};
-
-const createMetaDataFromChildReference = (
-  metadataChildReference: BFFMetadataChildReference,
-  metadataPool: any
-): FormMetaData => {
-  const metadata = metadataPool.get(metadataChildReference.childId) as BFFMetadata;
-  const repeatMin = parseInt(metadataChildReference.repeatMin, 10);
-  const repeatMax = determineRepeatMax(metadataChildReference.repeatMax);
-  let children;
-  let linkedRecordType;
-
-  if (metadata.type === 'group') {
-    const metadataGroup = metadata as BFFMetadataGroup;
-    children = metadataGroup.children.map((childRef) =>
-      createMetaDataFromChildReference(childRef, metadataPool)
-    );
-  }
-
-  if (metadata.type === 'recordLink') {
-    const metadataRecordLink = metadata as BFFMetadataRecordLink;
-    linkedRecordType = metadataRecordLink.linkedRecordType;
-  }
-
-  return removeEmpty({
-    name: metadata.nameInData,
-    type: metadata.type,
-    repeat: {
-      repeatMin,
-      repeatMax
-    },
-    children,
-    linkedRecordType
-  } as FormMetaData);
-};
-
 interface FormMetaDataRepeat {
   repeatMin: number;
   repeatMax: number;
@@ -137,20 +96,6 @@ export interface FormMetaData {
   children?: FormMetaData[];
   linkedRecordType?: string;
 }
-
-export const createFormMetaDataPathLookup = (
-  obj: FormMetaData,
-  path: string = '',
-  lookup: Record<string, FormMetaData> = {}
-) => {
-  path = path ? `${path}.${obj.name}` : obj.name;
-
-  obj.children?.forEach((metaData) => {
-    createFormMetaDataPathLookup(metaData, path, lookup);
-  });
-  lookup[path] = removeEmpty({ ...obj, children: undefined });
-  return lookup;
-};
 
 export const createLinkedRecordDefinition = (
   dependencies: Dependencies,
@@ -770,7 +715,7 @@ const createRepeat = (
   return { minNumberOfRepeatingToShow, repeatMin, repeatMax };
 };
 
-const determineRepeatMax = (value: string) => {
+export const determineRepeatMax = (value: string) => {
   const infiniteNumberOfRepeat = 'X';
   if (value === infiniteNumberOfRepeat) {
     return Number.MAX_VALUE;
