@@ -16,10 +16,8 @@ import {
   BFFMetadataRecordLink,
   BFFAttributeReference,
   BFFPresentationRecordLink,
-  BFFRecordLink,
   BFFRecordType
 } from 'config/bffTypes';
-import { Lookup } from 'utils/structs/lookup';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 
@@ -160,14 +158,10 @@ export const createLinkedRecordDefinition = (
 ) => {
   const { metadataPool, presentationPool } = dependencies;
 
-  const presentationLink = dependencies.presentationPool.get(
-    presentationLinkId
-  ) as BFFPresentationRecordLink;
-  const presentationId = presentationLink.linkedRecordPresentations[0].presentationId;
-  const presentationGroup = dependencies.presentationPool.get(presentationId);
-  const metadataGroup = dependencies.metadataPool.get(
-    presentationGroup.presentationOf
-  ) as BFFMetadataGroup;
+  const presentationLink = presentationPool.get(presentationLinkId) as BFFPresentationRecordLink;
+  const { presentationId } = presentationLink.linkedRecordPresentations[0];
+  const presentationGroup = presentationPool.get(presentationId);
+  const metadataGroup = metadataPool.get(presentationGroup.presentationOf) as BFFMetadataGroup;
 
   const formRootReference: BFFMetadataChildReference = {
     childId: metadataGroup.id,
@@ -199,7 +193,7 @@ export const createFormDefinition = (
 ) => {
   switch (mode) {
     case 'create':
-    return {
+      return {
         validationTypeId,
         form: createFormDefinitionForCreate(dependencies, validationTypeId)
       };
@@ -253,8 +247,7 @@ const createFormDefinitionFromValidationTypeUsingKeys = (
   return createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
     metadataGroup,
-    presentationGroup,
-    validationTypeId
+    presentationGroup
   );
 };
 
@@ -295,8 +288,7 @@ const createFormDefinitionFromRecordTypeUsingKey = (
   return createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
     metadataGroup,
-    presentationGroup,
-    validationTypeId
+    presentationGroup
   );
 };
 
@@ -313,8 +305,7 @@ const createFormDefinitionForView = (dependencies: Dependencies, validationTypeI
 const createDefinitionFromMetadataGroupAndPresentationGroup = (
   dependencies: Dependencies,
   metadataGroup: BFFMetadataGroup,
-  presentationGroup: BFFPresentationGroup,
-  validationTypeId: string
+  presentationGroup: BFFPresentationGroup
 ) => {
   const formRootReference: BFFMetadataChildReference = {
     childId: metadataGroup.id,
@@ -340,7 +331,7 @@ const createComponentsFromChildReferences = (
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[]
 ): unknown => {
-  const { metadataPool, presentationPool } = dependencies;
+  const { presentationPool } = dependencies;
   return presentationChildReferences.map((presentationChildReference) => {
     const presentationChildType = presentationChildReference.type;
 
@@ -851,5 +842,3 @@ const createCommonParameters = (
     showLabel
   });
 };
-
-
