@@ -41,6 +41,7 @@ import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
 import { createBFFMetadataReference } from './formMetadata';
+import { createBFFPresentationReference } from './formPresentation';
 
 interface FormMetaDataRepeat {
   repeatMin: number;
@@ -72,18 +73,10 @@ export const createLinkedRecordDefinition = (
   const presentationGroup = presentationPool.get(presentationId);
   const metadataGroup = metadataPool.get(presentationGroup.presentationOf) as BFFMetadataGroup;
 
-  const formRootReference = createBFFMetadataReference(metadataGroup.id);
-
-  const formRootPresentationReference: BFFPresentationChildReference = {
-    childId: presentationGroup.id,
-    type: 'presentation',
-    childStyle: []
-  };
-
-  const form = createPresentationWithStuff(
+  const form = createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
-    [formRootReference],
-    formRootPresentationReference
+    metadataGroup,
+    presentationGroup
   );
 
   return {
@@ -213,13 +206,7 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
   presentationGroup: BFFPresentationGroup
 ) => {
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
-
-  const formRootPresentationReference: BFFPresentationChildReference = {
-    childId: presentationGroup.id,
-    type: 'presentation',
-    childStyle: []
-  };
-
+  const formRootPresentationReference = createBFFPresentationReference(presentationGroup.id);
   return createPresentationWithStuff(
     dependencies,
     [formRootReference],
