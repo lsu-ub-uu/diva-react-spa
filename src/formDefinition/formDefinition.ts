@@ -476,6 +476,22 @@ const createAttributes = (
   });
 };
 
+// Move to validation.ts or something clever?
+const createTextVariableValidation = (textVariable: BFFMetadataTextVariable) => {
+  const pattern = textVariable.regEx;
+  return { type: 'regex', pattern };
+}
+
+// Move to validation.ts or something clever?
+const createNumberVariableValidation = (numberVariable: BFFMetadataNumberVariable) => {
+  const min = parseInt(numberVariable.min, 10);
+  const max = parseInt(numberVariable.max, 10);
+  const warningMin = parseInt(numberVariable.warningMin, 10);
+  const warningMax = parseInt(numberVariable.warningMax, 10);
+  const numberOfDecimals = parseInt(numberVariable.numberOfDecimals, 10);
+  return { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
+}
+
 const createPresentationWithStuff = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
@@ -490,13 +506,11 @@ const createPresentationWithStuff = (
   let components;
   let containerType;
   let presentationStyle;
-
   let metadataId;
   let metaDataChildRef;
   let repeat;
   let metadata;
   let commonParameters;
-
   let recordLinkType;
 
   const { childStyle } = presentationChildReference;
@@ -515,24 +529,19 @@ const createPresentationWithStuff = (
 
   if (presentation.type === 'pVar') {
     const textVariable = metadata as BFFMetadataTextVariable;
+    validation = createTextVariableValidation(textVariable);
     finalValue = textVariable.finalValue;
-    const pattern = textVariable.regEx;
-    validation = { type: 'regex', pattern };
 
     if (textVariable.attributeReferences !== undefined) {
       attributes = createAttributes(textVariable, metadataPool, undefined, presentation.mode);
     }
   }
 
+
   if (presentation.type === 'pNumVar') {
     const numberVariable = metadata as BFFMetadataNumberVariable;
+    validation = createNumberVariableValidation(numberVariable);
     finalValue = numberVariable.finalValue;
-    const min = parseInt(numberVariable.min, 10);
-    const max = parseInt(numberVariable.max, 10);
-    const warningMin = parseInt(numberVariable.warningMin, 10);
-    const warningMax = parseInt(numberVariable.warningMax, 10);
-    const numberOfDecimals = parseInt(numberVariable.numberOfDecimals, 10);
-    validation = { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
 
     if (numberVariable.attributeReferences !== undefined) {
       attributes = createAttributes(numberVariable, metadataPool, undefined, presentation.mode);
@@ -552,6 +561,7 @@ const createPresentationWithStuff = (
   if (presentation.type === 'pRecordLink') {
     const recordLink = metadata as BFFMetadataRecordLink;
     // todo more stuff around the record link presentation
+    // handle finalValue
     // what about linkedRecordType
     // const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.);
     recordLinkType = recordLink.linkedRecordType;
@@ -565,8 +575,7 @@ const createPresentationWithStuff = (
     // @ts-ignore
     const presentationContainer = presentation as BFFPresentationContainer;
     const name = presentation.id; // container does not have a nameInData so use id instead.
-    const { type } = presentation;
-    const { mode } = presentation;
+    const { type, mode } = presentation;
     containerType = presentationContainer.repeat === 'children' ? 'surrounding' : 'repeating';
     presentationStyle = presentationContainer.presentationStyle;
 
