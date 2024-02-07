@@ -62,7 +62,13 @@ const errorHandler = (error: unknown) => {
   };
 };
 
-let dependencies: Dependencies;
+const dependencies: Dependencies = {
+  metadataPool: listToPool<BFFMetadata>([]),
+  presentationPool: listToPool<BFFPresentation>([]),
+  recordTypePool: listToPool<BFFRecordType>([]),
+  textPool: listToPool<BFFText>([]),
+  validationTypePool: listToPool<BFFValidationType>([])
+};
 
 const loadStuffOnServerStart = async () => {
   const response = await getRecordDataListByType<DataListWrapper>('text', '');
