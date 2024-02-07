@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Lookup } from '../../utils/structs/lookup';
+import { Dependencies } from 'formDefinition/formDefinitionsDep';
 import {
   BFFMetadata,
   BFFPresentation,
@@ -28,13 +28,12 @@ import {
 } from '../../config/bffTypes';
 import { listToPool } from '../../utils/structs/listToPool';
 import { createTextDefinition } from '../textDefinition';
-import { Dependencies } from 'formDefinition/formDefinitionsDep';
 
 describe('textDefinition', () => {
   let dependencies: Dependencies;
 
   beforeEach(() => {
-    let textPool = listToPool<BFFText>([
+    const textPool = listToPool<BFFText>([
       { id: 'someTextId', en: 'someEnText', sv: 'someSvText' },
       { id: 'someText2Id', sv: 'someSv2Text' }
     ]);

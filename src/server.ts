@@ -10,7 +10,7 @@ import {
   BFFPresentationGroup,
   BFFRecordType,
   BFFText,
-  BFFValidationType,
+  BFFValidationType
 } from './config/bffTypes';
 import {
   getRecordDataById,
@@ -27,7 +27,7 @@ import { transformCoraValidationTypes } from './config/transformValidationTypes'
 import { Dependencies } from './formDefinition/formDefinitionsDep';
 import {
   createFormDefinition,
-  createLinkedRecordDefinition,
+  createLinkedRecordDefinition
 } from './formDefinition/formDefinition';
 import authRoute from './routes/authRoute';
 import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
@@ -35,8 +35,8 @@ import { injectRecordInfoIntoDataGroup, transformToCoraData } from './config/tra
 import { cleanJson } from './utils/structs/removeEmpty';
 import { transformRecord, transformRecords } from './config/transformRecord';
 import { transformCoraRecordTypes } from './config/transformRecordTypes';
-import { createFormMetaDataPathLookup } from "./utils/structs/metadataPathLookup";
-import { createFormMetaData } from "./formDefinition/formMetadata";
+import { createFormMetaDataPathLookup } from './utils/structs/metadataPathLookup';
+import { createFormMetaData } from './formDefinition/formMetadata';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -315,7 +315,7 @@ app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
   }
 });
 
-app.get('/api/refreshDefinitions', async (req, res) => {
+app.get('/api/refreshDefinitions', async (_req, res) => {
   try {
     await loadStuffOnServerStart();
     res.status(200).json({ message: 'Refreshed cora defs' });
@@ -330,7 +330,7 @@ app.listen(PORT, (): void => {
   console.log(`Cora API-url ${CORA_API_URL}`);
   loadStuffOnServerStart().then(() => {
     console.log('Loaded stuff from cora');
-    const definition = createLinkedRecordDefinition(dependencies,'divaPersonOutputPLink');
+    const definition = createLinkedRecordDefinition(dependencies, 'divaPersonOutputPLink');
     console.log(JSON.stringify(definition, null, 1));
   });
 });

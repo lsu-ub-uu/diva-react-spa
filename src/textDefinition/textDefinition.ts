@@ -18,20 +18,21 @@
  */
 
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
-import { BFFText } from '../config/bffTypes';
-import { Lookup } from '../utils/structs/lookup';
 
 export const createTextDefinition = (dependencies: Dependencies, lang: string) => {
   const { textPool } = dependencies;
-  const textItemDefinitions = [];
-  for (const [key, text] of textPool.entries()) {
+  const textItemDefinitions: { [x: string]: string }[] = [];
+
+  const entries = Array.from(textPool.entries());
+
+  entries.forEach(([key, text]) => {
     // @ts-ignore
     const value = text[lang];
-    const obj = {};
-    // @ts-ignore
-    obj[key] = value;
-    if (value !== undefined) textItemDefinitions.push(obj);
-  }
+    const obj = { [key]: value };
+    if (value !== undefined) {
+      textItemDefinitions.push(obj);
+    }
+  });
 
   return textItemDefinitions.reduce(
     (obj, item) =>

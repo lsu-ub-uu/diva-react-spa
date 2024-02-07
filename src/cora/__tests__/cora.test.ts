@@ -97,7 +97,6 @@ describe.skip('real', () => {
         presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
         recordTypePool: listToPool<BFFRecordType>([])
       };
-      const textPool = listToPool<BFFText>(texts);
       const defs = createTextDefinition(dependencies, 'en');
       expect(Object.keys(defs).length).toBe(6030);
       expect(response.data.dataList.containDataOfType).toBe('text');

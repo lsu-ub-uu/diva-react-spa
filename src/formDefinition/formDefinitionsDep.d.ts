@@ -1,3 +1,4 @@
+import { Lookup } from 'utils/structs/lookup';
 import {
   BFFMetadata,
   BFFValidationType,
@@ -6,7 +7,7 @@ import {
   BFFText,
   BFFRecordType
 } from '../config/bffTypes';
-import { Lookup } from 'utils/structs/lookup';
+
 export interface Dependencies {
   validationTypePool: Lookup<string, BFFValidationType>;
   metadataPool: Lookup<string, BFFMetadata>;

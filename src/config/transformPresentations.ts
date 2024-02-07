@@ -94,6 +94,7 @@ const transformCoraPresentationToBFFPresentation = (
       return transformCoraPresentationGuiElementLinkToBFFGuiElement(coraRecordWrapper);
     }
     default: {
+      return undefined;
     }
   }
 };
@@ -243,7 +244,7 @@ const transformChildReference = (childReference: DataGroup) => {
   const presentationSize = extractAtomicValueByName(childReference, 'presentationSize');
 
   const childStyleAtomics = getAllDataAtomicsWithNameInData(childReference, 'childStyle');
-  const childStyle = childStyleAtomics.map((childStyle) => childStyle.value);
+  const childStyle = childStyleAtomics.map((childStyleAtomic) => childStyleAtomic.value);
 
   return removeEmpty({
     childId,

@@ -480,7 +480,7 @@ const createAttributes = (
 const createTextVariableValidation = (textVariable: BFFMetadataTextVariable) => {
   const pattern = textVariable.regEx;
   return { type: 'regex', pattern };
-}
+};
 
 // Move to validation.ts or something clever?
 const createNumberVariableValidation = (numberVariable: BFFMetadataNumberVariable) => {
@@ -490,7 +490,7 @@ const createNumberVariableValidation = (numberVariable: BFFMetadataNumberVariabl
   const warningMax = parseInt(numberVariable.warningMax, 10);
   const numberOfDecimals = parseInt(numberVariable.numberOfDecimals, 10);
   return { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
-}
+};
 
 const createPresentationWithStuff = (
   dependencies: Dependencies,
@@ -536,7 +536,6 @@ const createPresentationWithStuff = (
       attributes = createAttributes(textVariable, metadataPool, undefined, presentation.mode);
     }
   }
-
 
   if (presentation.type === 'pNumVar') {
     const numberVariable = metadata as BFFMetadataNumberVariable;

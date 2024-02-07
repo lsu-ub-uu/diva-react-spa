@@ -226,6 +226,7 @@ const extractAttributesReferences = (dataRecordGroup: DataGroup) => {
       return { refCollectionVarId };
     });
   }
+  return undefined;
 };
 
 export const getChildReferencesListFromGroup = (dataRecordGroup: DataGroup) => {

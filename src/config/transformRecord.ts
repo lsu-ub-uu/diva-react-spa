@@ -34,13 +34,11 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
-import {
-  FormMetaData
-} from '../formDefinition/formDefinition';
+import { FormMetaData } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
-import { createFormMetaDataPathLookup } from "../utils/structs/metadataPathLookup";
-import { createFormMetaData } from "../formDefinition/formMetadata";
+import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
+import { createFormMetaData } from '../formDefinition/formMetadata';
 
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (
@@ -115,7 +113,8 @@ export const transformRecord = (
 ): unknown => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
-  let createdAt, createdBy;
+  let createdAt;
+  let createdBy;
 
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const recordInfo = extractRecordInfoDataGroup(dataRecordGroup);

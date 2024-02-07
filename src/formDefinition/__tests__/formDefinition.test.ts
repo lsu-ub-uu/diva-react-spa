@@ -109,13 +109,9 @@ import {
   createFormDefinition,
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
-  FormMetaData,
   getAttributesForAttributeReferences
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
-import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
-import { createFormMetaData } from "../formMetadata";
-import { convertStylesToGridColSpan } from "../../utils/cora-data/CoraDataUtilsPresentations";
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -1785,10 +1781,6 @@ describe('formDefinition', () => {
       });
     });
   });
-
-
-
-
 
   describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
     it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
