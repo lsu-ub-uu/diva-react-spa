@@ -492,6 +492,10 @@ const createNumberVariableValidation = (numberVariable: BFFMetadataNumberVariabl
   return { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
 };
 
+const getContainerType = (presentationContainer: BFFPresentationContainer) => {
+  return presentationContainer.repeat === 'children' ? 'surrounding' : 'repeating';
+};
+
 const createPresentationWithStuff = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
@@ -560,7 +564,7 @@ const createPresentationWithStuff = (
   if (presentation.type === 'pRecordLink') {
     const recordLink = metadata as BFFMetadataRecordLink;
     // todo more stuff around the record link presentation
-    // handle finalValue
+
     // what about linkedRecordType
     // const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.);
     recordLinkType = recordLink.linkedRecordType;
@@ -575,13 +579,12 @@ const createPresentationWithStuff = (
     const presentationContainer = presentation as BFFPresentationContainer;
     const name = presentation.id; // container does not have a nameInData so use id instead.
     const { type, mode } = presentation;
-    containerType = presentationContainer.repeat === 'children' ? 'surrounding' : 'repeating';
+    containerType = getContainerType(presentationContainer);
     presentationStyle = presentationContainer.presentationStyle;
 
     let filteredChildRefs: BFFMetadataChildReference[] = [];
 
-    if (presentationContainer.repeat === 'children') {
-      // surrounding Container
+    if (containerType === 'surrounding') {
       const metadataIds =
         (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
 
@@ -589,8 +592,7 @@ const createPresentationWithStuff = (
       filteredChildRefs = metadataChildReferences.filter((childRef) => {
         return metadataIds.includes(childRef.childId);
       });
-    } else if (presentationContainer.repeat === 'this') {
-      // repeating Container
+    } else if (containerType === 'repeating') {
       metadataId = presentationContainer.presentationOf;
       metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
       filteredChildRefs = [metaDataChildRef];
