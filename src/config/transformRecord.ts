@@ -104,7 +104,8 @@ export const transformRecords = (
 };
 
 /**
- * Transform a Record from Cora to DiVA3 Client BFF - GUI
+ * Transform Record
+ * @param dependencies
  * @param recordWrapper
  */
 export const transformRecord = (
