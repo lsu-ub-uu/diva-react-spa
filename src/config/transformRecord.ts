@@ -40,6 +40,10 @@ import { removeEmpty } from '../utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../formDefinition/formMetadata';
 
+/**
+ * Detects a DataGroup
+ * @param item
+ */
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (
     Object.prototype.hasOwnProperty.call(item, 'name') &&
@@ -47,6 +51,10 @@ export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   );
 }
 
+/**
+ * Detects a DataAtomic
+ * @param item
+ */
 export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
   return (
     Object.prototype.hasOwnProperty.call(item, 'name') &&
@@ -54,6 +62,10 @@ export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
   );
 }
 
+/**
+ * Detects a RecordLink
+ * @param item
+ */
 export function isRecordLink(item: DataGroup | DataAtomic | RecordLink) {
   if (!isDataGroup(item)) return false;
   const group = item as DataGroup;
@@ -91,6 +103,11 @@ const extractRecordUpdates = (recordInfo: DataGroup): unknown[] => {
   });
 };
 
+/**
+ * Transforms records
+ * @param dependencies
+ * @param dataListWrapper
+ */
 export const transformRecords = (
   dependencies: Dependencies,
   dataListWrapper: DataListWrapper
@@ -132,7 +149,6 @@ export const transformRecord = (
   }
   const updated = extractRecordUpdates(recordInfo);
 
-  // create a form definition by validationType
   const formMetadata = createFormMetaData(dependencies, validationType, 'update');
   const formPathLookup = createFormMetaDataPathLookup(formMetadata);
 
@@ -236,7 +252,6 @@ export const traverseDataGroup = (
       }
     });
 
-    // each unique name on that level
     if (repeating && !isGroup) {
       object.push({ [name]: thisLevelChildren });
     } else if (repeating && isGroup) {
