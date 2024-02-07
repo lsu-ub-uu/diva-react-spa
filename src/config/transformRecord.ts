@@ -154,12 +154,17 @@ export const transformRecord = (
   });
 };
 
-const transformObjectAttributes = (attrObject: Attributes | undefined) => {
-  const attributesArray = [];
-  for (const key in attrObject) {
-    attributesArray.push({ [`_${key}`]: attrObject[key] });
-  }
-  return attributesArray;
+/**
+ * Transform object attributes with _ prefix to key
+ * @param attributes
+ */
+export const transformObjectAttributes = (attributes: Attributes | undefined) => {
+  if (attributes === undefined) return [];
+
+  return Object.keys(attributes).map((key) => {
+    const value = attributes[key];
+    return { [`_${key}`]: value };
+  });
 };
 
 export const traverseDataGroup = (

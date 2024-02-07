@@ -24,11 +24,13 @@ import {
   isDataAtomic,
   isDataGroup,
   isRecordLink,
+  transformObjectAttributes,
   transformRecord,
   transformRecords,
   traverseDataGroup
 } from '../transformRecord';
 import {
+  Attributes,
   DataAtomic,
   DataGroup,
   DataListWrapper,
@@ -110,6 +112,23 @@ describe('transformRecord', () => {
       } as RecordLink;
       const expected = isRecordLink(testData);
       expect(true).toStrictEqual(expected);
+    });
+
+    it('should be able to transform object attributes with underscore prefix in key', () => {
+      const testAttributes: Attributes = {
+        attr1: 'someAttr1Value',
+        attr2: 'someAttr2Value'
+      };
+      const actual = transformObjectAttributes(testAttributes);
+      const expected = [
+        {
+          _attr1: 'someAttr1Value'
+        },
+        {
+          _attr2: 'someAttr2Value'
+        }
+      ];
+      expect(actual).toStrictEqual(expected);
     });
   });
 
