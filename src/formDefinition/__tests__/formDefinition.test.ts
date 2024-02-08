@@ -1528,7 +1528,7 @@ describe('formDefinition', () => {
               childStyle: [],
               name: 'pSomeGuiElementLinkId',
               gridColSpan: 12,
-              url: 'http://www.google.se',
+              url: 'https://www.google.se',
               elementText: 'demoTestLinkGuiElementText',
               presentAs: 'link',
               type: 'guiElementLink'

@@ -43,6 +43,7 @@ import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPres
 import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
 import { Lookup } from '../utils/structs/lookup';
+import { createNumberVariableValidation, createTextVariableValidation } from './formValidation';
 
 interface FormMetaDataRepeat {
   repeatMin: number;
@@ -63,6 +64,11 @@ export interface FormMetaData {
   linkedRecordType?: string;
 }
 
+/**
+ * Creates a Linked Record definition
+ * @param dependencies
+ * @param presentationLinkId
+ */
 export const createLinkedRecordDefinition = (
   dependencies: Dependencies,
   presentationLinkId: string
@@ -85,6 +91,12 @@ export const createLinkedRecordDefinition = (
   };
 };
 
+/**
+ * Creates a complete form definition
+ * @param dependencies
+ * @param validationTypeId
+ * @param mode
+ */
 export const createFormDefinition = (
   dependencies: Dependencies,
   validationTypeId: string,
@@ -208,7 +220,7 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
 ) => {
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
   const formRootPresentationReference = createBFFPresentationReference(presentationGroup.id);
-  return createPresentationWithStuff(
+  return createDetailedPresentationBasedOnPresentationType(
     dependencies,
     [formRootReference],
     formRootPresentationReference
@@ -261,7 +273,7 @@ const createPresentation = (
       metadataOverrideId = foundMetadata.id;
     }
   }
-  return createPresentationWithStuff(
+  return createDetailedPresentationBasedOnPresentationType(
     dependencies,
     metadataChildReferences,
     presentationChildReference,
@@ -477,27 +489,11 @@ const createAttributes = (
   });
 };
 
-// Move to validation.ts or something clever?
-const createTextVariableValidation = (textVariable: BFFMetadataTextVariable) => {
-  const pattern = textVariable.regEx;
-  return { type: 'regex', pattern };
-};
-
-// Move to validation.ts or something clever?
-const createNumberVariableValidation = (numberVariable: BFFMetadataNumberVariable) => {
-  const min = parseInt(numberVariable.min);
-  const max = parseInt(numberVariable.max);
-  const warningMin = parseInt(numberVariable.warningMin);
-  const warningMax = parseInt(numberVariable.warningMax);
-  const numberOfDecimals = parseInt(numberVariable.numberOfDecimals);
-  return { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
-};
-
 const getContainerType = (presentationContainer: BFFPresentationContainer) => {
   return presentationContainer.repeat === 'children' ? 'surrounding' : 'repeating';
 };
 
-const createPresentationWithStuff = (
+const createDetailedPresentationBasedOnPresentationType = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
@@ -555,15 +551,11 @@ const createPresentationWithStuff = (
 
   if (presentation.type === 'pRecordLink') {
     const recordLink = metadata as BFFMetadataRecordLink;
-    // todo more stuff around the record link presentation
-
-    // what about linkedRecordType
     recordLinkType = recordLink.linkedRecordType;
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
 
   if (presentation.type === 'container') {
-    // @ts-ignore
     const presentationContainer = presentation as BFFPresentationContainer;
     const name = presentation.id; // container does not have a nameInData so use id instead.
     const { type, mode } = presentation;
@@ -576,7 +568,6 @@ const createPresentationWithStuff = (
       const metadataIds =
         (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
 
-      // perform nameInData lookup
       filteredChildRefs = metadataChildReferences.filter((childRef) => {
         return metadataIds.includes(childRef.childId);
       });
@@ -625,6 +616,7 @@ const createPresentationWithStuff = (
     recordLinkType
   });
 };
+
 const checkForAttributes = (
   metadataVariable:
     | BFFMetadataCollectionVariable
@@ -693,8 +685,7 @@ const createCommonParameters = (
   const name = metadata.nameInData;
   const { type } = metadata;
   const placeholder = presentation.emptyTextId;
-  const { mode } = presentation;
-  const { inputType } = presentation;
+  const { mode, inputType } = presentation;
   const tooltip = { title: metadata.textId, body: metadata.defTextId };
   let label = metadata.textId;
   let showLabel = true;
