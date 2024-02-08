@@ -108,7 +108,6 @@ export const CreateRecordPage = () => {
             formSchema={schema as FormSchema}
           />
         </Stack>
-        <pre>{JSON.stringify(schema?.form, null, 1)}</pre>
       </div>
     </>
   );
