@@ -484,11 +484,11 @@ const createTextVariableValidation = (textVariable: BFFMetadataTextVariable) => 
 
 // Move to validation.ts or something clever?
 const createNumberVariableValidation = (numberVariable: BFFMetadataNumberVariable) => {
-  const min = parseInt(numberVariable.min, 10);
-  const max = parseInt(numberVariable.max, 10);
-  const warningMin = parseInt(numberVariable.warningMin, 10);
-  const warningMax = parseInt(numberVariable.warningMax, 10);
-  const numberOfDecimals = parseInt(numberVariable.numberOfDecimals, 10);
+  const min = parseInt(numberVariable.min);
+  const max = parseInt(numberVariable.max);
+  const warningMin = parseInt(numberVariable.warningMin);
+  const warningMax = parseInt(numberVariable.warningMax);
+  const numberOfDecimals = parseInt(numberVariable.numberOfDecimals);
   return { type: 'number', min, max, warningMin, warningMax, numberOfDecimals };
 };
 
@@ -660,7 +660,7 @@ const createRepeat = (
 ) => {
   const minNumberOfRepeatingToShow = getMinNumberOfRepeatingToShow(presentationChildReference);
 
-  const repeatMin = parseInt(metaDataChildRef.repeatMin, 10);
+  const repeatMin = parseInt(metaDataChildRef.repeatMin);
   const repeatMax = determineRepeatMax(metaDataChildRef.repeatMax);
 
   return { minNumberOfRepeatingToShow, repeatMin, repeatMax };
@@ -671,7 +671,7 @@ export const determineRepeatMax = (value: string) => {
   if (value === infiniteNumberOfRepeat) {
     return Number.MAX_VALUE;
   }
-  return parseInt(value, 10);
+  return parseInt(value);
 };
 
 const getMinNumberOfRepeatingToShow = (
@@ -679,10 +679,7 @@ const getMinNumberOfRepeatingToShow = (
 ) => {
   let minNumberOfRepeatingToShow;
   if (presentationChildReference.minNumberOfRepeatingToShow !== undefined) {
-    minNumberOfRepeatingToShow = parseInt(
-      presentationChildReference.minNumberOfRepeatingToShow,
-      10
-    );
+    minNumberOfRepeatingToShow = parseInt(presentationChildReference.minNumberOfRepeatingToShow);
   }
   return minNumberOfRepeatingToShow;
 };

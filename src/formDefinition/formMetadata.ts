@@ -51,7 +51,7 @@ const createMetaDataFromChildReference = (
   metadataPool: any
 ): FormMetaData => {
   const metadata = metadataPool.get(metadataChildReference.childId) as BFFMetadata;
-  const repeatMin = parseInt(metadataChildReference.repeatMin, 10);
+  const repeatMin = parseInt(metadataChildReference.repeatMin);
   const repeatMax = determineRepeatMax(metadataChildReference.repeatMax);
   let children;
   let linkedRecordType;
