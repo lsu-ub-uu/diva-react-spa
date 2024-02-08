@@ -42,6 +42,7 @@ import { Dependencies } from './formDefinitionsDep';
 import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
 import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
+import { Lookup } from '../utils/structs/lookup';
 
 interface FormMetaDataRepeat {
   repeatMin: number;
@@ -349,6 +350,22 @@ export const getAttributesForAttributeReferences = (
   return Object.assign({}, ...attributesArray);
 };
 
+const createCollectionVariableOptions = (
+  metadataPool: any,
+  collectionVariable: BFFMetadataCollectionVariable
+) => {
+  const collection = metadataPool.get(
+    collectionVariable.refCollection
+  ) as BFFMetadataItemCollection;
+  const itemReferences = collection.collectionItemReferences;
+  return itemReferences.map((itemRef) => {
+    const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
+    const label = collectionItem.textId;
+    const value = collectionItem.nameInData;
+    return { value, label }; // todo handle disabled?
+  });
+};
+
 export const firstAttributesExistsInSecond = (
   inAttributes1: Record<string, string[]> | undefined,
   inAttributes2: Record<string, string[]> | undefined
@@ -427,22 +444,6 @@ const createGuiElement = (
     childStyle: presentationChildReference.childStyle,
     gridColSpan: convertStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   };
-};
-
-const createCollectionVariableOptions = (
-  metadataPool: any,
-  collectionVariable: BFFMetadataCollectionVariable
-) => {
-  const collection = metadataPool.get(
-    collectionVariable.refCollection
-  ) as BFFMetadataItemCollection;
-  const itemReferences = collection.collectionItemReferences;
-  return itemReferences.map((itemRef) => {
-    const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
-    const label = collectionItem.textId;
-    const value = collectionItem.nameInData;
-    return { value, label }; // todo handle disabled?
-  });
 };
 
 const createAttributes = (
@@ -535,30 +536,21 @@ const createPresentationWithStuff = (
     const textVariable = metadata as BFFMetadataTextVariable;
     validation = createTextVariableValidation(textVariable);
     finalValue = textVariable.finalValue;
-
-    if (textVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(textVariable, metadataPool, undefined, presentation.mode);
-    }
+    attributes = checkForAttributes(textVariable, metadataPool, undefined, presentation);
   }
 
   if (presentation.type === 'pNumVar') {
     const numberVariable = metadata as BFFMetadataNumberVariable;
     validation = createNumberVariableValidation(numberVariable);
     finalValue = numberVariable.finalValue;
-
-    if (numberVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(numberVariable, metadataPool, undefined, presentation.mode);
-    }
+    attributes = checkForAttributes(numberVariable, metadataPool, undefined, presentation);
   }
 
   if (presentation.type === 'pCollVar') {
     const collectionVariable = metadata as BFFMetadataCollectionVariable;
     finalValue = collectionVariable.finalValue;
     options = createCollectionVariableOptions(metadataPool, collectionVariable);
-
-    if (collectionVariable.attributeReferences !== undefined) {
-      attributes = createAttributes(collectionVariable, metadataPool, options, presentation.mode);
-    }
+    attributes = checkForAttributes(collectionVariable, metadataPool, options, presentation);
   }
 
   if (presentation.type === 'pRecordLink') {
@@ -566,12 +558,8 @@ const createPresentationWithStuff = (
     // todo more stuff around the record link presentation
 
     // what about linkedRecordType
-    // const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.);
     recordLinkType = recordLink.linkedRecordType;
-
-    if (recordLink.attributeReferences !== undefined) {
-      attributes = createAttributes(recordLink, metadataPool, options, presentation.mode);
-    }
+    attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
 
   if (presentation.type === 'container') {
@@ -610,10 +598,7 @@ const createPresentationWithStuff = (
     const group = metadata as BFFMetadataGroup;
     const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
     presentationStyle = presentationGroup.presentationStyle;
-
-    if (group.attributeReferences !== undefined) {
-      attributes = createAttributes(group, metadataPool, undefined, presentation.mode);
-    }
+    attributes = checkForAttributes(group, metadataPool, options, presentation);
 
     // skip children for recordInfo group for now
     if (group.nameInData !== 'recordInfo') {
@@ -639,6 +624,23 @@ const createPresentationWithStuff = (
     gridColSpan,
     recordLinkType
   });
+};
+const checkForAttributes = (
+  metadataVariable:
+    | BFFMetadataCollectionVariable
+    | BFFMetadataNumberVariable
+    | BFFMetadataTextVariable
+    | BFFMetadataRecordLink
+    | BFFMetadataGroup,
+  metadataPool: Lookup<string, BFFMetadata>,
+  options: any,
+  presentation: BFFPresentation
+) => {
+  let attributes;
+  if (metadataVariable.attributeReferences !== undefined) {
+    attributes = createAttributes(metadataVariable, metadataPool, options, presentation.mode);
+  }
+  return attributes;
 };
 
 const findMetadataChildReferenceById = (
