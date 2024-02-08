@@ -18,16 +18,19 @@
  */
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
+import recordManuscriptWithoutCreatedAndUpdates from '../../__mocks__/coraRecordManuscriptPublicWithoutSensitiveData.json';
 import coraNationalSubjectCategories from '../../__mocks__/coraNationalSubjectCategories.json';
 import {
   isDataAtomic,
   isDataGroup,
   isRecordLink,
+  transformObjectAttributes,
   transformRecord,
   transformRecords,
   traverseDataGroup
 } from '../transformRecord';
 import {
+  Attributes,
   DataAtomic,
   DataGroup,
   DataListWrapper,
@@ -35,7 +38,14 @@ import {
   RecordWrapper
 } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
-import { BFFMetadata, BFFValidationType } from '../bffTypes';
+import {
+  BFFMetadata,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFRecordType,
+  BFFText,
+  BFFValidationType
+} from '../bffTypes';
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
@@ -65,8 +75,11 @@ describe('transformRecord', () => {
     ]);
 
     dependencies = {
+      textPool: listToPool<BFFText>([]),
       validationTypePool,
-      metadataPool
+      metadataPool,
+      presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
+      recordTypePool: listToPool<BFFRecordType>([])
     };
   });
 
@@ -99,6 +112,23 @@ describe('transformRecord', () => {
       } as RecordLink;
       const expected = isRecordLink(testData);
       expect(true).toStrictEqual(expected);
+    });
+
+    it('should be able to transform object attributes with underscore prefix in key', () => {
+      const testAttributes: Attributes = {
+        attr1: 'someAttr1Value',
+        attr2: 'someAttr2Value'
+      };
+      const actual = transformObjectAttributes(testAttributes);
+      const expected = [
+        {
+          _attr1: 'someAttr1Value'
+        },
+        {
+          _attr2: 'someAttr2Value'
+        }
+      ];
+      expect(actual).toStrictEqual(expected);
     });
   });
 
@@ -137,6 +167,56 @@ describe('transformRecord', () => {
           updatedBy: '161616'
         }
       ],
+      data: {
+        divaOutput: {
+          title: {
+            mainTitle: {
+              value: 'aaaaaa'
+            },
+            _language: 'kal'
+          },
+          alternativeTitle: [
+            {
+              mainTitle: {
+                value: 'bbbbb'
+              },
+              subTitle: [
+                {
+                  value: 'subTitle1'
+                }
+              ],
+              _language: 'epo',
+              _titleType: 'alternativeTitle'
+            }
+          ],
+          nationalSubjectCategory: [
+            {
+              value: 'nationalSubjectCategory:6325370460697648'
+            }
+          ],
+          abstract: [
+            {
+              value: 'hej!',
+              _language: 'fao'
+            }
+          ]
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should be able to return a record without created and updated data', () => {
+    const transformData = transformRecord(
+      dependencies,
+      recordManuscriptWithoutCreatedAndUpdates as RecordWrapper
+    );
+    const expected = {
+      id: 'divaOutput:519333261463755',
+      recordType: 'divaOutput',
+      validationType: 'manuscript',
+      userRights: ['read', 'update', 'index', 'delete'],
+      updated: [],
       data: {
         divaOutput: {
           title: {

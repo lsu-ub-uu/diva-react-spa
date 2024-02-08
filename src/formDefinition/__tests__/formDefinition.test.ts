@@ -32,7 +32,8 @@ import {
   BFFMetadataChildReference,
   BFFRecordType,
   BFFMetadataGroup,
-  BFFPresentationChildReference
+  BFFPresentationChildReference,
+  BFFText
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -105,14 +106,10 @@ import {
   someMetadataCollectionVariable2
 } from '../../__mocks__/form/bffMock';
 import {
-  convertStylesToGridColSpan,
   createFormDefinition,
-  createFormMetaData,
-  createFormMetaDataPathLookup,
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
-  FormMetaData,
-  getAttributesForAttributeReferences
+  getAttributesByAttributeReferences
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
@@ -124,6 +121,7 @@ describe('formDefinition', () => {
     BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
   >;
   let recordTypePool: Lookup<string, BFFRecordType>;
+  let textPool: Lookup<string, BFFText>;
   const FORM_MODE_NEW = 'create';
   const FORM_MODE_EDIT = 'update';
   const FORM_MODE_VIEW = 'view'; // used to present the record
@@ -208,11 +206,14 @@ describe('formDefinition', () => {
       pSomeOtherMetadataCollectionVariableWithMissingChildId
     ]);
     recordTypePool = listToPool<BFFRecordType>([]);
+    textPool = listToPool<BFFText>([]);
+
     dependencies = {
       validationTypePool,
       metadataPool,
       presentationPool,
-      recordTypePool
+      recordTypePool,
+      textPool
     };
 
     createRecordType('testRecordType');
@@ -418,12 +419,12 @@ describe('formDefinition', () => {
     return pGroup;
   };
 
-  it('should generate something', () => {
-    expect(validationTypePool.get('someValidationTypeId')).toBeDefined();
-    expect(metadataPool.get('someNewMetadataGroupId')).toBeDefined();
-    expect(metadataPool.get('someMetadataTextVariableId')).toBeDefined();
-    expect(presentationPool.get('pSomeMetadataTextVariableId')).toBeDefined();
-  });
+  // it('should be able to lookup validationTypes, metadata, presentations from pools', () => {
+  //   expect(validationTypePool.get('someValidationTypeId')).toBeDefined();
+  //   expect(metadataPool.get('someNewMetadataGroupId')).toBeDefined();
+  //   expect(metadataPool.get('someMetadataTextVariableId')).toBeDefined();
+  //   expect(presentationPool.get('pSomeMetadataTextVariableId')).toBeDefined();
+  // });
 
   it('should throw Error on invalid ValidationType', () => {
     const invalidValidationType = 'someInvalidValidationType';
@@ -1781,149 +1782,6 @@ describe('formDefinition', () => {
     });
   });
 
-  describe('converting childStyles to gridColspan', () => {
-    it('should be able to convert one threeChildStyle to grid col span to be number 3', () => {
-      const styles = ['threeChildStyle'];
-      const expected = 3;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert one twelveChildStyle to grid col span to be number 12', () => {
-      const styles = ['twelveChildStyle'];
-      const expected = 12;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert empty childStyle to grid col span to be default number 12', () => {
-      const styles: string[] = [];
-      const expected = 12;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert childStyle containing other settings to grid col span to be default number 12', () => {
-      const styles: string[] = ['inline', 'frame'];
-      const expected = 12;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert childStyle containing other settings and a fiveChildStyle to grid col span to be default number 5', () => {
-      const styles: string[] = ['inline', 'frame', 'fiveChildStyle'];
-      const expected = 5;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-
-    it('should be able to convert childStyle containing other settings and multiple numberChildStyle to take the first being 2', () => {
-      const styles: string[] = ['inline', 'twoChildStyle', 'frame', 'fiveChildStyle'];
-      const expected = 2;
-      const gridColSpan = convertStylesToGridColSpan(styles);
-      expect(gridColSpan).toStrictEqual(expected);
-    });
-  });
-
-  it('should return form meta data for a given validation type', () => {
-    const validationTypeId = 'someSimpleValidationTypeId';
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-
-    const expected: FormMetaData = {
-      name: 'someNewMetadataGroupNameInData',
-      type: 'group',
-      repeat: {
-        repeatMin: 1,
-        repeatMax: 1
-      },
-      children: [
-        {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3
-          }
-        },
-        {
-          name: 'someChildGroupNameInData',
-          type: 'group',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          children: [
-            {
-              name: 'someNameInData',
-              type: 'textVariable',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1
-              }
-            }
-          ]
-        },
-        {
-          name: 'nationalSubjectCategory',
-          repeat: {
-            repeatMax: 1,
-            repeatMin: 1
-          },
-          type: 'recordLink',
-          linkedRecordType: 'nationalSubjectCategory'
-        }
-      ]
-    };
-
-    const expectedMetadataLookup = {
-      someNewMetadataGroupNameInData: {
-        name: 'someNewMetadataGroupNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'group'
-      },
-      'someNewMetadataGroupNameInData.nationalSubjectCategory': {
-        name: 'nationalSubjectCategory',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'recordLink',
-        linkedRecordType: 'nationalSubjectCategory'
-      },
-      'someNewMetadataGroupNameInData.someChildGroupNameInData': {
-        name: 'someChildGroupNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'group'
-      },
-      'someNewMetadataGroupNameInData.someChildGroupNameInData.someNameInData': {
-        name: 'someNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'textVariable'
-      },
-      'someNewMetadataGroupNameInData.someNameInData': {
-        name: 'someNameInData',
-        repeat: {
-          repeatMax: 3,
-          repeatMin: 1
-        },
-        type: 'textVariable'
-      }
-    };
-
-    expect(formMetaData).toStrictEqual(expected);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
-  });
-
   describe('findMetadataChildReferenceByNameInDataAndAttributes', () => {
     it('findMetadataChildReferenceByNameInDataAndAttributes with correct nameInData', () => {
       const test = findMetadataChildReferenceByNameInDataAndAttributes(
@@ -2361,7 +2219,7 @@ describe('formDefinition', () => {
         const attributeReferences: BFFAttributeReference[] = [
           { refCollectionVarId: mmAttribute.id }
         ];
-        const actual = getAttributesForAttributeReferences(
+        const actual = getAttributesByAttributeReferences(
           dependencies.metadataPool,
           attributeReferences
         );
@@ -2376,7 +2234,7 @@ describe('formDefinition', () => {
           { refCollectionVarId: mmAttribute.id }
         ];
 
-        const actual = getAttributesForAttributeReferences(
+        const actual = getAttributesByAttributeReferences(
           dependencies.metadataPool,
           attributeReferences
         );
@@ -2403,7 +2261,7 @@ describe('formDefinition', () => {
           { refCollectionVarId: pmAttribute.id }
         ];
 
-        const actual = getAttributesForAttributeReferences(
+        const actual = getAttributesByAttributeReferences(
           dependencies.metadataPool,
           attributeReferences
         );

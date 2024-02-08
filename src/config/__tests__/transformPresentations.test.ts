@@ -333,7 +333,6 @@ describe('transformCoraPresentations', () => {
       const transformData = transformCoraPresentations(
         coraPresentationWithMiscTypes as DataListWrapper
       );
-
       expect(transformData).toHaveLength(6);
     });
   });
@@ -358,7 +357,13 @@ describe('transformCoraPresentations', () => {
         id: 'nationalSubjectCategoryPLink',
         type: 'pRecordLink',
         presentationOf: 'nationalSubjectCategoryLink',
-        mode: 'input'
+        mode: 'input',
+        linkedRecordPresentations: [
+          {
+            presentedRecordType: 'nationalSubjectCategory',
+            presentationId: 'nationalSubjectCategoryWhenLinkedPGroup'
+          }
+        ]
         // TODO linkedRecordPresentations
         // TODO Search
       });

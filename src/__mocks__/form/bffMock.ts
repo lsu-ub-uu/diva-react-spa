@@ -1081,8 +1081,13 @@ export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
   id: 'nationalSubjectCategoryPLinkId',
   type: 'pRecordLink',
   presentationOf: 'nationalSubjectCategoryLinkId',
-  mode: 'input'
-  // TODO linkedRecordPresentations?
+  mode: 'input',
+  linkedRecordPresentations: [
+    {
+      presentedRecordType: 'nationalSubjectCategory',
+      presentationId: 'someSubjectCategoryPresentation'
+    }
+  ]
   // TODO Search ?
 };
 

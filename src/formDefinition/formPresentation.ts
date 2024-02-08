@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -17,28 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import { BFFPresentationChildReference } from '../config/bffTypes';
 
-export const createTextDefinition = (dependencies: Dependencies, lang: string) => {
-  const { textPool } = dependencies;
-  const textItemDefinitions: { [x: string]: string }[] = [];
-
-  const entries = Array.from(textPool.entries());
-
-  entries.forEach(([key, text]) => {
-    // @ts-ignore
-    const value = text[lang];
-    const obj = { [key]: value };
-    if (value !== undefined) {
-      textItemDefinitions.push(obj);
-    }
-  });
-
-  return textItemDefinitions.reduce(
-    (obj, item) =>
-      Object.assign(obj, {
-        [Object.keys(item)[0]]: Object.values(item)[0]
-      }),
-    {}
-  );
-};
+export const createBFFPresentationReference = (
+  childId: string,
+  type: 'presentation' | 'guiElement' | 'text' = 'presentation',
+  childStyle = []
+): BFFPresentationChildReference => ({
+  childId,
+  type,
+  childStyle
+});

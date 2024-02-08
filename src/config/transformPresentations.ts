@@ -28,7 +28,9 @@ import {
   BFFPresentationSurroundingContainer,
   BFFPresentation,
   BFFPresentationGroup,
-  BFFGuiElement
+  BFFGuiElement,
+  BFFLinkedRecordPresentation,
+  BFFPresentationRecordLink
 } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { getChildReferencesListFromGroup } from './transformMetadata';
@@ -82,7 +84,7 @@ const transformCoraPresentationToBFFPresentation = (
     }
     case 'pRecordLink': {
       // basic presentation should be enough for pRecordLink until we deal with linkedPresentations and search
-      return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
+      return transformCoraPresentationPLinkToBFFPresentation(coraRecordWrapper);
     }
     case 'container': {
       return transformCoraPresentationContainerToBFFContainer(coraRecordWrapper);
@@ -92,6 +94,7 @@ const transformCoraPresentationToBFFPresentation = (
       return transformCoraPresentationGuiElementLinkToBFFGuiElement(coraRecordWrapper);
     }
     default: {
+      return undefined;
     }
   }
 };
@@ -137,6 +140,34 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     specifiedLabelTextId,
     showLabel
   } as BFFPresentation);
+};
+
+// Handle pRecordLink
+const transformCoraPresentationPLinkToBFFPresentation = (
+  coraRecordWrapper: RecordWrapper
+): BFFPresentation => {
+  const dataRecordGroup = coraRecordWrapper.record.data;
+  const basic = transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
+  let linkedRecordPresentations;
+
+  if (containsChildWithNameInData(dataRecordGroup, 'linkedRecordPresentations')) {
+    const linkedPresentationsGroup = getFirstDataGroupWithNameInDataAndAttributes(
+      dataRecordGroup,
+      'linkedRecordPresentations'
+    );
+
+    linkedRecordPresentations = linkedPresentationsGroup.children.map((linkedPresentation) => {
+      const group = linkedPresentation as DataGroup;
+      const presentedRecordType = extractLinkedRecordIdFromNamedRecordLink(
+        group,
+        'presentedRecordType'
+      );
+      const presentationId = extractLinkedRecordIdFromNamedRecordLink(group, 'presentation');
+      return { presentedRecordType, presentationId } as BFFLinkedRecordPresentation;
+    });
+  }
+
+  return removeEmpty({ ...basic, linkedRecordPresentations } as BFFPresentationRecordLink);
 };
 
 // Handle pVar
@@ -213,7 +244,7 @@ const transformChildReference = (childReference: DataGroup) => {
   const presentationSize = extractAtomicValueByName(childReference, 'presentationSize');
 
   const childStyleAtomics = getAllDataAtomicsWithNameInData(childReference, 'childStyle');
-  const childStyle = childStyleAtomics.map((childStyle) => childStyle.value);
+  const childStyle = childStyleAtomics.map((childStyleAtomic) => childStyleAtomic.value);
 
   return removeEmpty({
     childId,

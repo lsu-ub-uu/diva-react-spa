@@ -882,6 +882,43 @@
               {
                 "name": "mode",
                 "value": "input"
+              },
+              {
+                "name": "linkedRecordPresentations",
+                "children": [
+                  {
+                    "name": "linkedRecordPresentation",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "presentedRecordType",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "recordType"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "nationalSubjectCategory"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "presentation",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "presentation"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "nationalSubjectCategoryWhenLinkedPGroup"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
               }
             ],
             "name": "presentation",

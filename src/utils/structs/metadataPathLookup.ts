@@ -16,29 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { removeEmpty } from './removeEmpty';
+import { FormMetaData } from '../../formDefinition/formDefinition';
 
-import { Dependencies } from '../formDefinition/formDefinitionsDep';
+export const createFormMetaDataPathLookup = (
+  obj: FormMetaData,
+  path: string = '',
+  lookup: Record<string, FormMetaData> = {}
+) => {
+  path = path ? `${path}.${obj.name}` : obj.name;
 
-export const createTextDefinition = (dependencies: Dependencies, lang: string) => {
-  const { textPool } = dependencies;
-  const textItemDefinitions: { [x: string]: string }[] = [];
-
-  const entries = Array.from(textPool.entries());
-
-  entries.forEach(([key, text]) => {
-    // @ts-ignore
-    const value = text[lang];
-    const obj = { [key]: value };
-    if (value !== undefined) {
-      textItemDefinitions.push(obj);
-    }
+  obj.children?.forEach((metaData) => {
+    createFormMetaDataPathLookup(metaData, path, lookup);
   });
-
-  return textItemDefinitions.reduce(
-    (obj, item) =>
-      Object.assign(obj, {
-        [Object.keys(item)[0]]: Object.values(item)[0]
-      }),
-    {}
-  );
+  lookup[path] = removeEmpty({ ...obj, children: undefined });
+  return lookup;
 };

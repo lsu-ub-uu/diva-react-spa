@@ -56,10 +56,7 @@ describe('Lookup', () => {
   it('should be able to iterate over lookup entries', () => {
     lookup.set('testKey1', 'testValue1');
     lookup.set('testKey2', 'testValue2');
-    const arr = [];
-    for (const [key, value] of lookup.entries()) {
-      arr.push(key);
-    }
-    expect(arr).toEqual(['testKey1', 'testKey2']);
+    const expectedKeys = Array.from(lookup.keys());
+    expect(expectedKeys).toEqual(['testKey1', 'testKey2']);
   });
 });

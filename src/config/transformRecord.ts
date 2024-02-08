@@ -28,18 +28,22 @@ import {
 } from '../utils/cora-data/CoraData';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import {
+  containsChildWithNameInData,
   getAllChildrenWithNameInData,
   getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
-import {
-  createFormMetaData,
-  createFormMetaDataPathLookup,
-  FormMetaData
-} from '../formDefinition/formDefinition';
+import { FormMetaData } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import { removeEmpty } from '../utils/structs/removeEmpty';
+import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
+import { createFormMetaData } from '../formDefinition/formMetadata';
 
+/**
+ * Detects a DataGroup
+ * @param item
+ */
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (
     Object.prototype.hasOwnProperty.call(item, 'name') &&
@@ -47,6 +51,10 @@ export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   );
 }
 
+/**
+ * Detects a DataAtomic
+ * @param item
+ */
 export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
   return (
     Object.prototype.hasOwnProperty.call(item, 'name') &&
@@ -54,6 +62,10 @@ export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
   );
 }
 
+/**
+ * Detects a RecordLink
+ * @param item
+ */
 export function isRecordLink(item: DataGroup | DataAtomic | RecordLink) {
   if (!isDataGroup(item)) return false;
   const group = item as DataGroup;
@@ -91,6 +103,11 @@ const extractRecordUpdates = (recordInfo: DataGroup): unknown[] => {
   });
 };
 
+/**
+ * Transforms records
+ * @param dependencies
+ * @param dataListWrapper
+ */
 export const transformRecords = (
   dependencies: Dependencies,
   dataListWrapper: DataListWrapper
@@ -104,7 +121,8 @@ export const transformRecords = (
 };
 
 /**
- * Transform a Record from Cora to DiVA3 Client BFF - GUI
+ * Transform Record
+ * @param dependencies
  * @param recordWrapper
  */
 export const transformRecord = (
@@ -113,17 +131,24 @@ export const transformRecord = (
 ): unknown => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
+  let createdAt;
+  let createdBy;
 
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const recordInfo = extractRecordInfoDataGroup(dataRecordGroup);
 
   const recordType = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'type');
   const validationType = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'validationType');
-  const createdAt = getFirstDataAtomicValueWithNameInData(recordInfo, 'tsCreated');
-  const createdBy = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'createdBy');
+
+  if (containsChildWithNameInData(recordInfo, 'tsCreated')) {
+    createdAt = getFirstDataAtomicValueWithNameInData(recordInfo, 'tsCreated');
+  }
+
+  if (containsChildWithNameInData(recordInfo, 'createdBy')) {
+    createdBy = extractLinkedRecordIdFromNamedRecordLink(recordInfo, 'createdBy');
+  }
   const updated = extractRecordUpdates(recordInfo);
 
-  // create a form definition by validationType
   const formMetadata = createFormMetaData(dependencies, validationType, 'update');
   const formPathLookup = createFormMetaDataPathLookup(formMetadata);
 
@@ -133,15 +158,29 @@ export const transformRecord = (
   }
 
   const data = traverseDataGroup(dataRecordGroup, formPathLookup);
-  return { id, recordType, validationType, createdAt, createdBy, updated, userRights, data };
+  return removeEmpty({
+    id,
+    recordType,
+    validationType,
+    createdAt,
+    createdBy,
+    updated,
+    userRights,
+    data
+  });
 };
 
-const transformObjectAttributes = (attrObject: Attributes | undefined) => {
-  const attributesArray = [];
-  for (const key in attrObject) {
-    attributesArray.push({ [`_${key}`]: attrObject[key] });
-  }
-  return attributesArray;
+/**
+ * Transform object attributes with _ prefix to key
+ * @param attributes
+ */
+export const transformObjectAttributes = (attributes: Attributes | undefined) => {
+  if (attributes === undefined) return [];
+
+  return Object.keys(attributes).map((key) => {
+    const value = attributes[key];
+    return { [`_${key}`]: value };
+  });
 };
 
 export const traverseDataGroup = (
@@ -213,7 +252,6 @@ export const traverseDataGroup = (
       }
     });
 
-    // each unique name on that level
     if (repeating && !isGroup) {
       object.push({ [name]: thisLevelChildren });
     } else if (repeating && isGroup) {
