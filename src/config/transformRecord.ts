@@ -111,7 +111,7 @@ const extractRecordUpdates = (recordInfo: DataGroup): unknown[] => {
 export const transformRecords = (
   dependencies: Dependencies,
   dataListWrapper: DataListWrapper
-): unknown[] => {
+): any[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
