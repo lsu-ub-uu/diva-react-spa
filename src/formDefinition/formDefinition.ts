@@ -331,18 +331,23 @@ const attributesMatch = (
   metadataCandidate: any,
   metadataFromCurrentPresentation: any
 ) => {
-  const currentPresentationAttributes = getAttributesForAttributeReferences(
+  const currentPresentationAttributes = getAttributesByAttributeReferences(
     metadataPool,
     metadataFromCurrentPresentation.attributeReferences
   );
-  const candidateAttributes = getAttributesForAttributeReferences(
+  const candidateAttributes = getAttributesByAttributeReferences(
     metadataPool,
     metadataCandidate.attributeReferences
   );
   return firstAttributesExistsInSecond(candidateAttributes, currentPresentationAttributes);
 };
 
-export const getAttributesForAttributeReferences = (
+/**
+ * Gets attributes by attribute references
+ * @param metadataPool
+ * @param attributeReferences
+ */
+export const getAttributesByAttributeReferences = (
   metadataPool: any,
   attributeReferences: BFFAttributeReference[]
 ): Record<string, string[]> => {
@@ -374,7 +379,7 @@ const createCollectionVariableOptions = (
     const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
     const label = collectionItem.textId;
     const value = collectionItem.nameInData;
-    return { value, label }; // todo handle disabled?
+    return { value, label };
   });
 };
 
@@ -441,6 +446,7 @@ const createText = (
     gridColSpan: convertStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   };
 };
+
 const createGuiElement = (
   presentationChildReference: BFFPresentationChildReference,
   presentationPool: any
@@ -458,6 +464,30 @@ const createGuiElement = (
   };
 };
 
+/**
+ * Helper method to create a presentation for collection var.
+ *
+ * @remarks
+ *
+ * Used for creating a presentation for attributes since Cora
+ * lacks support for this.
+ *
+ * @param id
+ * @param presentationOf
+ * @param mode
+ */
+const createPresentationForCollectionVar = (
+  id: string,
+  presentationOf: string,
+  mode: 'input' | 'output'
+): BFFPresentation => ({
+  id,
+  presentationOf,
+  type: 'pCollVar',
+  mode,
+  emptyTextId: 'initialEmptyValueText'
+});
+
 const createAttributes = (
   metadataVariable:
     | BFFMetadataCollectionVariable
@@ -474,16 +504,13 @@ const createAttributes = (
       attributeReference.refCollectionVarId
     ) as BFFMetadataCollectionVariable;
 
-    const fakePresentation: BFFPresentation = {
-      id: 'someFakeId',
-      presentationOf: refCollectionVar.id,
-      type: 'pCollVar',
-      mode: variablePresentationMode,
-      emptyTextId: 'initialEmptyValueText'
-    };
-
+    const presentation = createPresentationForCollectionVar(
+      'someFakeId',
+      refCollectionVar.id,
+      variablePresentationMode
+    );
     const { finalValue } = refCollectionVar;
-    const commonParameters = createCommonParameters(refCollectionVar, fakePresentation);
+    const commonParameters = createCommonParameters(refCollectionVar, presentation);
     options = createCollectionVariableOptions(metadataPool, refCollectionVar);
     return removeEmpty({ ...commonParameters, options, finalValue });
   });
@@ -687,13 +714,12 @@ const createCommonParameters = (
   const placeholder = presentation.emptyTextId;
   const { mode, inputType } = presentation;
   const tooltip = { title: metadata.textId, body: metadata.defTextId };
-  let label = metadata.textId;
+  let label = presentation.specifiedLabelTextId
+    ? presentation.specifiedLabelTextId
+    : metadata.textId;
   let showLabel = true;
   let headlineLevel;
 
-  if (presentation.specifiedLabelTextId) {
-    label = presentation.specifiedLabelTextId;
-  }
   if (Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineTextId')) {
     const presentationGroup = presentation as BFFPresentationGroup;
     if (presentationGroup.specifiedHeadlineTextId !== undefined) {

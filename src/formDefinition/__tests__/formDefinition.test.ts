@@ -109,7 +109,7 @@ import {
   createFormDefinition,
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
-  getAttributesForAttributeReferences
+  getAttributesByAttributeReferences
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
@@ -1528,7 +1528,7 @@ describe('formDefinition', () => {
               childStyle: [],
               name: 'pSomeGuiElementLinkId',
               gridColSpan: 12,
-              url: 'https://www.google.se',
+              url: 'http://www.google.se',
               elementText: 'demoTestLinkGuiElementText',
               presentAs: 'link',
               type: 'guiElementLink'
@@ -2219,7 +2219,7 @@ describe('formDefinition', () => {
         const attributeReferences: BFFAttributeReference[] = [
           { refCollectionVarId: mmAttribute.id }
         ];
-        const actual = getAttributesForAttributeReferences(
+        const actual = getAttributesByAttributeReferences(
           dependencies.metadataPool,
           attributeReferences
         );
@@ -2234,7 +2234,7 @@ describe('formDefinition', () => {
           { refCollectionVarId: mmAttribute.id }
         ];
 
-        const actual = getAttributesForAttributeReferences(
+        const actual = getAttributesByAttributeReferences(
           dependencies.metadataPool,
           attributeReferences
         );
@@ -2261,7 +2261,7 @@ describe('formDefinition', () => {
           { refCollectionVarId: pmAttribute.id }
         ];
 
-        const actual = getAttributesForAttributeReferences(
+        const actual = getAttributesByAttributeReferences(
           dependencies.metadataPool,
           attributeReferences
         );
