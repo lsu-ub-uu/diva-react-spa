@@ -232,23 +232,37 @@ const createComponentsFromChildReferences = (
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReferences: BFFPresentationChildReference[]
 ): unknown => {
-  const { presentationPool } = dependencies;
   return presentationChildReferences.map((presentationChildReference) => {
-    const presentationChildType = presentationChildReference.type;
-
-    if (presentationChildType === 'text') {
-      return createText(presentationChildReference, presentationChildType);
-    }
-
-    if (presentationChildType === 'guiElement') {
-      return createGuiElement(presentationChildReference, presentationPool);
-    }
-
-    return createPresentation(dependencies, metadataChildReferences, presentationChildReference);
+    return createComponentFromChildReference(
+      presentationChildReference,
+      dependencies,
+      metadataChildReferences
+    );
   });
 };
 
-const createPresentation = (
+const createComponentFromChildReference = (
+  presentationChildReference: BFFPresentationChildReference,
+  dependencies: Dependencies,
+  metadataChildReferences: BFFMetadataChildReference[]
+) => {
+  const presentationChildType = presentationChildReference.type;
+
+  if (presentationChildType === 'text') {
+    return createText(presentationChildReference, presentationChildType);
+  }
+
+  if (presentationChildType === 'guiElement') {
+    return createGuiElement(presentationChildReference, dependencies.presentationPool);
+  }
+
+  return createFormPartsForGroupOrVariable(
+    dependencies,
+    metadataChildReferences,
+    presentationChildReference
+  );
+};
+const createFormPartsForGroupOrVariable = (
   dependencies: Dependencies,
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference
@@ -257,21 +271,22 @@ const createPresentation = (
   let metadataOverrideId;
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-  if (presentation.type !== 'container') {
-    if (!metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf)) {
-      const metadataFromCurrentPresentation = metadataPool.get(presentation.presentationOf);
-      const foundMetadataChildReference = findMetadataChildReferenceByNameInDataAndAttributes(
-        metadataPool,
-        metadataChildReferences,
-        metadataFromCurrentPresentation
-      );
+  if (
+    presentation.type !== 'container' &&
+    noIdMatchForChildRefAndPresentationOf(metadataChildReferences, presentation)
+  ) {
+    const metadataFromCurrentPresentation = metadataPool.get(presentation.presentationOf);
+    const foundMetadataChildReference = findMetadataChildReferenceByNameInDataAndAttributes(
+      metadataPool,
+      metadataChildReferences,
+      metadataFromCurrentPresentation
+    );
 
-      if (!foundMetadataChildReference) {
-        return undefined;
-      }
-      const foundMetadata = metadataPool.get(foundMetadataChildReference.childId);
-      metadataOverrideId = foundMetadata.id;
+    if (!foundMetadataChildReference) {
+      return undefined;
     }
+    const foundMetadata = metadataPool.get(foundMetadataChildReference.childId);
+    metadataOverrideId = foundMetadata.id;
   }
   return createDetailedPresentationBasedOnPresentationType(
     dependencies,
@@ -279,6 +294,13 @@ const createPresentation = (
     presentationChildReference,
     metadataOverrideId
   );
+};
+
+const noIdMatchForChildRefAndPresentationOf = (
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentation: BFFPresentation
+) => {
+  return !metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf);
 };
 
 export const findMetadataChildReferenceByNameInDataAndAttributes = (
