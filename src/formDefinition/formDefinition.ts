@@ -768,10 +768,10 @@ const checkIfSpecifiedHeadlineTextIdExist = (presentation: TYPES.BFFPresentation
   return Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineTextId');
 };
 
-function checkIfSpecifiedHeadlineLevelExist(presentation: TYPES.BFFPresentationGroup) {
+const checkIfSpecifiedHeadlineLevelExist = (presentation: TYPES.BFFPresentationGroup) => {
   return Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineLevel');
-}
+};
 
-function checkIfShowHeadlineExist(presentation: TYPES.BFFPresentationGroup) {
+const checkIfShowHeadlineExist = (presentation: TYPES.BFFPresentationGroup) => {
   return Object.prototype.hasOwnProperty.call(presentation, 'showHeadline');
-}
+};
