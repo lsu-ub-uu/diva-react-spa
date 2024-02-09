@@ -742,28 +742,30 @@ const createCommonParameters = (
   let showLabel = true;
   let headlineLevel;
 
-  if (Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineTextId')) {
-    const presentationGroup = presentation as BFFPresentationGroup;
-    if (presentationGroup.specifiedHeadlineTextId !== undefined) {
-      label = presentationGroup.specifiedHeadlineTextId;
-    }
+  const presentationGroup = presentation as BFFPresentationGroup;
+
+  if (
+    checkIfSpecifiedHeadlineTextIdExist(presentationGroup) &&
+    presentationGroup.specifiedHeadlineTextId !== undefined
+  ) {
+    label = presentationGroup.specifiedHeadlineTextId;
   }
-  if (Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineLevel')) {
-    const presentationGroup = presentation as BFFPresentationGroup;
-    if (presentationGroup.specifiedHeadlineLevel !== undefined) {
-      headlineLevel = presentationGroup.specifiedHeadlineLevel;
-    }
+
+  if (
+    checkIfSpecifiedHeadlineLevelExist(presentationGroup) &&
+    presentationGroup.specifiedHeadlineLevel !== undefined
+  ) {
+    headlineLevel = presentationGroup.specifiedHeadlineLevel;
   }
-  if (Object.prototype.hasOwnProperty.call(presentation, 'showHeadline')) {
-    const presentationGroup = presentation as BFFPresentationGroup;
-    if (presentationGroup.showHeadline === 'false') {
-      showLabel = false;
-    }
+
+  if (checkIfShowHeadlineExist(presentationGroup) && presentationGroup.showHeadline === 'false') {
+    showLabel = false;
   }
 
   if (presentation.showLabel && presentation.showLabel === 'false') {
     showLabel = false;
   }
+
   return removeEmpty({
     name,
     type,
@@ -776,3 +778,15 @@ const createCommonParameters = (
     showLabel
   });
 };
+
+const checkIfSpecifiedHeadlineTextIdExist = (presentation: BFFPresentationGroup) => {
+  return Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineTextId');
+};
+
+function checkIfSpecifiedHeadlineLevelExist(presentation: BFFPresentationGroup) {
+  return Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineLevel');
+}
+
+function checkIfShowHeadlineExist(presentation: BFFPresentationGroup) {
+  return Object.prototype.hasOwnProperty.call(presentation, 'showHeadline');
+}
