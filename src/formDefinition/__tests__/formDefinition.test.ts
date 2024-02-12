@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
   BFFGuiElement,
@@ -33,7 +34,10 @@ import {
   BFFRecordType,
   BFFMetadataGroup,
   BFFPresentationChildReference,
-  BFFText
+  BFFText,
+  BFFPresentationRecordLink,
+  BFFLinkedRecordPresentation,
+  BFFMetadataRecordLink
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -107,6 +111,7 @@ import {
 } from '../../__mocks__/form/bffMock';
 import {
   createFormDefinition,
+  createLinkedRecordDefinition,
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
   getAttributesByAttributeReferences
@@ -402,7 +407,7 @@ describe('formDefinition', () => {
     return metadata;
   };
 
-  const createBFFPresentationGroup = (
+  const createPresentationGroup = (
     id: string,
     presentationOf: string,
     children: BFFPresentationChildReference[]
@@ -419,12 +424,43 @@ describe('formDefinition', () => {
     return pGroup;
   };
 
-  // it('should be able to lookup validationTypes, metadata, presentations from pools', () => {
-  //   expect(validationTypePool.get('someValidationTypeId')).toBeDefined();
-  //   expect(metadataPool.get('someNewMetadataGroupId')).toBeDefined();
-  //   expect(metadataPool.get('someMetadataTextVariableId')).toBeDefined();
-  //   expect(presentationPool.get('pSomeMetadataTextVariableId')).toBeDefined();
-  // });
+  const createRecordLink = (id: string): BFFMetadataRecordLink => {
+    const metadata = {
+      id,
+      nameInData: `some${id}recordLink`,
+      type: 'recordLink',
+      textId: `some${id}TextId`,
+      defTextId: `some${id}DefTextId`,
+      linkedRecordType: 'nationalSubjectCategory'
+    } as BFFMetadataRecordLink;
+    addToPool(metadata);
+    return metadata;
+  };
+  const createPresentationRecordLink = (id: string): BFFPresentationRecordLink => {
+    const linkedRecordPresentations: BFFLinkedRecordPresentation[] = [
+      {
+        presentedRecordType: 'string',
+        presentationId: 'string'
+      }
+    ];
+    const pLink = {
+      id,
+      type: 'pRecordLink',
+      mode: 'output',
+      presentationOf: id,
+      linkedRecordPresentations
+    } as BFFPresentationRecordLink;
+    console.log(pLink);
+    dependencies.presentationPool.set(id, pLink);
+    return pLink;
+  };
+
+  it('should be able to lookup validationTypes, metadata, presentations from pools', () => {
+    expect(validationTypePool.get('someValidationTypeId')).toBeDefined();
+    expect(metadataPool.get('someNewMetadataGroupId')).toBeDefined();
+    expect(metadataPool.get('someMetadataTextVariableId')).toBeDefined();
+    expect(presentationPool.get('pSomeMetadataTextVariableId')).toBeDefined();
+  });
 
   it('should throw Error on invalid ValidationType', () => {
     const invalidValidationType = 'someInvalidValidationType';
@@ -1116,7 +1152,6 @@ describe('formDefinition', () => {
     });
 
     it('should return a form definition for a edit metadata group', () => {
-      // TODO: Add all the combinations from the newMetadataGroup
       const validationTypeId = 'someValidationTypeId';
       const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_EDIT);
       expect(formDefinition.form.components).toHaveLength(16);
@@ -1728,7 +1763,7 @@ describe('formDefinition', () => {
         childId: 'pSomeMetadataTextVariable6Id',
         type: 'presentation'
       } as BFFPresentationChildReference;
-      createBFFPresentationGroup(recordType.presentationViewId, metaDataGroup.nameInData, [
+      createPresentationGroup(recordType.presentationViewId, metaDataGroup.nameInData, [
         presentationChild
       ]);
 
@@ -1777,6 +1812,37 @@ describe('formDefinition', () => {
             title: 'someTextId'
           },
           type: 'group'
+        }
+      });
+    });
+  });
+  describe('linked record definition', () => {
+    it('should return a linked record definition for a new metadata group', () => {
+      const presentationLinkId = 'someValidationTypeId';
+      createValidationType('presentationRecordLink');
+
+      const linkedRecordDefinition = createLinkedRecordDefinition(dependencies, presentationLinkId);
+      expect(linkedRecordDefinition.form.components).toHaveLength(1);
+      expect(linkedRecordDefinition).toStrictEqual({
+        presentationLinkId,
+
+        form: {
+          name: 'person',
+          type: 'group',
+          mode: 'output',
+          tooltip: {
+            title: 'personGroupText',
+            body: 'personGroupDefText'
+          },
+          label: 'personGroupText',
+          showLabel: false,
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          components: [],
+          childStyle: [],
+          gridColSpan: 12
         }
       });
     });

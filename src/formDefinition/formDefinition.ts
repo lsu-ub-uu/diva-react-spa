@@ -18,7 +18,11 @@
  */
 
 import * as TYPES from 'config/bffTypes';
-import { BFFMetadataChildReference, BFFPresentationSurroundingContainer } from 'config/bffTypes';
+import {
+  BFFMetadata,
+  BFFMetadataChildReference,
+  BFFPresentationSurroundingContainer
+} from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
@@ -313,13 +317,36 @@ export const findMetadataChildReferenceByNameInDataAndAttributes = (
   });
 };
 
-const differentNameInData = (metadataCandidate: any, metadataFromCurrentPresentation: any) => {
+const differentNameInData = (
+  metadataCandidate:
+    | TYPES.BFFMetadataCollectionVariable
+    | TYPES.BFFMetadataNumberVariable
+    | TYPES.BFFMetadataTextVariable
+    | TYPES.BFFMetadataRecordLink
+    | TYPES.BFFMetadataGroup,
+  metadataFromCurrentPresentation:
+    | TYPES.BFFMetadataCollectionVariable
+    | TYPES.BFFMetadataNumberVariable
+    | TYPES.BFFMetadataTextVariable
+    | TYPES.BFFMetadataRecordLink
+    | TYPES.BFFMetadataGroup
+) => {
   return metadataCandidate.nameInData !== metadataFromCurrentPresentation.nameInData;
 };
 
 const differentNumberOfAttributes = (
-  metadataCandidate: any,
-  metadataFromCurrentPresentation: any
+  metadataCandidate:
+    | TYPES.BFFMetadataCollectionVariable
+    | TYPES.BFFMetadataNumberVariable
+    | TYPES.BFFMetadataTextVariable
+    | TYPES.BFFMetadataRecordLink
+    | TYPES.BFFMetadataGroup,
+  metadataFromCurrentPresentation:
+    | TYPES.BFFMetadataCollectionVariable
+    | TYPES.BFFMetadataNumberVariable
+    | TYPES.BFFMetadataTextVariable
+    | TYPES.BFFMetadataRecordLink
+    | TYPES.BFFMetadataGroup
 ) => {
   return (
     metadataCandidate.attributeReferences?.length !==
@@ -327,7 +354,14 @@ const differentNumberOfAttributes = (
   );
 };
 
-const noAttributesToCompare = (metadataCandidate: any) => {
+const noAttributesToCompare = (
+  metadataCandidate:
+    | TYPES.BFFMetadataCollectionVariable
+    | TYPES.BFFMetadataNumberVariable
+    | TYPES.BFFMetadataTextVariable
+    | TYPES.BFFMetadataRecordLink
+    | TYPES.BFFMetadataGroup
+) => {
   return (
     metadataCandidate.attributeReferences?.length === undefined ||
     metadataCandidate.attributeReferences?.length === 0
@@ -603,16 +637,14 @@ const createDetailedPresentationBasedOnPresentationType = (
       const presentationMetadataIds =
         (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
       definitionFilteredChildRefs = metadataChildReferences.filter((definitionChildRef) => {
-        if (presentationMetadataIds.includes(definitionChildRef.childId)) {
+        if (checkIfPresentationIncludesMetadataId(presentationMetadataIds, definitionChildRef)) {
           return true;
         }
-
-        const metadataFromCurrentPresentation = metadataPool.get(presentationMetadataIds[0]);
-        console.log('metadataFromCurrentPresentation', metadataFromCurrentPresentation);
-        return findMetadataChildReferenceByNameInDataAndAttributes(
+        // console.log('presentationMetadataIds', presentationMetadataIds)
+        return matchPresentationWithMetadata(
           metadataPool,
-          [definitionChildRef],
-          metadataFromCurrentPresentation
+          presentationMetadataIds,
+          definitionChildRef
         );
       });
     } else if (containerType === 'repeating') {
@@ -660,25 +692,6 @@ const createDetailedPresentationBasedOnPresentationType = (
     recordLinkType
   });
 };
-
-const checkForAttributes = (
-  metadataVariable:
-    | TYPES.BFFMetadataCollectionVariable
-    | TYPES.BFFMetadataNumberVariable
-    | TYPES.BFFMetadataTextVariable
-    | TYPES.BFFMetadataRecordLink
-    | TYPES.BFFMetadataGroup,
-  metadataPool: Lookup<string, TYPES.BFFMetadata>,
-  options: any,
-  presentation: TYPES.BFFPresentation
-) => {
-  let attributes;
-  if (metadataVariable.attributeReferences !== undefined) {
-    attributes = createAttributes(metadataVariable, metadataPool, options, presentation.mode);
-  }
-  return attributes;
-};
-
 const findMetadataChildReferenceById = (
   childId: string,
   metadataChildReferences: TYPES.BFFMetadataChildReference[]
@@ -702,24 +715,6 @@ const createRepeat = (
   const repeatMax = determineRepeatMax(metaDataChildRef.repeatMax);
 
   return { minNumberOfRepeatingToShow, repeatMin, repeatMax };
-};
-
-export const determineRepeatMax = (value: string) => {
-  const infiniteNumberOfRepeat = 'X';
-  if (value === infiniteNumberOfRepeat) {
-    return Number.MAX_VALUE;
-  }
-  return parseInt(value);
-};
-
-const getMinNumberOfRepeatingToShow = (
-  presentationChildReference: TYPES.BFFPresentationChildReference
-) => {
-  let minNumberOfRepeatingToShow;
-  if (presentationChildReference.minNumberOfRepeatingToShow !== undefined) {
-    minNumberOfRepeatingToShow = parseInt(presentationChildReference.minNumberOfRepeatingToShow);
-  }
-  return minNumberOfRepeatingToShow;
 };
 
 const createCommonParameters = (
@@ -772,6 +767,64 @@ const createCommonParameters = (
     headlineLevel,
     showLabel
   });
+};
+
+function matchPresentationWithMetadata(
+  metadataPool: Lookup<string, BFFMetadata>,
+  presentationMetadataIds: string[],
+  definitionChildRef: BFFMetadataChildReference
+) {
+  const metadataFromCurrentPresentation = metadataPool.get(presentationMetadataIds[0]);
+
+  console.log('metadataFromCurrentPresentation', metadataFromCurrentPresentation);
+  return findMetadataChildReferenceByNameInDataAndAttributes(
+    metadataPool,
+    [definitionChildRef],
+    metadataFromCurrentPresentation
+  );
+}
+
+const checkIfPresentationIncludesMetadataId = (
+  presentationMetadataIds: string[],
+  definitionChildRef: BFFMetadataChildReference
+) => {
+  return presentationMetadataIds.includes(definitionChildRef.childId);
+};
+
+const checkForAttributes = (
+  metadataVariable:
+    | TYPES.BFFMetadataCollectionVariable
+    | TYPES.BFFMetadataNumberVariable
+    | TYPES.BFFMetadataTextVariable
+    | TYPES.BFFMetadataRecordLink
+    | TYPES.BFFMetadataGroup,
+  metadataPool: Lookup<string, TYPES.BFFMetadata>,
+  options: any,
+  presentation: TYPES.BFFPresentation
+) => {
+  let attributes;
+  if (metadataVariable.attributeReferences !== undefined) {
+    attributes = createAttributes(metadataVariable, metadataPool, options, presentation.mode);
+  }
+  return attributes;
+};
+
+export const determineRepeatMax = (value: string) => {
+  const infiniteNumberOfRepeat = 'X';
+  if (value === infiniteNumberOfRepeat) {
+    return Number.MAX_VALUE;
+  }
+  return parseInt(value);
+};
+
+const getMinNumberOfRepeatingToShow = (
+  presentationChildReference: TYPES.BFFPresentationChildReference
+) => {
+  let minNumberOfRepeatingToShow;
+  if (presentationChildReference.minNumberOfRepeatingToShow !== undefined) {
+    minNumberOfRepeatingToShow = parseInt(presentationChildReference.minNumberOfRepeatingToShow);
+  }
+  return minNumberOfRepeatingToShow;
 };
 
 const checkIfSpecifiedHeadlineTextIdExist = (presentation: TYPES.BFFPresentationGroup) => {
