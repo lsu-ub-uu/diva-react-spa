@@ -18,6 +18,7 @@
  */
 
 import * as TYPES from 'config/bffTypes';
+import { BFFMetadataChildReference, BFFPresentationSurroundingContainer } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
@@ -596,25 +597,34 @@ const createDetailedPresentationBasedOnPresentationType = (
     containerType = getContainerType(presentationContainer);
     presentationStyle = presentationContainer.presentationStyle;
 
-    let filteredChildRefs: TYPES.BFFMetadataChildReference[] = [];
+    let definitionFilteredChildRefs: BFFMetadataChildReference[] = [];
 
     if (containerType === 'surrounding') {
-      const metadataIds =
-        (presentationContainer as TYPES.BFFPresentationSurroundingContainer).presentationsOf ?? [];
+      const presentationMetadataIds =
+        (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
+      definitionFilteredChildRefs = metadataChildReferences.filter((definitionChildRef) => {
+        if (presentationMetadataIds.includes(definitionChildRef.childId)) {
+          return true;
+        }
 
-      filteredChildRefs = metadataChildReferences.filter((childRef) => {
-        return metadataIds.includes(childRef.childId);
+        const metadataFromCurrentPresentation = metadataPool.get(presentationMetadataIds[0]);
+        console.log('metadataFromCurrentPresentation', metadataFromCurrentPresentation);
+        return findMetadataChildReferenceByNameInDataAndAttributes(
+          metadataPool,
+          [definitionChildRef],
+          metadataFromCurrentPresentation
+        );
       });
     } else if (containerType === 'repeating') {
       metadataId = presentationContainer.presentationOf;
       metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
-      filteredChildRefs = [metaDataChildRef];
+      definitionFilteredChildRefs = [metaDataChildRef];
     }
 
     commonParameters = { type, name, mode };
     components = createComponentsFromChildReferences(
       dependencies,
-      filteredChildRefs,
+      definitionFilteredChildRefs,
       presentationContainer.children
     );
   }

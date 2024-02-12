@@ -131,7 +131,7 @@ app.use('/api/divaOutputs', async (req, res) => {
       authToken
     );
 
-    const records= transformRecords(dependencies, response.data);
+    const records = transformRecords(dependencies, response.data);
     res.status(200).json(records);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
