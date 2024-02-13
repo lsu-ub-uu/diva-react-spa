@@ -640,7 +640,7 @@ const createDetailedPresentationBasedOnPresentationType = (
         if (checkIfPresentationIncludesMetadataId(presentationMetadataIds, definitionChildRef)) {
           return true;
         }
-        // console.log('presentationMetadataIds', presentationMetadataIds)
+
         return matchPresentationWithMetadata(
           metadataPool,
           presentationMetadataIds,
@@ -776,7 +776,6 @@ function matchPresentationWithMetadata(
 ) {
   const metadataFromCurrentPresentation = metadataPool.get(presentationMetadataIds[0]);
 
-  console.log('metadataFromCurrentPresentation', metadataFromCurrentPresentation);
   return findMetadataChildReferenceByNameInDataAndAttributes(
     metadataPool,
     [definitionChildRef],

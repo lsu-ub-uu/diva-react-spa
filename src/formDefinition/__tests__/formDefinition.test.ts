@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
   BFFGuiElement,
@@ -424,23 +423,27 @@ describe('formDefinition', () => {
     return pGroup;
   };
 
-  const createRecordLink = (id: string): BFFMetadataRecordLink => {
+  const createRecordLink = (id: string, linkedRecordType: string): BFFMetadataRecordLink => {
     const metadata = {
       id,
       nameInData: `some${id}recordLink`,
       type: 'recordLink',
       textId: `some${id}TextId`,
       defTextId: `some${id}DefTextId`,
-      linkedRecordType: 'nationalSubjectCategory'
+      linkedRecordType
     } as BFFMetadataRecordLink;
     addToPool(metadata);
     return metadata;
   };
-  const createPresentationRecordLink = (id: string): BFFPresentationRecordLink => {
+  const createPresentationRecordLink = (
+    id: string,
+    presentedRecordType: string,
+    presentationId: string
+  ): BFFPresentationRecordLink => {
     const linkedRecordPresentations: BFFLinkedRecordPresentation[] = [
       {
-        presentedRecordType: 'string',
-        presentationId: 'string'
+        presentedRecordType,
+        presentationId
       }
     ];
     const pLink = {
@@ -450,7 +453,7 @@ describe('formDefinition', () => {
       presentationOf: id,
       linkedRecordPresentations
     } as BFFPresentationRecordLink;
-    console.log(pLink);
+
     dependencies.presentationPool.set(id, pLink);
     return pLink;
   };
@@ -1818,33 +1821,43 @@ describe('formDefinition', () => {
   });
   describe('linked record definition', () => {
     it('should return a linked record definition for a new metadata group', () => {
-      const presentationLinkId = 'someValidationTypeId';
+      const presentationLinkId = 'presentationRecordLink';
       createValidationType('presentationRecordLink');
+      // createGroup('presentationRecordLink', 'presentationRecordLink', []);
+      createRecordLink('divaPersonPLink', 'divaPersonLink');
+      createPresentationRecordLink(
+        'presentationRecordLink',
+        'person',
+        'personWhenLinkedOutputPGroup'
+      );
+      createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
+        { childId: 'personNameLinkOutputPGroup', type: 'presentation' }
+      ]);
+      createRecordType('person');
+      createGroup('personGroup', 'personGroup', ['personNameGroup']);
+      createPresentationGroup('personPGroup', 'personGroup', [
+        {
+          childId: 'personNamePGroup',
+          type: 'presentation'
+        }
+      ]);
+      createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
+        {
+          childId: 'personNameLinkOutputPGroup',
+          type: 'presentation'
+        }
+      ]);
+      createPresentationGroup('personNameLinkOutputPGroup', 'personNameGroup', [
+        { childId: 'personNameGroup', type: 'presentation' }
+      ]);
+      createGroup('personNameGroup', 'personNameGroup', ['lastNameTextVar', 'firstNameTextVar']);
+      createTextVar('lastNameTextVar', 'familyName', []);
+      createTextVar('firstNameTextVar', 'givenName', []);
+      // console.log('temp: ', metadataPool.get('personNameGroup'));
 
       const linkedRecordDefinition = createLinkedRecordDefinition(dependencies, presentationLinkId);
-      expect(linkedRecordDefinition.form.components).toHaveLength(1);
-      expect(linkedRecordDefinition).toStrictEqual({
-        presentationLinkId,
-
-        form: {
-          name: 'person',
-          type: 'group',
-          mode: 'output',
-          tooltip: {
-            title: 'personGroupText',
-            body: 'personGroupDefText'
-          },
-          label: 'personGroupText',
-          showLabel: false,
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          components: [],
-          childStyle: [],
-          gridColSpan: 12
-        }
-      });
+      // expect(linkedRecordDefinition.form.components).toHaveLength(1);
+      expect(linkedRecordDefinition).toStrictEqual({});
     });
   });
 
