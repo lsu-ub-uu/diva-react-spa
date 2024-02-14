@@ -25,6 +25,9 @@ import { transformRecord, transformRecords } from './config/transformRecord';
 
 import { createFormMetaDataPathLookup } from './utils/structs/metadataPathLookup';
 import { createFormMetaData } from './formDefinition/formMetadata';
+import translationRoute from './routes/translationRoute';
+import divaOutputsRoute from './routes/divaOutputsRoute';
+import validationTypesRoute from './routes/validationTypesRoute';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -35,7 +38,7 @@ const app: Application = express();
 
 configureServer(app);
 
-const errorHandler = (error: unknown) => {
+export const errorHandler = (error: unknown) => {
   // @ts-ignore
   const message: string = (error.message ?? 'Unknown error') as string;
   const status = axios.isAxiosError(error) ? error.response?.status : 500;
@@ -46,45 +49,11 @@ const errorHandler = (error: unknown) => {
 };
 
 app.use('/api/auth', authRoute);
-app.use('/api/translations/:lang', async (req, res) => {
-  try {
-    const textDefinitions = createTextDefinition(dependencies, req.params.lang);
-    res.status(200).json(textDefinitions);
-  } catch (error: unknown) {
-    res.status(500).json('Internal server error');
-  }
-});
+app.use('/api/translations/', translationRoute);
+app.use('/api/divaOutputs', divaOutputsRoute);
+// app.use('/api/api/validationTypes', validationTypesRoute);
 
-app.use('/api/divaOutputs', async (req, res) => {
-  try {
-    const authToken = req.header('authToken') ?? '';
-    const searchQuery: DataGroup = {
-      name: 'search',
-      children: [
-        {
-          name: 'include',
-          children: [
-            { name: 'includePart', children: [{ name: 'outputGenericSearchTerm', value: '**' }] }
-          ]
-        }
-      ]
-    };
-
-    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
-      'divaOutputSearch',
-      searchQuery,
-      authToken
-    );
-
-    const records = transformRecords(dependencies, response.data);
-    res.status(200).json(records);
-  } catch (error: unknown) {
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-});
-
-app.use('/api/validationTypes', async (req, res) => {
+app.get('/api/validationTypes', async (req, res) => {
   try {
     const authToken = req.header('authToken') ?? '';
     const searchQuery: DataGroup = {
@@ -258,9 +227,9 @@ app.get('/api/refreshDefinitions', async (_req, res) => {
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
   console.log(`Cora API-url ${CORA_API_URL}`);
-  loadStuffOnServerStart().then(() => {
-    console.log('Loaded stuff from cora');
-    const definition = createLinkedRecordDefinition(dependencies, 'divaPersonOutputPLink');
-    console.log(JSON.stringify(definition, null, 1));
-  });
+  // loadStuffOnServerStart().then(() => {
+  //   console.log('Loaded stuff from cora');
+  //   const definition = createLinkedRecordDefinition(dependencies, 'divaPersonOutputPLink');
+  //   console.log(JSON.stringify(definition, null, 1));
+  // });
 });

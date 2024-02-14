@@ -1,1 +1,10 @@
 GET http://localhost:8080/api/refreshDefinitions
+
+###
+GET http://localhost:8080/api/translations/sv
+
+###
+GET http://localhost:8080/api/divaOutputs
+
+###
+GET http://localhost:8080/api/api/validationTypes
