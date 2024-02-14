@@ -1852,20 +1852,17 @@ describe('formDefinition', () => {
     });
   });
   describe('linked record definition', () => {
-    it('should return a linked record definition for a new metadata group', () => {
-      const presentationLinkId = 'presentationRecordLink';
-      createValidationType('presentationRecordLink');
-      // createGroup('presentationRecordLink', 'presentationRecordLink', []);
-      createRecordLink('divaPersonPLink', 'divaPersonLink');
+    it('should return a linked record definition for a new metadata group (person)', () => {
+      createRecordType('person');
+      createRecordLink('divaPersonOutputPLink', 'personWhenLinkedOutputPGroup');
       createPresentationRecordLink(
-        'presentationRecordLink',
-        'person',
+        'divaPersonOutputPLink',
+        'divaPersonLink',
         'personWhenLinkedOutputPGroup'
       );
       createPresentationGroup('personWhenLinkedOutputPGroup', 'personGroup', [
         { childId: 'personNameLinkOutputPGroup', type: 'presentation' }
       ]);
-      createRecordType('person');
       createGroup('personGroup', 'personGroup', ['personNameGroup']);
       createPresentationGroup('personPGroup', 'personGroup', [
         {
@@ -1908,9 +1905,11 @@ describe('formDefinition', () => {
       createGroup('personNameGroup', 'personNameGroup', ['lastNameTextVar', 'firstNameTextVar']);
       createTextVar('lastNameTextVar', 'familyName', []);
       createTextVar('firstNameTextVar', 'givenName', []);
-      // console.log('temp: ', metadataPool.get('personNameGroup'));
 
-      const linkedRecordDefinition = createLinkedRecordDefinition(dependencies, presentationLinkId);
+      const linkedRecordDefinition = createLinkedRecordDefinition(
+        dependencies,
+        'divaPersonOutputPLink'
+      );
       expect(linkedRecordDefinition.form.components).toHaveLength(1);
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
