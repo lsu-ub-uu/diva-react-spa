@@ -1,30 +1,18 @@
 import express, { Application } from 'express';
 import axios from 'axios';
-import { configureServer } from './config/configureServer';
+import { configureServer, dependencies, loadStuffOnServerStart } from './config/configureServer';
 import { createTextDefinition } from './textDefinition/textDefinition';
-import { listToPool } from './utils/structs/listToPool';
-import {
-  BFFGuiElement,
-  BFFMetadata,
-  BFFPresentation,
-  BFFPresentationGroup,
-  BFFRecordType,
-  BFFText,
-  BFFValidationType
-} from './config/bffTypes';
+
 import {
   getRecordDataById,
-  getRecordDataListByType,
   getSearchResultDataListBySearchType,
   postRecordData,
   updateRecordDataById
 } from './cora/cora';
 import { DataGroup, DataListWrapper, RecordWrapper } from './utils/cora-data/CoraData';
-import { transformCoraTexts } from './config/transformTexts';
-import { transformMetadata } from './config/transformMetadata';
-import { transformCoraPresentations } from './config/transformPresentations';
+
 import { transformCoraValidationTypes } from './config/transformValidationTypes';
-import { Dependencies } from './formDefinition/formDefinitionsDep';
+
 import {
   createFormDefinition,
   createLinkedRecordDefinition
@@ -34,7 +22,7 @@ import { extractIdFromRecordInfo } from './utils/cora-data/CoraDataTransforms';
 import { injectRecordInfoIntoDataGroup, transformToCoraData } from './config/transformToCora';
 import { cleanJson } from './utils/structs/removeEmpty';
 import { transformRecord, transformRecords } from './config/transformRecord';
-import { transformCoraRecordTypes } from './config/transformRecordTypes';
+
 import { createFormMetaDataPathLookup } from './utils/structs/metadataPathLookup';
 import { createFormMetaData } from './formDefinition/formMetadata';
 
@@ -47,11 +35,6 @@ const app: Application = express();
 
 configureServer(app);
 
-const getPoolsFromCora = (poolTypes: string[]) => {
-  const promises = poolTypes.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
-  return Promise.all(promises);
-};
-
 const errorHandler = (error: unknown) => {
   // @ts-ignore
   const message: string = (error.message ?? 'Unknown error') as string;
@@ -60,44 +43,6 @@ const errorHandler = (error: unknown) => {
     message,
     status: status ?? 500
   };
-};
-
-const dependencies: Dependencies = {
-  metadataPool: listToPool<BFFMetadata>([]),
-  presentationPool: listToPool<BFFPresentation>([]),
-  recordTypePool: listToPool<BFFRecordType>([]),
-  textPool: listToPool<BFFText>([]),
-  validationTypePool: listToPool<BFFValidationType>([])
-};
-
-const loadStuffOnServerStart = async () => {
-  const response = await getRecordDataListByType<DataListWrapper>('text', '');
-  const texts = transformCoraTexts(response.data);
-
-  const types = ['metadata', 'presentation', 'validationType', 'guiElement', 'recordType'];
-  const result = await getPoolsFromCora(types);
-
-  const metadata = transformMetadata(result[0].data);
-  const metadataPool = listToPool<BFFMetadata>(metadata);
-  const presentation = transformCoraPresentations(result[1].data);
-  const guiElements = transformCoraPresentations(result[3].data);
-
-  const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup | BFFGuiElement>([
-    ...presentation,
-    ...guiElements
-  ]);
-
-  const validationTypes = transformCoraValidationTypes(result[2].data);
-  const validationTypePool = listToPool<BFFValidationType>(validationTypes);
-
-  const recordTypes = transformCoraRecordTypes(result[4].data);
-  const recordTypePool = listToPool<BFFRecordType>(recordTypes);
-
-  dependencies.validationTypePool = validationTypePool;
-  dependencies.recordTypePool = recordTypePool;
-  dependencies.metadataPool = metadataPool;
-  dependencies.presentationPool = presentationPool;
-  dependencies.textPool = listToPool<BFFText>(texts);
 };
 
 app.use('/api/auth', authRoute);
