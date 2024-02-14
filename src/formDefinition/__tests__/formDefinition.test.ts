@@ -1852,8 +1852,7 @@ describe('formDefinition', () => {
     });
   });
   describe('linked record definition', () => {
-    it('should return a linked record definition for a new metadata group (person)', () => {
-      createRecordType('person');
+    it('should return a linked record definition for a divaPersonOutputPLink', () => {
       createRecordLink('divaPersonOutputPLink', 'personWhenLinkedOutputPGroup');
       createPresentationRecordLink(
         'divaPersonOutputPLink',
@@ -1990,6 +1989,231 @@ describe('formDefinition', () => {
           label: 'someTextId',
           mode: 'output',
           name: 'personGroup',
+          presentationStyle: '',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          showLabel: true,
+          tooltip: {
+            body: 'someDefTextId',
+            title: 'someTextId'
+          },
+          type: 'group'
+        }
+      });
+    });
+
+    it('should return a linked record definition for a nationalSubjectCategoryOutputPLink', () => {
+      createRecordLink('nationalSubjectCategoryLink', 'nationalSubjectCategory');
+      createPresentationRecordLink(
+        'nationalSubjectCategoryOutputPLink',
+        'nationalSubjectCategoryLink',
+        'nationalSubjectCategoryWhenLinkedPGroup'
+      );
+      createPresentationGroup(
+        'nationalSubjectCategoryWhenLinkedPGroup',
+        'nationalSubjectCategoryGroup',
+        [
+          { childId: 'nationalSubjectCategoryNameOutputPGroup', type: 'presentation' },
+          { childId: 'semicolonText', type: 'text' },
+          { childId: 'spaceText', type: 'text' },
+          { childId: 'nationalSubjectCategoryAlternativeNameOutputPGroup', type: 'presentation' },
+          { childId: 'spaceText', type: 'text' },
+          { childId: 'firstHalfParenthesisText', type: 'text' },
+          { childId: 'subjectCodeOutputPVar', type: 'presentation' },
+          { childId: 'secondHalfParenthesisText', type: 'text' }
+        ]
+      );
+      createGroup('nationalSubjectCategoryGroup', 'nationalSubjectCategory', [
+        'nationalSubjectCategoryNameGroup',
+        'nationalSubjectCategoryAlternativeNameGroup',
+        'subjectCodeTextVar'
+      ]);
+      createGroup('nationalSubjectCategoryNameGroup', 'name', [
+        'nationalSubjectCategoryNameTextVar',
+        'sweLanguageCollectionVar'
+      ]);
+      createGroup('nationalSubjectCategoryAlternativeNameGroup', 'alternativeName', [
+        'nationalSubjectCategoryNameTextVar',
+        'engLanguageCollectionVar'
+      ]);
+      createTextVar('nationalSubjectCategoryNameTextVar', 'nationalSubjectCategoryName', []);
+      createPresentationGroup(
+        'nationalSubjectCategoryNameOutputPGroup',
+        'nationalSubjectCategoryNameGroup',
+        [
+          {
+            childId: 'nationalSubjectCategoryNameOutputPVar',
+            type: 'presentation'
+          }
+        ]
+      );
+      createPresentationGroup(
+        'nationalSubjectCategoryAlternativeNameOutputPGroup',
+        'nationalSubjectCategoryAlternativeNameGroup',
+        [
+          {
+            childId: 'nationalSubjectCategoryNameOutputPVar',
+            type: 'presentation'
+          }
+        ]
+      );
+      createPresentationVar(
+        'nationalSubjectCategoryNameOutputPVar',
+        'nationalSubjectCategoryNameTextVar',
+        'output'
+      );
+      createPresentationGroup('nationalSubjectCategoryPGroup', 'nationalSubjectCategoryGroup', [
+        {
+          childId: 'nationalSubjectCategoryText',
+          type: 'text'
+        },
+        {
+          childId: 'nationalSubjectCategoryNamePGroup',
+          type: 'presentation'
+        },
+        {
+          childId: 'nationalSubjectCategoryAlternativeNamePGroup',
+          type: 'presentation'
+        },
+        {
+          childId: 'subjectCodeTextVarText',
+          type: 'text'
+        },
+        {
+          childId: 'subjectCodePVar',
+          type: 'presentation'
+        }
+      ]);
+      createTextVar('subjectCodeTextVar', 'subjectCode', []);
+      createPresentationVar('subjectCodeOutputPVar', 'subjectCodeTextVar', 'output');
+
+      const linkedRecordDefinition = createLinkedRecordDefinition(
+        dependencies,
+        'nationalSubjectCategoryOutputPLink'
+      );
+      expect(linkedRecordDefinition.form.components).toHaveLength(8);
+      expect(linkedRecordDefinition).toStrictEqual({
+        form: {
+          childStyle: [],
+          components: [
+            {
+              components: [
+                {
+                  gridColSpan: 12,
+                  label: 'someTextId',
+                  mode: 'output',
+                  name: 'nationalSubjectCategoryName',
+                  repeat: {
+                    repeatMax: 3,
+                    repeatMin: 1
+                  },
+                  showLabel: true,
+                  tooltip: {
+                    body: 'someDefTextId',
+                    title: 'someTextId'
+                  },
+                  type: 'textVariable'
+                }
+              ],
+              gridColSpan: 12,
+              label: 'someTextId',
+              mode: 'output',
+              name: 'name',
+              presentationStyle: '',
+              repeat: {
+                repeatMax: 3,
+                repeatMin: 1
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId'
+              },
+              type: 'group'
+            },
+            {
+              gridColSpan: 12,
+              name: 'semicolonText',
+              type: 'text'
+            },
+            {
+              gridColSpan: 12,
+              name: 'spaceText',
+              type: 'text'
+            },
+            {
+              components: [
+                {
+                  gridColSpan: 12,
+                  label: 'someTextId',
+                  mode: 'output',
+                  name: 'nationalSubjectCategoryName',
+                  repeat: {
+                    repeatMax: 3,
+                    repeatMin: 1
+                  },
+                  showLabel: true,
+                  tooltip: {
+                    body: 'someDefTextId',
+                    title: 'someTextId'
+                  },
+                  type: 'textVariable'
+                }
+              ],
+              gridColSpan: 12,
+              label: 'someTextId',
+              mode: 'output',
+              name: 'alternativeName',
+              presentationStyle: '',
+              repeat: {
+                repeatMax: 3,
+                repeatMin: 1
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId'
+              },
+              type: 'group'
+            },
+            {
+              gridColSpan: 12,
+              name: 'spaceText',
+              type: 'text'
+            },
+            {
+              gridColSpan: 12,
+              name: 'firstHalfParenthesisText',
+              type: 'text'
+            },
+            {
+              gridColSpan: 12,
+              label: 'someTextId',
+              mode: 'output',
+              name: 'subjectCode',
+              repeat: {
+                repeatMax: 3,
+                repeatMin: 1
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId'
+              },
+              type: 'textVariable'
+            },
+            {
+              gridColSpan: 12,
+              name: 'secondHalfParenthesisText',
+              type: 'text'
+            }
+          ],
+          gridColSpan: 12,
+          label: 'someTextId',
+          mode: 'output',
+          name: 'nationalSubjectCategory',
           presentationStyle: '',
           repeat: {
             repeatMax: 1,
