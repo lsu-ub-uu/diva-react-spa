@@ -247,6 +247,21 @@ describe('formDefinition', () => {
     return metadata;
   };
 
+  const createPresentationVar = (
+    id: string,
+    presentationOf: string,
+    type: string
+  ): BFFPresentation => {
+    const pVar = {
+      id,
+      presentationOf,
+      type,
+      mode: 'output'
+    };
+    dependencies.presentationPool.set(id, pVar);
+    return pVar as BFFPresentation;
+  };
+
   const createCollItem = (nameInData: string): BFFMetadata => {
     const metadata: BFFMetadata = {
       id: `${nameInData}Item`,
@@ -456,6 +471,23 @@ describe('formDefinition', () => {
 
     dependencies.presentationPool.set(id, pLink);
     return pLink;
+  };
+  const createPresentationSContainer = (
+    id: string,
+    presentationsOf: string[],
+    children: BFFPresentationChildReference[]
+  ): BFFPresentationSurroundingContainer => {
+    const container = {
+      id,
+      type: 'container',
+      presentationsOf,
+      mode: 'output',
+      children,
+      repeat: 'children'
+    } as BFFPresentationSurroundingContainer;
+
+    dependencies.presentationPool.set(id, container);
+    return container;
   };
 
   it('should be able to lookup validationTypes, metadata, presentations from pools', () => {
@@ -1848,16 +1880,130 @@ describe('formDefinition', () => {
         }
       ]);
       createPresentationGroup('personNameLinkOutputPGroup', 'personNameGroup', [
-        { childId: 'personNameGroup', type: 'presentation' }
+        { childId: 'personLastNameOutputPVar', type: 'presentation' },
+        { childId: 'personNameLinkSContainer', type: 'presentation' }
       ]);
+      createPresentationSContainer(
+        'personNameLinkSContainer',
+        ['personFirstNameTextVar'],
+        [
+          {
+            childId: 'commaText',
+            type: 'text'
+          },
+          {
+            childId: 'spaceText',
+            type: 'text'
+          },
+          {
+            childId: 'personFirstNameOutputPVar',
+            type: 'presentation'
+          }
+        ]
+      );
+      createPresentationVar('personFirstNameOutputPVar', 'personFirstNameTextVar', 'output');
+      createPresentationVar('personLastNameOutputPVar', 'personLastNameTextVar', 'output');
+      createTextVar('personFirstNameTextVar', 'givenName', []);
+      createTextVar('personLastNameTextVar', 'familyName', []);
       createGroup('personNameGroup', 'personNameGroup', ['lastNameTextVar', 'firstNameTextVar']);
       createTextVar('lastNameTextVar', 'familyName', []);
       createTextVar('firstNameTextVar', 'givenName', []);
       // console.log('temp: ', metadataPool.get('personNameGroup'));
 
       const linkedRecordDefinition = createLinkedRecordDefinition(dependencies, presentationLinkId);
-      // expect(linkedRecordDefinition.form.components).toHaveLength(1);
-      expect(linkedRecordDefinition).toStrictEqual({});
+      expect(linkedRecordDefinition.form.components).toHaveLength(1);
+      expect(linkedRecordDefinition).toStrictEqual({
+        form: {
+          childStyle: [],
+          components: [
+            {
+              components: [
+                {
+                  gridColSpan: 12,
+                  label: 'someTextId',
+                  mode: 'output',
+                  name: 'familyName',
+                  repeat: {
+                    repeatMax: 3,
+                    repeatMin: 1
+                  },
+                  showLabel: true,
+                  tooltip: {
+                    body: 'someDefTextId',
+                    title: 'someTextId'
+                  },
+                  type: 'textVariable'
+                },
+                {
+                  components: [
+                    {
+                      gridColSpan: 12,
+                      name: 'commaText',
+                      type: 'text'
+                    },
+                    {
+                      gridColSpan: 12,
+                      name: 'spaceText',
+                      type: 'text'
+                    },
+                    {
+                      gridColSpan: 12,
+                      label: 'someTextId',
+                      mode: 'output',
+                      name: 'givenName',
+                      repeat: {
+                        repeatMax: 3,
+                        repeatMin: 1
+                      },
+                      showLabel: true,
+                      tooltip: {
+                        body: 'someDefTextId',
+                        title: 'someTextId'
+                      },
+                      type: 'textVariable'
+                    }
+                  ],
+                  containerType: 'surrounding',
+                  gridColSpan: 12,
+                  mode: 'output',
+                  name: 'personNameLinkSContainer',
+                  type: 'container'
+                }
+              ],
+              gridColSpan: 12,
+              label: 'someTextId',
+              mode: 'output',
+              name: 'personNameGroup',
+              presentationStyle: '',
+              repeat: {
+                repeatMax: 3,
+                repeatMin: 1
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId'
+              },
+              type: 'group'
+            }
+          ],
+          gridColSpan: 12,
+          label: 'someTextId',
+          mode: 'output',
+          name: 'personGroup',
+          presentationStyle: '',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          showLabel: true,
+          tooltip: {
+            body: 'someDefTextId',
+            title: 'someTextId'
+          },
+          type: 'group'
+        }
+      });
     });
   });
 
