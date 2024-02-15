@@ -28,6 +28,7 @@ import { createFormMetaData } from './formDefinition/formMetadata';
 import translationRoute from './routes/translationRoute';
 import divaOutputsRoute from './routes/divaOutputsRoute';
 import validationTypesRoute from './routes/validationTypesRoute';
+import recordRoute from './routes/recordRoute';
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -52,103 +53,102 @@ app.use('/api/auth', authRoute);
 app.use('/api/translations/', translationRoute);
 app.use('/api/divaOutputs', divaOutputsRoute);
 app.use('/api/validationTypes', validationTypesRoute);
+app.use('/api/record', recordRoute);
 
+// app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
+//   try {
+//     const { validationTypeId, recordId } = req.params;
+//     const authToken = req.header('authToken') ?? '';
+//
+//     const payload = cleanJson(req.body);
+//     const { lastUpdate, values } = payload;
+//     const recordType = Object.keys(values)[0];
+//
+//     const { validationTypePool } = dependencies;
+//
+//     if (!validationTypePool.has(validationTypeId)) {
+//       throw new Error(`Validation type [${validationTypeId}] does not exist`);
+//     }
+//
+//     const FORM_MODE_UPDATE = 'update';
+//     const dataDivider = 'diva';
+//
+//     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
+//     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+//     const transformData = transformToCoraData(formMetaDataPathLookup, values);
+//     const updateGroup = injectRecordInfoIntoDataGroup(
+//       transformData[0] as DataGroup,
+//       validationTypeId,
+//       dataDivider,
+//       recordId,
+//       recordType,
+//       lastUpdate.updatedBy,
+//       lastUpdate.updateAt
+//     );
+//
+//     const response = await updateRecordDataById<RecordWrapper>(
+//       recordId,
+//       updateGroup,
+//       recordType,
+//       authToken
+//     );
+//
+//     res.status(response.status).json({});
+//   } catch (error: unknown) {
+//     const errorResponse = errorHandler(error);
+//     res.status(errorResponse.status).json(errorResponse).send();
+//   }
+// });
 
+// app.post('/api/record/:validationTypeId', async (req, res) => {
+//   try {
+//     const { validationTypeId } = req.params;
+//     const authToken = req.header('authToken') ?? '';
+//
+//     const payload = cleanJson(req.body);
+//     const recordType = Object.keys(payload)[0];
+//
+//     const { validationTypePool } = dependencies;
+//
+//     if (!validationTypePool.has(validationTypeId)) {
+//       throw new Error(`Validation type [${validationTypeId}] does not exist`);
+//     }
+//
+//     const FORM_MODE_NEW = 'create';
+//     const dataDivider = 'diva';
+//
+//     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+//     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+//     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
+//     const newGroup = injectRecordInfoIntoDataGroup(
+//       transformData[0] as DataGroup,
+//       validationTypeId,
+//       dataDivider
+//     );
+//     const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
+//     const id = extractIdFromRecordInfo(response.data.record.data);
+//
+//     res.status(response.status).json({ id }); // return id for now
+//   } catch (error: unknown) {
+//     const errorResponse = errorHandler(error);
+//     res.status(errorResponse.status).json(errorResponse).send();
+//   }
+// });
 
-app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
-  try {
-    const { validationTypeId, recordId } = req.params;
-    const authToken = req.header('authToken') ?? '';
-
-    const payload = cleanJson(req.body);
-    const { lastUpdate, values } = payload;
-    const recordType = Object.keys(values)[0];
-
-    const { validationTypePool } = dependencies;
-
-    if (!validationTypePool.has(validationTypeId)) {
-      throw new Error(`Validation type [${validationTypeId}] does not exist`);
-    }
-
-    const FORM_MODE_UPDATE = 'update';
-    const dataDivider = 'diva';
-
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(formMetaDataPathLookup, values);
-    const updateGroup = injectRecordInfoIntoDataGroup(
-      transformData[0] as DataGroup,
-      validationTypeId,
-      dataDivider,
-      recordId,
-      recordType,
-      lastUpdate.updatedBy,
-      lastUpdate.updateAt
-    );
-
-    const response = await updateRecordDataById<RecordWrapper>(
-      recordId,
-      updateGroup,
-      recordType,
-      authToken
-    );
-
-    res.status(response.status).json({});
-  } catch (error: unknown) {
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-});
-
-app.post('/api/record/:validationTypeId', async (req, res) => {
-  try {
-    const { validationTypeId } = req.params;
-    const authToken = req.header('authToken') ?? '';
-
-    const payload = cleanJson(req.body);
-    const recordType = Object.keys(payload)[0];
-
-    const { validationTypePool } = dependencies;
-
-    if (!validationTypePool.has(validationTypeId)) {
-      throw new Error(`Validation type [${validationTypeId}] does not exist`);
-    }
-
-    const FORM_MODE_NEW = 'create';
-    const dataDivider = 'diva';
-
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(formMetaDataPathLookup, payload);
-    const newGroup = injectRecordInfoIntoDataGroup(
-      transformData[0] as DataGroup,
-      validationTypeId,
-      dataDivider
-    );
-    const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
-    const id = extractIdFromRecordInfo(response.data.record.data);
-
-    res.status(response.status).json({ id }); // return id for now
-  } catch (error: unknown) {
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-});
-
-app.get('/api/record/:recordType/:recordId', async (req, res) => {
-  try {
-    const { recordType, recordId } = req.params;
-    const authToken = req.header('authToken') ?? '';
-
-    const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
-    const recordWrapper = response.data;
-    const record = transformRecord(dependencies, recordWrapper);
-    res.status(response.status).json(record);
-  } catch (error: unknown) {
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-});
+// app.get('/api/record/:recordType/:recordId', async (req, res) => {
+//   try {
+//     const { recordType, recordId } = req.params;
+//     const authToken = req.header('authToken') ?? '';
+//
+//     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
+//     const recordWrapper = response.data;
+//     const record = transformRecord(dependencies, recordWrapper);
+//     res.status(response.status).json(record);
+//   } catch (error: unknown) {
+//     const errorResponse = errorHandler(error);
+//     res.status(errorResponse.status).json(errorResponse).send();
+//   }
+// });
 
 app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
   try {

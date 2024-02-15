@@ -31,7 +31,6 @@ import { errorHandler } from '../server';
 export const getSearchedValidationTypes = async (req: Request, res: Response) => {
   try {
     const authToken = req.header('authToken') ?? '';
-    console.log('au', authToken);
     const searchQuery: DataGroup = {
       name: 'validationTypeSearch',
       children: [
