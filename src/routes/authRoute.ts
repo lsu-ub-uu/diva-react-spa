@@ -5,4 +5,4 @@ const authRoute = express.Router();
 
 authRoute.route('/:user').post(getAuthToken);
 
-export default authRoute;
+export { authRoute };

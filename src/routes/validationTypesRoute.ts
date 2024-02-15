@@ -24,4 +24,4 @@ const validationTypesRoute = express.Router();
 
 validationTypesRoute.route('/').get(getSearchedValidationTypes);
 
-export default validationTypesRoute;
+export { validationTypesRoute };

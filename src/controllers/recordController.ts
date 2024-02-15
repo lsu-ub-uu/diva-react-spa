@@ -19,7 +19,7 @@
 
 import { Request, Response } from 'express';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
-import {getRecordDataById, postRecordData, updateRecordDataById} from '../cora/cora';
+import { getRecordDataById, postRecordData, updateRecordDataById } from '../cora/cora';
 import { errorHandler } from '../server';
 import { cleanJson } from '../utils/structs/removeEmpty';
 import { dependencies } from '../config/configureServer';
@@ -27,7 +27,7 @@ import { createFormMetaData } from '../formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { injectRecordInfoIntoDataGroup, transformToCoraData } from '../config/transformToCora';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
-import {transformRecord} from "../config/transformRecord";
+import { transformRecord } from '../config/transformRecord';
 
 /**
  * @desc Post record 1

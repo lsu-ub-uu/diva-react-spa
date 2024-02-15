@@ -18,11 +18,10 @@
  */
 
 import express from 'express';
-
 import { getForm } from '../controllers/formController';
 
 const formRoute = express.Router();
 
 formRoute.route('/:validationTypeId/:mode').get(getForm);
 
-export default formRoute;
+export { formRoute };

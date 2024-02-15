@@ -17,17 +17,22 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import express from 'express';
-import {
-  getRecordByRecodTypeAndId,
-  postRecordByValidationType,
-  postRecordByValidationTypeAndId
-} from '../controllers/recordController';
+import { Request, Response } from 'express';
+import { loadStuffOnServerStart } from '../config/configureServer';
+import { errorHandler } from '../server';
 
-const recordRoute = express.Router();
-
-recordRoute.route('/:validationTypeId/:recordId').post(postRecordByValidationTypeAndId);
-recordRoute.route('/:recordType/:recordId').get(getRecordByRecodTypeAndId);
-recordRoute.route('/:validationTypeId').post(postRecordByValidationType);
-
-export { recordRoute };
+/**
+ * @desc Get refreshed definitions
+ * @route GET /api/refreshDefinitions
+ * @access	Public
+ * @description	Refresh the definitions collected from Cora in the pools.
+ */
+export const refreshDefinitions = async (req: Request, res: Response) => {
+  try {
+    await loadStuffOnServerStart();
+    res.status(200).json({ message: 'Refreshed cora defs' });
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};

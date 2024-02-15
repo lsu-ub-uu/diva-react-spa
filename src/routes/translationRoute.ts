@@ -24,4 +24,4 @@ const translationRoute = express.Router();
 
 translationRoute.route('/:lang').get(getTranslations);
 
-export default translationRoute;
+export { translationRoute };

@@ -18,16 +18,11 @@
  */
 
 import express from 'express';
-import {
-  getRecordByRecodTypeAndId,
-  postRecordByValidationType,
-  postRecordByValidationTypeAndId
-} from '../controllers/recordController';
 
-const recordRoute = express.Router();
+import { refreshDefinitions } from '../controllers/refreshDefinitionsController';
 
-recordRoute.route('/:validationTypeId/:recordId').post(postRecordByValidationTypeAndId);
-recordRoute.route('/:recordType/:recordId').get(getRecordByRecodTypeAndId);
-recordRoute.route('/:validationTypeId').post(postRecordByValidationType);
+const refreshDefinitionsRoute = express.Router();
 
-export { recordRoute };
+refreshDefinitionsRoute.route('/').get(refreshDefinitions);
+
+export { refreshDefinitionsRoute };

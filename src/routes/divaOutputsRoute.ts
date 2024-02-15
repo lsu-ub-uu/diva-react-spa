@@ -18,11 +18,10 @@
  */
 
 import express from 'express';
-
 import { getDivaOutputs } from '../controllers/divaOutputsController';
 
 const divaOutputsRoute = express.Router();
 
 divaOutputsRoute.route('/').get(getDivaOutputs);
 
-export default divaOutputsRoute;
+export { divaOutputsRoute };
