@@ -51,47 +51,9 @@ export const errorHandler = (error: unknown) => {
 app.use('/api/auth', authRoute);
 app.use('/api/translations/', translationRoute);
 app.use('/api/divaOutputs', divaOutputsRoute);
-// app.use('/api/api/validationTypes', validationTypesRoute);
+app.use('/api/validationTypes', validationTypesRoute);
 
-app.get('/api/validationTypes', async (req, res) => {
-  try {
-    const authToken = req.header('authToken') ?? '';
-    const searchQuery: DataGroup = {
-      name: 'validationTypeSearch',
-      children: [
-        {
-          name: 'include',
-          children: [
-            {
-              name: 'includePart',
-              children: [
-                {
-                  name: 'validatesRecordTypeSearchTerm',
-                  value: 'recordType_divaOutput'
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    };
 
-    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
-      'validationTypeSearch',
-      searchQuery,
-      authToken
-    );
-    const validationTypes = transformCoraValidationTypes(response.data);
-    const optionList = validationTypes.map((validationType) => ({
-      value: validationType.id,
-      label: validationType.nameTextId
-    }));
-    res.status(200).json(optionList);
-  } catch (error: unknown) {
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-});
 
 app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
   try {

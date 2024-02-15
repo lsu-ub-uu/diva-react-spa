@@ -18,11 +18,10 @@
  */
 
 import express from 'express';
-import { getValidationTypes, postValidationTypes } from '../controllers/validationTypesController';
+import { getSearchedValidationTypes } from '../controllers/validationTypesController';
 
 const validationTypesRoute = express.Router();
 
-validationTypesRoute.route('/').get(getValidationTypes);
-// validationTypesRoute.route('/:recordId').post(postValidationTypes);
+validationTypesRoute.route('/').get(getSearchedValidationTypes);
 
 export default validationTypesRoute;

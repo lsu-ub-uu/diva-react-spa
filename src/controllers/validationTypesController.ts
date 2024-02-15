@@ -18,22 +18,17 @@
  */
 
 import { Request, Response } from 'express';
-import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { getSearchResultDataListBySearchType, updateRecordDataById } from '../cora/cora';
+import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
+import { getSearchResultDataListBySearchType } from '../cora/cora';
 import { transformCoraValidationTypes } from '../config/transformValidationTypes';
 import { errorHandler } from '../server';
-import { cleanJson } from '../utils/structs/removeEmpty';
-import { dependencies } from '../config/configureServer';
-import { createFormMetaData } from '../formDefinition/formMetadata';
-import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
-import { injectRecordInfoIntoDataGroup, transformToCoraData } from '../config/transformToCora';
 
 /**
  * @desc Get validationTypes
  * @route GET /api/validationTypes
- * @access Public
+ * @access Private
  */
-export const getValidationTypes = async (req: Request, res: Response) => {
+export const getSearchedValidationTypes = async (req: Request, res: Response) => {
   try {
     const authToken = req.header('authToken') ?? '';
     console.log('au', authToken);
@@ -68,56 +63,6 @@ export const getValidationTypes = async (req: Request, res: Response) => {
       label: validationType.nameTextId
     }));
     res.status(200).json(optionList);
-  } catch (error: unknown) {
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-};
-
-/**
- * @desc Post validationType
- * @route POST /api/validationTypes
- * @access Public
- */
-export const postValidationTypes = async (req: Request, res: Response) => {
-  try {
-    const { validationTypeId, recordId } = req.params;
-    const authToken = req.header('authToken') ?? '';
-
-    const payload = cleanJson(req.body);
-    const { lastUpdate, values } = payload;
-    const recordType = Object.keys(values)[0];
-
-    const { validationTypePool } = dependencies;
-
-    if (!validationTypePool.has(validationTypeId)) {
-      throw new Error(`Validation type [${validationTypeId}] does not exist`);
-    }
-
-    const FORM_MODE_UPDATE = 'update';
-    const dataDivider = 'diva';
-
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(formMetaDataPathLookup, values);
-    const updateGroup = injectRecordInfoIntoDataGroup(
-      transformData[0] as DataGroup,
-      validationTypeId,
-      dataDivider,
-      recordId,
-      recordType,
-      lastUpdate.updatedBy,
-      lastUpdate.updateAt
-    );
-
-    const response = await updateRecordDataById<RecordWrapper>(
-      recordId,
-      updateGroup,
-      recordType,
-      authToken
-    );
-
-    res.status(response.status).json({});
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
