@@ -11,7 +11,10 @@ import {
   refreshDefinitionsRoute
 } from './routes';
 
-const PORT = process.env.PORT || 8080;
+// let PORT: string | 8080;
+const PORT = process.env.NODE_ENV !== 'test' ? process.env.PORT || 8080 : 9090;
+// const PORT = process.env.PORT || 8080;
+
 const { CORA_API_URL } = process.env;
 
 axios.defaults.baseURL = CORA_API_URL;
@@ -29,7 +32,9 @@ export const errorHandler = (error: unknown) => {
     status: status ?? 500
   };
 };
-
+app.get('/', (req, res) => {
+  res.status(200).json();
+});
 app.use('/api/auth', authRoute);
 app.use('/api/translations/', translationRoute);
 app.use('/api/divaOutputs', divaOutputsRoute);
@@ -47,3 +52,5 @@ app.listen(PORT, (): void => {
   //   console.log(JSON.stringify(definition, null, 1));
   // });
 });
+
+export default app;

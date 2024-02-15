@@ -18,11 +18,6 @@
  */
 
 import * as TYPES from 'config/bffTypes';
-import {
-  BFFMetadata,
-  BFFMetadataChildReference,
-  BFFPresentationSurroundingContainer
-} from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
@@ -631,11 +626,11 @@ const createDetailedPresentationBasedOnPresentationType = (
     containerType = getContainerType(presentationContainer);
     presentationStyle = presentationContainer.presentationStyle;
 
-    let definitionFilteredChildRefs: BFFMetadataChildReference[] = [];
+    let definitionFilteredChildRefs: TYPES.BFFMetadataChildReference[] = [];
 
     if (containerType === 'surrounding') {
       const presentationMetadataIds =
-        (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
+        (presentationContainer as TYPES.BFFPresentationSurroundingContainer).presentationsOf ?? [];
       definitionFilteredChildRefs = metadataChildReferences.filter((definitionChildRef) => {
         if (checkIfPresentationIncludesMetadataId(presentationMetadataIds, definitionChildRef)) {
           return true;
@@ -770,9 +765,9 @@ const createCommonParameters = (
 };
 
 function matchPresentationWithMetadata(
-  metadataPool: Lookup<string, BFFMetadata>,
+  metadataPool: Lookup<string, TYPES.BFFMetadata>,
   presentationMetadataIds: string[],
-  definitionChildRef: BFFMetadataChildReference
+  definitionChildRef: TYPES.BFFMetadataChildReference
 ) {
   const metadataFromCurrentPresentation = metadataPool.get(presentationMetadataIds[0]);
 
@@ -785,7 +780,7 @@ function matchPresentationWithMetadata(
 
 const checkIfPresentationIncludesMetadataId = (
   presentationMetadataIds: string[],
-  definitionChildRef: BFFMetadataChildReference
+  definitionChildRef: TYPES.BFFMetadataChildReference
 ) => {
   return presentationMetadataIds.includes(definitionChildRef.childId);
 };
