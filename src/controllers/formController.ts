@@ -23,7 +23,7 @@ import { errorHandler } from '../server';
 import { createFormDefinition } from '../formDefinition/formDefinition';
 
 /**
- * @desc Get form
+ * @desc Get requested form
  * @route GET /api/form
  * @access	Private
  */

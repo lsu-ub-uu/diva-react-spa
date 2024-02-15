@@ -22,7 +22,7 @@ import { createTextDefinition } from '../textDefinition/textDefinition';
 import { dependencies } from '../config/configureServer';
 
 /**
- * @desc Get translations
+ * @desc Get translations for requested language
  * @route GET /api/translation/:lang
  * @access	Public
  */

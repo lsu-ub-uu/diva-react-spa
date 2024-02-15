@@ -30,7 +30,7 @@ import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { transformRecord } from '../config/transformRecord';
 
 /**
- * @desc Post record 1
+ * @desc Post an update to a record to Cora
  * @route POST /api/record/:validationTypeId/:recordId
  * @access Private
  */
@@ -80,7 +80,7 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
 };
 
 /**
- * @desc Post record 2
+ * @desc Post a new record to Cora
  * @route POST /api/record/:validationTypeId/
  * @access Private
  */
@@ -120,11 +120,11 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
 };
 
 /**
- * @desc Post record 2
- * @route POST /api/record/:validationTypeId/
+ * @desc Get record for linked records
+ * @route GET /api/record/:recordType/:recordId
  * @access Private
  */
-export const getRecordByRecodTypeAndId = async (req: Request, res: Response) => {
+export const getRecordByRecordTypeAndId = async (req: Request, res: Response) => {
   try {
     const { recordType, recordId } = req.params;
     const authToken = req.header('authToken') ?? '';

@@ -24,7 +24,7 @@ import { transformCoraValidationTypes } from '../config/transformValidationTypes
 import { errorHandler } from '../server';
 
 /**
- * @desc Get validationTypes
+ * @desc Get list of existing validationTypes
  * @route GET /api/validationTypes
  * @access Private
  */

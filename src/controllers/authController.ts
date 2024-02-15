@@ -2,11 +2,11 @@ import { Request, Response } from 'express';
 import { requestAuthTokenOnLogin } from '../services/authServices/requestAuthTokenOnLogin';
 
 /**
- * @desc Post authToken
+ * @desc Post to get authToken from appToken
  * @route POST /api/auth/:user
  * @access Public
  */
-export const getAuthToken = async (req: Request, res: Response) => {
+export const postToGetAuthToken = async (req: Request, res: Response) => {
   const { user } = req.params;
   const appToken = req.body.token;
 

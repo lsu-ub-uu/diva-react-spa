@@ -25,7 +25,7 @@ import { transformRecords } from '../config/transformRecord';
 import { errorHandler } from '../server';
 
 /**
- * @desc Get divaOutputs
+ * @desc Get created divaOutputs
  * @route GET /api/divaOutputs
  * @access	Public
  */

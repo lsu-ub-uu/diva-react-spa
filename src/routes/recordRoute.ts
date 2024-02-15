@@ -19,7 +19,7 @@
 
 import express from 'express';
 import {
-  getRecordByRecodTypeAndId,
+  getRecordByRecordTypeAndId,
   postRecordByValidationType,
   postRecordByValidationTypeAndId
 } from '../controllers/recordController';
@@ -27,7 +27,7 @@ import {
 const recordRoute = express.Router();
 
 recordRoute.route('/:validationTypeId/:recordId').post(postRecordByValidationTypeAndId);
-recordRoute.route('/:recordType/:recordId').get(getRecordByRecodTypeAndId);
+recordRoute.route('/:recordType/:recordId').get(getRecordByRecordTypeAndId);
 recordRoute.route('/:validationTypeId').post(postRecordByValidationType);
 
 export { recordRoute };
