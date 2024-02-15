@@ -29,6 +29,7 @@ import translationRoute from './routes/translationRoute';
 import divaOutputsRoute from './routes/divaOutputsRoute';
 import validationTypesRoute from './routes/validationTypesRoute';
 import recordRoute from './routes/recordRoute';
+import formRoute from "./routes/formRoute";
 
 const PORT = process.env.PORT || 8080;
 const { CORA_API_URL } = process.env;
@@ -54,6 +55,7 @@ app.use('/api/translations/', translationRoute);
 app.use('/api/divaOutputs', divaOutputsRoute);
 app.use('/api/validationTypes', validationTypesRoute);
 app.use('/api/record', recordRoute);
+app.use('/api/form', formRoute);
 
 // app.post('/api/record/:validationTypeId/:recordId', async (req, res) => {
 //   try {
@@ -150,31 +152,31 @@ app.use('/api/record', recordRoute);
 //   }
 // });
 
-app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
-  try {
-    const { validationTypeId, mode } = req.params;
-
-    if (!['create', 'update', 'view'].includes(mode)) {
-      throw new Error(`Mode [${mode}] is not supported`);
-    }
-
-    if (!dependencies.validationTypePool.has(validationTypeId)) {
-      throw new Error(`Validation type [${validationTypeId}] does not exist`);
-    }
-
-    const formDef = createFormDefinition(
-      dependencies,
-      validationTypeId,
-      mode as 'create' | 'update' | 'view'
-    );
-
-    res.status(200).json(formDef);
-  } catch (error: unknown) {
-    console.log(error);
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-});
+// app.use('/api/form/:validationTypeId/:mode', async (req, res) => {
+//   try {
+//     const { validationTypeId, mode } = req.params;
+//
+//     if (!['create', 'update', 'view'].includes(mode)) {
+//       throw new Error(`Mode [${mode}] is not supported`);
+//     }
+//
+//     if (!dependencies.validationTypePool.has(validationTypeId)) {
+//       throw new Error(`Validation type [${validationTypeId}] does not exist`);
+//     }
+//
+//     const formDef = createFormDefinition(
+//       dependencies,
+//       validationTypeId,
+//       mode as 'create' | 'update' | 'view'
+//     );
+//
+//     res.status(200).json(formDef);
+//   } catch (error: unknown) {
+//     console.log(error);
+//     const errorResponse = errorHandler(error);
+//     res.status(errorResponse.status).json(errorResponse).send();
+//   }
+// });
 
 app.get('/api/refreshDefinitions', async (_req, res) => {
   try {
