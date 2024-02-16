@@ -22,7 +22,7 @@ import { Auth } from '../types/Auth';
 import { DataGroup } from '../utils/cora-data/CoraData';
 
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import * as console from "console";
+
 
 export async function requestAuthTokenOnLogin(
   user: string,

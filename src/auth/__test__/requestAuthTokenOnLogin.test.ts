@@ -1,11 +1,8 @@
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import httpClient from '../../utils/http/HttpClient';
 import { extractDataFromResult, requestAuthTokenOnLogin } from '../requestAuthTokenOnLogin';
 
 jest.mock('../../utils/http/HttpClient');
-
-const mockHttpClientPost = httpClient.post as jest.MockedFunction<typeof httpClient.post>;
 
 const authUser = {
   data: {
@@ -42,7 +39,6 @@ const authUser = {
 let mockAxios: MockAdapter;
 
 beforeEach(() => {
-  mockHttpClientPost.mockResolvedValueOnce(authUser);
   mockAxios = new MockAdapter(axios);
 });
 
