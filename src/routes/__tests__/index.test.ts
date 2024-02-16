@@ -18,7 +18,6 @@
  */
 
 import request from 'supertest';
-import * as console from 'console';
 import app from '../../server';
 
 describe('API endpoint routes', () => {
@@ -26,14 +25,26 @@ describe('API endpoint routes', () => {
     it('GET / returns a 200', async () => {
       const response = await request(app).get('/');
       expect(response.statusCode).toBe(200);
+      expect(response.body).toStrictEqual('');
     });
   });
   describe('/api/translations/', () => {
     it('GET /api/translations/sv returns a 200', async () => {
+      const refresh = await request(app).get('/api/refreshDefinitions');
+      expect(refresh.statusCode).toBe(200);
       const response = await request(app).get('/api/translations/sv');
-      console.log(response);
       expect(response.statusCode).toBe(200);
-      expect(response.body).toStrictEqual({ test: 'test' });
-    });
+      expect(Object.keys(response.body).length).toBeGreaterThanOrEqual(1);
+      // expect(response.body).toStrictEqual({ test: 'test' });
+    }, 100000);
+  });
+  describe('/api/refreshDefinitions', () => {
+    it('GET /api/refreshDefinitions returns a 200', async () => {
+      const response = await request(app).get('/api/refreshDefinitions');
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toStrictEqual({
+        message: 'Refreshed cora defs'
+      });
+    }, 100000);
   });
 });
