@@ -120,7 +120,7 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
 };
 
 /**
- * @desc Get record for linked records
+ * @desc Get record data for existing records
  * @route GET /api/record/:recordType/:recordId
  * @access Private
  */
@@ -128,7 +128,6 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
   try {
     const { recordType, recordId } = req.params;
     const authToken = req.header('authToken') ?? '';
-
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
     const recordWrapper = response.data;
     const record = transformRecord(dependencies, recordWrapper);
