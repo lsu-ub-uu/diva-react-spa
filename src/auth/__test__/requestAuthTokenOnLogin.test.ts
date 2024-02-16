@@ -2,8 +2,6 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { extractDataFromResult, requestAuthTokenOnLogin } from '../requestAuthTokenOnLogin';
 
-jest.mock('../../utils/http/HttpClient');
-
 const authUser = {
   data: {
     children: [

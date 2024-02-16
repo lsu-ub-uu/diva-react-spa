@@ -46,11 +46,11 @@ app.use('/api/refreshDefinitions', refreshDefinitionsRoute);
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
   console.log(`Cora API-url ${CORA_API_URL}`);
-  // loadStuffOnServerStart().then(() => {
-  //   console.log('Loaded stuff from cora');
-  //   const definition = createLinkedRecordDefinition(dependencies, 'divaPersonOutputPLink');
-  //   console.log(JSON.stringify(definition, null, 1));
-  // });
+  loadStuffOnServerStart().then(() => {
+    console.log('Loaded stuff from cora');
+    // const definition = createLinkedRecordDefinition(dependencies, 'divaPersonOutputPLink');
+    // console.log(JSON.stringify(definition, null, 1));
+  });
 });
 
 export default app;
