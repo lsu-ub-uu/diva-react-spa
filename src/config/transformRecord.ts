@@ -120,6 +120,23 @@ export const transformRecords = (
   return coraRecords.map((recordWrapper) => transformRecord(dependencies, recordWrapper));
 };
 
+interface TransformRecordInterface {
+  id: string;
+  recordType: string;
+  validationType: string;
+  createdAt: string;
+  createdBy: string;
+  updated: TransformRecordDataInterface[];
+  userRights: Array<'read' | 'read_incoming_links' | 'update' | 'index'>;
+  data: unknown;
+  presentation?: unknown;
+}
+
+interface TransformRecordDataInterface {
+  updateAt: string;
+  updateBy: string;
+}
+
 /**
  * Transform Record
  * @param dependencies
@@ -128,7 +145,7 @@ export const transformRecords = (
 export const transformRecord = (
   dependencies: Dependencies,
   recordWrapper: RecordWrapper
-): unknown => {
+): TransformRecordInterface => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   let createdAt;

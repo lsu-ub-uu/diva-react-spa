@@ -620,7 +620,6 @@ const createDetailedPresentationBasedOnPresentationType = (
     const recordLink = metadata as TYPES.BFFMetadataRecordLink;
     recordLinkType = recordLink.linkedRecordType;
     presentationRecordLinkId = presentation.id;
-    console.log('pres', presentationRecordLinkId);
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
 

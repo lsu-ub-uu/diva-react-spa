@@ -29,7 +29,6 @@ import { injectRecordInfoIntoDataGroup, transformToCoraData } from '../config/tr
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { transformRecord } from '../config/transformRecord';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
-import { recordRoute } from '../routes';
 
 /**
  * @desc Post an update to a record to Cora
@@ -128,19 +127,22 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
  */
 export const getRecordByRecordTypeAndId = async (req: Request, res: Response) => {
   try {
+    const { presentationRecordLinkId } = req.query;
     const { recordType, recordId } = req.params;
-    const { recordTypePool } = dependencies;
+
+    // console.log(presentationRecordLinkId);
 
     const authToken = req.header('authToken') ?? '';
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
     const recordWrapper = response.data;
     const record = transformRecord(dependencies, recordWrapper);
-    // const temp = recordTypePool.get(recordType);
-    // console.log('temp', temp);
-    // console.log('record', record);
 
-    const definition = createLinkedRecordDefinition(dependencies, 'divaPersonOutputPLink');
-    console.log('4', JSON.stringify(definition, null, 1));
+    if (presentationRecordLinkId !== undefined) {
+      record.presentation = createLinkedRecordDefinition(
+        dependencies,
+        presentationRecordLinkId as string
+      );
+    }
 
     res.status(response.status).json(record);
   } catch (error: unknown) {
