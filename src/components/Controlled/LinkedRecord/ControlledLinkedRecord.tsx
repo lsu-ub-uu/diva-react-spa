@@ -22,6 +22,7 @@ import { LinkedRecord } from '../../LinkedRecord/LinkedRecord';
 interface ControlledLinkedRecordProps {
   recordType: string;
   name: string;
+  presentationRecordLinkId: string;
   control?: Control<any>;
 }
 
@@ -37,6 +38,7 @@ export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
               <LinkedRecord
                 recordType={props.recordType}
                 id={field.value}
+                presentationRecordLinkId={props.presentationRecordLinkId}
               />
             )}
           </span>

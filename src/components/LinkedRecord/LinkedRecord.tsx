@@ -19,11 +19,13 @@
 
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
-import { FormGenerator } from '../../components';
 import { FormSchema } from 'components/FormGenerator/types';
+import { FormGenerator } from '..';
+
 interface LinkedRecordProps {
   recordType: string;
   id: string;
+  presentationRecordLinkId: string;
 }
 
 export const LinkedRecord: FC<LinkedRecordProps> = (
@@ -39,7 +41,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `/record/${props.recordType}/${props.id}?mode=list`,
+          `/record/${props.recordType}/${props.id}?presentationRecordLinkId=${props.presentationRecordLinkId}`,
         );
         if (isMounted) {
           setError(null);
@@ -63,7 +65,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
     return () => {
       isMounted = false;
     };
-  }, [props.id, props.recordType]);
+  }, [props.id, props.recordType, props.presentationRecordLinkId]);
 
   if (isLoading) {
     return <div>Loading linked record...</div>;
@@ -75,21 +77,22 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
 
   return (
     <>
-    <FormGenerator
-      record={record.record}
-      onSubmit={() => {}}
-      onInvalid={() => {}}
-      formSchema={record.presentation as FormSchema}/>
-    <pre
-      style={{
-        maxWidth: '800px',
-        overflow: 'auto',
-        height: '400px',
-        background: 'white',
-      }}
+      <FormGenerator
+        record={record.record}
+        onSubmit={() => {}}
+        onInvalid={() => {}}
+        formSchema={record.presentation as FormSchema}
+      />
+      <pre
+        style={{
+          maxWidth: '800px',
+          overflow: 'auto',
+          height: '400px',
+          background: 'white',
+        }}
       >
-      {JSON.stringify(record, null, 1)}
-    </pre>
-      </>
+        {JSON.stringify(record, null, 1)}
+      </pre>
+    </>
   );
 };
