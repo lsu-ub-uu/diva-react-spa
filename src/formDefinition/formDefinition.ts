@@ -18,6 +18,7 @@
  */
 
 import * as TYPES from 'config/bffTypes';
+import { BFFMetadataChildReference, BFFPresentationChildReference } from 'config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
@@ -219,17 +220,17 @@ const createComponentsFromChildReferences = (
 ): unknown => {
   return presentationChildReferences.map((presentationChildReference) => {
     return createComponentFromChildReference(
-      presentationChildReference,
       dependencies,
-      metadataChildReferences
+      metadataChildReferences,
+      presentationChildReference
     );
   });
 };
 
 const createComponentFromChildReference = (
-  presentationChildReference: TYPES.BFFPresentationChildReference,
   dependencies: Dependencies,
-  metadataChildReferences: TYPES.BFFMetadataChildReference[]
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReference: BFFPresentationChildReference
 ) => {
   const presentationChildType = presentationChildReference.type;
 

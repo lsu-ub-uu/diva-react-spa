@@ -28,6 +28,7 @@ import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLooku
 import { injectRecordInfoIntoDataGroup, transformToCoraData } from '../config/transformToCora';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { transformRecord } from '../config/transformRecord';
+import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 
 /**
  * @desc Post an update to a record to Cora
@@ -127,10 +128,26 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
 export const getRecordByRecordTypeAndId = async (req: Request, res: Response) => {
   try {
     const { recordType, recordId } = req.params;
+
     const authToken = req.header('authToken') ?? '';
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
     const recordWrapper = response.data;
     const record = transformRecord(dependencies, recordWrapper);
+
+    const { recordTypePool, metadataPool, presentationPool } = dependencies;
+    const rtPool = recordTypePool.get(recordType);
+    const mPool = metadataPool.get(rtPool.metadataId);
+    // const pPool = presentationPool.get(rtPool.metadataId);
+
+    console.log('1', recordType);
+    console.log('2', rtPool);
+    console.log('3', mPool);
+    // console.log('4', pPool);
+    // console.log('4', temp3);
+
+    const definition = createLinkedRecordDefinition(dependencies, 'personOutputPLink');
+    console.log('4', JSON.stringify(definition, null, 1));
+
     res.status(response.status).json(record);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);

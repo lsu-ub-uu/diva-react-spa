@@ -10,10 +10,9 @@ import {
   formRoute,
   refreshDefinitionsRoute
 } from './routes';
+import { createLinkedRecordDefinition } from './formDefinition/formDefinition';
 
-// let PORT: string | 8080;
 const PORT = process.env.NODE_ENV !== 'test' ? process.env.PORT || 8080 : 9090;
-// const PORT = process.env.PORT || 8080;
 
 const { CORA_API_URL } = process.env;
 
@@ -48,8 +47,7 @@ app.listen(PORT, (): void => {
   console.log(`Cora API-url ${CORA_API_URL}`);
   loadStuffOnServerStart().then(() => {
     console.log('Loaded stuff from cora');
-    // const definition = createLinkedRecordDefinition(dependencies, 'divaPersonOutputPLink');
-    // console.log(JSON.stringify(definition, null, 1));
+
   });
 });
 

@@ -56,6 +56,7 @@ export async function getRecordDataById<T>(
   id: string,
   authToken: string
 ): Promise<AxiosResponse<T>> {
+
   const apiUrl: string = `/record/${type}/${id}`;
   const headers = {
     Accept: 'application/vnd.uub.record+json',

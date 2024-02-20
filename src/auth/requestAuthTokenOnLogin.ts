@@ -23,7 +23,6 @@ import { DataGroup } from '../utils/cora-data/CoraData';
 
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
-
 export async function requestAuthTokenOnLogin(
   user: string,
   APP_TOKEN_ADMIN: string | undefined

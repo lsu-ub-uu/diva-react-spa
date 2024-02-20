@@ -45,7 +45,6 @@ describe('getRecordDataListByType', () => {
     mockAxios.restore();
   });
 
-  // @ts-ignore
   it('should fetch data for a valid type', async () => {
     const type = 'someValidType';
     const expectedResponse = {
