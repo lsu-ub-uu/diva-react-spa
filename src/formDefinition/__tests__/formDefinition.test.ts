@@ -925,6 +925,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               childStyle: [],
               mode: 'input',
+              presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
               recordLinkType: 'nationalSubjectCategory',
               repeat: {
                 repeatMin: 1,
@@ -1549,6 +1550,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               childStyle: [],
               mode: 'input',
+              presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
               recordLinkType: 'nationalSubjectCategory',
               repeat: {
                 repeatMin: 1,

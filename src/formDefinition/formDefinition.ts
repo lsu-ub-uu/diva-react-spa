@@ -19,6 +19,7 @@
 
 import * as TYPES from 'config/bffTypes';
 import { BFFMetadataChildReference, BFFPresentationChildReference } from 'config/bffTypes';
+import * as console from 'console';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
@@ -578,6 +579,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   let metadata;
   let commonParameters;
   let recordLinkType;
+  let presentationRecordLinkId;
 
   const { childStyle } = presentationChildReference;
   const gridColSpan = convertStylesToGridColSpan(presentationChildReference.childStyle ?? []);
@@ -617,6 +619,8 @@ const createDetailedPresentationBasedOnPresentationType = (
   if (presentation.type === 'pRecordLink') {
     const recordLink = metadata as TYPES.BFFMetadataRecordLink;
     recordLinkType = recordLink.linkedRecordType;
+    presentationRecordLinkId = presentation.id;
+    console.log('pres', presentationRecordLinkId);
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
 
@@ -685,7 +689,8 @@ const createDetailedPresentationBasedOnPresentationType = (
     containerType,
     childStyle,
     gridColSpan,
-    recordLinkType
+    recordLinkType,
+    presentationRecordLinkId
   });
 };
 const findMetadataChildReferenceById = (
