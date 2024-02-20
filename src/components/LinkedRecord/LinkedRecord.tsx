@@ -23,6 +23,7 @@ import axios from 'axios';
 interface LinkedRecordProps {
   recordType: string;
   id: string;
+  presentationRecordLinkId: string;
 }
 
 export const LinkedRecord: FC<LinkedRecordProps> = (
@@ -38,7 +39,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `/record/${props.recordType}/${props.id}`,
+          `/record/${props.recordType}/${props.id}?presentationRecordLinkId=${props.presentationRecordLinkId}`,
         );
         if (isMounted) {
           setError(null);
@@ -62,7 +63,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
     return () => {
       isMounted = false;
     };
-  }, [props.id, props.recordType]);
+  }, [props.id, props.recordType, props.presentationRecordLinkId]);
 
   if (isLoading) {
     return <div>Loading linked record...</div>;

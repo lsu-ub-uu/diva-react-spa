@@ -108,6 +108,9 @@ export const renderLeafComponent = (
               control={control}
               name={name}
               recordType={component.recordLinkType ?? ''}
+              presentationRecordLinkId={
+                component.presentationRecordLinkId ?? ''
+              }
             />
           )}
         </Grid>

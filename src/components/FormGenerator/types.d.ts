@@ -36,6 +36,7 @@ export interface FormComponentTooltip {
 }
 
 export interface FormComponent {
+  presentationRecordLinkId?: string;
   type:
     | 'recordLink'
     | 'collectionVariable'
@@ -75,6 +76,7 @@ export interface FormComponent {
   presentationStyle?: string; // frame etc
   headlineLevel?: string;
   recordLinkType?: string;
+  // presentationRecordLinkId?: string;
 }
 
 type FormAttributeCollection = Omit<
