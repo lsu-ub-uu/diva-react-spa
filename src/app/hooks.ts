@@ -92,6 +92,7 @@ export interface CoraRecord {
   updated: CoraUpdate[];
   userRights: string[];
   data: unknown;
+  presentation?: unknown;
 }
 
 export const useCoraRecordByTypeAndId = (

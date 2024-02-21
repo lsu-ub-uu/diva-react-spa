@@ -52,139 +52,13 @@ interface FormGeneratorProps {
   formSchema: FormSchema;
   onSubmit: (formValues: FieldValues) => void;
   onInvalid?: (fieldErrors: FieldErrors) => void;
+  linkedData?: boolean;
 }
-
-export const renderLeafComponent = (
-  component: FormComponent,
-  reactKey: string,
-  control: Control<any>,
-  name: string,
-  renderElementGridWrapper: boolean,
-): JSX.Element | null => {
-  switch (component.type) {
-    case 'textVariable':
-    case 'numberVariable': {
-      return (
-        <Grid
-          key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
-        >
-          <ControlledTextField
-            multiline={component.inputType === 'textarea'}
-            label={component.label ?? ''}
-            name={name}
-            placeholder={component.placeholder}
-            tooltip={component.tooltip}
-            control={control}
-            readOnly={!!component.finalValue}
-            displayMode={component.mode}
-          />
-        </Grid>
-      );
-    }
-    case 'recordLink': {
-      return (
-        <Grid
-          key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
-        >
-          {component.mode === 'input' ? (
-            <ControlledTextField
-              multiline={component.inputType === 'textarea'}
-              label={component.label ?? ''}
-              name={name}
-              placeholder={component.placeholder}
-              tooltip={component.tooltip}
-              control={control}
-              readOnly={!!component.finalValue}
-              displayMode={component.mode}
-            />
-          ) : (
-            <ControlledLinkedRecord
-              control={control}
-              name={name}
-              recordType={component.recordLinkType ?? ''}
-              presentationRecordLinkId={
-                component.presentationRecordLinkId ?? ''
-              }
-            />
-          )}
-        </Grid>
-      );
-    }
-    case 'collectionVariable': {
-      return (
-        <Grid
-          key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
-        >
-          <ControlledSelectField
-            name={name}
-            isLoading={false}
-            loadingError={false}
-            label={component.label ?? ''}
-            placeholder={component.placeholder}
-            tooltip={component.tooltip}
-            control={control}
-            options={component.options}
-            readOnly={!!component.finalValue}
-            displayMode={component.mode}
-          />
-        </Grid>
-      );
-    }
-    case 'text': {
-      return (
-        <Grid
-          key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
-        >
-          <Typography
-            variant={component.textStyle ?? 'bodyTextStyle'}
-            text={component.name}
-          />
-        </Grid>
-      );
-    }
-    case 'guiElementLink': {
-      // TODO If needed take component.presentAs in consideration
-      return (
-        <LinkButton
-          key={reactKey}
-          href={component.url ?? ''}
-          text={component.elementText ?? ''}
-        />
-      );
-    }
-    default:
-      return null;
-  }
-};
-
-// move to utils
-const headlineLevelToTypographyVariant = (
-  headlineLevel: string | undefined,
-): DivaTypographyVariants['variant'] => {
-  let typographyVariant: DivaTypographyVariants['variant'];
-  if (headlineLevel !== undefined) {
-    typographyVariant =
-      `${headlineLevel}TextStyle` as DivaTypographyVariants['variant'];
-  } else {
-    typographyVariant = 'h2TextStyle';
-  }
-
-  return typographyVariant as DivaTypographyVariants['variant']; // check style to return as default
-};
-
-export const FormGenerator = (props: FormGeneratorProps) => {
+export const FormGenerator = ({
+  linkedData = false,
+  ...props
+}: FormGeneratorProps) => {
+  console.log('linkedData', linkedData);
   const { t } = useTranslation();
   const methods = useForm({
     mode: 'onChange',
@@ -481,4 +355,134 @@ export const FormGenerator = (props: FormGeneratorProps) => {
       </AppBar>
     </Box>
   );
+};
+
+export const renderLeafComponent = (
+  component: FormComponent,
+  reactKey: string,
+  control: Control<any>,
+  name: string,
+  renderElementGridWrapper: boolean,
+): JSX.Element | null => {
+  switch (component.type) {
+    case 'textVariable':
+    case 'numberVariable': {
+      return (
+        <Grid
+          key={reactKey}
+          item
+          xs={12}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
+        >
+          <ControlledTextField
+            multiline={component.inputType === 'textarea'}
+            label={component.label ?? ''}
+            name={name}
+            placeholder={component.placeholder}
+            tooltip={component.tooltip}
+            control={control}
+            readOnly={!!component.finalValue}
+            displayMode={component.mode}
+          />
+        </Grid>
+      );
+    }
+    case 'recordLink': {
+      return (
+        <Grid
+          key={reactKey}
+          item
+          xs={12}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
+        >
+          {component.mode === 'input' ? (
+            <ControlledTextField
+              multiline={component.inputType === 'textarea'}
+              label={component.label ?? ''}
+              name={name}
+              placeholder={component.placeholder}
+              tooltip={component.tooltip}
+              control={control}
+              readOnly={!!component.finalValue}
+              displayMode={component.mode}
+            />
+          ) : (
+            <ControlledLinkedRecord
+              control={control}
+              name={name}
+              recordType={component.recordLinkType ?? ''}
+              presentationRecordLinkId={
+                component.presentationRecordLinkId ?? ''
+              }
+            />
+          )}
+        </Grid>
+      );
+    }
+    case 'collectionVariable': {
+      return (
+        <Grid
+          key={reactKey}
+          item
+          xs={12}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
+        >
+          <ControlledSelectField
+            name={name}
+            isLoading={false}
+            loadingError={false}
+            label={component.label ?? ''}
+            placeholder={component.placeholder}
+            tooltip={component.tooltip}
+            control={control}
+            options={component.options}
+            readOnly={!!component.finalValue}
+            displayMode={component.mode}
+          />
+        </Grid>
+      );
+    }
+    case 'text': {
+      return (
+        <Grid
+          key={reactKey}
+          item
+          xs={12}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
+        >
+          <Typography
+            variant={component.textStyle ?? 'bodyTextStyle'}
+            text={component.name}
+          />
+        </Grid>
+      );
+    }
+    case 'guiElementLink': {
+      // TODO If needed take component.presentAs in consideration
+      return (
+        <LinkButton
+          key={reactKey}
+          href={component.url ?? ''}
+          text={component.elementText ?? ''}
+        />
+      );
+    }
+    default:
+      return null;
+  }
+};
+
+// move to utils
+const headlineLevelToTypographyVariant = (
+  headlineLevel: string | undefined,
+): DivaTypographyVariants['variant'] => {
+  let typographyVariant: DivaTypographyVariants['variant'];
+  if (headlineLevel !== undefined) {
+    typographyVariant =
+      `${headlineLevel}TextStyle` as DivaTypographyVariants['variant'];
+  } else {
+    typographyVariant = 'h2TextStyle';
+  }
+
+  return typographyVariant as DivaTypographyVariants['variant']; // check style to return as default
 };

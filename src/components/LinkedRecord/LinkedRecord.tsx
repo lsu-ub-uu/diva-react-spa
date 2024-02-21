@@ -19,8 +19,8 @@
 
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
-import { FormSchema } from 'components/FormGenerator/types';
-import { FormGenerator } from '..';
+import { FormGenerator } from '../FormGenerator/FormGenerator';
+import { FormSchema } from '../FormGenerator/types';
 
 interface LinkedRecordProps {
   recordType: string;
@@ -77,12 +77,15 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
 
   return (
     <>
-      <FormGenerator
-        record={record.record}
-        onSubmit={() => {}}
-        onInvalid={() => {}}
-        formSchema={record.presentation as FormSchema}
-      />
+      {record && record.presentation.form && (
+        <FormGenerator
+          record={record}
+          onSubmit={() => {}}
+          onInvalid={() => {}}
+          formSchema={record.presentation as FormSchema}
+          linkedData
+        />
+      )}
       <pre
         style={{
           maxWidth: '800px',
