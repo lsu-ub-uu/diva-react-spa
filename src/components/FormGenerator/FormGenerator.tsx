@@ -58,7 +58,7 @@ export const FormGenerator = ({
   linkedData = false,
   ...props
 }: FormGeneratorProps) => {
-  console.log('linkedData', linkedData);
+  // console.log('linkedData', linkedData);
   const { t } = useTranslation();
   const methods = useForm({
     mode: 'onChange',
@@ -126,7 +126,7 @@ export const FormGenerator = ({
     ) {
       return (
         <div
-          id='dummy-surrounding-container'
+          id='surrounding-container'
           key={reactKey}
           style={{
             background: 'lightgray',
@@ -291,7 +291,7 @@ export const FormGenerator = ({
     return components.map((c, i) => generateFormComponent(c, i, path));
   };
 
-  return (
+  return linkedData !== true ? (
     <Box
       component='form'
       sx={{ width: '100%' }}
@@ -354,6 +354,8 @@ export const FormGenerator = ({
         </Container>
       </AppBar>
     </Box>
+  ) : (
+    generateFormComponent(props.formSchema.form, 0, '')
   );
 };
 
