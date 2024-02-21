@@ -466,6 +466,10 @@
               {
                 "name": "mode",
                 "value": "input"
+              },
+              {
+                "name": "presentationStyle",
+                "value": "inline"
               }
             ],
             "name": "presentation",

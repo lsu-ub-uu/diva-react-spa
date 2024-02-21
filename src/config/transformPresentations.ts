@@ -197,6 +197,11 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
     return transformChildReference(childReference);
   });
 
+  let presentationStyle;
+  if (containsChildWithNameInData(dataRecordGroup, 'presentationStyle')) {
+    presentationStyle = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'presentationStyle');
+  }
+
   let specifiedHeadlineTextId;
   if (containsChildWithNameInData(dataRecordGroup, 'specifiedHeadlineText')) {
     specifiedHeadlineTextId = extractLinkedRecordIdFromNamedRecordLink(
@@ -221,6 +226,7 @@ const transformCoraPresentationGroupToBFFPresentationGroup = (
   return removeEmpty({
     id,
     presentationOf,
+    presentationStyle,
     specifiedHeadlineTextId,
     showHeadline,
     specifiedHeadlineLevel,

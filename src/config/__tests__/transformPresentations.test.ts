@@ -143,6 +143,7 @@ describe('transformCoraPresentations', () => {
         id: 'someNewPGroup',
         type: 'pGroup',
         presentationOf: 'someNewGroup',
+        presentationStyle: 'inline',
         mode: 'input',
         children: [
           {
