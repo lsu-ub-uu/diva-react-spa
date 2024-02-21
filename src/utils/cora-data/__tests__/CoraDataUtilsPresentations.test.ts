@@ -18,47 +18,59 @@
  */
 
 import { convertStylesToGridColSpan } from '../CoraDataUtilsPresentations';
+import { removeEmpty } from '../../structs/removeEmpty';
+
+function convertStylesToBFFStyles(styles: string[]) {
+  const DEFAULT_COLSPAN: string[] = [];
+  const convertedColSpans = styles.length
+    ? styles.map((style) => {
+        switch (style) {
+          case 'compactChildStyle':
+            return 'compact';
+          case 'frameChildStyle':
+            return 'frame';
+          case 'blockChildStyle':
+            return 'block';
+          case 'specificationChildStyle':
+            return 'specification';
+          case 'rowBasedChildStyle':
+            return 'row';
+          default:
+            return [];
+        }
+      })
+    : [DEFAULT_COLSPAN];
+
+  const cleaned = removeEmpty(convertedColSpans)[0];
+  return cleaned ?? DEFAULT_COLSPAN;
+}
 
 describe('converting childStyles to gridColspan', () => {
-  it('should be able to convert one threeChildStyle to grid col span to be number 3', () => {
-    const styles = ['threeChildStyle'];
-    const expected = 3;
+  it.each([
+    [['threeChildStyle'], 3],
+    [['twelveChildStyle'], 12],
+    [[], 12],
+    [['inline', 'frame'], 12],
+    [['inline', 'frame', 'fiveChildStyle'], 5],
+    [['inline', 'twoChildStyle', 'frame', 'fiveChildStyle'], 2]
+  ])('should be able to convert childStyle "%s" to grid col span to be %d', (args1, args2) => {
+    const styles: string[] = args1;
     const gridColSpan = convertStylesToGridColSpan(styles);
-    expect(gridColSpan).toStrictEqual(expected);
+    expect(gridColSpan).toStrictEqual(args2);
   });
-
-  it('should be able to convert one twelveChildStyle to grid col span to be number 12', () => {
-    const styles = ['twelveChildStyle'];
-    const expected = 12;
-    const gridColSpan = convertStylesToGridColSpan(styles);
-    expect(gridColSpan).toStrictEqual(expected);
-  });
-
-  it('should be able to convert empty childStyle to grid col span to be default number 12', () => {
-    const styles: string[] = [];
-    const expected = 12;
-    const gridColSpan = convertStylesToGridColSpan(styles);
-    expect(gridColSpan).toStrictEqual(expected);
-  });
-
-  it('should be able to convert childStyle containing other settings to grid col span to be default number 12', () => {
-    const styles: string[] = ['inline', 'frame'];
-    const expected = 12;
-    const gridColSpan = convertStylesToGridColSpan(styles);
-    expect(gridColSpan).toStrictEqual(expected);
-  });
-
-  it('should be able to convert childStyle containing other settings and a fiveChildStyle to grid col span to be default number 5', () => {
-    const styles: string[] = ['inline', 'frame', 'fiveChildStyle'];
-    const expected = 5;
-    const gridColSpan = convertStylesToGridColSpan(styles);
-    expect(gridColSpan).toStrictEqual(expected);
-  });
-
-  it('should be able to convert childStyle containing other settings and multiple numberChildStyle to take the first being 2', () => {
-    const styles: string[] = ['inline', 'twoChildStyle', 'frame', 'fiveChildStyle'];
-    const expected = 2;
-    const gridColSpan = convertStylesToGridColSpan(styles);
-    expect(gridColSpan).toStrictEqual(expected);
-  });
+  it.each([
+    [['compactChildStyle'], 'compact'],
+    [['frameChildStyle'], 'frame'],
+    [['blockChildStyle'], 'block'],
+    [['specificationChildStyle'], 'specification'],
+    [['rowBasedChildStyle'], 'row'],
+    [[], []]
+  ])(
+    'should be able to convert presentationStyle "%s" to BFFpresentationStyle to be %s',
+    (args1, args2) => {
+      const styles: string[] = args1;
+      const gridColSpan = convertStylesToBFFStyles(styles);
+      expect(gridColSpan).toStrictEqual(args2);
+    }
+  );
 });
