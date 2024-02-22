@@ -671,6 +671,7 @@ describe('formDefinition', () => {
             {
               type: 'textVariable',
               name: 'someNameInData6',
+
               label: 'someTextId',
               showLabel: true,
               placeholder: 'someEmptyTextId',
@@ -1816,6 +1817,7 @@ describe('formDefinition', () => {
               inputType: 'input',
               label: 'someTextId',
               showLabel: true,
+              childStyle: [],
               mode: 'output',
               name: 'someNameInData6',
               placeholder: 'someEmptyTextId',
@@ -1917,9 +1919,11 @@ describe('formDefinition', () => {
           childStyle: [],
           components: [
             {
+              childStyle: [],
               components: [
                 {
                   gridColSpan: 12,
+                  childStyle: [],
                   label: 'someTextId',
                   mode: 'output',
                   name: 'familyName',
@@ -1935,6 +1939,7 @@ describe('formDefinition', () => {
                   type: 'textVariable'
                 },
                 {
+                  childStyle: [],
                   components: [
                     {
                       gridColSpan: 12,
@@ -1950,6 +1955,7 @@ describe('formDefinition', () => {
                       gridColSpan: 12,
                       label: 'someTextId',
                       mode: 'output',
+                      childStyle: [],
                       name: 'givenName',
                       repeat: {
                         repeatMax: 3,
@@ -2102,9 +2108,11 @@ describe('formDefinition', () => {
           childStyle: [],
           components: [
             {
+              childStyle: [],
               components: [
                 {
                   gridColSpan: 12,
+                  childStyle: [],
                   label: 'someTextId',
                   mode: 'output',
                   name: 'nationalSubjectCategoryName',
@@ -2147,10 +2155,12 @@ describe('formDefinition', () => {
               type: 'text'
             },
             {
+              childStyle: [],
               components: [
                 {
                   gridColSpan: 12,
                   label: 'someTextId',
+                  childStyle: [],
                   mode: 'output',
                   name: 'nationalSubjectCategoryName',
                   repeat: {
@@ -2193,6 +2203,7 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
+              childStyle: [],
               label: 'someTextId',
               mode: 'output',
               name: 'subjectCode',

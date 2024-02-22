@@ -18,8 +18,9 @@
  */
 
 import {
-  convertStylesToBFFStyles,
-  convertStylesToGridColSpan
+  convertStylesToShortName,
+  convertChildStylesToGridColSpan,
+  convertChildStylesToShortName
 } from '../CoraDataUtilsPresentations';
 
 describe('converting childStyles to gridColspan', () => {
@@ -32,9 +33,26 @@ describe('converting childStyles to gridColspan', () => {
     [['inline', 'twoChildStyle', 'frame', 'fiveChildStyle'], 2]
   ])('should be able to convert childStyle "%s" to grid col span to be %d', (args1, args2) => {
     const styles: string[] = args1;
-    const gridColSpan = convertStylesToGridColSpan(styles);
+    const gridColSpan = convertChildStylesToGridColSpan(styles);
     expect(gridColSpan).toStrictEqual(args2);
   });
+
+  it.each([
+    [['compactChildStyle'], ['compact']],
+    [['frameChildStyle'], ['frame']],
+    [['blockChildStyle'], ['block']],
+    [['specificationChildStyle'], ['specification']],
+    [['rowBasedChildStyle'], ['row']],
+    [[''], ['']],
+    [undefined, []],
+    [['card'], ['card']],
+    [['label'], ['label']],
+    [['someMetadataChildGroupPresentationStyle'], ['someMetadataChildGroupPresentationStyle']]
+  ])('should be able to convert childStyle "%s" to short name %s', (args1, args2) => {
+    const gridColSpan = convertChildStylesToShortName(args1);
+    expect(gridColSpan).toStrictEqual(args2);
+  });
+
   it.each([
     ['compactChildStyle', 'compact'],
     ['frameChildStyle', 'frame'],
@@ -45,11 +63,17 @@ describe('converting childStyles to gridColspan', () => {
     ['card', 'card'],
     ['label', 'label'],
     ['someMetadataChildGroupPresentationStyle', 'someMetadataChildGroupPresentationStyle']
-  ])(
-    'should be able to convert presentationStyle "%s" to BFFpresentationStyle to be %s',
-    (args1, args2) => {
-      const gridColSpan = convertStylesToBFFStyles(args1);
-      expect(gridColSpan).toStrictEqual(args2);
-    }
-  );
+  ])('should be able to convert long name "%s" to short name %s', (args1, args2) => {
+    const gridColSpan = convertStylesToShortName(args1);
+    expect(gridColSpan).toStrictEqual(args2);
+  });
+
+  it.each([
+    ['card', 'card'],
+    ['label', 'label'],
+    ['someMetadataChildGroupPresentationStyle', 'someMetadataChildGroupPresentationStyle']
+  ])('should be skip converting unknown long name "%s"', (args1, args2) => {
+    const gridColSpan = convertStylesToShortName(args1);
+    expect(gridColSpan).toStrictEqual(args2);
+  });
 });

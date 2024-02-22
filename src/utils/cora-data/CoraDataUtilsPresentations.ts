@@ -19,7 +19,7 @@
 
 import { removeEmpty } from '../structs/removeEmpty';
 
-export const convertStylesToGridColSpan = (styles: string[]): number => {
+export const convertChildStylesToGridColSpan = (styles: string[]): number => {
   const DEFAULT_COLSPAN = 12;
   const convertedColSpans = styles.length
     ? styles.map((style) => {
@@ -57,10 +57,14 @@ export const convertStylesToGridColSpan = (styles: string[]): number => {
   const cleaned = removeEmpty(convertedColSpans)[0];
   return cleaned ?? DEFAULT_COLSPAN;
 };
-
-export const convertStylesToBFFStyles = (styles: string) => {
-  // const DEFAULT_COLSPAN: string = '';
-
+export const convertChildStylesToShortName = (styles: string[] | undefined) => {
+  return styles?.length
+    ? styles.map((style) => {
+        return convertStylesToShortName(style);
+      })
+    : [];
+};
+export const convertStylesToShortName = (styles: string | undefined): string | undefined => {
   switch (styles) {
     case 'compactChildStyle':
       return 'compact';

@@ -22,8 +22,9 @@ import { BFFMetadataChildReference, BFFPresentationChildReference } from 'config
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import {
-  convertStylesToBFFStyles,
-  convertStylesToGridColSpan
+  convertStylesToShortName,
+  convertChildStylesToGridColSpan,
+  convertChildStylesToShortName
 } from '../utils/cora-data/CoraDataUtilsPresentations';
 import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
@@ -484,7 +485,7 @@ const createText = (
     type: presentationChildType,
     textStyle: presentationChildReference.textStyle,
     childStyle: presentationChildReference.childStyle,
-    gridColSpan: convertStylesToGridColSpan(presentationChildReference.childStyle ?? [])
+    gridColSpan: convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   };
 };
 
@@ -501,7 +502,7 @@ const createGuiElement = (
     elementText: presentation.elementText,
     presentAs: presentation.presentAs,
     childStyle: presentationChildReference.childStyle,
-    gridColSpan: convertStylesToGridColSpan(presentationChildReference.childStyle ?? [])
+    gridColSpan: convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   };
 };
 
@@ -583,8 +584,9 @@ const createDetailedPresentationBasedOnPresentationType = (
   let recordLinkType;
   let presentationRecordLinkId;
 
-  const { childStyle } = presentationChildReference;
-  const gridColSpan = convertStylesToGridColSpan(presentationChildReference.childStyle ?? []);
+  // const { childStyle } = presentationChildReference;
+  const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
+  const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
   const presentationChildId = presentationChildReference.childId;
   const presentation: TYPES.BFFPresentation = presentationPool.get(presentationChildId);
 
@@ -630,7 +632,7 @@ const createDetailedPresentationBasedOnPresentationType = (
     const name = presentation.id; // container does not have a nameInData so use id instead.
     const { type, mode } = presentation;
     containerType = getContainerType(presentationContainer);
-    presentationStyle = convertStylesToBFFStyles(presentationContainer.presentationStyle ?? '');
+    presentationStyle = convertStylesToShortName(presentationContainer.presentationStyle ?? '');
 
     let definitionFilteredChildRefs: TYPES.BFFMetadataChildReference[] = [];
 
@@ -665,7 +667,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   if (presentation.type === 'pGroup') {
     const group = metadata as TYPES.BFFMetadataGroup;
     const presentationGroup: TYPES.BFFPresentationGroup = presentationPool.get(presentation.id);
-    presentationStyle = convertStylesToBFFStyles(presentationGroup.presentationStyle ?? '');
+    presentationStyle = convertStylesToShortName(presentationGroup.presentationStyle ?? '');
     attributes = checkForAttributes(group, metadataPool, options, presentation);
 
     // skip children for recordInfo group for now
