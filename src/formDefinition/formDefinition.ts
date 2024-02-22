@@ -484,7 +484,7 @@ const createText = (
     name: presentationChildId,
     type: presentationChildType,
     textStyle: presentationChildReference.textStyle,
-    childStyle: presentationChildReference.childStyle,
+    childStyle: convertChildStylesToShortName(presentationChildReference.childStyle),
     gridColSpan: convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   };
 };
@@ -501,7 +501,7 @@ const createGuiElement = (
     url: presentation.url,
     elementText: presentation.elementText,
     presentAs: presentation.presentAs,
-    childStyle: presentationChildReference.childStyle,
+    childStyle: convertChildStylesToShortName(presentationChildReference.childStyle),
     gridColSpan: convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? [])
   };
 };
