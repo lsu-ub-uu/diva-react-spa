@@ -169,7 +169,7 @@ describe('API endpoint routes', () => {
                       repeatMax: 1,
                       repeatMin: 0
                     },
-                    showLabel: true,
+                    showLabel: false,
                     tooltip: {
                       body: 'lastNameTextVarDefText',
                       title: 'lastNameTextVarText'
@@ -231,6 +231,7 @@ describe('API endpoint routes', () => {
                 label: 'personNameGroupText',
                 mode: 'output',
                 name: 'authorisedName',
+                presentationStyle: '',
                 repeat: {
                   minNumberOfRepeatingToShow: 1,
                   repeatMax: 1,
@@ -248,6 +249,7 @@ describe('API endpoint routes', () => {
             label: 'personGroupText',
             mode: 'output',
             name: 'person',
+            presentationStyle: 'inline',
             repeat: {
               repeatMax: 1,
               repeatMin: 1

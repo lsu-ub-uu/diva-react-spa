@@ -17,33 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { convertStylesToGridColSpan } from '../CoraDataUtilsPresentations';
-import { removeEmpty } from '../../structs/removeEmpty';
-
-function convertStylesToBFFStyles(styles: string[]) {
-  const DEFAULT_COLSPAN: string[] = [];
-  const convertedColSpans = styles.length
-    ? styles.map((style) => {
-        switch (style) {
-          case 'compactChildStyle':
-            return 'compact';
-          case 'frameChildStyle':
-            return 'frame';
-          case 'blockChildStyle':
-            return 'block';
-          case 'specificationChildStyle':
-            return 'specification';
-          case 'rowBasedChildStyle':
-            return 'row';
-          default:
-            return [];
-        }
-      })
-    : [DEFAULT_COLSPAN];
-
-  const cleaned = removeEmpty(convertedColSpans)[0];
-  return cleaned ?? DEFAULT_COLSPAN;
-}
+import {
+  convertStylesToBFFStyles,
+  convertStylesToGridColSpan
+} from '../CoraDataUtilsPresentations';
 
 describe('converting childStyles to gridColspan', () => {
   it.each([
@@ -59,17 +36,19 @@ describe('converting childStyles to gridColspan', () => {
     expect(gridColSpan).toStrictEqual(args2);
   });
   it.each([
-    [['compactChildStyle'], 'compact'],
-    [['frameChildStyle'], 'frame'],
-    [['blockChildStyle'], 'block'],
-    [['specificationChildStyle'], 'specification'],
-    [['rowBasedChildStyle'], 'row'],
-    [[], []]
+    ['compactChildStyle', 'compact'],
+    ['frameChildStyle', 'frame'],
+    ['blockChildStyle', 'block'],
+    ['specificationChildStyle', 'specification'],
+    ['rowBasedChildStyle', 'row'],
+    ['', ''],
+    ['card', 'card'],
+    ['label', 'label'],
+    ['someMetadataChildGroupPresentationStyle', 'someMetadataChildGroupPresentationStyle']
   ])(
     'should be able to convert presentationStyle "%s" to BFFpresentationStyle to be %s',
     (args1, args2) => {
-      const styles: string[] = args1;
-      const gridColSpan = convertStylesToBFFStyles(styles);
+      const gridColSpan = convertStylesToBFFStyles(args1);
       expect(gridColSpan).toStrictEqual(args2);
     }
   );

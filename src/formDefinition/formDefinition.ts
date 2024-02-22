@@ -19,10 +19,12 @@
 
 import * as TYPES from 'config/bffTypes';
 import { BFFMetadataChildReference, BFFPresentationChildReference } from 'config/bffTypes';
-import * as console from 'console';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
-import { convertStylesToGridColSpan } from '../utils/cora-data/CoraDataUtilsPresentations';
+import {
+  convertStylesToBFFStyles,
+  convertStylesToGridColSpan
+} from '../utils/cora-data/CoraDataUtilsPresentations';
 import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
 import { Lookup } from '../utils/structs/lookup';
@@ -628,7 +630,7 @@ const createDetailedPresentationBasedOnPresentationType = (
     const name = presentation.id; // container does not have a nameInData so use id instead.
     const { type, mode } = presentation;
     containerType = getContainerType(presentationContainer);
-    presentationStyle = presentationContainer.presentationStyle;
+    presentationStyle = convertStylesToBFFStyles(presentationContainer.presentationStyle ?? '');
 
     let definitionFilteredChildRefs: TYPES.BFFMetadataChildReference[] = [];
 
@@ -663,7 +665,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   if (presentation.type === 'pGroup') {
     const group = metadata as TYPES.BFFMetadataGroup;
     const presentationGroup: TYPES.BFFPresentationGroup = presentationPool.get(presentation.id);
-    presentationStyle = presentationGroup.presentationStyle;
+    presentationStyle = convertStylesToBFFStyles(presentationGroup.presentationStyle ?? '');
     attributes = checkForAttributes(group, metadataPool, options, presentation);
 
     // skip children for recordInfo group for now

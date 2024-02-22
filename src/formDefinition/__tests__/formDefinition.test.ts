@@ -1967,6 +1967,7 @@ describe('formDefinition', () => {
                   gridColSpan: 12,
                   mode: 'output',
                   name: 'personNameLinkSContainer',
+                  presentationStyle: '',
                   type: 'container'
                 }
               ],

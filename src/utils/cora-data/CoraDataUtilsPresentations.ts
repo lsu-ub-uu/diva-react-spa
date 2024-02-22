@@ -57,3 +57,22 @@ export const convertStylesToGridColSpan = (styles: string[]): number => {
   const cleaned = removeEmpty(convertedColSpans)[0];
   return cleaned ?? DEFAULT_COLSPAN;
 };
+
+export const convertStylesToBFFStyles = (styles: string) => {
+  // const DEFAULT_COLSPAN: string = '';
+
+  switch (styles) {
+    case 'compactChildStyle':
+      return 'compact';
+    case 'frameChildStyle':
+      return 'frame';
+    case 'blockChildStyle':
+      return 'block';
+    case 'specificationChildStyle':
+      return 'specification';
+    case 'rowBasedChildStyle':
+      return 'row';
+    default:
+      return styles;
+  }
+};

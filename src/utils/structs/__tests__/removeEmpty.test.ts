@@ -29,7 +29,8 @@ describe('RemoveEmpty', () => {
       innerProp2: 'world'
     },
     prop5: [],
-    prop6: ['a']
+    prop6: ['a'],
+    prop7: ''
   };
 
   const cleaned = {
@@ -38,7 +39,8 @@ describe('RemoveEmpty', () => {
       innerProp2: 'world'
     },
     prop5: [],
-    prop6: ['a']
+    prop6: ['a'],
+    prop7: ''
   };
 
   it('should return a data object with properties removed if null or undefined', () => {
