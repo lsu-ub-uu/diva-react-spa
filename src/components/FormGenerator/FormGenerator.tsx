@@ -54,11 +54,11 @@ interface FormGeneratorProps {
   onInvalid?: (fieldErrors: FieldErrors) => void;
   linkedData?: boolean;
 }
+
 export const FormGenerator = ({
   linkedData = false,
   ...props
 }: FormGeneratorProps) => {
-  // console.log('linkedData', linkedData);
   const { t } = useTranslation();
   const methods = useForm({
     mode: 'onChange',
@@ -76,7 +76,6 @@ export const FormGenerator = ({
   // eslint-disable-next-line consistent-return
   const generateFormComponent = (
     component: FormComponent,
-    // parentComponent: FormComponent | undefined,
     idx: number,
     path: string,
   ) => {
@@ -120,36 +119,31 @@ export const FormGenerator = ({
       });
     };
 
-    if (
-      isComponentSurroundingContainer(component) &&
-      !isComponentRepeating(component)
-    ) {
+    if (isComponentSurroundingContainerAndNOTRepeating(component)) {
       return (
-        <div
-          id='surrounding-container'
-          key={reactKey}
-          style={{
-            background: 'lightgray',
-            border: '2px solid black',
-            padding: '16px',
-            marginTop: '16px',
-            marginBottom: '16px',
-          }}
-        >
-          {component.components &&
-            createFormComponents(
-              component.components,
-              currentComponentNamePath,
-            )}
-        </div>
+        <React.Fragment key={reactKey}>
+          <div
+            id='surrounding-container'
+            key={reactKey}
+            style={{
+              background: 'lightgray',
+              border: '1px solid black',
+              display: 'flex',
+              flexDirection:
+                component.presentationStyle === 'inline' ? 'row' : 'column',
+            }}
+          >
+            {component.components &&
+              createFormComponents(
+                component.components,
+                currentComponentNamePath,
+              )}
+          </div>
+        </React.Fragment>
       );
     }
 
-    if (
-      (isComponentGroup(component) ||
-        isComponentRepeatingContainer(component)) &&
-      !isComponentRepeating(component)
-    ) {
+    if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
       return isFirstLevel(currentComponentNamePath) ? (
         <span
           key={reactKey}
@@ -204,7 +198,7 @@ export const FormGenerator = ({
       );
     }
 
-    if (isComponentGroup(component) && isComponentRepeating(component)) {
+    if (isComponentGroupAndRepeating(component)) {
       return isFirstLevel(currentComponentNamePath) ? (
         <FieldArrayComponent
           key={reactKey}
@@ -233,6 +227,7 @@ export const FormGenerator = ({
               )}
             />
           )}
+
           <FieldArrayComponent
             control={control}
             component={component}
@@ -247,7 +242,8 @@ export const FormGenerator = ({
         </Grid>
       );
     }
-    if (isComponentVariable(component) && isComponentRepeating(component)) {
+    if (isComponentVariableAndRepeating(component)) {
+      // isComponentVariableAndRepeating
       return (
         <FieldArrayComponent
           key={reactKey}
@@ -487,4 +483,30 @@ const headlineLevelToTypographyVariant = (
   }
 
   return typographyVariant as DivaTypographyVariants['variant']; // check style to return as default
+};
+
+const isComponentSurroundingContainerAndNOTRepeating = (
+  component: FormComponent,
+) => {
+  return (
+    isComponentSurroundingContainer(component) &&
+    !isComponentRepeating(component)
+  );
+};
+
+const isComponentGroupOrRepeatingContainerAndNOTRepeating = (
+  component: FormComponent,
+) => {
+  return (
+    (isComponentGroup(component) || isComponentRepeatingContainer(component)) &&
+    !isComponentRepeating(component)
+  );
+};
+
+const isComponentGroupAndRepeating = (component: FormComponent) => {
+  return isComponentGroup(component) && isComponentRepeating(component);
+};
+
+const isComponentVariableAndRepeating = (component: FormComponent) => {
+  return isComponentVariable(component) && isComponentRepeating(component);
 };

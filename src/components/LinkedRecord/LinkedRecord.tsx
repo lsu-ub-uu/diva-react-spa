@@ -90,7 +90,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
         style={{
           maxWidth: '800px',
           overflow: 'auto',
-          height: '400px',
+          height: '900px',
           background: 'white',
         }}
       >

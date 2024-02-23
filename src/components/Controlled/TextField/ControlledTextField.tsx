@@ -33,6 +33,7 @@ interface ControlledTextFieldProps {
   multiline?: boolean;
   tooltip?: { title: string; body: string };
   displayMode?: string;
+  presentationStyle?: string;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
