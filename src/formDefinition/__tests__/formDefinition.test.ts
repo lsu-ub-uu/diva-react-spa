@@ -1943,11 +1943,13 @@ describe('formDefinition', () => {
                   components: [
                     {
                       gridColSpan: 12,
+                      childStyle: [],
                       name: 'commaText',
                       type: 'text'
                     },
                     {
                       gridColSpan: 12,
+                      childStyle: [],
                       name: 'spaceText',
                       type: 'text'
                     },
@@ -2146,11 +2148,13 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
+              childStyle: [],
               name: 'semicolonText',
               type: 'text'
             },
             {
               gridColSpan: 12,
+              childStyle: [],
               name: 'spaceText',
               type: 'text'
             },
@@ -2193,11 +2197,13 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
+              childStyle: [],
               name: 'spaceText',
               type: 'text'
             },
             {
               gridColSpan: 12,
+              childStyle: [],
               name: 'firstHalfParenthesisText',
               type: 'text'
             },
@@ -2220,6 +2226,7 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
+              childStyle: [],
               name: 'secondHalfParenthesisText',
               type: 'text'
             }

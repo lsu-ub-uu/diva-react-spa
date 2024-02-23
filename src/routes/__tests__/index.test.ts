@@ -21,6 +21,8 @@ import request from 'supertest';
 import app from '../../server';
 
 describe('API endpoint routes', () => {
+  afterAll(() => {});
+
   describe('/', () => {
     it('GET / returns a 200', async () => {
       const response = await request(app).get('/');
@@ -155,7 +157,7 @@ describe('API endpoint routes', () => {
             childStyle: [],
             components: [
               {
-                childStyle: ['compactChildStyle'],
+                childStyle: ['compact'],
                 components: [
                   {
                     childStyle: [],
