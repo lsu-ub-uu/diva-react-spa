@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 import axios from 'axios';
-import { configureServer, dependencies, loadStuffOnServerStart } from './config/configureServer';
+import { configureServer, loadStuffOnServerStart } from './config/configureServer';
 import {
   authRoute,
   translationRoute,
@@ -10,7 +10,6 @@ import {
   formRoute,
   refreshDefinitionsRoute
 } from './routes';
-import { createLinkedRecordDefinition } from './formDefinition/formDefinition';
 
 const PORT = process.env.NODE_ENV !== 'test' ? process.env.PORT || 8080 : 9090;
 
@@ -47,7 +46,6 @@ app.listen(PORT, (): void => {
   console.log(`Cora API-url ${CORA_API_URL}`);
   loadStuffOnServerStart().then(() => {
     console.log('Loaded stuff from cora');
-
   });
 });
 
