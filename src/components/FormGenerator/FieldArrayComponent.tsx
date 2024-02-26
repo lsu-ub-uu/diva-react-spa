@@ -19,7 +19,7 @@
 
 import React from 'react';
 import { Control, Controller, useFieldArray } from 'react-hook-form';
-import { Chip, Divider, Grid } from '@mui/material';
+import { Box, Chip, Divider, Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -96,7 +96,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                 deleteButtonAction={() => handleRemove(index)}
               />
             )}
-
             <Grid
               container
               item
@@ -105,6 +104,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               justifyContent='flex-start'
               alignItems='center'
               direction='row'
+              flexBasis='auto'
             >
               {
                 props.renderCallback(
@@ -140,15 +140,15 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       className='anchorLink'
       id={`anchor_${props.component.name}`}
     >
-      <Card
+      <Box
         sx={{ mb: 2 }}
-        title={t(props.component.label as string) as string}
+        /* title={t(props.component.label as string) as string}
         variant='variant6'
         tooltipTitle={t(props.component.tooltip?.title as string) as string}
-        tooltipBody={t(props.component.tooltip?.body as string) as string}
+        tooltipBody={t(props.component.tooltip?.body as string) as string} */
       >
         {getContent()}
-      </Card>
+      </Box>
     </span>
   ) : (
     <Grid

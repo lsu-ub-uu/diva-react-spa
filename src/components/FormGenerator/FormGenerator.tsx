@@ -41,7 +41,7 @@ import {
   isFirstLevel,
   RecordData,
 } from './utils';
-import { Typography, LinkButton, Card } from '../index';
+import { Typography, LinkButton } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
@@ -148,20 +148,21 @@ export const FormGenerator = ({
         <span
           key={reactKey}
           className='anchorLink'
-          id={`anchor_${component.name}`}
+          id={`anchor_${component.name}-card`}
         >
-          <Card
+          <Box
             sx={{ mb: 2 }}
-            title={t(component.label as string) as string}
-            variant='variant6'
-            tooltipTitle={t(component.tooltip?.title as string) as string}
-            tooltipBody={t(component.tooltip?.body as string) as string}
+            // title={t(component.label as string) as string}
+            // variant='variant6'
+            // tooltipTitle={t(component.tooltip?.title as string) as string}
+            // tooltipBody={t(component.tooltip?.body as string) as string}
           >
             <Grid
               container
               spacing={2}
               justifyContent='space-between'
               alignItems='flex-start'
+              id='green'
             >
               {createFormComponentAttributes(
                 component,
@@ -173,28 +174,41 @@ export const FormGenerator = ({
                   currentComponentNamePath,
                 )}
             </Grid>
-          </Card>
+          </Box>
         </span>
       ) : (
-        <Box
-          key={reactKey}
-          id='outer-start-form'
-        >
-          {component?.showLabel && (
-            <Typography
-              text={component?.label ?? ''}
-              variant={headlineLevelToTypographyVariant(
-                component.headlineLevel,
-              )}
-            />
-          )}
-          {createFormComponentAttributes(component, currentComponentNamePath)}
-          {component.components &&
-            createFormComponents(
-              component.components,
-              currentComponentNamePath,
+        <span id='linked'>
+          <Box
+            key={reactKey}
+            id={component.name}
+            sx={{
+              display: 'flex',
+
+              flexDirection:
+                component.presentationStyle === 'inline' ? 'row' : 'column',
+              alignItems:
+                component.presentationStyle === 'inline' ? 'flex-end' : null,
+              backgroundColor:
+                component.presentationStyle === 'inline' ? 'green' : 'none',
+              gap: '1em',
+            }}
+          >
+            {component?.showLabel && (
+              <Typography
+                text={component?.label ?? ''}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
             )}
-        </Box>
+            {createFormComponentAttributes(component, currentComponentNamePath)}
+            {component.components &&
+              createFormComponents(
+                component.components,
+                currentComponentNamePath,
+              )}
+          </Box>
+        </span>
       );
     }
 
@@ -242,8 +256,8 @@ export const FormGenerator = ({
         </Grid>
       );
     }
+
     if (isComponentVariableAndRepeating(component)) {
-      // isComponentVariableAndRepeating
       return (
         <FieldArrayComponent
           key={reactKey}
@@ -265,6 +279,7 @@ export const FormGenerator = ({
         />
       );
     }
+
     return (
       <React.Fragment key={reactKey}>
         {createFormComponentAttributes(component, currentComponentNamePath)}

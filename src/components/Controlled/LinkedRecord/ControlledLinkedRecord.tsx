@@ -33,7 +33,7 @@ export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
       name={props.name}
       render={({ field }) => {
         return (
-          <span>
+          <span id='controled-linked-record'>
             {field.value && (
               <LinkedRecord
                 recordType={props.recordType}
