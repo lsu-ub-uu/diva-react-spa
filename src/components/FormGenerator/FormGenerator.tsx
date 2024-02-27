@@ -189,7 +189,6 @@ export const FormGenerator = ({
               component.presentationStyle === 'inline' ? 'flex-end' : null,
             backgroundColor:
               component.presentationStyle === 'inline' ? 'green' : 'none',
-            gap: '1em',
           }}
         >
           {component?.showLabel && (
@@ -384,6 +383,12 @@ export const renderLeafComponent = (
           item
           xs={12}
           sm={renderElementGridWrapper ? component.gridColSpan : 12}
+          style={{
+            flexBasis:
+              convertChildStyleToString(component.childStyle) === 'compact'
+                ? 'auto'
+                : '100%',
+          }}
         >
           <ControlledTextField
             multiline={component.inputType === 'textarea'}
@@ -467,7 +472,7 @@ export const renderLeafComponent = (
             flexBasis:
               convertChildStyleToString(component.childStyle) === 'compact'
                 ? 'auto'
-                : 'max-content',
+                : '2em',
           }}
         >
           <Typography
@@ -536,7 +541,7 @@ const isComponentVariableAndRepeating = (component: FormComponent) => {
 const convertChildStyleToString = (
   childStyle: string[] | undefined,
 ): string | null => {
-  if (childStyle[0] === undefined) {
+  if (!childStyle || childStyle[0] === undefined) {
     return '';
   }
   return childStyle[0].toString();
