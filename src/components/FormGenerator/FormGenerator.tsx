@@ -63,7 +63,7 @@ export const FormGenerator = ({
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    shouldFocusError: true,
+    shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(
       props.formSchema,
       props.record?.data as RecordData,
@@ -177,38 +177,36 @@ export const FormGenerator = ({
           </Box>
         </span>
       ) : (
-        <span id='linked'>
-          <Box
-            key={reactKey}
-            id={component.name}
-            sx={{
-              display: 'flex',
+        <Box
+          key={reactKey}
+          id={component.name}
+          sx={{
+            display: 'flex',
 
-              flexDirection:
-                component.presentationStyle === 'inline' ? 'row' : 'column',
-              alignItems:
-                component.presentationStyle === 'inline' ? 'flex-end' : null,
-              backgroundColor:
-                component.presentationStyle === 'inline' ? 'green' : 'none',
-              gap: '1em',
-            }}
-          >
-            {component?.showLabel && (
-              <Typography
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
-            )}
-            {createFormComponentAttributes(component, currentComponentNamePath)}
-            {component.components &&
-              createFormComponents(
-                component.components,
-                currentComponentNamePath,
+            flexDirection:
+              component.presentationStyle === 'inline' ? 'row' : 'column',
+            alignItems:
+              component.presentationStyle === 'inline' ? 'flex-end' : null,
+            backgroundColor:
+              component.presentationStyle === 'inline' ? 'green' : 'none',
+            gap: '1em',
+          }}
+        >
+          {component?.showLabel && (
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
               )}
-          </Box>
-        </span>
+            />
+          )}
+          {createFormComponentAttributes(component, currentComponentNamePath)}
+          {component.components &&
+            createFormComponents(
+              component.components,
+              currentComponentNamePath,
+            )}
+        </Box>
       );
     }
 
@@ -396,6 +394,7 @@ export const renderLeafComponent = (
             control={control}
             readOnly={!!component.finalValue}
             displayMode={component.mode}
+            childStyle={component.childStyle}
           />
         </Grid>
       );
@@ -456,12 +455,20 @@ export const renderLeafComponent = (
       );
     }
     case 'text': {
+      console.log('aaa', convertChildStyleToString(component.childStyle));
       return (
         <Grid
           key={reactKey}
           item
           xs={12}
           sm={renderElementGridWrapper ? component.gridColSpan : 12}
+          style={{
+            backgroundColor: 'yellow',
+            flexBasis:
+              convertChildStyleToString(component.childStyle) === 'compact'
+                ? 'auto'
+                : 'max-content',
+          }}
         >
           <Typography
             variant={component.textStyle ?? 'bodyTextStyle'}
@@ -524,4 +531,13 @@ const isComponentGroupAndRepeating = (component: FormComponent) => {
 
 const isComponentVariableAndRepeating = (component: FormComponent) => {
   return isComponentVariable(component) && isComponentRepeating(component);
+};
+
+const convertChildStyleToString = (
+  childStyle: string[] | undefined,
+): string | null => {
+  if (childStyle[0] === undefined) {
+    return '';
+  }
+  return childStyle[0].toString();
 };

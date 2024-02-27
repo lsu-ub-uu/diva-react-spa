@@ -104,7 +104,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               justifyContent='flex-start'
               alignItems='center'
               direction='row'
-              flexBasis='auto'
             >
               {
                 props.renderCallback(
@@ -155,7 +154,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       item
       xs={12}
       sm={props.component.gridColSpan}
-      sx={{ position: 'relative' }}
+      id='temp2'
+      flexDirection='column'
+      style={{
+        flexBasis:
+          props.component.presentationStyle === 'inline' ? 'auto' : '100%',
+      }}
     >
       {getContent()}
     </Grid>

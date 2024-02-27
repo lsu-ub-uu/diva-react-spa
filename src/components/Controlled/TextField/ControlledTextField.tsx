@@ -34,12 +34,14 @@ interface ControlledTextFieldProps {
   tooltip?: { title: string; body: string };
   displayMode?: string;
   presentationStyle?: string;
+  childStyle?: string[];
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode =
     props.displayMode !== undefined ? props.displayMode : 'input';
+  const childStyle = props.childStyle !== undefined ? props.childStyle[0] : '';
   return (
     <Controller
       control={props.control}
