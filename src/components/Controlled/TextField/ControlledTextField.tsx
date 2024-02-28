@@ -22,6 +22,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useTranslation } from 'react-i18next';
 import { Tooltip } from '../..';
+import { convertChildStyleToString } from '../../FormGenerator/FormGenerator';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -33,15 +34,14 @@ interface ControlledTextFieldProps {
   multiline?: boolean;
   tooltip?: { title: string; body: string };
   displayMode?: string;
-  presentationStyle?: string;
-  childStyle?: string[];
+  parentChildStyle?: string | null | undefined;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode =
     props.displayMode !== undefined ? props.displayMode : 'input';
-  const childStyle = props.childStyle !== undefined ? props.childStyle[0] : '';
+
   return (
     <Controller
       control={props.control}
@@ -55,7 +55,11 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               aria-label={props.label}
               required={props.required}
               error={error !== undefined}
-              sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
+              sx={{
+                p: '2px 4px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
             >
               {t(props.label)}
               {props.tooltip && (

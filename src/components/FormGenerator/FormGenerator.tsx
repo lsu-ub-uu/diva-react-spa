@@ -144,7 +144,10 @@ export const FormGenerator = ({
     }
 
     if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
-      return isFirstLevel(currentComponentNamePath) ? (
+      return isComponentFirstLevelAndNOTLinkedData(
+        currentComponentNamePath,
+        linkedData,
+      ) ? (
         <span
           key={reactKey}
           className='anchorLink'
@@ -182,7 +185,6 @@ export const FormGenerator = ({
           id={component.name}
           sx={{
             display: 'flex',
-
             flexDirection:
               component.presentationStyle === 'inline' ? 'row' : 'column',
             alignItems:
@@ -210,6 +212,7 @@ export const FormGenerator = ({
     }
 
     if (isComponentGroupAndRepeating(component)) {
+      // console.log(component);
       return isFirstLevel(currentComponentNamePath) ? (
         <FieldArrayComponent
           key={reactKey}
@@ -399,7 +402,7 @@ export const renderLeafComponent = (
             control={control}
             readOnly={!!component.finalValue}
             displayMode={component.mode}
-            childStyle={component.childStyle}
+            parentChildStyle={convertChildStyleToString(component.childStyle)}
           />
         </Grid>
       );
@@ -460,7 +463,6 @@ export const renderLeafComponent = (
       );
     }
     case 'text': {
-      console.log('aaa', convertChildStyleToString(component.childStyle));
       return (
         <Grid
           key={reactKey}
@@ -538,7 +540,14 @@ const isComponentVariableAndRepeating = (component: FormComponent) => {
   return isComponentVariable(component) && isComponentRepeating(component);
 };
 
-const convertChildStyleToString = (
+function isComponentFirstLevelAndNOTLinkedData(
+  currentComponentNamePath: string,
+  linkedData: boolean | undefined,
+) {
+  return isFirstLevel(currentComponentNamePath) && !linkedData;
+}
+
+export const convertChildStyleToString = (
   childStyle: string[] | undefined,
 ): string | null => {
   if (!childStyle || childStyle[0] === undefined) {
