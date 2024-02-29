@@ -86,7 +86,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
           linkedData
         />
       )}
-      <pre
+      {/*      <pre
         style={{
           maxWidth: '800px',
           overflow: 'auto',
@@ -95,7 +95,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
         }}
       >
         {JSON.stringify(record, null, 3)}
-      </pre>
+      </pre> */}
     </>
   );
 };

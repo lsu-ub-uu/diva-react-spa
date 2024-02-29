@@ -141,6 +141,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     >
       <Box
         sx={{ mb: 2 }}
+
         /* title={t(props.component.label as string) as string}
         variant='variant6'
         tooltipTitle={t(props.component.tooltip?.title as string) as string}
@@ -156,10 +157,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       sm={props.component.gridColSpan}
       id='temp2'
       flexDirection='column'
-      style={{
-        flexBasis:
-          props.component.presentationStyle === 'inline' ? 'auto' : '100%',
-      }}
+      style={
+        {
+          // flexBasis:
+          //   props.component.presentationStyle === 'inline' ? 'auto' : '100%',
+        }
+      }
     >
       {getContent()}
     </Grid>

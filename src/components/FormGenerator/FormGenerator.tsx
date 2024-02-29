@@ -127,11 +127,15 @@ export const FormGenerator = ({
             id='surrounding-container'
             key={reactKey}
             style={{
-              background: 'lightgray',
-              border: '1px solid black',
+              // background: 'lightgray',
+              // border: '1px solid black',
               display: 'flex',
-              flexDirection:
-                component.presentationStyle === 'inline' ? 'row' : 'column',
+              flexDirection: checkIfPresentationStyleOrIsInline(component)
+                ? 'row'
+                : 'column',
+              alignItems: checkIfPresentationStyleOrIsInline(component)
+                ? 'center'
+                : undefined,
             }}
           >
             {component.components &&
@@ -169,7 +173,6 @@ export const FormGenerator = ({
               spacing={2}
               justifyContent='space-between'
               alignItems='flex-start'
-              id='green'
             >
               {createFormComponentAttributes(
                 component,
@@ -193,13 +196,19 @@ export const FormGenerator = ({
           id={component.name}
           sx={{
             display: 'flex',
-            flexDirection:
-              component.presentationStyle === 'inline' ? 'row' : 'column',
-            alignItems:
-              component.presentationStyle === 'inline' ? 'center' : null,
-            gap: component.presentationStyle === 'inline' ? '0.2em' : null,
-            // backgroundColor:
-            //   component.presentationStyle === 'inline' ? 'green' : 'none',
+            flexDirection: checkIfPresentationStyleOrParentIsInline(
+              component,
+              parentPresentationStyle,
+            )
+              ? 'row'
+              : 'column',
+            alignItems: checkIfPresentationStyleOrParentIsInline(
+              component,
+              parentPresentationStyle,
+            )
+              ? 'center'
+              : null,
+            gap: checkIfPresentationStyleOrIsInline(component) ? '0.2em' : null,
           }}
         >
           {component?.showLabel && (
@@ -215,8 +224,7 @@ export const FormGenerator = ({
             createFormComponents(
               component.components,
               currentComponentNamePath,
-              component.presentationStyle === undefined ||
-                component.presentationStyle === ''
+              checkIfPresentationStyleIsUndefinedOrEmpty(component)
                 ? parentPresentationStyle
                 : component.presentationStyle,
             )}
@@ -588,4 +596,27 @@ export const convertChildStyleToString = (
     return '';
   }
   return childStyle[0].toString();
+};
+
+const checkIfPresentationStyleOrParentIsInline = (
+  component: FormComponent,
+  parentPresentationStyle: string | undefined,
+) => {
+  return (
+    component.presentationStyle === 'inline' ||
+    parentPresentationStyle === 'inline'
+  );
+};
+
+const checkIfPresentationStyleIsUndefinedOrEmpty = (
+  component: FormComponent,
+) => {
+  return (
+    component.presentationStyle === undefined ||
+    component.presentationStyle === ''
+  );
+};
+
+const checkIfPresentationStyleOrIsInline = (component: FormComponent) => {
+  return component.presentationStyle === 'inline';
 };
