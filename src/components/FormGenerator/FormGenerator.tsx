@@ -208,7 +208,12 @@ export const FormGenerator = ({
             )
               ? 'center'
               : null,
-            gap: checkIfPresentationStyleOrIsInline(component) ? '0.2em' : null,
+            gap: checkIfPresentationStyleOrParentIsInline(
+              component,
+              parentPresentationStyle,
+            )
+              ? '0.2em'
+              : null,
           }}
         >
           {component?.showLabel && (
