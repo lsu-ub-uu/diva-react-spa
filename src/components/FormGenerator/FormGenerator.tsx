@@ -78,6 +78,7 @@ export const FormGenerator = ({
     component: FormComponent,
     idx: number,
     path: string,
+    parentPresentationStyle?: string,
   ) => {
     const reactKey = `key_${idx}`;
 
@@ -137,6 +138,9 @@ export const FormGenerator = ({
               createFormComponents(
                 component.components,
                 currentComponentNamePath,
+                component.presentationStyle === undefined
+                  ? parentPresentationStyle
+                  : component.presentationStyle,
               )}
           </div>
         </React.Fragment>
@@ -171,10 +175,14 @@ export const FormGenerator = ({
                 component,
                 currentComponentNamePath,
               )}
+
               {component.components &&
                 createFormComponents(
                   component.components,
                   currentComponentNamePath,
+                  component.presentationStyle === undefined
+                    ? parentPresentationStyle
+                    : component.presentationStyle,
                 )}
             </Grid>
           </Box>
@@ -188,9 +196,10 @@ export const FormGenerator = ({
             flexDirection:
               component.presentationStyle === 'inline' ? 'row' : 'column',
             alignItems:
-              component.presentationStyle === 'inline' ? 'flex-end' : null,
-            backgroundColor:
-              component.presentationStyle === 'inline' ? 'green' : 'none',
+              component.presentationStyle === 'inline' ? 'center' : null,
+            gap: component.presentationStyle === 'inline' ? '0.2em' : null,
+            // backgroundColor:
+            //   component.presentationStyle === 'inline' ? 'green' : 'none',
           }}
         >
           {component?.showLabel && (
@@ -206,13 +215,16 @@ export const FormGenerator = ({
             createFormComponents(
               component.components,
               currentComponentNamePath,
+              component.presentationStyle === undefined ||
+                component.presentationStyle === ''
+                ? parentPresentationStyle
+                : component.presentationStyle,
             )}
         </Box>
       );
     }
 
     if (isComponentGroupAndRepeating(component)) {
-      // console.log(component);
       return isFirstLevel(currentComponentNamePath) ? (
         <FieldArrayComponent
           key={reactKey}
@@ -222,7 +234,13 @@ export const FormGenerator = ({
           renderCallback={(arrayPath: string) => {
             return [
               ...createFormComponentAttributes(component, arrayPath),
-              ...createFormComponents(component.components ?? [], arrayPath),
+              ...createFormComponents(
+                component.components ?? [],
+                arrayPath,
+                component.presentationStyle === undefined
+                  ? parentPresentationStyle
+                  : component.presentationStyle,
+              ),
             ];
           }}
         />
@@ -249,7 +267,13 @@ export const FormGenerator = ({
             renderCallback={(arrayPath: string) => {
               return [
                 ...createFormComponentAttributes(component, arrayPath),
-                ...createFormComponents(component.components ?? [], arrayPath),
+                ...createFormComponents(
+                  component.components ?? [],
+                  arrayPath,
+                  component.presentationStyle === undefined
+                    ? parentPresentationStyle
+                    : component.presentationStyle,
+                ),
               ];
             }}
           />
@@ -273,6 +297,7 @@ export const FormGenerator = ({
                 control,
                 `${variableArrayPath}.value`,
                 false,
+                parentPresentationStyle,
               ),
             ];
           }}
@@ -289,6 +314,7 @@ export const FormGenerator = ({
           control,
           `${currentComponentNamePath}.value`,
           true,
+          parentPresentationStyle,
         )}
       </React.Fragment>
     );
@@ -296,10 +322,17 @@ export const FormGenerator = ({
 
   const createFormComponents = (
     components: FormComponent[],
-    // parentComponent: FormComponent | undefined,
     path = '',
+    parentPresentationStyle?: string,
   ): JSX.Element[] => {
-    return components.map((c, i) => generateFormComponent(c, i, path));
+    return components.map((c, i) => {
+      return generateFormComponent(
+        c,
+        i,
+        path,
+        parentPresentationStyle as string,
+      );
+    });
   };
 
   return linkedData !== true ? (
@@ -376,6 +409,7 @@ export const renderLeafComponent = (
   control: Control<any>,
   name: string,
   renderElementGridWrapper: boolean,
+  parentPresentationStyle?: string,
 ): JSX.Element | null => {
   switch (component.type) {
     case 'textVariable':
@@ -396,13 +430,14 @@ export const renderLeafComponent = (
           <ControlledTextField
             multiline={component.inputType === 'textarea'}
             label={component.label ?? ''}
+            showLabel={component.showLabel}
             name={name}
             placeholder={component.placeholder}
             tooltip={component.tooltip}
             control={control}
             readOnly={!!component.finalValue}
             displayMode={component.mode}
-            parentChildStyle={convertChildStyleToString(component.childStyle)}
+            parentPresentationStyle={parentPresentationStyle}
           />
         </Grid>
       );
@@ -470,7 +505,6 @@ export const renderLeafComponent = (
           xs={12}
           sm={renderElementGridWrapper ? component.gridColSpan : 12}
           style={{
-            backgroundColor: 'yellow',
             flexBasis:
               convertChildStyleToString(component.childStyle) === 'compact'
                 ? 'auto'

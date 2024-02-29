@@ -22,7 +22,6 @@ import ErrorIcon from '@mui/icons-material/Error';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useTranslation } from 'react-i18next';
 import { Tooltip } from '../..';
-import { convertChildStyleToString } from '../../FormGenerator/FormGenerator';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -34,14 +33,14 @@ interface ControlledTextFieldProps {
   multiline?: boolean;
   tooltip?: { title: string; body: string };
   displayMode?: string;
-  parentChildStyle?: string | null | undefined;
+  parentPresentationStyle?: string;
+  showLabel?: boolean;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode =
     props.displayMode !== undefined ? props.displayMode : 'input';
-
   return (
     <Controller
       control={props.control}
@@ -49,7 +48,14 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
       render={({ field, fieldState: { error } }) => {
         const fieldWithoutRef = { ...field, ref: undefined };
         return (
-          <FormControl fullWidth>
+          <FormControl
+            fullWidth
+            sx={{
+              flexDirection:
+                props.parentPresentationStyle === 'inline' ? 'row' : 'column',
+              alignItems: 'baseline',
+            }}
+          >
             <FormLabel
               htmlFor={field.name}
               aria-label={props.label}
@@ -61,7 +67,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 alignItems: 'center',
               }}
             >
-              {t(props.label)}
+              {props.showLabel === true ? t(props.label) : null}
               {props.tooltip && (
                 <Tooltip
                   title={t(props.tooltip.title)}

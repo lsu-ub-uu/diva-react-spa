@@ -94,7 +94,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
           background: 'white',
         }}
       >
-        {JSON.stringify(record, null, 1)}
+        {JSON.stringify(record, null, 3)}
       </pre>
     </>
   );
