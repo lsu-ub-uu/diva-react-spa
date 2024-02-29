@@ -550,7 +550,7 @@ describe('formDefinition', () => {
           label: 'textId345',
           showLabel: true,
           gridColSpan: 12,
-          childStyle: [],
+          childStyle: [''],
           presentationStyle: 'card',
           name: 'someNewMetadataGroupNameInData',
           repeat: {
@@ -676,7 +676,7 @@ describe('formDefinition', () => {
               showLabel: true,
               placeholder: 'someEmptyTextId',
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1
@@ -792,7 +792,7 @@ describe('formDefinition', () => {
               label: 'someNumberVarTextId',
               showLabel: true,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               placeholder: 'someEmptyTextId',
               repeat: {
                 repeatMin: 1,
@@ -838,7 +838,7 @@ describe('formDefinition', () => {
               label: 'someTextId',
               showLabel: true,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               placeholder: 'someEmptyTextId',
               repeat: {
                 repeatMin: 1,
@@ -880,7 +880,7 @@ describe('formDefinition', () => {
               label: 'someChildGroupTextId',
               showLabel: true,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someChildGroupNameInData',
               repeat: {
@@ -924,7 +924,7 @@ describe('formDefinition', () => {
               label: 'nationalSubjectCategoryLinkText',
               showLabel: true,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               mode: 'input',
               presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
               recordLinkType: 'nationalSubjectCategory',
@@ -943,7 +943,7 @@ describe('formDefinition', () => {
               presentationStyle: 'card', // frame
               containerType: 'surrounding',
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               components: [
                 {
                   type: 'textVariable',
@@ -973,7 +973,7 @@ describe('formDefinition', () => {
               mode: 'input'
             },
             {
-              childStyle: [],
+              childStyle: [''],
               name: 'pSomeGuiElementLinkId',
               gridColSpan: 12,
               url: 'http://www.google.se',
@@ -987,7 +987,7 @@ describe('formDefinition', () => {
               presentationStyle: 'label',
               containerType: 'repeating',
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               components: [
                 {
                   type: 'textVariable',
@@ -1022,7 +1022,7 @@ describe('formDefinition', () => {
               showLabel: true,
               headlineLevel: 'h3',
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
               repeat: {
@@ -1065,7 +1065,7 @@ describe('formDefinition', () => {
               label: 'someChildGroupTextId',
               showLabel: false,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
               repeat: {
@@ -1119,7 +1119,7 @@ describe('formDefinition', () => {
                 title: 'textId345'
               },
               type: 'group',
-              childStyle: [],
+              childStyle: [''],
               components: [
                 {
                   containerType: 'surrounding',
@@ -1128,10 +1128,10 @@ describe('formDefinition', () => {
                   name: 'pSomeManuscriptIdContainer',
                   presentationStyle: '',
                   type: 'container',
-                  childStyle: [],
+                  childStyle: [''],
                   components: [
                     {
-                      childStyle: [],
+                      childStyle: [''],
                       gridColSpan: 12,
                       inputType: 'input',
                       label: 'someTextId',
@@ -1155,7 +1155,7 @@ describe('formDefinition', () => {
                       }
                     },
                     {
-                      childStyle: [],
+                      childStyle: [''],
                       gridColSpan: 12,
                       inputType: 'input',
                       label: 'someTextId',
@@ -1199,7 +1199,7 @@ describe('formDefinition', () => {
           label: 'textId345',
           showLabel: true,
           gridColSpan: 12,
-          childStyle: [],
+          childStyle: [''],
           presentationStyle: 'card',
           name: 'someEditMetadataGroupNameInData',
           repeat: {
@@ -1417,7 +1417,7 @@ describe('formDefinition', () => {
               label: 'someNumberVarTextId',
               showLabel: true,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               placeholder: 'someEmptyTextId',
               repeat: {
                 repeatMin: 1,
@@ -1463,7 +1463,7 @@ describe('formDefinition', () => {
               label: 'someTextId',
               showLabel: true,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               placeholder: 'someEmptyTextId',
               repeat: {
                 repeatMin: 1,
@@ -1505,7 +1505,7 @@ describe('formDefinition', () => {
               label: 'someChildGroupTextId',
               showLabel: true,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someChildGroupNameInData',
               repeat: {
@@ -1549,7 +1549,7 @@ describe('formDefinition', () => {
               label: 'nationalSubjectCategoryLinkText',
               showLabel: true,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               mode: 'input',
               presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
               recordLinkType: 'nationalSubjectCategory',
@@ -1568,7 +1568,7 @@ describe('formDefinition', () => {
               presentationStyle: 'card', // frame
               containerType: 'surrounding',
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               components: [
                 {
                   type: 'textVariable',
@@ -1598,7 +1598,7 @@ describe('formDefinition', () => {
               mode: 'input'
             },
             {
-              childStyle: [],
+              childStyle: [''],
               name: 'pSomeGuiElementLinkId',
               gridColSpan: 12,
               url: 'http://www.google.se',
@@ -1612,7 +1612,7 @@ describe('formDefinition', () => {
               presentationStyle: 'label',
               containerType: 'repeating',
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               components: [
                 {
                   type: 'textVariable',
@@ -1647,7 +1647,7 @@ describe('formDefinition', () => {
               showLabel: true,
               headlineLevel: 'h3',
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithSpecifiedHeadlineTextNameInData',
               repeat: {
@@ -1690,7 +1690,7 @@ describe('formDefinition', () => {
               label: 'someChildGroupTextId',
               showLabel: false,
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               presentationStyle: 'someMetadataChildGroupPresentationStyle',
               name: 'someMetadataChildGroupWithShowHeadlineFalseNameInData',
               repeat: {
@@ -1743,7 +1743,7 @@ describe('formDefinition', () => {
         form: {
           type: 'group',
           gridColSpan: 12,
-          childStyle: [],
+          childStyle: [''],
           presentationStyle: 'card',
           name: 'divaOutput',
           repeat: {
@@ -1810,14 +1810,14 @@ describe('formDefinition', () => {
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
-          childStyle: [],
+          childStyle: [''],
           components: [
             {
               gridColSpan: 12,
               inputType: 'input',
               label: 'someTextId',
               showLabel: true,
-              childStyle: [],
+              childStyle: [''],
               mode: 'output',
               name: 'someNameInData6',
               placeholder: 'someEmptyTextId',
@@ -1916,14 +1916,14 @@ describe('formDefinition', () => {
       expect(linkedRecordDefinition.form.components).toHaveLength(1);
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
-          childStyle: [],
+          childStyle: [''],
           components: [
             {
-              childStyle: [],
+              childStyle: [''],
               components: [
                 {
                   gridColSpan: 12,
-                  childStyle: [],
+                  childStyle: [''],
                   label: 'someTextId',
                   mode: 'output',
                   name: 'familyName',
@@ -1939,17 +1939,17 @@ describe('formDefinition', () => {
                   type: 'textVariable'
                 },
                 {
-                  childStyle: [],
+                  childStyle: [''],
                   components: [
                     {
                       gridColSpan: 12,
-                      childStyle: [],
+                      childStyle: [''],
                       name: 'commaText',
                       type: 'text'
                     },
                     {
                       gridColSpan: 12,
-                      childStyle: [],
+                      childStyle: [''],
                       name: 'spaceText',
                       type: 'text'
                     },
@@ -1957,7 +1957,7 @@ describe('formDefinition', () => {
                       gridColSpan: 12,
                       label: 'someTextId',
                       mode: 'output',
-                      childStyle: [],
+                      childStyle: [''],
                       name: 'givenName',
                       repeat: {
                         repeatMax: 3,
@@ -2107,14 +2107,14 @@ describe('formDefinition', () => {
       expect(linkedRecordDefinition.form.components).toHaveLength(8);
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
-          childStyle: [],
+          childStyle: [''],
           components: [
             {
-              childStyle: [],
+              childStyle: [''],
               components: [
                 {
                   gridColSpan: 12,
-                  childStyle: [],
+                  childStyle: [''],
                   label: 'someTextId',
                   mode: 'output',
                   name: 'nationalSubjectCategoryName',
@@ -2148,23 +2148,23 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               name: 'semicolonText',
               type: 'text'
             },
             {
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               name: 'spaceText',
               type: 'text'
             },
             {
-              childStyle: [],
+              childStyle: [''],
               components: [
                 {
                   gridColSpan: 12,
                   label: 'someTextId',
-                  childStyle: [],
+                  childStyle: [''],
                   mode: 'output',
                   name: 'nationalSubjectCategoryName',
                   repeat: {
@@ -2197,19 +2197,19 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               name: 'spaceText',
               type: 'text'
             },
             {
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               name: 'firstHalfParenthesisText',
               type: 'text'
             },
             {
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               label: 'someTextId',
               mode: 'output',
               name: 'subjectCode',
@@ -2226,7 +2226,7 @@ describe('formDefinition', () => {
             },
             {
               gridColSpan: 12,
-              childStyle: [],
+              childStyle: [''],
               name: 'secondHalfParenthesisText',
               type: 'text'
             }

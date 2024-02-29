@@ -46,29 +46,18 @@ afterEach(() => {
 
 describe('requestAuthTokenOnLogin', () => {
   describe('requestAuthTokenOnLoginNew', () => {
-    it('1', async () => {
-      const expectedResponse = {
-        data: {
-          data: {
-            id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-            validForNoSeconds: '600',
-            idInUserStorage: 'coraUser:111111111111111',
-            idFromLogin: 'coraUser:111111111111111',
-            lastName: 'DiVA',
-            firstName: 'Everything'
-          }
-        },
-        headers: {},
-        request: {},
-        status: 200
-      };
+    it('Returns an appToken', async () => {
+      const { CORA_APPTOKENVERIFIER_URL } = process.env;
+      const rootUrl = `${CORA_APPTOKENVERIFIER_URL}/apptokenverifier/rest/apptoken/`;
       const coraUser = 'coraUser:111111111111111';
-      const url: string = `https://cora.epc.ub.uu.se/diva/apptokenverifier/rest/apptoken/${coraUser}`;
+      const url = `${rootUrl}${coraUser}`;
+
       mockAxios.onPost(url).reply(200, authUser);
       const response = await requestAuthTokenOnLogin(
         coraUser,
         'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
       );
+
       expect(response).toEqual({
         id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',

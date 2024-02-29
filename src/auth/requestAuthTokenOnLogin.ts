@@ -27,7 +27,9 @@ export async function requestAuthTokenOnLogin(
   user: string,
   APP_TOKEN_ADMIN: string | undefined
 ): Promise<Auth> {
-  const rootUrl = 'https://cora.epc.ub.uu.se/diva/apptokenverifier/rest/apptoken/';
+  const { CORA_APPTOKENVERIFIER_URL } = process.env;
+
+  const rootUrl = `${CORA_APPTOKENVERIFIER_URL}/apptokenverifier/rest/apptoken/`;
   const url = `${rootUrl}${user}`;
   const headers = {
     'Content-Type': 'text/plain;charset=UTF-8'

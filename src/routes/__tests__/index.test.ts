@@ -154,13 +154,13 @@ describe('API endpoint routes', () => {
         validationType: 'person',
         presentation: {
           form: {
-            childStyle: [],
+            childStyle: [''],
             components: [
               {
                 childStyle: ['compact'],
                 components: [
                   {
-                    childStyle: [],
+                    childStyle: [''],
                     gridColSpan: 12,
                     inputType: 'input',
                     label: 'lastNameTextVarText',
@@ -171,7 +171,7 @@ describe('API endpoint routes', () => {
                       repeatMax: 1,
                       repeatMin: 0
                     },
-                    showLabel: false,
+                    showLabel: true,
                     tooltip: {
                       body: 'lastNameTextVarDefText',
                       title: 'lastNameTextVarText'
@@ -183,22 +183,22 @@ describe('API endpoint routes', () => {
                     }
                   },
                   {
-                    childStyle: [],
+                    childStyle: [''],
                     components: [
                       {
-                        childStyle: [],
+                        childStyle: [''],
                         gridColSpan: 12,
                         name: 'commaText',
                         type: 'text'
                       },
                       {
-                        childStyle: [],
+                        childStyle: [''],
                         gridColSpan: 12,
                         name: 'spaceText',
                         type: 'text'
                       },
                       {
-                        childStyle: [],
+                        childStyle: [''],
                         gridColSpan: 12,
                         inputType: 'input',
                         label: 'firstNameTextVarText',

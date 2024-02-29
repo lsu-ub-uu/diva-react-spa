@@ -44,7 +44,7 @@ describe('converting childStyles to gridColspan', () => {
     [['specificationChildStyle'], ['specification']],
     [['rowBasedChildStyle'], ['row']],
     [[''], ['']],
-    [undefined, []],
+    [undefined, ['']],
     [['card'], ['card']],
     [['label'], ['label']],
     [['someMetadataChildGroupPresentationStyle'], ['someMetadataChildGroupPresentationStyle']]
