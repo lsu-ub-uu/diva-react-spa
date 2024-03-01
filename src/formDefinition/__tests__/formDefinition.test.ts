@@ -106,7 +106,9 @@ import {
   someMetadataNumberVarWithAttributeAndOtherId,
   someMetadataNumberVarWithOtherAttributeId,
   someMetadataCollectionWithOtherIdVariable,
-  someMetadataCollectionVariable2
+  someMetadataCollectionVariable2,
+  someNewRecordLink,
+  pSomeNewRecordLink
 } from '../../__mocks__/form/bffMock';
 import {
   createFormDefinition,
@@ -176,7 +178,8 @@ describe('formDefinition', () => {
       someMetadataNumberVarWithAttributeAndOtherId,
       someMetadataNumberVarWithOtherAttributeId,
       someMetadataCollectionWithOtherIdVariable,
-      someMetadataCollectionVariable2
+      someMetadataCollectionVariable2,
+      someNewRecordLink
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -207,7 +210,8 @@ describe('formDefinition', () => {
       pSomeLocalIdTextVar,
       pSomeScopusIdTextVar,
       pSomeNewMetadataGroupForMissingChildId,
-      pSomeOtherMetadataCollectionVariableWithMissingChildId
+      pSomeOtherMetadataCollectionVariableWithMissingChildId,
+      pSomeNewRecordLink
     ]);
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
@@ -450,6 +454,7 @@ describe('formDefinition', () => {
     addToPool(metadata);
     return metadata;
   };
+
   const createPresentationRecordLink = (
     id: string,
     presentedRecordType: string,
@@ -542,7 +547,7 @@ describe('formDefinition', () => {
     it('should return a form definition for a new metadata group', () => {
       const validationTypeId = 'someValidationTypeId';
       const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-      expect(formDefinition.form.components).toHaveLength(18);
+      expect(formDefinition.form.components).toHaveLength(19);
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
@@ -936,6 +941,26 @@ describe('formDefinition', () => {
                 title: 'nationalSubjectCategoryLinkText',
                 body: 'nationalSubjectCategoryLinkDefText'
               }
+            },
+            {
+              type: 'recordLink',
+              name: 'someNewRecordLink',
+              label: 'someNewRecordLinkText',
+              showLabel: true,
+              gridColSpan: 12,
+              childStyle: [''],
+              mode: 'input',
+              presentationRecordLinkId: 'someNewRecordPLinkId',
+              recordLinkType: 'someNewRecordLink',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1
+              },
+              tooltip: {
+                title: 'someNewRecordLinkText',
+                body: 'someNewRecordLinkDefText'
+              },
+              search: 'someNewRecordLinkSearch'
             },
             {
               type: 'container',
