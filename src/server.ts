@@ -8,7 +8,8 @@ import {
   validationTypesRoute,
   recordRoute,
   formRoute,
-  refreshDefinitionsRoute
+  refreshDefinitionsRoute,
+  searchRoute
 } from './routes';
 
 const PORT = process.env.NODE_ENV !== 'test' ? process.env.PORT || 8080 : 9090;
@@ -37,6 +38,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/translations/', translationRoute);
 app.use('/api/divaOutputs', divaOutputsRoute);
 app.use('/api/validationTypes', validationTypesRoute);
+app.use('/api/search', searchRoute);
 app.use('/api/record', recordRoute);
 app.use('/api/form', formRoute);
 app.use('/api/refreshDefinitions', refreshDefinitionsRoute);

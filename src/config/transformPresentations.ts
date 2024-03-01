@@ -64,6 +64,7 @@ const transformCoraPresentationToBFFPresentation = (
   | BFFPresentationGroup
   | BFFPresentationSurroundingContainer
   | BFFGuiElement
+  | BFFPresentationRecordLink
   | undefined => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
@@ -79,11 +80,9 @@ const transformCoraPresentationToBFFPresentation = (
       return transformCoraPresentationPVarToBFFPresentation(coraRecordWrapper);
     }
     case 'pCollVar': {
-      // basic presentation should be enough for collection variable
       return transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
     }
     case 'pRecordLink': {
-      // basic presentation should be enough for pRecordLink until we deal with linkedPresentations and search
       return transformCoraPresentationPLinkToBFFPresentation(coraRecordWrapper);
     }
     case 'container': {
@@ -149,6 +148,7 @@ const transformCoraPresentationPLinkToBFFPresentation = (
   const dataRecordGroup = coraRecordWrapper.record.data;
   const basic = transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
   let linkedRecordPresentations;
+  let search;
 
   if (containsChildWithNameInData(dataRecordGroup, 'linkedRecordPresentations')) {
     const linkedPresentationsGroup = getFirstDataGroupWithNameInDataAndAttributes(
@@ -166,8 +166,11 @@ const transformCoraPresentationPLinkToBFFPresentation = (
       return { presentedRecordType, presentationId } as BFFLinkedRecordPresentation;
     });
   }
+  if (containsChildWithNameInData(dataRecordGroup, 'search')) {
+    search = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'search');
+  }
 
-  return removeEmpty({ ...basic, linkedRecordPresentations } as BFFPresentationRecordLink);
+  return removeEmpty({ ...basic, linkedRecordPresentations, search } as BFFPresentationRecordLink);
 };
 
 // Handle pVar

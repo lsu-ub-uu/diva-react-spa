@@ -263,6 +263,19 @@
                     ]
                   }
                 ]
+              },
+              {
+                "name": "search",
+                "children": [
+                  {
+                    "name": "linkedRecordType",
+                    "value": "search"
+                  },
+                  {
+                    "name": "linkedRecordId",
+                    "value": "nationalSubjectCategorySearch"
+                  }
+                ]
               }
             ],
             "attributes": {

@@ -19,6 +19,7 @@
 
 import axios, { AxiosResponse } from 'axios';
 import { DataGroup } from '../utils/cora-data/CoraData';
+import * as console from "console";
 
 export async function getRecordDataListByType<T>(
   type: string,
@@ -36,7 +37,7 @@ export async function getRecordDataListByType<T>(
 export async function getSearchResultDataListBySearchType<T>(
   searchType: string,
   searchData: DataGroup,
-  authToken: string
+  authToken?: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/searchResult/${searchType}`;
 
@@ -56,14 +57,12 @@ export async function getRecordDataById<T>(
   id: string,
   authToken: string
 ): Promise<AxiosResponse<T>> {
-
   const apiUrl: string = `/record/${type}/${id}`;
   const headers = {
     Accept: 'application/vnd.uub.record+json',
     'Content-Type': 'application/vnd.uub.record+json',
     Authtoken: `${authToken}`
   };
-
   const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
   return response;
 }

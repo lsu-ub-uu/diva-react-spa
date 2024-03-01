@@ -225,6 +225,11 @@ export const someNewMetadataGroup: BFFMetadataGroup = {
       repeatMax: '1'
     },
     {
+      childId: 'someNewRecordLinkId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
       childId: 'someMetadataChildGroupWithSpecifiedHeadlineTextId',
       repeatMin: '1',
       repeatMax: '1'
@@ -878,6 +883,11 @@ export const pSomeNewMetadataGroup: BFFPresentationGroup = {
       childStyle: []
     },
     {
+      childId: 'someNewRecordPLinkId',
+      type: 'presentation',
+      childStyle: []
+    },
+    {
       childId: 'pSomeContainerId',
       type: 'presentation',
       childStyle: []
@@ -1076,6 +1086,14 @@ export const someMetadataRecordLink: BFFMetadataRecordLink = {
   defTextId: 'nationalSubjectCategoryLinkDefText',
   linkedRecordType: 'nationalSubjectCategory'
 };
+export const someNewRecordLink: BFFMetadataRecordLink = {
+  id: 'someNewRecordLinkId',
+  nameInData: 'someNewRecordLink',
+  type: 'recordLink',
+  textId: 'someNewRecordLinkText',
+  defTextId: 'someNewRecordLinkDefText',
+  linkedRecordType: 'someNewRecordLink'
+};
 
 export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
   id: 'nationalSubjectCategoryPLinkId',
@@ -1088,7 +1106,19 @@ export const pSomeMetadataRecordLink: BFFPresentationRecordLink = {
       presentationId: 'someSubjectCategoryPresentation'
     }
   ]
-  // TODO Search ?
+};
+export const pSomeNewRecordLink: BFFPresentationRecordLink = {
+  id: 'someNewRecordPLinkId',
+  type: 'pRecordLink',
+  presentationOf: 'someNewRecordLinkId',
+  mode: 'input',
+  linkedRecordPresentations: [
+    {
+      presentedRecordType: 'someNewRecordLink',
+      presentationId: 'someNewRecordLink'
+    }
+  ],
+  search: 'someNewRecordLinkSearch'
 };
 
 export const someMetadataRecordLinkWithAttributes: BFFMetadataRecordLink = {

@@ -102,5 +102,4 @@ export default {
   getAllDataAtomicValuesWithNameInData,
   extractDataGroupFollowingNameInDatas,
   extractFirstDataGroupWithAttributesFollowingNameInDatas
-  // extractAllDataGroupsWithAttributesFollowingNameInDatas,
 };

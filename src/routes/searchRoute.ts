@@ -17,22 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { authRoute } from './authRoute';
-import { translationRoute } from './translationRoute';
-import { divaOutputsRoute } from './divaOutputsRoute';
-import { validationTypesRoute } from './validationTypesRoute';
-import { recordRoute } from './recordRoute';
-import { formRoute } from './formRoute';
-import { refreshDefinitionsRoute } from './refreshDefinitionsRoute';
-import { searchRoute } from './searchRoute';
+import express from 'express';
+import { getPublicSearchResult } from '../controllers/searchController';
 
-export {
-  authRoute,
-  translationRoute,
-  divaOutputsRoute,
-  validationTypesRoute,
-  recordRoute,
-  formRoute,
-  refreshDefinitionsRoute,
-  searchRoute
-};
+const searchRoute = express.Router();
+
+searchRoute.route('/:searchType/:searchTerm').get(getPublicSearchResult);
+
+export { searchRoute };

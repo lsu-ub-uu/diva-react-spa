@@ -35,6 +35,7 @@ import coraPresentationSurroundingContainer from '../../__mocks__/coraPresentati
 import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '../../__mocks__/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
 import coraPresentationRepeatingContainer from '../../__mocks__/coraPresentationRepeatingContainer.json';
 import coraPresentationWithRecordLink from '../../__mocks__/coraPresentationRecordLink.json';
+import coraPresentationWithRecordLinkWithSearch from '../../__mocks__/coraPresentationRecordLinkWithSearch.json';
 import coraPresentationWithGuiElementLink from '../../__mocks__/coraPresentationGuiElement.json';
 import coraPresentationGroupSpecifiedHeadlineText from '../../__mocks__/coraPresentationGroupSpecifiedHeadlineText.json';
 import coraPresentationGroupWithShowLabel from '../../__mocks__/coraPresentationGroupWithShowLabel.json';
@@ -365,8 +366,22 @@ describe('transformCoraPresentations', () => {
             presentationId: 'nationalSubjectCategoryWhenLinkedPGroup'
           }
         ]
-        // TODO linkedRecordPresentations
-        // TODO Search
+      });
+    });
+    it('Returns one BFFPresentation for one pRecordLink entry with search', () => {
+      const transformData = transformCoraPresentations(coraPresentationWithRecordLinkWithSearch);
+      expect(transformData[0]).toStrictEqual({
+        id: 'nationalSubjectCategoryPLink',
+        type: 'pRecordLink',
+        presentationOf: 'nationalSubjectCategoryLink',
+        mode: 'input',
+        linkedRecordPresentations: [
+          {
+            presentedRecordType: 'nationalSubjectCategory',
+            presentationId: 'nationalSubjectCategoryWhenLinkedPGroup'
+          }
+        ],
+        search: 'nationalSubjectCategorySearch'
       });
     });
   });

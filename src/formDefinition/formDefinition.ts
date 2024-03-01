@@ -583,6 +583,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   let commonParameters;
   let recordLinkType;
   let presentationRecordLinkId;
+  let search;
 
   // const { childStyle } = presentationChildReference;
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
@@ -623,6 +624,10 @@ const createDetailedPresentationBasedOnPresentationType = (
   if (presentation.type === 'pRecordLink') {
     const recordLink = metadata as TYPES.BFFMetadataRecordLink;
     recordLinkType = recordLink.linkedRecordType;
+    const presentationRecordLink = presentation as TYPES.BFFPresentationRecordLink;
+    if (presentationRecordLink.search !== undefined) {
+      search = presentationRecordLink.search;
+    }
     presentationRecordLinkId = presentation.id;
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
@@ -693,7 +698,8 @@ const createDetailedPresentationBasedOnPresentationType = (
     childStyle,
     gridColSpan,
     recordLinkType,
-    presentationRecordLinkId
+    presentationRecordLinkId,
+    search
   });
 };
 const findMetadataChildReferenceById = (

@@ -1,6 +1,9 @@
 GET http://localhost:8080/api/refreshDefinitions
 
 ###
+GET http://localhost:8080/api/search/publicPersonSearch/*
+
+###
 GET http://localhost:8080
 
 ###
