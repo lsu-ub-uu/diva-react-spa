@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Dialog } from '../Dialog';
 
@@ -25,7 +24,7 @@ import { Dialog } from '../Dialog';
  */
 
 describe('<Dialog />', () => {
-  test('Renders with title and body content', () => {
+  it('Renders with title and body content', () => {
     render(
       <Dialog
         title='test-title'

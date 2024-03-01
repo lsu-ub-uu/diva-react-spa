@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { test } from 'vitest';
 import * as yup from 'yup';
 
 import {
@@ -73,7 +72,7 @@ const minMaxValidationTests = () => [{ name: 'min' }];
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
-    test('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
+    it('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           someNameInData: {
@@ -90,7 +89,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromFormSchema should take a formDef with a surrounding container and make default values object with that object level left out', () => {
+    it('createDefaultValuesFromFormSchema should take a formDef with a surrounding container and make default values object with that object level left out', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           someNameInData: {
@@ -104,7 +103,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromFormSchema should take a formDef with a repeating container and make default values object with that object level left out', () => {
+    it('createDefaultValuesFromFormSchema should take a formDef with a repeating container and make default values object with that object level left out', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           someNameInData: [
@@ -124,7 +123,7 @@ describe('FormGenerator Utils', () => {
     });
 
     // group
-    test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and make default values object', () => {
+    it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and make default values object', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           bookTitle: {
@@ -152,7 +151,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromFormSchema should take a more complex formDef with repeating groups and make default values object', () => {
+    it('createDefaultValuesFromFormSchema should take a more complex formDef with repeating groups and make default values object', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           bookTitle: {
@@ -190,7 +189,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromComponent should construct a default value object for repeating component', () => {
+    it('createDefaultValuesFromComponent should construct a default value object for repeating component', () => {
       const expectedDefaultValues = {
         exampleNumberVar: {
           value: '',
@@ -206,7 +205,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromComponent should construct a default value object for complex children in repeating component', () => {
+    it('createDefaultValuesFromComponent should construct a default value object for complex children in repeating component', () => {
       const expectedDefaultValues = {
         exampleNumberVar: [
           {
@@ -229,7 +228,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromComponent should construct a default value object for group within group having repeating vars and minNumberToShow set', () => {
+    it('createDefaultValuesFromComponent should construct a default value object for group within group having repeating vars and minNumberToShow set', () => {
       const expectedDefaultValues = {
         exampleTextVar: {
           value: '',
@@ -318,7 +317,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromComponent should construct a default value object for group with attributes and attributes for vars within group', () => {
+    it('createDefaultValuesFromComponent should construct a default value object for group with attributes and attributes for vars within group', () => {
       const expectedDefaultValues = {
         _firstChildGroupColor: 'yellow',
         _firstChildGroupSecondAttribute: '',
@@ -341,7 +340,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromComponent should construct a default value object for textVariable component', () => {
+    it('createDefaultValuesFromComponent should construct a default value object for textVariable component', () => {
       const expectedDefaultValues = {
         value: '',
       };
@@ -352,7 +351,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('createDefaultValuesFromFormSchema should construct a default value object for one single group having textVar as child component', () => {
+    it('createDefaultValuesFromFormSchema should construct a default value object for one single group having textVar as child component', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           someChildGroupNameInData: {
@@ -370,7 +369,7 @@ describe('FormGenerator Utils', () => {
     });
 
     // finalValues
-    test('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
+    it('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           bookTitle: {
@@ -399,7 +398,7 @@ describe('FormGenerator Utils', () => {
     });
 
     // attributes
-    test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and attributes and make default values object', () => {
+    it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and attributes and make default values object', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           bookTitle: {
@@ -435,7 +434,7 @@ describe('FormGenerator Utils', () => {
     });
 
     // repeating vars
-    test('createDefaultValuesFromFormSchema should take a more complex formDef with groups and repeating variables and make default values object', () => {
+    it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and repeating variables and make default values object', () => {
       const expectedDefaultValues = {
         someRootNameInData: {
           bookTitle: {
@@ -497,7 +496,7 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    test('should take a tree and be able to add full name paths', () => {
+    it('should take a tree and be able to add full name paths', () => {
       const expected = [
         {
           name: 'person',
@@ -603,7 +602,7 @@ describe('FormGenerator Utils', () => {
 
     // edit form
     describe('generate overrides from existing record', () => {
-      test('should take a formDef and make default values object but also take defaultValue override', () => {
+      it('should take a formDef and make default values object but also take defaultValue override', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
             someNameInData: {
@@ -631,7 +630,7 @@ describe('FormGenerator Utils', () => {
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
 
-      test('should take a formDef with repeating textVar and make default values object but also take defaultValue override', () => {
+      it('should take a formDef with repeating textVar and make default values object but also take defaultValue override', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
             someNameInData: [
@@ -666,7 +665,7 @@ describe('FormGenerator Utils', () => {
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
 
-      test('should take a more complex formDef with groups and make default values object with overrides', () => {
+      it('should take a more complex formDef with groups and make default values object with overrides', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
             bookTitle: {
@@ -714,7 +713,7 @@ describe('FormGenerator Utils', () => {
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
 
-      test('should take a more complex formDef with groups and attributes and make default values object with overrides', () => {
+      it('should take a more complex formDef with groups and attributes and make default values object with overrides', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
             bookTitle: {
@@ -780,7 +779,7 @@ describe('FormGenerator Utils', () => {
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
 
-      test('should take a more complex formDef with repeating groups and make default values object with overrides', () => {
+      it('should take a more complex formDef with repeating groups and make default values object with overrides', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
             bookTitle: {
@@ -879,7 +878,7 @@ describe('FormGenerator Utils', () => {
   });
 
   describe('generate yupSchema', () => {
-    test('should return correct validationSchema for one textVar and one numberVar', () => {
+    it('should return correct validationSchema for one textVar and one numberVar', () => {
       const yupSchema = generateYupSchemaFromFormSchema(formDef as FormSchema);
       const actualSchema = yupSchema.describe().fields;
 
@@ -911,7 +910,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    test('should return correct validationSchema for one textVar with a surrounding container', () => {
+    it('should return correct validationSchema for one textVar with a surrounding container', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithSurroundingContainerAroundTextVariable as FormSchema,
       );
@@ -935,7 +934,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    test('should return correct validationSchema for with nested surrounding containers', () => {
+    it('should return correct validationSchema for with nested surrounding containers', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithNestedSurroundingContainers as FormSchema,
       );
@@ -1035,7 +1034,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    test('should return correct validationSchema for one group having a text variable', () => {
+    it('should return correct validationSchema for one group having a text variable', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
       );
@@ -1251,7 +1250,7 @@ describe('FormGenerator Utils', () => {
   });
 
   describe('custom validate yupSchemas for array schemas', () => {
-    test('clear objects before validation', () => {
+    it('clear objects before validation', () => {
       const testObject = {
         property1: null,
         property2: undefined,
@@ -1270,7 +1269,7 @@ describe('FormGenerator Utils', () => {
       expect(expected).toStrictEqual(actual);
     });
 
-    test('should validate a list with a simple leaf value object being empty in the array', async () => {
+    it('should validate a list with a simple leaf value object being empty in the array', async () => {
       const optionalStringSchema = yup
         .string()
         .nullable()

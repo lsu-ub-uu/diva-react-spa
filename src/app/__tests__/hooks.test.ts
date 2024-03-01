@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { test } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
@@ -38,7 +37,7 @@ describe('useCoraFormSchemaByValidationType', () => {
     mockAxios.restore();
   });
 
-  test('returns schema for validation type', async () => {
+  it('returns schema for validation type', async () => {
     const expectedFormSchema: FormSchema = {
       validationTypeId: 'someValidationTypeId',
       form: {
@@ -94,7 +93,7 @@ describe('useCoraFormSchemaByValidationType', () => {
     });
   });
 
-  test('handles 500 server error gracefully', async () => {
+  it('handles 500 server error gracefully', async () => {
     const expected500Response = {
       headers: {},
       request: {},

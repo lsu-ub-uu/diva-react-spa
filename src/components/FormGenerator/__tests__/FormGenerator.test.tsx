@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { test, expect, vi } from 'vitest';
+import { vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -60,7 +60,7 @@ describe('<FormGenerator />', () => {
   }));
 
   describe('form', () => {
-    test('Renders a form from a given definition', () => {
+    it('Renders a form from a given definition', () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -82,7 +82,7 @@ describe('<FormGenerator />', () => {
       expect(headerElement).toBeInTheDocument();
     });
 
-    test('Renders a form from a given definition and submits it', async () => {
+    it('Renders a form from a given definition and submits it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -109,7 +109,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('recordLink', () => {
-    test('Validates recordLink being optional and having minNumberToShow 1!', async () => {
+    it('Validates recordLink being optional and having minNumberToShow 1!', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -128,7 +128,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    test('Do not validate an empty recordLink being required', async () => {
+    it('Do not validate an empty recordLink being required', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -149,7 +149,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('textVariable', () => {
-    test('Renders a form with TextVariable and validates it correctly and does not call the submit', async () => {
+    it('Renders a form with TextVariable and validates it correctly and does not call the submit', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -172,7 +172,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    test('Renders a form with TextVariable and sets a finalValue', async () => {
+    it('Renders a form with TextVariable and sets a finalValue', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -185,7 +185,7 @@ describe('<FormGenerator />', () => {
       expect(inputElement).toHaveValue('someFinalValue');
     });
 
-    test('Renders a form with TextVariable with mode output', async () => {
+    it('Renders a form with TextVariable with mode output', async () => {
       const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
@@ -216,7 +216,7 @@ describe('<FormGenerator />', () => {
       expect(inputElement).toBeInTheDocument();
     });
 
-    test('Validates textVariable being optional and having minNumberToShow 1!', async () => {
+    it('Validates textVariable being optional and having minNumberToShow 1!', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -254,7 +254,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    test('Does not validate a textVariable being optional and having minNumberToShow 1 with bad input', async () => {
+    it('Does not validate a textVariable being optional and having minNumberToShow 1 with bad input', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -280,7 +280,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('numberVariable', () => {
-    test('Renders a form with numberVariable and validates it correctly and does not call the submit', async () => {
+    it('Renders a form with numberVariable and validates it correctly and does not call the submit', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -304,7 +304,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    test('Validates numberVariable being  outside the min interval', async () => {
+    it('Validates numberVariable being  outside the min interval', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -328,7 +328,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    test('Validates numberVariable being outside the max interval', async () => {
+    it('Validates numberVariable being outside the max interval', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -352,7 +352,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    test('Not validating an numberVariable not having correct value', async () => {
+    it('Not validating an numberVariable not having correct value', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -381,7 +381,7 @@ describe('<FormGenerator />', () => {
       });
     });
 
-    test('Validates numberVariable to have correct number of decimals', async () => {
+    it('Validates numberVariable to have correct number of decimals', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -405,7 +405,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    test('Validates numberVariable to have decimals with two zeros', async () => {
+    it('Validates numberVariable to have decimals with two zeros', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -429,7 +429,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    test('Validates numberVariable being optional and having minNumberToShow 1!', async () => {
+    it('Validates numberVariable being optional and having minNumberToShow 1!', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -448,7 +448,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    test('Validates numberVariable being optional (having minNumberToShow 1) and the user enters a valid range value ', async () => {
+    it('Validates numberVariable being optional (having minNumberToShow 1) and the user enters a valid range value ', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -643,7 +643,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    test('Renders a form with CollectionVariable with mode output', async () => {
+    it('Renders a form with CollectionVariable with mode output', async () => {
       const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',

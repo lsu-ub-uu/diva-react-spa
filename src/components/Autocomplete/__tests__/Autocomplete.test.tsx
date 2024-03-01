@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { test, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Autocomplete } from '../Autocomplete';
 
@@ -31,7 +30,7 @@ const mockOptions = [
 ];
 
 describe('<Autocomplete/>', () => {
-  test('renders with default placeholder', () => {
+  it('renders with default placeholder', () => {
     render(
       <Autocomplete
         options={mockOptions}

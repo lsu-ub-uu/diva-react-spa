@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
 import { getFlat, getTree } from '../index';
 import { SelectItem } from '../../components';
 
@@ -24,7 +23,7 @@ import { SelectItem } from '../../components';
  * @vitest-environment jsdom
  */
 describe('Utilities', () => {
-  test('getTree transforms from flat list to tree', () => {
+  it('getTree transforms from flat list to tree', () => {
     const items: SelectItem[] = [
       { id: 'root', name: 'Root', parentId: '-' },
       { id: 'level1', name: 'Level 1', parentId: 'root' },
@@ -36,7 +35,7 @@ describe('Utilities', () => {
       '[{"id":"root","name":"Root","children":[{"id":"level1","name":"Level 1","children":[{"id":"level12","name":"Level 1_2","children":[]}]},{"id":"level2","name":"Level 2","children":[]}]}]',
     );
   });
-  test('getFlat transforms from tree to flat list', () => {
+  it('getFlat transforms from tree to flat list', () => {
     const treeData = {
       id: 'root',
       name: 'Research Subjects',

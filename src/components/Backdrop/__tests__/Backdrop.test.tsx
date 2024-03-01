@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import { Backdrop } from '../Backdrop';
 
@@ -25,7 +24,7 @@ import { Backdrop } from '../Backdrop';
  */
 
 describe('<Backdrop />', () => {
-  test('Renders', () => {
+  it('Renders', () => {
     const { container } = render(<Backdrop open />);
     expect(container.getElementsByClassName('MuiBackdrop-root').length).toBe(1);
   });

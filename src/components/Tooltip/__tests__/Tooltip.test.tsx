@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
+
 import {
   render,
   screen,
@@ -30,7 +30,7 @@ import { Tooltip } from '../Tooltip';
  */
 
 describe('<Tooltip />', () => {
-  test('Renders tooltip when child button is clicked and can be closed', async () => {
+  it('Renders tooltip when child button is clicked and can be closed', async () => {
     const user = userEvent.setup();
     const title = 'Test Title';
     const body = 'body content';

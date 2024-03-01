@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Step, StepLabel } from '@mui/material';
 import { HorizontalStepper, StepIcon } from '../HorizontalStepper';
@@ -25,7 +24,7 @@ import { HorizontalStepper, StepIcon } from '../HorizontalStepper';
  * @vitest-environment jsdom
  */
 describe('<HorizontalStepper />', () => {
-  test('It renders the steps of the form', () => {
+  it('It renders the steps of the form', () => {
     render(
       <HorizontalStepper activeStep={0}>
         <Step key='Fyll i uppgifter'>
@@ -48,7 +47,7 @@ describe('<HorizontalStepper />', () => {
     const steps = screen.getAllByText(/[1-3]/);
     expect(steps).toHaveLength(3);
   });
-  test('When on Step 1, Step 1 is active, Step 2-3 is disabled', async () => {
+  it('When on Step 1, Step 1 is active, Step 2-3 is disabled', async () => {
     render(
       <HorizontalStepper activeStep={0}>
         <Step key='Fyll i uppgifter'>
@@ -76,7 +75,7 @@ describe('<HorizontalStepper />', () => {
     expect(step2Container).toHaveClass('Mui-disabled');
     expect(step3Container).toHaveClass('Mui-disabled');
   });
-  test('When on Step 2, Step 1 is completed, Step 3 is disabled', async () => {
+  it('When on Step 2, Step 1 is completed, Step 3 is disabled', async () => {
     render(
       <HorizontalStepper activeStep={1}>
         <Step key='Fyll i uppgifter'>
@@ -99,7 +98,7 @@ describe('<HorizontalStepper />', () => {
     const activeOrDisabledSteps = screen.getAllByText(/[1-3]/);
     expect(activeOrDisabledSteps).toHaveLength(2);
   });
-  test('When on Step 3, Step 1-2 is completed, Step 3 is active', async () => {
+  it('When on Step 3, Step 1-2 is completed, Step 3 is active', async () => {
     render(
       <HorizontalStepper activeStep={2}>
         <Step key='Fyll i uppgifter'>

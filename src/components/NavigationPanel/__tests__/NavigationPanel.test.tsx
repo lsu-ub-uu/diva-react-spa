@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { expect, test } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { NavigationPanel } from '../NavigationPanel';
 import { NavigationPanelLink } from '../../index';
@@ -27,7 +26,7 @@ import { NavigationPanelLink } from '../../index';
  */
 
 describe('NavigationPanel', () => {
-  test('NavigationPanel renders with correct nr of links', () => {
+  it('NavigationPanel renders with correct nr of links', () => {
     const links: NavigationPanelLink[] = [
       { name: 'anchor1', label: 'Anchor 1' },
       { name: 'anchor2', label: 'Anchor 2' },
@@ -47,7 +46,7 @@ describe('NavigationPanel', () => {
     expect(navigationLinks).toHaveLength(3);
   });
 
-  test('NavigationPanel renders with correct active link name', () => {
+  it('NavigationPanel renders with correct active link name', () => {
     const links: NavigationPanelLink[] = [
       { name: 'anchor1', label: 'Anchor 1' },
       { name: 'anchor2', label: 'Anchor 2' },

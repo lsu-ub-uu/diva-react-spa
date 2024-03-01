@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   I18nextProvider,
@@ -60,7 +59,7 @@ beforeAll(async () => {
 });
 
 describe('I18n', () => {
-  test('Can render a component with translation hook', () => {
+  it('Can render a component with translation hook', () => {
     render(
       <I18nextProvider i18n={i18n}>
         <ComponentWithTranslation />
@@ -70,7 +69,7 @@ describe('I18n', () => {
     const translatedText = screen.getByText('Welcome to the DiVA tests');
     expect(translatedText).toHaveTextContent('Welcome to the DiVA tests');
   });
-  test('Can change language to swedish', async () => {
+  it('Can change language to swedish', async () => {
     await i18n.changeLanguage('sv');
     render(
       <I18nextProvider i18n={i18n}>

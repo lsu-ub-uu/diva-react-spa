@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
@@ -31,7 +30,7 @@ import { BackdropProvider, SnackbarProvider } from '../components';
  * @vitest-environment jsdom
  */
 describe('<App />', () => {
-  test('App Renders', async () => {
+  it('App Renders', async () => {
     render(
       <BackdropProvider>
         <StateProvider store={store}>

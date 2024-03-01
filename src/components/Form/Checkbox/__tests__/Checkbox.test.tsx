@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { FormControlLabel } from '@mui/material';
 import { Checkbox } from '../Checkbox';
@@ -26,7 +25,7 @@ import { Checkbox } from '../Checkbox';
  */
 
 describe('<Checkbox />', () => {
-  test('Renders', () => {
+  it('Renders', () => {
     render(
       <form>
         <FormControlLabel

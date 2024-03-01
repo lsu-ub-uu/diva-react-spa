@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, vi } from 'vitest';
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -27,7 +27,7 @@ import { DatePicker } from '../DatePicker';
  */
 
 describe('<DatePicker />', () => {
-  test('Renders', () => {
+  it('Renders', () => {
     render(
       <DatePicker
         onChange={vi.fn()}
@@ -73,7 +73,7 @@ describe('<DatePicker />', () => {
     expect(dateInput).toBeValid();
   });
 
-  /* test('Today button click gives todays date', async () => {
+  /* it('Today button click gives todays date', async () => {
     const today = dayjs().format('YYYY-MM-DD');
     render(
       <DatePicker

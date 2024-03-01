@@ -17,7 +17,6 @@
  */
 
 import { useEffect, useState } from 'react';
-import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AsidePortal } from '../AsidePortal';
 
@@ -44,7 +43,7 @@ const TestableAsidePortal = () => {
 };
 
 describe('<AsidePortal />', () => {
-  test('Renders with given children content', async () => {
+  it('Renders with given children content', async () => {
     render(<TestableAsidePortal />);
     const content = screen.getByText('works');
     expect(content).toBeInTheDocument();

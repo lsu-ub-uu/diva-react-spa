@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TabsMenu } from '../TabsMenu';
@@ -25,7 +24,7 @@ import { TabsMenu } from '../TabsMenu';
  * @vitest-environment jsdom
  */
 describe('TabsMenu', () => {
-  test('TabsMenu renders', () => {
+  it('TabsMenu renders', () => {
     render(<TabsMenu />);
 
     const tabs = screen.getAllByRole('tab');
@@ -38,7 +37,7 @@ describe('TabsMenu', () => {
       'Mina publikationer & projekt',
     ]);
   });
-  test('Tabs change when clicked', async () => {
+  it('Tabs change when clicked', async () => {
     render(<TabsMenu />);
     const user = userEvent.setup();
 
@@ -50,7 +49,7 @@ describe('TabsMenu', () => {
     const administreraText = screen.getByText('Administrera');
     expect(administreraText).toHaveTextContent('Administrera');
   });
-  test('Tabs change when clicked and then back when clicked again', async () => {
+  it('Tabs change when clicked and then back when clicked again', async () => {
     render(<TabsMenu />);
     const user = userEvent.setup();
 

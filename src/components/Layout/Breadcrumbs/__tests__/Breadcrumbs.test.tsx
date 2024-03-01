@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Breadcrumbs } from '../Breadcrumbs';
@@ -26,7 +25,7 @@ import { Breadcrumbs } from '../Breadcrumbs';
  */
 
 describe('<Breadcrumbs />', () => {
-  test('Renders', () => {
+  it('Renders', () => {
     render(
       <MemoryRouter initialEntries={['/page1/page1_1']}>
         <Breadcrumbs />
@@ -36,7 +35,7 @@ describe('<Breadcrumbs />', () => {
     const breads = screen.getByText('page1_1');
     expect(breads).toBeInTheDocument();
   });
-  test('Can take the user back to home page', () => {
+  it('Can take the user back to home page', () => {
     render(
       <MemoryRouter initialEntries={['/page1/page1_1']}>
         <Breadcrumbs />

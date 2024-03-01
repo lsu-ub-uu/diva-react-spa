@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Card } from '../Card';
 
@@ -38,7 +37,7 @@ export const TestableCard = () => {
 };
 
 describe('<Card />', () => {
-  test('Renders', () => {
+  it('Renders', () => {
     render(<TestableCard />);
 
     const testTitle = 'Card title';

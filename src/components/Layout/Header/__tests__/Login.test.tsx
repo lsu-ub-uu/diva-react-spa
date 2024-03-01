@@ -42,7 +42,7 @@ describe('<Login />', () => {
     const userNameList = screen.getAllByRole('menuitem');
     // screen.debug(userNameList);
     const listItems = userNameList.map((item) => item.textContent);
-    expect(listItems).toHaveLength(4);
+    expect(listItems).toHaveLength(5);
   });
   it.todo('saves to LocalStorage when loggin in', async () => {
     const user = userEvent.setup();

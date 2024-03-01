@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { test } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { FormControlLabel } from '@mui/material';
 import userEvent from '@testing-library/user-event';
@@ -27,7 +26,7 @@ import { Radio } from '../Radio';
  */
 
 describe('<Radio />', () => {
-  test('Renders', () => {
+  it('Renders', () => {
     render(
       <form>
         <FormControlLabel
@@ -40,7 +39,7 @@ describe('<Radio />', () => {
     const button = screen.getByLabelText('Female');
     expect(button).toBeInTheDocument();
   });
-  test('Option gets selected on click', async () => {
+  it('Option gets selected on click', async () => {
     render(
       <form>
         <FormControlLabel
