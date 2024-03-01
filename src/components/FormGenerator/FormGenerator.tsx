@@ -456,6 +456,7 @@ export const renderLeafComponent = (
       );
     }
     case 'recordLink': {
+      console.log('component', component);
       return (
         <Grid
           key={reactKey}
@@ -468,6 +469,7 @@ export const renderLeafComponent = (
               multiline={component.inputType === 'textarea'}
               label={component.label ?? ''}
               name={name}
+              showLabel={component.showLabel}
               placeholder={component.placeholder}
               tooltip={component.tooltip}
               control={control}
