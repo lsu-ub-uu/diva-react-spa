@@ -34,7 +34,14 @@ describe('<Autocomplete/>', () => {
     render(
       <Autocomplete
         options={mockOptions}
+        label='Label for test'
+        name='name'
+        showLabel
         placeholder='somePlaceholder'
+        tooltip={{
+          title: 'tooltipTitle',
+          body: 'tooltipBody',
+        }}
       />,
     );
     const inputElement = screen.getByPlaceholderText('somePlaceholder');
@@ -45,7 +52,14 @@ describe('<Autocomplete/>', () => {
     render(
       <Autocomplete
         options={mockOptions}
+        label='Label for test'
+        name='name'
+        showLabel
         placeholder='Custom Placeholder'
+        tooltip={{
+          title: 'tooltipTitle',
+          body: 'tooltipBody',
+        }}
       />,
     );
     const inputElement = screen.getByPlaceholderText('Custom Placeholder');
@@ -53,7 +67,19 @@ describe('<Autocomplete/>', () => {
   });
 
   it('displays options when typing in the input', async () => {
-    render(<Autocomplete options={mockOptions} />);
+    render(
+      <Autocomplete
+        options={mockOptions}
+        label='Label for test'
+        name='name'
+        showLabel
+        placeholder='Search'
+        tooltip={{
+          title: 'tooltipTitle',
+          body: 'tooltipBody',
+        }}
+      />,
+    );
     const inputElement = screen.getByPlaceholderText('Search');
     fireEvent.focus(inputElement);
     fireEvent.change(inputElement, { target: { value: 'Option' } });
@@ -62,7 +88,19 @@ describe('<Autocomplete/>', () => {
   });
 
   it('displays no options when input does not match any options', async () => {
-    render(<Autocomplete options={mockOptions} />);
+    render(
+      <Autocomplete
+        options={mockOptions}
+        label='Label for test'
+        name='name'
+        showLabel
+        placeholder='Search'
+        tooltip={{
+          title: 'tooltipTitle',
+          body: 'tooltipBody',
+        }}
+      />,
+    );
     const inputElement = screen.getByPlaceholderText('Search');
     fireEvent.focus(inputElement);
     fireEvent.change(inputElement, { target: { value: 'No Match' } });

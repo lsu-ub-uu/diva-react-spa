@@ -41,7 +41,7 @@ import {
   isFirstLevel,
   RecordData,
 } from './utils';
-import { Typography, LinkButton } from '../index';
+import { Typography, LinkButton, Autocomplete } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
@@ -457,6 +457,44 @@ export const renderLeafComponent = (
     }
     case 'recordLink': {
       console.log('component', component);
+      if (checkIfComponentContainsSearchId(component)) {
+        console.log(component.search);
+        return (
+          <Grid
+            key={reactKey}
+            item
+            xs={12}
+            sm={renderElementGridWrapper ? component.gridColSpan : 12}
+          >
+            {component.mode === 'input' ? (
+              <Autocomplete
+                options={[
+                  { id: '1', name: 'Option 1' },
+                  { id: '2', name: 'Option 2' },
+                ]}
+                label={component.label ?? ''}
+                name={name}
+                showLabel={component.showLabel}
+                placeholder={component.placeholder}
+                tooltip={component.tooltip}
+                // control={control}
+                readOnly={!!component.finalValue}
+                displayMode={component.mode}
+              />
+            ) : (
+              <ControlledLinkedRecord
+                control={control}
+                name={name}
+                recordType={component.recordLinkType ?? ''}
+                presentationRecordLinkId={
+                  component.presentationRecordLinkId ?? ''
+                }
+              />
+            )}
+          </Grid>
+        );
+      }
+      console.log('undef');
       return (
         <Grid
           key={reactKey}
@@ -626,4 +664,8 @@ const checkIfPresentationStyleIsUndefinedOrEmpty = (
 
 const checkIfPresentationStyleOrIsInline = (component: FormComponent) => {
   return component.presentationStyle === 'inline';
+};
+
+const checkIfComponentContainsSearchId = (component: FormComponent) => {
+  return !(component.search === undefined);
 };
