@@ -18,9 +18,12 @@
  */
 
 import { Request, Response } from 'express';
+import * as console from 'console';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/cora';
 import { errorHandler } from '../server';
+import { transformRecords } from '../config/transformRecord';
+import { dependencies } from '../config/configureServer';
 
 /**
  * @desc Get result of a public person search
@@ -29,9 +32,13 @@ import { errorHandler } from '../server';
  */
 export const getPublicSearchResult = async (req: Request, res: Response) => {
   try {
+    const { searchTermName, searchTermValue } = req.query;
+
+    console.log(searchTermName, searchTermValue);
+
     const authToken = req.header('authToken') ?? '';
-    const { searchType, searchTerm } = req.params;
-    // const { searchTerm } = req.query;
+    const { searchType } = req.params;
+
     const searchQuery: DataGroup = {
       name: 'search',
       children: [
@@ -42,8 +49,8 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
               name: 'includePart',
               children: [
                 {
-                  name: 'personGeneralSearchTerm',
-                  value: `${searchTerm}`
+                  name: `${searchTermName}`,
+                  value: `${searchTermValue}`
                 }
               ]
             }
@@ -57,12 +64,10 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
       searchQuery,
       authToken
     );
-    // const validationTypes = transformCoraValidationTypes(response.data);
-    // const optionList = validationTypes.map((validationType) => ({
-    //   value: validationType.id,
-    //   label: validationType.nameTextId
-    // }));
-    res.status(200).json();
+    const temp = transformRecords(dependencies, response.data);
+    console.log(temp);
+
+    res.status(200).json(temp);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();

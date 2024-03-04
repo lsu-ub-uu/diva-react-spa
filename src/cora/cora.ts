@@ -19,7 +19,6 @@
 
 import axios, { AxiosResponse } from 'axios';
 import { DataGroup } from '../utils/cora-data/CoraData';
-import * as console from "console";
 
 export async function getRecordDataListByType<T>(
   type: string,

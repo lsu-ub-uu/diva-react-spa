@@ -1,7 +1,7 @@
 GET http://localhost:8080/api/refreshDefinitions
 
 ###
-GET http://localhost:8080/api/search/publicPersonSearch/*
+GET http://localhost:8080/api/search/publicPersonSearch?searchTermName=personGeneralSearchTerm&searchTermValue=*
 
 ###
 GET http://localhost:8080
@@ -11,3 +11,6 @@ GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/refreshDefinitions
 
 ###
 GET http://localhost:8080/api/translations/sv
+
+
+
