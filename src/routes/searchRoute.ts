@@ -22,11 +22,6 @@ import { getPublicSearchResult } from '../controllers/searchController';
 
 const searchRoute = express.Router();
 
-// searchRoute.route('/:searchType/:searchTerm').get(getPublicSearchResult);
 searchRoute.route('/:searchType').get(getPublicSearchResult);
 
 export { searchRoute };
-
-// {
-//   'personGeneralSearchTerm': '*',
-// }

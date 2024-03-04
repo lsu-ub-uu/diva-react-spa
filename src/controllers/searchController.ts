@@ -33,6 +33,8 @@ import { dependencies } from '../config/configureServer';
 export const getPublicSearchResult = async (req: Request, res: Response) => {
   try {
     const { searchTermName, searchTermValue } = req.query;
+    const temp = req.path.split('/')[1];
+    console.log(temp);
 
     console.log(searchTermName, searchTermValue);
 
@@ -64,10 +66,11 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
       searchQuery,
       authToken
     );
-    const temp = transformRecords(dependencies, response.data);
-    console.log(temp);
 
-    res.status(200).json(temp);
+    const transformedRecords = transformRecords(dependencies, response.data);
+    console.log(transformedRecords);
+
+    res.status(200).json(transformedRecords);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
