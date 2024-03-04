@@ -456,9 +456,7 @@ export const renderLeafComponent = (
       );
     }
     case 'recordLink': {
-      console.log('component', component);
       if (checkIfComponentContainsSearchId(component)) {
-        console.log(component.search);
         return (
           <Grid
             key={reactKey}
@@ -480,6 +478,7 @@ export const renderLeafComponent = (
                 // control={control}
                 readOnly={!!component.finalValue}
                 displayMode={component.mode}
+                searchLink={component.search}
               />
             ) : (
               <ControlledLinkedRecord
@@ -494,7 +493,6 @@ export const renderLeafComponent = (
           </Grid>
         );
       }
-      console.log('undef');
       return (
         <Grid
           key={reactKey}

@@ -30,6 +30,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import { SelectItem, Tooltip } from '../index';
 
 interface AutoCompleteProps {
@@ -45,95 +46,71 @@ interface AutoCompleteProps {
   showLabel?: boolean;
   options: SelectItem[];
   onSelected?: (id: string) => void;
+  searchLink?: string;
 }
 
-function sleep(duration: number): Promise<void> {
-  return new Promise<void>((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, duration);
-  });
-}
-
-const topFilms = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 },
-  {
-    title: 'The Lord of the Rings: The Return of the King',
-    year: 2003,
-  },
-  { title: 'The Good, the Bad and the Ugly', year: 1966 },
-  { title: 'Fight Club', year: 1999 },
-  {
-    title: 'The Lord of the Rings: The Fellowship of the Ring',
-    year: 2001,
-  },
-  {
-    title: 'Star Wars: Episode V - The Empire Strikes Back',
-    year: 1980,
-  },
-  { title: 'Forrest Gump', year: 1994 },
-  { title: 'Inception', year: 2010 },
-  {
-    title: 'The Lord of the Rings: The Two Towers',
-    year: 2002,
-  },
-  { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-  { title: 'Goodfellas', year: 1990 },
-  { title: 'The Matrix', year: 1999 },
-  { title: 'Seven Samurai', year: 1954 },
-  {
-    title: 'Star Wars: Episode IV - A New Hope',
-    year: 1977,
-  },
-  { title: 'City of God', year: 2002 },
-  { title: 'Se7en', year: 1995 },
-  { title: 'The Silence of the Lambs', year: 1991 },
-  { title: "It's a Wonderful Life", year: 1946 },
-  { title: 'Life Is Beautiful', year: 1997 },
-  { title: 'The Usual Suspects', year: 1995 },
-  { title: 'Léon: The Professional', year: 1994 },
-  { title: 'Spirited Away', year: 2001 },
-  { title: 'Saving Private Ryan', year: 1998 },
-  { title: 'Once Upon a Time in the West', year: 1968 },
-  { title: 'American History X', year: 1998 },
-  { title: 'Interstellar', year: 2014 },
-];
-
-interface Film {
-  title: string;
-  year: number;
+interface AutoCompleteSearchResult {
+  // title: string;
+  // year: number;
+  id: string;
+  recordType: string;
+  validationType: string;
+  createdAt: string;
+  createdBy: string;
+  updated: unknown[];
+  userRights: string[];
+  data: unknown;
 }
 
 export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
+  const [value, setValue] = useState(null);
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<Film[]>([]);
+  const [options, setOptions] = useState<AutoCompleteSearchResult[]>([]);
+  const [inputValue, setInputValue] = useState('');
   const loading = open && options.length === 0;
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let active = true;
+    let isMounted = true;
 
     if (!loading) {
       return undefined;
     }
 
-    (async () => {
-      await sleep(1e3); // For demo purposes.
+    const fetchData = async () => {
+      try {
+        if (inputValue === '') {
+          setOptions(value ? [value] : []);
+          return undefined;
+        }
+        const response = await axios.get(
+          `/search/${props.searchLink}?searchTermName=personNameSearchTerm&searchTermValue=${inputValue}`,
+        );
+        console.log(response);
 
-      if (active) {
-        setOptions([...topFilms]);
+        if (isMounted) {
+          setError(null);
+          setOptions(response.data);
+          // setIsLoading(false);
+        }
+      } catch (err: unknown) {
+        if (isMounted) {
+          if (axios.isAxiosError(err)) {
+            setError(err.message);
+          } else {
+            setError('Unexpected error occurred');
+          }
+          // setIsLoading(false);
+        }
       }
-    })();
+    };
+
+    fetchData().then();
 
     return () => {
-      active = false;
+      isMounted = false;
     };
-  }, [loading]);
+  }, [inputValue, loading, props.searchLink, value]);
 
   useEffect(() => {
     if (!open) {
@@ -175,26 +152,26 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
       <MuiAutocomplete
         size='small'
         popupIcon={<ExpandMoreIcon />}
-        onChange={(event: React.SyntheticEvent, value: Film | null) => {
+        onChange={(
+          event: React.SyntheticEvent,
+          value: AutoCompleteSearchResult | null,
+        ) => {
           // onChange={(event: React.SyntheticEvent, value: SelectItem | null) => {
-          if (props.onSelected && value != null) props.onSelected(value.title);
+          if (props.onSelected && value != null) props.onSelected(value.id);
           // if (props.onSelected && value != null) props.onSelected(value.id);
         }}
-        // isOptionEqualToValue={(option, value) => option.id === value.id}
         id='autocomplete-test'
         sx={{ width: '100%' }}
-        // options={props.options}
         onOpen={() => {
           setOpen(true);
         }}
         onClose={() => {
           setOpen(false);
         }}
-        isOptionEqualToValue={(option, value) => option.title === value.title}
-        // getOptionLabel={(option) => option.title}
+        filterOptions={(x) => x}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
         options={options}
-        // getOptionDisabled={(option) => option.disabled ?? false}
-        getOptionLabel={(option) => option.title}
+        getOptionLabel={(option) => option.id}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -202,15 +179,20 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
             margin='normal'
           />
         )}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
         renderOption={(renderProps, option, { inputValue }) => {
-          const matches = match(option.title, inputValue, {
-            insideWords: true,
-          });
-          const parts = parse(option.title, matches);
+          console.log('ggtgggg', option);
+          // const matches = match(option.title, inputValue, {
+          //   insideWords: true,
+          // });
+          // const parts = parse(option.title, matches);
 
           return (
             <li {...renderProps}>
-              <div>
+              <p>{option.id}</p>
+             {/* <div>
                 {parts.map((part, index) => (
                   <span
                     key={index}
@@ -221,7 +203,7 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
                     {part.text}
                   </span>
                 ))}
-              </div>
+              </div>*/}
             </li>
           );
         }}
