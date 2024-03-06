@@ -84,7 +84,8 @@ export const NavigationPanel = (props: NavigationPanelProps) => {
       {props.links.map((item) => (
         <Step key={item.name}>
           <StepButton
-            disableRipple
+            focusRipple
+            // disableRipple
             href={`#anchor_${item.name}`}
             onClick={() => {
               setActiveLinkName(item.name);
