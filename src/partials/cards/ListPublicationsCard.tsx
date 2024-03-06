@@ -43,12 +43,24 @@ export const ListPublicationsCard = () => {
   }, [dispatch]);
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 230 },
-    { field: 'validationType', headerName: 'Type', width: 120 },
-    { field: 'title', headerName: 'Title', width: 220 },
+    {
+      field: 'id',
+      headerName: `${t('divaClient_listPublicationsHeaderNameId')}`, // ID
+      width: 230,
+    },
+    {
+      field: 'validationType',
+      headerName: `${t('divaClient_listPublicationsHeaderNameType')}`, // Type
+      width: 120,
+    },
+    {
+      field: 'title',
+      headerName: `${t('divaClient_listPublicationsHeaderNameTitle')}`, // Title
+      width: 220,
+    },
     {
       field: 'createdAt',
-      headerName: 'Created',
+      headerName: `${t('divaClient_listPublicationsHeaderNameCreated')}`, // Created,
       sortable: true,
       width: 160,
       valueGetter: (params: GridValueGetterParams) =>
@@ -56,7 +68,7 @@ export const ListPublicationsCard = () => {
     },
     {
       field: 'action',
-      headerName: '',
+      headerName: `${t('divaClient_listPublicationsHeaderNameActions')}`, // Actions
       width: 120,
       sortable: false,
       filterable: false,
