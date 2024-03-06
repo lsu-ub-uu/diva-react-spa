@@ -60,20 +60,14 @@ interface AutoCompleteSearchResultProps {
 }
 
 export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
-  // const [value, setValue] = useState(null);
-  const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<AutoCompleteSearchResultProps[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [value, setValue] = useState('');
-  const loading = open && options.length === 0;
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
-
-    if (!loading) {
-      return undefined;
-    }
 
     const fetchData = async () => {
       try {
@@ -88,7 +82,6 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
         if (isMounted) {
           setError(null);
           setOptions(response.data);
-          // setIsLoading(false);
         }
       } catch (err: unknown) {
         if (isMounted) {
@@ -97,7 +90,6 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
           } else {
             setError('Unexpected error occurred');
           }
-          // setIsLoading(false);
         }
       }
     };
@@ -108,12 +100,6 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
       isMounted = false;
     };
   }, [inputValue, loading, props.searchLink]);
-
-  useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
 
   useEffect(() => {
     console.log('value', value);
@@ -169,20 +155,18 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
                 event: React.SyntheticEvent,
                 newValue: AutoCompleteSearchResultProps | null,
               ) => {
-                setValue(newValue.id as string);
+                if (newValue === null) {
+                  setValue('');
+                }
                 if (props.onSelected && value !== null) {
+                  // @ts-ignore
+                  setValue(newValue.id as string);
                   // @ts-ignore
                   return props.onSelected(newValue.id as string);
                 }
               }}
               id='autocomplete-test'
               sx={{ width: '100%' }}
-              onOpen={() => {
-                setOpen(true);
-              }}
-              onClose={() => {
-                setOpen(false);
-              }}
               filterOptions={(x) => x}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               options={options}
