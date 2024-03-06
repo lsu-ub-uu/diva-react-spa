@@ -24,4 +24,3 @@ export { ControlledDatePicker } from './DatePicker/ControlledDatePicker';
 export { ControlledDateTimePicker } from './DateTimePicker/ControlledDateTimePicker';
 export { ControlledEditor } from './Editor/ControlledEditor';
 export { ControlledLinkedRecord } from './LinkedRecord/ControlledLinkedRecord';
-export { ControlledAutocomplete } from './Autocomplete/ControlledAutocomplete';

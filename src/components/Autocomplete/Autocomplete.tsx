@@ -19,19 +19,33 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
-import { Autocomplete as MuiAutocomplete } from '@mui/material';
+import {
+  Autocomplete as MuiAutocomplete,
+  FormControl,
+  FormLabel,
+  IconButton,
+} from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import axios from 'axios';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { Control, Controller } from 'react-hook-form';
+import { t } from 'i18next';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 interface AutoCompleteProps {
+  name: string;
   placeholder?: string;
+  label: string;
   readOnly?: boolean;
   displayMode?: string;
   parentPresentationStyle?: string;
   onSelected?: (id: string) => void;
   searchLink?: string;
+  control?: Control<any>;
+  showLabel?: boolean;
+  tooltip?: { title: string; body: string };
 }
 
 interface AutoCompleteSearchResultProps {
@@ -50,6 +64,7 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<AutoCompleteSearchResultProps[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [value, setValue] = useState('');
   const loading = open && options.length === 0;
   const [error, setError] = useState<string | null>(null);
 
@@ -69,7 +84,6 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
         const response = await axios.get(
           `/search/${props.searchLink}?searchTermName=${props.searchLink}Term&searchTermValue=${inputValue}`,
         );
-        console.log(response);
 
         if (isMounted) {
           setError(null);
@@ -101,42 +115,95 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
     }
   }, [open]);
 
+  useEffect(() => {
+    console.log('value', value);
+    console.log('inputValue', inputValue);
+  }, [inputValue, value]);
+
   return (
-    <MuiAutocomplete
-      size='small'
-      popupIcon={<ExpandMoreIcon />}
-      onChange={(
-        event: React.SyntheticEvent,
-        value: AutoCompleteSearchResultProps | null,
-      ) => {
-        // onChange={(event: React.SyntheticEvent, value: SelectItem | null) => {
-        if (props.onSelected && value != null) props.onSelected(value.id);
-        // if (props.onSelected && value != null) props.onSelected(value.id);
-      }}
-      id='autocomplete-test'
-      sx={{ width: '100%' }}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
-      filterOptions={(x) => x}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
-      options={options}
-      getOptionLabel={(option) => option.id}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          placeholder={props.placeholder ?? 'Search'}
-          margin='normal'
-        />
-      )}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
-      renderOption={(renderProps, option, { inputValue }) => {
-        return <li {...renderProps}>{option.id}</li>;
+    <Controller
+      control={props.control}
+      name={props.name}
+      render={({ field, fieldState: { error } }) => {
+        const fieldWithoutRef = { ...field, ref: undefined };
+        return (
+          <FormControl
+            fullWidth
+            sx={{
+              flexDirection:
+                props.parentPresentationStyle === 'inline' ? 'row' : 'column',
+              alignItems: 'baseline',
+            }}
+          >
+            <FormLabel
+              htmlFor={field.name}
+              aria-label={props.label}
+              error={error !== undefined}
+              sx={{
+                p: '2px 4px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              {props.showLabel === true ? t(props.label) : null}
+              {props.tooltip && (
+                <Tooltip
+                  title={t(props.tooltip.title)}
+                  body={t(props.tooltip.body)}
+                >
+                  <IconButton
+                    edge='end'
+                    aria-label='Help'
+                    disableRipple
+                    color='default'
+                  >
+                    <HelpOutlineIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </FormLabel>
+            <MuiAutocomplete
+              size='small'
+              popupIcon={<ExpandMoreIcon />}
+              onChange={(
+                event: React.SyntheticEvent,
+                newValue: AutoCompleteSearchResultProps | null,
+              ) => {
+                setValue(newValue.id as string);
+                if (props.onSelected && value !== null) {
+                  // @ts-ignore
+                  return props.onSelected(newValue.id as string);
+                }
+              }}
+              id='autocomplete-test'
+              sx={{ width: '100%' }}
+              onOpen={() => {
+                setOpen(true);
+              }}
+              onClose={() => {
+                setOpen(false);
+              }}
+              filterOptions={(x) => x}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              options={options}
+              getOptionLabel={(option) => option.id}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...fieldWithoutRef}
+                  placeholder={props.placeholder ?? 'Search'}
+                  margin='normal'
+                />
+              )}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
+              }}
+              renderOption={(renderProps, option, { inputValue }) => {
+                return <li {...renderProps}>{option.id}</li>;
+              }}
+            />
+          </FormControl>
+        );
       }}
     />
   );
