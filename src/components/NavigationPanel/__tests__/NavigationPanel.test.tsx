@@ -18,6 +18,8 @@
  */
 
 import { render, screen } from '@testing-library/react';
+import { expect } from 'vitest';
+import userEvent from '@testing-library/user-event';
 import { NavigationPanel } from '../NavigationPanel';
 import { NavigationPanelLink } from '../../index';
 
@@ -64,5 +66,25 @@ describe('NavigationPanel', () => {
 
     const spanText = screen.getByText('Anchor 2');
     expect(spanText).toHaveClass('Mui-active');
+  });
+
+  it('NavigationPanel switches focus when tab is pressed', async () => {
+    const links: NavigationPanelLink[] = [
+      { name: 'anchor1', label: 'Anchor 1' },
+      { name: 'anchor2', label: 'Anchor 2' },
+      { name: 'anchor3', label: 'Anchor 3' },
+    ];
+    const activeLinkName = 'anchor1';
+
+    const user = userEvent.setup();
+    render(
+      <NavigationPanel
+        links={links}
+        activeLinkName={activeLinkName}
+      />,
+    );
+    await user.tab();
+    const anchorText = screen.getByText('Anchor 2');
+    expect(anchorText).toHaveFocus();
   });
 });
