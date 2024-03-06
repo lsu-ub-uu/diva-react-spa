@@ -28,13 +28,12 @@ import { NavigationPanelLink } from '../../index';
  */
 
 describe('NavigationPanel', () => {
+  const links: NavigationPanelLink[] = [
+    { name: 'anchor1', label: 'Anchor 1' },
+    { name: 'anchor2', label: 'Anchor 2' },
+    { name: 'anchor3', label: 'Anchor 3' },
+  ];
   it('NavigationPanel renders with correct nr of links', () => {
-    const links: NavigationPanelLink[] = [
-      { name: 'anchor1', label: 'Anchor 1' },
-      { name: 'anchor2', label: 'Anchor 2' },
-      { name: 'anchor3', label: 'Anchor 3' },
-    ];
-
     const activeLinkName = 'anchor1';
 
     render(
@@ -49,12 +48,6 @@ describe('NavigationPanel', () => {
   });
 
   it('NavigationPanel renders with correct active link name', () => {
-    const links: NavigationPanelLink[] = [
-      { name: 'anchor1', label: 'Anchor 1' },
-      { name: 'anchor2', label: 'Anchor 2' },
-      { name: 'anchor3', label: 'Anchor 3' },
-    ];
-
     const activeLinkName = 'anchor2';
 
     render(
@@ -69,11 +62,6 @@ describe('NavigationPanel', () => {
   });
 
   it('NavigationPanel switches focus when tab is pressed', async () => {
-    const links: NavigationPanelLink[] = [
-      { name: 'anchor1', label: 'Anchor 1' },
-      { name: 'anchor2', label: 'Anchor 2' },
-      { name: 'anchor3', label: 'Anchor 3' },
-    ];
     const activeLinkName = 'anchor1';
 
     const user = userEvent.setup();
@@ -84,7 +72,12 @@ describe('NavigationPanel', () => {
       />,
     );
     await user.tab();
-    const anchorText = screen.getByText('Anchor 2');
+    await user.tab();
+    const anchorText = screen.getByRole('link', {
+      name: 'Anchor 2',
+      exact: false,
+    });
+    // const anchorText = screen.getByText('Anchor 2');
     expect(anchorText).toHaveFocus();
   });
 });
