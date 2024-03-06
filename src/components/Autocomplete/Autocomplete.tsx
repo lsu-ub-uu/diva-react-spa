@@ -155,15 +155,17 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
                 event: React.SyntheticEvent,
                 newValue: AutoCompleteSearchResultProps | null,
               ) => {
-                if (newValue === null) {
-                  setValue('');
-                }
-                if (props.onSelected && value !== null) {
-                  // @ts-ignore
-                  setValue(newValue.id as string);
-                  // @ts-ignore
-                  return props.onSelected(newValue.id as string);
-                }
+                // setValue(newValue?.id);
+                //
+                // if (props.onSelected && value !== null) {
+                //   // @ts-ignore
+                //   setValue(newValue.id as string);
+                //   // @ts-ignore
+                //   return props.onSelected(newValue.id as string);
+                // }
+                field.onChange(newValue?.id);
+                // console.log('newValue', newValue?.id);
+                // console.log('value', value);
               }}
               id='autocomplete-test'
               sx={{ width: '100%' }}
