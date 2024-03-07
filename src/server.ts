@@ -12,7 +12,7 @@ import {
   searchRoute
 } from './routes';
 
-const PORT = process.env.NODE_ENV !== 'test' ? process.env.PORT || 8080 : 9090;
+const PORT = process.env.PORT || 8080;
 
 const { CORA_API_URL } = process.env;
 
