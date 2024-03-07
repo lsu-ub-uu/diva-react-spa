@@ -130,7 +130,9 @@ export const SubjectCategoryPicker = (
         fixedHeader={
           <Autocomplete
             placeholder='Sök ämneskategori'
-            options={subjectCategoriesWithId}
+            name=''
+            label=''
+            // options={subjectCategoriesWithId}
             onSelected={handleSelected}
           />
         }

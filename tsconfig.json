@@ -20,6 +20,10 @@
     "noImplicitThis": true,
     "strictNullChecks": true
   },
-  "include": ["src", ".eslintrc.json"],
+  "include": [
+    "src",
+    ".eslintrc.json",
+    "node_modules/vitest/globals.d.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

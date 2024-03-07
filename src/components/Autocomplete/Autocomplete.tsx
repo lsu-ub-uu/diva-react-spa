@@ -48,15 +48,20 @@ interface AutoCompleteProps {
   tooltip?: { title: string; body: string };
 }
 
-interface AutoCompleteSearchResultProps {
+export interface AutoCompleteSearchResultProps {
   id: string;
   recordType: string;
   validationType: string;
   createdAt: string;
   createdBy: string;
-  updated: unknown[];
-  userRights: string[];
+  updated: AutoCompleteSearchResultDataInterface[];
+  userRights: Array<'read' | 'read_incoming_links' | 'update' | 'index'>;
   data: unknown;
+  presentation?: unknown;
+}
+interface AutoCompleteSearchResultDataInterface {
+  updateAt: string;
+  updatedBy: string;
 }
 
 export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
