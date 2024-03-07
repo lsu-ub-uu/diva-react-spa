@@ -68,7 +68,13 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
     );
 
     const transformedRecords = transformRecords(dependencies, response.data);
-    console.log(transformedRecords);
+
+    transformedRecords.forEach((transformedRecord, i) => {
+      const recordType = dependencies.recordTypePool.get(transformedRecord.recordType);
+      const { listPresentationViewId } = recordType;
+
+      console.log(i, transformedRecord);
+    });
 
     res.status(200).json(transformedRecords);
   } catch (error: unknown) {

@@ -19,6 +19,7 @@
 
 import * as TYPES from 'config/bffTypes';
 import { BFFMetadataChildReference, BFFPresentationChildReference } from 'config/bffTypes';
+import * as console from 'console';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import {
@@ -628,7 +629,14 @@ const createDetailedPresentationBasedOnPresentationType = (
     if (presentationRecordLink.search !== undefined) {
       search = presentationRecordLink.search;
     }
-    presentationRecordLinkId = presentation.id;
+    if (presentationRecordLink.linkedRecordPresentations !== undefined) {
+      presentationRecordLinkId =
+        presentationRecordLink.linkedRecordPresentations.map(
+          (linkedPresentation) => linkedPresentation.presentationId
+        ) ?? [];
+    }
+    // console.log('pRecordLink', presentationRecordLink);
+    // presentationRecordLinkId = presentation.id;
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
 
