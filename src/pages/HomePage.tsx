@@ -37,14 +37,6 @@ export const HomePage = () => {
             mattis metus. Quisque condimentum cursus egestas. Suspendisse tellus
             dolor, euismod at dui a, ultrices tempor erat.
           </p>
-          <NavigationPanel
-            links={[
-              { name: 'anchor1', label: 'Anchor 1' },
-              { name: 'anchor2', label: 'Anchor 2' },
-              { name: 'anchor3', label: 'Anchor 3' },
-            ]}
-            activeLinkName='anchor2'
-          />
         </AsidePortal>
         <Stack spacing={2}>
           <CreatePublicationCard />
