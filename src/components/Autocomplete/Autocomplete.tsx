@@ -33,6 +33,8 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Control, Controller } from 'react-hook-form';
 import { t } from 'i18next';
 import { Tooltip } from '../Tooltip/Tooltip';
+import {FormGenerator} from "../FormGenerator/FormGenerator";
+import {FormSchema} from "../FormGenerator/types";
 
 interface AutoCompleteProps {
   name: string;
@@ -105,11 +107,6 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
       isMounted = false;
     };
   }, [inputValue, loading, props.searchLink]);
-
-  useEffect(() => {
-    console.log('value', value);
-    console.log('inputValue', inputValue);
-  }, [inputValue, value]);
 
   return (
     <Controller
@@ -190,7 +187,17 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
                 setInputValue(newInputValue);
               }}
               renderOption={(renderProps, option, { inputValue }) => {
-                return <li {...renderProps}>{option.id}</li>;
+                return (
+                  <li {...renderProps}>
+                    <FormGenerator
+                      record={option}
+                      onSubmit={() => {}}
+                      onInvalid={() => {}}
+                      formSchema={option.presentation as FormSchema}
+                      linkedData
+                    />
+                  </li>
+                );
               }}
             />
           </FormControl>
