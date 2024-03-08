@@ -41,7 +41,7 @@ import {
   isFirstLevel,
   RecordData,
 } from './utils';
-import { Typography, LinkButton, Autocomplete } from '../index';
+import { Typography, LinkButton, ContolledAutocomplete } from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
@@ -465,7 +465,7 @@ export const renderLeafComponent = (
             sm={renderElementGridWrapper ? component.gridColSpan : 12}
           >
             {component.mode === 'input' ? (
-              <Autocomplete
+              <ContolledAutocomplete
                 label={component.label ?? ''}
                 name={name}
                 showLabel={component.showLabel}

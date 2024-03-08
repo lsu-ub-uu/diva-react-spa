@@ -17,17 +17,18 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { Autocomplete, AutoCompleteSearchResultProps } from '../Autocomplete';
+import { ContolledAutocomplete } from '../ContolledAutocomplete';
+import { CoraRecord } from '../../../app/hooks';
 
 /**
  * @vitest-environment jsdom
  */
 
-const mockOptions: AutoCompleteSearchResultProps[] = [
+const mockOptions: CoraRecord[] = [
   {
     id: 'nationalSubjectCategory:6325356888554468',
     recordType: 'nationalSubjectCategory',
@@ -118,7 +119,7 @@ export const DummyForm = (): JSX.Element => {
   const methods = useForm({ defaultValues: { optionSelect: 'option2' } });
 
   return (
-    <Autocomplete
+    <ContolledAutocomplete
       control={methods.control}
       label='Label for test'
       name='name'

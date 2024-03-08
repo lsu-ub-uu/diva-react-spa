@@ -33,8 +33,9 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Control, Controller } from 'react-hook-form';
 import { t } from 'i18next';
 import { Tooltip } from '../Tooltip/Tooltip';
-import {FormGenerator} from "../FormGenerator/FormGenerator";
-import {FormSchema} from "../FormGenerator/types";
+import { FormGenerator } from '../FormGenerator/FormGenerator';
+import { FormSchema } from '../FormGenerator/types';
+import { CoraRecord } from '../../app/hooks';
 
 interface AutoCompleteProps {
   name: string;
@@ -50,24 +51,10 @@ interface AutoCompleteProps {
   tooltip?: { title: string; body: string };
 }
 
-export interface AutoCompleteSearchResultProps {
-  id: string;
-  recordType: string;
-  validationType: string;
-  createdAt: string;
-  createdBy: string;
-  updated: AutoCompleteSearchResultDataInterface[];
-  userRights: Array<'read' | 'read_incoming_links' | 'update' | 'index'>;
-  data: unknown;
-  presentation?: unknown;
-}
-interface AutoCompleteSearchResultDataInterface {
-  updateAt: string;
-  updatedBy: string;
-}
-
-export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
-  const [options, setOptions] = useState<AutoCompleteSearchResultProps[]>([]);
+export const ContolledAutocomplete = (
+  props: AutoCompleteProps,
+): JSX.Element => {
+  const [options, setOptions] = useState<CoraRecord[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
@@ -155,19 +142,9 @@ export const Autocomplete = (props: AutoCompleteProps): JSX.Element => {
               popupIcon={<ExpandMoreIcon />}
               onChange={(
                 event: React.SyntheticEvent,
-                newValue: AutoCompleteSearchResultProps | null,
+                newValue: CoraRecord | null,
               ) => {
-                // setValue(newValue?.id);
-                //
-                // if (props.onSelected && value !== null) {
-                //   // @ts-ignore
-                //   setValue(newValue.id as string);
-                //   // @ts-ignore
-                //   return props.onSelected(newValue.id as string);
-                // }
                 field.onChange(newValue?.id);
-                // console.log('newValue', newValue?.id);
-                // console.log('value', value);
               }}
               id='autocomplete-test'
               sx={{ width: '100%' }}
