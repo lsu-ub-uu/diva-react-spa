@@ -24,6 +24,8 @@ import { getSearchResultDataListBySearchType } from '../cora/cora';
 import { errorHandler } from '../server';
 import { transformRecords } from '../config/transformRecord';
 import { dependencies } from '../config/configureServer';
+import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
+import { BFFMetadataGroup } from '../config/bffTypes';
 
 /**
  * @desc Get result of a public person search
@@ -69,13 +71,21 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
 
     const transformedRecords = transformRecords(dependencies, response.data);
 
-    transformedRecords.forEach((transformedRecord, i) => {
+    transformedRecords.forEach((transformedRecord) => {
       const recordType = dependencies.recordTypePool.get(transformedRecord.recordType);
       const { listPresentationViewId } = recordType;
 
-      console.log(i, transformedRecord);
-    });
+      const presentationGroup = dependencies.presentationPool.get(listPresentationViewId);
+      const metadataGroup = dependencies.metadataPool.get(
+        presentationGroup.presentationOf
+      ) as BFFMetadataGroup;
 
+      transformedRecord.presentation = createLinkedRecordDefinition(
+        dependencies,
+        metadataGroup,
+        presentationGroup
+      );
+    });
     res.status(200).json(transformedRecords);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);

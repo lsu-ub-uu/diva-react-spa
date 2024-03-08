@@ -29,6 +29,8 @@ import { injectRecordInfoIntoDataGroup, transformToCoraData } from '../config/tr
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { transformRecord } from '../config/transformRecord';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
+import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import * as TYPES from '../config/bffTypes';
 
 /**
  * @desc Post an update to a record to Cora
@@ -130,17 +132,20 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
     const { presentationRecordLinkId } = req.query;
     const { recordType, recordId } = req.params;
 
-    // console.log(presentationRecordLinkId);
-
     const authToken = req.header('authToken') ?? '';
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
     const recordWrapper = response.data;
     const record = transformRecord(dependencies, recordWrapper);
 
     if (presentationRecordLinkId !== undefined) {
-      record.presentation = createLinkedRecordDefinition(
+      const { presentationGroup, metadataGroup } = getGroupsFromPresentationLinkId(
         dependencies,
         presentationRecordLinkId as string
+      );
+      record.presentation = createLinkedRecordDefinition(
+        dependencies,
+        metadataGroup,
+        presentationGroup
       );
     }
 
@@ -149,4 +154,19 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }
+};
+
+export const getGroupsFromPresentationLinkId = (
+  dependencies: Dependencies,
+  presentationLinkId: string
+) => {
+  const presentationLink = dependencies.presentationPool.get(
+    presentationLinkId
+  ) as TYPES.BFFPresentationRecordLink;
+  const { presentationId } = presentationLink.linkedRecordPresentations[0];
+  const presentationGroup = dependencies.presentationPool.get(presentationId);
+  const metadataGroup = dependencies.metadataPool.get(
+    presentationGroup.presentationOf
+  ) as TYPES.BFFMetadataGroup;
+  return { presentationGroup, metadataGroup };
 };

@@ -931,7 +931,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               childStyle: [''],
               mode: 'input',
-              presentationRecordLinkId: ['someSubjectCategoryPresentation'],
+              presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
               recordLinkType: 'nationalSubjectCategory',
               repeat: {
                 repeatMin: 1,
@@ -950,7 +950,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               childStyle: [''],
               mode: 'input',
-              presentationRecordLinkId: ['someNewRecordLink'],
+              presentationRecordLinkId: 'someNewRecordPLinkId',
               recordLinkType: 'someNewRecordLink',
               repeat: {
                 repeatMin: 1,
@@ -1576,7 +1576,7 @@ describe('formDefinition', () => {
               gridColSpan: 12,
               childStyle: [''],
               mode: 'input',
-              presentationRecordLinkId: ['someSubjectCategoryPresentation'],
+              presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
               recordLinkType: 'nationalSubjectCategory',
               repeat: {
                 repeatMin: 1,
@@ -1934,9 +1934,13 @@ describe('formDefinition', () => {
       createTextVar('lastNameTextVar', 'familyName', []);
       createTextVar('firstNameTextVar', 'givenName', []);
 
+      const metadataGroup = dependencies.metadataPool.get('personGroup');
+      const presentationGroup = dependencies.presentationPool.get('personWhenLinkedOutputPGroup');
+
       const linkedRecordDefinition = createLinkedRecordDefinition(
         dependencies,
-        'divaPersonOutputPLink'
+        metadataGroup as BFFMetadataGroup,
+        presentationGroup
       );
       expect(linkedRecordDefinition.form.components).toHaveLength(1);
       expect(linkedRecordDefinition).toStrictEqual({
@@ -2125,10 +2129,17 @@ describe('formDefinition', () => {
       createTextVar('subjectCodeTextVar', 'subjectCode', []);
       createPresentationVar('subjectCodeOutputPVar', 'subjectCodeTextVar', 'output');
 
+      const metadataGroup = dependencies.metadataPool.get('nationalSubjectCategoryGroup');
+      const presentationGroup = dependencies.presentationPool.get(
+        'nationalSubjectCategoryWhenLinkedPGroup'
+      );
+
       const linkedRecordDefinition = createLinkedRecordDefinition(
         dependencies,
-        'nationalSubjectCategoryOutputPLink'
+        metadataGroup as BFFMetadataGroup,
+        presentationGroup
       );
+
       expect(linkedRecordDefinition.form.components).toHaveLength(8);
       expect(linkedRecordDefinition).toStrictEqual({
         form: {

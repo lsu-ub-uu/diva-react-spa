@@ -18,7 +18,13 @@
  */
 
 import * as TYPES from 'config/bffTypes';
-import { BFFMetadataChildReference, BFFPresentationChildReference } from 'config/bffTypes';
+import {
+  BFFMetadata,
+  BFFMetadataChildReference,
+  BFFMetadataGroup,
+  BFFPresentationChildReference,
+  BFFPresentationGroup
+} from 'config/bffTypes';
 import * as console from 'console';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -31,6 +37,7 @@ import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
 import { Lookup } from '../utils/structs/lookup';
 import { createNumberVariableValidation, createTextVariableValidation } from './formValidation';
+import { getGroupsFromPresentationLinkId } from '../controllers/recordController';
 
 interface FormMetaDataRepeat {
   repeatMin: number;
@@ -54,22 +61,15 @@ export interface FormMetaData {
 /**
  * Creates a Linked Record definition
  * @param dependencies
- * @param presentationLinkId
+ * @param metadataGroup
+ * @param presentationGroup
  */
 export const createLinkedRecordDefinition = (
   dependencies: Dependencies,
-  presentationLinkId: string
+  metadataGroup: BFFMetadataGroup,
+  presentationGroup: BFFPresentationGroup
 ) => {
-  const { metadataPool, presentationPool } = dependencies;
-
-  const presentationLink = presentationPool.get(
-    presentationLinkId
-  ) as TYPES.BFFPresentationRecordLink;
-  const { presentationId } = presentationLink.linkedRecordPresentations[0];
-  const presentationGroup = presentationPool.get(presentationId);
-  const metadataGroup = metadataPool.get(
-    presentationGroup.presentationOf
-  ) as TYPES.BFFMetadataGroup;
+  // const { metadataPool, presentationPool } = dependencies;
 
   const form = createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
@@ -629,14 +629,14 @@ const createDetailedPresentationBasedOnPresentationType = (
     if (presentationRecordLink.search !== undefined) {
       search = presentationRecordLink.search;
     }
-    if (presentationRecordLink.linkedRecordPresentations !== undefined) {
-      presentationRecordLinkId =
-        presentationRecordLink.linkedRecordPresentations.map(
-          (linkedPresentation) => linkedPresentation.presentationId
-        ) ?? [];
-    }
+    // if (presentationRecordLink.linkedRecordPresentations !== undefined) {
+    //   presentationRecordLinkId =
+    //     presentationRecordLink.linkedRecordPresentations.map(
+    //       (linkedPresentation) => linkedPresentation.presentationId
+    //     ) ?? [];
+    // }
     // console.log('pRecordLink', presentationRecordLink);
-    // presentationRecordLinkId = presentation.id;
+    presentationRecordLinkId = presentation.id;
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
 
