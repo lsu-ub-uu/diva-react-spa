@@ -76,6 +76,7 @@ export const ContolledAutocomplete = (
         if (isMounted) {
           setError(null);
           setOptions(response.data);
+          console.log('options', options)
         }
       } catch (err: unknown) {
         if (isMounted) {

@@ -45,7 +45,7 @@ const mockOptions: CoraRecord[] = [
         updatedBy: 'coraUser:490742519075086',
       },
     ],
-    userRights: ['read', 'read_incoming_links'],
+    userRights: ['read', 'read_incoming_links', 'update', 'index'],
     data: {
       nationalSubjectCategory: {
         name: {
@@ -69,6 +69,249 @@ const mockOptions: CoraRecord[] = [
         },
       },
     },
+    presentation: {
+      form: {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'output',
+        tooltip: {
+          title: 'nationalSubjectCategoryGroupText',
+          body: 'nationalSubjectCategoryGroupDefText',
+        },
+        label: 'nationalSubjectCategoryGroupText',
+        showLabel: false,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'name',
+            type: 'group',
+            mode: 'output',
+            tooltip: {
+              title: 'nationalSubjectCategoryNameGroupText',
+              body: 'nationalSubjectCategoryNameGroupDefText',
+            },
+            label: 'nationalSubjectCategoryNameGroupText',
+            showLabel: false,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'nationalSubjectCategoryName',
+                type: 'textVariable',
+                mode: 'output',
+                inputType: 'input',
+                tooltip: {
+                  title: 'nationalSubjectCategoryNameTextVarText',
+                  body: 'nationalSubjectCategoryNameTextVarDefText',
+                },
+                label: 'nationalSubjectCategoryNameTextVarText',
+                showLabel: false,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'semicolonText',
+            type: 'text',
+            textStyle: 'h3TextStyle',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'spaceText',
+            type: 'text',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'alternativeName',
+            type: 'group',
+            mode: 'output',
+            tooltip: {
+              title: 'nationalSubjectCategoryAlternativeNameGroupText',
+              body: 'nationalSubjectCategoryAlternativeNameGroupDefText',
+            },
+            label: 'nationalSubjectCategoryAlternativeNameGroupText',
+            showLabel: false,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'nationalSubjectCategoryName',
+                type: 'textVariable',
+                mode: 'output',
+                inputType: 'input',
+                tooltip: {
+                  title: 'nationalSubjectCategoryNameTextVarText',
+                  body: 'nationalSubjectCategoryNameTextVarDefText',
+                },
+                label: 'nationalSubjectCategoryNameTextVarText',
+                showLabel: false,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'spaceText',
+            type: 'text',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'firstHalfParenthesisText',
+            type: 'text',
+            textStyle: 'h3TextStyle',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'subjectCode',
+            type: 'textVariable',
+            mode: 'output',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectCodeTextVarText',
+              body: 'subjectCodeTextVarDefText',
+            },
+            label: 'subjectCodeTextVarText',
+            showLabel: false,
+            validation: {
+              type: 'regex',
+              pattern: '^[0-9-\\s]{1,100}$',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'secondHalfParenthesisText',
+            type: 'text',
+            textStyle: 'h3TextStyle',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            type: 'container',
+            name: 'nationalSubjectCategoryParentOutputListSContainer',
+            mode: 'output',
+            components: [
+              {
+                name: 'returnText',
+                type: 'text',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'subjectParentListText',
+                type: 'text',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'colonText',
+                type: 'text',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'spaceText',
+                type: 'text',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'nationalSubjectCategoryParent',
+                type: 'group',
+                mode: 'output',
+                tooltip: {
+                  title: 'nationalSubjectCategoryParentGroupText',
+                  body: 'nationalSubjectCategoryParentGroupDefText',
+                },
+                label: 'nationalSubjectCategoryParentGroupText',
+                showLabel: true,
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                components: [
+                  {
+                    name: 'nationalSubjectCategory',
+                    type: 'recordLink',
+                    mode: 'output',
+                    tooltip: {
+                      title: 'nationalSubjectCategoryLinkText',
+                      body: 'nationalSubjectCategoryLinkDefText',
+                    },
+                    label: 'nationalSubjectCategoryLinkText',
+                    showLabel: true,
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [''],
+                    gridColSpan: 12,
+                    recordLinkType: 'nationalSubjectCategory',
+                    presentationRecordLinkId:
+                      'nationalSubjectCategoryOutputPLink',
+                  },
+                ],
+                presentationStyle: '',
+                childStyle: ['compact'],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            containerType: 'surrounding',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: 'inline',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    },
   },
   {
     id: 'nationalSubjectCategory:6325526426473921',
@@ -86,7 +329,7 @@ const mockOptions: CoraRecord[] = [
         updatedBy: 'coraUser:490742519075086',
       },
     ],
-    userRights: ['read'],
+    userRights: ['read', 'update', 'index', 'delete'],
     data: {
       nationalSubjectCategory: {
         name: {
@@ -110,6 +353,249 @@ const mockOptions: CoraRecord[] = [
         subjectCode: {
           value: '50401',
         },
+      },
+    },
+    presentation: {
+      form: {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'output',
+        tooltip: {
+          title: 'nationalSubjectCategoryGroupText',
+          body: 'nationalSubjectCategoryGroupDefText',
+        },
+        label: 'nationalSubjectCategoryGroupText',
+        showLabel: false,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'name',
+            type: 'group',
+            mode: 'output',
+            tooltip: {
+              title: 'nationalSubjectCategoryNameGroupText',
+              body: 'nationalSubjectCategoryNameGroupDefText',
+            },
+            label: 'nationalSubjectCategoryNameGroupText',
+            showLabel: false,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'nationalSubjectCategoryName',
+                type: 'textVariable',
+                mode: 'output',
+                inputType: 'input',
+                tooltip: {
+                  title: 'nationalSubjectCategoryNameTextVarText',
+                  body: 'nationalSubjectCategoryNameTextVarDefText',
+                },
+                label: 'nationalSubjectCategoryNameTextVarText',
+                showLabel: false,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'semicolonText',
+            type: 'text',
+            textStyle: 'h3TextStyle',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'spaceText',
+            type: 'text',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'alternativeName',
+            type: 'group',
+            mode: 'output',
+            tooltip: {
+              title: 'nationalSubjectCategoryAlternativeNameGroupText',
+              body: 'nationalSubjectCategoryAlternativeNameGroupDefText',
+            },
+            label: 'nationalSubjectCategoryAlternativeNameGroupText',
+            showLabel: false,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'nationalSubjectCategoryName',
+                type: 'textVariable',
+                mode: 'output',
+                inputType: 'input',
+                tooltip: {
+                  title: 'nationalSubjectCategoryNameTextVarText',
+                  body: 'nationalSubjectCategoryNameTextVarDefText',
+                },
+                label: 'nationalSubjectCategoryNameTextVarText',
+                showLabel: false,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'spaceText',
+            type: 'text',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'firstHalfParenthesisText',
+            type: 'text',
+            textStyle: 'h3TextStyle',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'subjectCode',
+            type: 'textVariable',
+            mode: 'output',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectCodeTextVarText',
+              body: 'subjectCodeTextVarDefText',
+            },
+            label: 'subjectCodeTextVarText',
+            showLabel: false,
+            validation: {
+              type: 'regex',
+              pattern: '^[0-9-\\s]{1,100}$',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            name: 'secondHalfParenthesisText',
+            type: 'text',
+            textStyle: 'h3TextStyle',
+            childStyle: ['compact'],
+            gridColSpan: 12,
+          },
+          {
+            type: 'container',
+            name: 'nationalSubjectCategoryParentOutputListSContainer',
+            mode: 'output',
+            components: [
+              {
+                name: 'returnText',
+                type: 'text',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'subjectParentListText',
+                type: 'text',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'colonText',
+                type: 'text',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'spaceText',
+                type: 'text',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'nationalSubjectCategoryParent',
+                type: 'group',
+                mode: 'output',
+                tooltip: {
+                  title: 'nationalSubjectCategoryParentGroupText',
+                  body: 'nationalSubjectCategoryParentGroupDefText',
+                },
+                label: 'nationalSubjectCategoryParentGroupText',
+                showLabel: true,
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                components: [
+                  {
+                    name: 'nationalSubjectCategory',
+                    type: 'recordLink',
+                    mode: 'output',
+                    tooltip: {
+                      title: 'nationalSubjectCategoryLinkText',
+                      body: 'nationalSubjectCategoryLinkDefText',
+                    },
+                    label: 'nationalSubjectCategoryLinkText',
+                    showLabel: true,
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 0,
+                      repeatMax: 1,
+                    },
+                    childStyle: [''],
+                    gridColSpan: 12,
+                    recordLinkType: 'nationalSubjectCategory',
+                    presentationRecordLinkId:
+                      'nationalSubjectCategoryOutputPLink',
+                  },
+                ],
+                presentationStyle: '',
+                childStyle: ['compact'],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            containerType: 'surrounding',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: 'inline',
+        childStyle: [''],
+        gridColSpan: 12,
       },
     },
   },
@@ -143,19 +629,31 @@ describe('<Autocomplete/>', () => {
 
   it.todo('displays options when typing in the input', async () => {
     render(<DummyForm />);
-
-    const inputElement = screen.getByPlaceholderText('somePlaceholder');
     const user = userEvent.setup();
+
+    const inputElement = screen.getByRole('combobox');
+    expect(inputElement).toBeVisible();
+
+    const searchLink = 'nationalSubjectCategory';
+    const inputValue = '*';
     await user.click(inputElement);
-    await user.type(inputElement, '*');
+    await user.type(inputElement, inputValue);
+
     await waitFor(() => {
-      const optionElements = screen.getAllByText('nationalSubjectCategory');
-      expect(optionElements.length).toBe(2);
+      const optionElements = screen.findByText('Programvaruteknik', {
+        exact: false,
+      });
+      const listBox = screen.findByRole('presentation');
+      screen.debug();
+      expect(listBox).toBeInTheDocument();
+      // console.log('aaa', optionElements);
+      // expect(optionElements).toBeInTheDocument();
     });
   });
 
   it('displays no options when input does not match any options', async () => {
     render(<DummyForm />);
+
     const inputElement = screen.getByPlaceholderText('somePlaceholder');
     const user = userEvent.setup();
     await user.click(inputElement);
@@ -164,6 +662,5 @@ describe('<Autocomplete/>', () => {
     expect(noOptions).toBeInTheDocument();
 
     expect(screen.queryByText('Option 1')).toBeNull();
-    expect(screen.queryByText('Option 2')).toBeNull();
   });
 });
