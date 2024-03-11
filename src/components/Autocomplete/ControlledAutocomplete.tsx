@@ -21,6 +21,8 @@ import { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import {
   Autocomplete as MuiAutocomplete,
+  Box,
+  Chip,
   FormControl,
   FormLabel,
   IconButton,
@@ -51,12 +53,12 @@ interface AutoCompleteProps {
   tooltip?: { title: string; body: string };
 }
 
-export const ContolledAutocomplete = (
+export const ControlledAutocomplete = (
   props: AutoCompleteProps,
 ): JSX.Element => {
   const [options, setOptions] = useState<CoraRecord[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const [value, setValue] = useState('');
+  // const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,7 +78,7 @@ export const ContolledAutocomplete = (
         if (isMounted) {
           setError(null);
           setOptions(response.data);
-          console.log('options', options)
+          console.log('options', options);
         }
       } catch (err: unknown) {
         if (isMounted) {
@@ -147,6 +149,7 @@ export const ContolledAutocomplete = (
               ) => {
                 field.onChange(newValue?.id);
               }}
+              disablePortal
               id='autocomplete-test'
               sx={{ width: '100%' }}
               filterOptions={(x) => x}

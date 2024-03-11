@@ -18,12 +18,13 @@
  */
 
 import React from 'react';
-import { Box, Container, Grid, Toolbar } from '@mui/material';
+import { Box, Container, Grid, IconButton, Toolbar } from '@mui/material';
 import { Control, FieldErrors, FieldValues, useForm } from 'react-hook-form';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
+import InfoIcon from '@mui/icons-material/Info';
 import {
   ControlledTextField,
   ControlledSelectField,
@@ -41,7 +42,12 @@ import {
   isFirstLevel,
   RecordData,
 } from './utils';
-import { Typography, LinkButton, ContolledAutocomplete } from '../index';
+import {
+  Typography,
+  LinkButton,
+  ControlledAutocomplete,
+  Tooltip,
+} from '../index';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
@@ -142,9 +148,7 @@ export const FormGenerator = ({
               createFormComponents(
                 component.components,
                 currentComponentNamePath,
-                component.presentationStyle === undefined
-                  ? parentPresentationStyle
-                  : component.presentationStyle,
+                component.presentationStyle ?? parentPresentationStyle,
               )}
           </div>
         </React.Fragment>
@@ -161,13 +165,35 @@ export const FormGenerator = ({
           className='anchorLink'
           id={`anchor_${component.name}-card`}
         >
-          <Box
-            sx={{ mb: 2 }}
-            // title={t(component.label as string) as string}
-            // variant='variant6'
-            // tooltipTitle={t(component.tooltip?.title as string) as string}
-            // tooltipBody={t(component.tooltip?.body as string) as string}
-          >
+          <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              {component.showLabel === true ? (
+                <Typography
+                  text={component?.label ?? ''}
+                  variant={headlineLevelToTypographyVariant(
+                    component.headlineLevel,
+                  )}
+                />
+              ) : null}
+              <Tooltip
+                title={t(component.tooltip?.title as string)}
+                body={t(component.tooltip?.body as string)}
+              >
+                <IconButton
+                  disableRipple
+                  color='info'
+                  aria-label='info'
+                >
+                  <InfoIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
             <Grid
               container
               spacing={2}
@@ -183,9 +209,7 @@ export const FormGenerator = ({
                 createFormComponents(
                   component.components,
                   currentComponentNamePath,
-                  component.presentationStyle === undefined
-                    ? parentPresentationStyle
-                    : component.presentationStyle,
+                  component.presentationStyle ?? parentPresentationStyle,
                 )}
             </Grid>
           </Box>
@@ -250,9 +274,7 @@ export const FormGenerator = ({
               ...createFormComponents(
                 component.components ?? [],
                 arrayPath,
-                component.presentationStyle === undefined
-                  ? parentPresentationStyle
-                  : component.presentationStyle,
+                component.presentationStyle ?? parentPresentationStyle,
               ),
             ];
           }}
@@ -265,12 +287,34 @@ export const FormGenerator = ({
           sx={{ position: 'relative' }}
         >
           {component?.showLabel && (
-            <Typography
-              text={component?.label ?? ''}
-              variant={headlineLevelToTypographyVariant(
-                component.headlineLevel,
-              )}
-            />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              {component.showLabel ? (
+                <Typography
+                  text={component?.label ?? ''}
+                  variant={headlineLevelToTypographyVariant(
+                    component.headlineLevel,
+                  )}
+                />
+              ) : null}
+              <Tooltip
+                title={t(component.tooltip?.title as string)}
+                body={t(component.tooltip?.body as string)}
+              >
+                <IconButton
+                  disableRipple
+                  color='info'
+                  aria-label='info'
+                >
+                  <InfoIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
           )}
 
           <FieldArrayComponent
@@ -283,9 +327,7 @@ export const FormGenerator = ({
                 ...createFormComponents(
                   component.components ?? [],
                   arrayPath,
-                  component.presentationStyle === undefined
-                    ? parentPresentationStyle
-                    : component.presentationStyle,
+                  component.presentationStyle ?? parentPresentationStyle,
                 ),
               ];
             }}
@@ -465,7 +507,7 @@ export const renderLeafComponent = (
             sm={renderElementGridWrapper ? component.gridColSpan : 12}
           >
             {component.mode === 'input' ? (
-              <ContolledAutocomplete
+              <ControlledAutocomplete
                 label={component.label ?? ''}
                 name={name}
                 showLabel={component.showLabel}
@@ -581,7 +623,7 @@ export const renderLeafComponent = (
 };
 
 // move to utils
-const headlineLevelToTypographyVariant = (
+export const headlineLevelToTypographyVariant = (
   headlineLevel: string | undefined,
 ): DivaTypographyVariants['variant'] => {
   let typographyVariant: DivaTypographyVariants['variant'];
@@ -661,5 +703,5 @@ const checkIfPresentationStyleOrIsInline = (component: FormComponent) => {
 };
 
 const checkIfComponentContainsSearchId = (component: FormComponent) => {
-  return !(component.search === undefined);
+  return component.search !== undefined;
 };

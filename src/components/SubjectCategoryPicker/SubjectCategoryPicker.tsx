@@ -30,7 +30,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import { ContolledAutocomplete } from '../Autocomplete/ContolledAutocomplete';
+import { ControlledAutocomplete } from '../Autocomplete/ControlledAutocomplete';
 import { RichTree } from '../RichTree/RichTree';
 import { Dialog } from '../Dialog/Dialog';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -128,7 +128,7 @@ export const SubjectCategoryPicker = (
         closeButton
         open={open}
         fixedHeader={
-          <ContolledAutocomplete
+          <ControlledAutocomplete
             placeholder='Sök ämneskategori'
             name=''
             label=''

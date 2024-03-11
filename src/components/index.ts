@@ -35,7 +35,7 @@ export { Select } from './Form/Select/Select';
 export { Checkbox } from './Form/Checkbox/Checkbox';
 export { Radio } from './Form/Radio/Radio';
 export { RichTree } from './RichTree/RichTree';
-export { ContolledAutocomplete } from './Autocomplete/ContolledAutocomplete';
+export { ControlledAutocomplete } from './Autocomplete/ControlledAutocomplete';
 export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPicker';
 export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';

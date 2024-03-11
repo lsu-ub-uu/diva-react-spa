@@ -21,7 +21,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { ContolledAutocomplete } from '../ContolledAutocomplete';
+import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import { CoraRecord } from '../../../app/hooks';
 
 /**
@@ -605,7 +605,7 @@ export const DummyForm = (): JSX.Element => {
   const methods = useForm({ defaultValues: { optionSelect: 'option2' } });
 
   return (
-    <ContolledAutocomplete
+    <ControlledAutocomplete
       control={methods.control}
       label='Label for test'
       name='name'

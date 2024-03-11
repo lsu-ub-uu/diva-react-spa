@@ -19,10 +19,11 @@
 
 import React from 'react';
 import { Control, Controller, useFieldArray } from 'react-hook-form';
-import { Box, Chip, Divider, Grid } from '@mui/material';
+import { Box, Chip, Divider, Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
+import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { FormComponent } from './types';
 import {
@@ -30,7 +31,9 @@ import {
   isComponentSingularAndOptional,
   isFirstLevel,
 } from './utils';
-import { Card } from '../Card/Card';
+import { Typography } from '../Typography/Typography';
+import { Tooltip } from '../Tooltip/Tooltip';
+import { headlineLevelToTypographyVariant } from './FormGenerator';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -139,14 +142,35 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       className='anchorLink'
       id={`anchor_${props.component.name}`}
     >
-      <Box
-        sx={{ mb: 2 }}
-
-        /* title={t(props.component.label as string) as string}
-        variant='variant6'
-        tooltipTitle={t(props.component.tooltip?.title as string) as string}
-        tooltipBody={t(props.component.tooltip?.body as string) as string} */
-      >
+      <Box sx={{ mb: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          {props.component.showLabel === true ? (
+            <Typography
+              text={props.component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                props.component.headlineLevel,
+              )}
+            />
+          ) : null}
+          <Tooltip
+            title={t(props.component.tooltip?.title as string)}
+            body={t(props.component.tooltip?.body as string)}
+          >
+            <IconButton
+              disableRipple
+              color='info'
+              aria-label='info'
+            >
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
         {getContent()}
       </Box>
     </span>
