@@ -21,8 +21,6 @@ import { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import {
   Autocomplete as MuiAutocomplete,
-  Box,
-  Chip,
   FormControl,
   FormLabel,
   IconButton,
@@ -58,8 +56,10 @@ export const ControlledAutocomplete = (
 ): JSX.Element => {
   const [options, setOptions] = useState<CoraRecord[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const [value, setValue] = useState<CoraRecord | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [presentationValue, setPresentationValue] = useState<CoraRecord | null>(
+    null,
+  );
+  // const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export const ControlledAutocomplete = (
           return undefined;
         }
         const response = await axios.get(
-          `/search/${props.searchLink}?searchTermName=${props.searchLink}Term&searchTermValue=${inputValue}`,
+          `/search/${props.searchLink}?searchTermValue=${inputValue}`,
         );
 
         if (isMounted) {
@@ -90,12 +90,11 @@ export const ControlledAutocomplete = (
     };
 
     fetchData().then();
-    console.log('value', value);
 
     return () => {
       isMounted = false;
     };
-  }, [inputValue, loading, props.searchLink, value]);
+  }, [inputValue, props.searchLink, presentationValue]);
 
   return (
     <Controller
@@ -147,7 +146,7 @@ export const ControlledAutocomplete = (
                 newValue: CoraRecord | null,
               ) => {
                 field.onChange(newValue?.id);
-                setValue(newValue);
+                setPresentationValue(newValue);
               }}
               disablePortal
               id='autocomplete-test'
@@ -159,20 +158,25 @@ export const ControlledAutocomplete = (
               renderInput={(params) => (
                 // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
-                  {value !== null ? (
+                  {presentationValue !== null ? (
                     <FormGenerator
-                      record={value}
+                      record={presentationValue}
                       onSubmit={() => {}}
                       onInvalid={() => {}}
-                      formSchema={value?.presentation as FormSchema}
+                      formSchema={presentationValue?.presentation as FormSchema}
                       linkedData
                     />
                   ) : (
                     <TextField
                       {...params}
                       {...fieldWithoutRef}
-                      placeholder={props.placeholder ?? 'Search'}
+                      placeholder={
+                        props.placeholder !== undefined
+                          ? (t(props.placeholder) as string)
+                          : 'Search'
+                      }
                       margin='normal'
+                      error={error !== undefined}
                     />
                   )}
                 </>
@@ -180,7 +184,7 @@ export const ControlledAutocomplete = (
               onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
               }}
-              renderOption={(renderProps, option, { inputValue }) => {
+              renderOption={(renderProps, option) => {
                 return (
                   <li {...renderProps}>
                     <FormGenerator
