@@ -23,6 +23,7 @@ import {
   BFFPresentation,
   BFFPresentationGroup,
   BFFRecordType,
+  BFFSearch,
   BFFText,
   BFFValidationType
 } from '../../config/bffTypes';
@@ -43,7 +44,8 @@ describe('textDefinition', () => {
       validationTypePool: listToPool<BFFValidationType>([]),
       metadataPool: listToPool<BFFMetadata>([]),
       presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
-      recordTypePool: listToPool<BFFRecordType>([])
+      recordTypePool: listToPool<BFFRecordType>([]),
+      searchPool: listToPool<BFFSearch>([])
     };
   });
 

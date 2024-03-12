@@ -28,6 +28,7 @@ import {
   BFFPresentation,
   BFFPresentationGroup,
   BFFRecordType,
+  BFFSearch,
   BFFText,
   BFFValidationType
 } from '../../config/bffTypes';
@@ -94,7 +95,8 @@ describe.skip('real', () => {
         validationTypePool: listToPool<BFFValidationType>([]),
         metadataPool: listToPool<BFFMetadata>([]),
         presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
-        recordTypePool: listToPool<BFFRecordType>([])
+        recordTypePool: listToPool<BFFRecordType>([]),
+        searchPool: listToPool<BFFSearch>([])
       };
       const defs = createTextDefinition(dependencies, 'en');
       expect(Object.keys(defs).length).toBe(6030);
