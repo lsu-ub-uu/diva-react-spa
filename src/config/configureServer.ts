@@ -13,6 +13,7 @@ import {
   BFFPresentation,
   BFFPresentationGroup,
   BFFRecordType,
+  BFFSearch,
   BFFText,
   BFFValidationType
 } from './bffTypes';
@@ -20,6 +21,7 @@ import { transformCoraPresentations } from './transformPresentations';
 import { transformCoraValidationTypes } from './transformValidationTypes';
 import { transformCoraRecordTypes } from './transformRecordTypes';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import { transformCoraSearch } from './transformCoraSearch';
 
 export const configureServer = (app: Application) => {
   app.use(express.json());
@@ -42,14 +44,22 @@ const dependencies: Dependencies = {
   presentationPool: listToPool<BFFPresentation>([]),
   recordTypePool: listToPool<BFFRecordType>([]),
   textPool: listToPool<BFFText>([]),
-  validationTypePool: listToPool<BFFValidationType>([])
+  validationTypePool: listToPool<BFFValidationType>([]),
+  searchPool: listToPool<BFFSearch>([])
 };
 
 const loadStuffOnServerStart = async () => {
   const response = await getRecordDataListByType<DataListWrapper>('text', '');
   const texts = transformCoraTexts(response.data);
 
-  const types = ['metadata', 'presentation', 'validationType', 'guiElement', 'recordType'];
+  const types = [
+    'metadata',
+    'presentation',
+    'validationType',
+    'guiElement',
+    'recordType',
+    'search'
+  ];
   const result = await getPoolsFromCora(types);
 
   const metadata = transformMetadata(result[0].data);
@@ -68,10 +78,14 @@ const loadStuffOnServerStart = async () => {
   const recordTypes = transformCoraRecordTypes(result[4].data);
   const recordTypePool = listToPool<BFFRecordType>(recordTypes);
 
+  const search = transformCoraSearch(result[5].data);
+  const searchPool = listToPool<BFFSearch>(search);
+
   dependencies.validationTypePool = validationTypePool;
   dependencies.recordTypePool = recordTypePool;
   dependencies.metadataPool = metadataPool;
   dependencies.presentationPool = presentationPool;
   dependencies.textPool = listToPool<BFFText>(texts);
+  dependencies.searchPool = searchPool;
 };
 export { dependencies, loadStuffOnServerStart };

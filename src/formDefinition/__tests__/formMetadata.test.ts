@@ -29,6 +29,7 @@ import {
   BFFPresentationGroup,
   BFFPresentationSurroundingContainer,
   BFFRecordType,
+  BFFSearch,
   BFFText,
   BFFValidationType
 } from '../../config/bffTypes';
@@ -52,6 +53,8 @@ describe('formMetadata', () => {
   >;
   let recordTypePool: Lookup<string, BFFRecordType>;
   let textPool: Lookup<string, BFFText>;
+  let searchPool: Lookup<string, BFFSearch>;
+
   let dependencies: Dependencies;
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([someSimpleValidationTypeData]);
@@ -67,13 +70,15 @@ describe('formMetadata', () => {
     >([]);
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
+    searchPool = listToPool<BFFSearch>([]);
 
     dependencies = {
       validationTypePool,
       metadataPool,
       presentationPool,
       recordTypePool,
-      textPool
+      textPool,
+      searchPool
     };
   });
   it('should return form meta data for a given validation type', () => {

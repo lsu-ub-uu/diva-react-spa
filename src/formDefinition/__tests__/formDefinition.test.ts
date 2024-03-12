@@ -36,7 +36,8 @@ import {
   BFFText,
   BFFPresentationRecordLink,
   BFFLinkedRecordPresentation,
-  BFFMetadataRecordLink
+  BFFMetadataRecordLink,
+  BFFSearch
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -128,6 +129,7 @@ describe('formDefinition', () => {
   >;
   let recordTypePool: Lookup<string, BFFRecordType>;
   let textPool: Lookup<string, BFFText>;
+  let searchPool: Lookup<string, BFFSearch>;
   const FORM_MODE_NEW = 'create';
   const FORM_MODE_EDIT = 'update';
   const FORM_MODE_VIEW = 'view'; // used to present the record
@@ -215,13 +217,15 @@ describe('formDefinition', () => {
     ]);
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
+    listToPool<BFFSearch>([]);
 
     dependencies = {
       validationTypePool,
       metadataPool,
       presentationPool,
       recordTypePool,
-      textPool
+      textPool,
+      searchPool
     };
 
     createRecordType('testRecordType');

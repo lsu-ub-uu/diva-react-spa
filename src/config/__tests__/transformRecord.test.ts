@@ -43,6 +43,7 @@ import {
   BFFPresentation,
   BFFPresentationGroup,
   BFFRecordType,
+  BFFSearch,
   BFFText,
   BFFValidationType
 } from '../bffTypes';
@@ -79,7 +80,8 @@ describe('transformRecord', () => {
       validationTypePool,
       metadataPool,
       presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
-      recordTypePool: listToPool<BFFRecordType>([])
+      recordTypePool: listToPool<BFFRecordType>([]),
+      searchPool: listToPool<BFFSearch>([])
     };
   });
 
