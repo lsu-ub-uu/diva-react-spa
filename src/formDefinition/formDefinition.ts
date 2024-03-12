@@ -19,13 +19,11 @@
 
 import * as TYPES from 'config/bffTypes';
 import {
-  BFFMetadata,
   BFFMetadataChildReference,
   BFFMetadataGroup,
   BFFPresentationChildReference,
   BFFPresentationGroup
 } from 'config/bffTypes';
-import * as console from 'console';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import {
@@ -37,7 +35,6 @@ import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
 import { Lookup } from '../utils/structs/lookup';
 import { createNumberVariableValidation, createTextVariableValidation } from './formValidation';
-import { getGroupsFromPresentationLinkId } from '../controllers/recordController';
 
 interface FormMetaDataRepeat {
   repeatMin: number;
@@ -69,8 +66,6 @@ export const createLinkedRecordDefinition = (
   metadataGroup: BFFMetadataGroup,
   presentationGroup: BFFPresentationGroup
 ) => {
-  // const { metadataPool, presentationPool } = dependencies;
-
   const form = createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
     metadataGroup,
@@ -586,7 +581,6 @@ const createDetailedPresentationBasedOnPresentationType = (
   let presentationRecordLinkId;
   let search;
 
-  // const { childStyle } = presentationChildReference;
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
   const presentationChildId = presentationChildReference.childId;
@@ -597,7 +591,7 @@ const createDetailedPresentationBasedOnPresentationType = (
     metadataId = metadataOverrideId ?? presentation.presentationOf;
     metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
-    metadata = metadataPool.get(metadataId) as TYPES.BFFMetadata;
+    metadata = metadataPool.get(metadataId);
     commonParameters = createCommonParameters(metadata, presentation);
   }
 
@@ -629,13 +623,6 @@ const createDetailedPresentationBasedOnPresentationType = (
     if (presentationRecordLink.search !== undefined) {
       search = presentationRecordLink.search;
     }
-    // if (presentationRecordLink.linkedRecordPresentations !== undefined) {
-    //   presentationRecordLinkId =
-    //     presentationRecordLink.linkedRecordPresentations.map(
-    //       (linkedPresentation) => linkedPresentation.presentationId
-    //     ) ?? [];
-    // }
-    // console.log('pRecordLink', presentationRecordLink);
     presentationRecordLinkId = presentation.id;
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }

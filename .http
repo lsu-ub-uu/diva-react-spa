@@ -1,7 +1,7 @@
 GET http://localhost:8080/api/refreshDefinitions
 
 ###
-GET http://localhost:8080/api/search/nationalSubjectCategorySearch?searchTermName=nationalSubjectCategorySearchTerm&searchTermValue=*
+GET http://localhost:8080/api/search/nationalSubjectCategorySearch?searchTermValue=*
 
 ###
 GET http://localhost:8080/api/search/personSearch?searchTermValue=*
