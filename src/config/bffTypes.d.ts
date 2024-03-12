@@ -169,6 +169,15 @@ export interface BFFText extends BFFBase {
   en?: string;
 }
 
+export interface BFFSearch extends BFFBase {
+  metadataId: string;
+  presentationId: string;
+  recordTypeToSearchIn: string[];
+  searchGroup: autocomplete | publicSearch;
+  searchDefText: string;
+  searchText: string;
+}
+
 export interface BFFGuiElement extends BFFBase {
   url?: string;
   elementText?: string;

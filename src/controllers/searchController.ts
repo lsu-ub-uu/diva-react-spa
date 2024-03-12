@@ -35,8 +35,12 @@ import { BFFMetadataGroup } from '../config/bffTypes';
 export const getPublicSearchResult = async (req: Request, res: Response) => {
   try {
     const { searchTermName, searchTermValue } = req.query;
-    const temp = req.path.split('/')[1];
-    console.log(temp);
+    const searchLink = req.path.split('/')[1];
+    console.log('searchLink', searchLink); // nationalSubjectCategorySearch
+    // console.log('pool0', dependencies.validationTypePool.get(searchLink));
+    // console.log('pool0', dependencies.metadataPool.get(searchLink));
+    // console.log('pool0', dependencies.presentationPool.get(searchLink));
+    // console.log('pool0', dependencies.recordTypePool.get(searchLink));
 
     console.log(searchTermName, searchTermValue);
 
