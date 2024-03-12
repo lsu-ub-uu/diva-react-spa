@@ -58,7 +58,7 @@ export const ControlledAutocomplete = (
 ): JSX.Element => {
   const [options, setOptions] = useState<CoraRecord[]>([]);
   const [inputValue, setInputValue] = useState('');
-  // const [value, setValue] = useState('');
+  const [value, setValue] = useState<CoraRecord | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -68,7 +68,6 @@ export const ControlledAutocomplete = (
     const fetchData = async () => {
       try {
         if (inputValue === '') {
-          setOptions(inputValue ? [inputValue] : []);
           return undefined;
         }
         const response = await axios.get(
@@ -78,7 +77,6 @@ export const ControlledAutocomplete = (
         if (isMounted) {
           setError(null);
           setOptions(response.data);
-          console.log('options', options);
         }
       } catch (err: unknown) {
         if (isMounted) {
@@ -92,11 +90,12 @@ export const ControlledAutocomplete = (
     };
 
     fetchData().then();
+    console.log('value', value);
 
     return () => {
       isMounted = false;
     };
-  }, [inputValue, loading, props.searchLink]);
+  }, [inputValue, loading, props.searchLink, value]);
 
   return (
     <Controller
@@ -148,6 +147,7 @@ export const ControlledAutocomplete = (
                 newValue: CoraRecord | null,
               ) => {
                 field.onChange(newValue?.id);
+                setValue(newValue);
               }}
               disablePortal
               id='autocomplete-test'
@@ -157,12 +157,25 @@ export const ControlledAutocomplete = (
               options={options}
               getOptionLabel={(option) => option.id}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  {...fieldWithoutRef}
-                  placeholder={props.placeholder ?? 'Search'}
-                  margin='normal'
-                />
+                // eslint-disable-next-line react/jsx-no-useless-fragment
+                <>
+                  {value !== null ? (
+                    <FormGenerator
+                      record={value}
+                      onSubmit={() => {}}
+                      onInvalid={() => {}}
+                      formSchema={value?.presentation as FormSchema}
+                      linkedData
+                    />
+                  ) : (
+                    <TextField
+                      {...params}
+                      {...fieldWithoutRef}
+                      placeholder={props.placeholder ?? 'Search'}
+                      margin='normal'
+                    />
+                  )}
+                </>
               )}
               onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
