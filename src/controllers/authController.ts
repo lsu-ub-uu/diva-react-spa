@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { requestAuthTokenOnLogin } from '../auth/requestAuthTokenOnLogin';
+import { requestAuthTokenOnLogin } from '../cora/auth';
 import { errorHandler } from '../server';
 
 /**

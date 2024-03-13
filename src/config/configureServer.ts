@@ -2,7 +2,7 @@ import cors from 'cors';
 import 'dotenv/config';
 
 import express, { Application, Request } from 'express';
-import { getRecordDataListByType } from '../cora/cora';
+import { getRecordDataListByType } from '../cora/record';
 import { DataListWrapper } from '../utils/cora-data/CoraData';
 import { transformCoraTexts } from './transformTexts';
 import { transformMetadata } from './transformMetadata';

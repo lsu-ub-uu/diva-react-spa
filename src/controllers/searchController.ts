@@ -18,14 +18,14 @@
  */
 
 import { Request, Response } from 'express';
-import * as console from 'console';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
-import { getSearchResultDataListBySearchType } from '../cora/cora';
+import { getSearchResultDataListBySearchType } from '../cora/record';
 import { errorHandler } from '../server';
 import { transformRecords } from '../config/transformRecord';
 import { dependencies } from '../config/configureServer';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 import { BFFMetadataGroup } from '../config/bffTypes';
+import { getSearchTermNameFromSearchLink } from '../cora/search';
 
 /**
  * @desc Get result of a public person search
@@ -37,17 +37,7 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
     const { searchTermValue } = req.query;
     const searchLink = req.path.split('/')[1];
 
-    const search = dependencies.searchPool.get(searchLink);
-    const metadataGroup = dependencies.metadataPool.get(search.metadataId) as BFFMetadataGroup;
-    const includeGroup = dependencies.metadataPool.get(
-      metadataGroup.children[0].childId
-    ) as BFFMetadataGroup;
-    const includePartGroup = dependencies.metadataPool.get(
-      includeGroup.children[0].childId
-    ) as BFFMetadataGroup;
-    const searchTermName = dependencies.metadataPool.get(
-      includePartGroup.children[0].childId
-    ).nameInData;
+    const searchTermName = getSearchTermNameFromSearchLink(dependencies, searchLink);
 
     const authToken = req.header('authToken') ?? '';
     const { searchType } = req.params;

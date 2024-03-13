@@ -217,7 +217,7 @@ describe('formDefinition', () => {
     ]);
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
-    listToPool<BFFSearch>([]);
+    searchPool = listToPool<BFFSearch>([]);
 
     dependencies = {
       validationTypePool,

@@ -20,7 +20,7 @@
 import { Request, Response } from 'express';
 import { dependencies } from '../config/configureServer';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
-import { getSearchResultDataListBySearchType } from '../cora/cora';
+import { getSearchResultDataListBySearchType } from '../cora/record';
 import { transformRecords } from '../config/transformRecord';
 import { errorHandler } from '../server';
 
@@ -38,7 +38,7 @@ export const getDivaOutputs = async (req: Request, res: Response) => {
         {
           name: 'include',
           children: [
-            { name: 'includePart', children: [{ name: 'outputGenericSearchTerm', value: '**' }] }
+            { name: 'includePart', children: [{ name: 'outputGenericSearchTerm', value: '*' }] }
           ]
         }
       ]

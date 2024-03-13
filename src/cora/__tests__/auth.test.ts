@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { extractDataFromResult, requestAuthTokenOnLogin } from '../requestAuthTokenOnLogin';
+import { extractDataFromResult, requestAuthTokenOnLogin } from '../auth';
 
 const authUser = {
   data: {

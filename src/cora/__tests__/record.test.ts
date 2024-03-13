@@ -19,7 +19,7 @@
 
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { getRecordDataById, getRecordDataListByType, postRecordData } from '../cora';
+import { getRecordDataById, getRecordDataListByType, postRecordData } from '../record';
 import { DataGroup, DataListWrapper, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';

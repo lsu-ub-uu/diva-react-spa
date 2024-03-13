@@ -19,7 +19,7 @@
 
 import { Request, Response } from 'express';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
-import { getRecordDataById, postRecordData, updateRecordDataById } from '../cora/cora';
+import { getRecordDataById, postRecordData, updateRecordDataById } from '../cora/record';
 import { errorHandler } from '../server';
 import { cleanJson } from '../utils/structs/removeEmpty';
 import { dependencies } from '../config/configureServer';
