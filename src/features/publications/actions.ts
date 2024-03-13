@@ -39,6 +39,7 @@ export const loadPublicationsAsync =
         id: record.id,
         title: record.data.divaOutput.title.mainTitle.value,
         validationType: record.validationType,
+        recordType: record.recordType,
         createdAt: record.createdAt,
         createdBy: record.createdBy,
         userRights: record.userRights,

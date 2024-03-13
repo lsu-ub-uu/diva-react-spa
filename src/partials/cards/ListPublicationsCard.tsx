@@ -24,7 +24,10 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { IconButton, Stack } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
+import { useSnackbar, VariantType } from 'notistack';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Card } from '../../components';
 import {
@@ -32,11 +35,20 @@ import {
   publicationsSelector,
 } from '../../features/publications';
 import { DivaOutput } from '../../features/publications/actions';
+import { FormSchema } from '../../components/FormGenerator/types';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const publicationsState = useAppSelector(publicationsSelector);
+
+  const notification = (message: string, variant: VariantType) => {
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { vertical: 'top', horizontal: 'right' },
+    });
+  };
 
   useEffect(() => {
     dispatch(loadPublicationsAsync());
@@ -56,7 +68,7 @@ export const ListPublicationsCard = () => {
     {
       field: 'title',
       headerName: `${t('divaClient_listPublicationsHeaderNameTitle')}`, // Title
-      width: 220,
+      width: 200,
     },
     {
       field: 'createdAt',
@@ -69,7 +81,7 @@ export const ListPublicationsCard = () => {
     {
       field: 'action',
       headerName: `${t('divaClient_listPublicationsHeaderNameActions')}`, // Actions
-      width: 120,
+      width: 140,
       sortable: false,
       filterable: false,
       renderCell: (params) => (
@@ -89,6 +101,30 @@ export const ListPublicationsCard = () => {
             to={`/view/record/${params.id}`}
           >
             <FeedIcon />
+          </IconButton>
+          <IconButton
+            disabled={!params.row.userRights.includes('delete')}
+            aria-label='delete'
+            onClick={async () => {
+              console.log('id', params.row.recordType);
+
+              try {
+                const response = await axios.delete(
+                  `/record/${params.row.recordType}/${params.row.id}`,
+                );
+                console.log(response);
+                dispatch(loadPublicationsAsync());
+                notification(
+                  `Record ${params.row.id} was successfully deleted `,
+                  'success',
+                );
+              } catch (err: any) {
+                console.log('err', err);
+                notification(`${err.message}`, 'error');
+              }
+            }}
+          >
+            <DeleteForeverIcon />
           </IconButton>
         </Stack>
       ),
