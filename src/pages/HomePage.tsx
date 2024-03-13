@@ -19,8 +19,15 @@
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { AsidePortal, NavigationPanel } from '../components';
+import Alert from '@mui/material/Alert';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+
+import Button from '@mui/material/Button';
+import { Link as RouterLink } from 'react-router-dom';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import React from 'react';
 import { CreatePublicationCard, ListPublicationsCard } from '../partials';
+import { AsidePortal } from '../components';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -39,6 +46,20 @@ export const HomePage = () => {
           </p>
         </AsidePortal>
         <Stack spacing={2}>
+          <Alert
+            icon={<PriorityHighIcon fontSize='inherit' />}
+            severity='warning'
+          >
+            {t('divaClient_metadataWarningText')}
+          </Alert>
+
+          {/*          <Button
+            disableRipple
+            variant='contained'
+            endIcon={<ArrowForwardIcon />}
+          >
+            {t('divaClient_continueText')}
+          </Button> */}
           <CreatePublicationCard />
           <ListPublicationsCard />
         </Stack>

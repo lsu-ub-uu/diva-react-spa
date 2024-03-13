@@ -32,10 +32,10 @@ import axios from 'axios';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Control, Controller } from 'react-hook-form';
 import { t } from 'i18next';
-import { Tooltip } from '../Tooltip/Tooltip';
-import { FormGenerator } from '../FormGenerator/FormGenerator';
-import { FormSchema } from '../FormGenerator/types';
-import { CoraRecord } from '../../app/hooks';
+import { Tooltip } from '../../Tooltip/Tooltip';
+import { FormGenerator } from '../../FormGenerator/FormGenerator';
+import { FormSchema } from '../../FormGenerator/types';
+import { CoraRecord } from '../../../app/hooks';
 
 interface AutoCompleteProps {
   name: string;
@@ -59,7 +59,6 @@ export const ControlledAutocomplete = (
   const [presentationValue, setPresentationValue] = useState<CoraRecord | null>(
     null,
   );
-  // const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -170,11 +169,7 @@ export const ControlledAutocomplete = (
                     <TextField
                       {...params}
                       {...fieldWithoutRef}
-                      placeholder={
-                        props.placeholder !== undefined
-                          ? (t(props.placeholder) as string)
-                          : 'Search'
-                      }
+                      placeholder={t(props.placeholder as string) ?? 'Search'}
                       margin='normal'
                       error={error !== undefined}
                     />

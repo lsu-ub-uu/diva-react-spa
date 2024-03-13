@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { ControlledAutocomplete } from '../ControlledAutocomplete';
-import { CoraRecord } from '../../../app/hooks';
+import { CoraRecord } from '../../../../app/hooks';
 
 /**
  * @vitest-environment jsdom

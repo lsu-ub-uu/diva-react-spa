@@ -30,7 +30,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import { ControlledAutocomplete } from '../Autocomplete/ControlledAutocomplete';
+import { ControlledAutocomplete } from '../Controlled/Autocomplete/ControlledAutocomplete';
 import { RichTree } from '../RichTree/RichTree';
 import { Dialog } from '../Dialog/Dialog';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';

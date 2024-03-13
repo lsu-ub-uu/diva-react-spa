@@ -57,22 +57,22 @@ export const ListPublicationsCard = () => {
   const columns: GridColDef[] = [
     {
       field: 'id',
-      headerName: `${t('divaClient_listPublicationsHeaderNameId')}`, // ID
+      headerName: `${t('divaClient_listPublicationsHeaderNameIdText')}`, // ID
       width: 230,
     },
     {
       field: 'validationType',
-      headerName: `${t('divaClient_listPublicationsHeaderNameType')}`, // Type
+      headerName: `${t('divaClient_listPublicationsHeaderNameTypeText')}`, // Type
       width: 120,
     },
     {
       field: 'title',
-      headerName: `${t('divaClient_listPublicationsHeaderNameTitle')}`, // Title
+      headerName: `${t('divaClient_listPublicationsHeaderNameTitleText')}`, // Title
       width: 200,
     },
     {
       field: 'createdAt',
-      headerName: `${t('divaClient_listPublicationsHeaderNameCreated')}`, // Created,
+      headerName: `${t('divaClient_listPublicationsHeaderNameCreatedText')}`, // Created,
       sortable: true,
       width: 160,
       valueGetter: (params: GridValueGetterParams) =>
@@ -80,13 +80,13 @@ export const ListPublicationsCard = () => {
     },
     {
       field: 'action',
-      headerName: `${t('divaClient_listPublicationsHeaderNameActions')}`, // Actions
+      headerName: `${t('divaClient_listPublicationsHeaderNameActionsText')}`, // Actions
       width: 140,
       sortable: false,
       filterable: false,
       renderCell: (params) => (
         <Stack direction='row'>
-          <Tooltip title={t('divaClient_updateEntity')}>
+          <Tooltip title={t('divaClient_updateEntityText')}>
             <IconButton
               disabled={!params.row.userRights.includes('update')}
               aria-label='edit'
@@ -96,7 +96,7 @@ export const ListPublicationsCard = () => {
               <EditIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('divaClient_readEntity')}>
+          <Tooltip title={t('divaClient_readEntityText')}>
             <IconButton
               disabled={!params.row.userRights.includes('read')}
               aria-label='view'
@@ -106,18 +106,15 @@ export const ListPublicationsCard = () => {
               <FeedIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('divaClient_removeEntity')}>
+          <Tooltip title={t('divaClient_deleteEntityText')}>
             <IconButton
               disabled={!params.row.userRights.includes('delete')}
               aria-label='delete'
               onClick={async () => {
-                console.log('id', params.row.recordType);
-
                 try {
                   const response = await axios.delete(
                     `/record/${params.row.recordType}/${params.row.id}`,
                   );
-                  console.log(response);
                   dispatch(loadPublicationsAsync());
                   notification(
                     `Record ${params.row.id} was successfully deleted `,
