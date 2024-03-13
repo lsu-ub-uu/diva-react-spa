@@ -19,7 +19,12 @@
 
 import { Request, Response } from 'express';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
-import { getRecordDataById, postRecordData, updateRecordDataById } from '../cora/record';
+import {
+  deleteRecordDataById,
+  getRecordDataById,
+  postRecordData,
+  updateRecordDataById
+} from '../cora/record';
 import { errorHandler } from '../server';
 import { cleanJson } from '../utils/structs/removeEmpty';
 import { dependencies } from '../config/configureServer';
@@ -76,6 +81,31 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     );
 
     res.status(response.status).json({});
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
+/**
+ * @desc Delete a record from Cora
+ * @route DELETE /api/record/:validationTypeId/:recordId
+ * @access Private
+ */
+export const deleteRecordByValidationTypeAndId = async (req: Request, res: Response) => {
+  try {
+    const { recordType, recordId } = req.params;
+    const authToken = req.header('authToken') ?? '';
+
+    const { recordTypePool } = dependencies;
+
+    if (!recordTypePool.has(recordType)) {
+      throw new Error(`Validation type [${recordType}] does not exist`);
+    }
+
+    const response = await deleteRecordDataById(recordId, recordType, authToken);
+
+    res.status(response.status).json({ message: 'de' });
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();

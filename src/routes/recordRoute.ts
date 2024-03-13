@@ -19,6 +19,7 @@
 
 import express from 'express';
 import {
+  deleteRecordByValidationTypeAndId,
   getRecordByRecordTypeAndId,
   postRecordByValidationType,
   postRecordByValidationTypeAndId
@@ -29,5 +30,5 @@ const recordRoute = express.Router();
 recordRoute.route('/:validationTypeId/:recordId').post(postRecordByValidationTypeAndId);
 recordRoute.route('/:recordType/:recordId').get(getRecordByRecordTypeAndId);
 recordRoute.route('/:validationTypeId').post(postRecordByValidationType);
-
+recordRoute.route('/:recordType/:recordId').delete(deleteRecordByValidationTypeAndId);
 export { recordRoute };

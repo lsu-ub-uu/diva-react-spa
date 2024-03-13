@@ -98,3 +98,19 @@ export async function updateRecordDataById<T>(
   const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
   return response;
 }
+
+export async function deleteRecordDataById<T>(
+  recordId: string,
+  type: string,
+  authToken: string
+): Promise<AxiosResponse<T>> {
+  const apiUrl: string = `/record/${type}/${recordId}`;
+  const headers = {
+    Accept: 'application/vnd.uub.record+json',
+    'Content-Type': 'application/vnd.uub.record+json',
+    Authtoken: `${authToken}`
+  };
+
+  const response: AxiosResponse<T> = await axios.delete(apiUrl, { headers });
+  return response;
+}
