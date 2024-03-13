@@ -21,7 +21,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { IconButton, Stack } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -86,46 +86,52 @@ export const ListPublicationsCard = () => {
       filterable: false,
       renderCell: (params) => (
         <Stack direction='row'>
-          <IconButton
-            disabled={!params.row.userRights.includes('update')}
-            aria-label='edit'
-            component={RouterLink}
-            to={`/update/record/${params.id}`}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            disabled={!params.row.userRights.includes('read')}
-            aria-label='view'
-            component={RouterLink}
-            to={`/view/record/${params.id}`}
-          >
-            <FeedIcon />
-          </IconButton>
-          <IconButton
-            disabled={!params.row.userRights.includes('delete')}
-            aria-label='delete'
-            onClick={async () => {
-              console.log('id', params.row.recordType);
+          <Tooltip title={t('divaClient_updateEntity')}>
+            <IconButton
+              disabled={!params.row.userRights.includes('update')}
+              aria-label='edit'
+              component={RouterLink}
+              to={`/update/record/${params.id}`}
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={t('divaClient_readEntity')}>
+            <IconButton
+              disabled={!params.row.userRights.includes('read')}
+              aria-label='view'
+              component={RouterLink}
+              to={`/view/record/${params.id}`}
+            >
+              <FeedIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={t('divaClient_removeEntity')}>
+            <IconButton
+              disabled={!params.row.userRights.includes('delete')}
+              aria-label='delete'
+              onClick={async () => {
+                console.log('id', params.row.recordType);
 
-              try {
-                const response = await axios.delete(
-                  `/record/${params.row.recordType}/${params.row.id}`,
-                );
-                console.log(response);
-                dispatch(loadPublicationsAsync());
-                notification(
-                  `Record ${params.row.id} was successfully deleted `,
-                  'success',
-                );
-              } catch (err: any) {
-                console.log('err', err);
-                notification(`${err.message}`, 'error');
-              }
-            }}
-          >
-            <DeleteForeverIcon />
-          </IconButton>
+                try {
+                  const response = await axios.delete(
+                    `/record/${params.row.recordType}/${params.row.id}`,
+                  );
+                  console.log(response);
+                  dispatch(loadPublicationsAsync());
+                  notification(
+                    `Record ${params.row.id} was successfully deleted `,
+                    'success',
+                  );
+                } catch (err: any) {
+                  console.log('err', err);
+                  notification(`${err.message}`, 'error');
+                }
+              }}
+            >
+              <DeleteForeverIcon />
+            </IconButton>
+          </Tooltip>
         </Stack>
       ),
     },

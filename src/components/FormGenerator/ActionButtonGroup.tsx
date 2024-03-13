@@ -21,6 +21,7 @@ import { ButtonGroup, IconButton, Tooltip } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { useTranslation } from 'react-i18next';
 
 interface ActionButtonGroupProps {
   entityName?: string;
@@ -36,6 +37,8 @@ interface ActionButtonGroupProps {
 export const ActionButtonGroup = (
   props: ActionButtonGroupProps,
 ): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <ButtonGroup
       size='small'
@@ -53,7 +56,11 @@ export const ActionButtonGroup = (
           <ArrowUpwardIcon />
         </IconButton>
       )}
-      <Tooltip title={`Ta bort ${props.entityName ?? 'entity'}`}>
+      <Tooltip
+        title={`${t('divaClient_removeEntity')} ${
+          props.entityName ?? 'entity'
+        }`}
+      >
         <span>
           <IconButton
             size='small'
