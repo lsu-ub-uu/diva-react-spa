@@ -256,12 +256,54 @@ function mergeArrays(target: any[], overlay: any[]): any[] {
   return result;
 }
 
+export const createYupArrayFromSchema = (
+  schema:
+    | ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>
+    | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
+  repeat: FormComponentRepeat | undefined,
+) => {
+  return yup
+    .array()
+    .of(schema)
+    .min(repeat?.repeatMin ?? 1)
+    .max(repeat?.repeatMax ?? 1);
+};
+
+const createValidationForAttributesFromComponent = (
+  component: FormComponent,
+) => {
+  const attributeValidation =
+    component.attributes?.map(
+      (attributeCollection: FormAttributeCollection) => ({
+        [`_${attributeCollection.name}`]:
+          createValidationFromComponentType(attributeCollection),
+      }),
+    ) ?? [];
+  return {
+    ...Object.assign({}, ...attributeValidation),
+  };
+};
+
+const createValidationFromComponentType = (
+  component: FormComponent | FormAttributeCollection,
+) => {
+  console.log('createValidationFromComponentType', component);
+  switch (component.type) {
+    case 'textVariable':
+      return createYupStringRegexpSchema(component as FormComponent);
+    case 'numberVariable':
+      return createYupNumberSchema(component as FormComponent);
+    default: // collectionVariable, recordLink
+      return createYupStringSchema(component as FormComponent);
+  }
+};
+
 /**
- * YUP Validation
+ * @privateRemarks
+ *
  * OBS! In the Yup library, the transform method is executed after the validation process.
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
-
 const createYupStringRegexpSchema = (component: FormComponent) => {
   const regexpValidation = component.validation as FormRegexValidation;
 
@@ -283,19 +325,12 @@ const createYupStringRegexpSchema = (component: FormComponent) => {
     );
 };
 
-export const createYupArrayFromSchema = (
-  schema:
-    | ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>
-    | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
-  repeat: FormComponentRepeat | undefined,
-) => {
-  return yup
-    .array()
-    .of(schema)
-    .min(repeat?.repeatMin ?? 1)
-    .max(repeat?.repeatMax ?? 1);
-};
-
+/**
+ * @privateRemarks
+ *
+ * OBS! In the Yup library, the transform method is executed after the validation process.
+ * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
+ */
 const createYupNumberSchema = (component: FormComponent) => {
   const numberValidation = component.validation as FormNumberValidation;
   const { numberOfDecimals, min, max } = numberValidation;
@@ -357,22 +392,14 @@ const createYupNumberSchema = (component: FormComponent) => {
     .test(testMax);
 };
 
-const createValidationForAttributesFromComponent = (
-  component: FormComponent,
-) => {
-  const attributeValidation =
-    component.attributes?.map(
-      (attributeCollection: FormAttributeCollection) => ({
-        [`_${attributeCollection.name}`]:
-          createValidationFromComponentType(attributeCollection),
-      }),
-    ) ?? [];
-  return {
-    ...Object.assign({}, ...attributeValidation),
-  };
-};
-
+/**
+ * @privateRemarks
+ *
+ * OBS! In the Yup library, the transform method is executed after the validation process.
+ * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
+ */
 const createYupStringSchema = (component: FormComponent) => {
+  // console.log('createYupStringSchema', component);
   if (isComponentRepeating(component)) {
     return yup
       .string()
@@ -383,19 +410,6 @@ const createYupStringSchema = (component: FormComponent) => {
       );
   }
   return yup.string().required();
-};
-
-const createValidationFromComponentType = (
-  component: FormComponent | FormAttributeCollection,
-) => {
-  switch (component.type) {
-    case 'textVariable':
-      return createYupStringRegexpSchema(component as FormComponent);
-    case 'numberVariable':
-      return createYupNumberSchema(component as FormComponent);
-    default: // collectionVariable, recordLink
-      return createYupStringSchema(component as FormComponent);
-  }
 };
 
 export const createYupValidationsFromComponent = (component: FormComponent) => {
@@ -422,7 +436,6 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
         ...innerObjectSchema.fields,
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-
       validationRule[component.name] = createYupArrayFromSchema(
         extendedSchema,
         component.repeat,
@@ -457,10 +470,13 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
           return true;
         }) */
     } else {
-      validationRule[component.name] = yup.object().shape({
-        value: createValidationFromComponentType(component),
-        ...createValidationForAttributesFromComponent(component),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      validationRule[component.name] = yup.object().shape(
+        {
+          value: createValidationFromComponentType(component),
+          ...createValidationForAttributesFromComponent(component),
+        } /* Add .when("varIsNotNull", { is: !null, then: add required for attributes })
+           to add required for non empty value for main component */,
+      ) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     }
   }
 
