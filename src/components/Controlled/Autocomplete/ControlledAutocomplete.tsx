@@ -31,11 +31,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Control, Controller } from 'react-hook-form';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { Tooltip } from '../../Tooltip/Tooltip';
 import { FormGenerator } from '../../FormGenerator/FormGenerator';
 import { FormSchema } from '../../FormGenerator/types';
 import { CoraRecord } from '../../../app/hooks';
+import { LinkedRecord } from '../../LinkedRecord/LinkedRecord';
 
 interface AutoCompleteProps {
   name: string;
@@ -49,11 +50,15 @@ interface AutoCompleteProps {
   control?: Control<any>;
   showLabel?: boolean;
   tooltip?: { title: string; body: string };
+  presentationRecordLinkId?: string;
+  recordType?: string;
 }
 
 export const ControlledAutocomplete = (
   props: AutoCompleteProps,
 ): JSX.Element => {
+  const { t } = useTranslation();
+
   const [options, setOptions] = useState<CoraRecord[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [presentationValue, setPresentationValue] = useState<CoraRecord | null>(
@@ -94,7 +99,6 @@ export const ControlledAutocomplete = (
       isMounted = false;
     };
   }, [inputValue, props.searchLink, presentationValue]);
-
   return (
     <Controller
       control={props.control}
@@ -158,18 +162,22 @@ export const ControlledAutocomplete = (
                 // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
                   {presentationValue !== null ? (
-                    <FormGenerator
-                      record={presentationValue}
-                      onSubmit={() => {}}
-                      onInvalid={() => {}}
-                      formSchema={presentationValue?.presentation as FormSchema}
-                      linkedData
+                    <LinkedRecord
+                      recordType={props.recordType as string}
+                      id={field.value}
+                      presentationRecordLinkId={
+                        props.presentationRecordLinkId as string
+                      }
                     />
                   ) : (
                     <TextField
                       {...params}
                       {...fieldWithoutRef}
-                      placeholder={t(props.placeholder as string) ?? 'Search'}
+                      placeholder={
+                        props.placeholder !== undefined
+                          ? (t(props.placeholder) as string)
+                          : ''
+                      }
                       margin='normal'
                       error={error !== undefined}
                     />

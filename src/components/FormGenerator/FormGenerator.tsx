@@ -517,6 +517,10 @@ export const renderLeafComponent = (
                 readOnly={!!component.finalValue}
                 displayMode={component.mode}
                 searchLink={component.search}
+                presentationRecordLinkId={
+                  component.presentationRecordLinkId ?? ''
+                }
+                recordType={component.recordLinkType ?? ''}
               />
             ) : (
               <ControlledLinkedRecord
