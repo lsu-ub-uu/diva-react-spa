@@ -20,7 +20,7 @@ import { expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Login } from '../Login';
-import { reduxRender } from '../../../../utils/testUtils';
+import { reduxRender } from '../../../../../utils/testUtils';
 /**
  * @vitest-environment jsdom
  */

@@ -19,7 +19,7 @@
 import { Box, Button, Container, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import logo from './divaLogo.svg';
-import { Login } from './Login';
+import { Login } from './Login/Login';
 
 export const Header = () => {
   const { i18n } = useTranslation();

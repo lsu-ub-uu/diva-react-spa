@@ -287,7 +287,7 @@ const createValidationForAttributesFromComponent = (
 const createValidationFromComponentType = (
   component: FormComponent | FormAttributeCollection,
 ) => {
-  console.log('createValidationFromComponentType', component);
+  // console.log('createValidationFromComponentType', component);
   switch (component.type) {
     case 'textVariable':
       return createYupStringRegexpSchema(component as FormComponent);

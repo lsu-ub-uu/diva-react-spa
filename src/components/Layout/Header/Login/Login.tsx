@@ -20,25 +20,14 @@ import { useState, MouseEvent } from 'react';
 import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useTranslation } from 'react-i18next';
-import { devAccounts } from '../../../utils';
-import { dummyLoginAsync } from '../../../features/auth/actions';
-import { logout } from '../../../features/auth/authSlice';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { useBackdrop } from '../../Backdrop/BackdropContext';
-import { authStateSelector } from '../../../features/auth/selectors';
-import { loadPublicationsAsync } from '../../../features/publications';
-import { loadPublicationTypesAsync } from '../../../features/publicationTypes';
-
-// TODO should be moved
-export interface Account {
-  appToken: string;
-  id?: string;
-  validForNoSeconds?: string;
-  idInUserStorage?: string;
-  idFromLogin: string;
-  lastName?: string;
-  firstName?: string;
-}
+import { devAccounts, Account } from './devAccounts';
+import { dummyLoginAsync } from '../../../../features/auth/actions';
+import { logout } from '../../../../features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { useBackdrop } from '../../../Backdrop/BackdropContext';
+import { authStateSelector } from '../../../../features/auth/selectors';
+import { loadPublicationsAsync } from '../../../../features/publications';
+import { loadPublicationTypesAsync } from '../../../../features/publicationTypes';
 
 export const Login = (): JSX.Element => {
   const { t } = useTranslation();
@@ -106,7 +95,7 @@ export const Login = (): JSX.Element => {
           >
             {devAccounts.map((devAccount, index) => (
               <MenuItem
-                key={index}
+                key={`${index}_${devAccount.id}`}
                 onClick={(event) => handleSelection(event, devAccount)}
               >
                 {devAccount.firstName}
