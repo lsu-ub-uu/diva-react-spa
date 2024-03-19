@@ -88,15 +88,34 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
   }
 };
 
+const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+  const nameInData = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'nameInData');
+  const type = extractAttributeValueByName(dataRecordGroup, 'type');
+  const textId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'textId');
+  const defTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'defTextId');
+
+  return {
+    id,
+    nameInData,
+    type,
+    textId,
+    defTextId
+  } as BFFMetadata;
+};
+
 const transformTextVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata): BFFMetadata => {
   if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
     const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
     metadata = { ...metadata, finalValue } as BFFMetadata;
   }
-  const attributeReferences = extractAttributesReferences(dataRecordGroup);
+  if (containsChildWithNameInData(dataRecordGroup, 'attributeReferences')) {
+    const attributeReferences = extractAttributesReferences(dataRecordGroup);
+    metadata = { ...metadata, attributeReferences } as BFFMetadata;
+  }
 
   const regEx = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'regEx');
-  return removeEmpty({ ...metadata, regEx, attributeReferences }) as BFFMetadataTextVariable;
+  return { ...metadata, regEx } as BFFMetadataTextVariable;
 };
 
 const transformNumberVariable = (
@@ -176,22 +195,6 @@ const transformItemCollection = (dataRecordGroup: DataGroup, metadata: BFFMetada
   return {
     ...metadata,
     collectionItemReferences
-  } as BFFMetadata;
-};
-
-const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
-  const id = extractIdFromRecordInfo(dataRecordGroup);
-  const nameInData = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'nameInData');
-  const type = extractAttributeValueByName(dataRecordGroup, 'type');
-  const textId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'textId');
-  const defTextId = extractLinkedRecordIdFromNamedRecordLink(dataRecordGroup, 'defTextId');
-
-  return {
-    id,
-    nameInData,
-    type,
-    textId,
-    defTextId
   } as BFFMetadata;
 };
 
