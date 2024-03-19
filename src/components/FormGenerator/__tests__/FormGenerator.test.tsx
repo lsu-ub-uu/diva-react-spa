@@ -108,6 +108,31 @@ describe('<FormGenerator />', () => {
     });
   });
 
+  describe('form with linked data', () => {
+    it('Renders a form from a given definition', () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDef as FormSchema}
+          onSubmit={mockSubmit}
+          linkedData
+        />,
+      );
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+      expect(inputElement).toBeInTheDocument();
+
+      const inputNumberElement = screen.getByPlaceholderText(
+        'someNumberPlaceholderTextId',
+      );
+      expect(inputNumberElement).toBeInTheDocument();
+
+      const submitButton = screen.queryByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).not.toBeInTheDocument();
+    });
+  });
+
   describe('recordLink', () => {
     it('Validates recordLink being optional and having minNumberToShow 1!', async () => {
       const mockSubmit = vi.fn();
@@ -124,7 +149,7 @@ describe('<FormGenerator />', () => {
 
       const user = userEvent.setup();
       await user.click(submitButton);
-
+      screen.debug();
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 

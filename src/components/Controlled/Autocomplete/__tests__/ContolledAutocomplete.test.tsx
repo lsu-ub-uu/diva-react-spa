@@ -21,6 +21,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import { CoraRecord } from '../../../../app/hooks';
 
@@ -621,34 +623,18 @@ export const DummyForm = (): JSX.Element => {
 };
 
 describe('<Autocomplete/>', () => {
+  let mockAxios: MockAdapter;
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios);
+  });
+
+  afterEach(() => {
+    mockAxios.restore();
+  });
   it('renders with default placeholder', () => {
     render(<DummyForm />);
     const inputElement = screen.getByPlaceholderText('somePlaceholder');
     expect(inputElement).toBeInTheDocument();
-  });
-
-  it.todo('displays options when typing in the input', async () => {
-    render(<DummyForm />);
-    const user = userEvent.setup();
-
-    const inputElement = screen.getByRole('combobox');
-    expect(inputElement).toBeVisible();
-
-    const searchLink = 'nationalSubjectCategory';
-    const inputValue = '*';
-    await user.click(inputElement);
-    await user.type(inputElement, inputValue);
-
-    await waitFor(() => {
-      const optionElements = screen.findByText('Programvaruteknik', {
-        exact: false,
-      });
-      const listBox = screen.findByRole('presentation');
-      screen.debug();
-      expect(listBox).toBeInTheDocument();
-      // console.log('aaa', optionElements);
-      // expect(optionElements).toBeInTheDocument();
-    });
   });
 
   it('displays no options when input does not match any options', async () => {
@@ -662,5 +648,28 @@ describe('<Autocomplete/>', () => {
     expect(noOptions).toBeInTheDocument();
 
     expect(screen.queryByText('Option 1')).toBeNull();
+  });
+
+  it.todo('displays options when typing in the input', async () => {
+    const user = userEvent.setup();
+    render(<DummyForm />);
+    const inputElement = screen.getByRole('combobox');
+    expect(inputElement).toBeVisible();
+    const inputValue = '*';
+    await user.click(inputElement);
+    await user.type(inputElement, inputValue);
+    await user.keyboard('[ArrowDown]');
+    await user.keyboard('[Enter]');
+    const expectedResponse = {
+      data: mockOptions,
+      headers: {},
+      request: {},
+      status: 200,
+    };
+    const searchLink = 'nationalSubjectCategory';
+    const url: string = `/search/${searchLink}?searchTermValue=${inputValue}`;
+    mockAxios.onGet(url).reply(200, expectedResponse);
+
+    screen.debug();
   });
 });

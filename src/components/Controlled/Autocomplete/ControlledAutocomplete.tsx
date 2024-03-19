@@ -69,6 +69,7 @@ export const ControlledAutocomplete = (
   useEffect(() => {
     let isMounted = true;
 
+    // eslint-disable-next-line consistent-return
     const fetchData = async () => {
       try {
         if (inputValue === '') {
@@ -99,6 +100,7 @@ export const ControlledAutocomplete = (
       isMounted = false;
     };
   }, [inputValue, props.searchLink, presentationValue]);
+
   return (
     <Controller
       control={props.control}
