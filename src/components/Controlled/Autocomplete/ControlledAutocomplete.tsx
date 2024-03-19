@@ -152,7 +152,7 @@ export const ControlledAutocomplete = (
                 setPresentationValue(newValue);
               }}
               disablePortal
-              id='autocomplete-test'
+              id={field.name}
               sx={{ width: '100%' }}
               filterOptions={(x) => x}
               isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -173,6 +173,7 @@ export const ControlledAutocomplete = (
                     <TextField
                       {...params}
                       {...fieldWithoutRef}
+                      sx={{ marginTop: '0' }}
                       placeholder={
                         props.placeholder !== undefined
                           ? (t(props.placeholder) as string)
