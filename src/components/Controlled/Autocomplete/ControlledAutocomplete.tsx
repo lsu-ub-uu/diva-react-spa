@@ -145,6 +145,7 @@ export const ControlledAutocomplete = (
             </FormLabel>
             <MuiAutocomplete
               size='small'
+              noOptionsText={t('divaClient_noOptionsText' as string)}
               popupIcon={<ExpandMoreIcon />}
               onChange={(
                 event: React.SyntheticEvent,
