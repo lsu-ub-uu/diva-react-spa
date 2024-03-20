@@ -33,7 +33,6 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '../components';
-import { FormSchema } from '../components/FormGenerator/types';
 
 export const ViewRecordPage = () => {
   const { recordId } = useParams();
@@ -93,7 +92,7 @@ export const ViewRecordPage = () => {
               record={coraRecord.record}
               onSubmit={() => {}}
               onInvalid={() => {}}
-              formSchema={coraSchema.schema as FormSchema}
+              formSchema={coraSchema.schema}
             />
           )}
         </Stack>
