@@ -39,8 +39,7 @@ interface ControlledTextFieldProps {
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
-  const displayMode =
-    props.displayMode !== undefined ? props.displayMode : 'input';
+  const displayMode = props.displayMode ?? 'input';
   return (
     <Controller
       control={props.control}

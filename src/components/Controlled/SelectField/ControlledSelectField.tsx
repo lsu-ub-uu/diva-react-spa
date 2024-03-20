@@ -45,8 +45,7 @@ interface ControlledSelectFieldProps {
 
 export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
   const { t } = useTranslation();
-  const displayMode =
-    props.displayMode !== undefined ? props.displayMode : 'input';
+  const displayMode = props.displayMode ?? 'input';
 
   const findOptionLabelByValue = (
     array: Option[] | undefined,

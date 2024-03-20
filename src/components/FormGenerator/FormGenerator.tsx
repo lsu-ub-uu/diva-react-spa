@@ -79,7 +79,6 @@ export const FormGenerator = ({
 
   const { control, handleSubmit, reset } = methods;
 
-  // eslint-disable-next-line consistent-return
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
@@ -612,7 +611,6 @@ export const renderLeafComponent = (
       );
     }
     case 'guiElementLink': {
-      // TODO If needed take component.presentAs in consideration
       return (
         <LinkButton
           key={reactKey}
@@ -677,10 +675,7 @@ function isComponentFirstLevelAndNOTLinkedData(
 export const convertChildStyleToString = (
   childStyle: string[] | undefined,
 ): string | null => {
-  if (!childStyle || childStyle[0] === undefined) {
-    return '';
-  }
-  return childStyle[0].toString();
+  return childStyle?.[0] === undefined ? '' : childStyle[0].toString();
 };
 
 const checkIfPresentationStyleOrParentIsInline = (

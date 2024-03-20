@@ -31,12 +31,6 @@ export const Backdrop = (props: BackdropProps) => {
     setOpen(props.open);
   }, [props.open]);
 
-  /*
-  if (typeof window !== 'undefined' && window.document) {
-    document.body.style.overflow = 'hidden';
-  }
-  */
-
   return (
     <MuiBackdrop
       sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}

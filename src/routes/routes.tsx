@@ -23,7 +23,6 @@ import {
   CreateRecordPage,
   UpdateRecordPage,
   ViewRecordPage,
-  ReactHookFormTestPage,
 } from '../pages';
 import PrivateRoutes from './PrivateRoutes';
 
@@ -53,7 +52,6 @@ export const routes = [
         path: '/view/record/:recordId',
         element: <ViewRecordPage />,
       },
-      { path: '/test', element: <ReactHookFormTestPage /> },
       { path: '*', element: <div>404 not found</div> },
     ],
   },

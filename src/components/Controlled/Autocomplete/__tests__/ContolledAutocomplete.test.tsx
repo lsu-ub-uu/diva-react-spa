@@ -644,7 +644,7 @@ describe('<Autocomplete/>', () => {
     const user = userEvent.setup();
     await user.click(inputElement);
 
-    const noOptions = screen.getByText('No options');
+    const noOptions = screen.getByText('divaClient_noOptionsText');
     expect(noOptions).toBeInTheDocument();
 
     expect(screen.queryByText('Option 1')).toBeNull();

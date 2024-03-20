@@ -50,7 +50,7 @@ export const ControlledMultiCheckboxField = (
           </FormLabel>
           {props.options.map((option: Option, idx: number) => (
             <FormControlLabel
-              key={idx}
+              key={`${option.label}_${idx}`}
               control={
                 <Checkbox
                   onChange={(e) => {
