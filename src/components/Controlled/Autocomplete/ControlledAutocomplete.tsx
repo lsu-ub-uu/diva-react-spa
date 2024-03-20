@@ -64,7 +64,6 @@ export const ControlledAutocomplete = (
   const [presentationValue, setPresentationValue] = useState<CoraRecord | null>(
     null,
   );
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -80,17 +79,10 @@ export const ControlledAutocomplete = (
         );
 
         if (isMounted) {
-          setError(null);
           setOptions(response.data);
         }
       } catch (err: unknown) {
-        if (isMounted) {
-          if (axios.isAxiosError(err)) {
-            setError(err.message);
-          } else {
-            setError('Unexpected error occurred');
-          }
-        }
+        console.log('err', err);
       }
     };
 
@@ -177,11 +169,7 @@ export const ControlledAutocomplete = (
                       {...params}
                       {...fieldWithoutRef}
                       sx={{ marginTop: '0' }}
-                      placeholder={
-                        props.placeholder !== undefined
-                          ? (t(props.placeholder) as string)
-                          : ''
-                      }
+                      placeholder={t(props.placeholder as string) ?? ''}
                       margin='normal'
                       error={error !== undefined}
                     />
