@@ -87,47 +87,53 @@ export const ListPublicationsCard = () => {
       renderCell: (params) => (
         <Stack direction='row'>
           <Tooltip title={t('divaClient_updateEntityText')}>
-            <IconButton
-              disabled={!params.row.userRights.includes('update')}
-              aria-label='edit'
-              component={RouterLink}
-              to={`/update/record/${params.id}`}
-            >
-              <EditIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                disabled={!params.row.userRights.includes('update')}
+                aria-label='edit'
+                component={RouterLink}
+                to={`/update/record/${params.id}`}
+              >
+                <EditIcon />
+              </IconButton>
+            </span>
           </Tooltip>
           <Tooltip title={t('divaClient_readEntityText')}>
-            <IconButton
-              disabled={!params.row.userRights.includes('read')}
-              aria-label='view'
-              component={RouterLink}
-              to={`/view/record/${params.id}`}
-            >
-              <FeedIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                disabled={!params.row.userRights.includes('read')}
+                aria-label='view'
+                component={RouterLink}
+                to={`/view/record/${params.id}`}
+              >
+                <FeedIcon />
+              </IconButton>
+            </span>
           </Tooltip>
           <Tooltip title={t('divaClient_deleteEntityText')}>
-            <IconButton
-              disabled={!params.row.userRights.includes('delete')}
-              aria-label='delete'
-              onClick={async () => {
-                try {
-                  const response = await axios.delete(
-                    `/record/${params.row.recordType}/${params.row.id}`,
-                  );
-                  dispatch(loadPublicationsAsync());
-                  notification(
-                    `Record ${params.row.id} was successfully deleted `,
-                    'success',
-                  );
-                } catch (err: any) {
-                  console.log('err', err);
-                  notification(`${err.message}`, 'error');
-                }
-              }}
-            >
-              <DeleteForeverIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                disabled={!params.row.userRights.includes('delete')}
+                aria-label='delete'
+                onClick={async () => {
+                  try {
+                    const response = await axios.delete(
+                      `/record/${params.row.recordType}/${params.row.id}`,
+                    );
+                    dispatch(loadPublicationsAsync());
+                    notification(
+                      `Record ${params.row.id} was successfully deleted `,
+                      'success',
+                    );
+                  } catch (err: any) {
+                    console.log('err', err);
+                    notification(`${err.message}`, 'error');
+                  }
+                }}
+              >
+                <DeleteForeverIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         </Stack>
       ),
