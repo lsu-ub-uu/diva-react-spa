@@ -19,6 +19,7 @@
 
 import * as yup from 'yup';
 import { AnyObject, ObjectSchema, ObjectShape, TestConfig } from 'yup';
+
 import {
   FormAttributeCollection,
   FormComponent,
@@ -33,7 +34,6 @@ export interface RecordData {
 }
 
 export const removeEmpty = (obj: any) => {
-  // const obj = JSON.parse(JSON.stringify(originalObject));
   const keys = Object.keys(obj);
   keys.forEach((key) => {
     if (Array.isArray(obj[key])) {
@@ -165,7 +165,7 @@ export const createDefaultValuesFromComponent = (
   forceDefaultValuesForAppend = false,
 ) => {
   let defaultValues: {
-    [x: string]: string | number | ({} | undefined)[] | undefined | any;
+    [x: string]: string | number | ({} | undefined)[] | undefined | unknown[];
   } = {};
 
   const formDefaultObject = isComponentVariable(component)
@@ -224,7 +224,7 @@ export const createDefaultValuesFromFormSchema = (
 
 function mergeObjects(target: RecordData, overlay: RecordData): RecordData {
   Object.entries(overlay).forEach(([key]) => {
-    if (Object.prototype.hasOwnProperty.call(overlay, key)) {
+    if (Object.hasOwn(overlay, key)) {
       if (
         typeof overlay[key] === 'object' &&
         overlay[key] !== null &&
@@ -287,7 +287,6 @@ const createValidationForAttributesFromComponent = (
 const createValidationFromComponentType = (
   component: FormComponent | FormAttributeCollection,
 ) => {
-  // console.log('createValidationFromComponentType', component);
   switch (component.type) {
     case 'textVariable':
       return createYupStringRegexpSchema(component as FormComponent);
@@ -399,7 +398,6 @@ const createYupNumberSchema = (component: FormComponent) => {
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 const createYupStringSchema = (component: FormComponent) => {
-  // console.log('createYupStringSchema', component);
   if (isComponentRepeating(component)) {
     return yup
       .string()
@@ -475,7 +473,7 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
           value: createValidationFromComponentType(component),
           ...createValidationForAttributesFromComponent(component),
         } /* Add .when("varIsNotNull", { is: !null, then: add required for attributes })
-           to add required for non empty value for main component */,
+           to add required for non-empty value for main component */,
       ) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     }
   }
