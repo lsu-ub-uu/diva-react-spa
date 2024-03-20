@@ -153,6 +153,7 @@ export const ControlledAutocomplete = (
               isOptionEqualToValue={(option, value) => option.id === value.id}
               options={options}
               getOptionLabel={(option) => option.id}
+              clearOnBlur={false}
               renderInput={(params) => (
                 // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
