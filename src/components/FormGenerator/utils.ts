@@ -304,6 +304,7 @@ const createValidationFromComponentType = (
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 const createYupStringRegexpSchema = (component: FormComponent) => {
+  // console.log('createYupStringRegexpSchema', component);
   const regexpValidation = component.validation as FormRegexValidation;
 
   if (isComponentRepeating(component)) {
@@ -399,6 +400,7 @@ const createYupNumberSchema = (component: FormComponent) => {
  */
 const createYupStringSchema = (component: FormComponent) => {
   if (isComponentRepeating(component)) {
+    // console.log('createYupStringSchema 1', component);
     return yup
       .string()
       .nullable()
@@ -407,10 +409,12 @@ const createYupStringSchema = (component: FormComponent) => {
         isNotNull[0] ? field.required('not valid') : field,
       );
   }
+  console.log('createYupStringSchema 2', component);
   return yup.string().required();
 };
 
 export const createYupValidationsFromComponent = (component: FormComponent) => {
+  // console.log('createYupValidationsFromComponent', component);
   let validationRule: {
     [x: string]: any;
   } = {};
@@ -426,6 +430,7 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   }
   // eslint-disable-next-line no-lonely-if
   if (isComponentRepeating(component)) {
+    // console.log('isComponentRepeating', component);
     if (isComponentGroup(component)) {
       const innerObjectSchema = generateYupSchema(component.components);
 
@@ -439,6 +444,7 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
         component.repeat,
       );
     } else {
+      // console.log('else isComponentGroup', component);
       // repeating variables
       const extendedSchema = yup.object().shape({
         value: createValidationFromComponentType(component),
@@ -493,5 +499,6 @@ const generateYupSchema = (components: FormComponent[] | undefined) => {
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
+  console.log('yup', yup.object().shape(obj));
   return yup.object().shape(obj);
 };
