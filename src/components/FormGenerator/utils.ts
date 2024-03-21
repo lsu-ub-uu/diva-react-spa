@@ -222,7 +222,7 @@ export const createDefaultValuesFromFormSchema = (
   return defaultValues;
 };
 
-function mergeObjects(target: RecordData, overlay: RecordData): RecordData {
+const mergeObjects = (target: RecordData, overlay: RecordData): RecordData => {
   Object.entries(overlay).forEach(([key]) => {
     if (Object.hasOwn(overlay, key)) {
       if (
@@ -242,9 +242,9 @@ function mergeObjects(target: RecordData, overlay: RecordData): RecordData {
     }
   });
   return target;
-}
+};
 
-function mergeArrays(target: any[], overlay: any[]): any[] {
+const mergeArrays = (target: any[], overlay: any[]): any[] => {
   const result = [...target];
 
   overlay.forEach((item, index) => {
@@ -254,7 +254,7 @@ function mergeArrays(target: any[], overlay: any[]): any[] {
   });
 
   return result;
-}
+};
 
 export const createYupArrayFromSchema = (
   schema:

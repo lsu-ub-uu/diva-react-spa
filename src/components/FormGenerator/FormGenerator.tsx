@@ -126,236 +126,41 @@ export const FormGenerator = ({
     };
 
     if (isComponentSurroundingContainerAndNOTRepeating(component)) {
-      return (
-        <React.Fragment key={reactKey}>
-          <div
-            id='surrounding-container'
-            key={reactKey}
-            style={{
-              // background: 'lightgray',
-              // border: '1px solid black',
-              display: 'flex',
-              flexDirection: checkIfPresentationStyleOrIsInline(component)
-                ? 'row'
-                : 'column',
-              alignItems: checkIfPresentationStyleOrIsInline(component)
-                ? 'center'
-                : undefined,
-            }}
-          >
-            {component.components &&
-              createFormComponents(
-                component.components,
-                currentComponentNamePath,
-                component.presentationStyle ?? parentPresentationStyle,
-              )}
-          </div>
-        </React.Fragment>
+      return createComponentSurroundingContainerAndNOTRepeating(
+        reactKey,
+        component,
+        currentComponentNamePath,
+        parentPresentationStyle,
       );
     }
 
     if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
-      return isComponentFirstLevelAndNOTLinkedData(
+      return createComponentGroupOrRepeatingContainerAndNOTRepeating(
         currentComponentNamePath,
-        linkedData,
-      ) ? (
-        <span
-          key={reactKey}
-          className='anchorLink'
-          id={`anchor_${component.name}-card`}
-        >
-          <Box sx={{ mb: 2 }}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              {component.showLabel === true ? (
-                <Typography
-                  text={component?.label ?? ''}
-                  variant={headlineLevelToTypographyVariant(
-                    component.headlineLevel,
-                  )}
-                />
-              ) : null}
-              <Tooltip
-                title={t(component.tooltip?.title as string)}
-                body={t(component.tooltip?.body as string)}
-              >
-                <IconButton
-                  disableRipple
-                  color='info'
-                  aria-label='info'
-                >
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
-            <Grid
-              container
-              spacing={2}
-              justifyContent='space-between'
-              alignItems='flex-start'
-            >
-              {createFormComponentAttributes(
-                component,
-                currentComponentNamePath,
-              )}
-
-              {component.components &&
-                createFormComponents(
-                  component.components,
-                  currentComponentNamePath,
-                  component.presentationStyle ?? parentPresentationStyle,
-                )}
-            </Grid>
-          </Box>
-        </span>
-      ) : (
-        <Box
-          key={reactKey}
-          id={component.name}
-          sx={{
-            display: 'flex',
-            flexDirection: checkIfPresentationStyleOrParentIsInline(
-              component,
-              parentPresentationStyle,
-            )
-              ? 'row'
-              : 'column',
-            alignItems: checkIfPresentationStyleOrParentIsInline(
-              component,
-              parentPresentationStyle,
-            )
-              ? 'center'
-              : null,
-            gap: checkIfPresentationStyleOrParentIsInline(
-              component,
-              parentPresentationStyle,
-            )
-              ? '0.2em'
-              : null,
-          }}
-        >
-          {component?.showLabel && (
-            <Typography
-              text={component?.label ?? ''}
-              variant={headlineLevelToTypographyVariant(
-                component.headlineLevel,
-              )}
-            />
-          )}
-          {createFormComponentAttributes(component, currentComponentNamePath)}
-          {component.components &&
-            createFormComponents(
-              component.components,
-              currentComponentNamePath,
-              checkIfPresentationStyleIsUndefinedOrEmpty(component)
-                ? parentPresentationStyle
-                : component.presentationStyle,
-            )}
-        </Box>
+        reactKey,
+        component,
+        createFormComponentAttributes,
+        parentPresentationStyle,
       );
     }
 
     if (isComponentGroupAndRepeating(component)) {
-      return isFirstLevel(currentComponentNamePath) ? (
-        <FieldArrayComponent
-          key={reactKey}
-          control={control}
-          component={component}
-          name={currentComponentNamePath}
-          renderCallback={(arrayPath: string) => {
-            return [
-              ...createFormComponentAttributes(component, arrayPath),
-              ...createFormComponents(
-                component.components ?? [],
-                arrayPath,
-                component.presentationStyle ?? parentPresentationStyle,
-              ),
-            ];
-          }}
-        />
-      ) : (
-        <Grid
-          item
-          xs={12}
-          key={reactKey}
-          sx={{ position: 'relative' }}
-        >
-          {component?.showLabel && (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              {component.showLabel ? (
-                <Typography
-                  text={component?.label ?? ''}
-                  variant={headlineLevelToTypographyVariant(
-                    component.headlineLevel,
-                  )}
-                />
-              ) : null}
-              <Tooltip
-                title={t(component.tooltip?.title as string)}
-                body={t(component.tooltip?.body as string)}
-              >
-                <IconButton
-                  disableRipple
-                  color='info'
-                  aria-label='info'
-                >
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          )}
-
-          <FieldArrayComponent
-            control={control}
-            component={component}
-            name={currentComponentNamePath}
-            renderCallback={(arrayPath: string) => {
-              return [
-                ...createFormComponentAttributes(component, arrayPath),
-                ...createFormComponents(
-                  component.components ?? [],
-                  arrayPath,
-                  component.presentationStyle ?? parentPresentationStyle,
-                ),
-              ];
-            }}
-          />
-        </Grid>
+      return createComponentGroupAndRepeating(
+        currentComponentNamePath,
+        reactKey,
+        component,
+        createFormComponentAttributes,
+        parentPresentationStyle,
       );
     }
 
     if (isComponentVariableAndRepeating(component)) {
-      return (
-        <FieldArrayComponent
-          key={reactKey}
-          control={control}
-          component={component}
-          name={currentComponentNamePath}
-          renderCallback={(variableArrayPath: string) => {
-            return [
-              ...createFormComponentAttributes(component, variableArrayPath),
-              renderLeafComponent(
-                component,
-                variableArrayPath,
-                control,
-                `${variableArrayPath}.value`,
-                false,
-                parentPresentationStyle,
-              ),
-            ];
-          }}
-        />
+      return createComponentVariableAndRepeating(
+        reactKey,
+        component,
+        currentComponentNamePath,
+        createFormComponentAttributes,
+        parentPresentationStyle,
       );
     }
 
@@ -371,6 +176,267 @@ export const FormGenerator = ({
           parentPresentationStyle,
         )}
       </React.Fragment>
+    );
+  };
+
+  const createComponentSurroundingContainerAndNOTRepeating = (
+    reactKey: string,
+    component: FormComponent,
+    currentComponentNamePath: string,
+    parentPresentationStyle: string | undefined,
+  ) => {
+    return (
+      <React.Fragment key={reactKey}>
+        <div
+          id='surrounding-container'
+          key={reactKey}
+          style={{
+            // background: 'lightgray',
+            // border: '1px solid black',
+            display: 'flex',
+            flexDirection: checkIfPresentationStyleOrIsInline(component)
+              ? 'row'
+              : 'column',
+            alignItems: checkIfPresentationStyleOrIsInline(component)
+              ? 'center'
+              : undefined,
+          }}
+        >
+          {component.components &&
+            createFormComponents(
+              component.components,
+              currentComponentNamePath,
+              component.presentationStyle ?? parentPresentationStyle,
+            )}
+        </div>
+      </React.Fragment>
+    );
+  };
+
+  const createComponentGroupOrRepeatingContainerAndNOTRepeating = (
+    currentComponentNamePath: string,
+    reactKey: string,
+    component: FormComponent,
+    createFormComponentAttributes: (
+      aComponent: FormComponent,
+      aPath: string,
+    ) => JSX.Element[],
+    parentPresentationStyle: string | undefined,
+  ) => {
+    return isComponentFirstLevelAndNOTLinkedData(
+      currentComponentNamePath,
+      linkedData,
+    ) ? (
+      <span
+        key={reactKey}
+        className='anchorLink'
+        id={`anchor_${component.name}-card`}
+      >
+        <Box sx={{ mb: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            {component.showLabel === true ? (
+              <Typography
+                text={component?.label ?? ''}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
+            ) : null}
+            <Tooltip
+              title={t(component.tooltip?.title as string)}
+              body={t(component.tooltip?.body as string)}
+            >
+              <IconButton
+                disableRipple
+                color='info'
+                aria-label='info'
+              >
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          <Grid
+            container
+            spacing={2}
+            justifyContent='space-between'
+            alignItems='flex-start'
+          >
+            {createFormComponentAttributes(component, currentComponentNamePath)}
+
+            {component.components &&
+              createFormComponents(
+                component.components,
+                currentComponentNamePath,
+                component.presentationStyle ?? parentPresentationStyle,
+              )}
+          </Grid>
+        </Box>
+      </span>
+    ) : (
+      <Box
+        key={reactKey}
+        id={component.name}
+        sx={{
+          display: 'flex',
+          flexDirection: checkIfPresentationStyleOrParentIsInline(
+            component,
+            parentPresentationStyle,
+          )
+            ? 'row'
+            : 'column',
+          alignItems: checkIfPresentationStyleOrParentIsInline(
+            component,
+            parentPresentationStyle,
+          )
+            ? 'center'
+            : null,
+          gap: checkIfPresentationStyleOrParentIsInline(
+            component,
+            parentPresentationStyle,
+          )
+            ? '0.2em'
+            : null,
+        }}
+      >
+        {component?.showLabel && (
+          <Typography
+            text={component?.label ?? ''}
+            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
+          />
+        )}
+        {createFormComponentAttributes(component, currentComponentNamePath)}
+        {component.components &&
+          createFormComponents(
+            component.components,
+            currentComponentNamePath,
+            checkIfPresentationStyleIsUndefinedOrEmpty(component)
+              ? parentPresentationStyle
+              : component.presentationStyle,
+          )}
+      </Box>
+    );
+  };
+
+  const createComponentGroupAndRepeating = (
+    currentComponentNamePath: string,
+    reactKey: string,
+    component: FormComponent,
+    createFormComponentAttributes: (
+      aComponent: FormComponent,
+      aPath: string,
+    ) => JSX.Element[],
+    parentPresentationStyle: string | undefined,
+  ) => {
+    return isFirstLevel(currentComponentNamePath) ? (
+      <FieldArrayComponent
+        key={reactKey}
+        control={control}
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(arrayPath: string) => {
+          return [
+            ...createFormComponentAttributes(component, arrayPath),
+            ...createFormComponents(
+              component.components ?? [],
+              arrayPath,
+              component.presentationStyle ?? parentPresentationStyle,
+            ),
+          ];
+        }}
+      />
+    ) : (
+      <Grid
+        item
+        xs={12}
+        key={reactKey}
+        sx={{ position: 'relative' }}
+      >
+        {component?.showLabel && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            {component.showLabel ? (
+              <Typography
+                text={component?.label ?? ''}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
+            ) : null}
+            <Tooltip
+              title={t(component.tooltip?.title as string)}
+              body={t(component.tooltip?.body as string)}
+            >
+              <IconButton
+                disableRipple
+                color='info'
+                aria-label='info'
+              >
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+
+        <FieldArrayComponent
+          control={control}
+          component={component}
+          name={currentComponentNamePath}
+          renderCallback={(arrayPath: string) => {
+            return [
+              ...createFormComponentAttributes(component, arrayPath),
+              ...createFormComponents(
+                component.components ?? [],
+                arrayPath,
+                component.presentationStyle ?? parentPresentationStyle,
+              ),
+            ];
+          }}
+        />
+      </Grid>
+    );
+  };
+
+  const createComponentVariableAndRepeating = (
+    reactKey: string,
+    component: FormComponent,
+    currentComponentNamePath: string,
+    createFormComponentAttributes: (
+      aComponent: FormComponent,
+      aPath: string,
+    ) => JSX.Element[],
+    parentPresentationStyle: string | undefined,
+  ) => {
+    return (
+      <FieldArrayComponent
+        key={reactKey}
+        control={control}
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(variableArrayPath: string) => {
+          return [
+            ...createFormComponentAttributes(component, variableArrayPath),
+            renderLeafComponent(
+              component,
+              variableArrayPath,
+              control,
+              `${variableArrayPath}.value`,
+              false,
+              parentPresentationStyle,
+            ),
+          ];
+        }}
+      />
     );
   };
 
@@ -468,160 +534,232 @@ export const renderLeafComponent = (
   switch (component.type) {
     case 'textVariable':
     case 'numberVariable': {
-      return (
-        <Grid
-          key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
-          style={{
-            flexBasis:
-              convertChildStyleToString(component.childStyle) === 'compact'
-                ? 'auto'
-                : '100%',
-          }}
-        >
-          <ControlledTextField
-            multiline={component.inputType === 'textarea'}
-            label={component.label ?? ''}
-            showLabel={component.showLabel}
-            name={name}
-            placeholder={component.placeholder}
-            tooltip={component.tooltip}
-            control={control}
-            readOnly={!!component.finalValue}
-            displayMode={component.mode}
-            parentPresentationStyle={parentPresentationStyle}
-          />
-        </Grid>
+      return createTextOrNumberVariable(
+        reactKey,
+        renderElementGridWrapper,
+        component,
+        name,
+        control,
+        parentPresentationStyle,
       );
     }
     case 'recordLink': {
       if (checkIfComponentContainsSearchId(component)) {
-        return (
-          <Grid
-            key={reactKey}
-            item
-            xs={12}
-            sm={renderElementGridWrapper ? component.gridColSpan : 12}
-          >
-            {component.mode === 'input' ? (
-              <ControlledAutocomplete
-                label={component.label ?? ''}
-                name={name}
-                showLabel={component.showLabel}
-                placeholder={component.placeholder}
-                tooltip={component.tooltip}
-                control={control}
-                readOnly={!!component.finalValue}
-                displayMode={component.mode}
-                searchLink={component.search}
-                presentationRecordLinkId={
-                  component.presentationRecordLinkId ?? ''
-                }
-                recordType={component.recordLinkType ?? ''}
-              />
-            ) : (
-              <ControlledLinkedRecord
-                control={control}
-                name={name}
-                recordType={component.recordLinkType ?? ''}
-                presentationRecordLinkId={
-                  component.presentationRecordLinkId ?? ''
-                }
-              />
-            )}
-          </Grid>
+        return createRecordLinkWithSearchLink(
+          reactKey,
+          renderElementGridWrapper,
+          component,
+          name,
+          control,
         );
       }
-      return (
-        <Grid
-          key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
-        >
-          {component.mode === 'input' ? (
-            <ControlledTextField
-              multiline={component.inputType === 'textarea'}
-              label={component.label ?? ''}
-              name={name}
-              showLabel={component.showLabel}
-              placeholder={component.placeholder}
-              tooltip={component.tooltip}
-              control={control}
-              readOnly={!!component.finalValue}
-              displayMode={component.mode}
-            />
-          ) : (
-            <ControlledLinkedRecord
-              control={control}
-              name={name}
-              recordType={component.recordLinkType ?? ''}
-              presentationRecordLinkId={
-                component.presentationRecordLinkId ?? ''
-              }
-            />
-          )}
-        </Grid>
+      return createRecordLinkWithoutSearchLink(
+        reactKey,
+        renderElementGridWrapper,
+        component,
+        name,
+        control,
       );
     }
     case 'collectionVariable': {
-      return (
-        <Grid
-          key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
-        >
-          <ControlledSelectField
-            name={name}
-            isLoading={false}
-            loadingError={false}
-            label={component.label ?? ''}
-            placeholder={component.placeholder}
-            tooltip={component.tooltip}
-            control={control}
-            options={component.options}
-            readOnly={!!component.finalValue}
-            displayMode={component.mode}
-          />
-        </Grid>
+      return createCollectionVariable(
+        reactKey,
+        renderElementGridWrapper,
+        component,
+        name,
+        control,
       );
     }
     case 'text': {
-      return (
-        <Grid
-          key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
-          style={{
-            flexBasis:
-              convertChildStyleToString(component.childStyle) === 'compact'
-                ? 'auto'
-                : '2em',
-          }}
-        >
-          <Typography
-            variant={component.textStyle ?? 'bodyTextStyle'}
-            text={component.name}
-          />
-        </Grid>
-      );
+      return createText(reactKey, renderElementGridWrapper, component);
     }
     case 'guiElementLink': {
-      return (
-        <LinkButton
-          key={reactKey}
-          href={component.url ?? ''}
-          text={component.elementText ?? ''}
-        />
-      );
+      return createGuiElement(reactKey, component);
     }
     default:
       return null;
   }
+};
+
+const createTextOrNumberVariable = (
+  reactKey: string,
+  renderElementGridWrapper: boolean,
+  component: FormComponent,
+  name: string,
+  control: Control<any>,
+  parentPresentationStyle: string | undefined,
+) => {
+  return (
+    <Grid
+      key={reactKey}
+      item
+      xs={12}
+      sm={renderElementGridWrapper ? component.gridColSpan : 12}
+      style={{
+        flexBasis:
+          convertChildStyleToString(component.childStyle) === 'compact'
+            ? 'auto'
+            : '100%',
+      }}
+    >
+      <ControlledTextField
+        multiline={component.inputType === 'textarea'}
+        label={component.label ?? ''}
+        showLabel={component.showLabel}
+        name={name}
+        placeholder={component.placeholder}
+        tooltip={component.tooltip}
+        control={control}
+        readOnly={!!component.finalValue}
+        displayMode={component.mode}
+        parentPresentationStyle={parentPresentationStyle}
+      />
+    </Grid>
+  );
+};
+
+const createRecordLinkWithSearchLink = (
+  reactKey: string,
+  renderElementGridWrapper: boolean,
+  component: FormComponent,
+  name: string,
+  control: Control<any>,
+) => {
+  return (
+    <Grid
+      key={reactKey}
+      item
+      xs={12}
+      sm={renderElementGridWrapper ? component.gridColSpan : 12}
+    >
+      {component.mode === 'input' ? (
+        <ControlledAutocomplete
+          label={component.label ?? ''}
+          name={name}
+          showLabel={component.showLabel}
+          placeholder={component.placeholder}
+          tooltip={component.tooltip}
+          control={control}
+          readOnly={!!component.finalValue}
+          displayMode={component.mode}
+          searchLink={component.search}
+          presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+          recordType={component.recordLinkType ?? ''}
+        />
+      ) : (
+        <ControlledLinkedRecord
+          control={control}
+          name={name}
+          recordType={component.recordLinkType ?? ''}
+          presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+        />
+      )}
+    </Grid>
+  );
+};
+
+const createRecordLinkWithoutSearchLink = (
+  reactKey: string,
+  renderElementGridWrapper: boolean,
+  component: FormComponent,
+  name: string,
+  control: Control<any>,
+) => {
+  return (
+    <Grid
+      key={reactKey}
+      item
+      xs={12}
+      sm={renderElementGridWrapper ? component.gridColSpan : 12}
+    >
+      {component.mode === 'input' ? (
+        <ControlledTextField
+          multiline={component.inputType === 'textarea'}
+          label={component.label ?? ''}
+          name={name}
+          showLabel={component.showLabel}
+          placeholder={component.placeholder}
+          tooltip={component.tooltip}
+          control={control}
+          readOnly={!!component.finalValue}
+          displayMode={component.mode}
+        />
+      ) : (
+        <ControlledLinkedRecord
+          control={control}
+          name={name}
+          recordType={component.recordLinkType ?? ''}
+          presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+        />
+      )}
+    </Grid>
+  );
+};
+
+const createCollectionVariable = (
+  reactKey: string,
+  renderElementGridWrapper: boolean,
+  component: FormComponent,
+  name: string,
+  control: Control<any>,
+) => {
+  return (
+    <Grid
+      key={reactKey}
+      item
+      xs={12}
+      sm={renderElementGridWrapper ? component.gridColSpan : 12}
+    >
+      <ControlledSelectField
+        name={name}
+        isLoading={false}
+        loadingError={false}
+        label={component.label ?? ''}
+        placeholder={component.placeholder}
+        tooltip={component.tooltip}
+        control={control}
+        options={component.options}
+        readOnly={!!component.finalValue}
+        displayMode={component.mode}
+      />
+    </Grid>
+  );
+};
+
+const createText = (
+  reactKey: string,
+  renderElementGridWrapper: boolean,
+  component: FormComponent,
+) => {
+  return (
+    <Grid
+      key={reactKey}
+      item
+      xs={12}
+      sm={renderElementGridWrapper ? component.gridColSpan : 12}
+      style={{
+        flexBasis:
+          convertChildStyleToString(component.childStyle) === 'compact'
+            ? 'auto'
+            : '2em',
+      }}
+    >
+      <Typography
+        variant={component.textStyle ?? 'bodyTextStyle'}
+        text={component.name}
+      />
+    </Grid>
+  );
+};
+
+const createGuiElement = (reactKey: string, component: FormComponent) => {
+  return (
+    <LinkButton
+      key={reactKey}
+      href={component.url ?? ''}
+      text={component.elementText ?? ''}
+    />
+  );
 };
 
 // move to utils
