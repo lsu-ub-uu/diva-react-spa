@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
@@ -603,6 +603,211 @@ const mockOptions: CoraRecord[] = [
   },
 ];
 
+const softwareEngineringOption = {
+  id: 'nationalSubjectCategory:6325356888554468',
+  recordType: 'nationalSubjectCategory',
+  validationType: 'nationalSubjectCategory',
+  createdAt: '2022-04-22T12:39:17.832481Z',
+  createdBy: 'coraUser:4412982402853626',
+  updated: [
+    {
+      updateAt: '2022-04-22T12:39:17.832481Z',
+      updatedBy: 'coraUser:4412982402853626',
+    },
+    {
+      updateAt: '2023-03-03T13:25:30.021078Z',
+      updatedBy: 'coraUser:490742519075086',
+    },
+  ],
+  userRights: ['read', 'read_incoming_links', 'update', 'index'],
+  data: {
+    nationalSubjectCategory: {
+      name: {
+        language: {
+          value: 'sv',
+        },
+        nationalSubjectCategoryName: {
+          value: 'Programvaruteknik',
+        },
+      },
+      alternativeName: {
+        nationalSubjectCategoryName: {
+          value: 'Software Engineering',
+        },
+        language: {
+          value: 'en',
+        },
+      },
+      subjectCode: {
+        value: '10205',
+      },
+    },
+  },
+  presentation: {
+    form: {
+      name: 'nationalSubjectCategory',
+      type: 'group',
+      mode: 'output',
+      tooltip: {
+        title: 'nationalSubjectCategoryGroupText',
+        body: 'nationalSubjectCategoryGroupDefText',
+      },
+      label: 'nationalSubjectCategoryGroupText',
+      showLabel: false,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'name',
+          type: 'group',
+          mode: 'output',
+          tooltip: {
+            title: 'nationalSubjectCategoryNameGroupText',
+            body: 'nationalSubjectCategoryNameGroupDefText',
+          },
+          label: 'nationalSubjectCategoryNameGroupText',
+          showLabel: false,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'nationalSubjectCategoryName',
+              type: 'textVariable',
+              mode: 'output',
+              inputType: 'input',
+              tooltip: {
+                title: 'nationalSubjectCategoryNameTextVarText',
+                body: 'nationalSubjectCategoryNameTextVarDefText',
+              },
+              label: 'nationalSubjectCategoryNameTextVarText',
+              showLabel: false,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: ['compact'],
+          gridColSpan: 12,
+        },
+        {
+          name: 'semicolonText',
+          type: 'text',
+          childStyle: ['compact'],
+          gridColSpan: 12,
+        },
+        {
+          name: 'spaceText',
+          type: 'text',
+          childStyle: ['compact'],
+          gridColSpan: 12,
+        },
+        {
+          name: 'alternativeName',
+          type: 'group',
+          mode: 'output',
+          tooltip: {
+            title: 'nationalSubjectCategoryAlternativeNameGroupText',
+            body: 'nationalSubjectCategoryAlternativeNameGroupDefText',
+          },
+          label: 'nationalSubjectCategoryAlternativeNameGroupText',
+          showLabel: false,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'nationalSubjectCategoryName',
+              type: 'textVariable',
+              mode: 'output',
+              inputType: 'input',
+              tooltip: {
+                title: 'nationalSubjectCategoryNameTextVarText',
+                body: 'nationalSubjectCategoryNameTextVarDefText',
+              },
+              label: 'nationalSubjectCategoryNameTextVarText',
+              showLabel: false,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: ['compact'],
+          gridColSpan: 12,
+        },
+        {
+          name: 'spaceText',
+          type: 'text',
+          childStyle: ['compact'],
+          gridColSpan: 12,
+        },
+        {
+          name: 'firstHalfParenthesisText',
+          type: 'text',
+          childStyle: ['compact'],
+          gridColSpan: 12,
+        },
+        {
+          name: 'subjectCode',
+          type: 'textVariable',
+          mode: 'output',
+          inputType: 'input',
+          tooltip: {
+            title: 'subjectCodeTextVarText',
+            body: 'subjectCodeTextVarDefText',
+          },
+          label: 'subjectCodeTextVarText',
+          showLabel: false,
+          validation: {
+            type: 'regex',
+            pattern: '^[0-9-\\s]{1,100}$',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          childStyle: ['compact'],
+          gridColSpan: 12,
+        },
+        {
+          name: 'secondHalfParenthesisText',
+          type: 'text',
+          childStyle: ['compact'],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: 'inline',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  },
+};
+
 export const DummyForm = (): JSX.Element => {
   const methods = useForm({ defaultValues: { optionSelect: 'option2' } });
 
@@ -650,26 +855,41 @@ describe('<Autocomplete/>', () => {
     expect(screen.queryByText('Option 1')).toBeNull();
   });
 
-  it.todo('displays options when typing in the input', async () => {
+  it('displays options when typing in the input', async () => {
     const user = userEvent.setup();
     render(<DummyForm />);
     const inputElement = screen.getByRole('combobox');
     expect(inputElement).toBeVisible();
     const inputValue = '*';
+    // const searchLink = 'nationalSubjectCategory';
+    const listUrl: string = `/search/nationalSubjectCategory?searchTermValue=${inputValue}`;
+    mockAxios.onGet(listUrl).reply(200, mockOptions);
     await user.click(inputElement);
     await user.type(inputElement, inputValue);
-    await user.keyboard('[ArrowDown]');
-    await user.keyboard('[Enter]');
-    const expectedResponse = {
-      data: mockOptions,
-      headers: {},
-      request: {},
-      status: 200,
-    };
-    const searchLink = 'nationalSubjectCategory';
-    const url: string = `/search/${searchLink}?searchTermValue=${inputValue}`;
-    mockAxios.onGet(url).reply(200, expectedResponse);
 
+    const listbox = screen.getByRole('listbox');
+    expect(listbox).toBeInTheDocument();
+  });
+  it.todo('displays presentation for picked option', async () => {
+    const user = userEvent.setup();
+    render(<DummyForm />);
+    const inputElement = screen.getByRole('combobox');
+    expect(inputElement).toBeVisible();
+    const inputValue = '*';
+    // const searchLink = 'nationalSubjectCategory';
+    const listUrl: string = `/search/nationalSubjectCategory?searchTermValue=${inputValue}`;
+    mockAxios.onGet(listUrl).reply(200, mockOptions);
+    await user.click(inputElement);
+    await user.type(inputElement, inputValue);
+
+    const listbox = screen.getByRole('listbox');
+    expect(listbox).toBeInTheDocument();
+    const softwareEngineering = screen.getByText('Software Engineering');
+
+    const optionUrl =
+      '/record/nationalSubjectCategory/nationalSubjectCategory:6325356888554468';
+    mockAxios.onGet(optionUrl).reply(200, softwareEngineringOption);
+    await user.click(softwareEngineering);
     screen.debug();
   });
 });

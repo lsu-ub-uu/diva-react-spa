@@ -499,6 +499,6 @@ const generateYupSchema = (components: FormComponent[] | undefined) => {
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
-  console.log('yup', yup.object().shape(obj));
+  // console.log('yup', yup.object().shape(obj));
   return yup.object().shape(obj);
 };
