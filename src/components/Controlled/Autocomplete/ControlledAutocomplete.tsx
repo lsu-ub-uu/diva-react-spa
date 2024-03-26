@@ -74,6 +74,9 @@ export const ControlledAutocomplete = (
         if (inputValue === '') {
           return undefined;
         }
+        if (inputValue === presentationValue?.id) {
+          return undefined;
+        }
         const response = await axios.get(
           `/search/${props.searchLink}?searchTermValue=${inputValue}`,
         );
@@ -87,7 +90,7 @@ export const ControlledAutocomplete = (
     };
 
     fetchData().then();
-
+    console.log('pV', presentationValue);
     return () => {
       isMounted = false;
     };
