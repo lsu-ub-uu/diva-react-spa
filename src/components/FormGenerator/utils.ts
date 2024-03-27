@@ -409,7 +409,7 @@ const createYupStringSchema = (component: FormComponent) => {
         isNotNull[0] ? field.required('not valid') : field,
       );
   }
-  console.log('createYupStringSchema 2', component);
+  // console.log('createYupStringSchema 2', component);
   return yup.string().required();
 };
 

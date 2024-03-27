@@ -90,7 +90,6 @@ export const ControlledAutocomplete = (
     };
 
     fetchData().then();
-    console.log('pV', presentationValue);
     return () => {
       isMounted = false;
     };

@@ -17,12 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { expect } from 'vitest';
 import { ControlledAutocomplete } from '../ControlledAutocomplete';
 import { CoraRecord } from '../../../../app/hooks';
 
@@ -603,7 +604,7 @@ const mockOptions: CoraRecord[] = [
   },
 ];
 
-const softwareEngineringOption = {
+const softwareEngineeringOption = {
   id: 'nationalSubjectCategory:6325356888554468',
   recordType: 'nationalSubjectCategory',
   validationType: 'nationalSubjectCategory',
@@ -808,7 +809,7 @@ const softwareEngineringOption = {
   },
 };
 
-export const DummyForm = (): JSX.Element => {
+const DummyForm = (): JSX.Element => {
   const methods = useForm({ defaultValues: { optionSelect: 'option2' } });
 
   return (
@@ -831,6 +832,12 @@ describe('<Autocomplete/>', () => {
   let mockAxios: MockAdapter;
   beforeEach(() => {
     mockAxios = new MockAdapter(axios);
+    const listUrl: string = `/search/nationalSubjectCategory?searchTermValue=*`;
+    mockAxios.onGet(listUrl).reply(200, mockOptions);
+    const optionUrl =
+      '/record/nationalSubjectCategory/nationalSubjectCategory:6325356888554468?presentationRecordLinkId=nationalSubjectCategoryPLink';
+    mockAxios.onGet(optionUrl).reply(200, softwareEngineeringOption);
+    console.log(mockAxios.handlers.get[1]);
   });
 
   afterEach(() => {
@@ -860,36 +867,31 @@ describe('<Autocomplete/>', () => {
     render(<DummyForm />);
     const inputElement = screen.getByRole('combobox');
     expect(inputElement).toBeVisible();
-    const inputValue = '*';
-    // const searchLink = 'nationalSubjectCategory';
-    const listUrl: string = `/search/nationalSubjectCategory?searchTermValue=${inputValue}`;
-    mockAxios.onGet(listUrl).reply(200, mockOptions);
     await user.click(inputElement);
-    await user.type(inputElement, inputValue);
+    await user.type(inputElement, '*');
 
     const listbox = screen.getByRole('listbox');
     expect(listbox).toBeInTheDocument();
   });
-  it.todo('displays presentation for picked option', async () => {
+  it('displays presentation for picked option', async () => {
     const user = userEvent.setup();
     render(<DummyForm />);
     const inputElement = screen.getByRole('combobox');
     expect(inputElement).toBeVisible();
-    const inputValue = '*';
-    // const searchLink = 'nationalSubjectCategory';
-    const listUrl: string = `/search/nationalSubjectCategory?searchTermValue=${inputValue}`;
-    mockAxios.onGet(listUrl).reply(200, mockOptions);
+
     await user.click(inputElement);
-    await user.type(inputElement, inputValue);
+    await user.type(inputElement, '*');
 
     const listbox = screen.getByRole('listbox');
     expect(listbox).toBeInTheDocument();
     const softwareEngineering = screen.getByText('Software Engineering');
-
-    const optionUrl =
-      '/record/nationalSubjectCategory/nationalSubjectCategory:6325356888554468';
-    mockAxios.onGet(optionUrl).reply(200, softwareEngineringOption);
     await user.click(softwareEngineering);
-    screen.debug();
+    expect(listbox).not.toBeInTheDocument();
+    expect(mockAxios.history.get.length).toBe(2);
+    await waitFor(() => {
+      screen.debug();
+      const engineering = screen.findByText(/Programvaruteknik/i);
+      expect(engineering).toBeInTheDocument();
+    });
   });
 });
