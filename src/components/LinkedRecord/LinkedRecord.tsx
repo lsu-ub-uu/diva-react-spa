@@ -19,6 +19,7 @@
 
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { FormGenerator } from '../FormGenerator/FormGenerator';
 import { FormSchema } from '../FormGenerator/types';
 
@@ -34,6 +35,8 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
   const [record, setRecord] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     let isMounted = true;
@@ -68,7 +71,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
   }, [props.id, props.recordType, props.presentationRecordLinkId]);
 
   if (isLoading) {
-    return <div>Loading linked record...</div>;
+    return <div>{t('divaClient_loadingText')}</div>;
   }
 
   if (error) {
@@ -77,7 +80,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
 
   return (
     <>
-      {record && record.presentation.form && (
+      {record?.presentation?.form && (
         <FormGenerator
           record={record}
           onSubmit={() => {}}
@@ -86,16 +89,6 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
           linkedData
         />
       )}
-      {/*      <pre
-        style={{
-          maxWidth: '800px',
-          overflow: 'auto',
-          height: '900px',
-          background: 'white',
-        }}
-      >
-        {JSON.stringify(record, null, 3)}
-      </pre> */}
     </>
   );
 };
