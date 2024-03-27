@@ -107,24 +107,6 @@ describe('transformMetadata', () => {
   });
 
   describe('numberVariable', () => {
-    it.skip('Returns one BFFMetadata for numberVariable without finalValue', () => {
-      const metadataList = transformMetadata(testNumberVariableMetaData);
-      expect(metadataList).toHaveLength(1);
-      expect(metadataList[0]).toStrictEqual({
-        id: 'someNumberVar',
-        nameInData: 'someNameInDataNumberVar',
-        type: 'numberVariable',
-        textId: 'someNumberVarText',
-        defTextId: 'someNumberVarDefText',
-        min: '0',
-        max: '20',
-        warningMin: '2',
-        warningMax: '10',
-        numberOfDecimals: '3'
-      });
-      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
-    });
-
     it('Returns one BFFMetadata for numberVariable without finalValue', () => {
       const metadataList = transformMetadata(testNumberVariableMetaData);
       expect(metadataList).toHaveLength(1);
