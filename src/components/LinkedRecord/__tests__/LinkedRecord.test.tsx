@@ -249,6 +249,10 @@ describe('<LinkedRecord/>', () => {
   let mockAxios: MockAdapter;
   beforeEach(() => {
     mockAxios = new MockAdapter(axios);
+    const listUrl =
+      '/record/nationalSubjectCategory/nationalSubjectCategory:6325370460697648?presentationRecordLinkId=nationalSubjectCategoryOutputPLink';
+    mockAxios.onGet(listUrl).reply(200, nationalSubjectCategory);
+    // console.log(JSON.stringify(mockAxios, null, 2));
   });
 
   afterEach(() => {
@@ -276,21 +280,9 @@ describe('<LinkedRecord/>', () => {
     const loadingText = screen.getByText('divaClient_loadingText');
     expect(loadingText).toBeInTheDocument();
 
-    const listUrl =
-      '/record/nationalSubjectCategory/nationalSubjectCategory:6325370460697648?presentationRecordLinkId=nationalSubjectCategoryOutputPLink';
-    mockAxios.onAny(listUrl).reply(
-      200,
-      nationalSubjectCategory,
-      //   , {
-      //   Authtoken: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      // }
-    );
-
-    // console.log(mockAxios.handlers.get[0]);
-    waitFor(() => {
-      expect(
-        screen.findByLabelText('nationalSubjectCategoryLinkText'),
-      ).toBeInTheDocument();
-    }).then();
+    await waitFor(() => {
+      const fysik = screen.queryByText(/fysik/i);
+      expect(fysik).toBeInTheDocument();
+    });
   });
 });
