@@ -283,6 +283,27 @@ describe('<LinkedRecord/>', () => {
     await waitFor(() => {
       const fysik = screen.queryByText(/fysik/i);
       expect(fysik).toBeInTheDocument();
+      const physics = screen.queryByText(/Physical Sciences/i);
+      expect(physics).toBeInTheDocument();
+    });
+  });
+  it('calls the api once', async () => {
+    render(
+      <LinkedRecord
+        id='nationalSubjectCategory:6325370460697648'
+        recordType='nationalSubjectCategory'
+        presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
+      />,
+    );
+    const loadingText = screen.getByText('divaClient_loadingText');
+    expect(loadingText).toBeInTheDocument();
+
+    await waitFor(() => {
+      const fysik = screen.queryByText(/fysik/i);
+      expect(fysik).toBeInTheDocument();
+      const physics = screen.queryByText(/Physical Sciences/i);
+      expect(physics).toBeInTheDocument();
+      expect(mockAxios.history.get.length).toBe(1);
     });
   });
 });
