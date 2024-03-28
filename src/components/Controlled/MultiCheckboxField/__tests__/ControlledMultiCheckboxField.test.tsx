@@ -58,9 +58,7 @@ describe('<ControlledMultiCheckboxField />', () => {
     const checkboxes = container.querySelectorAll('input[type="checkbox"]');
     await userEvent.click(checkboxes[0]);
 
-    await act(async () => {
-      fireEvent.click(checkboxes[1]);
-    });
+    await userEvent.click(checkboxes[1]);
 
     expect(checkboxes[0]).toBeChecked();
     expect(checkboxes[1]).toBeChecked();
