@@ -85,7 +85,7 @@ export const ControlledAutocomplete = (
           setOptions(response.data);
         }
       } catch (err: unknown) {
-        console.log('err', err);
+        console.error('err', err);
       }
     };
 

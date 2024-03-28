@@ -832,6 +832,7 @@ const DummyForm = (): JSX.Element => {
 
 describe('<Autocomplete/>', () => {
   let mockAxios: MockAdapter;
+
   beforeEach(() => {
     mockAxios = new MockAdapter(axios);
     const listUrl: string = `/search/nationalSubjectCategory?searchTermValue=*`;
@@ -844,6 +845,7 @@ describe('<Autocomplete/>', () => {
   afterEach(() => {
     mockAxios.restore();
   });
+
   it('renders with default placeholder', () => {
     render(<DummyForm />);
     const inputElement = screen.getByPlaceholderText('somePlaceholder');
@@ -874,6 +876,7 @@ describe('<Autocomplete/>', () => {
     const listbox = screen.getByRole('listbox');
     expect(listbox).toBeInTheDocument();
   });
+
   it('displays presentation for picked option', async () => {
     const user = userEvent.setup();
     render(<DummyForm />);
