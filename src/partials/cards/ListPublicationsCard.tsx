@@ -35,7 +35,6 @@ import {
   publicationsSelector,
 } from '../../features/publications';
 import { DivaOutput } from '../../features/publications/actions';
-import { FormSchema } from '../../components/FormGenerator/types';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();

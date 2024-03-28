@@ -26,8 +26,8 @@ import type { RenderOptions } from '@testing-library/react';
 import { AppStore, RootState } from '../app/store';
 
 import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
-import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
-import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
+// import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
+// import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
 import authReducer from '../features/auth/authSlice';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
@@ -46,8 +46,8 @@ const renderWithReduxProvider = (
       reducer: {
         auth: authReducer,
         publicationType: publicationTypeReducer,
-        subjectCategory: subjectCategoryReducer,
-        researchSubject: researchSubjectReducer,
+        // subjectCategory: subjectCategoryReducer,
+        // researchSubject: researchSubjectReducer,
       },
       preloadedState,
     }),
