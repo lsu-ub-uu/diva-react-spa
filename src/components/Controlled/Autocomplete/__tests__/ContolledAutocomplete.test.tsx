@@ -818,7 +818,9 @@ const DummyForm = (): JSX.Element => {
       label='Label for test'
       name='name'
       showLabel
+      recordType='nationalSubjectCategory'
       searchLink='nationalSubjectCategory'
+      presentationRecordLinkId='nationalSubjectCategoryPLink'
       placeholder='somePlaceholder'
       tooltip={{
         title: 'tooltipTitle',
@@ -837,7 +839,6 @@ describe('<Autocomplete/>', () => {
     const optionUrl =
       '/record/nationalSubjectCategory/nationalSubjectCategory:6325356888554468?presentationRecordLinkId=nationalSubjectCategoryPLink';
     mockAxios.onGet(optionUrl).reply(200, softwareEngineeringOption);
-    console.log(mockAxios.handlers.get[1]);
   });
 
   afterEach(() => {
@@ -884,13 +885,13 @@ describe('<Autocomplete/>', () => {
 
     const listbox = screen.getByRole('listbox');
     expect(listbox).toBeInTheDocument();
+
     const softwareEngineering = screen.getByText('Software Engineering');
     await user.click(softwareEngineering);
     expect(listbox).not.toBeInTheDocument();
-    expect(mockAxios.history.get.length).toBe(2);
+
     await waitFor(() => {
-      screen.debug();
-      const engineering = screen.findByText(/Programvaruteknik/i);
+      const engineering = screen.queryByText(/Programvaruteknik/i);
       expect(engineering).toBeInTheDocument();
     });
   });

@@ -23,7 +23,6 @@ export { Tooltip } from './Tooltip/Tooltip';
 export { Dialog } from './Dialog/Dialog';
 export { Backdrop } from './Backdrop/Backdrop';
 export { Card } from './Card/Card';
-export { Search } from './Search/Search';
 export { BackdropProvider, useBackdrop } from './Backdrop/BackdropContext';
 export { FileUpload } from './FileUpload/FileUpload';
 export {
@@ -34,10 +33,7 @@ export { TabsMenu } from './TabsMenu/TabsMenu';
 export { Select } from './Form/Select/Select';
 export { Checkbox } from './Form/Checkbox/Checkbox';
 export { Radio } from './Form/Radio/Radio';
-export { RichTree } from './RichTree/RichTree';
 export { ControlledAutocomplete } from './Controlled/Autocomplete/ControlledAutocomplete';
-export { SubjectCategoryPicker } from './SubjectCategoryPicker/SubjectCategoryPicker';
-export { ResearchSubjectPicker } from './ResearchSubjectPicker/ResearchSubjectPicker';
 export { DatePicker } from './Form/DatePicker/DatePicker';
 export { DateTimePicker } from './Form/DateTimePicker/DateTimePicker';
 export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';

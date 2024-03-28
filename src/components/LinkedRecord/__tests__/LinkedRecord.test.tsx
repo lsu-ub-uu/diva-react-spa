@@ -252,12 +252,15 @@ describe('<LinkedRecord/>', () => {
     const listUrl =
       '/record/nationalSubjectCategory/nationalSubjectCategory:6325370460697648?presentationRecordLinkId=nationalSubjectCategoryOutputPLink';
     mockAxios.onGet(listUrl).reply(200, nationalSubjectCategory);
-    // console.log(JSON.stringify(mockAxios, null, 2));
+    const errorUrl =
+      '/record/nationalSubjectCategory/nationalSubjectCategory:error?presentationRecordLinkId=nationalSubjectCategoryOutputPLink';
+    mockAxios.onGet(errorUrl).networkErrorOnce();
   });
 
   afterEach(() => {
     mockAxios.restore();
   });
+
   it('renders with default loadingText', async () => {
     render(
       <LinkedRecord
@@ -269,7 +272,8 @@ describe('<LinkedRecord/>', () => {
     const loadingText = screen.getByText('divaClient_loadingText');
     expect(loadingText).toBeInTheDocument();
   });
-  it('renders with default placeholder', async () => {
+
+  it('renders the presentation for the linked record', async () => {
     render(
       <LinkedRecord
         id='nationalSubjectCategory:6325370460697648'
@@ -287,6 +291,41 @@ describe('<LinkedRecord/>', () => {
       expect(physics).toBeInTheDocument();
     });
   });
+
+  it('renders an 404 on missing linked record', async () => {
+    render(
+      <LinkedRecord
+        id='nationalSubjectCategory:missing'
+        recordType='nationalSubjectCategory'
+        presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
+      />,
+    );
+    const loadingText = screen.getByText('divaClient_loadingText');
+    expect(loadingText).toBeInTheDocument();
+
+    await waitFor(() => {
+      const error = screen.queryByText(/Request failed with status code 404/i);
+      expect(error).toBeInTheDocument();
+    });
+  });
+
+  it('renders an error on network error', async () => {
+    render(
+      <LinkedRecord
+        id='nationalSubjectCategory:error'
+        recordType='nationalSubjectCategory'
+        presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
+      />,
+    );
+    const loadingText = screen.getByText('divaClient_loadingText');
+    expect(loadingText).toBeInTheDocument();
+
+    await waitFor(() => {
+      const error = screen.queryByText(/Network Error/i);
+      expect(error).toBeInTheDocument();
+    });
+  });
+
   it('calls the api once', async () => {
     render(
       <LinkedRecord
