@@ -17,10 +17,16 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { render, screen, waitFor } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import { expect } from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
+import { act } from 'react-dom/test-utils';
 import { LinkedRecord } from '../LinkedRecord';
 
 /**
@@ -262,6 +268,7 @@ describe('<LinkedRecord/>', () => {
   });
 
   it('renders with default loadingText', async () => {
+    // expect(loadingText).not.toBeInTheDocument();
     render(
       <LinkedRecord
         id='nationalSubjectCategory:6325370460697648'
@@ -269,8 +276,11 @@ describe('<LinkedRecord/>', () => {
         presentationRecordLinkId='nationalSubjectCategoryOutputPLink'
       />,
     );
-    const loadingText = screen.getByText('divaClient_loadingText');
+    const loadingText = screen.queryByText('divaClient_loadingText');
     expect(loadingText).toBeInTheDocument();
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText('divaClient_loadingText'),
+    );
   });
 
   it('renders the presentation for the linked record', async () => {
@@ -290,6 +300,7 @@ describe('<LinkedRecord/>', () => {
       const physics = screen.queryByText(/Physical Sciences/i);
       expect(physics).toBeInTheDocument();
     });
+    expect(loadingText).not.toBeInTheDocument();
   });
 
   it('renders an 404 on missing linked record', async () => {

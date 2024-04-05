@@ -149,7 +149,6 @@ describe('<FormGenerator />', () => {
 
       const user = userEvent.setup();
       await user.click(submitButton);
-      screen.debug();
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
