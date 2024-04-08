@@ -1279,15 +1279,11 @@ describe('FormGenerator Utils', () => {
         testArray: [{ value: '' }, { value: '' }, { value: 'test' }],
       };
 
-      try {
-        const actualData = await schema.validate(data);
-        const expectedData = {
-          testArray: [{ value: 'test' }],
-        };
-        expect(expectedData).toStrictEqual(actualData);
-      } catch (error: unknown) {
-        expect(false).toBe(true);
-      }
-    }); // test ends
+      const actualData = await schema.validate(data);
+      const expectedData = {
+        testArray: [{ value: 'test' }],
+      };
+      expect(expectedData).toStrictEqual(actualData);
+    });
   });
 });
