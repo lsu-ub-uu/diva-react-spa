@@ -42,6 +42,7 @@ import {
   formDefWithOneRecordLinkBeingRequired,
   formDefWithOneTextVariableBeingRepeating,
   formDefContributorGroupWithAuthorGroupAuthor,
+  formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -737,6 +738,35 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('renders a form with numberVariable and a optional numberVariable and skipable attribute and validates it', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+      const numberInput = screen.getByLabelText('someNumberVarIdLabel');
+      expect(numberInput).toBeInTheDocument();
+      const numberInput2 = screen.getByLabelText('someNumberVar2IdLabel');
+      expect(numberInput2).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(numberInput, '2');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
 

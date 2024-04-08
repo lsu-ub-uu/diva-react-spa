@@ -1,14 +1,14 @@
 export const removeEmpty = (obj: any) => {
   const keys = Object.keys(obj);
   keys.forEach((key) => {
-    possiblyEmptyArray(obj, key);
-    possiblyEmptyObject(obj, key);
-    possiblyObjectWithKeys(obj, key);
+    possiblyRemoveEmptyArray(obj, key);
+    possiblyRemoveEmptyObject(obj, key);
+    possiblyRemovePartOfObjectWithKeys(obj, key);
   });
   return obj;
 };
 
-const possiblyEmptyArray = (obj: any, key: string) => {
+const possiblyRemoveEmptyArray = (obj: any, key: string) => {
   if (Array.isArray(obj[key])) {
     const arr = obj[key]
       .map(removeEmpty)
@@ -21,13 +21,13 @@ const possiblyEmptyArray = (obj: any, key: string) => {
   }
 };
 
-const possiblyEmptyObject = (obj: any, key: string) => {
+const possiblyRemoveEmptyObject = (obj: any, key: string) => {
   if (isObjectEmpty(obj, key)) {
     delete obj[key];
   }
 };
 
-const possiblyObjectWithKeys = (obj: any, key: string) => {
+const possiblyRemovePartOfObjectWithKeys = (obj: any, key: string) => {
   if (isObjectAndHasLength(obj, key)) {
     const newObj = removeEmpty(obj[key]);
     if (Object.keys(newObj).length > 0) {

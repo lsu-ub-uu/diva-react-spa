@@ -76,7 +76,6 @@ export const FormGenerator = ({
     ),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
-
   const { control, handleSubmit, reset } = methods;
 
   const generateFormComponent = (
