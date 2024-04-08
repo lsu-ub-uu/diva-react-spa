@@ -23,7 +23,6 @@ import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
   generateYupSchemaFromFormSchema,
-  removeEmpty,
 } from '../utils';
 import {
   formComponentGroup,
@@ -50,6 +49,7 @@ import {
   formDefRealDemoWithAttributesButWithoutFinalValue,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
+import { removeEmpty } from '../../../utils/removeEmpty';
 
 const numberValidationTests = (
   min: number,
@@ -1250,25 +1250,6 @@ describe('FormGenerator Utils', () => {
   });
 
   describe('custom validate yupSchemas for array schemas', () => {
-    it('clear objects before validation', () => {
-      const testObject = {
-        property1: null,
-        property2: undefined,
-        property3: '',
-        property4: [],
-        property5: {},
-        property6: [{ value: '' }, { value: '' }],
-        property7: {
-          value: '',
-          testGroup: { value: '' },
-          testArray: [{}, { value: '' }],
-        },
-      };
-      const actual = removeEmpty(testObject);
-      const expected = {};
-      expect(expected).toStrictEqual(actual);
-    });
-
     it('should validate a list with a simple leaf value object being empty in the array', async () => {
       const optionalStringSchema = yup
         .string()

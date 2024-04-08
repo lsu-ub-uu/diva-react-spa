@@ -18,7 +18,7 @@
  */
 
 import * as yup from 'yup';
-import { AnyObject, ObjectSchema, ObjectShape, TestConfig } from 'yup';
+import {AnyObject, ObjectSchema, ObjectShape, TestConfig} from 'yup';
 
 import {
   FormAttributeCollection,
@@ -32,41 +32,6 @@ import {
 export interface RecordData {
   [key: string]: any;
 }
-
-export const removeEmpty = (obj: any) => {
-  const keys = Object.keys(obj);
-  keys.forEach((key) => {
-    if (Array.isArray(obj[key])) {
-      const arr = obj[key]
-        .map(removeEmpty)
-        .filter((o: any) => Object.keys(o).length > 0);
-      if (arr.length === 0) {
-        delete obj[key];
-      } else {
-        obj[key] = arr;
-      }
-    }
-    if (
-      obj[key] === undefined ||
-      obj[key] === null ||
-      obj[key] === '' ||
-      Object.keys(obj[key]).length === 0
-    ) {
-      delete obj[key];
-    } else if (
-      typeof obj[key] === 'object' &&
-      Object.keys(obj[key]).length > 0
-    ) {
-      const newObj = removeEmpty(obj[key]);
-      if (Object.keys(newObj).length > 0) {
-        obj[key] = newObj;
-      } else {
-        delete obj[key];
-      }
-    }
-  });
-  return obj;
-};
 
 const removeRootObject = (obj: object) => {
   const childKeys = Object.keys(obj);
