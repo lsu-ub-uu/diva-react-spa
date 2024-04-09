@@ -16,8 +16,29 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { RootState } from 'app/store';
+import { IconButton } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import { Tooltip } from '../Tooltip/Tooltip';
 
-export const authStateSelector = (state: RootState) => {
-  return state.auth;
+interface TooltipHelpButtonProps {
+  title: string;
+  body: string;
+}
+
+export const TooltipHelpButton = (props: TooltipHelpButtonProps) => {
+  return (
+    <Tooltip
+      title={props.title}
+      body={props.body}
+    >
+      <IconButton
+        sx={{ p: 0 }}
+        disableRipple
+        color='info'
+        aria-label='info'
+      >
+        <InfoIcon />
+      </IconButton>
+    </Tooltip>
+  );
 };

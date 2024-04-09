@@ -17,7 +17,8 @@
  */
 
 import axios from 'axios';
-import { AppThunk } from 'app/store';
+// import { AppThunk } from 'app/store';
+import { AppThunk } from '../../app/store';
 import { authenticated, authenticating, hasError } from './authSlice';
 import { Account } from '../../components/Layout/Header/Login/devAccounts';
 import { loadPublicationTypesAsync } from '../publicationTypes';

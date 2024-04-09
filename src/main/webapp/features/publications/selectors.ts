@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { RootState } from 'app/store';
+import { RootState } from '../../app/store';
 
-export const publicationTypeSelector = (state: RootState) => {
-  return state.publicationType;
+export const publicationsSelector = (state: RootState) => {
+  return state.publications;
 };

@@ -7,6 +7,10 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // publicDir: 'public',
+  // base: './',
+  root: 'src/main/webapp',
+  envDir: '../../../',
   plugins: [react()],
   test: {
     globals: true,

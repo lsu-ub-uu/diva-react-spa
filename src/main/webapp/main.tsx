@@ -29,7 +29,6 @@ import { divaTheme } from './themes/diva';
 import App from './App';
 import { BackdropProvider, SnackbarProvider } from './components';
 
-// Setup axios baseUrl from env variable
 const { VITE_BFF_API_URL } = import.meta.env;
 axios.defaults.baseURL = VITE_BFF_API_URL;
 

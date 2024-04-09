@@ -16,29 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Tooltip } from 'components/Tooltip/Tooltip';
-import { IconButton } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import { RootState } from '../../app/store';
 
-interface TooltipHelpButtonProps {
-  title: string;
-  body: string;
-}
-
-export const TooltipHelpButton = (props: TooltipHelpButtonProps) => {
-  return (
-    <Tooltip
-      title={props.title}
-      body={props.body}
-    >
-      <IconButton
-        sx={{ p: 0 }}
-        disableRipple
-        color='info'
-        aria-label='info'
-      >
-        <InfoIcon />
-      </IconButton>
-    </Tooltip>
-  );
+export const publicationTypeSelector = (state: RootState) => {
+  return state.publicationType;
 };
