@@ -29,7 +29,7 @@ export async function requestAuthTokenOnLogin(
 ): Promise<Auth> {
   const { CORA_APPTOKENVERIFIER_URL } = process.env;
 
-  const rootUrl = `${CORA_APPTOKENVERIFIER_URL}/apptokenverifier/rest/apptoken/`;
+  const rootUrl = `${CORA_APPTOKENVERIFIER_URL}apptoken/`;
   const url = `${rootUrl}${user}`;
   const headers = {
     'Content-Type': 'text/plain;charset=UTF-8'
