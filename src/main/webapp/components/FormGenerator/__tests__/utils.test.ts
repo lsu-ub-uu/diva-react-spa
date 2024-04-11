@@ -1193,7 +1193,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    it.skip('should return correct validationSchema for repeating group having a text variable', () => {
+    it('should return correct validationSchema for repeating group having a text variable', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRepeatingGroup as FormSchema,
       );
@@ -1201,24 +1201,55 @@ describe('FormGenerator Utils', () => {
 
       const expectedSchema = {
         someRootNameInData: {
+          default: {
+            firstChildGroup: undefined,
+          },
           type: 'object',
           fields: {
             firstChildGroup: {
+              default: undefined,
               type: 'array',
-              tests: minMaxValidationTests(), // 0, 10
+              // tests: minMaxValidationTests(), // 0, 10
               innerType: {
+                default: {
+                  exampleNumberVar: {
+                    value: undefined,
+                  },
+                },
                 fields: {
                   exampleNumberVar: {
+                    default: {
+                      value: undefined,
+                    },
                     type: 'object',
                     fields: {
                       value: {
+                        ...validationTestsExtras(),
+
                         type: 'string',
                         tests: numberValidationTests(0, 20, 2),
                       },
                     },
+                    ...validationTestsExtras(),
                   },
                 },
+                ...validationTestsExtras(),
               },
+              ...validationTestsExtras(),
+              tests: [
+                {
+                  name: 'min',
+                  params: {
+                    min: 0,
+                  },
+                },
+                {
+                  name: 'max',
+                  params: {
+                    max: 10,
+                  },
+                },
+              ],
             },
           },
         },
