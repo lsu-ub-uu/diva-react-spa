@@ -739,7 +739,6 @@ describe('<FormGenerator />', () => {
 
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
-
     it('renders a form with numberVariable and a optional numberVariable and skipable attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
