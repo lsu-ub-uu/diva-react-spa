@@ -237,7 +237,7 @@ export const createYupArrayFromSchema = (
 const createValidationForAttributesFromComponent = (
   component: FormComponent,
 ) => {
-  console.log('createValidationForAttributesFromComponent', component);
+  // console.log('createValidationForAttributesFromComponent', component);
 
   const attributeValidation =
     component.attributes?.map(
@@ -246,7 +246,7 @@ const createValidationForAttributesFromComponent = (
           createValidationFromComponentType(attributeCollection),
       }),
     ) ?? [];
-  console.log('not attribute', component);
+  // console.log('not attribute', component);
   return {
     ...Object.assign({}, ...attributeValidation),
   };
@@ -272,7 +272,7 @@ const createValidationFromComponentType = (
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 const createYupStringRegexpSchema = (component: FormComponent) => {
-  console.log('createYupStringRegexpSchema', component);
+  // console.log('createYupStringRegexpSchema', component);
   const regexpValidation = component.validation as FormRegexValidation;
 
   if (isComponentRepeating(component)) {
@@ -412,7 +412,7 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
         component.repeat,
       );
     } else {
-      console.log('repeating var', component);
+      // console.log('repeating var', component);
       // repeating variables
       const extendedSchema = yup.object().shape({
         value: createValidationFromComponentType(component),

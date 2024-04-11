@@ -18,7 +18,6 @@
  */
 
 import * as yup from 'yup';
-
 import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
@@ -69,6 +68,16 @@ const stringValidationTests = (regex: RegExp) => [
 const requiredValidationTests = [{ name: 'required' }];
 
 const minMaxValidationTests = () => [{ name: 'min' }];
+
+const validationTestsExtras = () => {
+  return {
+    label: undefined,
+    meta: undefined,
+    notOneOf: [],
+    nullable: false,
+    oneOf: [],
+  };
+};
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
@@ -368,240 +377,138 @@ describe('FormGenerator Utils', () => {
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
 
-    // finalValues
-    it('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          bookTitle: {
-            value: 'someFinalValue',
-          },
-          keeptHis: [
-            {
-              value: '12',
+    describe('finalValues', () => {
+      it('createDefaultValuesFromFormSchema should take a more complex formDef with finalValue default values object', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'someFinalValue',
             },
-          ],
-          firstChildGroup: {
-            exampleNumberVar: {
-              value: '55',
-            },
-            exampleTextVar: {
-              value: 'someText',
-            },
-          },
-          recordInfo: {},
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefRealDemoWithFinalValues as FormSchema,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    // attributes
-    it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and attributes and make default values object', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          bookTitle: {
-            value: '',
-            _colour: '',
-          },
-          keeptHis: [
-            {
-              value: '',
-              _colour: '',
-            },
-          ],
-          firstChildGroup: {
-            exampleNumberVar: {
-              value: '',
-            },
-            exampleTextVar: {
-              _colour: '',
-              _colourAgain: 'pink',
-              value: 'exampleFinalValue',
-            },
-            _groupColour: '',
-            _groupColourAgain: 'pink',
-          },
-          recordInfo: {},
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefRealDemoWithAttributes as FormSchema,
-      );
-
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    // repeating vars
-    it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and repeating variables and make default values object', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          bookTitle: {
-            value: '',
-          },
-          keeptHis: [
-            {
-              value: '',
-              _colour: 'blue',
-            },
-            {
-              value: '',
-              _colour: 'blue',
-            },
-            {
-              value: '',
-              _colour: 'blue',
-            },
-            {
-              value: '',
-              _colour: 'blue',
-            },
-            {
-              value: '',
-              _colour: 'blue',
-            },
-          ],
-          firstChildGroup: {
-            exampleNumberVar: [
+            keeptHis: [
               {
-                value: '',
-                _colour: 'pink',
-              },
-              {
-                value: '',
-                _colour: 'pink',
-              },
-              {
-                value: '',
-                _colour: 'pink',
-              },
-              {
-                value: '',
-                _colour: 'pink',
-              },
-              {
-                value: '',
-                _colour: 'pink',
+                value: '12',
               },
             ],
-            exampleTextVar: [],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '55',
+              },
+              exampleTextVar: {
+                value: 'someText',
+              },
+            },
+            recordInfo: {},
           },
-          recordInfo: {},
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefRealDemoWithRepeatingVars as FormSchema,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithFinalValues as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
 
-    it('should take a tree and be able to add full name paths', () => {
-      const expected = [
-        {
-          name: 'person',
-          type: 'group',
-          repeat: true,
-          path: 'person',
-          components: [
-            {
-              name: 'name',
-              type: 'group',
-              repeat: true,
-              components: [
-                {
-                  name: 'firstName',
-                  type: 'textVariable',
-                  repeat: false,
-                  path: 'person.name.firstName',
-                  components: [],
-                },
-                {
-                  name: 'lastName',
-                  path: 'person.name.lastName',
-                  type: 'textVariable',
-                  repeat: false,
-                  components: [],
-                },
-              ],
-              path: 'person.name',
+    describe('attributes', () => {
+      it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and attributes and make default values object', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: '',
+              _colour: '',
             },
-            {
-              name: 'age',
-              type: 'numberVariable',
-              repeat: false,
-              path: 'person.age',
-              components: [],
+            keeptHis: [
+              {
+                value: '',
+                _colour: '',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '',
+              },
+              exampleTextVar: {
+                _colour: '',
+                _colourAgain: 'pink',
+                value: 'exampleFinalValue',
+              },
+              _groupColour: '',
+              _groupColourAgain: 'pink',
             },
-          ],
-        },
-      ];
+            recordInfo: {},
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithAttributes as FormSchema,
+        );
 
-      interface TestComponentLight {
-        name: string;
-        type: 'group' | 'textVariable' | 'numberVariable';
-        repeat: boolean;
-        path?: string; // path template
-        components: TestComponentLight[];
-      }
-
-      const createFormDefWithPaths = (
-        data: TestComponentLight[],
-        parentPath = '',
-      ): unknown => {
-        return data.map((node: TestComponentLight) => {
-          const nodePath = `${parentPath}.${node.name}`;
-          const components = createFormDefWithPaths(node.components, nodePath);
-
-          return {
-            ...node,
-            path: nodePath.slice(1),
-            components,
-          } as TestComponentLight;
-        });
-      };
-
-      const rootComponents: TestComponentLight[] = [
-        {
-          name: 'person',
-          type: 'group',
-          repeat: true,
-          components: [
-            {
-              name: 'name',
-              type: 'group',
-              repeat: true,
-              components: [
-                {
-                  name: 'firstName',
-                  type: 'textVariable',
-                  repeat: false,
-                  components: [],
-                },
-                {
-                  name: 'lastName',
-                  type: 'textVariable',
-                  repeat: false,
-                  components: [],
-                },
-              ],
-            },
-            {
-              name: 'age',
-              type: 'numberVariable',
-              repeat: false,
-              components: [],
-            },
-          ],
-        },
-      ];
-
-      const actual = createFormDefWithPaths(rootComponents);
-      expect(actual).toStrictEqual(expected);
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
 
-    // edit form
-    describe('generate overrides from existing record', () => {
+    describe('repeating vars', () => {
+      it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and repeating variables and make default values object', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: '',
+            },
+            keeptHis: [
+              {
+                value: '',
+                _colour: 'blue',
+              },
+              {
+                value: '',
+                _colour: 'blue',
+              },
+              {
+                value: '',
+                _colour: 'blue',
+              },
+              {
+                value: '',
+                _colour: 'blue',
+              },
+              {
+                value: '',
+                _colour: 'blue',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: [
+                {
+                  value: '',
+                  _colour: 'pink',
+                },
+                {
+                  value: '',
+                  _colour: 'pink',
+                },
+                {
+                  value: '',
+                  _colour: 'pink',
+                },
+                {
+                  value: '',
+                  _colour: 'pink',
+                },
+                {
+                  value: '',
+                  _colour: 'pink',
+                },
+              ],
+              exampleTextVar: [],
+            },
+            recordInfo: {},
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithRepeatingVars as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+    });
+
+    describe('generate overrides from existing record (edit form)', () => {
       it('should take a formDef and make default values object but also take defaultValue override', () => {
         const expectedDefaultValues = {
           someRootNameInData: {
@@ -877,6 +784,110 @@ describe('FormGenerator Utils', () => {
     });
   });
 
+  it('should take a tree and be able to add full name paths', () => {
+    const expected = [
+      {
+        name: 'person',
+        type: 'group',
+        repeat: true,
+        path: 'person',
+        components: [
+          {
+            name: 'name',
+            type: 'group',
+            repeat: true,
+            components: [
+              {
+                name: 'firstName',
+                type: 'textVariable',
+                repeat: false,
+                path: 'person.name.firstName',
+                components: [],
+              },
+              {
+                name: 'lastName',
+                path: 'person.name.lastName',
+                type: 'textVariable',
+                repeat: false,
+                components: [],
+              },
+            ],
+            path: 'person.name',
+          },
+          {
+            name: 'age',
+            type: 'numberVariable',
+            repeat: false,
+            path: 'person.age',
+            components: [],
+          },
+        ],
+      },
+    ];
+
+    interface TestComponentLight {
+      name: string;
+      type: 'group' | 'textVariable' | 'numberVariable';
+      repeat: boolean;
+      path?: string; // path template
+      components: TestComponentLight[];
+    }
+
+    const createFormDefWithPaths = (
+      data: TestComponentLight[],
+      parentPath = '',
+    ): unknown => {
+      return data.map((node: TestComponentLight) => {
+        const nodePath = `${parentPath}.${node.name}`;
+        const components = createFormDefWithPaths(node.components, nodePath);
+
+        return {
+          ...node,
+          path: nodePath.slice(1),
+          components,
+        } as TestComponentLight;
+      });
+    };
+
+    const rootComponents: TestComponentLight[] = [
+      {
+        name: 'person',
+        type: 'group',
+        repeat: true,
+        components: [
+          {
+            name: 'name',
+            type: 'group',
+            repeat: true,
+            components: [
+              {
+                name: 'firstName',
+                type: 'textVariable',
+                repeat: false,
+                components: [],
+              },
+              {
+                name: 'lastName',
+                type: 'textVariable',
+                repeat: false,
+                components: [],
+              },
+            ],
+          },
+          {
+            name: 'age',
+            type: 'numberVariable',
+            repeat: false,
+            components: [],
+          },
+        ],
+      },
+    ];
+
+    const actual = createFormDefWithPaths(rootComponents);
+    expect(actual).toStrictEqual(expected);
+  });
+
   describe('generate yupSchema', () => {
     it('should return correct validationSchema for one textVar and one numberVar', () => {
       const yupSchema = generateYupSchemaFromFormSchema(formDef as FormSchema);
@@ -958,7 +969,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    test.skip('should return correct validationSchema for two repeating variables', () => {
+    it('should return correct validationSchema for two repeating variables', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithTwoRepeatingVarsAndCollectionVar as FormSchema,
       );
@@ -966,37 +977,125 @@ describe('FormGenerator Utils', () => {
 
       const expectedSchema = {
         someRootNameInData: {
+          ...validationTestsExtras(),
+          optional: true,
+          tests: [],
           type: 'object',
+          default: {
+            colour: {
+              value: undefined,
+            },
+            someNameInData: undefined,
+            someNumberVariableNameInData: undefined,
+          },
+
           fields: {
             someNameInData: {
+              ...validationTestsExtras(),
+              default: undefined,
               type: 'array',
-              tests: minMaxValidationTests(), // 0, 2
+              optional: true,
+              tests: [
+                {
+                  name: 'min',
+                  params: {
+                    min: 0,
+                  },
+                },
+                {
+                  name: 'max',
+                  params: {
+                    max: 2,
+                  },
+                },
+              ],
               innerType: {
+                ...validationTestsExtras(),
+                optional: true,
+                tests: [],
+                type: 'object',
+                default: {
+                  value: undefined,
+                },
                 fields: {
                   value: {
-                    type: 'string',
-                    nullable: true,
+                    default: undefined,
+                    ...validationTestsExtras(),
                     optional: true,
+                    type: 'string',
+                    tests: [
+                      {
+                        name: 'matches',
+                        params: {
+                          regex: /^[a-zA-Z]$/,
+                        },
+                      },
+                    ],
+                    nullable: true,
                   },
                 },
               },
             },
             someNumberVariableNameInData: {
-              type: 'array',
-              tests: minMaxValidationTests(), // 1, 5
+              default: undefined,
               innerType: {
+                default: {
+                  value: undefined,
+                },
+                ...validationTestsExtras(),
                 fields: {
                   value: {
+                    default: undefined,
+                    ...validationTestsExtras(),
+                    optional: true,
                     type: 'string',
                     tests: numberValidationTests(0, 20, 2),
                   },
                 },
+                optional: true,
+                type: 'object',
+                ...validationTestsExtras(),
+                tests: [],
               },
+              ...validationTestsExtras(),
+              optional: true,
+              tests: [
+                {
+                  name: 'min',
+                  params: {
+                    min: 1,
+                  },
+                },
+                {
+                  name: 'max',
+                  params: {
+                    max: 5,
+                  },
+                },
+              ],
+              type: 'array',
             },
             colour: {
+              default: {
+                value: undefined,
+              },
               type: 'object',
+              ...validationTestsExtras(),
+              optional: true,
+              tests: [],
               fields: {
-                value: { type: 'string', tests: requiredValidationTests },
+                value: {
+                  default: undefined,
+                  ...validationTestsExtras(),
+                  optional: false,
+                  type: 'string',
+                  tests: [
+                    {
+                      name: 'required',
+                      params: undefined,
+                    },
+                  ],
+                },
               },
             },
           },
@@ -1005,7 +1104,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    test.skip('should return correct validationSchema for one repeating collectionVariable', () => {
+    it.skip('should return correct validationSchema for one repeating collectionVariable', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRepeatingCollectionVar as FormSchema,
       );
@@ -1063,7 +1162,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    test.skip('should return correct validationSchema for repeating group having a text variable', () => {
+    it.skip('should return correct validationSchema for repeating group having a text variable', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRepeatingGroup as FormSchema,
       );
@@ -1097,7 +1196,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    test.skip('should return correct validationSchema for repeating group having repeating child group with two name fields', () => {
+    it.skip('should return correct validationSchema for repeating group having repeating child group with two name fields', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRepeatingGroupWithRepeatingChildGroup as FormSchema,
       );
@@ -1155,7 +1254,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    test.skip('should return correct validationSchema for repeating group having repeating child group with two name fields and different attributes', () => {
+    it.skip('should return correct validationSchema for repeating group having repeating child group with two name fields and different attributes', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes as FormSchema,
       );
