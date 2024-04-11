@@ -1104,7 +1104,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    it.skip('should return correct validationSchema for one repeating collectionVariable', () => {
+    it('should return correct validationSchema for one repeating collectionVariable', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRepeatingCollectionVar as FormSchema,
       );
@@ -1113,21 +1113,52 @@ describe('FormGenerator Utils', () => {
       const expectedSchema = {
         someRootNameInData: {
           type: 'object',
+          default: {
+            colour: undefined,
+          },
           fields: {
             colour: {
+              default: undefined,
               type: 'array',
-              tests: minMaxValidationTests(), // 0, 3
+              // tests: minMaxValidationTests(), // 0, 3
               innerType: {
+                default: {
+                  value: undefined,
+                },
                 fields: {
                   value: {
+                    default: undefined,
+                    ...validationTestsExtras(),
+                    tests: [],
                     type: 'string',
                     nullable: true,
                     optional: true,
                   },
                 },
+                ...validationTestsExtras(),
+                optional: true,
+                tests: [],
+                type: 'object',
               },
+              ...validationTestsExtras(),
+              optional: true,
+              tests: [
+                {
+                  name: 'min',
+                  params: {
+                    min: 0,
+                  },
+                },
+                {
+                  name: 'max',
+                  params: {
+                    max: 3,
+                  },
+                },
+              ],
             },
           },
+          ...validationTestsExtras(),
         },
       };
       expect(actualSchema).toMatchObject(expectedSchema);
