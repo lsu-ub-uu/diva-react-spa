@@ -82,8 +82,17 @@ const minMaxValidationTests = (min: number, max: number) => [
   },
 ];
 
-const validationTestsExtras = () => {
+const validationTestsExtras = (
+  optional: boolean,
+  type: 'string' | 'array' | 'object',
+  tests: unknown[],
+  defaultParam: Object | undefined,
+) => {
   return {
+    optional,
+    type,
+    tests,
+    default: defaultParam,
     label: undefined,
     meta: undefined,
     notOneOf: [],
@@ -990,99 +999,90 @@ describe('FormGenerator Utils', () => {
 
       const expectedSchema = {
         someRootNameInData: {
-          ...validationTestsExtras(),
-          optional: true,
-          tests: [],
-          type: 'object',
-          default: {
+          ...validationTestsExtras(true, 'object', [], {
             colour: {
               value: undefined,
             },
             someNameInData: undefined,
             someNumberVariableNameInData: undefined,
-          },
+          }),
 
           fields: {
             someNameInData: {
-              ...validationTestsExtras(),
-              default: undefined,
-              type: 'array',
-              optional: true,
-              tests: minMaxValidationTests(0, 2),
+              ...validationTestsExtras(
+                true,
+                'array',
+                minMaxValidationTests(0, 2),
+                undefined,
+              ),
               innerType: {
-                ...validationTestsExtras(),
-                optional: true,
-                tests: [],
-                type: 'object',
-                default: {
+                ...validationTestsExtras(true, 'object', [], {
                   value: undefined,
-                },
+                }),
                 fields: {
                   value: {
-                    default: undefined,
-                    ...validationTestsExtras(),
-                    optional: true,
-                    type: 'string',
-                    tests: [
-                      {
-                        name: 'matches',
-                        params: {
-                          regex: /^[a-zA-Z]$/,
+                    ...validationTestsExtras(
+                      true,
+                      'string',
+                      [
+                        {
+                          name: 'matches',
+                          params: {
+                            regex: /^[a-zA-Z]$/,
+                          },
                         },
-                      },
-                    ],
+                      ],
+                      undefined,
+                    ),
+
                     nullable: true,
                   },
                 },
               },
             },
             someNumberVariableNameInData: {
-              default: undefined,
               innerType: {
-                default: {
-                  value: undefined,
-                },
-                ...validationTestsExtras(),
+                // ...validationTestsExtras(),
                 fields: {
                   value: {
-                    default: undefined,
-                    ...validationTestsExtras(),
-                    optional: true,
-                    type: 'string',
-                    tests: numberValidationTests(0, 20, 2),
+                    ...validationTestsExtras(
+                      true,
+                      'string',
+                      numberValidationTests(0, 20, 2),
+                      undefined,
+                    ),
                   },
                 },
-                optional: true,
-                type: 'object',
-                ...validationTestsExtras(),
-                tests: [],
-              },
-              ...validationTestsExtras(),
-              optional: true,
-              tests: minMaxValidationTests(1, 5),
 
-              type: 'array',
+                ...validationTestsExtras(true, 'object', [], {
+                  value: undefined,
+                }),
+              },
+              ...validationTestsExtras(
+                true,
+                'array',
+                minMaxValidationTests(1, 5),
+                undefined,
+              ),
             },
             colour: {
-              default: {
+              ...validationTestsExtras(true, 'object', [], {
                 value: undefined,
-              },
-              type: 'object',
-              ...validationTestsExtras(),
-              optional: true,
-              tests: [],
+              }),
+
               fields: {
                 value: {
-                  default: undefined,
-                  ...validationTestsExtras(),
-                  optional: false,
-                  type: 'string',
-                  tests: [
-                    {
-                      name: 'required',
-                      params: undefined,
-                    },
-                  ],
+                  ...validationTestsExtras(
+                    false,
+                    'string',
+                    [
+                      {
+                        name: 'required',
+                        params: undefined,
+                      },
+                    ],
+                    undefined,
+                  ),
                 },
               },
             },
@@ -1100,39 +1100,30 @@ describe('FormGenerator Utils', () => {
 
       const expectedSchema = {
         someRootNameInData: {
-          type: 'object',
-          default: {
-            colour: undefined,
-          },
           fields: {
             colour: {
-              default: undefined,
-              type: 'array',
               innerType: {
-                default: {
-                  value: undefined,
-                },
                 fields: {
                   value: {
-                    default: undefined,
-                    ...validationTestsExtras(),
-                    tests: [],
-                    type: 'string',
+                    ...validationTestsExtras(true, 'string', [], undefined),
                     nullable: true,
-                    optional: true,
                   },
                 },
-                ...validationTestsExtras(),
-                optional: true,
-                tests: [],
-                type: 'object',
+                ...validationTestsExtras(true, 'object', [], {
+                  value: undefined,
+                }),
               },
-              ...validationTestsExtras(),
-              optional: true,
-              tests: minMaxValidationTests(0, 3),
+              ...validationTestsExtras(
+                true,
+                'array',
+                minMaxValidationTests(0, 3),
+                undefined,
+              ),
             },
           },
-          ...validationTestsExtras(),
+          ...validationTestsExtras(true, 'object', [], {
+            colour: undefined,
+          }),
         },
       };
       expect(actualSchema).toMatchObject(expectedSchema);
@@ -1175,43 +1166,43 @@ describe('FormGenerator Utils', () => {
 
       const expectedSchema = {
         someRootNameInData: {
-          default: {
-            firstChildGroup: undefined,
-          },
-          type: 'object',
           fields: {
             firstChildGroup: {
-              default: undefined,
-              type: 'array',
-              tests: minMaxValidationTests(0, 10),
               innerType: {
-                default: {
+                fields: {
+                  exampleNumberVar: {
+                    fields: {
+                      value: {
+                        ...validationTestsExtras(
+                          true,
+                          'string',
+                          numberValidationTests(0, 20, 2),
+                          undefined,
+                        ),
+                      },
+                    },
+                    ...validationTestsExtras(true, 'object', [], {
+                      value: undefined,
+                    }),
+                  },
+                },
+                ...validationTestsExtras(true, 'object', [], {
                   exampleNumberVar: {
                     value: undefined,
                   },
-                },
-                fields: {
-                  exampleNumberVar: {
-                    default: {
-                      value: undefined,
-                    },
-                    type: 'object',
-                    fields: {
-                      value: {
-                        ...validationTestsExtras(),
-
-                        type: 'string',
-                        tests: numberValidationTests(0, 20, 2),
-                      },
-                    },
-                    ...validationTestsExtras(),
-                  },
-                },
-                ...validationTestsExtras(),
+                }),
               },
-              ...validationTestsExtras(),
+              ...validationTestsExtras(
+                true,
+                'array',
+                minMaxValidationTests(0, 10),
+                undefined,
+              ),
             },
           },
+          ...validationTestsExtras(true, 'object', [], {
+            firstChildGroup: undefined,
+          }),
         },
       };
 
@@ -1226,42 +1217,15 @@ describe('FormGenerator Utils', () => {
 
       const expectedSchema = {
         someRootNameInData: {
-          default: {
-            author: undefined,
-          },
-          type: 'object',
           fields: {
             author: {
-              default: undefined,
-              // type: 'array',
-              tests: minMaxValidationTests(1, 10),
               innerType: {
-                default: {
-                  name: undefined,
-                },
                 fields: {
                   name: {
-                    default: undefined,
-                    tests: minMaxValidationTests(1, 100),
                     innerType: {
-                      default: {
-                        age: {
-                          value: undefined,
-                        },
-                        firstName: {
-                          value: undefined,
-                        },
-                        lastName: {
-                          value: undefined,
-                        },
-                      },
                       fields: {
                         firstName: {
-                          type: 'object',
-                          optional: true,
-                          tests: [],
-                          default: {},
-                          ...validationTestsExtras(),
+                          ...validationTestsExtras(true, 'object', [], {}),
                           fields: {
                             value: {
                               type: 'string',
@@ -1269,11 +1233,7 @@ describe('FormGenerator Utils', () => {
                           },
                         },
                         lastName: {
-                          type: 'object',
-                          optional: true,
-                          tests: [],
-                          default: {},
-                          ...validationTestsExtras(),
+                          ...validationTestsExtras(true, 'object', [], {}),
                           fields: {
                             value: {
                               type: 'string',
@@ -1281,11 +1241,7 @@ describe('FormGenerator Utils', () => {
                           },
                         },
                         age: {
-                          type: 'object',
-                          optional: true,
-                          tests: [],
-                          default: {},
-                          ...validationTestsExtras(),
+                          ...validationTestsExtras(true, 'object', [], {}),
                           fields: {
                             value: {
                               type: 'string',
@@ -1294,29 +1250,41 @@ describe('FormGenerator Utils', () => {
                           },
                         },
                       },
-                      ...validationTestsExtras(),
-                      type: 'object',
-                      optional: true,
-                      tests: [],
+                      ...validationTestsExtras(true, 'object', [], {
+                        age: {
+                          value: undefined,
+                        },
+                        firstName: {
+                          value: undefined,
+                        },
+                        lastName: {
+                          value: undefined,
+                        },
+                      }),
                     },
-                    ...validationTestsExtras(),
-                    optional: true,
-                    type: 'array',
+                    ...validationTestsExtras(
+                      true,
+                      'array',
+                      minMaxValidationTests(1, 100),
+                      undefined,
+                    ),
                   },
                 },
-                ...validationTestsExtras(),
-                type: 'object',
-                optional: true,
-                tests: [],
+                ...validationTestsExtras(true, 'object', [], {
+                  name: undefined,
+                }),
               },
-              ...validationTestsExtras(),
-              optional: true,
-              type: 'array',
+              ...validationTestsExtras(
+                true,
+                'array',
+                minMaxValidationTests(1, 10),
+                undefined,
+              ),
             },
           },
-          ...validationTestsExtras(),
-          optional: true,
-          tests: [],
+          ...validationTestsExtras(true, 'object', [], {
+            author: undefined,
+          }),
         },
       };
 
@@ -1341,43 +1309,41 @@ describe('FormGenerator Utils', () => {
           type: 'object',
           fields: {
             grade: {
-              default: undefined,
-              type: 'array',
-              tests: minMaxValidationTests(1, 12),
               innerType: {
-                default: {
-                  _gradeAttribute: undefined,
-                  value: undefined,
-                },
-                type: 'object',
                 fields: {
                   _gradeAttribute: {
-                    default: undefined,
-                    optional: false,
-                    ...validationTestsExtras(),
-
-                    type: 'string',
-                    tests: [
-                      {
-                        name: 'required',
-                        params: undefined,
-                      },
-                    ],
+                    ...validationTestsExtras(
+                      false,
+                      'string',
+                      [
+                        {
+                          name: 'required',
+                          params: undefined,
+                        },
+                      ],
+                      undefined,
+                    ),
                   },
                   value: {
-                    ...validationTestsExtras(),
-                    default: undefined,
-                    optional: true,
-                    type: 'string',
-                    tests: numberValidationTests(1, 5, 0),
+                    ...validationTestsExtras(
+                      true,
+                      'string',
+                      numberValidationTests(1, 5, 0),
+                      undefined,
+                    ),
                   },
                 },
-                ...validationTestsExtras(),
-                optional: true,
-                tests: [],
+                ...validationTestsExtras(true, 'object', [], {
+                  _gradeAttribute: undefined,
+                  value: undefined,
+                }),
               },
-              ...validationTestsExtras(),
-              optional: true,
+              ...validationTestsExtras(
+                true,
+                'array',
+                minMaxValidationTests(1, 12),
+                undefined,
+              ),
             },
             nonRepeatingGroup: {
               type: 'object',
@@ -1389,52 +1355,27 @@ describe('FormGenerator Utils', () => {
               },
             },
             author: {
-              default: undefined,
-              type: 'array',
-              tests: minMaxValidationTests(1, 10),
               innerType: {
-                default: {
-                  _colourAttribute: undefined,
-                  name: undefined,
-                },
                 fields: {
                   _colourAttribute: {
-                    ...validationTestsExtras(),
-                    default: undefined,
-                    optional: false,
+                    ...validationTestsExtras(
+                      false,
+                      'string',
+                      [
+                        {
+                          name: 'required',
+                          params: undefined,
+                        },
+                      ],
+                      undefined,
+                    ),
                     // attribute values are always required
-                    type: 'string',
-                    tests: [
-                      {
-                        name: 'required',
-                        params: undefined,
-                      },
-                    ],
                   },
                   name: {
-                    default: undefined,
-                    type: 'array',
-                    tests: minMaxValidationTests(1, 100),
                     innerType: {
-                      default: {
-                        age: {
-                          value: undefined,
-                        },
-                        firstName: {
-                          _colourAttribute: undefined,
-                          value: undefined,
-                        },
-                        lastName: {
-                          value: undefined,
-                        },
-                      },
                       fields: {
                         firstName: {
-                          ...validationTestsExtras(),
-                          default: {},
-                          optional: true,
-                          tests: [],
-                          type: 'object',
+                          ...validationTestsExtras(true, 'object', [], {}),
                           fields: {
                             value: {
                               type: 'string',
@@ -1446,11 +1387,7 @@ describe('FormGenerator Utils', () => {
                           },
                         },
                         lastName: {
-                          ...validationTestsExtras(),
-                          default: {},
-                          optional: true,
-                          tests: [],
-                          type: 'object',
+                          ...validationTestsExtras(true, 'object', [], {}),
                           fields: {
                             value: {
                               type: 'string',
@@ -1458,11 +1395,7 @@ describe('FormGenerator Utils', () => {
                           },
                         },
                         age: {
-                          ...validationTestsExtras(),
-                          default: {},
-                          optional: true,
-                          tests: [],
-                          type: 'object',
+                          ...validationTestsExtras(true, 'object', [], {}),
                           fields: {
                             value: {
                               type: 'string',
@@ -1471,22 +1404,38 @@ describe('FormGenerator Utils', () => {
                           },
                         },
                       },
-                      ...validationTestsExtras(),
-                      optional: true,
-                      type: 'object',
-                      tests: [],
+                      ...validationTestsExtras(true, 'object', [], {
+                        age: {
+                          value: undefined,
+                        },
+                        firstName: {
+                          _colourAttribute: undefined,
+                          value: undefined,
+                        },
+                        lastName: {
+                          value: undefined,
+                        },
+                      }),
                     },
-                    ...validationTestsExtras(),
-                    optional: true,
+                    ...validationTestsExtras(
+                      true,
+                      'array',
+                      minMaxValidationTests(1, 100),
+                      undefined,
+                    ),
                   },
                 },
-                ...validationTestsExtras(),
-                optional: true,
-                tests: [],
-                type: 'object',
+                ...validationTestsExtras(true, 'object', [], {
+                  _colourAttribute: undefined,
+                  name: undefined,
+                }),
               },
-              ...validationTestsExtras(),
-              optional: true,
+              ...validationTestsExtras(
+                true,
+                'array',
+                minMaxValidationTests(1, 10),
+                undefined,
+              ),
             },
           },
         },
