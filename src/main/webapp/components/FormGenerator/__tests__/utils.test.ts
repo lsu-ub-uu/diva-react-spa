@@ -18,6 +18,7 @@
  */
 
 import * as yup from 'yup';
+import { array } from 'yup';
 import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromFormSchema,
@@ -1258,7 +1259,7 @@ describe('FormGenerator Utils', () => {
       expect(actualSchema).toMatchObject(expectedSchema);
     });
 
-    it.skip('should return correct validationSchema for repeating group having repeating child group with two name fields', () => {
+    it('should return correct validationSchema for repeating group having repeating child group with two name fields', () => {
       const yupSchema = generateYupSchemaFromFormSchema(
         formDefWithRepeatingGroupWithRepeatingChildGroup as FormSchema,
       );
@@ -1266,20 +1267,42 @@ describe('FormGenerator Utils', () => {
 
       const expectedSchema = {
         someRootNameInData: {
+          default: {
+            author: undefined,
+          },
           type: 'object',
           fields: {
             author: {
-              type: 'array',
-              tests: minMaxValidationTests(), // 1, 10
+              default: undefined,
+              // type: 'array',
+              // tests: minMaxValidationTests(), // 1, 10
               innerType: {
+                default: {
+                  name: undefined,
+                },
                 fields: {
                   name: {
-                    type: 'array',
-                    tests: minMaxValidationTests(), // 1, 100
+                    default: undefined,
+                    // tests: minMaxValidationTests(), // 1, 100
                     innerType: {
+                      default: {
+                        age: {
+                          value: undefined,
+                        },
+                        firstName: {
+                          value: undefined,
+                        },
+                        lastName: {
+                          value: undefined,
+                        },
+                      },
                       fields: {
                         firstName: {
                           type: 'object',
+                          optional: true,
+                          tests: [],
+                          default: {},
+                          ...validationTestsExtras(),
                           fields: {
                             value: {
                               type: 'string',
@@ -1288,6 +1311,10 @@ describe('FormGenerator Utils', () => {
                         },
                         lastName: {
                           type: 'object',
+                          optional: true,
+                          tests: [],
+                          default: {},
+                          ...validationTestsExtras(),
                           fields: {
                             value: {
                               type: 'string',
@@ -1296,6 +1323,10 @@ describe('FormGenerator Utils', () => {
                         },
                         age: {
                           type: 'object',
+                          optional: true,
+                          tests: [],
+                          default: {},
+                          ...validationTestsExtras(),
                           fields: {
                             value: {
                               type: 'string',
@@ -1304,12 +1335,60 @@ describe('FormGenerator Utils', () => {
                           },
                         },
                       },
+                      ...validationTestsExtras(),
+                      type: 'object',
+                      optional: true,
+                      tests: [],
                     },
+                    ...validationTestsExtras(),
+                    // type: 'object',
+                    optional: true,
+                    tests: [
+                      {
+                        name: 'min',
+                        params: {
+                          min: 1,
+                        },
+                      },
+                      {
+                        name: 'max',
+                        params: {
+                          max: 100,
+                        },
+                      },
+                    ],
+                    type: 'array',
                   },
                 },
+                ...validationTestsExtras(),
+                type: 'object',
+                optional: true,
+                tests: [],
               },
+              ...validationTestsExtras(),
+              // type: 'object',
+              optional: true,
+              tests: [
+                {
+                  name: 'min',
+                  params: {
+                    min: 1,
+                  },
+                },
+                {
+                  name: 'max',
+                  params: {
+                    max: 10,
+                  },
+                },
+              ],
+              type: 'array',
             },
           },
+          ...validationTestsExtras(),
+          // type: 'object',
+          optional: true,
+          tests: [],
         },
       };
 
