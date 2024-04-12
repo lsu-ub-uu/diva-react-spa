@@ -33,7 +33,7 @@ export interface RecordData {
   [key: string]: any;
 }
 
-const removeRootObject = (obj: object) => {
+export const removeRootObject = (obj: object) => {
   const childKeys = Object.keys(obj);
   if (childKeys.length === 1) {
     // @ts-ignore
@@ -41,7 +41,7 @@ const removeRootObject = (obj: object) => {
   }
 };
 
-const createDefaultValue = (
+export const createDefaultValue = (
   component: FormComponent | FormAttributeCollection,
 ) => (component.finalValue ? component.finalValue : '');
 
@@ -58,11 +58,11 @@ export const generateComponentAttributes = (component: FormComponent) => {
   };
 };
 
-const generateRepeatingObject = (size: number, obj: unknown): unknown[] => {
+export const generateRepeatingObject = (size: number, obj: unknown): unknown[] => {
   return Array.from({ length: size }, () => obj);
 };
 
-const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
+export const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
   component.repeat?.minNumberOfRepeatingToShow ??
   component.repeat?.repeatMin ??
   0;
@@ -96,6 +96,7 @@ export const createDefaultValuesFromComponent = (
         numberToShowFromStart,
         formDefaultObject,
       );
+      console.log('temp')
     } else {
       defaultValues[component.name] = formDefaultObject;
     }

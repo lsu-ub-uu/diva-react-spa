@@ -19,9 +19,14 @@
 
 import * as yup from 'yup';
 import {
+  createDefaultValue,
   createDefaultValuesFromComponent,
+  createDefaultValuesFromComponents,
   createDefaultValuesFromFormSchema,
+  generateRepeatingObject,
   generateYupSchemaFromFormSchema,
+  getMinNumberOfRepeatingToShow,
+  removeRootObject,
 } from '../utils';
 import {
   formComponentGroup,
@@ -1480,6 +1485,268 @@ describe('FormGenerator Utils', () => {
         testArray: [{ value: 'test' }],
       };
       expect(expectedData).toStrictEqual(actualData);
+    });
+  });
+  describe('util functions', () => {
+    it('removeRootObject', () => {
+      const expectedData = {
+        someNameInData: {
+          value: '',
+        },
+      };
+      const actualData = removeRootObject({
+        someSurroundingContainerName: {
+          someNameInData: {
+            value: '',
+          },
+        },
+      });
+      expect(expectedData).toStrictEqual(actualData);
+    });
+    describe('createDefaultValue', () => {
+      it('createDefaultValue without finalValue return empty default value', () => {
+        const expectedData = '';
+        const actualData = createDefaultValue({
+          name: 'exampleNumberVar',
+          type: 'numberVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataNumberVarText',
+            body: 'exampleMetadataNumberVarDefText',
+          },
+          label: 'exampleMetadataNumberVarText',
+          showLabel: true,
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 100,
+            warningMin: 10,
+            warningMax: 90,
+            numberOfDecimals: 2,
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        });
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('createDefaultValue with finalValue return set default value', () => {
+        const expectedData = '12';
+        const actualData = createDefaultValue({
+          name: 'exampleNumberVar',
+          type: 'numberVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataNumberVarText',
+            body: 'exampleMetadataNumberVarDefText',
+          },
+          label: 'exampleMetadataNumberVarText',
+          finalValue: '12',
+          showLabel: true,
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 100,
+            warningMin: 10,
+            warningMax: 90,
+            numberOfDecimals: 2,
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        });
+        expect(expectedData).toStrictEqual(actualData);
+      });
+    });
+    describe('generateRepeatingObject', () => {
+      it('one repeat', () => {
+        const expectedData = [
+          {
+            value: '',
+          },
+        ];
+        const actualData = generateRepeatingObject(1, {
+          value: '',
+        });
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('two repeats', () => {
+        const expectedData = [
+          {
+            value: '',
+          },
+          {
+            value: '',
+          },
+        ];
+        const actualData = generateRepeatingObject(2, {
+          value: '',
+        });
+        expect(expectedData).toStrictEqual(actualData);
+      });
+    });
+    describe('getMinNumberOfRepeatingToShow', () => {
+      it('getMinNumberOfRepeatingToShow get minNumberOfRepeatingToShow', () => {
+        const expectedData = 2;
+        const actualData = getMinNumberOfRepeatingToShow({
+          name: 'exampleNumberVar',
+          type: 'numberVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataNumberVarText',
+            body: 'exampleMetadataNumberVarDefText',
+          },
+          label: 'exampleMetadataNumberVarText',
+          finalValue: '12',
+          showLabel: true,
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 100,
+            warningMin: 10,
+            warningMax: 90,
+            numberOfDecimals: 2,
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+            minNumberOfRepeatingToShow: 2,
+          },
+        });
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('getMinNumberOfRepeatingToShow get repeatMin', () => {
+        const expectedData = 1;
+        const actualData = getMinNumberOfRepeatingToShow({
+          name: 'exampleNumberVar',
+          type: 'numberVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataNumberVarText',
+            body: 'exampleMetadataNumberVarDefText',
+          },
+          label: 'exampleMetadataNumberVarText',
+          finalValue: '12',
+          showLabel: true,
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 100,
+            warningMin: 10,
+            warningMax: 90,
+            numberOfDecimals: 2,
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        });
+        expect(expectedData).toStrictEqual(actualData);
+      });
+    });
+    describe('createDefaultValuesFromComponents', () => {
+      it('create default value from one component', () => {
+        const expectedData = {
+          exampleNumberVar: {
+            value: '12',
+          },
+        };
+        const actualData = createDefaultValuesFromComponents([
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ]);
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('create default value from one component', () => {
+        const expectedData = {
+          exampleNumberVar: {
+            value: '12',
+          },
+          exampleNumberVar2: {
+            value: '12',
+          },
+        };
+        const actualData = createDefaultValuesFromComponents([
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            name: 'exampleNumberVar2',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ]);
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('create default value from undefined', () => {
+        const expectedData = {};
+        const actualData = createDefaultValuesFromComponents([]);
+        expect(expectedData).toStrictEqual(actualData);
+      });
     });
   });
 });
