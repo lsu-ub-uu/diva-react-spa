@@ -1,19 +1,193 @@
 GET http://localhost:8080/api/refreshDefinitions
 
 ###
+GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/refreshDefinitions
+
+###
+GET http://localhost:8080
+
+###
 GET http://localhost:8080/api/search/nationalSubjectCategorySearch?searchTermValue=*
 
 ###
 GET http://localhost:8080/api/search/personSearch?searchTermValue=*
 
 ###
-GET http://localhost:8080
-
-###
-GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/refreshDefinitions
-
-###
 GET http://localhost:8080/api/translations/sv
 
 ###
 GET http://localhost:8080/api/auth/loginUnits
+
+###
+POST http://localhost:8080/api/record/manuscript
+Content-Type: application/json
+Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
+
+{
+  "divaOutput": {
+    "abstract": [],
+    "administrativeNote": [
+      {
+        "value": null
+      }
+    ],
+    "alternativeTitle": [],
+    "archiveNumber": [
+      {
+        "value": null
+      }
+    ],
+    "artisticWork": {
+      "value": "divaYes"
+    },
+    "attachment": [],
+    "contentType": {
+      "value": "OtherAcademic"
+    },
+    "contributor": {
+      "author": [
+        {
+          "birthYear": [
+            {
+              "value": null
+            }
+          ],
+          "correspondingAuthor": [
+            {
+              "value": null
+            }
+          ],
+          "deathYear": [
+            {
+              "value": null
+            }
+          ],
+          "divaPerson": [
+            {
+              "value": null
+            }
+          ],
+          "email": [
+            {
+              "value": null
+            }
+          ],
+          "familyName": {
+            "value": "e"
+          },
+          "givenName": {
+            "value": "a"
+          },
+          "localUserId": [
+            {
+              "value": null
+            }
+          ],
+          "ORCID": [
+            {
+              "value": null
+            }
+          ],
+          "organisation": [
+            {
+              "value": null
+            }
+          ],
+          "otherOrganisation": [],
+          "otherResearchGroup": [],
+          "researchGroup": [
+            {
+              "value": null
+            }
+          ]
+        }
+      ]
+    },
+    "externalNote": [
+      {
+        "value": null
+      }
+    ],
+    "funders": [],
+    "geoData": [
+      {
+        "description": [
+          {
+            "value": null
+          }
+        ],
+        "endDate": [
+          {
+            "day": [
+              {
+                "value": null
+              }
+            ],
+            "month": [
+              {
+                "value": null
+              }
+            ],
+            "year": [
+              {
+                "value": null
+              }
+            ]
+          }
+        ],
+        "polygon": [],
+        "startDate": [
+          {
+            "day": [
+              {
+                "value": null
+              }
+            ],
+            "month": [
+              {
+                "value": null
+              }
+            ],
+            "year": [
+              {
+                "value": null
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "keywords": [],
+    "localId": [
+      {
+        "value": null
+      }
+    ],
+    "nationalSubjectCategory": [
+      {
+        "value": "nationalSubjectCategory:6325637849942919"
+      }
+    ],
+    "numberOfContributors": [
+      {
+        "value": null
+      }
+    ],
+    "otherFunder": [],
+    "otherProject": [],
+    "project": [],
+    "researchSubject": [],
+    "title": {
+      "_language": "nob",
+      "mainTitle": {
+        "value": "aaaaa"
+      },
+      "subTitle": [
+        {
+          "value": null
+        }
+      ]
+    },
+    "url": []
+  }
+}
