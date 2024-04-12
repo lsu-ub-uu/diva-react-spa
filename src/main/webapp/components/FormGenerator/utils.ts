@@ -39,64 +39,6 @@ const removeRootObject = (obj: object) => {
     // @ts-ignore
     return obj[childKeys[0]];
   }
-  return obj;
-};
-
-const countStringCharOccurrences = (
-  inputString: string,
-  targetChar: string,
-) => {
-  return inputString.split('').filter((char) => char === targetChar).length;
-};
-
-export const isFirstLevel = (pathName: string) => {
-  return countStringCharOccurrences(pathName, '.') === 1;
-};
-
-export const isComponentVariable = (component: FormComponent) =>
-  [
-    'numberVariable',
-    'textVariable',
-    'collectionVariable',
-    'recordLink',
-  ].includes(component.type);
-
-export const isComponentGroup = (component: FormComponent) =>
-  component.type === 'group';
-
-export const isComponentContainer = (component: FormComponent) =>
-  component.type === 'container';
-
-export const isComponentSurroundingContainer = (component: FormComponent) =>
-  isComponentContainer(component) && component.containerType === 'surrounding';
-
-export const isComponentRepeatingContainer = (
-  component: FormComponent | undefined,
-) =>
-  component !== undefined &&
-  isComponentContainer(component) &&
-  component.containerType === 'repeating';
-
-export const isComponentValidForDataCarrying = (component: FormComponent) =>
-  isComponentVariable(component) ||
-  isComponentGroup(component) ||
-  isComponentContainer(component); // a container can have children that are data carriers
-
-export const isComponentRepeating = (component: FormComponent) => {
-  const rMax = component.repeat?.repeatMax ?? 1;
-  const rMin = component.repeat?.repeatMin ?? 1;
-  return !(rMax === 1 && rMin === 1);
-};
-
-export const isComponentRequired = (component: FormComponent) => {
-  const rMin = component.repeat?.repeatMin ?? 1;
-  return rMin > 0;
-};
-
-export const isComponentSingularAndOptional = (component: FormComponent) => {
-  const rMax = component.repeat?.repeatMax ?? 1;
-  const rMin = component.repeat?.repeatMin ?? 1;
-  return rMax === 1 && rMin === 0;
 };
 
 const createDefaultValue = (
@@ -237,8 +179,6 @@ export const createYupArrayFromSchema = (
 const createValidationForAttributesFromComponent = (
   component: FormComponent,
 ) => {
-  // console.log('createValidationForAttributesFromComponent', component);
-
   const attributeValidation =
     component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
@@ -246,7 +186,6 @@ const createValidationForAttributesFromComponent = (
           createValidationFromComponentType(attributeCollection),
       }),
     ) ?? [];
-  // console.log('not attribute', component);
   return {
     ...Object.assign({}, ...attributeValidation),
   };
@@ -272,7 +211,6 @@ const createValidationFromComponentType = (
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 const createYupStringRegexpSchema = (component: FormComponent) => {
-  // console.log('createYupStringRegexpSchema', component);
   const regexpValidation = component.validation as FormRegexValidation;
 
   if (isComponentRepeating(component)) {
@@ -368,7 +306,6 @@ const createYupNumberSchema = (component: FormComponent) => {
  */
 const createYupStringSchema = (component: FormComponent) => {
   if (isComponentRepeating(component)) {
-    // console.log('createYupStringSchema 1', component);
     return yup
       .string()
       .nullable()
@@ -377,19 +314,16 @@ const createYupStringSchema = (component: FormComponent) => {
         isNotNull[0] ? field.required('not valid') : field,
       );
   }
-  // console.log('createYupStringSchema 2', component);
   return yup.string().required();
 };
 
 export const createYupValidationsFromComponent = (component: FormComponent) => {
-  // console.log('createYupValidationsFromComponent', component);
   let validationRule: {
     [x: string]: any;
   } = {};
 
   // remove surrounding container in yup validation structure
   if (isComponentContainer(component)) {
-    // validation rules for children to the container
     const validationsRules = (component.components ?? [])
       .filter(isComponentValidForDataCarrying)
       .map((formComponent) => createYupValidationsFromComponent(formComponent));
@@ -398,7 +332,6 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   }
   // eslint-disable-next-line no-lonely-if
   if (isComponentRepeating(component)) {
-    // console.log('isComponentRepeating', component);
     if (isComponentGroup(component)) {
       const innerObjectSchema = generateYupSchema(component.components);
 
@@ -412,7 +345,6 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
         component.repeat,
       );
     } else {
-      // console.log('repeating var', component);
       // repeating variables
       const extendedSchema = yup.object().shape({
         value: createValidationFromComponentType(component),
@@ -433,22 +365,11 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
         ...innerSchema.fields,
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      /*
-        .test('required-group', `${component.name} is required`, (value) => {
-          if (isComponentRequired(component) && value !== undefined) {
-            const clean = removeEmpty(value);
-            return Object.keys(clean).length > 0;
-          }
-          return true;
-        }) */
     } else {
-      validationRule[component.name] = yup.object().shape(
-        {
-          value: createValidationFromComponentType(component),
-          ...createValidationForAttributesFromComponent(component),
-        } /* Add .when("varIsNotNull", { is: !null, then: add required for attributes })
-           to add required for non-empty value for main component */,
-      ) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      validationRule[component.name] = yup.object().shape({
+        value: createValidationFromComponentType(component),
+        ...createValidationForAttributesFromComponent(component),
+      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     }
   }
 
@@ -467,6 +388,62 @@ const generateYupSchema = (components: FormComponent[] | undefined) => {
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
-  // console.log('yup', yup.object().shape(obj));
   return yup.object().shape(obj);
+};
+
+const countStringCharOccurrences = (
+  inputString: string,
+  targetChar: string,
+) => {
+  return inputString.split('').filter((char) => char === targetChar).length;
+};
+
+export const isFirstLevel = (pathName: string) => {
+  return countStringCharOccurrences(pathName, '.') === 1;
+};
+
+export const isComponentVariable = (component: FormComponent) =>
+  [
+    'numberVariable',
+    'textVariable',
+    'collectionVariable',
+    'recordLink',
+  ].includes(component.type);
+
+export const isComponentGroup = (component: FormComponent) =>
+  component.type === 'group';
+
+export const isComponentContainer = (component: FormComponent) =>
+  component.type === 'container';
+
+export const isComponentSurroundingContainer = (component: FormComponent) =>
+  isComponentContainer(component) && component.containerType === 'surrounding';
+
+export const isComponentRepeatingContainer = (
+  component: FormComponent | undefined,
+) =>
+  component !== undefined &&
+  isComponentContainer(component) &&
+  component.containerType === 'repeating';
+
+export const isComponentValidForDataCarrying = (component: FormComponent) =>
+  isComponentVariable(component) ||
+  isComponentGroup(component) ||
+  isComponentContainer(component); // a container can have children that are data carriers
+
+export const isComponentRepeating = (component: FormComponent) => {
+  const rMax = component.repeat?.repeatMax ?? 1;
+  const rMin = component.repeat?.repeatMin ?? 1;
+  return !(rMax === 1 && rMin === 1);
+};
+
+export const isComponentRequired = (component: FormComponent) => {
+  const rMin = component.repeat?.repeatMin ?? 1;
+  return rMin > 0;
+};
+
+export const isComponentSingularAndOptional = (component: FormComponent) => {
+  const rMax = component.repeat?.repeatMax ?? 1;
+  const rMin = component.repeat?.repeatMin ?? 1;
+  return rMax === 1 && rMin === 0;
 };
