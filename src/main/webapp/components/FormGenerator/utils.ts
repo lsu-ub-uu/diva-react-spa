@@ -176,7 +176,7 @@ export const createYupArrayFromSchema = (
     .max(repeat?.repeatMax ?? 1);
 };
 
-const createValidationForAttributesFromComponent = (
+export const createValidationForAttributesFromComponent = (
   component: FormComponent,
 ) => {
   const attributeValidation =
@@ -191,7 +191,7 @@ const createValidationForAttributesFromComponent = (
   };
 };
 
-const createValidationFromComponentType = (
+export const createValidationFromComponentType = (
   component: FormComponent | FormAttributeCollection,
 ) => {
   switch (component.type) {
@@ -237,7 +237,7 @@ const createYupStringRegexpSchema = (component: FormComponent) => {
  * OBS! In the Yup library, the transform method is executed after the validation process.
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
-const createYupNumberSchema = (component: FormComponent) => {
+export const createYupNumberSchema = (component: FormComponent) => {
   const numberValidation = component.validation as FormNumberValidation;
   const { numberOfDecimals, min, max } = numberValidation;
 

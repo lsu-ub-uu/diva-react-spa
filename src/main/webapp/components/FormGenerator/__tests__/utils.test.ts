@@ -23,6 +23,10 @@ import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromComponents,
   createDefaultValuesFromFormSchema,
+  createValidationForAttributesFromComponent,
+  createValidationFromComponentType,
+  createYupArrayFromSchema,
+  createYupNumberSchema,
   generateRepeatingObject,
   generateYupSchemaFromFormSchema,
   getMinNumberOfRepeatingToShow,
@@ -54,7 +58,7 @@ import {
   formDefWithOneRepeatingTextVariable,
   formDefRealDemoWithAttributesButWithoutFinalValue,
 } from '../../../__mocks__/data/formDef';
-import { FormSchema } from '../types';
+import { FormComponent, FormSchema } from '../types';
 import { removeEmpty } from '../../../utils/removeEmpty';
 
 const numberValidationTests = (
@@ -1937,6 +1941,103 @@ describe('FormGenerator Utils', () => {
           ],
         );
         expect(expectedData).toStrictEqual(actualData);
+      });
+    });
+
+    describe('createYupArrayFromSchema', () => {
+      it.todo('creates one Yup Array', () => {
+        const expectedData = '';
+        const actualData = createYupArrayFromSchema(
+          {},
+          {
+            minNumberOfRepeatingToShow: 0,
+            repeatMin: 0,
+            repeatMax: 10,
+          },
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+    });
+    describe('createValidationForAttributesFromComponent', () => {
+      it.todo('creates one validation for a attribute', () => {
+        const expectedData = {};
+        const actualData = createValidationForAttributesFromComponent({
+          name: 'firstName',
+          type: 'textVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataVarText',
+            body: 'exampleMetadataVarDefText',
+          },
+          label: 'firstName',
+          validation: {
+            type: 'regex',
+            pattern: '^[a-zA-Z]$',
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colourAttribute',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                {
+                  value: 'blue',
+                  label: 'exampleBlueItemText',
+                },
+                {
+                  value: 'pink',
+                  label: 'examplePinkItemText',
+                },
+                {
+                  value: 'yellow',
+                  label: 'exampleYellowItemText',
+                },
+              ],
+              mode: 'input',
+            },
+          ],
+        });
+        expect(expectedData).toMatchObject(actualData);
+      });
+    });
+    describe('createValidationFromComponentType', () => {
+      it.todo('textVariable', () => {
+        const component: FormComponent = {
+          name: 'exampleNumberVar',
+          type: 'numberVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleMetadataNumberVarText',
+            body: 'exampleMetadataNumberVarDefText',
+          },
+          label: 'exampleMetadataNumberVarText',
+          finalValue: '12',
+          showLabel: true,
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 100,
+            warningMin: 10,
+            warningMax: 90,
+            numberOfDecimals: 2,
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        };
+        createValidationFromComponentType(component);
+        const mock = vi.fn();
+        createYupNumberSchema(component as FormComponent)
+        expect(mock).toHaveBeenCalledTimes(1);
       });
     });
   });
