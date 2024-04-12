@@ -26,6 +26,8 @@ import {
   generateRepeatingObject,
   generateYupSchemaFromFormSchema,
   getMinNumberOfRepeatingToShow,
+  mergeArrays,
+  mergeObjects,
   removeRootObject,
 } from '../utils';
 import {
@@ -1745,6 +1747,195 @@ describe('FormGenerator Utils', () => {
       it('create default value from undefined', () => {
         const expectedData = {};
         const actualData = createDefaultValuesFromComponents([]);
+        expect(expectedData).toStrictEqual(actualData);
+      });
+    });
+    describe('mergeObjects', () => {
+      it('merges one object', () => {
+        const expectedData = {
+          someNameInData: {
+            value: 'testValue',
+          },
+        };
+        const actualData = mergeObjects(
+          {
+            someNameInData: {
+              value: '',
+            },
+          },
+          {
+            someNameInData: {
+              value: 'testValue',
+            },
+          },
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('merges one nested object', () => {
+        const expectedData = {
+          someRootNameInData: {
+            someNameInData: {
+              value: 'testValue',
+            },
+          },
+        };
+        const actualData = mergeObjects(
+          {
+            someRootNameInData: {
+              someNameInData: {
+                value: '',
+              },
+            },
+          },
+          {
+            someRootNameInData: {
+              someNameInData: {
+                value: 'testValue',
+              },
+            },
+          },
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('merges one object with an extra object', () => {
+        const expectedData = {
+          someRootNameInData: {
+            someNameInData: {
+              value: 'testValue',
+            },
+            someNumberVariableNameInData: {
+              value: '',
+            },
+          },
+        };
+        const actualData = mergeObjects(
+          {
+            someRootNameInData: {
+              someNameInData: {
+                value: '',
+              },
+              someNumberVariableNameInData: {
+                value: '',
+              },
+            },
+          },
+          {
+            someRootNameInData: {
+              someNameInData: {
+                value: 'testValue',
+              },
+            },
+          },
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('merges one array', () => {
+        const expectedData = {
+          someRootNameInData: {
+            someNameInData: [
+              {
+                value: 'testValue',
+              },
+              {
+                value: '',
+              },
+              {
+                value: '',
+              },
+            ],
+          },
+        };
+        const actualData = mergeObjects(
+          {
+            someRootNameInData: {
+              someNameInData: [
+                {
+                  value: '',
+                },
+                {
+                  value: '',
+                },
+                {
+                  value: '',
+                },
+              ],
+            },
+          },
+          {
+            someRootNameInData: {
+              someNameInData: [
+                {
+                  value: 'testValue',
+                },
+              ],
+            },
+          },
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('merges one value', () => {
+        const expectedData = {
+          someRootNameInData: 'testValue',
+        };
+        const actualData = mergeObjects(
+          {
+            someRootNameInData: '',
+          },
+          {
+            someRootNameInData: 'testValue',
+          },
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+    });
+    describe('mergeArrays', () => {
+      it('merges array with one object', () => {
+        const expectedData = [
+          {
+            value: 'override',
+          },
+        ];
+        const actualData = mergeArrays(
+          [
+            {
+              value: '',
+            },
+          ],
+          [
+            {
+              value: 'override',
+            },
+          ],
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+      it('merges array with two object', () => {
+        const expectedData = [
+          {
+            value: 'override',
+          },
+          {
+            value: 'override2',
+          },
+        ];
+        const actualData = mergeArrays(
+          [
+            {
+              value: '',
+            },
+            {
+              value: '',
+            },
+          ],
+          [
+            {
+              value: 'override',
+            },
+            {
+              value: 'override2',
+            },
+          ],
+        );
         expect(expectedData).toStrictEqual(actualData);
       });
     });

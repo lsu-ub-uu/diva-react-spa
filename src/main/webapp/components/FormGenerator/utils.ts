@@ -96,7 +96,6 @@ export const createDefaultValuesFromComponent = (
         numberToShowFromStart,
         formDefaultObject,
       );
-      console.log('temp')
     } else {
       defaultValues[component.name] = formDefaultObject;
     }
@@ -130,7 +129,7 @@ export const createDefaultValuesFromFormSchema = (
   return defaultValues;
 };
 
-const mergeObjects = (target: RecordData, overlay: RecordData): RecordData => {
+export const mergeObjects = (target: RecordData, overlay: RecordData): RecordData => {
   Object.entries(overlay).forEach(([key]) => {
     if (Object.hasOwn(overlay, key)) {
       if (
@@ -152,7 +151,7 @@ const mergeObjects = (target: RecordData, overlay: RecordData): RecordData => {
   return target;
 };
 
-const mergeArrays = (target: any[], overlay: any[]): any[] => {
+export const mergeArrays = (target: any[], overlay: any[]): any[] => {
   const result = [...target];
 
   overlay.forEach((item, index) => {
