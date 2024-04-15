@@ -207,7 +207,10 @@ export const createValidationFromComponentType = (
 ) => {
   switch (component.type) {
     case 'textVariable':
-      return createYupStringRegexpSchema(component as FormComponent);
+      return createYupStringRegexpSchema(
+        component as FormComponent,
+        isParentComponentRequired,
+      );
     case 'numberVariable':
       return createYupNumberSchema(component as FormComponent);
     default: // collectionVariable, recordLink
@@ -225,10 +228,14 @@ export const createValidationFromComponentType = (
  * OBS! In the Yup library, the transform method is executed after the validation process.
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
-const createYupStringRegexpSchema = (component: FormComponent) => {
+const createYupStringRegexpSchema = (
+  component: FormComponent,
+  isParentComponentRequired: boolean = false,
+) => {
   const regexpValidation = component.validation as FormRegexValidation;
-
+  console.log('1');
   if (isComponentRepeating(component)) {
+    console.log('2');
     return yup
       .string()
       .nullable()
@@ -238,6 +245,50 @@ const createYupStringRegexpSchema = (component: FormComponent) => {
         'Invalid input format',
       );
   }
+
+  if (!isParentComponentRequired) {
+    console.log(
+      '3',
+      component.repeat?.repeatMin,
+      component.repeat?.repeatMin,
+      isParentComponentRequired,
+    );
+    console.log(
+      JSON.stringify(
+        yup
+          .string()
+          .nullable()
+          .transform((value) => (value === '' ? null : value))
+          .matches(
+            new RegExp(regexpValidation.pattern ?? '.+'),
+            'Invalid input format',
+          ),
+        null,
+        2,
+      ),
+    );
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .matches(
+        new RegExp(regexpValidation.pattern ?? '.+'),
+        'Invalid input format',
+      );
+  }
+  console.log('4');
+  // console.log(
+  //   JSON.stringify(
+  //     yup
+  //       .string()
+  //       .matches(
+  //         new RegExp(regexpValidation.pattern ?? '.+'),
+  //         'Invalid input format',
+  //       ),
+  //     null,
+  //     2,
+  //   ),
+  // );
   return yup
     .string()
     .matches(
@@ -344,11 +395,13 @@ const createYupStringSchema = (
   return yup.string().required();
 };
 
-export const createYupValidationsFromComponent = (component: FormComponent) => {
+export const createYupValidationsFromComponent = (
+  component: FormComponent,
+  isParentComponentRepeating: boolean = false,
+) => {
   let validationRule: {
     [x: string]: any;
   } = {};
-
   // remove surrounding container in yup validation structure
   if (isComponentContainer(component)) {
     const validationsRules = (component.components ?? [])
@@ -387,14 +440,21 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
     // non-repeating group
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
-      const innerSchema = generateYupSchema(component.components);
+      const innerSchema = generateYupSchema(
+        component.components,
+        isComponentRepeating(component),
+      );
       validationRule[component.name] = yup.object().shape({
         ...innerSchema.fields,
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
       validationRule[component.name] = yup.object().shape({
-        value: createValidationFromComponentType(component),
+        value: createValidationFromComponentType(
+          component,
+          false,
+          isParentComponentRepeating,
+        ),
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     }
@@ -403,7 +463,10 @@ export const createYupValidationsFromComponent = (component: FormComponent) => {
   return validationRule;
 };
 
-const generateYupSchema = (components: FormComponent[] | undefined) => {
+const generateYupSchema = (
+  components: FormComponent[] | undefined,
+  isParentComponentRepeating: boolean = false,
+) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
     .map((formComponent) => createYupValidationsFromComponent(formComponent));

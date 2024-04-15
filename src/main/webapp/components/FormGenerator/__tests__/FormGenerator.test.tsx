@@ -43,6 +43,7 @@ import {
   formDefWithOneTextVariableBeingRepeating,
   formDefContributorGroupWithAuthorGroupAuthor,
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
+  formDefWithOptionalGroupWithRequiredVar,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -873,7 +874,26 @@ describe('<FormGenerator />', () => {
       expect(headlineElement).toBeInTheDocument();
     });
 
-    it.skip('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
+    it('validation should pass a group having min 0 and max 0 and variables being min 1 and max 1', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOptionalGroupWithRequiredVar as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -892,7 +912,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it.skip('validation should fail a group having min 1 and max 1 and sub groups being optional', async () => {
+    it('validation should fail a group having min 1 and max 1 and some sub groups being optional', async () => {
       const mockSubmit = vi.fn();
 
       render(
