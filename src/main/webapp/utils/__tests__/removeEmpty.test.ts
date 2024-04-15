@@ -33,9 +33,219 @@ describe('removeEmpty', () => {
         testGroup: { value: '' },
         testArray: [{}, { value: '' }],
       },
+      property8: [
+        {
+          value: null,
+        },
+      ],
     };
     const actual = removeEmpty(testObject);
     const expected = {};
+    expect(expected).toStrictEqual(actual);
+  });
+  it('clear mixed objects', () => {
+    const testObject = {
+      divaOutput: {
+        abstract: [],
+        administrativeNote: [
+          {
+            value: null,
+          },
+        ],
+        alternativeTitle: [],
+        archiveNumber: [
+          {
+            value: null,
+          },
+        ],
+        artisticWork: {
+          value: 'divaYes',
+        },
+        attachment: [],
+        contentType: {
+          value: 'OtherAcademic',
+        },
+        contributor: {
+          author: [
+            {
+              birthYear: [
+                {
+                  value: null,
+                },
+              ],
+              correspondingAuthor: [
+                {
+                  value: null,
+                },
+              ],
+              deathYear: [
+                {
+                  value: null,
+                },
+              ],
+              divaPerson: [
+                {
+                  value: null,
+                },
+              ],
+              email: [
+                {
+                  value: null,
+                },
+              ],
+              familyName: {
+                value: 'Efternamn',
+              },
+              givenName: {
+                value: 'Förnamn',
+              },
+              localUserId: [
+                {
+                  value: null,
+                },
+              ],
+              ORCID: [
+                {
+                  value: null,
+                },
+              ],
+              organisation: [
+                {
+                  value: null,
+                },
+              ],
+              otherOrganisation: [],
+              otherResearchGroup: [],
+              researchGroup: [
+                {
+                  value: null,
+                },
+              ],
+            },
+          ],
+        },
+        externalNote: [
+          {
+            value: null,
+          },
+        ],
+        funders: [],
+        geoData: [
+          {
+            description: [
+              {
+                value: null,
+              },
+            ],
+            endDate: [
+              {
+                day: [
+                  {
+                    value: null,
+                  },
+                ],
+                month: [
+                  {
+                    value: null,
+                  },
+                ],
+                year: [
+                  {
+                    value: null,
+                  },
+                ],
+              },
+            ],
+            polygon: [],
+            startDate: [
+              {
+                day: [
+                  {
+                    value: null,
+                  },
+                ],
+                month: [
+                  {
+                    value: null,
+                  },
+                ],
+                year: [
+                  {
+                    value: null,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        keywords: [],
+        localId: [
+          {
+            value: null,
+          },
+        ],
+        nationalSubjectCategory: [
+          {
+            value: 'nationalSubjectCategory:1111111111111111',
+          },
+        ],
+        numberOfContributors: [
+          {
+            value: null,
+          },
+        ],
+        otherFunder: [],
+        otherProject: [],
+        project: [],
+        researchSubject: [],
+        title: {
+          _language: 'lan',
+          mainTitle: {
+            value: 'language',
+          },
+          subTitle: [
+            {
+              value: null,
+            },
+          ],
+        },
+        url: [],
+      },
+    };
+    const actual = removeEmpty(testObject);
+    const expected = {
+      divaOutput: {
+        artisticWork: {
+          value: 'divaYes',
+        },
+        contentType: {
+          value: 'OtherAcademic',
+        },
+        contributor: {
+          author: [
+            {
+              familyName: {
+                value: 'Efternamn',
+              },
+              givenName: {
+                value: 'Förnamn',
+              },
+            },
+          ],
+        },
+        nationalSubjectCategory: [
+          {
+            value: 'nationalSubjectCategory:1111111111111111',
+          },
+        ],
+        title: {
+          _language: 'lan',
+          mainTitle: {
+            value: 'language',
+          },
+        },
+      },
+    };
     expect(expected).toStrictEqual(actual);
   });
 });

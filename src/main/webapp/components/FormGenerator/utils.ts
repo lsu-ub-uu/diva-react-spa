@@ -58,7 +58,10 @@ export const generateComponentAttributes = (component: FormComponent) => {
   };
 };
 
-export const generateRepeatingObject = (size: number, obj: unknown): unknown[] => {
+export const generateRepeatingObject = (
+  size: number,
+  obj: unknown,
+): unknown[] => {
   return Array.from({ length: size }, () => obj);
 };
 
@@ -129,7 +132,10 @@ export const createDefaultValuesFromFormSchema = (
   return defaultValues;
 };
 
-export const mergeObjects = (target: RecordData, overlay: RecordData): RecordData => {
+export const mergeObjects = (
+  target: RecordData,
+  overlay: RecordData,
+): RecordData => {
   Object.entries(overlay).forEach(([key]) => {
     if (Object.hasOwn(overlay, key)) {
       if (
@@ -182,8 +188,11 @@ export const createValidationForAttributesFromComponent = (
   const attributeValidation =
     component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
-        [`_${attributeCollection.name}`]:
-          createValidationFromComponentType(attributeCollection),
+        [`_${attributeCollection.name}`]: createValidationFromComponentType(
+          attributeCollection,
+          true,
+          isComponentRequired(component),
+        ),
       }),
     ) ?? [];
   return {
@@ -193,6 +202,8 @@ export const createValidationForAttributesFromComponent = (
 
 export const createValidationFromComponentType = (
   component: FormComponent | FormAttributeCollection,
+  isAttribute?: boolean,
+  isParentComponentRequired?: boolean,
 ) => {
   switch (component.type) {
     case 'textVariable':
@@ -200,7 +211,11 @@ export const createValidationFromComponentType = (
     case 'numberVariable':
       return createYupNumberSchema(component as FormComponent);
     default: // collectionVariable, recordLink
-      return createYupStringSchema(component as FormComponent);
+      return createYupStringSchema(
+        component as FormComponent,
+        isAttribute,
+        isParentComponentRequired,
+      );
   }
 };
 
@@ -304,7 +319,11 @@ export const createYupNumberSchema = (component: FormComponent) => {
  * OBS! In the Yup library, the transform method is executed after the validation process.
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
-const createYupStringSchema = (component: FormComponent) => {
+const createYupStringSchema = (
+  component: FormComponent,
+  isAttribute: boolean = false,
+  isParentComponentRequired: boolean = false,
+) => {
   if (isComponentRepeating(component)) {
     return yup
       .string()
@@ -313,6 +332,14 @@ const createYupStringSchema = (component: FormComponent) => {
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull[0] ? field.required('not valid') : field,
       );
+  }
+  if (isAttribute && !isParentComponentRequired) {
+    // check if sibling is 1-1, 1-X
+    return yup.string().when('value', ([value]) => {
+      return value !== null || value !== ''
+        ? yup.string()
+        : yup.string().required();
+    });
   }
   return yup.string().required();
 };

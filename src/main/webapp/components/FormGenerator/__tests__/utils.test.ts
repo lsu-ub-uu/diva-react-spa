@@ -2009,7 +2009,7 @@ describe('FormGenerator Utils', () => {
       });
     });
     describe('createValidationFromComponentType', () => {
-      it.todo('textVariable', () => {
+      it.todo('textVariable', () =>  {
         const component: FormComponent = {
           name: 'exampleNumberVar',
           type: 'numberVariable',

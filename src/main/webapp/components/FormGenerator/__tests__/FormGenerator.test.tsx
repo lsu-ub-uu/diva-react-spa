@@ -719,6 +719,7 @@ describe('<FormGenerator />', () => {
       expect(expandButton).toBeInTheDocument();
 
       const user = userEvent.setup();
+      await user.type(numberInput, '12');
       await user.click(expandButton);
       const listBoxElement = screen.getByRole('listbox');
 
@@ -740,6 +741,42 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
+    it('renders a form with numberVariable and attribute collection selectBox and validates it when filled', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneNumberVariableWithAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const numberInput = screen.getByPlaceholderText('someEmptyTextId');
+      expect(numberInput).toBeInTheDocument();
+
+      const attributeButton = screen.getByRole('button', { expanded: false });
+      expect(attributeButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(numberInput, '12');
+      await user.click(attributeButton);
+      const listBoxElement = screen.getByRole('listbox');
+
+      expect(listBoxElement.children).toHaveLength(4);
+      await user.selectOptions(listBoxElement, 'exampleBlueItemText');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
     it('renders a form with numberVariable and a optional numberVariable and skipable attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
@@ -754,6 +791,8 @@ describe('<FormGenerator />', () => {
       expect(numberInput).toBeInTheDocument();
       const numberInput2 = screen.getByLabelText('someNumberVar2IdLabel');
       expect(numberInput2).toBeInTheDocument();
+      const attributeButton = screen.getByRole('button', { expanded: false });
+      expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
       await user.type(numberInput, '2');
