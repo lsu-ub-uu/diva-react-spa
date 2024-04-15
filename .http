@@ -191,3 +191,42 @@ Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
     "url": []
   }
 }
+
+###
+POST http://localhost:8080/api/record/manuscript
+Content-Type: application/json
+Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
+
+{
+  "divaOutput": {
+    "artisticWork": {
+      "value": "divaYes"
+    },
+    "contentType": {
+      "value": "OtherAcademic"
+    },
+    "contributor": {
+      "author": [
+        {
+          "familyName": {
+            "value": "Efternamn"
+          },
+          "givenName": {
+            "value": "Förnamn"
+          }
+        }
+      ]
+    },
+    "nationalSubjectCategory": [
+      {
+        "value": "nationalSubjectCategory:6325637849942919"
+      }
+    ],
+    "title": {
+      "_language": "nob",
+      "mainTitle": {
+        "value": "mainTitle"
+      }
+    }
+  }
+}
