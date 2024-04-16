@@ -3466,6 +3466,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel = {
           body: 'authorGroupDefText',
         },
         label: 'author',
+        showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
           repeatMin: 1,

@@ -702,7 +702,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('attribute collection', () => {
-    it('renders a form with numberVariable and attribute collection selectBox and validates it', async () => {
+    it('renders a form with numberVariable and attribute and does NOT validate it when skipped', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -742,7 +742,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('renders a form with numberVariable and attribute collection selectBox and validates it when filled', async () => {
+    it('renders a form with numberVariable and attribute and validates it when filled', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -778,7 +778,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a form with numberVariable and a optional numberVariable and skipable attribute and validates it', async () => {
+    it('renders a form with numberVariable and a optional numberVariable and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -842,7 +842,7 @@ describe('<FormGenerator />', () => {
       expect(headlineElement).toBeInTheDocument();
     });
 
-    it.skip('renders a form with repeating group and headlineLevel', async () => {
+    it('renders a form with repeating group and headlineLevel', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -858,7 +858,7 @@ describe('<FormGenerator />', () => {
       expect(headlineElement).toBeInTheDocument();
     });
 
-    it.skip('renders a form with group and default headlineLevel', async () => {
+    it('renders a form with group and default headlineLevel', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator

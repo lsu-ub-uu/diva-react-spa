@@ -2009,7 +2009,7 @@ describe('FormGenerator Utils', () => {
       });
     });
     describe('createValidationFromComponentType', () => {
-      it.todo('textVariable', () =>  {
+      it.todo('textVariable', () => {
         const component: FormComponent = {
           name: 'exampleNumberVar',
           type: 'numberVariable',
@@ -2036,7 +2036,7 @@ describe('FormGenerator Utils', () => {
         };
         createValidationFromComponentType(component);
         const mock = vi.fn();
-        createYupNumberSchema(component as FormComponent)
+        createYupNumberSchema(component as FormComponent);
         expect(mock).toHaveBeenCalledTimes(1);
       });
     });
