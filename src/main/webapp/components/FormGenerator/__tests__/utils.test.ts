@@ -18,6 +18,7 @@
  */
 
 import * as yup from 'yup';
+import { AnyObject, ObjectSchema } from 'yup';
 import {
   createDefaultValue,
   createDefaultValuesFromComponent,
@@ -109,6 +110,28 @@ const validationTestsExtras = (
     notOneOf: [],
     nullable: false,
     oneOf: [],
+  };
+};
+
+const validationSpecExtras = (
+  optional: boolean,
+  tests: unknown[],
+  transforms: unknown[],
+  type: 'string' | 'array' | 'object',
+) => {
+  return {
+    spec: {
+      abortEarly: true,
+      coerce: true,
+      nullable: false,
+      optional,
+      recursive: true,
+      strict: false,
+      strip: false,
+    },
+    tests,
+    transforms,
+    type,
   };
 };
 
@@ -1945,17 +1968,104 @@ describe('FormGenerator Utils', () => {
     });
 
     describe('createYupArrayFromSchema', () => {
-      it.todo('creates one Yup Array', () => {
-        // const expectedData = '';
-        // const actualData = createYupArrayFromSchema(
-        //   {},
-        //   {
-        //     minNumberOfRepeatingToShow: 0,
-        //     repeatMin: 0,
-        //     repeatMax: 10,
-        //   },
-        // );
-        // expect(expectedData).toStrictEqual(actualData);
+      it('creates one Yup Array', () => {
+        const expectedSchema = {
+          _blacklist: new Set([]),
+          _typeCheck: function check() {},
+          _whitelist: new Set([]),
+          conditions: [],
+          deps: [],
+          exclusiveTests: {
+            max: true,
+            min: true,
+          },
+          innerType: {
+            _blacklist: new Set([]),
+            _excludedEdges: [],
+            _mutate: undefined,
+            _nodes: ['person'],
+            _sortErrors: function sortErrors() {},
+            _typeCheck: function check() {},
+            _whitelist: new Set([]),
+            conditions: [],
+            deps: [],
+            exclusiveTests: {},
+            fields: {
+              person: {
+                _blacklist: new Set([]),
+                _excludedEdges: [],
+                _mutate: undefined,
+                _nodes: ['firstName'],
+                _sortErrors: function sortErrors() {},
+                _typeCheck: function check() {},
+                _whitelist: new Set([]),
+                conditions: [],
+                deps: [],
+                exclusiveTests: {},
+                fields: {
+                  firstName: {
+                    _blacklist: new Set([]),
+                    _mutate: undefined,
+                    _typeCheck: function check() {},
+                    _whitelist: new Set([]),
+                    conditions: [],
+                    deps: [],
+                    exclusiveTests: {
+                      required: false,
+                    },
+                    internalTests: {
+                      nullable: function validate() {},
+                      optionality: function optionality() {},
+                      typeError: function validate() {},
+                    },
+                    ...validationSpecExtras(
+                      false,
+                      [function validate() {}],
+                      [() => {}],
+                      'string',
+                    ),
+                  },
+                },
+                internalTests: {
+                  nullable: function validate() {},
+                  typeError: function validate() {},
+                },
+                ...validationSpecExtras(true, [], [], 'object'),
+              },
+            },
+            internalTests: {
+              nullable: function validate() {},
+              typeError: function validate() {},
+            },
+            ...validationSpecExtras(true, [], [], 'object'),
+          },
+          internalTests: {
+            nullable: function validate() {},
+            typeError: function validate() {},
+          },
+          ...validationSpecExtras(
+            true,
+            [function validate() {}, function validate() {}],
+            [],
+            'array',
+          ),
+        };
+
+        const schema:
+          | ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>
+          | ObjectSchema<{ [x: string]: unknown }, AnyObject> = yup
+          .object()
+          .shape({
+            person: yup.object().shape({
+              firstName: yup.string().required(),
+            }),
+          });
+        const actualData = createYupArrayFromSchema(schema, {
+          minNumberOfRepeatingToShow: 0,
+          repeatMin: 0,
+          repeatMax: 10,
+        });
+        expect(expectedSchema).toMatchObject(actualData);
       });
     });
     describe('createValidationForAttributesFromComponent', () => {

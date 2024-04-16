@@ -385,7 +385,6 @@ const createYupStringSchema = (
       );
   }
   if (isAttribute && !isParentComponentRequired) {
-    // check if sibling is 1-1, 1-X
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
         ? yup.string()
