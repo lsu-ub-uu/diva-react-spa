@@ -1946,16 +1946,16 @@ describe('FormGenerator Utils', () => {
 
     describe('createYupArrayFromSchema', () => {
       it.todo('creates one Yup Array', () => {
-        const expectedData = '';
-        const actualData = createYupArrayFromSchema(
-          {},
-          {
-            minNumberOfRepeatingToShow: 0,
-            repeatMin: 0,
-            repeatMax: 10,
-          },
-        );
-        expect(expectedData).toStrictEqual(actualData);
+        // const expectedData = '';
+        // const actualData = createYupArrayFromSchema(
+        //   {},
+        //   {
+        //     minNumberOfRepeatingToShow: 0,
+        //     repeatMin: 0,
+        //     repeatMax: 10,
+        //   },
+        // );
+        // expect(expectedData).toStrictEqual(actualData);
       });
     });
     describe('createValidationForAttributesFromComponent', () => {
