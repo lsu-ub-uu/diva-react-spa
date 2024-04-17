@@ -1,9 +1,10 @@
 export const removeEmpty = (obj: any) => {
   const keys = Object.keys(obj);
-  keys.forEach((key) => {
+  keys.forEach((key, index) => {
     possiblyRemoveEmptyArray(obj, key);
     possiblyRemoveEmptyObject(obj, key);
     possiblyRemovePartOfObjectWithKeys(obj, key);
+    possiblyRemoveAttributeForEmptyValues(obj, key);
   });
   return obj;
 };
@@ -35,6 +36,51 @@ const possiblyRemovePartOfObjectWithKeys = (obj: any, key: string) => {
     } else {
       delete obj[key];
     }
+  }
+};
+
+const possiblyRemoveAttributeForEmptyValues = (obj: any, key: string) => {
+  /* console.log('sWi', key, key.charAt(0).startsWith('_'));
+  console.log('inc', key, !Object.keys(obj).includes('value'));
+  console.log(
+    'in2',
+    key,
+    !key.charAt(0).startsWith('_') && !Object.keys(obj).includes('value'),
+  );
+  console.log(
+    'wha',
+    key,
+    key.charAt(0).startsWith('_') ||
+      (!key.charAt(0).startsWith('_') && !Object.keys(obj).includes('value')),
+  );
+  console.log(
+    'wh2',
+    key,
+    (key.charAt(0).startsWith('_') && obj.value === undefined) ||
+      (!key.charAt(0).startsWith('_') && !Object.keys(obj).includes('value')),
+  );
+  console.log('aaa', key, Object.keys(obj));
+  console.log(
+    'bbb',
+    key,
+    Object.keys(obj).length && !Object.keys(obj).includes('value'),
+  );
+  console.log(
+    'ccc',
+    key,
+    Object.keys(obj).length > 0 && !Object.keys(obj).includes('value'),
+  );
+  console.log(
+    'ddd',
+    key,
+    key.charAt(0).startsWith('_') &&
+      obj.value === undefined &&
+      Object.keys(obj).length > 0 &&
+      !Object.keys(obj).includes('value'),
+  ); */
+
+  if (key.charAt(0).startsWith('_') && obj.value === undefined) {
+    delete obj[key];
   }
 };
 

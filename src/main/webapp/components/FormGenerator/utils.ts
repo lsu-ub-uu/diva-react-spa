@@ -233,9 +233,8 @@ const createYupStringRegexpSchema = (
   isParentComponentRequired: boolean = false,
 ) => {
   const regexpValidation = component.validation as FormRegexValidation;
-  console.log('1');
+
   if (isComponentRepeating(component)) {
-    console.log('2');
     return yup
       .string()
       .nullable()
@@ -247,26 +246,6 @@ const createYupStringRegexpSchema = (
   }
 
   if (!isParentComponentRequired) {
-    console.log(
-      '3',
-      component.repeat?.repeatMin,
-      component.repeat?.repeatMin,
-      isParentComponentRequired,
-    );
-    console.log(
-      JSON.stringify(
-        yup
-          .string()
-          .nullable()
-          .transform((value) => (value === '' ? null : value))
-          .matches(
-            new RegExp(regexpValidation.pattern ?? '.+'),
-            'Invalid input format',
-          ),
-        null,
-        2,
-      ),
-    );
     return yup
       .string()
       .nullable()
@@ -276,19 +255,7 @@ const createYupStringRegexpSchema = (
         'Invalid input format',
       );
   }
-  console.log('4');
-  // console.log(
-  //   JSON.stringify(
-  //     yup
-  //       .string()
-  //       .matches(
-  //         new RegExp(regexpValidation.pattern ?? '.+'),
-  //         'Invalid input format',
-  //       ),
-  //     null,
-  //     2,
-  //   ),
-  // );
+
   return yup
     .string()
     .matches(
@@ -384,13 +351,16 @@ const createYupStringSchema = (
         isNotNull[0] ? field.required('not valid') : field,
       );
   }
+
   if (isAttribute && !isParentComponentRequired) {
+    // console.log('bbbbbbb');
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
-        ? yup.string()
+        ? yup.string().nullable()
         : yup.string().required();
     });
   }
+
   return yup.string().required();
 };
 
