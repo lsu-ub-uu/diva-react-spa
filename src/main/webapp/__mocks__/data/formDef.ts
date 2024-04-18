@@ -1152,6 +1152,96 @@ export const formDefWithOneOptionalNumberVariableWithAttributeCollection = {
   },
 };
 
+export const formDefWithOneGroupWithAttributeCollection = {
+  validationTypeId: 'demo',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'recordInfo',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'recordInfoText',
+          body: 'recordInfoDefText',
+        },
+        label: 'recordInfoText',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        name: 'firstChildGroup',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'exampleFirstChildGroupText',
+          body: 'exampleFirstChildGroupDefText',
+        },
+        label: 'exampleFirstChildGroupText',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                type: 'collectionVariable',
+                name: 'colour',
+                label: 'someNumberVar2AttributeLabel',
+                placeholder: 'someNumberVar2AttributeId',
+                tooltip: {
+                  title: 'exampleCollectionVarText',
+                  body: 'exampleCollectionVarDefText',
+                },
+                options: [
+                  { value: 'blue', label: 'exampleBlueItemText' },
+                  { value: 'pink', label: 'examplePinkItemText' },
+                  { value: 'yellow', label: 'exampleYellowItemText' },
+                ],
+                mode: 'input',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefWithOneGroupHavingTextVariableAsChild = {
   validationTypeId: 'someValidationTypeId',
   form: {

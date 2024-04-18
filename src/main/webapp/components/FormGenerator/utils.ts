@@ -245,17 +245,6 @@ const createYupStringRegexpSchema = (
       );
   }
 
-  if (!isParentComponentRequired) {
-    return yup
-      .string()
-      .nullable()
-      .transform((value) => (value === '' ? null : value))
-      .matches(
-        new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
-      );
-  }
-
   return yup
     .string()
     .matches(
@@ -408,10 +397,7 @@ export const createYupValidationsFromComponent = (
     // non-repeating group
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
-      const innerSchema = generateYupSchema(
-        component.components,
-        isComponentRepeating(component),
-      );
+      const innerSchema = generateYupSchema(component.components);
       validationRule[component.name] = yup.object().shape({
         ...innerSchema.fields,
         ...createValidationForAttributesFromComponent(component),
@@ -431,10 +417,7 @@ export const createYupValidationsFromComponent = (
   return validationRule;
 };
 
-const generateYupSchema = (
-  components: FormComponent[] | undefined,
-  isParentComponentRepeating: boolean = false,
-) => {
+const generateYupSchema = (components: FormComponent[] | undefined) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
     .map((formComponent) => createYupValidationsFromComponent(formComponent));

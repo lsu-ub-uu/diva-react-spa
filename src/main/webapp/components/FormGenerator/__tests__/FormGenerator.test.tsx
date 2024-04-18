@@ -45,6 +45,7 @@ import {
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
   formDefWithOptionalGroupWithRequiredVar,
   formDefWithOneOptionalNumberVariableWithAttributeCollection,
+  formDefWithOneGroupWithAttributeCollection,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -834,6 +835,33 @@ describe('<FormGenerator />', () => {
 
       const user = userEvent.setup();
       await user.type(numberInput, '2');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a form with group and a optional numberVariable and attribute and validates it', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithOneGroupWithAttributeCollection as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+      const numberInput = screen.getByLabelText('exampleMetadataNumberVarText');
+      expect(numberInput).toBeInTheDocument();
+      const attributeButton = screen.getByRole('button', { expanded: false });
+      expect(attributeButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      // await user.type(numberInput, '2');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
