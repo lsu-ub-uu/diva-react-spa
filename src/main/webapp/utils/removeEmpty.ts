@@ -1,6 +1,6 @@
 export const removeEmpty = (obj: any) => {
   const keys = Object.keys(obj);
-  keys.forEach((key, index) => {
+  keys.forEach((key) => {
     possiblyRemoveEmptyArray(obj, key);
     possiblyRemoveEmptyObject(obj, key);
     possiblyRemovePartOfObjectWithKeys(obj, key);
@@ -40,48 +40,32 @@ const possiblyRemovePartOfObjectWithKeys = (obj: any, key: string) => {
 };
 
 const possiblyRemoveAttributeForEmptyValues = (obj: any, key: string) => {
-  /* console.log('sWi', key, key.charAt(0).startsWith('_'));
-  console.log('inc', key, !Object.keys(obj).includes('value'));
-  console.log(
-    'in2',
-    key,
-    !key.charAt(0).startsWith('_') && !Object.keys(obj).includes('value'),
-  );
-  console.log(
-    'wha',
-    key,
-    key.charAt(0).startsWith('_') ||
-      (!key.charAt(0).startsWith('_') && !Object.keys(obj).includes('value')),
-  );
-  console.log(
-    'wh2',
-    key,
-    (key.charAt(0).startsWith('_') && obj.value === undefined) ||
-      (!key.charAt(0).startsWith('_') && !Object.keys(obj).includes('value')),
-  );
-  console.log('aaa', key, Object.keys(obj));
-  console.log(
-    'bbb',
-    key,
-    Object.keys(obj).length && !Object.keys(obj).includes('value'),
-  );
-  console.log(
-    'ccc',
-    key,
-    Object.keys(obj).length > 0 && !Object.keys(obj).includes('value'),
-  );
-  console.log(
-    'ddd',
-    key,
-    key.charAt(0).startsWith('_') &&
-      obj.value === undefined &&
-      Object.keys(obj).length > 0 &&
-      !Object.keys(obj).includes('value'),
-  ); */
-
-  if (key.charAt(0).startsWith('_') && obj.value === undefined) {
+  if (
+    isObjectAttribute(obj, key) &&
+    hasObjectValue(obj) &&
+    !hasObjectChildren(obj)
+  ) {
     delete obj[key];
   }
+};
+
+const isObjectAttribute = (obj: any, key: string) => {
+  return key.charAt(0).startsWith('_');
+};
+const hasObjectValue = (obj: any) => {
+  return obj.value === undefined;
+};
+
+const numberOfAttributes = (obj: any) => {
+  return Object.keys(obj).filter((item) => item.startsWith('_')).length;
+};
+const numberOfValues = (obj: any) => {
+  return Object.keys(obj).filter((item) => item.startsWith('value')).length;
+};
+
+const hasObjectChildren = (obj: any) => {
+  const entries = Object.keys(obj).length;
+  return entries - numberOfAttributes(obj) - numberOfValues(obj) > 0;
 };
 
 const isArrayLengthZero = (arr: any[]) => {

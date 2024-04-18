@@ -55,30 +55,36 @@ describe('removeEmpty', () => {
     const testObject = {
       property1: {
         value: '',
-        _colour: 'blue',
+        _colour1: 'blue',
       },
       property2: {
         value: '',
-        _colour: 'green',
-        _language: 'swe',
+        _colour2: 'green',
+        _language2: 'swe',
       },
       property3: {
         value: 'someValueText',
-        _language: 'cat',
+        _language3: 'cat',
       },
       property4: {
         value: 'someValueText2',
-        _language: 'jpn',
-        _colour: 'red',
+        _language4: 'jpn',
+        _colour4: 'red',
       },
       property5: {
         value: null,
-        _colour: 'yellow',
+        _colour5: 'yellow',
       },
       property6: {
-        _language: 'ger',
+        _language6: 'ger',
         mainTitle: {
-          value: 'someMainTitle',
+          value: 'someMainTitle6',
+        },
+      },
+      property7: {
+        mainTitle: {
+          _language7: 'nor',
+          value: 'someMainTitle7',
         },
       },
     };
@@ -86,17 +92,23 @@ describe('removeEmpty', () => {
     const expected = {
       property3: {
         value: 'someValueText',
-        _language: 'cat',
+        _language3: 'cat',
       },
       property4: {
         value: 'someValueText2',
-        _language: 'jpn',
-        _colour: 'red',
+        _language4: 'jpn',
+        _colour4: 'red',
       },
       property6: {
-        _language: 'ger',
+        _language6: 'ger',
         mainTitle: {
-          value: 'someMainTitle',
+          value: 'someMainTitle6',
+        },
+      },
+      property7: {
+        mainTitle: {
+          _language7: 'nor',
+          value: 'someMainTitle7',
         },
       },
     };
