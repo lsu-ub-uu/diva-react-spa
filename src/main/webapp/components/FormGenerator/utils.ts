@@ -203,13 +203,13 @@ export const createValidationForAttributesFromComponent = (
 export const createValidationFromComponentType = (
   component: FormComponent | FormAttributeCollection,
   isAttribute?: boolean,
-  isParentComponentRequired?: boolean,
+  isComponentRequired?: boolean,
 ) => {
   switch (component.type) {
     case 'textVariable':
       return createYupStringRegexpSchema(
         component as FormComponent,
-        isParentComponentRequired,
+        isComponentRequired,
       );
     case 'numberVariable':
       return createYupNumberSchema(component as FormComponent);
@@ -217,7 +217,7 @@ export const createValidationFromComponentType = (
       return createYupStringSchema(
         component as FormComponent,
         isAttribute,
-        isParentComponentRequired,
+        isComponentRequired,
       );
   }
 };
@@ -353,7 +353,6 @@ const createYupStringSchema = (
   }
 
   if (isAttribute && !isParentComponentRequired) {
-    // console.log('bbbbbbb');
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
         ? yup.string().nullable()
