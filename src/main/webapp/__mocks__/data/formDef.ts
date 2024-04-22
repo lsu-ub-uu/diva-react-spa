@@ -1090,6 +1090,180 @@ export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeC
     },
   };
 
+export const formDefWithOneOptionalNumberVariableWithAttributeCollection = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        name: 'numberVar2',
+        label: 'someNumberVar2IdLabel',
+        placeholder: 'someNumberVar2IdPlaceholder',
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'someNumberVarTextId',
+          body: 'someNumberVarDefTextId',
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'colour',
+            label: 'someNumberVar2AttributeLabel',
+            placeholder: 'someNumberVar2AttributeId',
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText',
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+        validation: {
+          type: 'number',
+          min: 0,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneGroupWithAttributeCollection = {
+  validationTypeId: 'manuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'manuscript2NewGroupText',
+      body: 'manuscript2NewGroupDefText',
+    },
+    label: 'manuscript2NewGroupText',
+    // headlineLevel: 'h1',
+    showLabel: false,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        name: 'someNumberVariableNameInData',
+        placeholder: 'someNumberPlaceholderTextId',
+        label: 'numberVariableLabelText',
+        showLabel: true,
+        validation: {
+          type: 'number',
+          min: 0,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 2,
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        name: 'alternativeTitle',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'someTooltipGroupText',
+          body: 'someTooltipGroupDefText',
+        },
+        label: 'alternativeTitleGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'titleType',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'titleTypeCollectionVarText',
+              body: 'titleTypeCollectionVarDefText',
+            },
+            label: 'titleTypeCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'alternativeTitle',
+                label: 'alternativeTitleItemText',
+              },
+              {
+                value: 'translatedTitle',
+                label: 'translatedTitleItemText',
+              },
+            ],
+          },
+        ],
+        components: [
+          {
+            name: 'mainTitle',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'someTooltipTitleText',
+              body: 'someTooltipTitleDefText',
+            },
+            label: 'textVarLabelText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
 export const formDefWithOneGroupHavingTextVariableAsChild = {
   validationTypeId: 'someValidationTypeId',
   form: {
@@ -2908,268 +3082,6 @@ export const formDefWithOptionalGroupWithRequiredVar = {
   },
 };
 
-export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups = {
-  validationTypeId: 'book',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    mode: 'input',
-    components: [
-      {
-        type: 'text',
-        name: 'someHeaderText',
-      },
-      {
-        name: 'colour',
-        type: 'collectionVariable',
-        label: 'colour',
-        placeholder: 'book cover colour',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        mode: 'input',
-        tooltip: {
-          title: 'exampleCollectionVarText',
-          body: 'exampleCollectionVarDefText',
-        },
-        options: [
-          {
-            value: 'blue',
-            label: 'exampleBlueItemText',
-          },
-          {
-            value: 'pink',
-            label: 'examplePinkItemText',
-          },
-          {
-            value: 'yellow',
-            label: 'exampleYellowItemText',
-          },
-        ],
-      },
-      {
-        type: 'numberVariable',
-        name: 'year',
-        label: 'year',
-        placeholder: 'year',
-        validation: {
-          type: 'number',
-          min: 0,
-          max: 2023,
-          warningMin: 0,
-          warningMax: 0,
-          numberOfDecimals: 0,
-        },
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-      },
-      {
-        name: 'title',
-        type: 'group',
-        tooltip: {
-          title: 'non-repeating title group',
-          body: '',
-        },
-        label: 'title',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'titleColorAttribute',
-            placeholder: 'Select title color',
-            tooltip: {
-              title: 'Face color',
-              body: 'state the author face color',
-            },
-            label: 'Title color',
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
-          },
-        ],
-        components: [
-          {
-            type: 'text',
-            name: 'this a header for group',
-            textStyle: 'h5TextStyle',
-          },
-          {
-            name: 'main',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'Main',
-              body: '',
-            },
-            label: 'Main title',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-          },
-          {
-            name: 'tagLine',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'title.tagLine.value',
-              body: '',
-            },
-            label: 'Title tagline',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-          },
-        ],
-      },
-      {
-        type: 'text',
-        name: 'Authors',
-        textStyle: 'h3TextStyle',
-      },
-      {
-        name: 'author',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'authorGroupText',
-          body: 'authorGroupDefText',
-        },
-        label: 'author',
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 10,
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'eyeColor',
-            placeholder: 'Select eye color',
-            tooltip: {
-              title: 'Eye color',
-              body: 'state the author eye color',
-            },
-            finalValue: 'blue',
-            label: 'Eye color',
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
-          },
-        ],
-        components: [
-          {
-            name: 'firstName',
-            type: 'textVariable',
-            mode: 'input',
-            tooltip: {
-              title: '',
-              body: '',
-            },
-            label: 'First name',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            attributes: [
-              {
-                type: 'collectionVariable',
-                name: 'faceColorAttribute',
-                placeholder: 'Select eye color',
-                tooltip: {
-                  title: 'Face color',
-                  body: 'state the author face color',
-                },
-                label: 'Face color',
-                options: [
-                  { value: 'pale', label: 'examplePaleItemText' },
-                  { value: 'blue', label: 'exampleBlueItemText' },
-                  { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
-                ],
-                mode: 'input',
-              },
-            ],
-          },
-          {
-            name: 'lastName',
-            type: 'textVariable',
-            mode: 'input',
-            tooltip: {
-              title: '',
-              body: '',
-            },
-            label: 'Last name',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 3,
-            },
-            attributes: [
-              {
-                type: 'collectionVariable',
-                name: 'lastNameColor',
-                placeholder: 'Select lastname color',
-                tooltip: {
-                  title: 'Last color',
-                  body: 'state the author eye color',
-                },
-                finalValue: 'yellow',
-                label: 'Lastname color',
-                options: [
-                  { value: 'blue', label: 'exampleBlueItemText' },
-                  { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
-                ],
-                mode: 'input',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-};
 
 export const formDefWithSurroundingContainerAroundTextVariable: FormSchema = {
   validationTypeId: 'book',

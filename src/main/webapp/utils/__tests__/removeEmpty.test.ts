@@ -38,9 +38,80 @@ describe('removeEmpty', () => {
           value: null,
         },
       ],
+      property9: {
+        value: '',
+        _colour: 'blue',
+      },
+      property10: {
+        value: '',
+        _language: 'swe',
+      },
     };
     const actual = removeEmpty(testObject);
     const expected = {};
+    expect(expected).toStrictEqual(actual);
+  });
+  it("don't clear objects that has values", () => {
+    const testObject = {
+      property1: {
+        value: '',
+        _colour1: 'blue',
+      },
+      property2: {
+        value: '',
+        _colour2: 'green',
+        _language2: 'swe',
+      },
+      property3: {
+        value: 'someValueText',
+        _language3: 'cat',
+      },
+      property4: {
+        value: 'someValueText2',
+        _language4: 'jpn',
+        _colour4: 'red',
+      },
+      property5: {
+        value: null,
+        _colour5: 'yellow',
+      },
+      property6: {
+        _language6: 'ger',
+        mainTitle: {
+          value: 'someMainTitle6',
+        },
+      },
+      property7: {
+        mainTitle: {
+          _language7: 'nor',
+          value: 'someMainTitle7',
+        },
+      },
+    };
+    const actual = removeEmpty(testObject);
+    const expected = {
+      property3: {
+        value: 'someValueText',
+        _language3: 'cat',
+      },
+      property4: {
+        value: 'someValueText2',
+        _language4: 'jpn',
+        _colour4: 'red',
+      },
+      property6: {
+        _language6: 'ger',
+        mainTitle: {
+          value: 'someMainTitle6',
+        },
+      },
+      property7: {
+        mainTitle: {
+          _language7: 'nor',
+          value: 'someMainTitle7',
+        },
+      },
+    };
     expect(expected).toStrictEqual(actual);
   });
   it('clear mixed objects', () => {

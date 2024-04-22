@@ -26,11 +26,8 @@ import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { FormComponent } from './types';
-import {
-  createDefaultValuesFromComponent,
-  isComponentSingularAndOptional,
-  isFirstLevel,
-} from './utils';
+import { createDefaultValuesFromComponent } from './utils';
+import { isComponentSingularAndOptional, isFirstLevel } from './utils/helper';
 import { Typography } from '../Typography/Typography';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { headlineLevelToTypographyVariant } from './FormGenerator';

@@ -30,9 +30,9 @@ import {
   ControlledSelectField,
   ControlledLinkedRecord,
 } from '../Controlled';
+import { createDefaultValuesFromFormSchema, RecordData } from './utils';
+import { generateYupSchemaFromFormSchema } from './utils/yupSchema';
 import {
-  createDefaultValuesFromFormSchema,
-  generateYupSchemaFromFormSchema,
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
@@ -40,8 +40,7 @@ import {
   isComponentSurroundingContainer,
   isComponentVariable,
   isFirstLevel,
-  RecordData,
-} from './utils';
+} from './utils/helper';
 import {
   Typography,
   LinkButton,
@@ -332,6 +331,7 @@ export const FormGenerator = ({
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
   ) => {
+    console.log(isFirstLevel(currentComponentNamePath), currentComponentNamePath)
     return isFirstLevel(currentComponentNamePath) ? (
       <FieldArrayComponent
         key={reactKey}
