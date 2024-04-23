@@ -26,10 +26,10 @@
 		<version>2.5.0</version>
 	</parent>
 
-	<artifactId>divaclient</artifactId>
+	<artifactId>diva-client-gui</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>DiVA Client</name>
+	<name>DiVA Client GUI</name>
 
 	<properties>
 		<xml-maven-plugin.version>1.0.2</xml-maven-plugin.version>
@@ -61,11 +61,8 @@
 			<build>
 				<resources>
 					<resource>
-						<targetPath>dist</targetPath>
 						<directory>dist</directory>
-						<includes>
-							<include>**/*</include> <!-- Include all files in the directory -->
-						</includes>
+						<targetPath>dist</targetPath>
 					</resource>
 				</resources>
 				<pluginManagement>
