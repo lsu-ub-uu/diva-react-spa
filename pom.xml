@@ -1,3 +1,4 @@
+
 <!--
   ~ Copyright 2024 Uppsala University Library
   ~
@@ -47,6 +48,8 @@
 
 		<jsClientContainerName>myJsClientContainer3</jsClientContainerName>
 		<basename>/</basename>
+
+		<nodeVersion>v20.12.2</nodeVersion>
 	</properties>
 
 
@@ -58,71 +61,77 @@
 		<tag>HEAD</tag>
 	</scm>
 
-			<build>
-				<resources>
-					<resource>
-						<directory>dist</directory>
-						<targetPath>dist</targetPath>
-					</resource>
-				</resources>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>com.githug.eirslett</groupId>
-							<artifactId>frontend-maven-plugin</artifactId>
-							<version>${frontend-maven-plugin.version}</version>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-				<plugins>
-					<plugin>
+	<build>
+		<resources>
+			<resource>
+				<directory>dist</directory>
+				<targetPath>dist</targetPath>
+				<includes><include>**/*</include></includes>
+			</resource>
+		</resources>
+		<!--<copy-resources>
+			<copy-resource>
+				<directory>dist</directory>
+				<targetPath>dist</targetPath>
+				<includes><include>**/*</include></includes>
+			</copy-resource>
+		</copy-resources>-->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>${frontend-maven-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>${frontend-maven-plugin.version}</version>
+				<configuration>
+					<installDirectory>${project.build.directory}/nodeJs</installDirectory> <!--??-->
+					<workingDirectory>${project.build.directory}/nodeJs</workingDirectory> <!--??-->
+				</configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>${nodeVersion}</nodeVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>npm run build:prod</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build:prod --base ${basename}</arguments>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
 						<groupId>com.github.eirslett</groupId>
 						<artifactId>frontend-maven-plugin</artifactId>
 						<version>${frontend-maven-plugin.version}</version>
-						<configuration>
-							<installDirectory>${project.build.directory}/nodeJs</installDirectory> <!--??-->
-							<workingDirectory>${project.build.directory}/nodeJs</workingDirectory> <!--??-->
-						</configuration>
-						<executions>
-							<execution>
-								<id>install node and npm</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>install-node-and-npm</goal>
-								</goals>
-								<configuration>
-									<nodeVersion>v18.16.0</nodeVersion>
-								</configuration>
-							</execution>
-							<execution>
-								<id>npm install</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>npm</goal>
-								</goals>
-							</execution>
-
-							<execution>
-								<id>npm run build:prod</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>npm</goal>
-								</goals>
-								<configuration>
-									<arguments>run build:prod --base ${basename}</arguments>
-								</configuration>
-							</execution>
-
-
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>com.github.eirslett</groupId>
-								<artifactId>frontend-maven-plugin</artifactId>
-								<version>${frontend-maven-plugin.version}</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-				</plugins>
-			</build>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
 </project>
