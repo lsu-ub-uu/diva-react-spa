@@ -25,8 +25,8 @@ export const createTextDefinition = (dependencies: Dependencies, lang: string) =
 
   const entries = Array.from(textPool.entries());
 
+  // @ts-ignore
   entries.forEach(([key, text]) => {
-    // @ts-ignore
     const value = text[lang];
     const obj = { [key]: value };
     if (value !== undefined) {

@@ -4,7 +4,6 @@ import { requestAuthTokenOnLogin } from '../cora/auth';
 import { errorHandler } from '../server';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
-import { transformCoraValidationTypes } from '../config/transformValidationTypes';
 
 /**
  * @desc Post appToken to get authToken

@@ -4,7 +4,7 @@
   "description": "A basic typescript app starter for 2023.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node --esm src/server.ts",
+    "dev": "nodemon --exec ts-node --esm src/main/webapp/server.ts",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
     "prettier-format": "prettier --write \"src/**/*.{ts,json}\" --config ./.prettierrc.json",

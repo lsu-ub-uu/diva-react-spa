@@ -17,13 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as TYPES from 'config/bffTypes';
+import * as TYPES from '../config/bffTypes';
 import {
   BFFMetadataChildReference,
   BFFMetadataGroup,
   BFFPresentationChildReference,
   BFFPresentationGroup
-} from 'config/bffTypes';
+} from '../config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import {
@@ -408,12 +408,12 @@ export const getAttributesByAttributeReferences = (
 const createCollectionVariableOptions = (
   metadataPool: any,
   collectionVariable: TYPES.BFFMetadataCollectionVariable
-) => {
+): { label: string; value: string }[] => {
   const collection = metadataPool.get(
     collectionVariable.refCollection
   ) as TYPES.BFFMetadataItemCollection;
   const itemReferences = collection.collectionItemReferences;
-  return itemReferences.map((itemRef) => {
+  return itemReferences.map((itemRef: TYPES.BFFCollectionItemReference) => {
     const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as TYPES.BFFMetadata;
     const label = collectionItem.textId;
     const value = collectionItem.nameInData;
@@ -537,21 +537,23 @@ const createAttributes = (
   options: unknown[] | undefined,
   variablePresentationMode: 'input' | 'output'
 ) => {
-  return metadataVariable.attributeReferences?.map((attributeReference) => {
-    const refCollectionVar = metadataPool.get(
-      attributeReference.refCollectionVarId
-    ) as TYPES.BFFMetadataCollectionVariable;
+  return metadataVariable.attributeReferences?.map(
+    (attributeReference: TYPES.BFFAttributeReference) => {
+      const refCollectionVar = metadataPool.get(
+        attributeReference.refCollectionVarId
+      ) as TYPES.BFFMetadataCollectionVariable;
 
-    const presentation = createPresentationForCollectionVar(
-      'someFakeId',
-      refCollectionVar.id,
-      variablePresentationMode
-    );
-    const { finalValue } = refCollectionVar;
-    const commonParameters = createCommonParameters(refCollectionVar, presentation);
-    options = createCollectionVariableOptions(metadataPool, refCollectionVar);
-    return removeEmpty({ ...commonParameters, options, finalValue });
-  });
+      const presentation = createPresentationForCollectionVar(
+        'someFakeId',
+        refCollectionVar.id,
+        variablePresentationMode
+      );
+      const { finalValue } = refCollectionVar;
+      const commonParameters = createCommonParameters(refCollectionVar, presentation);
+      options = createCollectionVariableOptions(metadataPool, refCollectionVar);
+      return removeEmpty({ ...commonParameters, options, finalValue });
+    }
+  );
 };
 
 const getContainerType = (presentationContainer: TYPES.BFFPresentationContainer) => {
