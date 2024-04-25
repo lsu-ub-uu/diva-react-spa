@@ -49,7 +49,7 @@
 		<jsClientContainerName>myJsClientContainer3</jsClientContainerName>
 		<basename>/</basename>
 
-		<nodeVersion>v20.12.2</nodeVersion>
+		<nodeVersion>v18.16.0</nodeVersion>
 	</properties>
 
 
