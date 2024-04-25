@@ -632,7 +632,58 @@ export const formDefWithOneTextVariableHavingFinalValue = {
         },
         validation: {
           type: 'regex',
-          pattern: '^[a-zA-Z]$',
+          pattern: '.*',
+        },
+        inputType: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+export const formDefWithTwoTextVariableHavingFinalValue = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'textVariable',
+        name: 'someNameInData1',
+        label: 'label1',
+        finalValue: 'someFinalValue1',
+        placeholder: 'someEmptyTextId1',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        inputType: 'input',
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData2',
+        label: 'label2',
+        finalValue: 'someFinalValue2',
+        placeholder: 'someEmptyTextId2',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '.*',
         },
         inputType: 'input',
       },
@@ -3081,7 +3132,6 @@ export const formDefWithOptionalGroupWithRequiredVar = {
     ],
   },
 };
-
 
 export const formDefWithSurroundingContainerAroundTextVariable: FormSchema = {
   validationTypeId: 'book',

@@ -46,6 +46,7 @@ import {
   formDefWithOptionalGroupWithRequiredVar,
   formDefWithOneOptionalNumberVariableWithAttributeCollection,
   formDefWithOneGroupWithAttributeCollection,
+  formDefWithTwoTextVariableHavingFinalValue,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -211,6 +212,54 @@ describe('<FormGenerator />', () => {
       );
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
       expect(inputElement).toHaveValue('someFinalValue');
+    });
+
+    it('Renders a form with TextVariable and sets a finalValue 2', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableHavingFinalValue as FormSchema}
+        />,
+      );
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+      expect(inputElement).toHaveValue('someFinalValue');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('Renders a form with TextVariable and sets a finalValue 3', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithTwoTextVariableHavingFinalValue as FormSchema}
+        />,
+      );
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId1');
+      expect(inputElement).toHaveValue('someFinalValue1');
+      const inputElement2 = screen.getByPlaceholderText('someEmptyTextId2');
+      expect(inputElement2).toHaveValue('someFinalValue2');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
     it('Renders a form with TextVariable with mode output', async () => {
@@ -813,7 +862,6 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);
-      screen.debug();
     });
 
     it('renders a form with numberVariable and a optional numberVariable and attribute and validates it', async () => {
@@ -855,7 +903,6 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
         />,
       );
-      screen.debug();
       const numberInput = screen.getByText('numberVariableLabelText');
       expect(numberInput).toBeInTheDocument();
       const textInput = screen.getByText('textVarLabelText');
