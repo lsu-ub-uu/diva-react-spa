@@ -69,13 +69,6 @@
 				<includes><include>**/*</include></includes>
 			</resource>
 		</resources>
-		<!--<copy-resources>
-			<copy-resource>
-				<directory>dist</directory>
-				<targetPath>dist</targetPath>
-				<includes><include>**/*</include></includes>
-			</copy-resource>
-		</copy-resources>-->
 		<pluginManagement>
 			<plugins>
 				<plugin>
