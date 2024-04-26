@@ -17,89 +17,27 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as yup from 'yup';
-import { AnyObject, ObjectSchema, ObjectShape, TestConfig } from 'yup';
-
+import { FormAttributeCollection, FormComponent, FormSchema } from './types';
 import {
-  FormAttributeCollection,
-  FormComponent,
-  FormComponentRepeat,
-  FormNumberValidation,
-  FormRegexValidation,
-  FormSchema,
-} from './types';
+  isComponentContainer,
+  isComponentRepeating,
+  isComponentValidForDataCarrying,
+  isComponentVariable,
+} from './utils/helper';
 
 export interface RecordData {
   [key: string]: any;
 }
 
-const removeRootObject = (obj: object) => {
+export const removeRootObject = (obj: object) => {
   const childKeys = Object.keys(obj);
   if (childKeys.length === 1) {
     // @ts-ignore
     return obj[childKeys[0]];
   }
-  return obj;
 };
 
-const countStringCharOccurrences = (
-  inputString: string,
-  targetChar: string,
-) => {
-  return inputString.split('').filter((char) => char === targetChar).length;
-};
-
-export const isFirstLevel = (pathName: string) => {
-  return countStringCharOccurrences(pathName, '.') === 1;
-};
-
-export const isComponentVariable = (component: FormComponent) =>
-  [
-    'numberVariable',
-    'textVariable',
-    'collectionVariable',
-    'recordLink',
-  ].includes(component.type);
-
-export const isComponentGroup = (component: FormComponent) =>
-  component.type === 'group';
-
-export const isComponentContainer = (component: FormComponent) =>
-  component.type === 'container';
-
-export const isComponentSurroundingContainer = (component: FormComponent) =>
-  isComponentContainer(component) && component.containerType === 'surrounding';
-
-export const isComponentRepeatingContainer = (
-  component: FormComponent | undefined,
-) =>
-  component !== undefined &&
-  isComponentContainer(component) &&
-  component.containerType === 'repeating';
-
-export const isComponentValidForDataCarrying = (component: FormComponent) =>
-  isComponentVariable(component) ||
-  isComponentGroup(component) ||
-  isComponentContainer(component); // a container can have children that are data carriers
-
-export const isComponentRepeating = (component: FormComponent) => {
-  const rMax = component.repeat?.repeatMax ?? 1;
-  const rMin = component.repeat?.repeatMin ?? 1;
-  return !(rMax === 1 && rMin === 1);
-};
-
-export const isComponentRequired = (component: FormComponent) => {
-  const rMin = component.repeat?.repeatMin ?? 1;
-  return rMin > 0;
-};
-
-export const isComponentSingularAndOptional = (component: FormComponent) => {
-  const rMax = component.repeat?.repeatMax ?? 1;
-  const rMin = component.repeat?.repeatMin ?? 1;
-  return rMax === 1 && rMin === 0;
-};
-
-const createDefaultValue = (
+export const createDefaultValue = (
   component: FormComponent | FormAttributeCollection,
 ) => (component.finalValue ? component.finalValue : '');
 
@@ -116,11 +54,14 @@ export const generateComponentAttributes = (component: FormComponent) => {
   };
 };
 
-const generateRepeatingObject = (size: number, obj: unknown): unknown[] => {
+export const generateRepeatingObject = (
+  size: number,
+  obj: unknown,
+): unknown[] => {
   return Array.from({ length: size }, () => obj);
 };
 
-const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
+export const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
   component.repeat?.minNumberOfRepeatingToShow ??
   component.repeat?.repeatMin ??
   0;
@@ -187,7 +128,10 @@ export const createDefaultValuesFromFormSchema = (
   return defaultValues;
 };
 
-const mergeObjects = (target: RecordData, overlay: RecordData): RecordData => {
+export const mergeObjects = (
+  target: RecordData,
+  overlay: RecordData,
+): RecordData => {
   Object.entries(overlay).forEach(([key]) => {
     if (Object.hasOwn(overlay, key)) {
       if (
@@ -209,7 +153,7 @@ const mergeObjects = (target: RecordData, overlay: RecordData): RecordData => {
   return target;
 };
 
-const mergeArrays = (target: any[], overlay: any[]): any[] => {
+export const mergeArrays = (target: any[], overlay: any[]): any[] => {
   const result = [...target];
 
   overlay.forEach((item, index) => {
@@ -219,254 +163,4 @@ const mergeArrays = (target: any[], overlay: any[]): any[] => {
   });
 
   return result;
-};
-
-export const createYupArrayFromSchema = (
-  schema:
-    | ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>
-    | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
-  repeat: FormComponentRepeat | undefined,
-) => {
-  return yup
-    .array()
-    .of(schema)
-    .min(repeat?.repeatMin ?? 1)
-    .max(repeat?.repeatMax ?? 1);
-};
-
-const createValidationForAttributesFromComponent = (
-  component: FormComponent,
-) => {
-  console.log('createValidationForAttributesFromComponent', component);
-
-  const attributeValidation =
-    component.attributes?.map(
-      (attributeCollection: FormAttributeCollection) => ({
-        [`_${attributeCollection.name}`]:
-          createValidationFromComponentType(attributeCollection),
-      }),
-    ) ?? [];
-  console.log('not attribute', component);
-  return {
-    ...Object.assign({}, ...attributeValidation),
-  };
-};
-
-const createValidationFromComponentType = (
-  component: FormComponent | FormAttributeCollection,
-) => {
-  switch (component.type) {
-    case 'textVariable':
-      return createYupStringRegexpSchema(component as FormComponent);
-    case 'numberVariable':
-      return createYupNumberSchema(component as FormComponent);
-    default: // collectionVariable, recordLink
-      return createYupStringSchema(component as FormComponent);
-  }
-};
-
-/**
- * @privateRemarks
- *
- * OBS! In the Yup library, the transform method is executed after the validation process.
- * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
- */
-const createYupStringRegexpSchema = (component: FormComponent) => {
-  console.log('createYupStringRegexpSchema', component);
-  const regexpValidation = component.validation as FormRegexValidation;
-
-  if (isComponentRepeating(component)) {
-    return yup
-      .string()
-      .nullable()
-      .transform((value) => (value === '' ? null : value))
-      .matches(
-        new RegExp(regexpValidation.pattern ?? '.+'),
-        'Invalid input format',
-      );
-  }
-  return yup
-    .string()
-    .matches(
-      new RegExp(regexpValidation.pattern ?? '.+'),
-      'Invalid input format',
-    );
-};
-
-/**
- * @privateRemarks
- *
- * OBS! In the Yup library, the transform method is executed after the validation process.
- * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
- */
-const createYupNumberSchema = (component: FormComponent) => {
-  const numberValidation = component.validation as FormNumberValidation;
-  const { numberOfDecimals, min, max } = numberValidation;
-
-  const testDecimals: TestConfig<string | null | undefined, AnyObject> = {
-    name: 'decimal-places',
-    message: 'Invalid number of decimals', // todo translation
-    params: { numberOfDecimals },
-    test: (value) => {
-      if (!value) return true;
-      const decimalPlaces = (value.split('.')[1] || []).length;
-      return decimalPlaces === numberOfDecimals;
-    },
-  };
-
-  const testMin: TestConfig<string | null | undefined, AnyObject> = {
-    name: 'min',
-    message: 'Invalid range (min)',
-    params: { min },
-    test: (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return min <= numValue;
-    },
-  };
-
-  const testMax: TestConfig<string | null | undefined, AnyObject> = {
-    name: 'max',
-    message: 'Invalid range (max)',
-    params: { max },
-    test: (value) => {
-      if (!value) return true;
-      const numValue = parseFloat(value);
-      return max >= numValue;
-    },
-  };
-
-  if (isComponentSingularAndOptional(component)) {
-    return yup
-      .string()
-      .nullable()
-      .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull
-          ? field
-              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-              .test(testDecimals)
-              .test(testMax)
-              .test(testMin)
-          : field,
-      );
-  }
-
-  return yup
-    .string()
-    .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
-    .test(testDecimals)
-    .test(testMin)
-    .test(testMax);
-};
-
-/**
- * @privateRemarks
- *
- * OBS! In the Yup library, the transform method is executed after the validation process.
- * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
- */
-const createYupStringSchema = (component: FormComponent) => {
-  if (isComponentRepeating(component)) {
-    // console.log('createYupStringSchema 1', component);
-    return yup
-      .string()
-      .nullable()
-      .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull[0] ? field.required('not valid') : field,
-      );
-  }
-  // console.log('createYupStringSchema 2', component);
-  return yup.string().required();
-};
-
-export const createYupValidationsFromComponent = (component: FormComponent) => {
-  // console.log('createYupValidationsFromComponent', component);
-  let validationRule: {
-    [x: string]: any;
-  } = {};
-
-  // remove surrounding container in yup validation structure
-  if (isComponentContainer(component)) {
-    // validation rules for children to the container
-    const validationsRules = (component.components ?? [])
-      .filter(isComponentValidForDataCarrying)
-      .map((formComponent) => createYupValidationsFromComponent(formComponent));
-    validationRule = Object.assign({}, ...validationsRules);
-    return validationRule;
-  }
-  // eslint-disable-next-line no-lonely-if
-  if (isComponentRepeating(component)) {
-    // console.log('isComponentRepeating', component);
-    if (isComponentGroup(component)) {
-      const innerObjectSchema = generateYupSchema(component.components);
-
-      // Create a new schema by merging the existing schema and attribute fields
-      const extendedSchema = yup.object().shape({
-        ...innerObjectSchema.fields,
-        ...createValidationForAttributesFromComponent(component),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      validationRule[component.name] = createYupArrayFromSchema(
-        extendedSchema,
-        component.repeat,
-      );
-    } else {
-      console.log('repeating var', component);
-      // repeating variables
-      const extendedSchema = yup.object().shape({
-        value: createValidationFromComponentType(component),
-        ...createValidationForAttributesFromComponent(component),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-
-      validationRule[component.name] = createYupArrayFromSchema(
-        extendedSchema,
-        component.repeat,
-      );
-    }
-  } else {
-    // non-repeating group
-    // eslint-disable-next-line no-lonely-if
-    if (isComponentGroup(component)) {
-      const innerSchema = generateYupSchema(component.components);
-      validationRule[component.name] = yup.object().shape({
-        ...innerSchema.fields,
-        ...createValidationForAttributesFromComponent(component),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      /*
-        .test('required-group', `${component.name} is required`, (value) => {
-          if (isComponentRequired(component) && value !== undefined) {
-            const clean = removeEmpty(value);
-            return Object.keys(clean).length > 0;
-          }
-          return true;
-        }) */
-    } else {
-      validationRule[component.name] = yup.object().shape(
-        {
-          value: createValidationFromComponentType(component),
-          ...createValidationForAttributesFromComponent(component),
-        } /* Add .when("varIsNotNull", { is: !null, then: add required for attributes })
-           to add required for non-empty value for main component */,
-      ) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-    }
-  }
-
-  return validationRule;
-};
-
-const generateYupSchema = (components: FormComponent[] | undefined) => {
-  const validationsRules = (components ?? [])
-    .filter(isComponentValidForDataCarrying)
-    .map((formComponent) => createYupValidationsFromComponent(formComponent));
-
-  const obj = Object.assign({}, ...validationsRules) as ObjectShape;
-  return yup.object().default({}).shape(obj);
-};
-
-export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
-  const rule = createYupValidationsFromComponent(formSchema.form);
-  const obj = Object.assign({}, ...[rule]) as ObjectShape;
-  // console.log('yup', yup.object().shape(obj));
-  return yup.object().shape(obj);
 };

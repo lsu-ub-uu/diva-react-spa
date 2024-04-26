@@ -18,6 +18,8 @@
 
 import { Box, Button, Container, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import CachedIcon from '@mui/icons-material/Cached';
 import logo from './divaLogo.svg';
 import { Login } from './Login/Login';
 
@@ -49,6 +51,17 @@ export const Header = () => {
             xs
           />
           <Grid item>
+            <Button
+              onClick={() => {
+                axios.get('/refreshDefinitions').then((response) => {
+                  // console.log(response);
+                  // eslint-disable-next-line no-restricted-globals
+                  location.reload();
+                });
+              }}
+            >
+              Refresh Def <CachedIcon />
+            </Button>
             <Button onClick={() => i18n.changeLanguage('sv')}>Svenska</Button>
             <Button onClick={() => i18n.changeLanguage('en')}>English</Button>
           </Grid>

@@ -35,6 +35,7 @@ import {
 } from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
+import {removeEmpty} from "../utils/removeEmpty";
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
@@ -64,7 +65,7 @@ export const CreateRecordPage = () => {
       setIsSubmitting(true);
       const response = await axios.post(
         `/record/${schema?.validationTypeId}`,
-        values,
+        removeEmpty(values),
       );
       notification(
         `Record was successfully created ${response.data.id}`,

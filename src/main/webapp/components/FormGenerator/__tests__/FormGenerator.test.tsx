@@ -43,6 +43,10 @@ import {
   formDefWithOneTextVariableBeingRepeating,
   formDefContributorGroupWithAuthorGroupAuthor,
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
+  formDefWithOptionalGroupWithRequiredVar,
+  formDefWithOneOptionalNumberVariableWithAttributeCollection,
+  formDefWithOneGroupWithAttributeCollection,
+  formDefWithTwoTextVariableHavingFinalValue,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -208,6 +212,54 @@ describe('<FormGenerator />', () => {
       );
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
       expect(inputElement).toHaveValue('someFinalValue');
+    });
+
+    it('Renders a form with TextVariable and sets a finalValue 2', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableHavingFinalValue as FormSchema}
+        />,
+      );
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+      expect(inputElement).toHaveValue('someFinalValue');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('Renders a form with TextVariable and sets a finalValue 3', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithTwoTextVariableHavingFinalValue as FormSchema}
+        />,
+      );
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId1');
+      expect(inputElement).toHaveValue('someFinalValue1');
+      const inputElement2 = screen.getByPlaceholderText('someEmptyTextId2');
+      expect(inputElement2).toHaveValue('someFinalValue2');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
     it('Renders a form with TextVariable with mode output', async () => {
@@ -701,7 +753,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('attribute collection', () => {
-    it('renders a form with numberVariable and attribute collection selectBox and validates it', async () => {
+    it('renders a form with numberVariable and attribute and does NOT validate it when skipped', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -719,6 +771,7 @@ describe('<FormGenerator />', () => {
       expect(expandButton).toBeInTheDocument();
 
       const user = userEvent.setup();
+      await user.type(numberInput, '12');
       await user.click(expandButton);
       const listBoxElement = screen.getByRole('listbox');
 
@@ -739,23 +792,32 @@ describe('<FormGenerator />', () => {
 
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
-    it('renders a form with numberVariable and a optional numberVariable and skipable attribute and validates it', async () => {
+
+    it('renders a form with numberVariable and attribute and validates it when filled', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
           formSchema={
-            formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection as FormSchema
+            formDefWithOneNumberVariableWithAttributeCollection as FormSchema
           }
           onSubmit={mockSubmit}
         />,
       );
-      const numberInput = screen.getByLabelText('someNumberVarIdLabel');
+
+      const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
-      const numberInput2 = screen.getByLabelText('someNumberVar2IdLabel');
-      expect(numberInput2).toBeInTheDocument();
+
+      const attributeButton = screen.getByRole('button', { expanded: false });
+      expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
-      await user.type(numberInput, '2');
+      await user.type(numberInput, '12');
+
+      await user.click(attributeButton);
+      const listBoxElement = screen.getByRole('listbox');
+
+      expect(listBoxElement.children).toHaveLength(4);
+      await user.selectOptions(listBoxElement, 'exampleBlueItemText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -767,128 +829,282 @@ describe('<FormGenerator />', () => {
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
-  });
 
-  describe('group', () => {
-    it('renders a form with group and renders its textVariable child', async () => {
+    it('renders a form with a optional numberVariable and attribute and validates it when variable is skipped', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
           formSchema={
-            formDefWithOneGroupHavingTextVariableAsChild as FormSchema
+            formDefWithOneOptionalNumberVariableWithAttributeCollection as FormSchema
           }
           onSubmit={mockSubmit}
         />,
       );
 
-      const textInput = screen.getByPlaceholderText('someEmptyTextId');
-      expect(textInput).toBeInTheDocument();
-    });
+      const numberInput = screen.getByLabelText('someNumberVar2IdLabel');
+      expect(numberInput).toBeInTheDocument();
+      const attributeButton = screen.getByRole('button', { expanded: false });
+      expect(attributeButton).toBeInTheDocument();
 
-    it('renders a form with non-repeating group and headlineLevel', async () => {
-      const mockSubmit = vi.fn();
-      render(
-        <FormGenerator
-          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema}
-          onSubmit={mockSubmit}
-        />,
-      );
+      const user = userEvent.setup();
+      await user.click(attributeButton);
+      const listBoxElement = screen.getByRole('listbox');
 
-      const headlineElement = screen.getByRole('heading', {
-        name: 'someRootFormGroupText',
-        level: 1,
-      });
-      expect(headlineElement).toBeInTheDocument();
-    });
+      expect(listBoxElement.children).toHaveLength(4);
+      await user.selectOptions(listBoxElement, 'exampleBlueItemText');
 
-    it.skip('renders a form with repeating group and headlineLevel', async () => {
-      const mockSubmit = vi.fn();
-      render(
-        <FormGenerator
-          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema}
-          onSubmit={mockSubmit}
-        />,
-      );
-
-      const headlineElement = screen.getByRole('heading', {
-        name: 'author',
-        level: 3,
-      });
-      expect(headlineElement).toBeInTheDocument();
-    });
-
-    it.skip('renders a form with group and default headlineLevel', async () => {
-      const mockSubmit = vi.fn();
-      render(
-        <FormGenerator
-          formSchema={formDefWithGroupWithDefaultHeadlineLevel as FormSchema}
-          onSubmit={mockSubmit}
-        />,
-      );
-
-      const headlineElement = screen.getByRole('heading', {
-        name: 'author',
-        level: 2,
-      });
-      expect(headlineElement).toBeInTheDocument();
-    });
-
-    it.skip('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
-      const mockSubmit = vi.fn();
-
-      render(
-        <FormGenerator
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
-        />,
-      );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-
-      const user = userEvent.setup();
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it.skip('validation should fail a group having min 1 and max 1 and sub groups being optional', async () => {
-      const mockSubmit = vi.fn();
+    it('renders a form with numberVariable and a optional numberVariable and attribute and validates it', async () => {
+      it('renders a form with numberVariable and a optional numberVariable and skipable attribute and validates it', async () => {
+        const mockSubmit = vi.fn();
+        render(
+          <FormGenerator
+            formSchema={
+              formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection as FormSchema
+            }
+            onSubmit={mockSubmit}
+          />,
+        );
+        const numberInput = screen.getByLabelText('someNumberVarIdLabel');
+        expect(numberInput).toBeInTheDocument();
+        const numberInput2 = screen.getByLabelText('someNumberVar2IdLabel');
+        expect(numberInput2).toBeInTheDocument();
+        const attributeButton = screen.getByRole('button', { expanded: false });
+        expect(attributeButton).toBeInTheDocument();
 
-      render(
-        <FormGenerator
-          onSubmit={mockSubmit}
-          formSchema={
-            formDefContributorGroupWithAuthorGroupAuthor as FormSchema
-          }
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
+        const user = userEvent.setup();
+        await user.type(numberInput, '2');
+
+        const submitButton = screen.getByRole('button', {
+          name: 'divaClient_SubmitButtonText',
+        });
+        await waitFor(() => {
+          expect(submitButton).toBeInTheDocument();
+        });
+        await user.click(submitButton);
+
+        expect(mockSubmit).toHaveBeenCalledTimes(1);
       });
 
-      const user = userEvent.setup();
-      await user.click(submitButton);
+      it('renders a form with numberVariable and a group with a optional textVariable and attribute and validates it', async () => {
+        const mockSubmit = vi.fn();
+        render(
+          <FormGenerator
+            formSchema={
+              formDefWithOneGroupWithAttributeCollection as FormSchema
+            }
+            onSubmit={mockSubmit}
+          />,
+        );
+        const numberInput = screen.getByText('numberVariableLabelText');
+        expect(numberInput).toBeInTheDocument();
+        const textInput = screen.getByText('textVarLabelText');
+        expect(textInput).toBeInTheDocument();
+        const attributeButton = screen.getByRole('button', { expanded: false });
+        expect(attributeButton).toBeInTheDocument();
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+        const user = userEvent.setup();
+        await user.type(numberInput, '3.33');
+
+        const submitButton = screen.getByRole('button', {
+          name: 'divaClient_SubmitButtonText',
+        });
+        await waitFor(() => {
+          expect(submitButton).toBeInTheDocument();
+        });
+        await user.click(submitButton);
+
+        expect(mockSubmit).toHaveBeenCalledTimes(1);
+      });
+
+      it('renders a form a group with a textVariable and attribute and does not validates the group', async () => {
+        const mockSubmit = vi.fn();
+        render(
+          <FormGenerator
+            formSchema={
+              formDefWithOneGroupWithAttributeCollection as FormSchema
+            }
+            onSubmit={mockSubmit}
+          />,
+        );
+
+        const numberInput = screen.getByText('numberVariableLabelText');
+        expect(numberInput).toBeInTheDocument();
+        const textInput = screen.getByText('textVarLabelText');
+        expect(textInput).toBeInTheDocument();
+        const attributeButton = screen.getByRole('button', { expanded: false });
+        expect(attributeButton).toBeInTheDocument();
+
+        const user = userEvent.setup();
+        await user.type(numberInput, '3.33');
+        await user.type(textInput, 'abcd');
+
+        const submitButton = screen.getByRole('button', {
+          name: 'divaClient_SubmitButtonText',
+        });
+        await waitFor(() => {
+          expect(submitButton).toBeInTheDocument();
+        });
+        await user.click(submitButton);
+
+        expect(mockSubmit).toHaveBeenCalledTimes(0);
+      });
     });
-  });
 
-  describe('guiElementLink', () => {
-    it('renders a form with numberVariable and a gui element link', async () => {
-      const mockSubmit = vi.fn();
-      render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneNumberVariableAndGuiElementLink as FormSchema
-          }
-          onSubmit={mockSubmit}
-        />,
-      );
+    describe('group', () => {
+      it('renders a form with group and renders its textVariable child', async () => {
+        const mockSubmit = vi.fn();
+        render(
+          <FormGenerator
+            formSchema={
+              formDefWithOneGroupHavingTextVariableAsChild as FormSchema
+            }
+            onSubmit={mockSubmit}
+          />,
+        );
 
-      const link = screen.getByRole('link');
+        const textInput = screen.getByPlaceholderText('someEmptyTextId');
+        expect(textInput).toBeInTheDocument();
+      });
 
-      expect(link).toHaveAttribute('href', 'http://www.google.se');
+      it('renders a form with non-repeating group and headlineLevel', async () => {
+        const mockSubmit = vi.fn();
+        render(
+          <FormGenerator
+            formSchema={
+              formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema
+            }
+            onSubmit={mockSubmit}
+          />,
+        );
+
+        const headlineElement = screen.getByRole('heading', {
+          name: 'someRootFormGroupText',
+          level: 1,
+        });
+        expect(headlineElement).toBeInTheDocument();
+      });
+
+      it('renders a form with repeating group and headlineLevel', async () => {
+        const mockSubmit = vi.fn();
+        render(
+          <FormGenerator
+            formSchema={
+              formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema
+            }
+            onSubmit={mockSubmit}
+          />,
+        );
+
+        const headlineElement = screen.getByRole('heading', {
+          name: 'author',
+          level: 3,
+        });
+        expect(headlineElement).toBeInTheDocument();
+      });
+
+      it('renders a form with group and default headlineLevel', async () => {
+        const mockSubmit = vi.fn();
+        render(
+          <FormGenerator
+            formSchema={formDefWithGroupWithDefaultHeadlineLevel as FormSchema}
+            onSubmit={mockSubmit}
+          />,
+        );
+
+        const headlineElement = screen.getByRole('heading', {
+          name: 'author',
+          level: 2,
+        });
+        expect(headlineElement).toBeInTheDocument();
+      });
+
+      it('validation should pass a group having min 0 and max 0 and variables being min 1 and max 1', async () => {
+        const mockSubmit = vi.fn();
+
+        render(
+          <FormGenerator
+            onSubmit={mockSubmit}
+            formSchema={formDefWithOptionalGroupWithRequiredVar as FormSchema}
+          />,
+        );
+        const submitButton = screen.getByRole('button', {
+          name: 'divaClient_SubmitButtonText',
+        });
+
+        const user = userEvent.setup();
+        await user.click(submitButton);
+
+        expect(mockSubmit).toHaveBeenCalledTimes(1);
+      });
+
+      it('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
+        const mockSubmit = vi.fn();
+
+        render(
+          <FormGenerator
+            onSubmit={mockSubmit}
+            formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+          />,
+        );
+        const submitButton = screen.getByRole('button', {
+          name: 'divaClient_SubmitButtonText',
+        });
+
+        const user = userEvent.setup();
+        await user.click(submitButton);
+
+        expect(mockSubmit).toHaveBeenCalledTimes(0);
+      });
+
+      it('validation should fail a group having min 1 and max 1 and some sub groups being optional', async () => {
+        const mockSubmit = vi.fn();
+
+        render(
+          <FormGenerator
+            onSubmit={mockSubmit}
+            formSchema={
+              formDefContributorGroupWithAuthorGroupAuthor as FormSchema
+            }
+          />,
+        );
+        const submitButton = screen.getByRole('button', {
+          name: 'divaClient_SubmitButtonText',
+        });
+
+        const user = userEvent.setup();
+        await user.click(submitButton);
+
+        expect(mockSubmit).toHaveBeenCalledTimes(0);
+      });
+    });
+
+    describe('guiElementLink', () => {
+      it('renders a form with numberVariable and a gui element link', async () => {
+        const mockSubmit = vi.fn();
+        render(
+          <FormGenerator
+            formSchema={
+              formDefWithOneNumberVariableAndGuiElementLink as FormSchema
+            }
+            onSubmit={mockSubmit}
+          />,
+        );
+
+        const link = screen.getByRole('link');
+
+        expect(link).toHaveAttribute('href', 'http://www.google.se');
+      });
     });
   });
 });

@@ -632,7 +632,58 @@ export const formDefWithOneTextVariableHavingFinalValue = {
         },
         validation: {
           type: 'regex',
-          pattern: '^[a-zA-Z]$',
+          pattern: '.*',
+        },
+        inputType: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+export const formDefWithTwoTextVariableHavingFinalValue = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'textVariable',
+        name: 'someNameInData1',
+        label: 'label1',
+        finalValue: 'someFinalValue1',
+        placeholder: 'someEmptyTextId1',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        inputType: 'input',
+      },
+      {
+        type: 'textVariable',
+        name: 'someNameInData2',
+        label: 'label2',
+        finalValue: 'someFinalValue2',
+        placeholder: 'someEmptyTextId2',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '.*',
         },
         inputType: 'input',
       },
@@ -1089,6 +1140,180 @@ export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeC
       mode: 'input',
     },
   };
+
+export const formDefWithOneOptionalNumberVariableWithAttributeCollection = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        name: 'numberVar2',
+        label: 'someNumberVar2IdLabel',
+        placeholder: 'someNumberVar2IdPlaceholder',
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'someNumberVarTextId',
+          body: 'someNumberVarDefTextId',
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'colour',
+            label: 'someNumberVar2AttributeLabel',
+            placeholder: 'someNumberVar2AttributeId',
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText',
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+        validation: {
+          type: 'number',
+          min: 0,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneGroupWithAttributeCollection = {
+  validationTypeId: 'manuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'manuscript2NewGroupText',
+      body: 'manuscript2NewGroupDefText',
+    },
+    label: 'manuscript2NewGroupText',
+    // headlineLevel: 'h1',
+    showLabel: false,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        name: 'someNumberVariableNameInData',
+        placeholder: 'someNumberPlaceholderTextId',
+        label: 'numberVariableLabelText',
+        showLabel: true,
+        validation: {
+          type: 'number',
+          min: 0,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 2,
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        name: 'alternativeTitle',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'someTooltipGroupText',
+          body: 'someTooltipGroupDefText',
+        },
+        label: 'alternativeTitleGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'titleType',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'titleTypeCollectionVarText',
+              body: 'titleTypeCollectionVarDefText',
+            },
+            label: 'titleTypeCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'alternativeTitle',
+                label: 'alternativeTitleItemText',
+              },
+              {
+                value: 'translatedTitle',
+                label: 'translatedTitleItemText',
+              },
+            ],
+          },
+        ],
+        components: [
+          {
+            name: 'mainTitle',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'someTooltipTitleText',
+              body: 'someTooltipTitleDefText',
+            },
+            label: 'textVarLabelText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
 
 export const formDefWithOneGroupHavingTextVariableAsChild = {
   validationTypeId: 'someValidationTypeId',
@@ -2853,9 +3078,8 @@ export const formDefWithRepeatingAuthorGroupWithNameTextVar = {
     ],
   },
 };
-
-export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups = {
-  validationTypeId: 'book',
+export const formDefWithOptionalGroupWithRequiredVar = {
+  validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
     label: 'someRootFormGroupText',
@@ -2871,245 +3095,37 @@ export const formDefBookWithTitleGroupAndAuthorGroupsWithNameGroups = {
     mode: 'input',
     components: [
       {
-        type: 'text',
-        name: 'someHeaderText',
-      },
-      {
-        name: 'colour',
-        type: 'collectionVariable',
-        label: 'colour',
-        placeholder: 'book cover colour',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        mode: 'input',
-        tooltip: {
-          title: 'exampleCollectionVarText',
-          body: 'exampleCollectionVarDefText',
-        },
-        options: [
-          {
-            value: 'blue',
-            label: 'exampleBlueItemText',
-          },
-          {
-            value: 'pink',
-            label: 'examplePinkItemText',
-          },
-          {
-            value: 'yellow',
-            label: 'exampleYellowItemText',
-          },
-        ],
-      },
-      {
-        type: 'numberVariable',
-        name: 'year',
-        label: 'year',
-        placeholder: 'year',
-        validation: {
-          type: 'number',
-          min: 0,
-          max: 2023,
-          warningMin: 0,
-          warningMax: 0,
-          numberOfDecimals: 0,
-        },
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-      },
-      {
-        name: 'title',
-        type: 'group',
-        tooltip: {
-          title: 'non-repeating title group',
-          body: '',
-        },
-        label: 'title',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'titleColorAttribute',
-            placeholder: 'Select title color',
-            tooltip: {
-              title: 'Face color',
-              body: 'state the author face color',
-            },
-            label: 'Title color',
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
-          },
-        ],
-        components: [
-          {
-            type: 'text',
-            name: 'this a header for group',
-            textStyle: 'h5TextStyle',
-          },
-          {
-            name: 'main',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'Main',
-              body: '',
-            },
-            label: 'Main title',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-          },
-          {
-            name: 'tagLine',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'title.tagLine.value',
-              body: '',
-            },
-            label: 'Title tagline',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-          },
-        ],
-      },
-      {
-        type: 'text',
-        name: 'Authors',
-        textStyle: 'h3TextStyle',
-      },
-      {
-        name: 'author',
+        name: 'point',
         type: 'group',
         mode: 'input',
         tooltip: {
-          title: 'authorGroupText',
-          body: 'authorGroupDefText',
+          title: 'pointGroupText',
+          body: 'pointGroupDefText',
         },
-        label: 'author',
+        label: 'pointGroupText',
         repeat: {
           minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 10,
+          repeatMin: 0,
+          repeatMax: 0,
         },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'eyeColor',
-            placeholder: 'Select eye color',
-            tooltip: {
-              title: 'Eye color',
-              body: 'state the author eye color',
-            },
-            finalValue: 'blue',
-            label: 'Eye color',
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
-          },
-        ],
         components: [
           {
-            name: 'firstName',
+            name: 'longitudeTextVar',
             type: 'textVariable',
             mode: 'input',
             tooltip: {
-              title: '',
-              body: '',
+              title: 'longitudeVarText',
+              body: 'longitudeVarDefText',
             },
-            label: 'First name',
+            label: 'name',
             validation: {
               type: 'regex',
-              pattern: '.+',
+              pattern: '^[a-zA-Z]$',
             },
             repeat: {
               repeatMin: 1,
               repeatMax: 1,
             },
-            attributes: [
-              {
-                type: 'collectionVariable',
-                name: 'faceColorAttribute',
-                placeholder: 'Select eye color',
-                tooltip: {
-                  title: 'Face color',
-                  body: 'state the author face color',
-                },
-                label: 'Face color',
-                options: [
-                  { value: 'pale', label: 'examplePaleItemText' },
-                  { value: 'blue', label: 'exampleBlueItemText' },
-                  { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
-                ],
-                mode: 'input',
-              },
-            ],
-          },
-          {
-            name: 'lastName',
-            type: 'textVariable',
-            mode: 'input',
-            tooltip: {
-              title: '',
-              body: '',
-            },
-            label: 'Last name',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 3,
-            },
-            attributes: [
-              {
-                type: 'collectionVariable',
-                name: 'lastNameColor',
-                placeholder: 'Select lastname color',
-                tooltip: {
-                  title: 'Last color',
-                  body: 'state the author eye color',
-                },
-                finalValue: 'yellow',
-                label: 'Lastname color',
-                options: [
-                  { value: 'blue', label: 'exampleBlueItemText' },
-                  { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
-                ],
-                mode: 'input',
-              },
-            ],
           },
         ],
       },
@@ -3412,6 +3428,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel = {
           body: 'authorGroupDefText',
         },
         label: 'author',
+        showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
           repeatMin: 1,
@@ -3656,11 +3673,11 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
           body: 'authorGroupDefText',
         },
         label: 'authorGroupText',
-        showLabel: true,
         headlineLevel: 'h3',
+        showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
+          repeatMin: 1,
           repeatMax: 1.7976931348623157e308,
         },
         components: [
@@ -3679,8 +3696,11 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               repeatMin: 0,
               repeatMax: 1,
             },
-            childStyle: [],
+            childStyle: [''],
             gridColSpan: 12,
+            recordLinkType: 'person',
+            presentationRecordLinkId: 'divaPersonPLink',
+            search: 'personSearch',
           },
           {
             name: 'givenName',
@@ -3702,31 +3722,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               repeatMin: 1,
               repeatMax: 1,
             },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
-            name: 'familyName',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'familyNameTextVarText',
-              body: 'familyNameTextVarDefText',
-            },
-            label: 'familyNameTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
+            childStyle: ['eightChildStyle'],
+            gridColSpan: 8,
           },
           {
             name: 'correspondingAuthor',
@@ -3754,7 +3751,53 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
                 label: 'divaNoItemText',
               },
             ],
-            childStyle: [],
+            childStyle: ['fourChildStyle'],
+            gridColSpan: 4,
+          },
+          {
+            name: 'familyName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'familyNameTextVarText',
+              body: 'familyNameTextVarDefText',
+            },
+            label: 'familyNameTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'email',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'contributorEmailTextVarText',
+              body: 'contributorEmailTextVarDefText',
+            },
+            label: 'contributorEmailTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            childStyle: [''],
             gridColSpan: 12,
           },
           {
@@ -3767,6 +3810,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'birthYearTextVarDefText',
             },
             label: 'birthYearTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '^[0-9]{4}$',
@@ -3776,8 +3820,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               repeatMin: 0,
               repeatMax: 1,
             },
-            childStyle: [],
-            gridColSpan: 12,
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
           },
           {
             name: 'deathYear',
@@ -3789,6 +3833,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'deathYearTextVarDefText',
             },
             label: 'deathYearTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '^[0-9]{4}$',
@@ -3798,30 +3843,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               repeatMin: 0,
               repeatMax: 1,
             },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
-            name: 'email',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'contributorEmailTextVarText',
-              body: 'contributorEmailTextVarDefText',
-            },
-            label: 'contributorEmailTextVarText',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
           },
           {
             name: 'localUserId',
@@ -3833,6 +3856,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'localUserIdTextVarDefText',
             },
             label: 'localUserIdTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '.+',
@@ -3842,8 +3866,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               repeatMin: 0,
               repeatMax: 1,
             },
-            childStyle: [],
-            gridColSpan: 12,
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
           },
           {
             name: 'ORCID',
@@ -3855,6 +3879,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'orcidTextVarDefText',
             },
             label: 'orcidTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '^(\\d{4})-(\\d{4})-(\\d{4})-(\\d{3}[0-9X])$',
@@ -3864,8 +3889,8 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               repeatMin: 0,
               repeatMax: 1,
             },
-            childStyle: [],
-            gridColSpan: 12,
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
           },
           {
             name: 'organisation',
@@ -3876,13 +3901,17 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'organisationLinkDefText',
             },
             label: 'organisationLinkText',
+            showLabel: true,
             repeat: {
               minNumberOfRepeatingToShow: 1,
               repeatMin: 0,
               repeatMax: 1,
             },
-            childStyle: [],
+            childStyle: [''],
             gridColSpan: 12,
+            recordLinkType: 'organisation',
+            presentationRecordLinkId: 'organisationPLink',
+            search: 'organisationSearch',
           },
           {
             name: 'otherOrganisation',
@@ -3893,6 +3922,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'otherOrganisationGroupDefText',
             },
             label: 'otherOrganisationGroupText',
+            showLabel: false,
             repeat: {
               minNumberOfRepeatingToShow: 0,
               repeatMin: 0,
@@ -3909,6 +3939,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
                   body: 'otherOrganisationTextVarDefText',
                 },
                 label: 'otherOrganisationTextVarText',
+                showLabel: true,
                 validation: {
                   type: 'regex',
                   pattern: '.+',
@@ -3918,11 +3949,12 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
                   repeatMin: 0,
                   repeatMax: 1,
                 },
-                childStyle: [],
+                childStyle: [''],
                 gridColSpan: 12,
               },
             ],
-            childStyle: [],
+            presentationStyle: '',
+            childStyle: [''],
             gridColSpan: 12,
           },
           {
@@ -3934,13 +3966,17 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'researchGroupLinkDefText',
             },
             label: 'researchGroupLinkText',
+            showLabel: true,
             repeat: {
               minNumberOfRepeatingToShow: 1,
               repeatMin: 0,
               repeatMax: 1.7976931348623157e308,
             },
-            childStyle: [],
+            childStyle: [''],
             gridColSpan: 12,
+            recordLinkType: 'researchGroup',
+            presentationRecordLinkId: 'researchGroupPLink',
+            search: 'researchGroupSearch',
           },
           {
             name: 'otherResearchGroup',
@@ -3952,168 +3988,27 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
               body: 'otherResearchGroupTextVarDefText',
             },
             label: 'otherResearchGroupTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
               pattern: '.+',
             },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-        ],
-        childStyle: [],
-        gridColSpan: 12,
-      },
-      {
-        name: 'groupAuthor',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'groupAuthorGroupText',
-          body: 'groupAuthorGroupDefText',
-        },
-        label: 'groupAuthorGroupText',
-        headlineLevel: 'h3',
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
-          repeatMax: 1.7976931348623157e308,
-        },
-        components: [
-          {
-            name: 'groupAuthorName',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'groupAuthorNameTextVarText',
-              body: 'groupAuthorNameTextVarDefText',
-            },
-            label: 'groupAuthorNameTextVarText',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
-            name: 'email',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'contributorEmailTextVarText',
-              body: 'contributorEmailTextVarDefText',
-            },
-            label: 'contributorEmailTextVarText',
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
-            name: 'url',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'outputUrlTextVarText',
-              body: 'outputUrlTextVarDefText',
-            },
-            label: 'outputUrlTextVarText',
-            validation: {
-              type: 'regex',
-              pattern: '^[0-9A-Za-z./:?=-]{1,300}$',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
-            name: 'organisation',
-            type: 'recordLink',
-            mode: 'input',
-            tooltip: {
-              title: 'organisationLinkText',
-              body: 'organisationLinkDefText',
-            },
-            label: 'organisationLinkText',
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1.7976931348623157e308,
-            },
-            childStyle: [],
-            gridColSpan: 12,
-          },
-          {
-            name: 'otherOrganisation',
-            type: 'group',
-            mode: 'input',
-            tooltip: {
-              title: 'otherOrganisationGroupText',
-              body: 'otherOrganisationGroupDefText',
-            },
-            label: 'otherOrganisationGroupText',
             repeat: {
               minNumberOfRepeatingToShow: 0,
               repeatMin: 0,
-              repeatMax: 1.7976931348623157e308,
+              repeatMax: 1,
             },
-            components: [
-              {
-                name: 'otherOrganisation',
-                type: 'textVariable',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'otherOrganisationTextVarText',
-                  body: 'otherOrganisationTextVarDefText',
-                },
-                label: 'otherOrganisationTextVarText',
-                validation: {
-                  type: 'regex',
-                  pattern: '.+',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                childStyle: [],
-                gridColSpan: 12,
-              },
-            ],
-            childStyle: [],
+            childStyle: [''],
             gridColSpan: 12,
           },
         ],
-        childStyle: [],
+        presentationStyle: '',
+        childStyle: [''],
         gridColSpan: 12,
       },
     ],
-    childStyle: [],
+    presentationStyle: '',
+    childStyle: [''],
     gridColSpan: 12,
   },
 };

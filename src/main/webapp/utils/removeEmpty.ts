@@ -4,6 +4,7 @@ export const removeEmpty = (obj: any) => {
     possiblyRemoveEmptyArray(obj, key);
     possiblyRemoveEmptyObject(obj, key);
     possiblyRemovePartOfObjectWithKeys(obj, key);
+    possiblyRemoveAttributeForEmptyValues(obj, key);
   });
   return obj;
 };
@@ -36,6 +37,35 @@ const possiblyRemovePartOfObjectWithKeys = (obj: any, key: string) => {
       delete obj[key];
     }
   }
+};
+
+const possiblyRemoveAttributeForEmptyValues = (obj: any, key: string) => {
+  if (
+    isObjectAttribute(obj, key) &&
+    hasObjectValue(obj) &&
+    !hasObjectChildren(obj)
+  ) {
+    delete obj[key];
+  }
+};
+
+const isObjectAttribute = (obj: any, key: string) => {
+  return key.charAt(0).startsWith('_');
+};
+const hasObjectValue = (obj: any) => {
+  return obj.value === undefined;
+};
+
+const numberOfAttributes = (obj: any) => {
+  return Object.keys(obj).filter((item) => item.startsWith('_')).length;
+};
+const numberOfValues = (obj: any) => {
+  return Object.keys(obj).filter((item) => item.startsWith('value')).length;
+};
+
+const hasObjectChildren = (obj: any) => {
+  const entries = Object.keys(obj).length;
+  return entries - numberOfAttributes(obj) - numberOfValues(obj) > 0;
 };
 
 const isArrayLengthZero = (arr: any[]) => {
