@@ -37,15 +37,14 @@
 
 		<sonar.language>js</sonar.language>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-		<sonar.sources>src/main/webapp/script</sonar.sources>
-		<sonar.tests>src/test/script/</sonar.tests>
-		<sonar.exclusions>src/main/webapp/script/lib/**</sonar.exclusions>
-		<sonar.testExecutionReportPaths>target/generated-resources/xml/xslt/karma-junit.xml</sonar.testExecutionReportPaths>
-		<sonar.javascript.lcov.reportPaths>target/jsReportFromDocker/coverage/firefox/lcov.info,target/jsReportFromDocker/coverage/chrome/lcov.info</sonar.javascript.lcov.reportPaths>
+<!--		<sonar.sources>src/main/webapp/script</sonar.sources>-->
+<!--		<sonar.tests>src/test/script/</sonar.tests>-->
+<!--		<sonar.exclusions>src/main/webapp/script/lib/**</sonar.exclusions>-->
+<!--		<sonar.testExecutionReportPaths>target/generated-resources/xml/xslt/karma-junit.xml</sonar.testExecutionReportPaths>-->
+<!--		<sonar.javascript.lcov.reportPaths>target/jsReportFromDocker/coverage/firefox/lcov.info,target/jsReportFromDocker/coverage/chrome/lcov.info</sonar.javascript.lcov.reportPaths>-->
 		<sonar.nodejs.executable>${project.build.directory}/nodeJs/node/node</sonar.nodejs.executable>
 		<frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
 
-		<jsClientContainerName>myJsClientContainer3</jsClientContainerName>
 		<basename>/</basename>
 
 		<nodeVersion>v18.16.0</nodeVersion>
