@@ -1,8 +1,7 @@
 {
-  "name": "typescript-starter",
+  "name": "diva-client-bff",
   "version": "1.0.0",
-  "description": "A basic typescript app starter for 2023.",
-  "main": "index.js",
+  "description": "Diva Client BFF",
   "scripts": {
     "dev": "nodemon --exec ts-node --esm src/main/webapp/server.ts",
     "lint": "eslint ./src/**/*.ts",
@@ -13,9 +12,7 @@
     "test-verbose": "jest --watch --verbose=true",
     "coverage": "jest --coverage /;exit 0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
