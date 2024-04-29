@@ -34,6 +34,8 @@ axios.defaults.baseURL = VITE_BFF_API_URL;
 
 console.log('axios.baseUrl: ', axios.defaults.baseURL);
 
+
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BackdropProvider>
