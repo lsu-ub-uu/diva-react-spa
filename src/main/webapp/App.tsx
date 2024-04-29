@@ -17,18 +17,29 @@
  */
 
 import { BrowserRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Router from './routes/routes';
 import useI18n from './app/i18n';
 
 const App = () => {
   const { loading } = useI18n();
+  const { MODE } = import.meta.env;
 
   if (loading) return <h3>Waiting for DiVA 3 GUI to load...</h3>;
 
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Router />
-    </BrowserRouter>
+    <>
+      <Helmet>
+        <link
+          rel='icon'
+          type='image/svg+xml'
+          href={MODE === 'development' ? '/dev_favicon.svg' : '/favicon.svg'}
+        />
+      </Helmet>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <Router />
+      </BrowserRouter>
+    </>
   );
 };
 

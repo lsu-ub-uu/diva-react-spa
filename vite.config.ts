@@ -7,8 +7,7 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // publicDir: 'public',
-  // base: './',
+  publicDir: '../public',
   root: 'src/main/webapp',
   envDir: '../../../',
   plugins: [react()],
@@ -20,6 +19,6 @@ export default defineConfig({
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
   build: {
-    outDir: '../../../dist', // Specifies the output directory for the build
+    outDir: '../../../dist',
   }
 });

@@ -40,7 +40,7 @@ export const Header = () => {
         >
           <Grid item>
             <img
-              src={logo}
+              src='/divaLogo.svg'
               className='logo'
               alt='logo'
               style={{ width: 160 }}
