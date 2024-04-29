@@ -45,7 +45,7 @@
 		<sonar.nodejs.executable>${project.build.directory}/nodeJs/node/node</sonar.nodejs.executable>
 		<frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
 
-		<basename>/</basename>
+		<basename>/diva/spaclient</basename>
 
 		<nodeVersion>v18.16.0</nodeVersion>
 	</properties>
