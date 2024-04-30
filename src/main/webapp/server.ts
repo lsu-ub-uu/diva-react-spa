@@ -66,7 +66,7 @@ app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
   console.log(`Cora API-url ${CORA_API_URL}`);
   console.log(
-    `CORA_APPTOKENVERIFIER-url ${CORA_APPTOKENVERIFIER_URL}/apptokenverifier/rest/apptoken/`
+    `CORA_APPTOKENVERIFIER-url ${CORA_APPTOKENVERIFIER_URL}/apptoken/`
   );
   loadStuffOnServerStart().then(() => {
     console.log('Loaded stuff from cora');
