@@ -18,7 +18,6 @@
  */
 
 import axios, { AxiosResponse } from 'axios';
-import * as console from 'console';
 import { Auth } from '../types/Auth';
 import { DataGroup } from '../utils/cora-data/CoraData';
 
@@ -28,8 +27,8 @@ export async function requestAuthTokenOnLogin(
   user: string,
   APP_TOKEN_ADMIN: string | undefined
 ): Promise<Auth> {
-  const { CORA_APPTOKENVERIFIER_URL } = process.env;
-  const rootUrl = `${CORA_APPTOKENVERIFIER_URL}/apptokenverifier/rest/apptoken/`;
+  const { CORA_LOGIN_URL } = process.env;
+  const rootUrl = `${CORA_LOGIN_URL}/apptoken/`;
 
   const url = `${rootUrl}${user}`;
   const headers = {
