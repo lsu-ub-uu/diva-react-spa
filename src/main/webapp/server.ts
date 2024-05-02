@@ -65,7 +65,7 @@ app.use('/api/refreshDefinitions', refreshDefinitionsRoute);
 app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
   console.log(`Cora API-url ${CORA_API_URL}`);
-  console.log(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}/apptoken`);
+  console.log(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
   loadStuffOnServerStart().then(() => {
     console.log('Loaded stuff from cora');
   });

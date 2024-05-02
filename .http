@@ -9,6 +9,13 @@ Content-Type: application/json
 Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
 
 ###
+POST https://cora.epc.ub.uu.se/diva/spaclientbff/api/auth/coraUser:490742519075086
+Content-Type: application/json
+Authtoken:
+
+{"token":"2e57eb36-55b9-4820-8c44-8271baab4e8e"}
+
+###
 GET http://localhost:8080
 
 ###
@@ -240,3 +247,4 @@ Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
     }
   }
 }
+
