@@ -33,7 +33,7 @@ import {
 
 const PORT = process.env.PORT ?? 8080;
 
-const { CORA_API_URL, CORA_LOGIN_URL } = process.env;
+const { CORA_API_URL, CORA_APPTOKENVERIFIER_URL } = process.env;
 
 axios.defaults.baseURL = CORA_API_URL;
 
