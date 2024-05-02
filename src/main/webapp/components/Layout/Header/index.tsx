@@ -20,12 +20,11 @@ import { Box, Button, Container, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import CachedIcon from '@mui/icons-material/Cached';
-import logo from './divaLogo.svg';
 import { Login } from './Login/Login';
+import divaLogo from '../../../assets/divaLogo.svg';
 
 export const Header = () => {
   const { i18n } = useTranslation();
-
   return (
     <Box
       sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
@@ -40,7 +39,7 @@ export const Header = () => {
         >
           <Grid item>
             <img
-              src='/divaLogo.svg'
+              src={divaLogo}
               className='logo'
               alt='logo'
               style={{ width: 160 }}

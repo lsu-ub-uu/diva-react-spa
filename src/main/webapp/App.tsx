@@ -18,6 +18,8 @@
 
 import { BrowserRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import favicon from './assets/favicon.svg';
+import dev_favicon from './assets/dev_favicon.svg';
 import Router from './routes/routes';
 import useI18n from './app/i18n';
 
@@ -33,7 +35,7 @@ const App = () => {
         <link
           rel='icon'
           type='image/svg+xml'
-          href={MODE === 'development' ? '/dev_favicon.svg' : '/favicon.svg'}
+          href={MODE === 'development' ? dev_favicon : favicon}
         />
       </Helmet>
       <BrowserRouter basename={import.meta.env.BASE_URL}>
