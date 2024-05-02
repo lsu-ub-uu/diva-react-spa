@@ -33,7 +33,7 @@ import {
 
 const PORT = process.env.PORT ?? 8080;
 
-const { CORA_API_URL, CORA_APPTOKENVERIFIER_URL } = process.env;
+const { CORA_API_URL, CORA_LOGIN_URL } = process.env;
 
 axios.defaults.baseURL = CORA_API_URL;
 
@@ -66,7 +66,6 @@ app.listen(PORT, (): void => {
   console.log(`Server running at ${PORT}`);
   console.log(`Cora API-url ${CORA_API_URL}`);
   console.log(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}/apptoken`);
-  console.log('aaaaaa');
   loadStuffOnServerStart().then(() => {
     console.log('Loaded stuff from cora');
   });
