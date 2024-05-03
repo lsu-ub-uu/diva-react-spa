@@ -834,13 +834,14 @@ const getMinNumberOfRepeatingToShow = (
 };
 
 const checkIfSpecifiedHeadlineTextIdExist = (presentation: TYPES.BFFPresentationGroup) => {
-  return Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineTextId');
+  return Object.hasOwn(presentation, 'specifiedHeadlineTextId');
 };
 
 const checkIfSpecifiedHeadlineLevelExist = (presentation: TYPES.BFFPresentationGroup) => {
-  return Object.prototype.hasOwnProperty.call(presentation, 'specifiedHeadlineLevel');
+  return Object.hasOwn(presentation, 'specifiedHeadlineLevel');
 };
 
 const checkIfShowHeadlineExist = (presentation: TYPES.BFFPresentationGroup) => {
-  return Object.prototype.hasOwnProperty.call(presentation, 'showHeadline');
+  // eslint-disable-next-line no-prototype-builtins
+  return Object.hasOwn(presentation, 'showHeadline');
 };

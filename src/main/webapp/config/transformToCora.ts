@@ -68,7 +68,7 @@ export const generateLastUpdateInfo = (userId: string, updatedAt: string) => {
 const findChildrenAttributes = (obj: any) => {
   const attributesArray: Record<string, string>[] = [];
   Object.keys(obj).forEach((key) => {
-    if (Object.prototype.hasOwnProperty.call(obj, key) && key.startsWith('_')) {
+    if (Object.hasOwn(obj, key) && key.startsWith('_')) {
       const value = obj[key];
       attributesArray.push({ [key.substring(1)]: value });
     }

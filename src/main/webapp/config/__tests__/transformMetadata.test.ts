@@ -53,7 +53,7 @@ describe('transformMetadata', () => {
         defTextId: 'someTextVarDefText',
         regEx: '.*'
       });
-      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
+      expect(Object.hasOwn(metadataList[0], 'finalValue')).toBe(false);
     });
 
     it('Returns one BFFMetadata for textVariable with finalValue', () => {
@@ -102,7 +102,7 @@ describe('transformMetadata', () => {
         ]
       });
 
-      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
+      expect(Object.hasOwn(metadataList[0], 'finalValue')).toBe(false);
     });
   });
 
@@ -122,7 +122,7 @@ describe('transformMetadata', () => {
         warningMax: '10',
         numberOfDecimals: '3'
       });
-      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
+      expect(Object.hasOwn(metadataList[0], 'finalValue')).toBe(false);
     });
 
     it('Returns one BFFMetadata for numberVariable with finalValue', () => {
@@ -141,7 +141,7 @@ describe('transformMetadata', () => {
         numberOfDecimals: '3',
         finalValue: '50.123'
       });
-      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(true);
+      expect(Object.hasOwn(metadataList[0], 'finalValue')).toBe(true);
     });
   });
 
@@ -157,7 +157,7 @@ describe('transformMetadata', () => {
         defTextId: 'exampleCollectionVarDefText',
         refCollection: 'exampleCollection'
       });
-      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(false);
+      expect(Object.hasOwn(metadataList[0], 'finalValue')).toBe(false);
     });
 
     it('Returns one BFFMetadata for collectionVariable with finalValue', () => {
@@ -174,7 +174,7 @@ describe('transformMetadata', () => {
         refCollection: 'exampleCollection',
         finalValue: 'blue'
       });
-      expect(Object.prototype.hasOwnProperty.call(metadataList[0], 'finalValue')).toBe(true);
+      expect(Object.hasOwn(metadataList[0], 'finalValue')).toBe(true);
     });
   });
 

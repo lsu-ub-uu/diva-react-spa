@@ -46,8 +46,8 @@ import { createFormMetaData } from '../formDefinition/formMetadata';
  */
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
   return (
-    Object.prototype.hasOwnProperty.call(item, 'name') &&
-    Object.prototype.hasOwnProperty.call(item, 'children')
+    Object.hasOwn(item, 'name') &&
+    Object.hasOwn(item, 'children')
   );
 }
 
@@ -57,8 +57,8 @@ export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
  */
 export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
   return (
-    Object.prototype.hasOwnProperty.call(item, 'name') &&
-    Object.prototype.hasOwnProperty.call(item, 'value')
+    Object.hasOwn(item, 'name') &&
+    Object.hasOwn(item, 'value')
   );
 }
 
@@ -86,7 +86,7 @@ export function isRepeating(
   if (formComponent) {
     isFormDataRepeating = formComponent.repeat.repeatMin === 0;
   }
-  return Object.prototype.hasOwnProperty.call(item, 'repeatId') || isFormDataRepeating;
+  return Object.hasOwn(item, 'repeatId') || isFormDataRepeating;
 }
 
 const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {

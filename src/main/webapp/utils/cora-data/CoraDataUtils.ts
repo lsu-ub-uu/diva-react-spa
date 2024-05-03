@@ -26,7 +26,7 @@ export function getAllRecordLinksWithNameInData(
   nameInData: string
 ): BFFRecordLink[] {
   const recordLinks = <RecordLink[]>dataGroup.children.filter((child) => {
-    if (Object.prototype.hasOwnProperty.call(child, 'children')) {
+    if (Object.hasOwn(child, 'children')) {
       const dGChild = child as DataGroup;
       return (
         dGChild.children.filter((grandChild: DataElement) => {
@@ -99,7 +99,7 @@ export function getFirstDataAtomicWithNameInData(
   }
 
   const dataAtomics = <DataAtomic[]>dataGroup.children.filter((child) => {
-    return Object.prototype.hasOwnProperty.call(child, 'value');
+    return Object.hasOwn(child, 'value');
   });
 
   const firstMatchingDataAtomic = dataAtomics.find((dataAtomic) => {
@@ -120,7 +120,7 @@ export function getAllDataAtomicsWithNameInData(
   nameInData: string
 ): DataAtomic[] {
   const dataAtomics = <DataAtomic[]>dataGroup.children.filter((child) => {
-    return Object.prototype.hasOwnProperty.call(child, 'value');
+    return Object.hasOwn(child, 'value');
   });
 
   const matchingDataAtomics = dataAtomics.filter((dataAtomic) => {
@@ -135,7 +135,7 @@ export function getFirstDataGroupWithNameInData(
   nameInData: string
 ): DataGroup {
   const dataGroups = <DataGroup[]>dataGroup.children.filter((child) => {
-    return Object.prototype.hasOwnProperty.call(child, 'children');
+    return Object.hasOwn(child, 'children');
   });
 
   const firstMatchingDataGroup = dataGroups.find((child) => {
@@ -173,7 +173,7 @@ export const getAllDataGroupsWithNameInDataAndAttributes = (
   attributesToMatch?: Attributes
 ): DataGroup[] => {
   const dataGroups = <DataGroup[]>dataGroup.children.filter((child) => {
-    return Object.prototype.hasOwnProperty.call(child, 'children');
+    return Object.hasOwn(child, 'children');
   });
 
   const matchingDataGroups = dataGroups.filter((child) => {
