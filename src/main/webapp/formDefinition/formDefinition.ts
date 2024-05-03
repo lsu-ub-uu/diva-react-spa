@@ -17,12 +17,26 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as TYPES from '../config/bffTypes';
 import {
+  BFFAttributeReference,
+  BFFCollectionItemReference,
+  BFFGuiElement,
+  BFFMetadata,
   BFFMetadataChildReference,
+  BFFMetadataCollectionVariable,
   BFFMetadataGroup,
+  BFFMetadataItemCollection,
+  BFFMetadataNumberVariable,
+  BFFMetadataRecordLink,
+  BFFMetadataTextVariable,
+  BFFPresentation,
   BFFPresentationChildReference,
-  BFFPresentationGroup
+  BFFPresentationContainer,
+  BFFPresentationGroup,
+  BFFPresentationRecordLink,
+  BFFPresentationSurroundingContainer,
+  BFFRecordType,
+  BFFValidationType
 } from '../config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
@@ -35,6 +49,13 @@ import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
 import { Lookup } from '../utils/structs/lookup';
 import { createNumberVariableValidation, createTextVariableValidation } from './formValidation';
+
+type BFFMetadataTypes =
+  | BFFMetadataCollectionVariable
+  | BFFMetadataNumberVariable
+  | BFFMetadataTextVariable
+  | BFFMetadataRecordLink
+  | BFFMetadataGroup;
 
 interface FormMetaDataRepeat {
   repeatMin: number;
@@ -129,17 +150,17 @@ const createFormDefinitionForCreate = (dependencies: Dependencies, validationTyp
 const createFormDefinitionFromValidationTypeUsingKeys = (
   dependencies: Dependencies,
   validationTypeId: string,
-  metadataKey: keyof TYPES.BFFValidationType,
-  presentationKey: keyof TYPES.BFFValidationType
+  metadataKey: keyof BFFValidationType,
+  presentationKey: keyof BFFValidationType
 ) => {
   const { validationTypePool, metadataPool, presentationPool } = dependencies;
   const validationType = validationTypePool.get(validationTypeId);
 
   const metadataId = validationType[metadataKey];
-  const metadataGroup = metadataPool.get(metadataId) as TYPES.BFFMetadataGroup;
+  const metadataGroup = metadataPool.get(metadataId) as BFFMetadataGroup;
 
   const presentationId = validationType[presentationKey];
-  const presentationGroup = presentationPool.get(presentationId) as TYPES.BFFPresentationGroup;
+  const presentationGroup = presentationPool.get(presentationId) as BFFPresentationGroup;
 
   return createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
@@ -173,15 +194,15 @@ const createFormDefinitionForList = (dependencies: Dependencies, validationTypeI
 const createFormDefinitionFromRecordTypeUsingKey = (
   dependencies: Dependencies,
   validationTypeId: string,
-  presentationKey: keyof TYPES.BFFRecordType
+  presentationKey: keyof BFFRecordType
 ) => {
   const { validationTypePool, metadataPool, presentationPool, recordTypePool } = dependencies;
   const validationType = validationTypePool.get(validationTypeId);
 
   const recordType = recordTypePool.get(validationType.validatesRecordTypeId);
-  const metadataGroup = metadataPool.get(recordType.metadataId) as TYPES.BFFMetadataGroup;
+  const metadataGroup = metadataPool.get(recordType.metadataId) as BFFMetadataGroup;
   const presentationId = recordType[presentationKey] as string;
-  const presentationGroup = presentationPool.get(presentationId) as TYPES.BFFPresentationGroup;
+  const presentationGroup = presentationPool.get(presentationId) as BFFPresentationGroup;
   return createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
     metadataGroup,
@@ -201,8 +222,8 @@ const createFormDefinitionForView = (dependencies: Dependencies, validationTypeI
 
 const createDefinitionFromMetadataGroupAndPresentationGroup = (
   dependencies: Dependencies,
-  metadataGroup: TYPES.BFFMetadataGroup,
-  presentationGroup: TYPES.BFFPresentationGroup
+  metadataGroup: BFFMetadataGroup,
+  presentationGroup: BFFPresentationGroup
 ) => {
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
   const formRootPresentationReference = createBFFPresentationReference(presentationGroup.id);
@@ -215,8 +236,8 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
 
 const createComponentsFromChildReferences = (
   dependencies: Dependencies,
-  metadataChildReferences: TYPES.BFFMetadataChildReference[],
-  presentationChildReferences: TYPES.BFFPresentationChildReference[]
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReferences: BFFPresentationChildReference[]
 ): unknown => {
   return presentationChildReferences.map((presentationChildReference) => {
     return createComponentFromChildReference(
@@ -250,13 +271,13 @@ const createComponentFromChildReference = (
 };
 const createFormPartsForGroupOrVariable = (
   dependencies: Dependencies,
-  metadataChildReferences: TYPES.BFFMetadataChildReference[],
-  presentationChildReference: TYPES.BFFPresentationChildReference
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReference: BFFPresentationChildReference
 ) => {
   const { metadataPool, presentationPool } = dependencies;
   let metadataOverrideId;
   const presentationChildId = presentationChildReference.childId;
-  const presentation: TYPES.BFFPresentation = presentationPool.get(presentationChildId);
+  const presentation: BFFPresentation = presentationPool.get(presentationChildId);
   if (
     presentation.type !== 'container' &&
     noIdMatchForChildRefAndPresentationOf(metadataChildReferences, presentation)
@@ -283,17 +304,17 @@ const createFormPartsForGroupOrVariable = (
 };
 
 const noIdMatchForChildRefAndPresentationOf = (
-  metadataChildReferences: TYPES.BFFMetadataChildReference[],
-  presentation: TYPES.BFFPresentation
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentation: BFFPresentation
 ) => {
   return !metadataChildReferences.some((mcr) => mcr.childId === presentation.presentationOf);
 };
 
 export const findMetadataChildReferenceByNameInDataAndAttributes = (
   metadataPool: any,
-  metadataChildReferences: TYPES.BFFMetadataChildReference[],
+  metadataChildReferences: BFFMetadataChildReference[],
   metadataFromCurrentPresentation: any
-): TYPES.BFFMetadataChildReference | undefined => {
+): BFFMetadataChildReference | undefined => {
   return metadataChildReferences.find((metadataChildReferenceCandidate) => {
     const metadataCandidate = metadataPool.get(metadataChildReferenceCandidate.childId);
 
@@ -314,35 +335,15 @@ export const findMetadataChildReferenceByNameInDataAndAttributes = (
 };
 
 const differentNameInData = (
-  metadataCandidate:
-    | TYPES.BFFMetadataCollectionVariable
-    | TYPES.BFFMetadataNumberVariable
-    | TYPES.BFFMetadataTextVariable
-    | TYPES.BFFMetadataRecordLink
-    | TYPES.BFFMetadataGroup,
-  metadataFromCurrentPresentation:
-    | TYPES.BFFMetadataCollectionVariable
-    | TYPES.BFFMetadataNumberVariable
-    | TYPES.BFFMetadataTextVariable
-    | TYPES.BFFMetadataRecordLink
-    | TYPES.BFFMetadataGroup
+  metadataCandidate: BFFMetadataTypes,
+  metadataFromCurrentPresentation: BFFMetadataTypes
 ) => {
   return metadataCandidate.nameInData !== metadataFromCurrentPresentation.nameInData;
 };
 
 const differentNumberOfAttributes = (
-  metadataCandidate:
-    | TYPES.BFFMetadataCollectionVariable
-    | TYPES.BFFMetadataNumberVariable
-    | TYPES.BFFMetadataTextVariable
-    | TYPES.BFFMetadataRecordLink
-    | TYPES.BFFMetadataGroup,
-  metadataFromCurrentPresentation:
-    | TYPES.BFFMetadataCollectionVariable
-    | TYPES.BFFMetadataNumberVariable
-    | TYPES.BFFMetadataTextVariable
-    | TYPES.BFFMetadataRecordLink
-    | TYPES.BFFMetadataGroup
+  metadataCandidate: BFFMetadataTypes,
+  metadataFromCurrentPresentation: BFFMetadataTypes
 ) => {
   return (
     metadataCandidate.attributeReferences?.length !==
@@ -350,14 +351,7 @@ const differentNumberOfAttributes = (
   );
 };
 
-const noAttributesToCompare = (
-  metadataCandidate:
-    | TYPES.BFFMetadataCollectionVariable
-    | TYPES.BFFMetadataNumberVariable
-    | TYPES.BFFMetadataTextVariable
-    | TYPES.BFFMetadataRecordLink
-    | TYPES.BFFMetadataGroup
-) => {
+const noAttributesToCompare = (metadataCandidate: BFFMetadataTypes) => {
   return (
     metadataCandidate.attributeReferences?.length === undefined ||
     metadataCandidate.attributeReferences?.length === 0
@@ -387,12 +381,12 @@ const attributesMatch = (
  */
 export const getAttributesByAttributeReferences = (
   metadataPool: any,
-  attributeReferences: TYPES.BFFAttributeReference[]
+  attributeReferences: BFFAttributeReference[]
 ): Record<string, string[]> => {
   const attributesArray = attributeReferences.map((attributeReference) => {
     const attributeCollectionVar = metadataPool.get(
       attributeReference.refCollectionVarId
-    ) as TYPES.BFFMetadataCollectionVariable;
+    ) as BFFMetadataCollectionVariable;
 
     if (attributeCollectionVar.finalValue) {
       return { [attributeCollectionVar.nameInData]: [attributeCollectionVar.finalValue] };
@@ -407,14 +401,14 @@ export const getAttributesByAttributeReferences = (
 
 const createCollectionVariableOptions = (
   metadataPool: any,
-  collectionVariable: TYPES.BFFMetadataCollectionVariable
+  collectionVariable: BFFMetadataCollectionVariable
 ): { label: string; value: string }[] => {
   const collection = metadataPool.get(
     collectionVariable.refCollection
-  ) as TYPES.BFFMetadataItemCollection;
+  ) as BFFMetadataItemCollection;
   const itemReferences = collection.collectionItemReferences;
-  return itemReferences.map((itemRef: TYPES.BFFCollectionItemReference) => {
-    const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as TYPES.BFFMetadata;
+  return itemReferences.map((itemRef: BFFCollectionItemReference) => {
+    const collectionItem = metadataPool.get(itemRef.refCollectionItemId) as BFFMetadata;
     const label = collectionItem.textId;
     const value = collectionItem.nameInData;
     return { value, label };
@@ -472,7 +466,7 @@ const createValueCheckFunction = (attributeValues2: string[]) => {
 };
 
 const createText = (
-  presentationChildReference: TYPES.BFFPresentationChildReference,
+  presentationChildReference: BFFPresentationChildReference,
   presentationChildType: string
 ) => {
   const presentationChildId = presentationChildReference.childId;
@@ -486,11 +480,11 @@ const createText = (
 };
 
 const createGuiElement = (
-  presentationChildReference: TYPES.BFFPresentationChildReference,
+  presentationChildReference: BFFPresentationChildReference,
   presentationPool: any
 ) => {
   const presentationChildId = presentationChildReference.childId;
-  const presentation: TYPES.BFFGuiElement = presentationPool.get(presentationChildId);
+  const presentation: BFFGuiElement = presentationPool.get(presentationChildId);
   return {
     name: presentationChildId,
     type: presentation.type,
@@ -518,7 +512,7 @@ const createPresentationForCollectionVar = (
   id: string,
   presentationOf: string,
   mode: 'input' | 'output'
-): TYPES.BFFPresentation => ({
+): BFFPresentation => ({
   id,
   presentationOf,
   type: 'pCollVar',
@@ -528,42 +522,40 @@ const createPresentationForCollectionVar = (
 
 const createAttributes = (
   metadataVariable:
-    | TYPES.BFFMetadataCollectionVariable
-    | TYPES.BFFMetadataNumberVariable
-    | TYPES.BFFMetadataTextVariable
-    | TYPES.BFFMetadataRecordLink
-    | TYPES.BFFMetadataGroup,
+    | BFFMetadataCollectionVariable
+    | BFFMetadataNumberVariable
+    | BFFMetadataTextVariable
+    | BFFMetadataRecordLink
+    | BFFMetadataGroup,
   metadataPool: any,
   options: unknown[] | undefined,
   variablePresentationMode: 'input' | 'output'
 ) => {
-  return metadataVariable.attributeReferences?.map(
-    (attributeReference: TYPES.BFFAttributeReference) => {
-      const refCollectionVar = metadataPool.get(
-        attributeReference.refCollectionVarId
-      ) as TYPES.BFFMetadataCollectionVariable;
+  return metadataVariable.attributeReferences?.map((attributeReference: BFFAttributeReference) => {
+    const refCollectionVar = metadataPool.get(
+      attributeReference.refCollectionVarId
+    ) as BFFMetadataCollectionVariable;
 
-      const presentation = createPresentationForCollectionVar(
-        'someFakeId',
-        refCollectionVar.id,
-        variablePresentationMode
-      );
-      const { finalValue } = refCollectionVar;
-      const commonParameters = createCommonParameters(refCollectionVar, presentation);
-      options = createCollectionVariableOptions(metadataPool, refCollectionVar);
-      return removeEmpty({ ...commonParameters, options, finalValue });
-    }
-  );
+    const presentation = createPresentationForCollectionVar(
+      'someFakeId',
+      refCollectionVar.id,
+      variablePresentationMode
+    );
+    const { finalValue } = refCollectionVar;
+    const commonParameters = createCommonParameters(refCollectionVar, presentation);
+    options = createCollectionVariableOptions(metadataPool, refCollectionVar);
+    return removeEmpty({ ...commonParameters, options, finalValue });
+  });
 };
 
-const getContainerType = (presentationContainer: TYPES.BFFPresentationContainer) => {
+const getContainerType = (presentationContainer: BFFPresentationContainer) => {
   return presentationContainer.repeat === 'children' ? 'surrounding' : 'repeating';
 };
 
 const createDetailedPresentationBasedOnPresentationType = (
   dependencies: Dependencies,
-  metadataChildReferences: TYPES.BFFMetadataChildReference[],
-  presentationChildReference: TYPES.BFFPresentationChildReference,
+  metadataChildReferences: BFFMetadataChildReference[],
+  presentationChildReference: BFFPresentationChildReference,
   metadataOverrideId?: string
 ) => {
   const { metadataPool, presentationPool } = dependencies;
@@ -586,7 +578,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
   const presentationChildId = presentationChildReference.childId;
-  const presentation: TYPES.BFFPresentation = presentationPool.get(presentationChildId);
+  const presentation: BFFPresentation = presentationPool.get(presentationChildId);
 
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
@@ -598,30 +590,30 @@ const createDetailedPresentationBasedOnPresentationType = (
   }
 
   if (presentation.type === 'pVar') {
-    const textVariable = metadata as TYPES.BFFMetadataTextVariable;
+    const textVariable = metadata as BFFMetadataTextVariable;
     validation = createTextVariableValidation(textVariable);
     finalValue = textVariable.finalValue;
     attributes = checkForAttributes(textVariable, metadataPool, undefined, presentation);
   }
 
   if (presentation.type === 'pNumVar') {
-    const numberVariable = metadata as TYPES.BFFMetadataNumberVariable;
+    const numberVariable = metadata as BFFMetadataNumberVariable;
     validation = createNumberVariableValidation(numberVariable);
     finalValue = numberVariable.finalValue;
     attributes = checkForAttributes(numberVariable, metadataPool, undefined, presentation);
   }
 
   if (presentation.type === 'pCollVar') {
-    const collectionVariable = metadata as TYPES.BFFMetadataCollectionVariable;
+    const collectionVariable = metadata as BFFMetadataCollectionVariable;
     finalValue = collectionVariable.finalValue;
     options = createCollectionVariableOptions(metadataPool, collectionVariable);
     attributes = checkForAttributes(collectionVariable, metadataPool, options, presentation);
   }
 
   if (presentation.type === 'pRecordLink') {
-    const recordLink = metadata as TYPES.BFFMetadataRecordLink;
+    const recordLink = metadata as BFFMetadataRecordLink;
     recordLinkType = recordLink.linkedRecordType;
-    const presentationRecordLink = presentation as TYPES.BFFPresentationRecordLink;
+    const presentationRecordLink = presentation as BFFPresentationRecordLink;
     if (presentationRecordLink.search !== undefined) {
       search = presentationRecordLink.search;
     }
@@ -630,17 +622,17 @@ const createDetailedPresentationBasedOnPresentationType = (
   }
 
   if (presentation.type === 'container') {
-    const presentationContainer = presentation as TYPES.BFFPresentationContainer;
+    const presentationContainer = presentation as BFFPresentationContainer;
     const name = presentation.id; // container does not have a nameInData so use id instead.
     const { type, mode } = presentation;
     containerType = getContainerType(presentationContainer);
     presentationStyle = convertStylesToShortName(presentationContainer.presentationStyle ?? '');
 
-    let definitionFilteredChildRefs: TYPES.BFFMetadataChildReference[] = [];
+    let definitionFilteredChildRefs: BFFMetadataChildReference[] = [];
 
     if (containerType === 'surrounding') {
       const presentationMetadataIds =
-        (presentationContainer as TYPES.BFFPresentationSurroundingContainer).presentationsOf ?? [];
+        (presentationContainer as BFFPresentationSurroundingContainer).presentationsOf ?? [];
       definitionFilteredChildRefs = metadataChildReferences.filter((definitionChildRef) => {
         if (checkIfPresentationIncludesMetadataId(presentationMetadataIds, definitionChildRef)) {
           return true;
@@ -667,12 +659,11 @@ const createDetailedPresentationBasedOnPresentationType = (
   }
 
   if (presentation.type === 'pGroup') {
-    const group = metadata as TYPES.BFFMetadataGroup;
-    const presentationGroup: TYPES.BFFPresentationGroup = presentationPool.get(presentation.id);
+    const group = metadata as BFFMetadataGroup;
+    const presentationGroup: BFFPresentationGroup = presentationPool.get(presentation.id);
     presentationStyle = convertStylesToShortName(presentationGroup.presentationStyle ?? '');
     attributes = checkForAttributes(group, metadataPool, options, presentation);
 
-    // skip children for recordInfo group for now
     if (group.nameInData !== 'recordInfo') {
       components = createComponentsFromChildReferences(
         dependencies,
@@ -701,7 +692,7 @@ const createDetailedPresentationBasedOnPresentationType = (
 };
 const findMetadataChildReferenceById = (
   childId: string,
-  metadataChildReferences: TYPES.BFFMetadataChildReference[]
+  metadataChildReferences: BFFMetadataChildReference[]
 ) => {
   const metaDataChildRef = metadataChildReferences.find(
     (reference) => reference.childId === childId
@@ -713,8 +704,8 @@ const findMetadataChildReferenceById = (
 };
 
 const createRepeat = (
-  presentationChildReference: TYPES.BFFPresentationChildReference,
-  metaDataChildRef: TYPES.BFFMetadataChildReference
+  presentationChildReference: BFFPresentationChildReference,
+  metaDataChildRef: BFFMetadataChildReference
 ) => {
   const minNumberOfRepeatingToShow = getMinNumberOfRepeatingToShow(presentationChildReference);
 
@@ -725,8 +716,8 @@ const createRepeat = (
 };
 
 const createCommonParameters = (
-  metadata: TYPES.BFFMetadata,
-  presentation: TYPES.BFFPresentation | TYPES.BFFPresentationGroup
+  metadata: BFFMetadata,
+  presentation: BFFPresentation | BFFPresentationGroup
 ) => {
   const name = metadata.nameInData;
   const { type } = metadata;
@@ -739,7 +730,7 @@ const createCommonParameters = (
   let showLabel = true;
   let headlineLevel;
 
-  const presentationGroup = presentation as TYPES.BFFPresentationGroup;
+  const presentationGroup = presentation as BFFPresentationGroup;
 
   if (
     checkIfSpecifiedHeadlineTextIdExist(presentationGroup) &&
@@ -777,9 +768,9 @@ const createCommonParameters = (
 };
 
 function matchPresentationWithMetadata(
-  metadataPool: Lookup<string, TYPES.BFFMetadata>,
+  metadataPool: Lookup<string, BFFMetadata>,
   presentationMetadataIds: string[],
-  definitionChildRef: TYPES.BFFMetadataChildReference
+  definitionChildRef: BFFMetadataChildReference
 ) {
   const metadataFromCurrentPresentation = metadataPool.get(presentationMetadataIds[0]);
 
@@ -792,21 +783,16 @@ function matchPresentationWithMetadata(
 
 const checkIfPresentationIncludesMetadataId = (
   presentationMetadataIds: string[],
-  definitionChildRef: TYPES.BFFMetadataChildReference
+  definitionChildRef: BFFMetadataChildReference
 ) => {
   return presentationMetadataIds.includes(definitionChildRef.childId);
 };
 
 const checkForAttributes = (
-  metadataVariable:
-    | TYPES.BFFMetadataCollectionVariable
-    | TYPES.BFFMetadataNumberVariable
-    | TYPES.BFFMetadataTextVariable
-    | TYPES.BFFMetadataRecordLink
-    | TYPES.BFFMetadataGroup,
-  metadataPool: Lookup<string, TYPES.BFFMetadata>,
+  metadataVariable: BFFMetadataTypes,
+  metadataPool: Lookup<string, BFFMetadata>,
   options: any,
-  presentation: TYPES.BFFPresentation
+  presentation: BFFPresentation
 ) => {
   let attributes;
   if (metadataVariable.attributeReferences !== undefined) {
@@ -824,7 +810,7 @@ export const determineRepeatMax = (value: string) => {
 };
 
 const getMinNumberOfRepeatingToShow = (
-  presentationChildReference: TYPES.BFFPresentationChildReference
+  presentationChildReference: BFFPresentationChildReference
 ) => {
   let minNumberOfRepeatingToShow;
   if (presentationChildReference.minNumberOfRepeatingToShow !== undefined) {
@@ -833,15 +819,15 @@ const getMinNumberOfRepeatingToShow = (
   return minNumberOfRepeatingToShow;
 };
 
-const checkIfSpecifiedHeadlineTextIdExist = (presentation: TYPES.BFFPresentationGroup) => {
+const checkIfSpecifiedHeadlineTextIdExist = (presentation: BFFPresentationGroup) => {
   return Object.hasOwn(presentation, 'specifiedHeadlineTextId');
 };
 
-const checkIfSpecifiedHeadlineLevelExist = (presentation: TYPES.BFFPresentationGroup) => {
+const checkIfSpecifiedHeadlineLevelExist = (presentation: BFFPresentationGroup) => {
   return Object.hasOwn(presentation, 'specifiedHeadlineLevel');
 };
 
-const checkIfShowHeadlineExist = (presentation: TYPES.BFFPresentationGroup) => {
+const checkIfShowHeadlineExist = (presentation: BFFPresentationGroup) => {
   // eslint-disable-next-line no-prototype-builtins
   return Object.hasOwn(presentation, 'showHeadline');
 };
