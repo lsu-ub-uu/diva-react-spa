@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import {
   BFFAttributeReference,
   BFFCollectionItemReference,
@@ -161,7 +162,6 @@ const createFormDefinitionFromValidationTypeUsingKeys = (
 
   const presentationId = validationType[presentationKey];
   const presentationGroup = presentationPool.get(presentationId) as BFFPresentationGroup;
-
   return createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
     metadataGroup,
@@ -227,6 +227,7 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
 ) => {
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
   const formRootPresentationReference = createBFFPresentationReference(presentationGroup.id);
+
   return createDetailedPresentationBasedOnPresentationType(
     dependencies,
     [formRootReference],
@@ -559,6 +560,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   metadataOverrideId?: string
 ) => {
   const { metadataPool, presentationPool } = dependencies;
+  console.log('aaaa');
   let validation;
   let options;
   let finalValue;
@@ -579,9 +581,10 @@ const createDetailedPresentationBasedOnPresentationType = (
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-
+  console.log(metadataPool.get(metadataChildReferences[0].childId))
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
+
     metadataId = metadataOverrideId ?? presentation.presentationOf;
     metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
@@ -767,11 +770,11 @@ const createCommonParameters = (
   });
 };
 
-function matchPresentationWithMetadata(
+const matchPresentationWithMetadata = (
   metadataPool: Lookup<string, BFFMetadata>,
   presentationMetadataIds: string[],
   definitionChildRef: BFFMetadataChildReference
-) {
+) => {
   const metadataFromCurrentPresentation = metadataPool.get(presentationMetadataIds[0]);
 
   return findMetadataChildReferenceByNameInDataAndAttributes(
@@ -779,7 +782,7 @@ function matchPresentationWithMetadata(
     [definitionChildRef],
     metadataFromCurrentPresentation
   );
-}
+};
 
 const checkIfPresentationIncludesMetadataId = (
   presentationMetadataIds: string[],

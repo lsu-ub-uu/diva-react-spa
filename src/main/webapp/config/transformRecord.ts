@@ -45,10 +45,7 @@ import { createFormMetaData } from '../formDefinition/formMetadata';
  * @param item
  */
 export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
-  return (
-    Object.hasOwn(item, 'name') &&
-    Object.hasOwn(item, 'children')
-  );
+  return Object.hasOwn(item, 'name') && Object.hasOwn(item, 'children');
 }
 
 /**
@@ -56,10 +53,7 @@ export function isDataGroup(item: DataGroup | DataAtomic | RecordLink) {
  * @param item
  */
 export function isDataAtomic(item: DataGroup | DataAtomic | RecordLink) {
-  return (
-    Object.hasOwn(item, 'name') &&
-    Object.hasOwn(item, 'value')
-  );
+  return Object.hasOwn(item, 'name') && Object.hasOwn(item, 'value');
 }
 
 /**

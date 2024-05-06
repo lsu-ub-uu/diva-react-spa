@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
   BFFGuiElement,
@@ -421,6 +422,25 @@ describe('formDefinition', () => {
       // Update/Edit
       metadataGroupId: `some${id}EditMetadataGroupId`,
       presentationGroupId: `pSome${id}EditMetadataGroupId`,
+      nameTextId: `some${id}TextId`,
+      defTextId: `some${id}DefTextId`
+    };
+
+    validationTypePool.set(metadata.id, metadata);
+    return metadata;
+  };
+  const createValidationTypeWithReusedPresentation = (
+    id: string,
+    pId: string
+  ): BFFValidationType => {
+    const metadata = {
+      id,
+      validatesRecordTypeId: pId,
+      newMetadataGroupId: `some${id}MetadataGroupId`,
+      newPresentationGroupId: `pSome${pId}NewMetadataGroupId`,
+      // Update/Edit
+      metadataGroupId: `some${id}EditMetadataGroupId`,
+      presentationGroupId: `pSome${pId}EditMetadataGroupId`,
       nameTextId: `some${id}TextId`,
       defTextId: `some${id}DefTextId`
     };
@@ -1884,6 +1904,7 @@ describe('formDefinition', () => {
       });
     });
   });
+
   describe('linked record definition', () => {
     it('should return a linked record definition for a divaPersonOutputPLink', () => {
       createRecordLink('divaPersonOutputPLink', 'personWhenLinkedOutputPGroup');
@@ -2781,6 +2802,31 @@ describe('formDefinition', () => {
         };
         expect(actual).toStrictEqual(expected);
       });
+    });
+  });
+
+  describe('reusing presentation for validationTypes', () => {
+    it('reusing divaOutputPGroup for thesisManuscriptNewGroup', () => {
+      createValidationTypeWithReusedPresentation('thesisManuscript', 'divaOutput');
+      createValidationType('divaOutput');
+      createGroup('somethesisManuscriptMetadataGroupId', 'divaOutput', ['abstractTextVar']);
+      createPresentationGroup('pSomedivaOutputNewMetadataGroupId', 'divaOutputGroup', [
+        {
+          childId: 'abstractPVar',
+          type: 'presentation'
+        }
+      ]);
+      createGroup('divaOutputGroup', 'divaOutput', ['abstractTextVar']);
+
+      console.log(validationTypePool.get('thesisManuscript'));
+      console.log(validationTypePool.get('divaOutput'));
+      console.log(metadataPool.get('somethesisManuscriptMetadataGroupId'));
+      console.log(presentationPool.get('pSomedivaOutputNewMetadataGroupId'));
+      console.log(metadataPool.get('divaOutputGroup'));
+
+      const formDefinition = createFormDefinition(dependencies, 'thesisManuscript', FORM_MODE_NEW);
+      // expect(formDefinition.form.components).toHaveLength(19);
+      expect(formDefinition).toStrictEqual({});
     });
   });
 });
