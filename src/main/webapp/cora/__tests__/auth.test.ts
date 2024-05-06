@@ -31,6 +31,13 @@ const authUser = {
       }
     ],
     name: 'authToken'
+  },
+  actionLinks: {
+    delete: {
+      requestMethod: 'DELETE',
+      rel: 'delete',
+      url: 'https://cora.epc.ub.uu.se/diva/login/rest/apptoken/coraUser:111111111111111'
+    }
   }
 };
 
@@ -64,21 +71,23 @@ describe('requestAuthTokenOnLogin', () => {
         idInUserStorage: 'coraUser:111111111111111',
         idFromLogin: 'coraUser:111111111111111',
         lastName: 'DiVA',
-        firstName: 'Everything'
+        firstName: 'Everything',
+        logoutURL: 'https://cora.epc.ub.uu.se/diva/login/rest/apptoken/coraUser:111111111111111'
       });
     });
   });
 
   describe('extractDataFromResult', () => {
     it('extract data from authToken', () => {
-      const testData = extractDataFromResult(authUser.data);
+      const testData = extractDataFromResult(authUser);
       expect(testData).toEqual({
         firstName: 'Everything',
         id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         idFromLogin: 'coraUser:111111111111111',
         idInUserStorage: 'coraUser:111111111111111',
         lastName: 'DiVA',
-        validForNoSeconds: '600'
+        validForNoSeconds: '600',
+        logoutURL: 'https://cora.epc.ub.uu.se/diva/login/rest/apptoken/coraUser:111111111111111'
       });
     });
   });

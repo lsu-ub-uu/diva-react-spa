@@ -11,13 +11,16 @@ export class Auth {
 
   firstName: string;
 
+  logoutURL: string;
+
   constructor(
     id: string,
     validForNoSeconds: string,
     idInUserStorage: string,
     idFromLogin: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    logoutURL: string
   ) {
     this.id = id;
     this.validForNoSeconds = validForNoSeconds;
@@ -25,5 +28,6 @@ export class Auth {
     this.idFromLogin = idFromLogin;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.logoutURL = logoutURL;
   }
 }

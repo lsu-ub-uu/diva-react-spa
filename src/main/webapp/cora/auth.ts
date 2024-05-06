@@ -18,8 +18,9 @@
  */
 
 import axios, { AxiosResponse } from 'axios';
+import * as console from 'console';
 import { Auth } from '../types/Auth';
-import { DataGroup } from '../utils/cora-data/CoraData';
+import { CoraRecord, DataGroup } from '../utils/cora-data/CoraData';
 
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
@@ -36,16 +37,26 @@ export async function requestAuthTokenOnLogin(
   };
 
   const response: AxiosResponse = await axios.post(url, APP_TOKEN_ADMIN, { headers });
-  return extractDataFromResult(response.data.data as DataGroup);
+  return extractDataFromResult(response.data);
 }
 
-export const extractDataFromResult = (dataGroup: DataGroup): Auth => {
+export const extractDataFromResult = (record: CoraRecord): Auth => {
+  const dataGroup: DataGroup = record.data;
   const id = getFirstDataAtomicValueWithNameInData(dataGroup, 'id');
   const validForNoSeconds = getFirstDataAtomicValueWithNameInData(dataGroup, 'validForNoSeconds');
   const idInUserStorage = getFirstDataAtomicValueWithNameInData(dataGroup, 'idInUserStorage');
   const idFromLogin = getFirstDataAtomicValueWithNameInData(dataGroup, 'idFromLogin');
   const firstName = getFirstDataAtomicValueWithNameInData(dataGroup, 'firstName');
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
+  const logoutURL = record.actionLinks?.delete?.url ?? '';
 
-  return new Auth(id, validForNoSeconds, idInUserStorage, idFromLogin, firstName, lastName);
+  return new Auth(
+    id,
+    validForNoSeconds,
+    idInUserStorage,
+    idFromLogin,
+    firstName,
+    lastName,
+    logoutURL
+  );
 };
