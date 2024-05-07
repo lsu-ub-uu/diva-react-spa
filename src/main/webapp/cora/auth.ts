@@ -18,7 +18,6 @@
  */
 
 import axios, { AxiosResponse } from 'axios';
-import * as console from 'console';
 import { Auth } from '../types/Auth';
 import { CoraRecord, DataGroup } from '../utils/cora-data/CoraData';
 

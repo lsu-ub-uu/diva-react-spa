@@ -2809,6 +2809,8 @@ describe('formDefinition', () => {
     it('reusing divaOutputPGroup for thesisManuscriptNewGroup', () => {
       createValidationTypeWithReusedPresentation('thesisManuscript', 'divaOutput');
       createValidationType('divaOutput');
+      createTextVar('abstractTextVar', 'abstract', []);
+      createPresentationVar('abstractPVar', 'abstractTextVar', 'presentation');
       createGroup('somethesisManuscriptMetadataGroupId', 'divaOutput', ['abstractTextVar']);
       createPresentationGroup('pSomedivaOutputNewMetadataGroupId', 'divaOutputGroup', [
         {
@@ -2818,11 +2820,11 @@ describe('formDefinition', () => {
       ]);
       createGroup('divaOutputGroup', 'divaOutput', ['abstractTextVar']);
 
-      console.log(validationTypePool.get('thesisManuscript'));
-      console.log(validationTypePool.get('divaOutput'));
-      console.log(metadataPool.get('somethesisManuscriptMetadataGroupId'));
-      console.log(presentationPool.get('pSomedivaOutputNewMetadataGroupId'));
-      console.log(metadataPool.get('divaOutputGroup'));
+      // console.log(validationTypePool.get('thesisManuscript'));
+      // console.log(validationTypePool.get('divaOutput'));
+      // console.log(metadataPool.get('somethesisManuscriptMetadataGroupId'));
+      // console.log(presentationPool.get('pSomedivaOutputNewMetadataGroupId'));
+      // console.log(metadataPool.get('divaOutputGroup'));
 
       const formDefinition = createFormDefinition(dependencies, 'thesisManuscript', FORM_MODE_NEW);
       // expect(formDefinition.form.components).toHaveLength(19);

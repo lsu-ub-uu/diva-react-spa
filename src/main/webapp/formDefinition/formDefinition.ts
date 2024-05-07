@@ -560,7 +560,6 @@ const createDetailedPresentationBasedOnPresentationType = (
   metadataOverrideId?: string
 ) => {
   const { metadataPool, presentationPool } = dependencies;
-  console.log('aaaa');
   let validation;
   let options;
   let finalValue;
@@ -579,16 +578,23 @@ const createDetailedPresentationBasedOnPresentationType = (
 
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
+
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-  console.log(metadataPool.get(metadataChildReferences[0].childId))
+
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
-
     metadataId = metadataOverrideId ?? presentation.presentationOf;
+    metadata = metadataPool.get(metadataId);
+
+    const mNiD = metadataPool.get(metadataId).nameInData;
+    const pNiD = metadataPool.get(presentation.presentationOf).nameInData;
+    console.log(mNiD, pNiD);
+    if (mNiD === pNiD) {
+      console.log('id', metadataId);
+    }
     metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
-    metadata = metadataPool.get(metadataId);
     commonParameters = createCommonParameters(metadata, presentation);
   }
 
@@ -697,6 +703,7 @@ const findMetadataChildReferenceById = (
   childId: string,
   metadataChildReferences: BFFMetadataChildReference[]
 ) => {
+  // console.log('meta', metadataChildReferences, 'cID', childId);
   const metaDataChildRef = metadataChildReferences.find(
     (reference) => reference.childId === childId
   );
