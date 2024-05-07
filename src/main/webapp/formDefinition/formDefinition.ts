@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import {
   BFFAttributeReference,
   BFFCollectionItemReference,
@@ -585,15 +584,15 @@ const createDetailedPresentationBasedOnPresentationType = (
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
     metadataId = metadataOverrideId ?? presentation.presentationOf;
-    metadata = metadataPool.get(metadataId);
+    const metadataFormPresentation = metadataPool.get(presentation.presentationOf);
 
-    const mNiD = metadataPool.get(metadataId).nameInData;
-    const pNiD = metadataPool.get(presentation.presentationOf).nameInData;
-    console.log(mNiD, pNiD);
-    if (mNiD === pNiD) {
-      console.log('id', metadataId);
-    }
-    metaDataChildRef = findMetadataChildReferenceById(metadataId, metadataChildReferences);
+    metaDataChildRef = findMetadataChildReferenceByNameInDataAndAttributes(
+      metadataPool,
+      metadataChildReferences,
+      metadataFormPresentation
+    ) as BFFMetadataChildReference;
+    metadata = metadataPool.get(metaDataChildRef.childId);
+
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
     commonParameters = createCommonParameters(metadata, presentation);
   }
@@ -703,7 +702,6 @@ const findMetadataChildReferenceById = (
   childId: string,
   metadataChildReferences: BFFMetadataChildReference[]
 ) => {
-  // console.log('meta', metadataChildReferences, 'cID', childId);
   const metaDataChildRef = metadataChildReferences.find(
     (reference) => reference.childId === childId
   );

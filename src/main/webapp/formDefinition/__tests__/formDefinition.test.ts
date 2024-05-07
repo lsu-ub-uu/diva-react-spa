@@ -543,23 +543,6 @@ describe('formDefinition', () => {
     }
   });
 
-  it('should throw Error on invalid child reference id', () => {
-    const validationTypeId = 'someValidationTypeDataFaultyChildReferenceId';
-
-    expect(() => {
-      createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    }).toThrow(Error);
-
-    try {
-      createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-    } catch (error: unknown) {
-      const createFormDefinitionError: Error = <Error>error;
-      expect(createFormDefinitionError.message).toStrictEqual(
-        'Child reference with childId [someNewMetadataGroupId] does not exist'
-      );
-    }
-  });
-
   describe('recordType', () => {
     it('createRecordType creates a recordType and adds it to the pool', () => {
       createRecordType('testRecordType');
@@ -2810,25 +2793,63 @@ describe('formDefinition', () => {
       createValidationTypeWithReusedPresentation('thesisManuscript', 'divaOutput');
       createValidationType('divaOutput');
       createTextVar('abstractTextVar', 'abstract', []);
+      createTextVar('abstract2TextVar', 'abstract2', []);
       createPresentationVar('abstractPVar', 'abstractTextVar', 'presentation');
+      createPresentationVar('abstract2PVar', 'abstract2TextVar', 'presentation');
       createGroup('somethesisManuscriptMetadataGroupId', 'divaOutput', ['abstractTextVar']);
       createPresentationGroup('pSomedivaOutputNewMetadataGroupId', 'divaOutputGroup', [
         {
           childId: 'abstractPVar',
           type: 'presentation'
+        },
+        {
+          childId: 'abstract2PVar',
+          type: 'presentation'
         }
       ]);
-      createGroup('divaOutputGroup', 'divaOutput', ['abstractTextVar']);
-
-      // console.log(validationTypePool.get('thesisManuscript'));
-      // console.log(validationTypePool.get('divaOutput'));
-      // console.log(metadataPool.get('somethesisManuscriptMetadataGroupId'));
-      // console.log(presentationPool.get('pSomedivaOutputNewMetadataGroupId'));
-      // console.log(metadataPool.get('divaOutputGroup'));
+      createGroup('divaOutputGroup', 'divaOutput', ['abstractTextVar', 'abstract2TextVar']);
 
       const formDefinition = createFormDefinition(dependencies, 'thesisManuscript', FORM_MODE_NEW);
-      // expect(formDefinition.form.components).toHaveLength(19);
-      expect(formDefinition).toStrictEqual({});
+      expect(formDefinition).toStrictEqual({
+        form: {
+          childStyle: [''],
+          components: [
+            {
+              childStyle: [''],
+              gridColSpan: 12,
+              label: 'someTextId',
+              mode: 'output',
+              name: 'abstract',
+              repeat: {
+                repeatMax: 3,
+                repeatMin: 1
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'someDefTextId',
+                title: 'someTextId'
+              },
+              type: 'textVariable'
+            }
+          ],
+          gridColSpan: 12,
+          label: 'someTextId',
+          mode: 'output',
+          name: 'divaOutput',
+          presentationStyle: '',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          showLabel: true,
+          tooltip: {
+            body: 'someDefTextId',
+            title: 'someTextId'
+          },
+          type: 'group'
+        },
+        validationTypeId: 'thesisManuscript'
+      });
     });
   });
 });
