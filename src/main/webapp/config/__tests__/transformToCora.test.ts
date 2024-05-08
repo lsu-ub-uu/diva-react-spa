@@ -18,14 +18,17 @@
  */
 
 import {
+  generateAtomicValue,
+  generateLastUpdateInfo,
   generateRecordInfo,
+  generateRecordLink,
   injectRecordInfoIntoDataGroup,
   transformToCoraData
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import testFormPayloadWithGroupWithAttributesAndTextVar from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
 import testFormPayloadWithGroupWithGroupWithRepeatingGroups from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithRepeatingGroups.json';
-import { DataGroup } from '../../utils/cora-data/CoraData';
+import { Attributes, DataGroup } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
 import {
   BFFMetadata,
@@ -94,462 +97,724 @@ describe('transformToCora', () => {
     };
   });
 
-  it('should take a form payload with someRecordType group containing title group with a mainTitle text variable', () => {
-    const expected: DataGroup = {
-      name: 'someNewMetadataGroupNameInData',
-      children: [
-        {
-          repeatId: '0',
-          name: 'someNameInData',
-          value: 'firstValue'
-        },
-        {
-          name: 'someChildGroupNameInData',
-          children: [
-            {
-              name: 'someNameInData',
-              value: 'secondValue'
-            }
-          ]
-        },
-        {
-          name: 'nationalSubjectCategory',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'nationalSubjectCategory'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'linkValue'
-            }
-          ]
-        }
-      ]
-    };
-    const validationTypeId = 'someSimpleValidationTypeId';
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(
-      formMetaDataPathLookup,
-      testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink
-    );
-    expect(transformData[0]).toStrictEqual(expected);
-  });
-
-  it('should take a form payload with group containing attributes, numberVar with repeatMax', () => {
-    const expected: DataGroup = {
-      name: 'someNewMetadataGroupWithAttributesNameInData',
-      children: [
-        {
-          name: 'someNameInData',
-          value: 'Erik'
-        },
-        {
-          name: 'someNameInDataTextWithAttrib',
-          value: 'AttribVar',
-          attributes: {
-            colour: 'someAttributeValue3'
+  describe('injectRecordInfoIntoDataGroup', () => {
+    it('adds a recordInfo group to the data', () => {
+      const expected = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'recordInfo',
+            children: [
+              {
+                name: 'id',
+                value: 'divaOutput:111111111111111111'
+              },
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'system'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaData'
+                  }
+                ],
+                name: 'dataDivider'
+              },
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'validationType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaOutput'
+                  }
+                ],
+                name: 'validationType'
+              },
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'recordType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'thesisManuscript'
+                  }
+                ],
+                name: 'type'
+              },
+              {
+                children: [
+                  {
+                    children: [
+                      {
+                        name: 'linkedRecordType',
+                        value: 'user'
+                      },
+                      {
+                        name: 'linkedRecordId',
+                        value: '161616'
+                      }
+                    ],
+                    name: 'updatedBy'
+                  },
+                  {
+                    name: 'tsUpdated',
+                    value: '2024-05-08T09:40:42.769008Z'
+                  }
+                ],
+                name: 'updated',
+                repeatId: '0'
+              }
+            ]
+          },
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaaaaaaa'
+              }
+            ]
+          },
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'havochvatten'
           }
-        },
-        {
-          name: 'someNameInDataNumberVar',
-          value: '1',
-          repeatId: '0'
-        },
-        {
-          name: 'someNameInDataNumberVar',
-          value: '2',
-          repeatId: '1'
-        },
-        {
-          name: 'someNameInDataNumberVar',
-          value: '3',
-          repeatId: '2'
-        },
-        {
-          name: 'someNameInDataNumberVar',
-          value: '4',
-          repeatId: '3'
-        },
-        {
-          name: 'someNameInDataNumberWithAttributeVar',
-          value: '1',
-          attributes: {
-            colour: 'someAttributeValue3'
+        ]
+      };
+      const transformData = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaaaaaaa'
+              }
+            ]
           },
-          repeatId: '0'
-        },
-        {
-          name: 'nationalSubjectCategoryWithAttributes',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'nationalSubjectCategory2'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'recordLinkWithAttrib'
-            }
-          ],
-          attributes: {
-            colour: 'someAttributeValue3'
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'havochvatten'
           }
-        },
-        {
-          name: 'nationalSubjectCategoryRepeatingWithAttributes',
-          repeatId: '0',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'nationalSubjectCategory2'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'recordLinkRepeatingWithAttrib'
-            }
-          ],
-          attributes: {
-            colour: 'someAttributeValue4'
+        ]
+      };
+      const validationTypeId = 'divaOutput';
+      const dataDivider = 'divaData';
+      const recordId = 'divaOutput:111111111111111111';
+      const recordType = 'thesisManuscript';
+
+      const updateGroup = injectRecordInfoIntoDataGroup(
+        transformData as DataGroup,
+        validationTypeId,
+        dataDivider,
+        recordId,
+        recordType,
+        '161616',
+        '2024-05-08T09:40:42.769008Z'
+      );
+
+      expect(updateGroup).toStrictEqual(expected);
+    });
+  });
+
+  describe('generateRecordInfo', () => {
+    it('creates a recordInfo group from data', () => {
+      const expected = {
+        name: 'recordInfo',
+        children: [
+          {
+            name: 'id',
+            value: 'divaOutput:111111111111111111'
+          },
+          {
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'system'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'divaData'
+              }
+            ],
+            name: 'dataDivider'
+          },
+          {
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'validationType'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'divaOutput'
+              }
+            ],
+            name: 'validationType'
+          },
+          {
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'recordType'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'thesisManuscript'
+              }
+            ],
+            name: 'type'
+          },
+          {
+            children: [
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'user'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: '161616'
+                  }
+                ],
+                name: 'updatedBy'
+              },
+              {
+                name: 'tsUpdated',
+                value: '2024-05-08T09:40:42.769008Z'
+              }
+            ],
+            name: 'updated',
+            repeatId: '0'
           }
-        }
-      ],
-      attributes: {
-        colour: 'someAttributeValue3'
-      }
-    };
-    const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(
-      formMetaDataPathLookup,
-      testFormPayloadWithGroupWithAttributesAndTextVar
-    );
-    expect(transformData[0]).toStrictEqual(expected);
-  });
+        ]
+      };
+      const validationTypeId = 'divaOutput';
+      const dataDivider = 'divaData';
+      const recordId = 'divaOutput:111111111111111111';
+      const recordType = 'thesisManuscript';
 
-  it('should take a form payload with repeating groups', () => {
-    const expected: DataGroup = {
-      name: 'someNewMetadataGroupRepeatingGroupsNameInData',
-      children: [
-        {
-          name: 'someChildGroupNameInData',
-          repeatId: '0',
-          children: [
-            {
-              name: 'someNameInData',
-              value: 'Erik'
-            }
-          ]
-        },
-        {
-          name: 'someChildGroupNameInData',
-          repeatId: '1',
-          children: [
-            {
-              name: 'someNameInData',
-              value: 'Egil'
-            }
-          ]
-        }
-      ]
-    };
-    const validationTypeId = 'someSimpleValidationTypeWithRepeatingGroupsId';
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(
-      formMetaDataPathLookup,
-      testFormPayloadWithGroupWithGroupWithRepeatingGroups
-    );
-    expect(transformData[0]).toStrictEqual(expected);
-  });
+      const updateGroup = generateRecordInfo(
+        validationTypeId,
+        dataDivider,
+        recordId,
+        recordType,
+        '161616',
+        '2024-05-08T09:40:42.769008Z'
+      );
 
-  it('should be able to generate a record info from data', () => {
-    const expected: DataGroup = {
-      name: 'recordInfo',
-      children: [
-        {
-          name: 'dataDivider',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'system'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'diva'
-            }
-          ]
-        },
-        {
-          name: 'validationType',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'validationType'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'divaOutput'
-            }
-          ]
-        }
-      ]
-    };
-    const recordInfo = generateRecordInfo('divaOutput', 'diva');
-    expect(recordInfo).toStrictEqual(expected);
-  });
+      expect(updateGroup).toStrictEqual(expected);
+    });
 
-  it('should be able to generate a record info from data with id', () => {
-    const expected: DataGroup = {
-      name: 'recordInfo',
-      children: [
-        {
-          name: 'id',
-          value: 'someRecordId'
-        },
-        {
-          name: 'dataDivider',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'system'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'diva'
-            }
-          ]
-        },
-        {
-          name: 'validationType',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'validationType'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'divaOutput'
-            }
-          ]
-        }
-      ]
-    };
-    const recordInfo = generateRecordInfo('divaOutput', 'diva', 'someRecordId');
-    expect(recordInfo).toStrictEqual(expected);
-  });
-
-  it('should be able to generate a record info from data with id, validationType, record and last updated', () => {
-    const expected: DataGroup = {
-      name: 'recordInfo',
-      children: [
-        {
-          name: 'id',
-          value: 'someRecordId'
-        },
-        {
-          name: 'dataDivider',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'system'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'diva'
-            }
-          ]
-        },
-        {
-          name: 'validationType',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'validationType'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'manuscript'
-            }
-          ]
-        },
-        {
-          name: 'type',
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'recordType'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'divaOutput'
-            }
-          ]
-        },
-        {
-          children: [
-            {
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'user'
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'coraUser:490742519075086'
-                }
-              ],
-              name: 'updatedBy'
-            },
-            {
-              name: 'tsUpdated',
-              value: '2023-12-12T13:25:11.145501Z'
-            }
-          ],
-          name: 'updated',
-          repeatId: '0'
-        }
-      ]
-    };
-    const recordInfo = generateRecordInfo(
-      'manuscript',
-      'diva',
-      'someRecordId',
-      'divaOutput',
-      'coraUser:490742519075086',
-      '2023-12-12T13:25:11.145501Z'
-    );
-    expect(recordInfo).toStrictEqual(expected);
-  });
-
-  it('should be able to generate a complete new group for a validation type', () => {
-    const expected = {
-      attributes: {
-        colour: 'someAttributeValue3'
-      },
-      children: [
-        {
-          children: [
-            {
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'system'
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'diva'
-                }
-              ],
-              name: 'dataDivider'
-            },
-            {
-              children: [
-                {
-                  name: 'linkedRecordType',
-                  value: 'validationType'
-                },
-                {
-                  name: 'linkedRecordId',
-                  value: 'someSimpleValidationTypeWithAttributesId'
-                }
-              ],
-              name: 'validationType'
-            }
-          ],
-          name: 'recordInfo'
-        },
-        {
-          name: 'someNameInData',
-          value: 'Erik'
-        },
-        {
-          attributes: {
-            colour: 'someAttributeValue3'
+    it('should be able to generate a record info from data', () => {
+      const expected: DataGroup = {
+        name: 'recordInfo',
+        children: [
+          {
+            name: 'dataDivider',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'system'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'diva'
+              }
+            ]
           },
-          name: 'someNameInDataTextWithAttrib',
-          value: 'AttribVar'
-        },
-        {
-          name: 'someNameInDataNumberVar',
-          repeatId: '0',
-          value: '1'
-        },
-        {
-          name: 'someNameInDataNumberVar',
-          repeatId: '1',
-          value: '2'
-        },
-        {
-          name: 'someNameInDataNumberVar',
-          repeatId: '2',
-          value: '3'
-        },
-        {
-          name: 'someNameInDataNumberVar',
-          repeatId: '3',
-          value: '4'
-        },
-        {
-          attributes: {
-            colour: 'someAttributeValue3'
+          {
+            name: 'validationType',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'validationType'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'divaOutput'
+              }
+            ]
+          }
+        ]
+      };
+      const recordInfo = generateRecordInfo('divaOutput', 'diva');
+      expect(recordInfo).toStrictEqual(expected);
+    });
+
+    it('should be able to generate a record info from data with id', () => {
+      const expected: DataGroup = {
+        name: 'recordInfo',
+        children: [
+          {
+            name: 'id',
+            value: 'someRecordId'
           },
-          name: 'someNameInDataNumberWithAttributeVar',
-          repeatId: '0',
-          value: '1'
-        },
-        {
-          attributes: {
-            colour: 'someAttributeValue3'
+          {
+            name: 'dataDivider',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'system'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'diva'
+              }
+            ]
           },
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'nationalSubjectCategory2'
-            },
-            {
-              name: 'linkedRecordId',
-              value: 'recordLinkWithAttrib'
+          {
+            name: 'validationType',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'validationType'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'divaOutput'
+              }
+            ]
+          }
+        ]
+      };
+      const recordInfo = generateRecordInfo('divaOutput', 'diva', 'someRecordId');
+      expect(recordInfo).toStrictEqual(expected);
+    });
+
+    it('should be able to generate a record info from data with id, validationType, record and last updated', () => {
+      const expected: DataGroup = {
+        name: 'recordInfo',
+        children: [
+          {
+            name: 'id',
+            value: 'someRecordId'
+          },
+          {
+            name: 'dataDivider',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'system'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'diva'
+              }
+            ]
+          },
+          {
+            name: 'validationType',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'validationType'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'manuscript'
+              }
+            ]
+          },
+          {
+            name: 'type',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'recordType'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'divaOutput'
+              }
+            ]
+          },
+          {
+            children: [
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'user'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'coraUser:490742519075086'
+                  }
+                ],
+                name: 'updatedBy'
+              },
+              {
+                name: 'tsUpdated',
+                value: '2023-12-12T13:25:11.145501Z'
+              }
+            ],
+            name: 'updated',
+            repeatId: '0'
+          }
+        ]
+      };
+      const recordInfo = generateRecordInfo(
+        'manuscript',
+        'diva',
+        'someRecordId',
+        'divaOutput',
+        'coraUser:490742519075086',
+        '2023-12-12T13:25:11.145501Z'
+      );
+      expect(recordInfo).toStrictEqual(expected);
+    });
+  });
+
+  describe('generateLastUpdateInfo', () => {
+    it('creates last update info group from data', () => {
+      const expected = {
+        children: [
+          {
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'user'
+              },
+              {
+                name: 'linkedRecordId',
+                value: '161616'
+              }
+            ],
+            name: 'updatedBy'
+          },
+          {
+            name: 'tsUpdated',
+            value: '2024-05-08T09:40:42.769008Z'
+          }
+        ],
+        name: 'updated',
+        repeatId: '0'
+      };
+
+      const updateGroup = generateLastUpdateInfo('161616', '2024-05-08T09:40:42.769008Z');
+
+      expect(updateGroup).toStrictEqual(expected);
+    });
+  });
+
+  describe('findChildrenAttributes', () => {
+    it.todo('convert GUI attributes to Cora format');
+  });
+
+  describe('generateAtomicValue', () => {
+    it('convert GUI values to Cora atomic format', () => {
+      const expected = {
+        name: 'someName',
+        value: 'someValue'
+      };
+      const actual = generateAtomicValue('someName', 'someValue');
+      expect(actual).toStrictEqual(expected);
+    });
+  });
+
+  describe('generateRecordLink', () => {
+    it('convert recordLinks to Cora recordLink format', () => {
+      const expected = {
+        children: [
+          {
+            name: 'linkedRecordType',
+            value: 'linkedRecordType'
+          },
+          {
+            name: 'linkedRecordId',
+            value: 'linkedRecordId'
+          }
+        ],
+        name: 'name'
+      };
+      const actual = generateRecordLink('name', 'linkedRecordType', 'linkedRecordId');
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert recordLinks to Cora recordLink format with attributes', () => {
+      const expected = {
+        children: [
+          {
+            name: 'linkedRecordType',
+            value: 'linkedRecordType'
+          },
+          {
+            name: 'linkedRecordId',
+            value: 'linkedRecordId'
+          }
+        ],
+        attributes: {
+          name: 'value'
+        },
+        name: 'name'
+      };
+      const actual = generateRecordLink('name', 'linkedRecordType', 'linkedRecordId', {
+        name: 'value'
+      });
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert recordLinks to Cora recordLink format with repeatId', () => {
+      const expected = {
+        children: [
+          {
+            name: 'linkedRecordType',
+            value: 'linkedRecordType'
+          },
+          {
+            name: 'linkedRecordId',
+            value: 'linkedRecordId'
+          }
+        ],
+        repeatId: '1',
+        name: 'name'
+      };
+      const actual = generateRecordLink(
+        'name',
+        'linkedRecordType',
+        'linkedRecordId',
+        undefined,
+        '1'
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert recordLinks to Cora recordLink format with attributes and repeatId', () => {
+      const expected = {
+        children: [
+          {
+            name: 'linkedRecordType',
+            value: 'linkedRecordType'
+          },
+          {
+            name: 'linkedRecordId',
+            value: 'linkedRecordId'
+          }
+        ],
+        attributes: {
+          name: 'value'
+        },
+        repeatId: '1',
+        name: 'name'
+      };
+      const actual = generateRecordLink(
+        'name',
+        'linkedRecordType',
+        'linkedRecordId',
+        {
+          name: 'value'
+        },
+        '1'
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+  });
+
+  describe('transformToCoraData', () => {
+    it('should take a form payload with someRecordType group containing title group with a mainTitle text variable', () => {
+      const expected: DataGroup = {
+        name: 'someNewMetadataGroupNameInData',
+        children: [
+          {
+            repeatId: '0',
+            name: 'someNameInData',
+            value: 'firstValue'
+          },
+          {
+            name: 'someChildGroupNameInData',
+            children: [
+              {
+                name: 'someNameInData',
+                value: 'secondValue'
+              }
+            ]
+          },
+          {
+            name: 'nationalSubjectCategory',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'nationalSubjectCategory'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'linkValue'
+              }
+            ]
+          }
+        ]
+      };
+      const validationTypeId = 'someSimpleValidationTypeId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(
+        formMetaDataPathLookup,
+        testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink
+      );
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with group containing attributes, numberVar with repeatMax', () => {
+      const expected: DataGroup = {
+        name: 'someNewMetadataGroupWithAttributesNameInData',
+        children: [
+          {
+            name: 'someNameInData',
+            value: 'Erik'
+          },
+          {
+            name: 'someNameInDataTextWithAttrib',
+            value: 'AttribVar',
+            attributes: {
+              colour: 'someAttributeValue3'
             }
-          ],
-          name: 'nationalSubjectCategoryWithAttributes'
-        },
-        {
-          attributes: {
-            colour: 'someAttributeValue4'
           },
-          children: [
-            {
-              name: 'linkedRecordType',
-              value: 'nationalSubjectCategory2'
+          {
+            name: 'someNameInDataNumberVar',
+            value: '1',
+            repeatId: '0'
+          },
+          {
+            name: 'someNameInDataNumberVar',
+            value: '2',
+            repeatId: '1'
+          },
+          {
+            name: 'someNameInDataNumberVar',
+            value: '3',
+            repeatId: '2'
+          },
+          {
+            name: 'someNameInDataNumberVar',
+            value: '4',
+            repeatId: '3'
+          },
+          {
+            name: 'someNameInDataNumberWithAttributeVar',
+            value: '1',
+            attributes: {
+              colour: 'someAttributeValue3'
             },
-            {
-              name: 'linkedRecordId',
-              value: 'recordLinkRepeatingWithAttrib'
+            repeatId: '0'
+          },
+          {
+            name: 'nationalSubjectCategoryWithAttributes',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'nationalSubjectCategory2'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'recordLinkWithAttrib'
+              }
+            ],
+            attributes: {
+              colour: 'someAttributeValue3'
             }
-          ],
-          name: 'nationalSubjectCategoryRepeatingWithAttributes',
-          repeatId: '0'
+          },
+          {
+            name: 'nationalSubjectCategoryRepeatingWithAttributes',
+            repeatId: '0',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'nationalSubjectCategory2'
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'recordLinkRepeatingWithAttrib'
+              }
+            ],
+            attributes: {
+              colour: 'someAttributeValue4'
+            }
+          }
+        ],
+        attributes: {
+          colour: 'someAttributeValue3'
         }
-      ],
-      name: 'someNewMetadataGroupWithAttributesNameInData'
-    };
+      };
+      const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(
+        formMetaDataPathLookup,
+        testFormPayloadWithGroupWithAttributesAndTextVar
+      );
+      expect(transformData[0]).toStrictEqual(expected);
+    });
 
-    const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
-    const dataDivider = 'diva';
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(
-      formMetaDataPathLookup,
-      testFormPayloadWithGroupWithAttributesAndTextVar
-    );
-
-    const newGroup = injectRecordInfoIntoDataGroup(
-      transformData[0] as DataGroup,
-      validationTypeId,
-      dataDivider
-    );
-    expect(newGroup).toStrictEqual(expected);
+    it('should take a form payload with repeating groups', () => {
+      const expected: DataGroup = {
+        name: 'someNewMetadataGroupRepeatingGroupsNameInData',
+        children: [
+          {
+            name: 'someChildGroupNameInData',
+            repeatId: '0',
+            children: [
+              {
+                name: 'someNameInData',
+                value: 'Erik'
+              }
+            ]
+          },
+          {
+            name: 'someChildGroupNameInData',
+            repeatId: '1',
+            children: [
+              {
+                name: 'someNameInData',
+                value: 'Egil'
+              }
+            ]
+          }
+        ]
+      };
+      const validationTypeId = 'someSimpleValidationTypeWithRepeatingGroupsId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(
+        formMetaDataPathLookup,
+        testFormPayloadWithGroupWithGroupWithRepeatingGroups
+      );
+      expect(transformData[0]).toStrictEqual(expected);
+    });
   });
 });

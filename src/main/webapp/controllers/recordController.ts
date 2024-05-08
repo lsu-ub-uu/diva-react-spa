@@ -80,7 +80,6 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
       recordType,
       authToken
     );
-    console.log('jere', recordId);
     res.status(response.status).json({});
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);

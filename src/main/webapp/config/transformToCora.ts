@@ -77,12 +77,12 @@ const findChildrenAttributes = (obj: any) => {
   return Object.assign({}, ...attributesArray);
 };
 
-const generateAtomicValue = (name: string, value: any): DataAtomic => ({
+export const generateAtomicValue = (name: string, value: any): DataAtomic => ({
   name,
   value
 });
 
-const generateRecordLink = (
+export const generateRecordLink = (
   name: string,
   linkedRecordType: string,
   linkedRecordId: string,
