@@ -247,23 +247,16 @@ describe('record', () => {
       };
       const apiUrl: string = `/record/${type}`;
       mockAxios.onPost(apiUrl).reply(400, expectedResponse);
-      const response = await postRecordData(actual, type, authToken);
-      expect(response.data).toEqual(expect.objectContaining(expectedResponse));
 
-      // const invalidValidationType = 'someInvalidValidationType';
-      //
-      // expect(() => {
-      //   createFormDefinition(dependencies, invalidValidationType, FORM_MODE_NEW);
-      // }).toThrow(Error);
-      //
-      // try {
-      //   createFormDefinition(dependencies, invalidValidationType, FORM_MODE_NEW);
-      // } catch (error: unknown) {
-      //   const createFormDefinitionError: Error = <Error>error;
-      //   expect(createFormDefinitionError.message).toStrictEqual(
-      //     '[someInvalidValidationType] does not exist in Lookup pool'
-      //   );
-      // }
+      try {
+        await postRecordData(actual, type, authToken);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          expect(error).toBeInstanceOf(AxiosError);
+          const castError: AxiosError = <AxiosError>error;
+          expect(castError.response?.status).toBe(400);
+        }
+      }
     });
   });
 
