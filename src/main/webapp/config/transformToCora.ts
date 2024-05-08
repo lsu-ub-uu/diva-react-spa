@@ -65,7 +65,7 @@ export const generateLastUpdateInfo = (userId: string, updatedAt: string) => {
   return removeEmpty({ name, children, repeatId: '0' }) as DataGroup;
 };
 
-const findChildrenAttributes = (obj: any) => {
+export const findChildrenAttributes = (obj: any) => {
   const attributesArray: Record<string, string>[] = [];
   Object.keys(obj).forEach((key) => {
     if (Object.hasOwn(obj, key) && key.startsWith('_')) {
@@ -99,7 +99,7 @@ export const generateRecordLink = (
     repeatId
   });
 
-const createLeaf = (
+export const createLeaf = (
   metaData: FormMetaData,
   name: string,
   value: string,
@@ -114,13 +114,7 @@ const createLeaf = (
       repeatId
     } as DataAtomic);
   }
-  return generateRecordLink(
-    name,
-    metaData.linkedRecordType ?? '',
-    value,
-    inAttributes,
-    repeatId
-  ) as RecordLink;
+  return generateRecordLink(name, metaData.linkedRecordType ?? '', value, inAttributes, repeatId);
 };
 
 export const transformToCoraData = (

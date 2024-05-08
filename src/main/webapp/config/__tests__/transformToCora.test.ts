@@ -18,6 +18,8 @@
  */
 
 import {
+  createLeaf,
+  findChildrenAttributes,
   generateAtomicValue,
   generateLastUpdateInfo,
   generateRecordInfo,
@@ -28,7 +30,7 @@ import {
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import testFormPayloadWithGroupWithAttributesAndTextVar from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
 import testFormPayloadWithGroupWithGroupWithRepeatingGroups from '../../__mocks__/payloads/divaGuiPostPayloadWithGroupWithRepeatingGroups.json';
-import { Attributes, DataGroup } from '../../utils/cora-data/CoraData';
+import { DataGroup } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
 import {
   BFFMetadata,
@@ -534,7 +536,47 @@ describe('transformToCora', () => {
   });
 
   describe('findChildrenAttributes', () => {
-    it.todo('convert GUI attributes to Cora format');
+    it('skips atomics without attributes', () => {
+      const expected = undefined;
+      const actual = findChildrenAttributes({
+        value: 'Erik'
+      });
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert GUI attributes to Cora format', () => {
+      const expected = {
+        colour: 'someAttributeValue3'
+      };
+      const actual = findChildrenAttributes({
+        _colour: 'someAttributeValue3'
+      });
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert atomics with GUI attributes to Cora format', () => {
+      const expected = {
+        colour: 'someAttributeValue3'
+      };
+      const actual = findChildrenAttributes({
+        _colour: 'someAttributeValue3',
+        value: 'Erik'
+      });
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert GUI attributes with extra values to Cora format', () => {
+      const expected = {
+        colour: 'someAttributeValue3'
+      };
+      const actual = findChildrenAttributes({
+        _colour: 'someAttributeValue3',
+        someNameInData: {
+          value: 'Erik'
+        }
+      });
+      expect(actual).toStrictEqual(expected);
+    });
   });
 
   describe('generateAtomicValue', () => {
@@ -641,6 +683,171 @@ describe('transformToCora', () => {
           name: 'value'
         },
         '1'
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+  });
+
+  describe('createLeaf', () => {
+    it('convert recordLink with createLeaf to Cora recordLink format', () => {
+      const expected = {
+        children: [
+          {
+            name: 'linkedRecordType',
+            value: 'nationalSubjectCategory'
+          },
+          {
+            name: 'linkedRecordId',
+            value: 'linkValue'
+          }
+        ],
+        name: 'nationalSubjectCategory'
+      };
+      const actual = createLeaf(
+        {
+          name: 'nationalSubjectCategory',
+          type: 'recordLink',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          linkedRecordType: 'nationalSubjectCategory'
+        },
+        'nationalSubjectCategory',
+        'linkValue'
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert textVariable with createLeaf to Cora atomic format', () => {
+      const expected = {
+        name: 'someNameInData',
+        value: 'someValue'
+      };
+      const actual = createLeaf(
+        {
+          name: 'someNameInData',
+          type: 'textVariable',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          }
+        },
+        'someNameInData',
+        'someValue'
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert numberVariable with createLeaf to Cora atomic format', () => {
+      const expected = {
+        name: 'someNameInData',
+        value: 'someValue'
+      };
+      const actual = createLeaf(
+        {
+          name: 'someNameInData',
+          type: 'numberVariable',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          }
+        },
+        'someNameInData',
+        'someValue'
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert collectionVariable with createLeaf to Cora atomic format', () => {
+      const expected = {
+        name: 'someNameInData',
+        value: 'someValue'
+      };
+      const actual = createLeaf(
+        {
+          name: 'someNameInData',
+          type: 'collectionVariable',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          }
+        },
+        'someNameInData',
+        'someValue'
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert textVariable with repeat with createLeaf to Cora recordLink format', () => {
+      const expected = {
+        name: 'someNameInData',
+        value: 'someValue',
+        repeatId: '2'
+      };
+      const actual = createLeaf(
+        {
+          name: 'someNameInData',
+          type: 'textVariable',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          }
+        },
+        'someNameInData',
+        'someValue',
+        '2'
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert textVariable with attributes with createLeaf to Cora recordLink format', () => {
+      const expected = {
+        name: 'someNameInData',
+        value: 'someValue',
+        attributes: {
+          _someAttributes: 'a'
+        }
+      };
+      const actual = createLeaf(
+        {
+          name: 'someNameInData',
+          type: 'textVariable',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          }
+        },
+        'someNameInData',
+        'someValue',
+        undefined,
+        { _someAttributes: 'a' }
+      );
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('convert textVariable with attributes and repeat with createLeaf to Cora recordLink format', () => {
+      const expected = {
+        name: 'someNameInData',
+        value: 'someValue',
+        attributes: {
+          _someAttributes: 'a'
+        },
+        repeatId: '2'
+      };
+      const actual = createLeaf(
+        {
+          name: 'someNameInData',
+          type: 'textVariable',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 3
+          }
+        },
+        'someNameInData',
+        'someValue',
+        '2',
+        { _someAttributes: 'a' }
       );
       expect(actual).toStrictEqual(expected);
     });
