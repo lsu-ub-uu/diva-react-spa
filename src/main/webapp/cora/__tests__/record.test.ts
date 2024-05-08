@@ -19,7 +19,13 @@
 
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { getRecordDataById, getRecordDataListByType, postRecordData } from '../record';
+import {
+  deleteRecordDataById,
+  getRecordDataById,
+  getRecordDataListByType,
+  postRecordData,
+  updateRecordDataById
+} from '../record';
 import { DataGroup, DataListWrapper, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';
@@ -35,7 +41,7 @@ import {
 import { createTextDefinition } from '../../textDefinition/textDefinition';
 import { extractIdFromRecordInfo } from '../../utils/cora-data/CoraDataTransforms';
 
-describe('getRecordDataListByType', () => {
+describe('record', () => {
   let mockAxios: MockAdapter;
 
   beforeEach(() => {
@@ -46,37 +52,222 @@ describe('getRecordDataListByType', () => {
     mockAxios.restore();
   });
 
-  it('should fetch data for a valid type', async () => {
-    const type = 'someValidType';
-    const expectedResponse = {
-      data: {
-        test: 'someTestValue'
-      },
-      headers: {},
-      request: {},
-      status: 200
-    };
-    const apiUrl: string = `/record/${type}`;
-    mockAxios.onGet(apiUrl).reply(200, expectedResponse);
-    const response = await getRecordDataListByType(type, 'someValidToken');
-    expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+  describe('getRecordDataListByType', () => {
+    it('should fetch data for a valid type', async () => {
+      const type = 'someValidType';
+      const expectedResponse = {
+        data: {
+          test: 'someTestValue'
+        },
+        headers: {},
+        request: {},
+        status: 200
+      };
+      const apiUrl: string = `/record/${type}`;
+      mockAxios.onGet(apiUrl).reply(200, expectedResponse);
+      const response = await getRecordDataListByType(type, 'someValidToken');
+      expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+    });
+
+    // @ts-ignore
+    it('should handle an error response with status 404', async () => {
+      const type = 'invalidType';
+      const apiUrl: string = `/record/${type}`;
+      mockAxios.onGet(apiUrl).reply(404);
+
+      try {
+        await getRecordDataListByType(type, 'validToken');
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          expect(error).toBeInstanceOf(AxiosError);
+          const castError: AxiosError = <AxiosError>error;
+          expect(castError.response?.status).toBe(404);
+        }
+      }
+    });
   });
 
-  // @ts-ignore
-  it('should handle an error response with status 404', async () => {
-    const type = 'invalidType';
-    const apiUrl: string = `/record/${type}`;
-    mockAxios.onGet(apiUrl).reply(404);
+  describe('getRecordDataById', () => {
+    it('should fetch data for a valid type and id', async () => {
+      const type = 'divaOutput';
+      const id = 'divaOutput:11111111111111';
+      const authToken = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+      const expectedResponse = {
+        status: 200
+      };
+      const apiUrl: string = `/record/${type}/${id}`;
+      mockAxios.onGet(apiUrl).reply(200, expectedResponse);
+      const response = await getRecordDataById(type, id, authToken);
+      expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+    });
+  });
 
-    try {
-      await getRecordDataListByType(type, 'validToken');
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        expect(error).toBeInstanceOf(AxiosError);
-        const castError: AxiosError = <AxiosError>error;
-        expect(castError.response?.status).toBe(404);
-      }
-    }
+  describe('postRecordData', () => {
+    it('should post a record to Cora', async () => {
+      const type = 'divaOutput';
+      const actual = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'recordInfo',
+            children: [
+              {
+                name: 'dataDivider',
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'system'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaData'
+                  }
+                ]
+              },
+              {
+                name: 'validationType',
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'validationType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'thesisManuscript'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaa'
+              }
+            ]
+          },
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'ivl'
+          }
+        ]
+      };
+      const authToken = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+      const expectedResponse = {
+        status: 200
+      };
+      const apiUrl: string = `/record/${type}`;
+      mockAxios.onPost(apiUrl).reply(200, expectedResponse);
+      const response = await postRecordData(actual, type, authToken);
+      expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+    });
+  });
+
+  describe('updateRecordDataById', () => {
+    it('should update data for a specific id', async () => {
+      const type = 'divaOutput';
+      const actual = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'recordInfo',
+            children: [
+              {
+                name: 'dataDivider',
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'system'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaData'
+                  }
+                ]
+              },
+              {
+                name: 'validationType',
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'validationType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'thesisManuscript'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaa'
+              }
+            ]
+          },
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'ivl'
+          }
+        ]
+      };
+      const recordId = 'divaOutput:11111111111111';
+      const authToken = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+      const expectedResponse = {
+        status: 200
+      };
+      const apiUrl: string = `/record/${type}/${recordId}`;
+      mockAxios.onPost(apiUrl).reply(200, expectedResponse);
+      const response = await updateRecordDataById(recordId, actual, type, authToken);
+      expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+    });
+  });
+
+  describe('deleteRecordDataById', () => {
+    it('should update data for a specific id', async () => {
+      const type = 'divaOutput';
+      const recordId = 'divaOutput:11111111111111';
+      const authToken = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+      const expectedResponse = {
+        status: 200
+      };
+      const apiUrl: string = `/record/${type}/${recordId}`;
+      mockAxios.onDelete(apiUrl).reply(200, expectedResponse);
+      const response = await deleteRecordDataById(recordId, type, authToken);
+      expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+    });
   });
 });
 

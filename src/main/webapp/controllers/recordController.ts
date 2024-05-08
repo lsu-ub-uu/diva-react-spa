@@ -18,6 +18,7 @@
  */
 
 import { Request, Response } from 'express';
+import * as console from 'console';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   deleteRecordDataById,
@@ -58,7 +59,7 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     }
 
     const FORM_MODE_UPDATE = 'update';
-    const dataDivider = 'diva';
+    const dataDivider = 'divaData';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
@@ -79,7 +80,7 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
       recordType,
       authToken
     );
-
+    console.log('jere', recordId);
     res.status(response.status).json({});
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
@@ -113,7 +114,7 @@ export const deleteRecordByValidationTypeAndId = async (req: Request, res: Respo
 };
 
 /**
- * @desc Post a new record to Cora
+ * @desc Create a new record to Cora
  * @route POST /api/record/:validationTypeId/
  * @access Private
  */
@@ -132,7 +133,7 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     }
 
     const FORM_MODE_NEW = 'create';
-    const dataDivider = 'diva';
+    const dataDivider = 'divaData';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
@@ -142,9 +143,9 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
       validationTypeId,
       dataDivider
     );
+
     const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
     const id = extractIdFromRecordInfo(response.data.record.data);
-
     res.status(response.status).json({ id }); // return id for now
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
@@ -178,7 +179,6 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
         presentationGroup
       );
     }
-
     res.status(response.status).json(record);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);

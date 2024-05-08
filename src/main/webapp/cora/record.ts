@@ -77,7 +77,6 @@ export async function postRecordData<T>(
     'Content-Type': 'application/vnd.uub.record+json',
     Authtoken: `${authToken}`
   };
-
   const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
   return response;
 }
