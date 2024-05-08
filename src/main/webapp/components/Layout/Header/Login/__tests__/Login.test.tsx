@@ -17,7 +17,7 @@
  */
 
 import { expect, vi } from 'vitest';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Login } from '../Login';
 import { reduxRender } from '../../../../../utils/testUtils';
@@ -43,6 +43,26 @@ describe('<Login />', () => {
     // screen.debug(userNameList);
     const listItems = userNameList.map((item) => item.textContent);
     expect(listItems).toHaveLength(5);
+  });
+  it('login flow works', async () => {
+    const user = userEvent.setup();
+    reduxRender(<Login />);
+    const loginButton = screen.getByRole('button', {
+      name: 'divaClient_LoginText',
+    });
+    await user.click(loginButton);
+    const userNameList = screen.getAllByRole('menuitem');
+    const listItems = userNameList.map((item) => item.textContent);
+    expect(listItems).toHaveLength(5);
+    const divaEverything = screen.getByText('EverythingDiVA', { exact: false });
+    expect(divaEverything).toBeInTheDocument();
+    await user.click(divaEverything);
+
+    waitFor(() => {
+      const icon = screen.findAllByTestId('PersonIcon');
+      expect(icon).toBeInTheDocument();
+    });
+    expect.assertions(3);
   });
   it.todo('saves to LocalStorage when loggin in', async () => {
     const user = userEvent.setup();
