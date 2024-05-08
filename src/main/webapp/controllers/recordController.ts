@@ -18,7 +18,6 @@
  */
 
 import { Request, Response } from 'express';
-import * as console from 'console';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   deleteRecordDataById,

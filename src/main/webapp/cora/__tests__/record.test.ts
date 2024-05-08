@@ -40,6 +40,7 @@ import {
 } from '../../config/bffTypes';
 import { createTextDefinition } from '../../textDefinition/textDefinition';
 import { extractIdFromRecordInfo } from '../../utils/cora-data/CoraDataTransforms';
+import { createFormDefinition } from '../../formDefinition/formDefinition';
 
 describe('record', () => {
   let mockAxios: MockAdapter;
@@ -175,6 +176,94 @@ describe('record', () => {
       mockAxios.onPost(apiUrl).reply(200, expectedResponse);
       const response = await postRecordData(actual, type, authToken);
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+    });
+    it('should NOT post a record to Cora with wrong type', async () => {
+      const type = 'diva';
+      const actual = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'recordInfo',
+            children: [
+              {
+                name: 'dataDivider',
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'system'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaData'
+                  }
+                ]
+              },
+              {
+                name: 'validationType',
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'validationType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'thesisManuscript'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaa'
+              }
+            ]
+          },
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'ivl'
+          }
+        ]
+      };
+      const authToken = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+      const expectedResponse = {
+        status: 400
+      };
+      const apiUrl: string = `/record/${type}`;
+      mockAxios.onPost(apiUrl).reply(400, expectedResponse);
+      const response = await postRecordData(actual, type, authToken);
+      expect(response.data).toEqual(expect.objectContaining(expectedResponse));
+
+      // const invalidValidationType = 'someInvalidValidationType';
+      //
+      // expect(() => {
+      //   createFormDefinition(dependencies, invalidValidationType, FORM_MODE_NEW);
+      // }).toThrow(Error);
+      //
+      // try {
+      //   createFormDefinition(dependencies, invalidValidationType, FORM_MODE_NEW);
+      // } catch (error: unknown) {
+      //   const createFormDefinitionError: Error = <Error>error;
+      //   expect(createFormDefinitionError.message).toStrictEqual(
+      //     '[someInvalidValidationType] does not exist in Lookup pool'
+      //   );
+      // }
     });
   });
 
