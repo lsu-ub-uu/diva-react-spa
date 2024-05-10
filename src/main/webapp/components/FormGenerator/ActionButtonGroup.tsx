@@ -42,13 +42,25 @@ export const ActionButtonGroup = (
   return (
     <ButtonGroup
       size='small'
-      sx={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}
+      sx={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        zIndex: 1,
+        borderRadius: '25px',
+        backgroundColor: 'aliceblue',
+      }}
       orientation='horizontal'
       variant='text'
     >
       {!props.hideMoveButtons && (
         <IconButton
           size='small'
+          sx={{
+            '&:hover': {
+              backgroundColor: '#c3d5e6',
+            },
+          }}
           aria-label='up'
           disabled={props.moveUpButtonDisabled}
           onClick={props.moveUpButtonAction}
@@ -64,6 +76,11 @@ export const ActionButtonGroup = (
         <span>
           <IconButton
             size='small'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#c3d5e6',
+              },
+            }}
             aria-label='delete'
             disabled={props.deleteButtonDisabled}
             onClick={props.deleteButtonAction}
@@ -75,6 +92,11 @@ export const ActionButtonGroup = (
       {!props.hideMoveButtons && (
         <IconButton
           size='small'
+          sx={{
+            '&:hover': {
+              backgroundColor: '#c3d5e6',
+            },
+          }}
           aria-label='down'
           disabled={props.moveDownButtonDisabled}
           onClick={props.moveDownButtonAction}
