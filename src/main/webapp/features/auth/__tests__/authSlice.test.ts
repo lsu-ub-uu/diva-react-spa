@@ -36,6 +36,7 @@ describe('authSlice', () => {
       idFromLogin: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',
+      logoutURL: 'https://cora.epc.ub.uu.se/diva/login/rest/authToken/161616'
     };
 
     expect.assertions(2);
@@ -56,6 +57,7 @@ describe('authSlice', () => {
       idFromLogin: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',
+      logoutURL: 'https://cora.epc.ub.uu.se/diva/login/rest/authToken/161616'
     };
 
     localStorage.setItem('diva_session', JSON.stringify(userSession));
@@ -71,6 +73,7 @@ describe('authSlice', () => {
       idFromLogin: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',
+      logoutURL: 'https://cora.epc.ub.uu.se/diva/login/rest/authToken/161616'
     };
 
     localStorage.setItem('diva_session', JSON.stringify(userSession));

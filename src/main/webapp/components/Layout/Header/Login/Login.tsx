@@ -21,7 +21,7 @@ import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useTranslation } from 'react-i18next';
 import { devAccounts, Account } from './devAccounts';
-import { dummyLoginAsync } from '../../../../features/auth/actions';
+import { loginAsync, logoutAsync } from '../../../../features/auth/actions';
 import { logout } from '../../../../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import { useBackdrop } from '../../../Backdrop/BackdropContext';
@@ -51,14 +51,12 @@ export const Login = (): JSX.Element => {
   ) => {
     event.preventDefault();
     setBackdrop(true);
-    dispatch(dummyLoginAsync(account, () => setBackdrop(false)));
+    dispatch(loginAsync(account, () => setBackdrop(false)));
     handleClose();
   };
 
   const handleLogout = () => {
-    dispatch(logout());
-    dispatch(loadPublicationTypesAsync());
-    dispatch(loadPublicationsAsync());
+    dispatch(logoutAsync());
   };
 
   return (

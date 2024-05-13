@@ -29,6 +29,7 @@ export interface UserSession {
   idFromLogin: string;
   lastName: string;
   firstName: string;
+  logoutURL: string;
 }
 export interface AuthState {
   isAuthenticated: boolean;
