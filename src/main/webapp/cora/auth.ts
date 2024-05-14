@@ -46,17 +46,8 @@ export const extractDataFromResult = (record: CoraRecord): Auth => {
   const idFromLogin = getFirstDataAtomicValueWithNameInData(dataGroup, 'idFromLogin');
   const firstName = getFirstDataAtomicValueWithNameInData(dataGroup, 'firstName');
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
-  const logoutURL = record.actionLinks?.delete?.url ?? '';
 
-  return new Auth(
-    id,
-    validForNoSeconds,
-    idInUserStorage,
-    idFromLogin,
-    firstName,
-    lastName,
-    logoutURL
-  );
+  return new Auth(id, validForNoSeconds, idInUserStorage, idFromLogin, firstName, lastName);
 };
 
 export const deleteAuthTokenFromCora = async (user: string, authToken: string | undefined) => {

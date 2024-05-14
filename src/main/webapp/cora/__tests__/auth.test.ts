@@ -71,8 +71,7 @@ describe('requestAuthTokenOnLogin', () => {
         idInUserStorage: 'coraUser:111111111111111',
         idFromLogin: 'coraUser:111111111111111',
         lastName: 'DiVA',
-        firstName: 'Everything',
-        logoutURL: 'https://cora.epc.ub.uu.se/diva/login/rest/apptoken/coraUser:111111111111111'
+        firstName: 'Everything'
       });
     });
   });
@@ -86,8 +85,7 @@ describe('requestAuthTokenOnLogin', () => {
         idFromLogin: 'coraUser:111111111111111',
         idInUserStorage: 'coraUser:111111111111111',
         lastName: 'DiVA',
-        validForNoSeconds: '600',
-        logoutURL: 'https://cora.epc.ub.uu.se/diva/login/rest/apptoken/coraUser:111111111111111'
+        validForNoSeconds: '600'
       });
     });
   });
