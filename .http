@@ -16,6 +16,23 @@ Authtoken:
 {"token":"2e57eb36-55b9-4820-8c44-8271baab4e8e"}
 
 ###
+DELETE https://cora.epc.ub.uu.se/diva/spaclientbff/api/auth/coraUser:490742519075086
+Content-Type: text/plain;charset=UTF-8
+Authtoken: 11a379d7-8686-43f2-b48a-6bd18b2a3133
+
+###
+POST http://localhost:8080/api/auth/coraUser:490742519075086
+Content-Type: application/json
+Authtoken:
+
+{"token":"2e57eb36-55b9-4820-8c44-8271baab4e8e"}
+
+###
+DELETE http://localhost:8080/api/auth/coraUser:490742519075086
+Content-Type: text/plain;charset=UTF-8
+Authtoken: a1003a97-9165-4ec4-98e4-a9f3e60536b1
+
+###
 GET http://localhost:8080
 
 ###

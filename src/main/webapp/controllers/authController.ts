@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as console from 'console';
-import { requestAuthTokenOnLogin } from '../cora/auth';
+import { deleteAuthTokenFromCora, requestAuthTokenOnLogin } from '../cora/auth';
 import { errorHandler } from '../server';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
@@ -13,10 +13,27 @@ import { getSearchResultDataListBySearchType } from '../cora/record';
 export const postAppTokenToGetAuthToken = async (req: Request, res: Response) => {
   const { user } = req.params;
   const appToken = req.body.token;
-
   try {
     const authToken = await requestAuthTokenOnLogin(user, appToken);
     res.status(201).json({ authToken });
+  } catch (error: unknown) {
+    console.log(error);
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
+/**
+ * @desc Delete appToken to get authToken
+ * @route DELETE /api/auth/:user
+ * @access Private
+ */
+export const deleteAuthTokenOnLogout = async (req: Request, res: Response) => {
+  const { user } = req.params;
+  const authToken = req.header('authToken') ?? '';
+  try {
+    const response = await deleteAuthTokenFromCora(user, authToken);
+    res.status(response.status).json(response.status);
   } catch (error: unknown) {
     console.log(error);
     const errorResponse = errorHandler(error);

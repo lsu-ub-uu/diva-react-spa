@@ -17,15 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { Auth } from '../types/Auth';
 import { CoraRecord, DataGroup } from '../utils/cora-data/CoraData';
-
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
 export async function requestAuthTokenOnLogin(
   user: string,
-  APP_TOKEN_ADMIN: string | undefined
+  authToken: string | undefined
 ): Promise<Auth> {
   const { CORA_LOGIN_URL } = process.env;
   const rootUrl = `${CORA_LOGIN_URL}/apptoken/`;
@@ -35,7 +34,7 @@ export async function requestAuthTokenOnLogin(
     'Content-Type': 'text/plain;charset=UTF-8'
   };
 
-  const response: AxiosResponse = await axios.post(url, APP_TOKEN_ADMIN, { headers });
+  const response = await axios.post(url, authToken, { headers });
   return extractDataFromResult(response.data);
 }
 
@@ -58,4 +57,20 @@ export const extractDataFromResult = (record: CoraRecord): Auth => {
     lastName,
     logoutURL
   );
+};
+
+export const deleteAuthTokenFromCora = async (user: string, authToken: string | undefined) => {
+  const { CORA_LOGIN_URL } = process.env;
+  const rootUrl = `${CORA_LOGIN_URL}/authToken/`;
+  const url = `${rootUrl}${user}`;
+
+  const headers = {
+    'Content-Type': 'text/plain;charset=UTF-8'
+  };
+
+  const response = await axios.delete(url, {
+    headers,
+    data: authToken
+  });
+  return response;
 };

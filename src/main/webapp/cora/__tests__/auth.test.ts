@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
-import { extractDataFromResult, requestAuthTokenOnLogin } from '../auth';
+import axios, { AxiosError } from 'axios';
+import { deleteAuthTokenFromCora, extractDataFromResult, requestAuthTokenOnLogin } from '../auth';
 
 const authUser = {
   data: {
@@ -89,6 +89,39 @@ describe('requestAuthTokenOnLogin', () => {
         validForNoSeconds: '600',
         logoutURL: 'https://cora.epc.ub.uu.se/diva/login/rest/apptoken/coraUser:111111111111111'
       });
+    });
+  });
+
+  describe('deleteAuthTokenOnLogout', () => {
+    it('Delete an appToken', async () => {
+      const { CORA_LOGIN_URL } = process.env;
+      const rootUrl = `${CORA_LOGIN_URL}/authToken/`;
+      const coraUser = 'coraUser:111111111111111';
+      const url = `${rootUrl}${coraUser}`;
+
+      mockAxios.onDelete(url).reply(200);
+      const response = await deleteAuthTokenFromCora(
+        coraUser,
+        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+      );
+      expect(response.status).toEqual(200);
+    });
+    it('Returns 500 on failed DELETE authtoken from Cora', async () => {
+      const { CORA_LOGIN_URL } = process.env;
+      const rootUrl = `${CORA_LOGIN_URL}/authToken/`;
+      const coraUser = 'coraUser:111111111111111';
+      const url = `${rootUrl}${coraUser}`;
+
+      mockAxios.onDelete(url).reply(500);
+
+      try {
+        await deleteAuthTokenFromCora(coraUser, 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const castError: AxiosError = <AxiosError>error;
+          expect(castError.response?.status).toBe(500);
+        }
+      }
     });
   });
 });
