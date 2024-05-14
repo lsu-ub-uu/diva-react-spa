@@ -47,8 +47,9 @@ export const ActionButtonGroup = (
         top: 0,
         right: 0,
         zIndex: 1,
+        border: ' solid 1px',
         borderRadius: '25px',
-        backgroundColor: 'aliceblue',
+        backgroundColor: '#00000',
       }}
       orientation='horizontal'
       variant='text'
@@ -58,14 +59,18 @@ export const ActionButtonGroup = (
           size='small'
           sx={{
             '&:hover': {
-              backgroundColor: '#c3d5e6',
+              backgroundColor: '#000000',
+              '& .MuiSvgIcon-root': {
+                color: '#ffffff',
+                backgroundColor: '#000000',
+              },
             },
           }}
           aria-label='up'
           disabled={props.moveUpButtonDisabled}
           onClick={props.moveUpButtonAction}
         >
-          <ArrowUpwardIcon />
+          <ArrowUpwardIcon sx={{ color: '#000000' }} />
         </IconButton>
       )}
       <Tooltip
@@ -78,14 +83,18 @@ export const ActionButtonGroup = (
             size='small'
             sx={{
               '&:hover': {
-                backgroundColor: '#c3d5e6',
+                backgroundColor: '#000000',
+                '& .MuiSvgIcon-root': {
+                  color: '#ffffff',
+                  backgroundColor: '#000000',
+                },
               },
             }}
             aria-label='delete'
             disabled={props.deleteButtonDisabled}
             onClick={props.deleteButtonAction}
           >
-            <ClearIcon />
+            <ClearIcon sx={{ color: '#000000' }} />
           </IconButton>
         </span>
       </Tooltip>
@@ -94,14 +103,18 @@ export const ActionButtonGroup = (
           size='small'
           sx={{
             '&:hover': {
-              backgroundColor: '#c3d5e6',
+              backgroundColor: '#000000',
+              '& .MuiSvgIcon-root': {
+                color: '#ffffff',
+                backgroundColor: '#000000',
+              },
             },
           }}
           aria-label='down'
           disabled={props.moveDownButtonDisabled}
           onClick={props.moveDownButtonAction}
         >
-          <ArrowDownwardIcon />
+          <ArrowDownwardIcon sx={{ color: '#000000' }} />
         </IconButton>
       )}
     </ButtonGroup>
