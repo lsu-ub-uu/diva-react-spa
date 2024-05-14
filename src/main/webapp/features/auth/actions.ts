@@ -62,7 +62,7 @@ export const logoutAsync = (): AppThunk => async (dispatch) => {
     dispatch(authenticating());
 
     const response = await deleteFromCora(
-      userSession.logoutURL,
+      userSession.idFromLogin,
       userSession.id,
     );
 

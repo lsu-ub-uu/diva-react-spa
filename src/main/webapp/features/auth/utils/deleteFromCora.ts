@@ -19,7 +19,12 @@
 
 import axios from 'axios';
 
-export const deleteFromCora = async (url: string, authToken: string) => {
-  const response = await axios.delete(url, { data: authToken });
+export const deleteFromCora = async (
+  idFromLogin: string,
+  authToken: string,
+) => {
+  const response = await axios.delete(`/auth/${idFromLogin}`, {
+    data: { token: authToken },
+  });
   return response;
 };

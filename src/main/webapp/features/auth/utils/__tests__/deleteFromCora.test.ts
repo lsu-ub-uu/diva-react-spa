@@ -53,9 +53,9 @@ describe('actions', () => {
       request: {},
       status: 200,
     };
-    mockAxios.onDelete(userSession.logoutURL).reply(200);
+    mockAxios.onDelete(`/auth/${userSession.idFromLogin}`).reply(200);
     const response = await deleteFromCora(
-      userSession.logoutURL,
+      userSession.idFromLogin,
       userSession.id,
     );
     expect(response.status).toEqual(expectedResponse.status);
@@ -73,10 +73,10 @@ describe('actions', () => {
         'https://cora.epc.ub.uu.se/diva/login/rest/authToken/coraUser:111111111111111',
     };
 
-    mockAxios.onDelete(userSession.logoutURL).reply(500);
+    mockAxios.onDelete(`/auth/${userSession.idFromLogin}`).reply(500);
 
     try {
-      await deleteFromCora(userSession.logoutURL, userSession.id);
+      await deleteFromCora(userSession.idFromLogin, userSession.id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const castError: AxiosError = <AxiosError>error;
