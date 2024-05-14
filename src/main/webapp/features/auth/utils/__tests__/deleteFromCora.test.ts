@@ -31,11 +31,6 @@ describe('actions', () => {
     mockAxios.restore();
   });
 
-  // const deleteFromCora = async (url: string, authToken: string) => {
-  //   const response = await axios.delete(url, { data: authToken });
-  //   return response;
-  // };
-
   it('deleteFromCora sends request to DELETE authtoken from Cora', async () => {
     const userSession = {
       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -44,8 +39,6 @@ describe('actions', () => {
       idFromLogin: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',
-      logoutURL:
-        'https://cora.epc.ub.uu.se/diva/login/rest/authToken/coraUser:111111111111111',
     };
     const expectedResponse = {
       data: {},
@@ -53,11 +46,11 @@ describe('actions', () => {
       request: {},
       status: 200,
     };
-    mockAxios.onDelete(userSession.logoutURL).reply(200);
-    const response = await deleteFromCora(
-      userSession.logoutURL,
-      userSession.id,
-    );
+
+    const logoutURL = `http://localhost:8080/api/auth/${userSession.idFromLogin}`;
+
+    mockAxios.onDelete(logoutURL).reply(200);
+    const response = await deleteFromCora(logoutURL, userSession.id);
     expect(response.status).toEqual(expectedResponse.status);
   });
 
@@ -69,14 +62,14 @@ describe('actions', () => {
       idFromLogin: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',
-      logoutURL:
-        'https://cora.epc.ub.uu.se/diva/login/rest/authToken/coraUser:111111111111111',
     };
 
-    mockAxios.onDelete(userSession.logoutURL).reply(500);
+    const logoutURL = `http://localhost:8080/api/auth/${userSession.idFromLogin}`;
+
+    mockAxios.onDelete(logoutURL).reply(500);
 
     try {
-      await deleteFromCora(userSession.logoutURL, userSession.id);
+      await deleteFromCora(logoutURL, userSession.id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const castError: AxiosError = <AxiosError>error;

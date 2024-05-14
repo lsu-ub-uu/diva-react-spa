@@ -30,6 +30,7 @@ import { loadPublicationTypesAsync } from '../publicationTypes';
 import { loadPublicationsAsync } from '../publications';
 import { deleteFromCora } from './utils/deleteFromCora';
 
+const { VITE_BFF_API_URL } = import.meta.env;
 export const loginAsync =
   (account: Account, callback?: Function): AppThunk =>
   async (dispatch) => {
@@ -58,13 +59,13 @@ export const logoutAsync = (): AppThunk => async (dispatch) => {
   const userSession: UserSession = JSON.parse(
     localStorage.getItem('diva_session') as string,
   );
+
+  const url = `${VITE_BFF_API_URL}/auth/${userSession.idFromLogin}`;
+  console.log('aaaaa', url);
   try {
     dispatch(authenticating());
 
-    const response = await deleteFromCora(
-      userSession.logoutURL,
-      userSession.id,
-    );
+    const response = await deleteFromCora(url, userSession.id);
 
     dispatch(logout(response.data.authToken));
     dispatch(loadPublicationTypesAsync());

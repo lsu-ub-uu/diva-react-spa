@@ -20,6 +20,10 @@
 import axios from 'axios';
 
 export const deleteFromCora = async (url: string, authToken: string) => {
-  const response = await axios.delete(url, { data: authToken });
+  const headers = {
+    'Content-Type': 'text/plain;charset=UTF-8',
+  };
+
+  const response = await axios.delete(url, { headers, data: authToken });
   return response;
 };
