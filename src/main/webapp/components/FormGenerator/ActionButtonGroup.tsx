@@ -58,6 +58,7 @@ export const ActionButtonGroup = (
         <IconButton
           size='small'
           sx={{
+            padding: '3px',
             '&:hover': {
               backgroundColor: '#000000',
               '& .MuiSvgIcon-root': {
@@ -82,6 +83,7 @@ export const ActionButtonGroup = (
           <IconButton
             size='small'
             sx={{
+              padding: '3px',
               '&:hover': {
                 backgroundColor: '#000000',
                 '& .MuiSvgIcon-root': {
@@ -102,6 +104,7 @@ export const ActionButtonGroup = (
         <IconButton
           size='small'
           sx={{
+            padding: '3px',
             '&:hover': {
               backgroundColor: '#000000',
               '& .MuiSvgIcon-root': {
