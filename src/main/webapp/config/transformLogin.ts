@@ -17,36 +17,33 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { BFFLoginUnit } from './bffTypes';
+import { BFFLoginUnit, BFFLoginWebRedirect } from './bffTypes';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
+import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
+import { extractAttributesReferences } from './transformMetadata';
 
-export const transformLoginUnit = (dataListWrapper: DataListWrapper): BFFLoginUnit[] => {
+export const transformLogin = (dataListWrapper: DataListWrapper): BFFLoginWebRedirect[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
 
   const coraRecords = dataListWrapper.dataList.data;
-  return coraRecords.map(transformCoraLoginUnitToBFFLoginUnit).filter((item) => item !== undefined);
+  return coraRecords.map(transformCoraLoginToBFFLogin).filter((item) => item !== undefined);
 };
-
-const transformCoraLoginUnitToBFFLoginUnit = (coraRecordWrapper: RecordWrapper) => {
+//
+const transformCoraLoginToBFFLogin = (coraRecordWrapper: RecordWrapper): BFFLoginWebRedirect => {
   const coraRecord = coraRecordWrapper.record;
 
   const dataRecordGroup = coraRecord.data;
-  return transformRecordGroupLoginUnitToBFF(dataRecordGroup) as BFFLoginUnit;
-};
 
-const transformRecordGroupLoginUnitToBFF = (dataRecordGroup: DataGroup) => {
-  return transformSingleLoginUnit(dataRecordGroup) as BFFLoginUnit;
-};
-
-const transformSingleLoginUnit = (dataRecordGroup: DataGroup) => {
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const loginInfo = getFirstDataGroupWithNameInData(dataRecordGroup, 'loginInfo');
-  const login = extractLinkedRecordIdFromNamedRecordLink(loginInfo, 'login');
-  const loginDescription = extractLinkedRecordIdFromNamedRecordLink(loginInfo, 'loginDescription');
-  return { id, login, loginDescription };
+  const loginName = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'loginName');
+  const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
+  const { attributes } = dataRecordGroup;
+  const type = attributes?.type as string;
+  return { id, loginName, url, type };
 };

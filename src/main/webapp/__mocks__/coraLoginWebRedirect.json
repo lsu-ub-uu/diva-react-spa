@@ -20,14 +20,14 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "loginUnit"
+                        "value": "login"
                       }
                     ],
                     "actionLinks": {
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/loginUnit",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/login",
                         "accept": "application/vnd.uub.record+json"
                       }
                     },
@@ -41,14 +41,14 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "loginUnit"
+                        "value": "loginWebRedirect"
                       }
                     ],
                     "actionLinks": {
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/loginUnit",
+                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/loginWebRedirect",
                         "accept": "application/vnd.uub.record+json"
                       }
                     },
@@ -93,7 +93,7 @@
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2020-10-16T11:01:29.006765Z"
+                        "value": "2020-10-16T10:53:49.910625Z"
                       }
                     ],
                     "name": "updated"
@@ -116,7 +116,7 @@
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2021-03-04T09:18:44.201776Z"
+                        "value": "2021-03-04T09:54:55.414666Z"
                       }
                     ],
                     "name": "updated"
@@ -139,7 +139,7 @@
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2023-03-03T13:13:52.106831Z"
+                        "value": "2023-03-03T13:24:37.542151Z"
                       }
                     ],
                     "name": "updated"
@@ -162,7 +162,7 @@
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2024-04-22T12:53:25.459433Z"
+                        "value": "2024-04-22T13:06:20.851048Z"
                       }
                     ],
                     "name": "updated"
@@ -182,73 +182,43 @@
                   },
                   {
                     "name": "tsCreated",
-                    "value": "2020-10-16T11:01:29.006765Z"
+                    "value": "2020-10-16T10:53:49.910625Z"
                   }
                 ],
                 "name": "recordInfo"
               },
               {
-                "children": [
-                  {
-                    "children": [
-                      {
-                        "name": "linkedRecordType",
-                        "value": "login"
-                      },
-                      {
-                        "name": "linkedRecordId",
-                        "value": "someLoginDiVAwr"
-                      }
-                    ],
-                    "actionLinks": {
-                      "read": {
-                        "requestMethod": "GET",
-                        "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/login/ltuTestDiVAwr",
-                        "accept": "application/vnd.uub.record+json"
-                      }
-                    },
-                    "name": "login"
-                  },
-                  {
-                    "children": [
-                      {
-                        "name": "linkedRecordType",
-                        "value": "text"
-                      },
-                      {
-                        "name": "linkedRecordId",
-                        "value": "someDiVALoginUnitText"
-                      }
-                    ],
-                    "actionLinks": {
-                      "read": {
-                        "requestMethod": "GET",
-                        "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/text/ltuTestDiVALoginUnitText",
-                        "accept": "application/vnd.uub.record+json"
-                      }
-                    },
-                    "name": "loginDescription"
-                  }
-                ],
-                "name": "loginInfo"
+                "name": "loginName",
+                "value": "DiVA Test university"
+              },
+              {
+                "name": "url",
+                "value": "https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login"
               }
             ],
-            "name": "loginUnit"
+            "name": "login",
+            "attributes": {
+              "type": "webRedirect"
+            }
           },
           "actionLinks": {
             "read": {
               "requestMethod": "GET",
               "rel": "read",
-              "url": "https://cora.epc.ub.uu.se/diva/rest/record/loginUnit/ltuTestDiVALoginUnit",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/login/liuTestDiVAwr",
               "accept": "application/vnd.uub.record+json"
+            },
+            "read_incoming_links": {
+              "requestMethod": "GET",
+              "rel": "read_incoming_links",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/login/liuTestDiVAwr/incomingLinks",
+              "accept": "application/vnd.uub.recordList+json"
             },
             "update": {
               "requestMethod": "POST",
               "rel": "update",
               "contentType": "application/vnd.uub.record+json",
-              "url": "https://cora.epc.ub.uu.se/diva/rest/record/loginUnit/ltuTestDiVALoginUnit",
+              "url": "https://cora.epc.ub.uu.se/diva/rest/record/login/liuTestDiVAwr",
               "accept": "application/vnd.uub.record+json"
             },
             "index": {
@@ -264,14 +234,14 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "loginUnit"
+                        "value": "login"
                       }
                     ],
                     "name": "recordType"
                   },
                   {
                     "name": "recordId",
-                    "value": "ltuTestDiVALoginUnit"
+                    "value": "liuTestDiVAwr"
                   },
                   {
                     "name": "type",
@@ -283,18 +253,13 @@
               "contentType": "application/vnd.uub.record+json",
               "url": "https://cora.epc.ub.uu.se/diva/rest/record/workOrder/",
               "accept": "application/vnd.uub.record+json"
-            },
-            "delete": {
-              "requestMethod": "DELETE",
-              "rel": "delete",
-              "url": "https://cora.epc.ub.uu.se/diva/rest/record/loginUnit/ltuTestDiVALoginUnit"
             }
           }
         }
       }
     ],
     "totalNo": "1",
-    "containDataOfType": "loginUnit",
+    "containDataOfType": "login",
     "toNo": "1"
   }
 }

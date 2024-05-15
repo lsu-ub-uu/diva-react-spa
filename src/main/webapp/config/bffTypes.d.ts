@@ -199,3 +199,12 @@ export interface BFFLoginUnit extends BFFBase {
   login: string;
   loginDescription: string;
 }
+
+export interface BFFLogin extends BFFBase {
+  type: string;
+}
+
+export interface BFFLoginWebRedirect extends BFFLogin {
+  loginName: string;
+  url: string;
+}
