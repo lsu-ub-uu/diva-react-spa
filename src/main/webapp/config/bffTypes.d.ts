@@ -194,3 +194,8 @@ export interface BFFValidationType extends BFFBase {
   nameTextId: string;
   defTextId: string;
 }
+
+export interface BFFLoginUnit extends BFFBase {
+  login: string;
+  loginDescription: string;
+}

@@ -48,36 +48,6 @@ export const deleteAuthTokenOnLogout = async (req: Request, res: Response) => {
  */
 export const getAllLoginUnits = async (req: Request, res: Response) => {
   try {
-    // const authToken = req.header('authToken') ?? '';
-    const searchQuery: DataGroup = {
-      name: 'validationTypeSearch',
-      children: [
-        {
-          name: 'include',
-          children: [
-            {
-              name: 'includePart',
-              children: [
-                {
-                  name: 'validatesRecordTypeSearchTerm',
-                  value: 'recordType_divaOutput'
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    };
-
-    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
-      'validationTypeSearch',
-      searchQuery
-    );
-    // const validationTypes = transformCoraValidationTypes(response.data);
-    // const optionList = validationTypes.map((validationType) => ({
-    //   value: validationType.id,
-    //   label: validationType.nameTextId
-    // }));
     res.status(200).json('optionList');
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
