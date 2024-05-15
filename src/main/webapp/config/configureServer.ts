@@ -9,6 +9,8 @@ import { transformMetadata } from './transformMetadata';
 import { listToPool } from '../utils/structs/listToPool';
 import {
   BFFGuiElement,
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
   BFFMetadata,
   BFFPresentation,
   BFFPresentationGroup,
@@ -45,7 +47,9 @@ const dependencies: Dependencies = {
   recordTypePool: listToPool<BFFRecordType>([]),
   textPool: listToPool<BFFText>([]),
   validationTypePool: listToPool<BFFValidationType>([]),
-  searchPool: listToPool<BFFSearch>([])
+  searchPool: listToPool<BFFSearch>([]),
+  loginUnitPool: listToPool<BFFLoginUnit>([]),
+  loginPool: listToPool<BFFLoginWebRedirect>([])
 };
 
 const loadStuffOnServerStart = async () => {

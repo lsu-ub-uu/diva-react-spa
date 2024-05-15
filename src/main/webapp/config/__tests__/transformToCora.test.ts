@@ -33,6 +33,8 @@ import testFormPayloadWithGroupWithGroupWithRepeatingGroups from '../../__mocks_
 import { DataGroup } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
 import {
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
   BFFMetadata,
   BFFMetadataItemCollection,
   BFFPresentation,
@@ -95,7 +97,9 @@ describe('transformToCora', () => {
       textPool: listToPool<BFFText>([]),
       presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
       recordTypePool: listToPool<BFFRecordType>([]),
-      searchPool: listToPool<BFFSearch>([])
+      searchPool: listToPool<BFFSearch>([]),
+      loginUnitPool: listToPool<BFFLoginUnit>([]),
+      loginPool: listToPool<BFFLoginWebRedirect>([])
     };
   });
 

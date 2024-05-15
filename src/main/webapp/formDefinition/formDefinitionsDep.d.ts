@@ -6,7 +6,9 @@ import {
   BFFPresentationGroup,
   BFFText,
   BFFRecordType,
-  BFFSearch
+  BFFSearch,
+  BFFLoginUnit,
+  BFFLoginWebRedirect
 } from '../config/bffTypes';
 
 export interface Dependencies {
@@ -19,4 +21,6 @@ export interface Dependencies {
   textPool: Lookup<string, BFFText>;
   recordTypePool: Lookup<string, BFFRecordType>;
   searchPool: Lookup<string, BFFSearch>;
+  loginUnitPool: Lookup<string, BFFLoginUnit>;
+  loginPool: Lookup<string, BFFLoginWebRedirect>;
 }

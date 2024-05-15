@@ -22,6 +22,8 @@ import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLo
 import { listToPool } from '../../utils/structs/listToPool';
 import {
   BFFGuiElement,
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
   BFFMetadata,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
@@ -54,6 +56,8 @@ describe('formMetadata', () => {
   let recordTypePool: Lookup<string, BFFRecordType>;
   let textPool: Lookup<string, BFFText>;
   let searchPool: Lookup<string, BFFSearch>;
+  let loginUnitPool: Lookup<string, BFFLoginUnit>;
+  let loginPool: Lookup<string, BFFLoginWebRedirect>;
 
   let dependencies: Dependencies;
   beforeEach(() => {
@@ -71,6 +75,8 @@ describe('formMetadata', () => {
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
     searchPool = listToPool<BFFSearch>([]);
+    loginUnitPool = listToPool<BFFLoginUnit>([]);
+    loginPool = listToPool<BFFLoginWebRedirect>([]);
 
     dependencies = {
       validationTypePool,
@@ -78,7 +84,9 @@ describe('formMetadata', () => {
       presentationPool,
       recordTypePool,
       textPool,
-      searchPool
+      searchPool,
+      loginUnitPool,
+      loginPool
     };
   });
   it('should return form meta data for a given validation type', () => {

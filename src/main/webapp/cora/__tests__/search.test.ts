@@ -28,7 +28,9 @@ import {
   BFFMetadataGroup,
   BFFText,
   BFFSearch,
-  BFFMetadataTextVariable
+  BFFMetadataTextVariable,
+  BFFLoginUnit,
+  BFFLoginWebRedirect
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 
@@ -57,6 +59,8 @@ describe('formDefinition', () => {
       textPool: listToPool<BFFText>([]),
       presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
       recordTypePool: listToPool<BFFRecordType>([]),
+      loginUnitPool: listToPool<BFFLoginUnit>([]),
+      loginPool: listToPool<BFFLoginWebRedirect>([]),
       searchPool
     };
   });
