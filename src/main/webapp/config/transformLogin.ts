@@ -18,15 +18,14 @@
  */
 
 import * as console from 'console';
-import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { BFFLoginUnit, BFFLoginWebRedirect } from './bffTypes';
+import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { BFFLoginPassword, BFFLoginWebRedirect } from './bffTypes';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
-import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
-import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { extractAttributesReferences } from './transformMetadata';
 
-export const transformLogin = (dataListWrapper: DataListWrapper): BFFLoginWebRedirect[] => {
+export const transformLogin = (
+  dataListWrapper: DataListWrapper
+): (BFFLoginWebRedirect | BFFLoginPassword)[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
@@ -35,15 +34,29 @@ export const transformLogin = (dataListWrapper: DataListWrapper): BFFLoginWebRed
   return coraRecords.map(transformCoraLoginToBFFLogin).filter((item) => item !== undefined);
 };
 //
-const transformCoraLoginToBFFLogin = (coraRecordWrapper: RecordWrapper): BFFLoginWebRedirect => {
+const transformCoraLoginToBFFLogin = (
+  coraRecordWrapper: RecordWrapper
+): BFFLoginWebRedirect | BFFLoginPassword => {
   const coraRecord = coraRecordWrapper.record;
 
   const dataRecordGroup = coraRecord.data;
 
-  const id = extractIdFromRecordInfo(dataRecordGroup);
-  const loginName = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'loginName');
-  const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
   const { attributes } = dataRecordGroup;
   const type = attributes?.type as string;
-  return { id, loginName, url, type };
+  const id = extractIdFromRecordInfo(dataRecordGroup);
+  const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
+
+  if (type === 'webRedirect') {
+    console.log(type);
+    const loginName = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'loginName');
+    return { id, loginName, url, type };
+  }
+
+  return {
+    id,
+    type,
+    metadata: '',
+    presentation: '',
+    url
+  };
 };

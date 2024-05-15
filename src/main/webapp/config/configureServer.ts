@@ -24,6 +24,8 @@ import { transformCoraValidationTypes } from './transformValidationTypes';
 import { transformCoraRecordTypes } from './transformRecordTypes';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { transformCoraSearch } from './transformCoraSearch';
+import { transformLoginUnit } from './transformLoginUnit';
+import { transformLogin } from './transformLogin';
 
 export const configureServer = (app: Application) => {
   app.use(express.json());
@@ -62,7 +64,9 @@ const loadStuffOnServerStart = async () => {
     'validationType',
     'guiElement',
     'recordType',
-    'search'
+    'search',
+    'loginUnit'
+    // 'login'
   ];
   const result = await getPoolsFromCora(types);
 
@@ -85,11 +89,19 @@ const loadStuffOnServerStart = async () => {
   const search = transformCoraSearch(result[5].data);
   const searchPool = listToPool<BFFSearch>(search);
 
+  const loginUnit = transformLoginUnit(result[6].data);
+  const loginUnitPool = listToPool<BFFLoginUnit>(loginUnit);
+
+  // const login = transformLogin(result[7].data);
+  // const loginPool = listToPool<BFFLoginWebRedirect>(login);
+
   dependencies.validationTypePool = validationTypePool;
   dependencies.recordTypePool = recordTypePool;
   dependencies.metadataPool = metadataPool;
   dependencies.presentationPool = presentationPool;
   dependencies.textPool = listToPool<BFFText>(texts);
   dependencies.searchPool = searchPool;
+  dependencies.loginUnitPool = loginUnitPool;
+  // dependencies.loginPool = loginPool;
 };
 export { dependencies, loadStuffOnServerStart };

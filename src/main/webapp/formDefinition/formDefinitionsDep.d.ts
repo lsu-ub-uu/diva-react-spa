@@ -8,7 +8,8 @@ import {
   BFFRecordType,
   BFFSearch,
   BFFLoginUnit,
-  BFFLoginWebRedirect
+  BFFLoginWebRedirect,
+  BFFLoginPassword
 } from '../config/bffTypes';
 
 export interface Dependencies {
@@ -22,5 +23,5 @@ export interface Dependencies {
   recordTypePool: Lookup<string, BFFRecordType>;
   searchPool: Lookup<string, BFFSearch>;
   loginUnitPool: Lookup<string, BFFLoginUnit>;
-  loginPool: Lookup<string, BFFLoginWebRedirect>;
+  loginPool: Lookup<string, BFFLoginWebRedirect | BFFLoginPassword>;
 }
