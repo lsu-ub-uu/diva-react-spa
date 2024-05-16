@@ -79,11 +79,13 @@ describe('loginDefinition', () => {
     const result = [
       {
         loginDescription: 'someDiVALoginUnitText',
-        url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login'
+        url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
+        type: 'webRedirect'
       },
       {
         loginDescription: 'someDiVALoginUnitText2',
-        url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login'
+        url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
+        type: 'webRedirect'
       }
     ];
 

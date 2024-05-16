@@ -22,6 +22,7 @@ import { Dependencies } from '../formDefinition/formDefinitionsDep';
 interface LoginDefinition {
   loginDescription: string;
   url: string;
+  type: string;
 }
 export const createLoginDefinition = (dependencies: Dependencies): LoginDefinition[] => {
   const { loginUnitPool, loginPool } = dependencies;
@@ -31,10 +32,11 @@ export const createLoginDefinition = (dependencies: Dependencies): LoginDefiniti
   const loginUnitEntries = Array.from(loginUnitPool.entries());
 
   loginUnitEntries.forEach((login: any) => {
-    const { url } = loginPool.get(login[1].login);
+    const { url, type } = loginPool.get(login[1].login);
     const item = {
       loginDescription: login[1].loginDescription,
-      url
+      url,
+      type
     };
     loginItemDefinitions.push(item);
   });

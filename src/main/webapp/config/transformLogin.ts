@@ -47,7 +47,6 @@ const transformCoraLoginToBFFLogin = (
   const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
 
   if (type === 'webRedirect') {
-    console.log(type);
     const loginName = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'loginName');
     return { id, loginName, url, type };
   }
