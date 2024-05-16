@@ -22,6 +22,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useTranslation } from 'react-i18next';
+import { red } from '@mui/material/colors';
 
 interface ActionButtonGroupProps {
   entityName?: string;
@@ -70,7 +71,9 @@ export const ActionButtonGroup = (
           disabled={props.moveUpButtonDisabled}
           onClick={props.moveUpButtonAction}
         >
-          <ArrowUpwardIcon sx={{ color: '#000000' }} />
+          <ArrowUpwardIcon
+            sx={{ color: props.moveUpButtonDisabled ? '#cccccc' : '#000000' }}
+          />
         </IconButton>
       )}
       <Tooltip
@@ -114,7 +117,9 @@ export const ActionButtonGroup = (
           disabled={props.moveDownButtonDisabled}
           onClick={props.moveDownButtonAction}
         >
-          <ArrowDownwardIcon sx={{ color: '#000000' }} />
+          <ArrowDownwardIcon
+            sx={{ color: props.moveDownButtonDisabled ? '#cccccc' : '#000000' }}
+          />
         </IconButton>
       )}
     </ButtonGroup>
