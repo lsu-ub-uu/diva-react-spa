@@ -4,6 +4,8 @@ import { deleteAuthTokenFromCora, requestAuthTokenOnLogin } from '../cora/auth';
 import { errorHandler } from '../server';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
+import { createLoginDefinition } from '../loginDefinition/loginDefinition';
+import { dependencies } from '../config/configureServer';
 
 /**
  * @desc Post appToken to get authToken
@@ -48,7 +50,8 @@ export const deleteAuthTokenOnLogout = async (req: Request, res: Response) => {
  */
 export const getAllLoginUnits = async (req: Request, res: Response) => {
   try {
-    res.status(200).json('optionList');
+    const loginList = createLoginDefinition(dependencies);
+    res.status(200).json(loginList);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();

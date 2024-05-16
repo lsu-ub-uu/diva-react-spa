@@ -20,6 +20,7 @@
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
+  BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadata,
@@ -46,9 +47,14 @@ describe('loginDefinition', () => {
         id: 'someOtherLoginUnitId',
         login: 'someOtherLoginDiVAwr',
         loginDescription: 'someDiVALoginUnitText2'
+      },
+      {
+        id: 'someThirdLoginUnitId',
+        login: 'uppsalaLDAP',
+        loginDescription: 'someDiVALoginUnitText2'
       }
     ]);
-    const loginPool = listToPool<BFFLoginWebRedirect>([
+    const loginPool = listToPool<BFFLoginWebRedirect | BFFLoginPassword>([
       {
         id: 'someLoginDiVAwr',
         loginName: 'DiVA Test university',
@@ -60,6 +66,13 @@ describe('loginDefinition', () => {
         loginName: 'DiVA Other Test university',
         url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
         type: 'webRedirect'
+      },
+      {
+        id: 'uppsalaLDAP',
+        metadata: 'someMetadata',
+        presentation: 'somePresentation',
+        url: 'http://www.google.se',
+        type: 'ldap'
       }
     ]);
 
@@ -86,6 +99,11 @@ describe('loginDefinition', () => {
         loginDescription: 'someDiVALoginUnitText2',
         url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
         type: 'webRedirect'
+      },
+      {
+        loginDescription: 'someDiVALoginUnitText2',
+        type: 'ldap',
+        url: 'http://www.google.se'
       }
     ];
 

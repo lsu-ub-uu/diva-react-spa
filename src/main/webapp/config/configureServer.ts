@@ -9,6 +9,7 @@ import { transformMetadata } from './transformMetadata';
 import { listToPool } from '../utils/structs/listToPool';
 import {
   BFFGuiElement,
+  BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadata,
@@ -65,8 +66,8 @@ const loadStuffOnServerStart = async () => {
     'guiElement',
     'recordType',
     'search',
-    'loginUnit'
-    // 'login'
+    'loginUnit',
+    'login'
   ];
   const result = await getPoolsFromCora(types);
 
@@ -92,8 +93,8 @@ const loadStuffOnServerStart = async () => {
   const loginUnit = transformLoginUnit(result[6].data);
   const loginUnitPool = listToPool<BFFLoginUnit>(loginUnit);
 
-  // const login = transformLogin(result[7].data);
-  // const loginPool = listToPool<BFFLoginWebRedirect>(login);
+  const login = transformLogin(result[7].data);
+  const loginPool = listToPool<BFFLoginWebRedirect | BFFLoginPassword>(login);
 
   dependencies.validationTypePool = validationTypePool;
   dependencies.recordTypePool = recordTypePool;
@@ -102,6 +103,6 @@ const loadStuffOnServerStart = async () => {
   dependencies.textPool = listToPool<BFFText>(texts);
   dependencies.searchPool = searchPool;
   dependencies.loginUnitPool = loginUnitPool;
-  // dependencies.loginPool = loginPool;
+  dependencies.loginPool = loginPool;
 };
 export { dependencies, loadStuffOnServerStart };
