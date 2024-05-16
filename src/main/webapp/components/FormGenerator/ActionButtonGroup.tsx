@@ -22,7 +22,6 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useTranslation } from 'react-i18next';
-import { red } from '@mui/material/colors';
 
 interface ActionButtonGroupProps {
   entityName?: string;

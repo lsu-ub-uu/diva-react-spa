@@ -25,7 +25,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import InfoIcon from '@mui/icons-material/Info';
 import { Select } from '../../Form/Select/Select';
 import { Option, Tooltip } from '../../index';
 
@@ -84,7 +84,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                   disableRipple
                   color='default'
                 >
-                  <HelpOutlineIcon />
+                  <InfoIcon />
                 </IconButton>
               </Tooltip>
             )}
