@@ -16,18 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useEffect } from 'react';
 import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useTranslation } from 'react-i18next';
 import { devAccounts, Account } from './devAccounts';
 import { loginAsync, logoutAsync } from '../../../../features/auth/actions';
-import { logout } from '../../../../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import { useBackdrop } from '../../../Backdrop/BackdropContext';
 import { authStateSelector } from '../../../../features/auth/selectors';
-import { loadPublicationsAsync } from '../../../../features/publications';
-import { loadPublicationTypesAsync } from '../../../../features/publicationTypes';
+import {
+  loadLoginUnitsAsync,
+  loginUnitsSelector,
+} from '../../../../features/loginUnits';
 
 export const Login = (): JSX.Element => {
   const { t } = useTranslation();
@@ -36,6 +37,11 @@ export const Login = (): JSX.Element => {
   const open = Boolean(anchorEl);
   const dispatch = useAppDispatch();
   const authState = useAppSelector(authStateSelector);
+  const loginUnitsState = useAppSelector(loginUnitsSelector);
+
+  useEffect(() => {
+    dispatch(loadLoginUnitsAsync());
+  }, [dispatch]);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -68,7 +74,7 @@ export const Login = (): JSX.Element => {
           alignItems='center'
         >
           <Box>
-            {`${authState.userSession.firstName} ${authState.userSession.lastName}`}
+            {authState.userSession.firstName} {authState.userSession.lastName}
           </Box>
           <Avatar
             alt='Logout user'
@@ -96,8 +102,16 @@ export const Login = (): JSX.Element => {
                 key={`${index}_${devAccount.id}`}
                 onClick={(event) => handleSelection(event, devAccount)}
               >
-                {devAccount.firstName}
                 {devAccount.lastName}
+                {devAccount.firstName}
+              </MenuItem>
+            ))}
+            {loginUnitsState.loginUnits.map((loginUnit, index) => (
+              <MenuItem
+                key={`${index}_${loginUnit.loginDescription}`}
+                // onClick={(event) => handleSelection(event, devAccount)}
+              >
+                {loginUnit.loginDescription}
               </MenuItem>
             ))}
           </Menu>

@@ -331,7 +331,7 @@ export const FormGenerator = ({
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
   ) => {
-    console.log(isFirstLevel(currentComponentNamePath), currentComponentNamePath)
+    // console.log(isFirstLevel(currentComponentNamePath), currentComponentNamePath)
     return isFirstLevel(currentComponentNamePath) ? (
       <FieldArrayComponent
         key={reactKey}
