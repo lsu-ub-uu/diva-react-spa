@@ -228,7 +228,7 @@ export const FormGenerator = ({
       <span
         key={reactKey}
         className='anchorLink'
-        id={`anchor_${component.name}-card`}
+        id={`anchor_${component.name}`}
       >
         <Box sx={{ mb: 2 }}>
           <Box
