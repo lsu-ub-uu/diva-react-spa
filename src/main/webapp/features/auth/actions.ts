@@ -61,16 +61,16 @@ export const logoutAsync = (): AppThunk => async (dispatch) => {
   );
 
   const url = `${VITE_BFF_API_URL}/auth/${userSession.idFromLogin}`;
-  console.log('aaaaa', url);
+
   try {
     dispatch(authenticating());
 
     const response = await deleteFromCora(url, userSession.id);
-
-    dispatch(logout(response.data.authToken));
+    dispatch(logout());
     dispatch(loadPublicationTypesAsync());
     dispatch(loadPublicationsAsync());
-  } catch (e) {
-    dispatch(hasError('logout error'));
+  } catch (e: any) {
+    dispatch(logout());
+    dispatch(hasError(e.message));
   }
 };
