@@ -111,7 +111,7 @@ export const Login = (): JSX.Element => {
                 key={`${index}_${loginUnit.loginDescription}`}
                 // onClick={(event) => handleSelection(event, devAccount)}
               >
-                {loginUnit.loginDescription}
+                {t(loginUnit.loginDescription)}
               </MenuItem>
             ))}
           </Menu>
