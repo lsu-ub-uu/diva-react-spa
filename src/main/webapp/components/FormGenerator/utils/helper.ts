@@ -83,8 +83,3 @@ export const checkIfComponentHasValue = (
 ) => {
   return getValues(componentValue) !== '';
 };
-
-// console.log(
-//   currentComponentNamePath,
-//   checkIfComponentHasValue(getValues, `${currentComponentNamePath}.value`),
-// );

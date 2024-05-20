@@ -1434,17 +1434,16 @@ describe('helper methods', () => {
     });
   });
 
-  describe('check', () => {
-    it('s', () => {
-      const actual = checkIfComponentHasValue()
-      expect(actual).toStrictEqual(false)
-    })
-    it('s', () => {
-      const actual = checkIfComponentHasValue()
-      expect(actual).toStrictEqual(true)
-    })
-  })
-
+  // describe('check', () => {
+  //   it('s', () => {
+  //     const actual = checkIfComponentHasValue()
+  //     expect(actual).toStrictEqual(false)
+  //   })
+  //   it('s', () => {
+  //     const actual = checkIfComponentHasValue()
+  //     expect(actual).toStrictEqual(true)
+  //   })
+  // })
 
   // // console.log(
   // //   'gV',

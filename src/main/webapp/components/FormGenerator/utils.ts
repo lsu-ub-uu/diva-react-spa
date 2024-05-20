@@ -164,7 +164,3 @@ export const mergeArrays = (target: any[], overlay: any[]): any[] => {
 
   return result;
 };
-
-const checkIfComponentHasValue = (componentValue: string) => {
-  return getValues(componentValue) !== '';
-};
