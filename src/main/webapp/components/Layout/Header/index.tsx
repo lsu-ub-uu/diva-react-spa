@@ -16,10 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box, Button, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import CachedIcon from '@mui/icons-material/Cached';
+import { Link as RouterLink } from 'react-router-dom';
 import { Login } from './Login/Login';
 import divaLogo from '../../../assets/divaLogo.svg';
 
@@ -38,12 +39,17 @@ export const Header = () => {
           alignItems='flex-start'
         >
           <Grid item>
-            <img
-              src={divaLogo}
-              className='logo'
-              alt='logo'
-              style={{ width: 160 }}
-            />
+            <Link
+              component={RouterLink}
+              to='/'
+            >
+              <img
+                src={divaLogo}
+                className='logo'
+                alt='logo'
+                style={{ width: 160 }}
+              />
+            </Link>
           </Grid>
           <Grid
             item

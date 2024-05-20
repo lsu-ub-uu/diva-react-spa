@@ -57,7 +57,7 @@ export const ActionButtonGroup = (
         </IconButton>
       )}
       <Tooltip
-        title={`${t('divaClient_removeEntity')} ${
+        title={`${t('divaClient_removeFieldText')} ${
           props.entityName ?? 'entity'
         }`}
       >
