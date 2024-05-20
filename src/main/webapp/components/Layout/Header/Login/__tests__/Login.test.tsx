@@ -17,33 +17,85 @@
  */
 
 import { expect, vi } from 'vitest';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import { Login } from '../Login';
 import { reduxRender } from '../../../../../utils/testUtils';
+
 /**
  * @vitest-environment jsdom
  */
 
 vi.spyOn(Storage.prototype, 'setItem');
 
-afterEach(() => {
-  localStorage.clear();
-});
+const loginUnits = [
+  {
+    loginDescription: 'rkhTestDiVALoginUnitText',
+    url: 'https://www.diva-portal.org/Shibboleth.sso/Login/rkh?target=https://www.diva-portal.org/diva-test/idplogin/login',
+    type: 'webRedirect',
+  },
+  {
+    loginDescription: 'skhTestDiVALoginUnitText',
+    url: 'https://www.diva-portal.org/Shibboleth.sso/Login/uniarts?target=https://www.diva-portal.org/diva-test/idplogin/login',
+    type: 'webRedirect',
+  },
+  {
+    loginDescription: 'ltuDiVALoginUnitText',
+    url: 'https://www.diva-portal.org/Shibboleth.sso/Login/ltu?target=https://www.diva-portal.org/diva/idplogin/login',
+    type: 'webRedirect',
+  },
+];
 
-describe('<Login />', () => {
-  it('shows the account in a list', async () => {
+describe('<Login/>', () => {
+  let mockAxios: MockAdapter;
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios);
+
+    const unitUrl: string = `/auth/loginUnits`;
+    mockAxios.onGet(unitUrl).reply(200, loginUnits);
+  });
+
+  afterEach(() => {
+    mockAxios.restore();
+  });
+
+  it('shows the accounts in a list', async () => {
     const user = userEvent.setup();
-    reduxRender(<Login />);
+    reduxRender(<Login />, {
+      preloadedState: {
+        loginUnits: {
+          loginUnits,
+          isLoading: false,
+          isError: false,
+          message: '',
+        },
+      },
+    });
+
     const loginButton = screen.getByRole('button', {
       name: 'divaClient_LoginText',
     });
     await user.click(loginButton);
-    const userNameList = screen.getAllByRole('menuitem');
-    // screen.debug(userNameList);
-    const listItems = userNameList.map((item) => item.textContent);
-    expect(listItems).toHaveLength(5);
+
+    await waitFor(() => {
+      const userNameList = screen.queryAllByRole('menuitem');
+      const listItems = userNameList.map((item) => item.textContent);
+      expect(listItems).toHaveLength(8);
+      expect(listItems).toEqual([
+        'DiVAUser',
+        'DiVAEverything',
+        'AdminSystem',
+        'UUdomainAdmin',
+        'KTHdomainAdmin',
+        'rkhTestDiVALoginUnitText',
+        'skhTestDiVALoginUnitText',
+        'ltuDiVALoginUnitText',
+      ]);
+    });
   });
+
   it.todo('saves to LocalStorage when loggin in', async () => {
     const user = userEvent.setup();
     reduxRender(<Login />);

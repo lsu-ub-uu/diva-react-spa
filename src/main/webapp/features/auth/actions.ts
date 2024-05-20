@@ -71,6 +71,7 @@ export const logoutAsync = (): AppThunk => async (dispatch) => {
     dispatch(loadPublicationTypesAsync());
     dispatch(loadPublicationsAsync());
   } catch (e) {
+    dispatch(logout());
     dispatch(hasError('logout error'));
   }
 };

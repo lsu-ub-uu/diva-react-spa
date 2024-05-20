@@ -29,6 +29,8 @@ import publicationTypeReducer from '../features/publicationTypes/publicationType
 // import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
 // import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
 import authReducer from '../features/auth/authSlice';
+import publicationsReducer from "../features/publications/publicationsSlice";
+import loginUnitsReducer from "../features/loginUnits/loginUnitsSlice";
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;
@@ -46,8 +48,8 @@ const renderWithReduxProvider = (
       reducer: {
         auth: authReducer,
         publicationType: publicationTypeReducer,
-        // subjectCategory: subjectCategoryReducer,
-        // researchSubject: researchSubjectReducer,
+        publications: publicationsReducer,
+        loginUnits: loginUnitsReducer,
       },
       preloadedState,
     }),

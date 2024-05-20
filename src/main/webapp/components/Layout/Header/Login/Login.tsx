@@ -106,7 +106,7 @@ export const Login = (): JSX.Element => {
                 {devAccount.firstName}
               </MenuItem>
             ))}
-            {loginUnitsState.loginUnits.map((loginUnit, index) => (
+            {loginUnitsState?.loginUnits.map((loginUnit, index) => (
               <MenuItem
                 key={`${index}_${loginUnit.loginDescription}`}
                 // onClick={(event) => handleSelection(event, devAccount)}
