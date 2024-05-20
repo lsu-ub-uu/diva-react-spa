@@ -96,7 +96,9 @@ export const ActionButtonGroup = (
             disabled={props.deleteButtonDisabled}
             onClick={props.deleteButtonAction}
           >
-            <ClearIcon sx={{ color: '#000000' }} />
+            <ClearIcon
+              sx={{ color: props.deleteButtonDisabled ? '#cccccc' : '#000000' }}
+            />
           </IconButton>
         </span>
       </Tooltip>
