@@ -53,6 +53,7 @@ describe('helper methods', () => {
       expect(expected).toStrictEqual(arg2);
     });
   });
+
   describe('isComponentVariable', () => {
     it.each([
       [
@@ -1432,4 +1433,23 @@ describe('helper methods', () => {
       expect(expected).toStrictEqual(arg3);
     });
   });
+
+  describe('check', () => {
+    it('s', () => {
+      const actual = checkIfComponentHasValue()
+      expect(actual).toStrictEqual(false)
+    })
+    it('s', () => {
+      const actual = checkIfComponentHasValue()
+      expect(actual).toStrictEqual(true)
+    })
+  })
+
+
+  // // console.log(
+  // //   'gV',
+  // //   checkIfComponentHasValue(`${currentComponentNamePath}.value`),
+  // // );
+  //
+  // console.log(`${currentComponentNamePath}.value`)
 });

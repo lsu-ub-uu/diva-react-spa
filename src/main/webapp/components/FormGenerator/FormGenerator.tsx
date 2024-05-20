@@ -19,7 +19,13 @@
 
 import React from 'react';
 import { Box, Container, Grid, IconButton, Toolbar } from '@mui/material';
-import { Control, FieldErrors, FieldValues, useForm } from 'react-hook-form';
+import {
+  Control,
+  FieldErrors,
+  FieldValues,
+  useForm,
+  UseFormGetValues,
+} from 'react-hook-form';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -33,6 +39,7 @@ import {
 import { createDefaultValuesFromFormSchema, RecordData } from './utils';
 import { generateYupSchemaFromFormSchema } from './utils/yupSchema';
 import {
+  checkIfComponentHasValue,
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
@@ -75,7 +82,7 @@ export const FormGenerator = ({
     ),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
-  const { control, handleSubmit, reset } = methods;
+  const { control, handleSubmit, reset, getValues } = methods;
 
   const generateFormComponent = (
     component: FormComponent,

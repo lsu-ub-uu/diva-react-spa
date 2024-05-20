@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormComponent } from '../types';
 
 export const countStringCharOccurrences = (
@@ -75,3 +76,15 @@ export const isComponentSingularAndOptional = (component: FormComponent) => {
   const rMin = component.repeat?.repeatMin ?? 1;
   return rMax === 1 && rMin === 0;
 };
+
+export const checkIfComponentHasValue = (
+  getValues: UseFormGetValues<FieldValues>,
+  componentValue: string,
+) => {
+  return getValues(componentValue) !== '';
+};
+
+// console.log(
+//   currentComponentNamePath,
+//   checkIfComponentHasValue(getValues, `${currentComponentNamePath}.value`),
+// );
