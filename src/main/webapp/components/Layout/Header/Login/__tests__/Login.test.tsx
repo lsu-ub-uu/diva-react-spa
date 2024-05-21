@@ -21,6 +21,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { MenuItem } from '@mui/material';
 import { Login } from '../Login';
 import { reduxRender } from '../../../../../utils/testUtils';
 
@@ -49,67 +50,157 @@ const loginUnits = [
 ];
 
 describe('<Login/>', () => {
-  let mockAxios: MockAdapter;
-  beforeEach(() => {
-    mockAxios = new MockAdapter(axios);
+  describe('Login menu', () => {
+    let mockAxios: MockAdapter;
 
-    const unitUrl: string = `/auth/loginUnits`;
-    mockAxios.onGet(unitUrl).reply(200, loginUnits);
-  });
+    beforeEach(() => {
+      mockAxios = new MockAdapter(axios);
+    });
 
-  afterEach(() => {
-    mockAxios.restore();
-  });
+    afterEach(() => {
+      mockAxios.restore();
+    });
 
-  it('shows the accounts in a list', async () => {
-    const user = userEvent.setup();
-    reduxRender(<Login />, {
-      preloadedState: {
-        loginUnits: {
-          loginUnits,
-          isLoading: false,
-          isError: false,
-          message: '',
+    it('shows the accounts in a list', async () => {
+      const unitUrl: string = `/auth/loginUnits`;
+      mockAxios.onGet(unitUrl).reply(200, loginUnits);
+      const user = userEvent.setup();
+      reduxRender(<Login />, {
+        preloadedState: {
+          loginUnits: {
+            loginUnits,
+            isLoading: false,
+            isError: false,
+            message: '',
+          },
         },
-      },
+      });
+
+      const loginButton = screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      });
+      await user.click(loginButton);
+
+      await waitFor(() => {
+        const userNameList = screen.queryAllByRole('menuitem');
+        const listItems = userNameList.map((item) => item.textContent);
+        expect(listItems).toHaveLength(8);
+        expect(listItems).toEqual([
+          'DiVAUser',
+          'DiVAEverything',
+          'AdminSystem',
+          'UUdomainAdmin',
+          'KTHdomainAdmin',
+          'rkhTestDiVALoginUnitText',
+          'skhTestDiVALoginUnitText',
+          'ltuDiVALoginUnitText',
+        ]);
+      });
     });
 
-    const loginButton = screen.getByRole('button', {
-      name: 'divaClient_LoginText',
-    });
-    await user.click(loginButton);
+    describe('webRedirect accounts has a link to Shibboleth', () => {
+      it.each([
+        ['rkhTestDiVALoginUnitText', 'http://localhost:1234/rkh'],
+        ['skhTestDiVALoginUnitText', 'http://localhost:1234/skh'],
+        ['ltuDiVALoginUnitText', 'http://localhost:1234/ltu'],
+      ])('%s url is correct', async (loginUnitName, loginUnitUrl) => {
+        const unitUrl: string = `/auth/loginUnits`;
+        mockAxios.onGet(unitUrl).reply(200, loginUnits);
+        const user = userEvent.setup();
 
-    await waitFor(() => {
-      const userNameList = screen.queryAllByRole('menuitem');
-      const listItems = userNameList.map((item) => item.textContent);
-      expect(listItems).toHaveLength(8);
-      expect(listItems).toEqual([
-        'DiVAUser',
-        'DiVAEverything',
-        'AdminSystem',
-        'UUdomainAdmin',
-        'KTHdomainAdmin',
-        'rkhTestDiVALoginUnitText',
-        'skhTestDiVALoginUnitText',
-        'ltuDiVALoginUnitText',
-      ]);
+        reduxRender(<Login />, {
+          preloadedState: {
+            loginUnits: {
+              loginUnits,
+              isLoading: false,
+              isError: false,
+              message: '',
+            },
+          },
+        });
+
+        const loginButton = screen.getByRole('button', {
+          name: 'divaClient_LoginText',
+        });
+        await user.click(loginButton);
+
+        const shibbolethUrl = screen.queryByText(loginUnitName) as HTMLElement;
+        expect(shibbolethUrl).toBeInTheDocument();
+        await user.click(shibbolethUrl);
+        // const unitUrl: string = `loginUnitUrl`;
+        mockAxios.onGet(loginUnitUrl).reply(200, loginUnits);
+      });
+    });
+
+    it('axios gets called on click', async () => {
+      const redirectUrl = loginUnits[0].url;
+      mockAxios.onGet(redirectUrl).reply(200, {
+        userId: 'johdo290@user.uu.se',
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        idFromLogin: 'johdo290@user.uu.se',
+        validForNoSeconds: '600',
+        actionLinks: {
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+          },
+        },
+      });
+
+      const user = userEvent.setup();
+      reduxRender(<Login />, {
+        preloadedState: {
+          loginUnits: {
+            loginUnits,
+            isLoading: false,
+            isError: false,
+            message: '',
+          },
+        },
+      });
+
+      const loginButton = screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      });
+      await user.click(loginButton);
+
+      await waitFor(() => {
+        const shibbolethUrl = screen.queryByText(
+          'rkhTestDiVALoginUnitText',
+        ) as HTMLElement;
+
+        user.click(shibbolethUrl);
+        expect(mockAxios.history.get.length).toBe(1);
+      });
+    });
+
+    it('should should show name of chosen user', () => {
+      it('shows the accounts in a list', async () => {
+        const unitUrl: string = `/auth/loginUnits`;
+        mockAxios.onGet(unitUrl).reply(200, loginUnits);
+        const user = userEvent.setup();
+        reduxRender(<Login />, {
+          preloadedState: {
+            loginUnits: {
+              loginUnits,
+              isLoading: false,
+              isError: false,
+              message: '',
+            },
+          },
+        });
+
+        const loginButton = screen.getByRole('button', {
+          name: 'divaClient_LoginText',
+        });
+        await user.click(loginButton);
+
+        const divaUser = screen.getByText('DiVAUser');
+        await user.click(divaUser);
+        const logedInUser = screen.getByText('DiVA User');
+        expect(logedInUser).toBeInTheDocument();
+      });
     });
   });
-
-  it.todo('saves to LocalStorage when loggin in', async () => {
-    const user = userEvent.setup();
-    reduxRender(<Login />);
-    const loginButton = screen.getByRole('button', {
-      name: 'Log in',
-    });
-    await user.click(loginButton);
-    const userButton = screen.getByRole('menuitem', {
-      name: 'divaSystemAdmin',
-    });
-    await user.click(userButton);
-    // const userAvatar = await waitFor(() => screen.getByTestId('PersonIcon'));
-    // screen.debug(userAvatar);
-    // const avatar = screen.getByAltText('Logout user');
-  });
-  it.todo('deletes from LocalStorage when loggin out', () => {});
 });

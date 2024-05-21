@@ -21,7 +21,11 @@ import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useTranslation } from 'react-i18next';
 import { devAccounts, Account } from './devAccounts';
-import { loginAsync, logoutAsync } from '../../../../features/auth/actions';
+import {
+  loginAsync,
+  loginWebRedirectAsync,
+  logoutAsync,
+} from '../../../../features/auth/actions';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import { useBackdrop } from '../../../Backdrop/BackdropContext';
 import { authStateSelector } from '../../../../features/auth/selectors';
@@ -29,6 +33,11 @@ import {
   loadLoginUnitsAsync,
   loginUnitsSelector,
 } from '../../../../features/loginUnits';
+import {
+  convertWebRedirectToUserSession,
+  messageIsFromWindowOpenedFromHere,
+  splitSlashFromUrl,
+} from './utils/utils';
 
 export const Login = (): JSX.Element => {
   const { t } = useTranslation();
@@ -51,7 +60,7 @@ export const Login = (): JSX.Element => {
     setAnchorEl(null);
   };
 
-  const handleSelection = (
+  const handleDevSelection = (
     event: MouseEvent<HTMLElement>,
     account: Account,
   ) => {
@@ -59,6 +68,33 @@ export const Login = (): JSX.Element => {
     setBackdrop(true);
     dispatch(loginAsync(account, () => setBackdrop(false)));
     handleClose();
+  };
+
+  const handleWebRedirectSelection = (
+    event: MouseEvent<HTMLElement>,
+    url: string,
+  ) => {
+    try {
+      window.open('http://localhost:1234');
+      window.addEventListener('message', receiveMessage, false);
+    } catch (e: any) {
+      console.log(e.message());
+    }
+    handleClose();
+  };
+  const receiveMessage = (event: any) => {
+    if (
+      !messageIsFromWindowOpenedFromHere(
+        splitSlashFromUrl(window.location.href),
+        splitSlashFromUrl(event.origin as string),
+      )
+    ) {
+      dispatch(
+        loginWebRedirectAsync(convertWebRedirectToUserSession(event.data), () =>
+          setBackdrop(false),
+        ),
+      );
+    }
   };
 
   const handleLogout = () => {
@@ -100,7 +136,7 @@ export const Login = (): JSX.Element => {
             {devAccounts.map((devAccount, index) => (
               <MenuItem
                 key={`${index}_${devAccount.id}`}
-                onClick={(event) => handleSelection(event, devAccount)}
+                onClick={(event) => handleDevSelection(event, devAccount)}
               >
                 {devAccount.lastName}
                 {devAccount.firstName}
@@ -109,7 +145,9 @@ export const Login = (): JSX.Element => {
             {loginUnitsState?.loginUnits.map((loginUnit, index) => (
               <MenuItem
                 key={`${index}_${loginUnit.loginDescription}`}
-                // onClick={(event) => handleSelection(event, devAccount)}
+                onClick={(event) =>
+                  handleWebRedirectSelection(event, loginUnit.url)
+                }
               >
                 {t(loginUnit.loginDescription)}
               </MenuItem>

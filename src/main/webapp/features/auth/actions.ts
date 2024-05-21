@@ -55,6 +55,21 @@ export const loginAsync =
     }
   };
 
+export const loginWebRedirectAsync =
+  (account: UserSession, callback?: Function): AppThunk =>
+  async (dispatch) => {
+    try {
+      dispatch(authenticating());
+      dispatch(authenticated(account));
+      dispatch(loadPublicationTypesAsync());
+      dispatch(loadPublicationsAsync());
+    } catch (e) {
+      dispatch(hasError('login error'));
+    } finally {
+      if (callback) callback();
+    }
+  };
+
 export const logoutAsync = (): AppThunk => async (dispatch) => {
   const userSession: UserSession = JSON.parse(
     localStorage.getItem('diva_session') as string,

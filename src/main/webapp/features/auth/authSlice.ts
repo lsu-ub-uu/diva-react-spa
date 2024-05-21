@@ -25,10 +25,10 @@ const LOCAL_STORAGE_NAME = 'diva_session';
 export interface UserSession {
   id: string; // this is the authToken
   validForNoSeconds: string;
-  idInUserStorage: string;
+  idInUserStorage?: string;
   idFromLogin: string;
-  lastName: string;
-  firstName: string;
+  lastName?: string;
+  firstName?: string;
 }
 export interface AuthState {
   isAuthenticated: boolean;
