@@ -27,3 +27,12 @@ export const deleteFromCora = async (url: string, authToken: string) => {
   const response = await axios.delete(url, { headers, data: authToken });
   return response;
 };
+
+export const isValidJSON = (str: string | null) => {
+  try {
+    JSON.parse(str as string);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};

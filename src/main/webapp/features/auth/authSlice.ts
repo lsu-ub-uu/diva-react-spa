@@ -18,6 +18,7 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { isValidJSON } from './utils/utils';
 
 const LOCAL_STORAGE_NAME = 'diva_session';
 
@@ -47,20 +48,31 @@ export const deleteState = (): void => {
 };
 
 export const createInitialState = (): UserSession | null => {
-  if (localStorage.getItem(LOCAL_STORAGE_NAME) == null) {
+  const storage = localStorage.getItem(LOCAL_STORAGE_NAME);
+
+  if (!isValidJSON(storage)) {
     axios.defaults.headers.common = {
       Authtoken: '',
     };
     return null;
   }
 
-  const session = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_NAME) as string,
-  ) as UserSession;
+  if (
+    isValidJSON(storage) &&
+    (JSON.parse(storage as string) === undefined ||
+      JSON.parse(storage as string) === null)
+  ) {
+    axios.defaults.headers.common = {
+      Authtoken: '',
+    };
+    return null;
+  }
+
+  const session = JSON.parse(storage as string);
   axios.defaults.headers.common = {
     Authtoken: session.id,
   };
-  return session;
+  return session as UserSession;
 };
 
 const initialState = {

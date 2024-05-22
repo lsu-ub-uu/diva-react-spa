@@ -96,7 +96,23 @@ describe('authSlice', () => {
 
     expect(createInitialState()).toStrictEqual(userSession);
   });
-  it('createInitialState returns null from localStorage', () => {
-    expect(createInitialState()).toStrictEqual(null);
+  describe('createInitialState', () => {
+    it('createInitialState returns null from localStorage from undefined', () => {
+      // @ts-ignore
+      localStorage.setItem('diva_session', undefined);
+      expect(createInitialState()).toStrictEqual(null);
+    });
+
+    it('createInitialState returns null from localStorage from null', () => {
+      // @ts-ignore
+      localStorage.setItem('diva_session', null);
+      expect(createInitialState()).toStrictEqual(null);
+    });
+
+    it('createInitialState returns null from localStorage from {}', () => {
+      // @ts-ignore
+      localStorage.setItem('diva_session', {});
+      expect(createInitialState()).toStrictEqual(null);
+    });
   });
 });
