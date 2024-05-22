@@ -42,6 +42,23 @@ describe('<Breadcrumbs />', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('start').closest('a')).toHaveAttribute('href', '/');
+    expect(
+      screen.getByText('divaClient_breadcrumbStartText').closest('a'),
+    ).toHaveAttribute('href', '/');
+  });
+
+  it('Renders steps as breadcrumbs', () => {
+    render(
+      <MemoryRouter initialEntries={['/page1/page1_1']}>
+        <Breadcrumbs />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByText('divaClient_breadcrumbStartText'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('page1')).toBeInTheDocument();
+    expect(screen.getByText('page1_1')).toBeInTheDocument();
+    expect(screen.queryByText('page2')).not.toBeInTheDocument();
   });
 });

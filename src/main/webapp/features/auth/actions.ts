@@ -28,9 +28,11 @@ import {
 import { Account } from '../../components/Layout/Header/Login/devAccounts';
 import { loadPublicationTypesAsync } from '../publicationTypes';
 import { loadPublicationsAsync } from '../publications';
-import { deleteFromCora } from './utils/deleteFromCora';
+import { deleteFromCora, isValidJSON } from './utils/utils';
 
 const { VITE_BFF_API_URL } = import.meta.env;
+const LOCAL_STORAGE_NAME = 'diva_session';
+
 export const loginAsync =
   (account: Account, callback?: Function): AppThunk =>
   async (dispatch) => {
@@ -55,22 +57,48 @@ export const loginAsync =
     }
   };
 
+export const loginWebRedirectAsync =
+  (account: UserSession, callback?: Function): AppThunk =>
+  async (dispatch) => {
+    try {
+      dispatch(authenticating());
+      dispatch(authenticated(account));
+      dispatch(loadPublicationTypesAsync());
+      dispatch(loadPublicationsAsync());
+    } catch (e) {
+      dispatch(hasError('login error'));
+    } finally {
+      if (callback) callback();
+    }
+  };
+
 export const logoutAsync = (): AppThunk => async (dispatch) => {
-  const userSession: UserSession = JSON.parse(
-    localStorage.getItem('diva_session') as string,
-  );
+  const storage = localStorage.getItem(LOCAL_STORAGE_NAME);
 
-  const url = `${VITE_BFF_API_URL}/auth/${userSession.idFromLogin}`;
-  console.log('aaaaa', url);
-  try {
-    dispatch(authenticating());
-
-    const response = await deleteFromCora(url, userSession.id);
-
-    dispatch(logout(response.data.authToken));
-    dispatch(loadPublicationTypesAsync());
-    dispatch(loadPublicationsAsync());
-  } catch (e) {
-    dispatch(hasError('logout error'));
+  if (!isValidJSON(storage)) {
+    dispatch(logout());
   }
+
+  if (isValidJSON(storage) && JSON.parse(storage as string) === null) {
+    dispatch(logout());
+  }
+
+  if (isValidJSON(storage) && JSON.parse(storage as string) !== null) {
+    const parsed = JSON.parse(storage as string) as UserSession;
+    console.log(parsed);
+    const url = `${VITE_BFF_API_URL}/auth/${parsed.idFromLogin}`;
+
+    try {
+      dispatch(authenticating());
+
+      const response = await deleteFromCora(url, parsed.id);
+      dispatch(logout());
+      dispatch(loadPublicationTypesAsync());
+      dispatch(loadPublicationsAsync());
+    } catch (e: any) {
+      dispatch(logout());
+      dispatch(hasError(e.message));
+    }
+  }
+  dispatch(logout());
 };

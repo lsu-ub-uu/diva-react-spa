@@ -16,18 +16,28 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useEffect } from 'react';
 import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useTranslation } from 'react-i18next';
 import { devAccounts, Account } from './devAccounts';
-import { loginAsync, logoutAsync } from '../../../../features/auth/actions';
-import { logout } from '../../../../features/auth/authSlice';
+import {
+  loginAsync,
+  loginWebRedirectAsync,
+  logoutAsync,
+} from '../../../../features/auth/actions';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import { useBackdrop } from '../../../Backdrop/BackdropContext';
 import { authStateSelector } from '../../../../features/auth/selectors';
-import { loadPublicationsAsync } from '../../../../features/publications';
-import { loadPublicationTypesAsync } from '../../../../features/publicationTypes';
+import {
+  loadLoginUnitsAsync,
+  loginUnitsSelector,
+} from '../../../../features/loginUnits';
+import {
+  convertWebRedirectToUserSession,
+  messageIsFromWindowOpenedFromHere,
+  splitSlashFromUrl,
+} from './utils/utils';
 
 export const Login = (): JSX.Element => {
   const { t } = useTranslation();
@@ -36,6 +46,11 @@ export const Login = (): JSX.Element => {
   const open = Boolean(anchorEl);
   const dispatch = useAppDispatch();
   const authState = useAppSelector(authStateSelector);
+  const loginUnitsState = useAppSelector(loginUnitsSelector);
+
+  useEffect(() => {
+    dispatch(loadLoginUnitsAsync());
+  }, [dispatch]);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -45,7 +60,7 @@ export const Login = (): JSX.Element => {
     setAnchorEl(null);
   };
 
-  const handleSelection = (
+  const handleDevSelection = (
     event: MouseEvent<HTMLElement>,
     account: Account,
   ) => {
@@ -53,6 +68,33 @@ export const Login = (): JSX.Element => {
     setBackdrop(true);
     dispatch(loginAsync(account, () => setBackdrop(false)));
     handleClose();
+  };
+
+  const handleWebRedirectSelection = (
+    event: MouseEvent<HTMLElement>,
+    url: string,
+  ) => {
+    try {
+      window.open('http://localhost:1234');
+      window.addEventListener('message', receiveMessage, false);
+    } catch (e: any) {
+      console.log(e.message());
+    }
+    handleClose();
+  };
+  const receiveMessage = (event: any) => {
+    if (
+      !messageIsFromWindowOpenedFromHere(
+        splitSlashFromUrl(window.location.href),
+        splitSlashFromUrl(event.origin as string),
+      )
+    ) {
+      dispatch(
+        loginWebRedirectAsync(convertWebRedirectToUserSession(event.data), () =>
+          setBackdrop(false),
+        ),
+      );
+    }
   };
 
   const handleLogout = () => {
@@ -68,7 +110,7 @@ export const Login = (): JSX.Element => {
           alignItems='center'
         >
           <Box>
-            {`${authState.userSession.firstName} ${authState.userSession.lastName}`}
+            {authState.userSession.firstName} {authState.userSession.lastName}
           </Box>
           <Avatar
             alt='Logout user'
@@ -94,10 +136,20 @@ export const Login = (): JSX.Element => {
             {devAccounts.map((devAccount, index) => (
               <MenuItem
                 key={`${index}_${devAccount.id}`}
-                onClick={(event) => handleSelection(event, devAccount)}
+                onClick={(event) => handleDevSelection(event, devAccount)}
               >
-                {devAccount.firstName}
                 {devAccount.lastName}
+                {devAccount.firstName}
+              </MenuItem>
+            ))}
+            {loginUnitsState?.loginUnits.map((loginUnit, index) => (
+              <MenuItem
+                key={`${index}_${loginUnit.loginDescription}`}
+                onClick={(event) =>
+                  handleWebRedirectSelection(event, loginUnit.url)
+                }
+              >
+                {t(loginUnit.loginDescription)}
               </MenuItem>
             ))}
           </Menu>
