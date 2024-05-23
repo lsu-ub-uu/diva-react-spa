@@ -40,3 +40,20 @@ export const convertWebRedirectToUserSession = (coraUser: any): UserSession => {
 
   return { id, validForNoSeconds, idFromLogin };
 };
+
+export const convertUserIdToShortForm = (userId: string) => {
+  return userId.split('@')[0];
+};
+
+export const checkTypeOfUser = (user: UserSession) => {
+  if (user.firstName) {
+    return 'appToken';
+  }
+  return 'webRedirect';
+};
+
+export const printUserNameOnPage = (user: UserSession) => {
+  return checkTypeOfUser(user) === 'appToken'
+    ? `${user.firstName} ${user.lastName}`
+    : convertUserIdToShortForm(user.idFromLogin);
+};

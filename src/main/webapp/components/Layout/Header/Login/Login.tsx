@@ -36,10 +36,12 @@ import {
 import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
+  printUserNameOnPage,
   splitSlashFromUrl,
 } from './utils/utils';
 
 export const Login = (): JSX.Element => {
+  const { MODE } = import.meta.env;
   const { t } = useTranslation();
   const { setBackdrop } = useBackdrop();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -75,7 +77,7 @@ export const Login = (): JSX.Element => {
     url: string,
   ) => {
     try {
-      window.open('http://localhost:1234');
+      window.open(MODE === 'development' ? 'http://localhost:1234' : url);
       window.addEventListener('message', receiveMessage, false);
     } catch (e: any) {
       console.log(e.message());
@@ -109,9 +111,7 @@ export const Login = (): JSX.Element => {
           spacing={2}
           alignItems='center'
         >
-          <Box>
-            {authState.userSession.firstName} {authState.userSession.lastName}
-          </Box>
+          <Box>{printUserNameOnPage(authState.userSession)}</Box>
           <Avatar
             alt='Logout user'
             onClick={handleLogout}
