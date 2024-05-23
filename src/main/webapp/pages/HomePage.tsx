@@ -23,8 +23,7 @@ import Alert from '@mui/material/Alert';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 import React from 'react';
-import { CreatePublicationCard, ListPublicationsCard } from '../partials';
-import { AsidePortal } from '../components';
+import { AsidePortal, TabsMenu } from '../components';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -49,16 +48,7 @@ export const HomePage = () => {
           >
             {t('divaClient_metadataWarningText')}
           </Alert>
-
-          {/*          <Button
-            disableRipple
-            variant='contained'
-            endIcon={<ArrowForwardIcon />}
-          >
-            {t('divaClient_continueText')}
-          </Button> */}
-          <CreatePublicationCard />
-          <ListPublicationsCard />
+          <TabsMenu />
         </Stack>
       </div>
     </>

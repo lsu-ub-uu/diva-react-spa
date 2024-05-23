@@ -18,6 +18,7 @@
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { TabsMenu } from '../TabsMenu';
 import { reduxRender } from '../../../utils/testUtils';
 
@@ -26,7 +27,11 @@ import { reduxRender } from '../../../utils/testUtils';
  */
 describe('TabsMenu', () => {
   it('TabsMenu renders', () => {
-    reduxRender(<TabsMenu />);
+    reduxRender(
+      <Router>
+        <TabsMenu />{' '}
+      </Router>,
+    );
 
     const tabs = screen.getAllByRole('tab');
     expect(tabs).toHaveLength(3);
@@ -39,7 +44,11 @@ describe('TabsMenu', () => {
     ]);
   });
   it('Tabs change when clicked', async () => {
-    render(<TabsMenu />);
+    reduxRender(
+      <Router>
+        <TabsMenu />{' '}
+      </Router>,
+    );
     const user = userEvent.setup();
 
     const administrera = screen.getByRole('tab', {

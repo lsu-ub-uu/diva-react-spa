@@ -17,8 +17,13 @@
  */
 
 import React, { useState } from 'react';
-import { Tabs, Tab, Typography, Box, styled } from '@mui/material';
-import { CreatePublicationCard, ListPublicationsCard } from '../../partials';
+import { Tabs, Tab, Box, styled } from '@mui/material';
+import {
+  CreatePublicationCard,
+  ListPublicationsCard,
+  SearchPublicationCard,
+  ImportPublicationCard,
+} from '../../partials';
 
 interface TabsMenuProps {
   children: React.ReactNode;
@@ -36,8 +41,8 @@ const TabPanel = (props: TabsMenuProps) => {
   return (
     <div>
       {props.value === props.index && (
-        <Box sx={{ paddingTop: '20px' }}>
-          <Typography>{props.children}</Typography>
+        <Box sx={{ marginTop: '20px', marginBottom: '50px' }}>
+          <div>{props.children}</div>
         </Box>
       )}
     </div>
@@ -100,12 +105,14 @@ export const TabsMenu = () => {
         index={0}
       >
         <CreatePublicationCard />
+        <SearchPublicationCard />
+        <ImportPublicationCard />
       </TabPanel>
       <TabPanel
         value={value}
         index={1}
       >
-        {/* <ListPublicationsCard /> */}
+        <ListPublicationsCard />
       </TabPanel>
       <TabPanel
         value={value}

@@ -124,6 +124,7 @@ export const Card = (props: CardProps) => {
           overflow: 'visible',
           maxWidth: '100%',
           borderRadius: 0,
+          marginBottom: '30px',
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
@@ -141,7 +142,7 @@ export const Card = (props: CardProps) => {
           }),
           ...(props.variant === 'variant3' && {
             backgroundColor: '#d9eadb',
-            borderBottom: '2px solid #a6c9a4',
+            borderBottom: '2px solid #00700F',
           }),
           ...(props.variant === 'variant4' && {
             backgroundColor: '#ded5e7',
@@ -194,6 +195,13 @@ export const Card = (props: CardProps) => {
           sx={{
             ...(props.variant === 'variant1' && {
               backgroundColor: '#D6E7F333',
+            }),
+
+            ...(props.variant === 'variant2' && {
+              backgroundColor: '#fcf8f8',
+            }),
+            ...(props.variant === 'variant3' && {
+              backgroundColor: '#f6faf7',
             }),
             ...(props.variant === 'variant5' && {
               backgroundColor: '#fff',
