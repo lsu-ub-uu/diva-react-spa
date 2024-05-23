@@ -23,9 +23,9 @@ import {
   convertUserIdToShortForm,
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
+  printUserNameOnPage,
   splitSlashFromUrl,
 } from '../utils';
-import { UserSession } from '../../../../../../features/auth/authSlice';
 
 describe('Login utils', () => {
   it('messageIsFromWindowOpenedFromHere return false on different event url', () => {
@@ -98,5 +98,63 @@ describe('Login utils', () => {
   ])('checkTypeOfUser returns correct type of user', (userSession, type) => {
     const acutal = checkTypeOfUser(userSession);
     expect(acutal).toBe(type);
+  });
+
+  it.each([
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        idFromLogin: 'coraUser:111111111111111',
+        firstName: 'Everything',
+        lastName: 'DiVA',
+      },
+      'Everything DiVA',
+    ],
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        idFromLogin: 'coraUser:111111111111111',
+        lastName: 'Admin',
+        firstName: 'System',
+      },
+      'System Admin',
+    ],
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        idFromLogin: 'coraUser:111111111111111',
+        lastName: 'UU',
+        firstName: 'domainAdmin',
+      },
+      'domainAdmin UU',
+    ],
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        idFromLogin: 'coraUser:111111111111111',
+        lastName: 'KTH',
+        firstName: 'domainAdmin',
+      },
+      'domainAdmin KTH',
+    ],
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idFromLogin: 'johdo290@user.uu.se',
+      },
+      'johdo290',
+    ],
+  ])('printUserNameOnPage', (user, name) => {
+    const actual = printUserNameOnPage(user);
+    expect(actual).toBe(name);
   });
 });

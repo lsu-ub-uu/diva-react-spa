@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { string } from 'yup';
 import { UserSession } from '../../../../../features/auth/authSlice';
 
 export const messageIsFromWindowOpenedFromHere = (
@@ -51,4 +50,10 @@ export const checkTypeOfUser = (user: UserSession) => {
     return 'appToken';
   }
   return 'webRedirect';
+};
+
+export const printUserNameOnPage = (user: UserSession) => {
+  return checkTypeOfUser(user) === 'appToken'
+    ? `${user.firstName} ${user.lastName}`
+    : convertUserIdToShortForm(user.idFromLogin);
 };

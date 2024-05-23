@@ -34,10 +34,9 @@ import {
   loginUnitsSelector,
 } from '../../../../features/loginUnits';
 import {
-  checkTypeOfUser,
-  convertUserIdToShortForm,
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
+  printUserNameOnPage,
   splitSlashFromUrl,
 } from './utils/utils';
 
@@ -112,11 +111,7 @@ export const Login = (): JSX.Element => {
           spacing={2}
           alignItems='center'
         >
-          <Box>
-            {checkTypeOfUser(authState.userSession) === 'appToken'
-              ? `${authState.userSession.firstName} ${authState.userSession.lastName}`
-              : convertUserIdToShortForm(authState.userSession.idFromLogin)}
-          </Box>
+          <Box>{printUserNameOnPage(authState.userSession)}</Box>
           <Avatar
             alt='Logout user'
             onClick={handleLogout}
