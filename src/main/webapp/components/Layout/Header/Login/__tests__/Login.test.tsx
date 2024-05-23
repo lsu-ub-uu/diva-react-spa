@@ -98,7 +98,7 @@ describe('<Login/>', () => {
       });
     });
 
-    describe('webRedirect accounts has a link to Shibboleth', () => {
+    describe('webRedirect accounts has a link to Shibboleth', async () => {
       it.each([
         ['rkhTestDiVALoginUnitText', 'http://localhost:1234/rkh'],
         ['skhTestDiVALoginUnitText', 'http://localhost:1234/skh'],
@@ -107,6 +107,7 @@ describe('<Login/>', () => {
         const unitUrl: string = `/auth/loginUnits`;
         mockAxios.onGet(unitUrl).reply(200, loginUnits);
         const user = userEvent.setup();
+        window.open = vi.fn();
 
         reduxRender(<Login />, {
           preloadedState: {
@@ -175,30 +176,64 @@ describe('<Login/>', () => {
       });
     });
 
-    it('should should show name of chosen user', () => {
-      it('shows the accounts in a list', async () => {
-        const unitUrl: string = `/auth/loginUnits`;
-        mockAxios.onGet(unitUrl).reply(200, loginUnits);
-        const user = userEvent.setup();
-        reduxRender(<Login />, {
-          preloadedState: {
-            loginUnits: {
-              loginUnits,
-              isLoading: false,
-              isError: false,
-              message: '',
-            },
+    it('should should show name of chosen devUser', async () => {
+      const unitUrl: string = `/auth/loginUnits`;
+      mockAxios.onGet(unitUrl).reply(200, loginUnits);
+      const user = userEvent.setup();
+      reduxRender(<Login />, {
+        preloadedState: {
+          loginUnits: {
+            loginUnits,
+            isLoading: false,
+            isError: false,
+            message: '',
           },
-        });
+        },
+      });
 
-        const loginButton = screen.getByRole('button', {
-          name: 'divaClient_LoginText',
-        });
-        await user.click(loginButton);
+      const loginButton = screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      });
+      await user.click(loginButton);
+      const divaUser = screen.getByText('DiVAUser');
+      await user.click(divaUser);
 
-        const divaUser = screen.getByText('DiVAUser');
-        await user.click(divaUser);
-        const logedInUser = screen.getByText('DiVA User');
+      const logedInUser = screen.findByText('DiVA User');
+      waitFor(() => {
+        expect(logedInUser).toBeInTheDocument();
+      });
+    });
+
+    it('should should show name of chosen webRedirectUser', async () => {
+      const unitUrl: string = `/auth/loginUnits`;
+      mockAxios.onGet(unitUrl).reply(200, loginUnits);
+      const user = userEvent.setup();
+      window.open = vi.fn();
+
+      reduxRender(<Login />, {
+        preloadedState: {
+          loginUnits: {
+            loginUnits,
+            isLoading: false,
+            isError: false,
+            message: '',
+          },
+        },
+      });
+
+      const loginButton = screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      });
+      await user.click(loginButton);
+
+      const shibbolethUrl = screen.queryByText(
+        'rkhTestDiVALoginUnitText',
+      ) as HTMLElement;
+
+      await user.click(shibbolethUrl);
+
+      const logedInUser = screen.findByText('johdo290');
+      waitFor(() => {
         expect(logedInUser).toBeInTheDocument();
       });
     });

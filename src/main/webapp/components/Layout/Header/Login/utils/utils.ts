@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { string } from 'yup';
 import { UserSession } from '../../../../../features/auth/authSlice';
 
 export const messageIsFromWindowOpenedFromHere = (
@@ -39,4 +40,15 @@ export const convertWebRedirectToUserSession = (coraUser: any): UserSession => {
   const { validForNoSeconds, idFromLogin } = coraUser;
 
   return { id, validForNoSeconds, idFromLogin };
+};
+
+export const convertUserIdToShortForm = (userId: string) => {
+  return userId.split('@')[0];
+};
+
+export const checkTypeOfUser = (user: UserSession) => {
+  if (user.firstName) {
+    return 'appToken';
+  }
+  return 'webRedirect';
 };

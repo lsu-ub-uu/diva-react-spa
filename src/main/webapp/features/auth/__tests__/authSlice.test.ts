@@ -33,7 +33,7 @@ afterEach(() => {
   localStorage.clear();
 });
 describe('authSlice', () => {
-  it('writeState writes to localStorage', () => {
+  it('writeState writes to localStorage for authToken', () => {
     const userSession: UserSession = {
       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
@@ -43,6 +43,23 @@ describe('authSlice', () => {
       lastName: 'DiVA',
     };
 
+    expect.assertions(2);
+
+    writeState(userSession);
+    expect(setItemSpy).toHaveBeenCalledWith(
+      'diva_session',
+      JSON.stringify(userSession),
+    );
+    const getLocalStorage = localStorage.getItem('diva_session');
+    expect(getLocalStorage).toEqual(JSON.stringify(userSession));
+  });
+
+  it('writeState writes to localStorage for webRedirect', () => {
+    const userSession: UserSession = {
+      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      validForNoSeconds: '600',
+      idFromLogin: 'johdo290@user.uu.se',
+    };
     expect.assertions(2);
 
     writeState(userSession);

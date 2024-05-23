@@ -19,10 +19,13 @@
 
 import { expect } from 'vitest';
 import {
+  checkTypeOfUser,
+  convertUserIdToShortForm,
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   splitSlashFromUrl,
 } from '../utils';
+import { UserSession } from '../../../../../../features/auth/authSlice';
 
 describe('Login utils', () => {
   it('messageIsFromWindowOpenedFromHere return false on different event url', () => {
@@ -41,6 +44,7 @@ describe('Login utils', () => {
     const actual = splitSlashFromUrl('http://localhost:5173');
     expect(actual).toBe('http://localhost:5173');
   });
+
   it('convertWebRedirectToUserSession converts to UserSession', () => {
     const actual = convertWebRedirectToUserSession({
       userId: 'johdo290@user.uu.se',
@@ -60,5 +64,39 @@ describe('Login utils', () => {
       validForNoSeconds: '600',
       idFromLogin: 'johdo290@user.uu.se',
     });
+  });
+
+  it.each([
+    ['johdo290@user.uu.se', 'johdo290'],
+    ['joh.do@user.uu.se', 'joh.do'],
+    ['joh+do@user.uu.se', 'joh+do'],
+  ])('convertUserIdToShortForm converts %s to %s', (email, result) => {
+    const actual = convertUserIdToShortForm(email);
+    expect(actual).toBe(result);
+  });
+
+  it.each([
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idFromLogin: 'johdo290@user.uu.se',
+      },
+      'webRedirect',
+    ],
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        idFromLogin: 'coraUser:111111111111111',
+        firstName: 'Everything',
+        lastName: 'DiVA',
+      },
+      'appToken',
+    ],
+  ])('checkTypeOfUser returns correct type of user', (userSession, type) => {
+    const acutal = checkTypeOfUser(userSession);
+    expect(acutal).toBe(type);
   });
 });
