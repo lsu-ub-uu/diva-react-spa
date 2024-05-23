@@ -19,13 +19,14 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TabsMenu } from '../TabsMenu';
+import { reduxRender } from '../../../utils/testUtils';
 
 /**
  * @vitest-environment jsdom
  */
 describe('TabsMenu', () => {
   it('TabsMenu renders', () => {
-    render(<TabsMenu />);
+    reduxRender(<TabsMenu />);
 
     const tabs = screen.getAllByRole('tab');
     expect(tabs).toHaveLength(3);

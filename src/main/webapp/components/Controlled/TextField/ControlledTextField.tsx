@@ -19,7 +19,7 @@
 import { FormControl, FormLabel, IconButton, TextField } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import ErrorIcon from '@mui/icons-material/Error';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
 import { Tooltip } from '../..';
 
@@ -78,7 +78,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                     disableRipple
                     color='default'
                   >
-                    <HelpOutlineIcon />
+                    <InfoIcon />
                   </IconButton>
                 </Tooltip>
               )}
