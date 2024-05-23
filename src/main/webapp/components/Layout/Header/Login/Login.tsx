@@ -68,6 +68,7 @@ export const Login = (): JSX.Element => {
           direction='row'
           spacing={2}
           alignItems='center'
+          style={{ marginTop: '-4px' }}
         >
           <Box>
             {`${authState.userSession.firstName} ${authState.userSession.lastName}`}

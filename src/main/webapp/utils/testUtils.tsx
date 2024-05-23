@@ -29,6 +29,7 @@ import publicationTypeReducer from '../features/publicationTypes/publicationType
 // import subjectCategoryReducer from '../features/subjectCategory/subjectCategorySlice';
 // import researchSubjectReducer from '../features/researchSubject/researchSubjectSlice';
 import authReducer from '../features/auth/authSlice';
+import publicationsReducer from '../features/publications/publicationsSlice';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;
@@ -44,6 +45,7 @@ const renderWithReduxProvider = (
     preloadedState = {},
     store = configureStore({
       reducer: {
+        publications: publicationsReducer,
         auth: authReducer,
         publicationType: publicationTypeReducer,
         // subjectCategory: subjectCategoryReducer,
