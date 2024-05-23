@@ -17,14 +17,21 @@
  */
 
 import axios from 'axios';
-// import { AppThunk } from 'app/store';
 import { AppThunk } from '../../app/store';
-import { authenticated, authenticating, hasError } from './authSlice';
+import {
+  authenticated,
+  authenticating,
+  hasError,
+  logout,
+  UserSession,
+} from './authSlice';
 import { Account } from '../../components/Layout/Header/Login/devAccounts';
 import { loadPublicationTypesAsync } from '../publicationTypes';
 import { loadPublicationsAsync } from '../publications';
+import { deleteFromCora } from './utils/deleteFromCora';
 
-export const dummyLoginAsync =
+const { VITE_BFF_API_URL } = import.meta.env;
+export const loginAsync =
   (account: Account, callback?: Function): AppThunk =>
   async (dispatch) => {
     try {
@@ -47,3 +54,23 @@ export const dummyLoginAsync =
       if (callback) callback();
     }
   };
+
+export const logoutAsync = (): AppThunk => async (dispatch) => {
+  const userSession: UserSession = JSON.parse(
+    localStorage.getItem('diva_session') as string,
+  );
+
+  const url = `${VITE_BFF_API_URL}/auth/${userSession.idFromLogin}`;
+  console.log('aaaaa', url);
+  try {
+    dispatch(authenticating());
+
+    const response = await deleteFromCora(url, userSession.id);
+
+    dispatch(logout(response.data.authToken));
+    dispatch(loadPublicationTypesAsync());
+    dispatch(loadPublicationsAsync());
+  } catch (e) {
+    dispatch(hasError('logout error'));
+  }
+};

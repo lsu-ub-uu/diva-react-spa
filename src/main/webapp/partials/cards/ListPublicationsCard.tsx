@@ -56,22 +56,22 @@ export const ListPublicationsCard = () => {
   const columns: GridColDef[] = [
     {
       field: 'id',
-      headerName: `${t('divaClient_listPublicationsHeaderNameIdText')}`, // ID
+      headerName: `${t('divaClient_listPublicationsHeaderIdText')}`, // ID
       width: 230,
     },
     {
       field: 'validationType',
-      headerName: `${t('divaClient_listPublicationsHeaderNameTypeText')}`, // Type
+      headerName: `${t('divaClient_listPublicationsHeaderTypeText')}`, // Type
       width: 120,
     },
     {
       field: 'title',
-      headerName: `${t('divaClient_listPublicationsHeaderNameTitleText')}`, // Title
+      headerName: `${t('divaClient_listPublicationsHeaderTitleText')}`, // Title
       width: 200,
     },
     {
       field: 'createdAt',
-      headerName: `${t('divaClient_listPublicationsHeaderNameCreatedText')}`, // Created,
+      headerName: `${t('divaClient_listPublicationsHeaderCreatedText')}`, // Created,
       sortable: true,
       width: 160,
       valueGetter: (params: GridValueGetterParams) =>
@@ -79,13 +79,13 @@ export const ListPublicationsCard = () => {
     },
     {
       field: 'action',
-      headerName: `${t('divaClient_listPublicationsHeaderNameActionsText')}`, // Actions
+      headerName: `${t('divaClient_listPublicationsHeaderActionsText')}`, // Actions
       width: 140,
       sortable: false,
       filterable: false,
       renderCell: (params) => (
         <Stack direction='row'>
-          <Tooltip title={t('divaClient_updateEntityText')}>
+          <Tooltip title={t('divaClient_updatePublicationText')}>
             <span>
               <IconButton
                 disabled={!params.row.userRights.includes('update')}
@@ -97,7 +97,7 @@ export const ListPublicationsCard = () => {
               </IconButton>
             </span>
           </Tooltip>
-          <Tooltip title={t('divaClient_readEntityText')}>
+          <Tooltip title={t('divaClient_readPublicationText')}>
             <span>
               <IconButton
                 disabled={!params.row.userRights.includes('read')}
@@ -109,7 +109,7 @@ export const ListPublicationsCard = () => {
               </IconButton>
             </span>
           </Tooltip>
-          <Tooltip title={t('divaClient_deleteEntityText')}>
+          <Tooltip title={t('divaClient_deletePublicationText')}>
             <span>
               <IconButton
                 disabled={!params.row.userRights.includes('delete')}
