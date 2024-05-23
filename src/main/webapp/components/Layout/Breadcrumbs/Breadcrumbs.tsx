@@ -72,7 +72,7 @@ export const Breadcrumbs = () => {
           color='inherit'
           fontSize='inherit'
         />
-        {t('start')}
+        {t('divaClient_breadcrumbStartText')}
       </Link>
       {crumbs}
     </MuiBreadcrumbs>

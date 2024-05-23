@@ -18,7 +18,9 @@
  */
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { deleteFromCora } from '../deleteFromCora';
+import { deleteFromCora, isValidJSON } from '../utils';
+import { isComponentSingularAndOptional } from '../../../../components/FormGenerator/utils/helper';
+import { FormComponent } from '../../../../components/FormGenerator/types';
 
 describe('actions', () => {
   let mockAxios: MockAdapter;
@@ -31,7 +33,7 @@ describe('actions', () => {
     mockAxios.restore();
   });
 
-  it('deleteFromCora sends request to DELETE authtoken from Cora', async () => {
+  it('utils sends request to DELETE authtoken from Cora', async () => {
     const userSession = {
       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
@@ -54,7 +56,7 @@ describe('actions', () => {
     expect(response.status).toEqual(expectedResponse.status);
   });
 
-  it('deleteFromCora returns 500 on failed DELETE authtoken from Cora', async () => {
+  it('utils returns 500 on failed DELETE authtoken from Cora', async () => {
     const userSession = {
       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
@@ -76,5 +78,20 @@ describe('actions', () => {
         expect(castError.response?.status).toBe(500);
       }
     }
+  });
+});
+
+describe('isValidJSON', () => {
+  it.each([
+    ['{"name":"Adam","age":20}', true],
+    ['{"name":"Adam",age:"20"}', false],
+    ['{"name":"Adam","age":20}', true],
+    ['{}', true],
+    ['undefined', false],
+    ['null', true],
+    [null, true],
+  ])('check if %s is valid JSON', (string, boolean) => {
+    const expected = isValidJSON(string);
+    expect(expected).toStrictEqual(boolean);
   });
 });

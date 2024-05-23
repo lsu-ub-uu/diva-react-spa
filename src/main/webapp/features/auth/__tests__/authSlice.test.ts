@@ -17,7 +17,12 @@
  */
 
 import { vi } from 'vitest';
-import { writeState, deleteState, createInitialState } from '../authSlice';
+import {
+  writeState,
+  deleteState,
+  createInitialState,
+  UserSession,
+} from '../authSlice';
 
 /**
  * @vitest-environment jsdom
@@ -28,8 +33,8 @@ afterEach(() => {
   localStorage.clear();
 });
 describe('authSlice', () => {
-  it('writeState writes to localStorage', () => {
-    const userSession = {
+  it('writeState writes to localStorage for authToken', () => {
+    const userSession: UserSession = {
       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
       idInUserStorage: 'coraUser:111111111111111',
@@ -48,8 +53,26 @@ describe('authSlice', () => {
     const getLocalStorage = localStorage.getItem('diva_session');
     expect(getLocalStorage).toEqual(JSON.stringify(userSession));
   });
+
+  it('writeState writes to localStorage for webRedirect', () => {
+    const userSession: UserSession = {
+      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      validForNoSeconds: '600',
+      idFromLogin: 'johdo290@user.uu.se',
+    };
+    expect.assertions(2);
+
+    writeState(userSession);
+    expect(setItemSpy).toHaveBeenCalledWith(
+      'diva_session',
+      JSON.stringify(userSession),
+    );
+    const getLocalStorage = localStorage.getItem('diva_session');
+    expect(getLocalStorage).toEqual(JSON.stringify(userSession));
+  });
+
   it('deleteState deletes to localStorage', () => {
-    const userSession = {
+    const userSession: UserSession = {
       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
       idInUserStorage: 'coraUser:111111111111111',
@@ -63,8 +86,9 @@ describe('authSlice', () => {
     const getLocalStorage = localStorage.getItem('diva_session');
     expect(getLocalStorage).toStrictEqual(null);
   });
-  it('createInitialState creates state with name from localStorage', () => {
-    const userSession = {
+
+  it('createInitialState creates state with name from localStorage for authToken', () => {
+    const userSession: UserSession = {
       id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
       idInUserStorage: 'coraUser:111111111111111',
@@ -77,7 +101,35 @@ describe('authSlice', () => {
 
     expect(createInitialState()).toStrictEqual(userSession);
   });
-  it('createInitialState returns null from localStorage', () => {
-    expect(createInitialState()).toStrictEqual(null);
+
+  it('createInitialState creates state with name from localStorage for webRedirect', () => {
+    const userSession: UserSession = {
+      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      validForNoSeconds: '600',
+      idFromLogin: 'coraUser:111111111111111',
+    };
+
+    localStorage.setItem('diva_session', JSON.stringify(userSession));
+
+    expect(createInitialState()).toStrictEqual(userSession);
+  });
+  describe('createInitialState', () => {
+    it('createInitialState returns null from localStorage from undefined', () => {
+      // @ts-ignore
+      localStorage.setItem('diva_session', undefined);
+      expect(createInitialState()).toStrictEqual(null);
+    });
+
+    it('createInitialState returns null from localStorage from null', () => {
+      // @ts-ignore
+      localStorage.setItem('diva_session', null);
+      expect(createInitialState()).toStrictEqual(null);
+    });
+
+    it('createInitialState returns null from localStorage from {}', () => {
+      // @ts-ignore
+      localStorage.setItem('diva_session', {});
+      expect(createInitialState()).toStrictEqual(null);
+    });
   });
 });

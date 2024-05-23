@@ -17,13 +17,17 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios from 'axios';
+import { vi } from 'vitest';
 
-export const deleteFromCora = async (url: string, authToken: string) => {
-  const headers = {
-    'Content-Type': 'text/plain;charset=UTF-8',
-  };
+vi.spyOn(Storage.prototype, 'setItem');
+vi.spyOn(Storage.prototype, 'getItem');
+Storage.prototype.setItem = vi.fn();
+Storage.prototype.getItem = vi.fn();
 
-  const response = await axios.delete(url, { headers, data: authToken });
-  return response;
-};
+afterEach(() => {
+  localStorage.clear();
+});
+
+describe('auth actions', () => {
+  it.todo('loginAsync', () => {});
+});
