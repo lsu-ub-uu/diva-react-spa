@@ -21,8 +21,6 @@ import { Tabs, Tab, Box, styled } from '@mui/material';
 import {
   CreatePublicationCard,
   ListPublicationsCard,
-  SearchPublicationCard,
-  ImportPublicationCard,
 } from '../../partials';
 
 interface TabsMenuProps {

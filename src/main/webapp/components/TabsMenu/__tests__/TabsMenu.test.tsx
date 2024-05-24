@@ -16,9 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import MockAdapter from 'axios-mock-adapter';
+import axios from 'axios';
 import { TabsMenu } from '../TabsMenu';
 import { reduxRender } from '../../../utils/testUtils';
 
@@ -26,22 +28,53 @@ import { reduxRender } from '../../../utils/testUtils';
  * @vitest-environment jsdom
  */
 describe('TabsMenu', () => {
-  it('TabsMenu renders', () => {
+  let mockAxios: MockAdapter;
+
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios);
+    const divaOutputs = [
+      {
+        id: 'divaOutput:2063456157227510',
+        recordType: 'divaOutput',
+        validationType: 'preprint',
+        createdAt: '2024-05-24T08:24:54.549460Z',
+        createdBy: '161616',
+        updated: [
+          { updateAt: '2024-05-24T08:24:54.549460Z', updatedBy: '161616' },
+        ],
+        userRights: ['read'],
+        data: {
+          divaOutput: {
+            domain: { value: 'fhs' },
+            outputType: { outputType: { value: 'artisticOutput' } },
+            title: { mainTitle: { value: 'asdasd' }, _language: 'ace' },
+          },
+        },
+      },
+    ];
+    mockAxios.onGet('/divaOutputs').reply(200, divaOutputs);
+  });
+
+  afterEach(() => {
+    mockAxios.restore();
+  });
+  it('TabsMenu renders', async () => {
     reduxRender(
       <MemoryRouter>
         <TabsMenu />
       </MemoryRouter>,
     );
+    waitFor(async () => {
+      const tabs = await screen.findAllByRole('tab');
+      expect(tabs).toHaveLength(3);
 
-    const tabs = screen.getAllByRole('tab');
-    expect(tabs).toHaveLength(3);
-
-    const tabsTexts = tabs.map((element) => element.id);
-    expect(tabsTexts).toEqual([
-      'Registrera & hantera',
-      'Administrera',
-      'Mina publikationer & projekt',
-    ]);
+      const tabsTexts = tabs.map((element) => element.id);
+      expect(tabsTexts).toEqual([
+        'Registrera & hantera',
+        'Administrera',
+        'Mina publikationer & projekt',
+      ]);
+    });
   });
   it('Tabs change when clicked', async () => {
     reduxRender(

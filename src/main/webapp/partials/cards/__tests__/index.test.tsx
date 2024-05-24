@@ -16,10 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { screen } from '@testing-library/react';
-import { vi } from 'vitest';
+import { screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import MockAdapter from 'axios-mock-adapter';
+import axios from 'axios';
 import { CreatePublicationCard } from '../CreatePublicationCard';
 import { reduxRender } from '../../../utils/testUtils';
 import { ListPublicationsCard } from '../ListPublicationsCard';
@@ -28,28 +29,62 @@ import { ListPublicationsCard } from '../ListPublicationsCard';
  * @vitest-environment jsdom
  */
 
-const setItemSpy = vi.spyOn(Storage.prototype, 'getItem');
+const divaOutputs = [
+  {
+    id: 'divaOutput:2063456157227510',
+    recordType: 'divaOutput',
+    validationType: 'preprint',
+    createdAt: '2024-05-24T08:24:54.549460Z',
+    createdBy: '161616',
+    updated: [{ updateAt: '2024-05-24T08:24:54.549460Z', updatedBy: '161616' }],
+    userRights: ['read'],
+    data: {
+      divaOutput: {
+        domain: { value: 'fhs' },
+        outputType: { outputType: { value: 'artisticOutput' } },
+        title: { mainTitle: { value: 'asdasd' }, _language: 'ace' },
+      },
+    },
+  },
+];
+
+const validationTypes = [
+  { value: 'thesisManuscript', label: 'thesisManuscriptText' },
+  { value: 'preprint', label: 'preprintText' },
+  { value: 'divaOutput', label: 'divaOutputText' },
+];
+
+let mockAxios: MockAdapter;
+
+beforeEach(() => {
+  mockAxios = new MockAdapter(axios);
+
+  mockAxios.onGet('/divaOutputs').reply(200, divaOutputs);
+  mockAxios.onGet('/validationTypes').reply(200, validationTypes);
+});
 
 afterEach(() => {
+  mockAxios.restore();
   localStorage.clear();
 });
 
 describe('CreatePublicationCard', () => {
-  it('renders CreatePublicationCard', () => {
+  it('renders CreatePublicationCard', async () => {
     reduxRender(
       <MemoryRouter initialEntries={['/']}>
         <CreatePublicationCard />
       </MemoryRouter>,
     );
-    const administreraText = screen.getByText(
-      'divaClient_createPublicationTypeText',
-      { exact: false },
-    );
-    screen.debug()
-    expect(administreraText).toBeInTheDocument();
+    waitFor(async () => {
+      const administreraText = await screen.findByText(
+        'divaClient_createPublicationTypeText',
+        { exact: false },
+      );
+      expect(administreraText).toBeInTheDocument();
+    });
   });
 
-  it('renders ListPublicationsCard', () => {
+  it('renders ListPublicationsCard', async () => {
     reduxRender(
       <MemoryRouter initialEntries={['/']}>
         <ListPublicationsCard />
@@ -74,10 +109,13 @@ describe('CreatePublicationCard', () => {
         },
       },
     );
-    const administreraText = screen.getByText(
-      'divaClient_listPublicationsText',
-      { exact: false },
-    );
-    expect(administreraText).toBeInTheDocument();
+
+    waitFor(async () => {
+      const administreraText = await screen.findByText(
+        'divaClient_listPublicationsText',
+        { exact: false },
+      );
+      expect(administreraText).toBeInTheDocument();
+    });
   });
 });
