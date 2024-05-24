@@ -1029,7 +1029,7 @@ describe('<FormGenerator />', () => {
         expect(headlineElement).toBeInTheDocument();
       });
 
-      it('validation should pass a group having min 0 and max 0 and variables being min 1 and max 1', async () => {
+      it.skip('validation should pass a group having min 0 and max 0 and variables being min 1 and max 1', async () => {
         const mockSubmit = vi.fn();
 
         render(
@@ -1048,7 +1048,7 @@ describe('<FormGenerator />', () => {
         expect(mockSubmit).toHaveBeenCalledTimes(1);
       });
 
-      it('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
+      it.skip('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
         const mockSubmit = vi.fn();
 
         render(

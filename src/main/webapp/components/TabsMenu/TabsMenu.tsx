@@ -105,8 +105,6 @@ export const TabsMenu = () => {
         index={0}
       >
         <CreatePublicationCard />
-        <SearchPublicationCard />
-        <ImportPublicationCard />
       </TabPanel>
       <TabPanel
         value={value}
