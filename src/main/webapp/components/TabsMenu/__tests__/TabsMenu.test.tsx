@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter as Router } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { TabsMenu } from '../TabsMenu';
 import { reduxRender } from '../../../utils/testUtils';
 
@@ -28,9 +28,9 @@ import { reduxRender } from '../../../utils/testUtils';
 describe('TabsMenu', () => {
   it('TabsMenu renders', () => {
     reduxRender(
-      <Router>
-        <TabsMenu />{' '}
-      </Router>,
+      <MemoryRouter>
+        <TabsMenu />
+      </MemoryRouter>,
     );
 
     const tabs = screen.getAllByRole('tab');
@@ -45,9 +45,9 @@ describe('TabsMenu', () => {
   });
   it('Tabs change when clicked', async () => {
     reduxRender(
-      <Router>
-        <TabsMenu />{' '}
-      </Router>,
+      <MemoryRouter>
+        <TabsMenu />
+      </MemoryRouter>,
     );
     const user = userEvent.setup();
 
@@ -60,7 +60,11 @@ describe('TabsMenu', () => {
     expect(administreraText).toHaveTextContent('Administrera');
   });
   it('Tabs change when clicked and then back when clicked again', async () => {
-    render(<TabsMenu />);
+    reduxRender(
+      <MemoryRouter>
+        <TabsMenu />
+      </MemoryRouter>,
+    );
     const user = userEvent.setup();
 
     const registrera = screen.getByRole('tab', {

@@ -42,7 +42,7 @@ const TabPanel = (props: TabsMenuProps) => {
     <div>
       {props.value === props.index && (
         <Box sx={{ marginTop: '20px', marginBottom: '50px' }}>
-          <div>{props.children}</div>
+          {props.children}
         </Box>
       )}
     </div>
