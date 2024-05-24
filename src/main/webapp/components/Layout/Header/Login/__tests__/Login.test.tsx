@@ -197,8 +197,8 @@ describe('<Login/>', () => {
       const divaUser = screen.getByText('DiVAUser');
       await user.click(divaUser);
 
-      const logedInUser = screen.findByText('DiVA User');
-      waitFor(() => {
+      waitFor(async () => {
+        const logedInUser = await screen.findByText('DiVA User');
         expect(logedInUser).toBeInTheDocument();
       });
     });
@@ -231,8 +231,8 @@ describe('<Login/>', () => {
 
       await user.click(shibbolethUrl);
 
-      const logedInUser = screen.findByText('johdo290');
-      waitFor(() => {
+      waitFor(async () => {
+        const logedInUser = await screen.findByText('johdo290');
         expect(logedInUser).toBeInTheDocument();
       });
     });
