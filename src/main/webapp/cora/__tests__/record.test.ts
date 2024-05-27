@@ -30,6 +30,8 @@ import { DataGroup, DataListWrapper, RecordWrapper } from '../../utils/cora-data
 import { transformCoraTexts } from '../../config/transformTexts';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
   BFFMetadata,
   BFFPresentation,
   BFFPresentationGroup,
@@ -369,7 +371,9 @@ describe.skip('real', () => {
         metadataPool: listToPool<BFFMetadata>([]),
         presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
         recordTypePool: listToPool<BFFRecordType>([]),
-        searchPool: listToPool<BFFSearch>([])
+        searchPool: listToPool<BFFSearch>([]),
+        loginUnitPool: listToPool<BFFLoginUnit>([]),
+        loginPool: listToPool<BFFLoginWebRedirect>([])
       };
       const defs = createTextDefinition(dependencies, 'en');
       expect(Object.keys(defs).length).toBe(6030);

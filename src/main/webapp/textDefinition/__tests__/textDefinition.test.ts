@@ -19,6 +19,8 @@
 
 import { Dependencies } from '../../formDefinition/formDefinitionsDep';
 import {
+  BFFLoginUnit,
+  BFFLoginWebRedirect,
   BFFMetadata,
   BFFPresentation,
   BFFPresentationGroup,
@@ -45,7 +47,9 @@ describe('textDefinition', () => {
       metadataPool: listToPool<BFFMetadata>([]),
       presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
       recordTypePool: listToPool<BFFRecordType>([]),
-      searchPool: listToPool<BFFSearch>([])
+      searchPool: listToPool<BFFSearch>([]),
+      loginUnitPool: listToPool<BFFLoginUnit>([]),
+      loginPool: listToPool<BFFLoginWebRedirect>([])
     };
   });
 

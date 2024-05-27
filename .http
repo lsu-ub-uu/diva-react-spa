@@ -6,7 +6,7 @@ GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/refreshDefinitions
 ###
 GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/validationTypes
 Content-Type: application/json
-Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
+Authtoken: fcec95d6-f57c-478b-9152-0db9ecf58530
 
 ###
 POST https://cora.epc.ub.uu.se/diva/spaclientbff/api/auth/coraUser:490742519075086
@@ -46,6 +46,9 @@ GET http://localhost:8080/api/translations/sv
 
 ###
 GET http://localhost:8080/api/auth/loginUnits
+
+###
+GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/auth/loginUnits
 
 ###
 GET http://localhost:8080/api/validationTypes

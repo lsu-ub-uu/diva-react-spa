@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import { listToPool } from '../../utils/structs/listToPool';
 import {
   BFFGuiElement,
@@ -38,7 +37,9 @@ import {
   BFFPresentationRecordLink,
   BFFLinkedRecordPresentation,
   BFFMetadataRecordLink,
-  BFFSearch
+  BFFSearch,
+  BFFLoginUnit,
+  BFFLoginWebRedirect
 } from '../../config/bffTypes';
 import { Lookup } from '../../utils/structs/lookup';
 import {
@@ -131,6 +132,8 @@ describe('formDefinition', () => {
   let recordTypePool: Lookup<string, BFFRecordType>;
   let textPool: Lookup<string, BFFText>;
   let searchPool: Lookup<string, BFFSearch>;
+  let loginUnitPool: Lookup<string, BFFLoginUnit>;
+  let loginPool: Lookup<string, BFFLoginWebRedirect>;
   const FORM_MODE_NEW = 'create';
   const FORM_MODE_EDIT = 'update';
   const FORM_MODE_VIEW = 'view'; // used to present the record
@@ -219,6 +222,8 @@ describe('formDefinition', () => {
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
     searchPool = listToPool<BFFSearch>([]);
+    loginUnitPool = listToPool<BFFLoginUnit>([]);
+    loginPool = listToPool<BFFLoginWebRedirect>([]);
 
     dependencies = {
       validationTypePool,
@@ -226,7 +231,9 @@ describe('formDefinition', () => {
       presentationPool,
       recordTypePool,
       textPool,
-      searchPool
+      searchPool,
+      loginPool,
+      loginUnitPool
     };
 
     createRecordType('testRecordType');

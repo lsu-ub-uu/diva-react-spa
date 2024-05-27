@@ -214,7 +214,7 @@ const transformMetadataGroup = (dataRecordGroup: DataGroup, metadata: BFFMetadat
   }) as BFFMetadataGroup;
 };
 
-const extractAttributesReferences = (dataRecordGroup: DataGroup) => {
+export const extractAttributesReferences = (dataRecordGroup: DataGroup) => {
   if (containsChildWithNameInData(dataRecordGroup, 'attributeReferences')) {
     const attributesReferencesGroup = getFirstDataGroupWithNameInData(
       dataRecordGroup,

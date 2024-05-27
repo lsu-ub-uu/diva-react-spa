@@ -194,3 +194,22 @@ export interface BFFValidationType extends BFFBase {
   nameTextId: string;
   defTextId: string;
 }
+
+export interface BFFLoginUnit extends BFFBase {
+  login: string;
+  loginDescription: string;
+}
+
+export interface BFFLogin extends BFFBase {
+  type: string;
+}
+
+export interface BFFLoginWebRedirect extends BFFLogin {
+  loginName: string;
+  url: string;
+}
+export interface BFFLoginPassword extends BFFLogin {
+  metadata: string;
+  presentation: string;
+  url: string;
+}

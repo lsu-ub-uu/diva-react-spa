@@ -4,6 +4,8 @@ import { deleteAuthTokenFromCora, requestAuthTokenOnLogin } from '../cora/auth';
 import { errorHandler } from '../server';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
+import { createLoginDefinition } from '../loginDefinition/loginDefinition';
+import { dependencies } from '../config/configureServer';
 
 /**
  * @desc Post appToken to get authToken
@@ -48,37 +50,8 @@ export const deleteAuthTokenOnLogout = async (req: Request, res: Response) => {
  */
 export const getAllLoginUnits = async (req: Request, res: Response) => {
   try {
-    // const authToken = req.header('authToken') ?? '';
-    const searchQuery: DataGroup = {
-      name: 'validationTypeSearch',
-      children: [
-        {
-          name: 'include',
-          children: [
-            {
-              name: 'includePart',
-              children: [
-                {
-                  name: 'validatesRecordTypeSearchTerm',
-                  value: 'recordType_divaOutput'
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    };
-
-    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
-      'validationTypeSearch',
-      searchQuery
-    );
-    // const validationTypes = transformCoraValidationTypes(response.data);
-    // const optionList = validationTypes.map((validationType) => ({
-    //   value: validationType.id,
-    //   label: validationType.nameTextId
-    // }));
-    res.status(200).json('optionList');
+    const loginList = createLoginDefinition(dependencies);
+    res.status(200).json(loginList);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
