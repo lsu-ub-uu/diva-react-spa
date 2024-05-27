@@ -32,6 +32,7 @@ interface ActionButtonGroupProps {
   moveDownButtonAction: () => void;
   deleteButtonDisabled: boolean;
   deleteButtonAction: () => void;
+  entityType?: string;
 }
 
 export const ActionButtonGroup = (
@@ -39,6 +40,13 @@ export const ActionButtonGroup = (
 ): JSX.Element => {
   const { t } = useTranslation();
 
+  console.log(
+    props.entityName,
+    isComponentGroupAndSingular(
+      props.entityType as string,
+      props.hideMoveButtons,
+    ),
+  );
   return (
     <ButtonGroup
       size='small'
@@ -125,4 +133,11 @@ export const ActionButtonGroup = (
       )}
     </ButtonGroup>
   );
+};
+
+const isComponentGroupAndSingular = (
+  entityType: string,
+  hideMoveButtons: boolean,
+) => {
+  return entityType === 'group' && hideMoveButtons;
 };
