@@ -22,6 +22,7 @@ import {
   deleteState,
   createInitialState,
   UserSession,
+  checkIfDataShouldBeSaved,
 } from '../authSlice';
 
 /**
@@ -69,6 +70,15 @@ describe('authSlice', () => {
     );
     const getLocalStorage = localStorage.getItem('diva_session');
     expect(getLocalStorage).toEqual(JSON.stringify(userSession));
+  });
+
+  it('writeState does not write to localStorage with broken JSON', () => {
+    const userSession = {};
+
+    // @ts-ignore
+    writeState(userSession);
+    const getLocalStorage = localStorage.getItem('diva_session');
+    expect(getLocalStorage).toEqual(null);
   });
 
   it('deleteState deletes to localStorage', () => {
@@ -131,5 +141,31 @@ describe('authSlice', () => {
       localStorage.setItem('diva_session', {});
       expect(createInitialState()).toStrictEqual(null);
     });
+  });
+  it.each([
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        idFromLogin: 'coraUser:111111111111111',
+        firstName: 'Everything',
+        lastName: 'DiVA',
+      },
+      true,
+    ],
+    [
+      {
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idFromLogin: 'johdo290@user.uu.se',
+      },
+      true,
+    ],
+    [{}, false],
+    [null, false],
+  ])('checkIfDataWillBeSaved returns bool for object', (object, boolean) => {
+    const actual = checkIfDataShouldBeSaved(object);
+    expect(actual).toBe(boolean);
   });
 });

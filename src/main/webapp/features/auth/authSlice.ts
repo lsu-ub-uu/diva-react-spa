@@ -39,8 +39,22 @@ export interface AuthState {
   userSession: UserSession | null;
 }
 
+export const checkIfDataShouldBeSaved = (
+  userSession: UserSession | {} | null,
+) => {
+  if (
+    JSON.stringify(userSession) === '{}' ||
+    JSON.stringify(userSession) === 'null'
+  ) {
+    return false;
+  }
+  return isValidJSON(JSON.stringify(userSession));
+};
+
 export const writeState = (userSession: UserSession) => {
-  localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(userSession));
+  if (checkIfDataShouldBeSaved(userSession)) {
+    localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(userSession));
+  }
 };
 
 export const deleteState = (): void => {

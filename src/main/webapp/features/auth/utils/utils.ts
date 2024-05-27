@@ -28,7 +28,7 @@ export const deleteFromCora = async (url: string, authToken: string) => {
   return response;
 };
 
-export const isValidJSON = (str: string | null) => {
+export const isValidJSON = (str: string | {} | null) => {
   try {
     JSON.parse(str as string);
     return true;

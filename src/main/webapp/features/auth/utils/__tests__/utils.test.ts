@@ -87,11 +87,12 @@ describe('isValidJSON', () => {
     ['{"name":"Adam",age:"20"}', false],
     ['{"name":"Adam","age":20}', true],
     ['{}', true],
+    [{}, false],
     ['undefined', false],
     ['null', true],
     [null, true],
   ])('check if %s is valid JSON', (string, boolean) => {
     const expected = isValidJSON(string);
-    expect(expected).toStrictEqual(boolean);
+    expect(expected).toBe(boolean);
   });
 });
