@@ -19,7 +19,7 @@
 
 import React from 'react';
 import { Control, Controller, useFieldArray } from 'react-hook-form';
-import { Box, Chip, Divider, Grid, IconButton } from '@mui/material';
+import { Box, Chip, Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -71,14 +71,35 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         {fields.map((field, index) => (
           <div
             key={field.id}
-            style={{ position: 'relative' }}
+            style={{ position: 'relative', marginTop: '10px' }}
           >
             {!isComponentSingularAndOptional(props.component) && (
-              <Divider sx={{ mb: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 2,
+                }}
+              >
+                <div
+                  style={{
+                    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+                    width: '25%',
+                    marginRight: '5px',
+                  }}
+                />
                 <Chip
                   label={`${t(props.component.label ?? '')} ${index + 1}`}
                 />
-              </Divider>
+                <div
+                  style={{
+                    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+                    width: '25%',
+                    marginLeft: '5px',
+                  }}
+                />
+              </Box>
             )}
             {props.component.mode === 'input' && (
               <ActionButtonGroup

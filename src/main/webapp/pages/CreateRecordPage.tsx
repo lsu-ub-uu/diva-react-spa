@@ -99,7 +99,7 @@ export const CreateRecordPage = () => {
           activeLinkName={activeSection}
         />
       </AsidePortal>
-      <div style={{ marginBottom: '1000px' }}>
+      <div>
         <Stack spacing={2}>
           <FormGenerator
             onSubmit={handleSubmit}
