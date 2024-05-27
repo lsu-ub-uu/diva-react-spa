@@ -47,6 +47,7 @@ import {
   formDefWithOneOptionalNumberVariableWithAttributeCollection,
   formDefWithOneGroupWithAttributeCollection,
   formDefWithTwoTextVariableHavingFinalValue,
+  formDefWithTwoTextVariableWithModeOutput,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -960,151 +961,209 @@ describe('<FormGenerator />', () => {
         expect(mockSubmit).toHaveBeenCalledTimes(0);
       });
     });
+  });
 
-    describe('group', () => {
-      it('renders a form with group and renders its textVariable child', async () => {
-        const mockSubmit = vi.fn();
-        render(
-          <FormGenerator
-            formSchema={
-              formDefWithOneGroupHavingTextVariableAsChild as FormSchema
-            }
-            onSubmit={mockSubmit}
-          />,
-        );
+  describe('group', () => {
+    it('renders a form with group and renders its textVariable child', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneGroupHavingTextVariableAsChild as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
 
-        const textInput = screen.getByPlaceholderText('someEmptyTextId');
-        expect(textInput).toBeInTheDocument();
-      });
-
-      it('renders a form with non-repeating group and headlineLevel', async () => {
-        const mockSubmit = vi.fn();
-        render(
-          <FormGenerator
-            formSchema={
-              formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema
-            }
-            onSubmit={mockSubmit}
-          />,
-        );
-
-        const headlineElement = screen.getByRole('heading', {
-          name: 'someRootFormGroupText',
-          level: 1,
-        });
-        expect(headlineElement).toBeInTheDocument();
-      });
-
-      it('renders a form with repeating group and headlineLevel', async () => {
-        const mockSubmit = vi.fn();
-        render(
-          <FormGenerator
-            formSchema={
-              formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema
-            }
-            onSubmit={mockSubmit}
-          />,
-        );
-
-        const headlineElement = screen.getByRole('heading', {
-          name: 'author',
-          level: 3,
-        });
-        expect(headlineElement).toBeInTheDocument();
-      });
-
-      it('renders a form with group and default headlineLevel', async () => {
-        const mockSubmit = vi.fn();
-        render(
-          <FormGenerator
-            formSchema={formDefWithGroupWithDefaultHeadlineLevel as FormSchema}
-            onSubmit={mockSubmit}
-          />,
-        );
-
-        const headlineElement = screen.getByRole('heading', {
-          name: 'author',
-          level: 2,
-        });
-        expect(headlineElement).toBeInTheDocument();
-      });
-
-      it.skip('validation should pass a group having min 0 and max 0 and variables being min 1 and max 1', async () => {
-        const mockSubmit = vi.fn();
-
-        render(
-          <FormGenerator
-            onSubmit={mockSubmit}
-            formSchema={formDefWithOptionalGroupWithRequiredVar as FormSchema}
-          />,
-        );
-        const submitButton = screen.getByRole('button', {
-          name: 'divaClient_SubmitButtonText',
-        });
-
-        const user = userEvent.setup();
-        await user.click(submitButton);
-
-        expect(mockSubmit).toHaveBeenCalledTimes(1);
-      });
-
-      it.skip('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
-        const mockSubmit = vi.fn();
-
-        render(
-          <FormGenerator
-            onSubmit={mockSubmit}
-            formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
-          />,
-        );
-        const submitButton = screen.getByRole('button', {
-          name: 'divaClient_SubmitButtonText',
-        });
-
-        const user = userEvent.setup();
-        await user.click(submitButton);
-
-        expect(mockSubmit).toHaveBeenCalledTimes(0);
-      });
-
-      it('validation should fail a group having min 1 and max 1 and some sub groups being optional', async () => {
-        const mockSubmit = vi.fn();
-
-        render(
-          <FormGenerator
-            onSubmit={mockSubmit}
-            formSchema={
-              formDefContributorGroupWithAuthorGroupAuthor as FormSchema
-            }
-          />,
-        );
-        const submitButton = screen.getByRole('button', {
-          name: 'divaClient_SubmitButtonText',
-        });
-
-        const user = userEvent.setup();
-        await user.click(submitButton);
-
-        expect(mockSubmit).toHaveBeenCalledTimes(0);
-      });
+      const textInput = screen.getByPlaceholderText('someEmptyTextId');
+      expect(textInput).toBeInTheDocument();
     });
 
-    describe('guiElementLink', () => {
-      it('renders a form with numberVariable and a gui element link', async () => {
-        const mockSubmit = vi.fn();
-        render(
-          <FormGenerator
-            formSchema={
-              formDefWithOneNumberVariableAndGuiElementLink as FormSchema
-            }
-            onSubmit={mockSubmit}
-          />,
-        );
+    it('renders a form with non-repeating group and headlineLevel', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
 
-        const link = screen.getByRole('link');
-
-        expect(link).toHaveAttribute('href', 'http://www.google.se');
+      const headlineElement = screen.getByRole('heading', {
+        name: 'someRootFormGroupText',
+        level: 1,
       });
+      expect(headlineElement).toBeInTheDocument();
+    });
+
+    it('renders a form with repeating group and headlineLevel', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const headlineElement = screen.getByRole('heading', {
+        name: 'author',
+        level: 3,
+      });
+      expect(headlineElement).toBeInTheDocument();
+    });
+
+    it('renders a form with group and default headlineLevel', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithGroupWithDefaultHeadlineLevel as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const headlineElement = screen.getByRole('heading', {
+        name: 'author',
+        level: 2,
+      });
+      expect(headlineElement).toBeInTheDocument();
+    });
+
+    it.skip('validation should pass a group having min 0 and max 0 and variables being min 1 and max 1', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOptionalGroupWithRequiredVar as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it.skip('validation should fail a group having min 1 and max 1 with an empty optional numberVar child', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('validation should fail a group having min 1 and max 1 and some sub groups being optional', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefContributorGroupWithAuthorGroupAuthor as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('guiElementLink', () => {
+    it('renders a form with numberVariable and a gui element link', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneNumberVariableAndGuiElementLink as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const link = screen.getByRole('link');
+
+      expect(link).toHaveAttribute('href', 'http://www.google.se');
+    });
+  });
+
+  describe.skip('checkIfComponentHasValue', () => {
+    it('checkIfComponentHasValue hides variable in output with no value', () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            someOtherTextVar: {
+              value: 'someTestText',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithTwoTextVariableWithModeOutput as FormSchema}
+          record={coraRecord}
+        />,
+      );
+      const inputElement = screen.queryByLabelText('someMetadataTextVarText');
+      expect(inputElement).not.toBeInTheDocument();
+    });
+
+    it('checkIfComponentHasValue does not hides variable in output with value', () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            someOtherTextVar: {
+              value: 'someTestText',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithTwoTextVariableWithModeOutput as FormSchema}
+          record={coraRecord}
+        />,
+      );
+      const inputElement = screen.getByLabelText(
+        'someMetadataOtherTextVarText',
+      );
+      expect(inputElement).toBeInTheDocument();
     });
   });
 });

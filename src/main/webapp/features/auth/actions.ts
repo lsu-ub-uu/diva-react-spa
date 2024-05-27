@@ -85,7 +85,6 @@ export const logoutAsync = (): AppThunk => async (dispatch) => {
 
   if (isValidJSON(storage) && JSON.parse(storage as string) !== null) {
     const parsed = JSON.parse(storage as string) as UserSession;
-    console.log(parsed);
     const url = `${VITE_BFF_API_URL}/auth/${parsed.idFromLogin}`;
 
     try {
