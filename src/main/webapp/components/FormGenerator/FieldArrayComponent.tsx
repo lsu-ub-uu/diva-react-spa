@@ -115,6 +115,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   fields.length <= (props.component.repeat?.repeatMin ?? 1)
                 }
                 deleteButtonAction={() => handleRemove(index)}
+                entityType={props.component.type}
               />
             )}
             <Grid
