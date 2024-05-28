@@ -85,8 +85,16 @@ export const Login = (): JSX.Element => {
     handleClose();
   };
   const receiveMessage = (event: any) => {
+    console.log(
+      splitSlashFromUrl(window.location.href) ===
+        splitSlashFromUrl(event.origin as string),
+    );
+    console.log(
+      splitSlashFromUrl(window.location.href),
+      splitSlashFromUrl(event.origin as string),
+    );
     if (
-      !messageIsFromWindowOpenedFromHere(
+      messageIsFromWindowOpenedFromHere(
         splitSlashFromUrl(window.location.href),
         splitSlashFromUrl(event.origin as string),
       )
