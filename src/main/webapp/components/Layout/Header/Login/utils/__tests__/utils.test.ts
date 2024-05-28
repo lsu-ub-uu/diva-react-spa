@@ -48,26 +48,38 @@ describe('Login utils', () => {
     const actual = splitSlashFromUrl('http://localhost:5173');
     expect(actual).toBe('http://localhost:5173');
   });
+  describe('splitBasenameFromUrl', () => {
+    it('splitBasenameFromUrl returns url with removed basename', () => {
+      const actual = splitBasenameFromUrl(
+        'http://localhost:9876/divaclient/',
+        'divaclient',
+      );
+      expect(actual).toEqual('http://localhost:9876/');
+    });
 
-  it('splitBasenameFromUrl returns url with removed basename', () => {
-    const actual = splitBasenameFromUrl(
-      'http://localhost:9876/divaclient/',
-      'divaclient',
-    );
-    expect(actual).toEqual('http://localhost:9876/');
-  });
+    it('splitBasenameFromUrl returns url with removed basename without /', () => {
+      const actual = splitBasenameFromUrl(
+        'http://localhost:9876/divaclient',
+        'divaclient',
+      );
+      expect(actual).toEqual('http://localhost:9876/');
+    });
 
-  it('splitBasenameFromUrl returns url with removed basename without /', () => {
-    const actual = splitBasenameFromUrl(
-      'http://localhost:9876/divaclient',
-      'divaclient',
-    );
-    expect(actual).toEqual('http://localhost:9876/');
-  });
+    it('splitBasenameFromUrl returns epc url without basename', () => {
+      const actual = splitBasenameFromUrl(
+        'https://cora.epc.ub.uu.se/divaclient/',
+        'divaclient',
+      );
+      expect(actual).toEqual('https://cora.epc.ub.uu.se/');
+    });
 
-  it('splitBasenameFromUrl returns url without basename', () => {
-    const actual = splitBasenameFromUrl('http://localhost:9876/', '');
-    expect(actual).toEqual('http://localhost:9876/');
+    it('splitBasenameFromUrl returns epc url with removed basename without /', () => {
+      const actual = splitBasenameFromUrl(
+        'https://cora.epc.ub.uu.se/divaclient',
+        'divaclient',
+      );
+      expect(actual).toEqual('https://cora.epc.ub.uu.se/');
+    });
   });
 
   it('convertWebRedirectToUserSession converts to UserSession', () => {

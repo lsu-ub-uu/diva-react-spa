@@ -165,10 +165,10 @@ describe('<Login/>', () => {
       });
       await user.click(loginButton);
 
-      await waitFor(() => {
-        const shibbolethUrl = screen.queryByText(
+      await waitFor(async () => {
+        const shibbolethUrl = (await screen.queryByText(
           'rkhTestDiVALoginUnitText',
-        ) as HTMLElement;
+        )) as HTMLElement;
 
         user.click(shibbolethUrl);
         expect(mockAxios.history.get.length).toBe(1);

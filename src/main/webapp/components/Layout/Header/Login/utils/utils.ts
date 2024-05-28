@@ -35,14 +35,17 @@ export const splitSlashFromUrl = (url: string) => {
 };
 
 export const splitBasenameFromUrl = (url: string, basename: string) => {
+  const temp = url.replace(`${basename}/`, '');
+
   if (basename.length === 0) {
     return url;
   }
-  const temp = url.replace(`${basename}/`, '');
-  // if (temp === `${basename}/`) {
-  //   return url.substring(0, url.length - `${basename}/`.length);
-  // }
-  return temp;
+
+  if (url.slice(-1) === '/') {
+    return temp;
+  }
+
+  return url.substring(0, url.length - basename.length);
 };
 
 export const convertWebRedirectToUserSession = (coraUser: any): UserSession => {
