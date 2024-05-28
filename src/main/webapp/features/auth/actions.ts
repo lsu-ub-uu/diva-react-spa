@@ -60,6 +60,11 @@ export const loginAsync =
 export const loginWebRedirectAsync =
   (account: UserSession, callback?: Function): AppThunk =>
   async (dispatch) => {
+
+    // if (account.id === undefined) {
+    //   console.log('acc', account)
+    //   dispatch(hasError('login error'))
+    // }
     try {
       dispatch(authenticating());
       dispatch(authenticated(account));
