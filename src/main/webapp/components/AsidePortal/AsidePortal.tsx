@@ -35,6 +35,9 @@ const StyledAsidePortal = styled('div')((props: StyledAsidePortalProps) => ({
   top: props.fixed === true ? '60px' : '0',
   // overflow: 'scroll',
   height: '100%',
+  '@media screen and (max-width: 1600px)': {
+    zoom: '90%',
+  },
 }));
 
 export const AsidePortal = (props: AsidePortalProps) => {
