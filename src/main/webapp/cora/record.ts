@@ -18,6 +18,7 @@
  */
 
 import axios, { AxiosResponse } from 'axios';
+import * as console from 'console';
 import { DataGroup } from '../utils/cora-data/CoraData';
 
 export async function getRecordDataListByType<T>(
@@ -93,7 +94,7 @@ export async function updateRecordDataById<T>(
     'Content-Type': 'application/vnd.uub.record+json',
     Authtoken: `${authToken}`
   };
-
+  console.log('payload', JSON.stringify(payload, null, 2));
   const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
   return response;
 }

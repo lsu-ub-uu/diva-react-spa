@@ -28,10 +28,21 @@ export const injectRecordInfoIntoDataGroup = (
   recordId?: string,
   recordType?: string,
   userId?: string,
-  lastUpdate?: string
+  lastUpdate?: string,
+  createdBy?: string,
+  tsCreated?: string
 ): DataGroup => {
   dataGroup.children = [
-    generateRecordInfo(validationTypeId, dataDivider, recordId, recordType, userId, lastUpdate),
+    generateRecordInfo(
+      validationTypeId,
+      dataDivider,
+      recordId,
+      recordType,
+      userId,
+      lastUpdate,
+      createdBy,
+      tsCreated
+    ),
     ...dataGroup.children
   ];
   return dataGroup;
@@ -43,7 +54,9 @@ export const generateRecordInfo = (
   recordId?: string,
   recordType?: string,
   userId?: string,
-  lastUpdate?: string
+  lastUpdate?: string,
+  createdBy?: string,
+  tsCreated?: string
 ): DataGroup => {
   const name = 'recordInfo';
   const children = [
@@ -51,7 +64,9 @@ export const generateRecordInfo = (
     generateRecordLink('dataDivider', 'system', dataDivider),
     generateRecordLink('validationType', 'validationType', validationType),
     recordType ? generateRecordLink('type', 'recordType', recordType) : undefined,
-    userId && lastUpdate ? generateLastUpdateInfo(userId, lastUpdate) : undefined
+    userId && lastUpdate ? generateLastUpdateInfo(userId, lastUpdate) : undefined,
+    tsCreated ? generateAtomicValue('tsCreated', tsCreated) : undefined,
+    createdBy ? generateRecordLink('createdBy', 'user', createdBy) : undefined
   ];
   return removeEmpty({ name, children }) as DataGroup;
 };
