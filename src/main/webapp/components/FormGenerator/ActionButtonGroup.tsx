@@ -39,16 +39,23 @@ export const ActionButtonGroup = (
   props: ActionButtonGroupProps,
 ): JSX.Element => {
   const { t } = useTranslation();
+
+  const marginTopValue =
+    // eslint-disable-next-line no-nested-ternary
+    props.entityName === 'Polygon'
+      ? '30px'
+      : isComponentGroupAndSingularForStyling(
+          props.entityType,
+          props.hideMoveButtons,
+        )
+      ? '-46px'
+      : null;
+
   return (
     <ButtonGroup
       size='small'
       sx={{
-        marginTop: isComponentGroupAndSingularForStyling(
-          props.entityType,
-          props.hideMoveButtons,
-        )
-          ? '-46px'
-          : null,
+        marginTop: marginTopValue,
         position: 'absolute',
         top: 0,
         right: 0,
