@@ -37,6 +37,7 @@ import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
+  splitBasenameFromUrl,
   splitSlashFromUrl,
 } from './utils/utils';
 
@@ -80,14 +81,29 @@ export const Login = (): JSX.Element => {
       window.open(MODE === 'development' ? 'http://localhost:1234' : url);
       window.addEventListener('message', receiveMessage, false);
     } catch (e: any) {
+      if (e === undefined) {
+        console.log('undef', event);
+      }
       console.log(e.message());
     }
     handleClose();
   };
   const receiveMessage = (event: any) => {
+    if (event === undefined) {
+      console.log('rM', event);
+    }
+
+    console.log(
+      splitSlashFromUrl(
+        splitBasenameFromUrl(window.location.href, 'divaclient'),
+      ),
+      splitSlashFromUrl(event.origin as string),
+    );
     if (
       !messageIsFromWindowOpenedFromHere(
-        splitSlashFromUrl(window.location.href),
+        splitSlashFromUrl(
+          splitBasenameFromUrl(window.location.href, 'divaclient'),
+        ),
         splitSlashFromUrl(event.origin as string),
       )
     ) {

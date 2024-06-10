@@ -32,25 +32,23 @@ interface ActionButtonGroupProps {
   moveDownButtonAction: () => void;
   deleteButtonDisabled: boolean;
   deleteButtonAction: () => void;
-  entityType?: string;
+  entityType: string;
 }
 
 export const ActionButtonGroup = (
   props: ActionButtonGroupProps,
 ): JSX.Element => {
   const { t } = useTranslation();
-
-  console.log(
-    props.entityName,
-    isComponentGroupAndSingular(
-      props.entityType as string,
-      props.hideMoveButtons,
-    ),
-  );
   return (
     <ButtonGroup
       size='small'
       sx={{
+        marginTop: isComponentGroupAndSingularForStyling(
+          props.entityType,
+          props.hideMoveButtons,
+        )
+          ? '-46px'
+          : null,
         position: 'absolute',
         top: 0,
         right: 0,
@@ -135,7 +133,7 @@ export const ActionButtonGroup = (
   );
 };
 
-const isComponentGroupAndSingular = (
+export const isComponentGroupAndSingularForStyling = (
   entityType: string,
   hideMoveButtons: boolean,
 ) => {
