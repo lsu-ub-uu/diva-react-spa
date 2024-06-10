@@ -58,7 +58,7 @@ Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
 ###
 POST http://localhost:8080/api/record/manuscript
 Content-Type: application/json
-Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
+Authtoken: 2d9a3476-e980-41f9-96ce-4a3b6af49e92
 
 {
   "divaOutput": {
@@ -268,3 +268,117 @@ Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
   }
 }
 
+###
+POST http://localhost:8080/api/record/thesisManuscript/divaOutput:3038399305959804
+Content-Type: application/json
+Authtoken: 2d9a3476-e980-41f9-96ce-4a3b6af49e92
+
+{
+  "lastUpdate": {
+    "updateAt": "2024-06-04T15:13:57.698204Z",
+    "updatedBy": "161616"
+  },
+  "created": {
+    "createdAt": "2024-06-04T15:13:57.698204Z",
+    "createdBy": "161616"
+  },
+  "values": {
+    "divaOutput": {
+      "geoData": [
+        {
+          "polygon": [],
+          "endDate": [],
+          "startDate": [],
+          "description": [
+            {
+              "value": null
+            }
+          ]
+        }
+      ],
+      "note": [
+        {
+          "value": null
+        }
+      ],
+      "localId": [
+        {
+          "value": null
+        }
+      ],
+      "archiveNumber": [
+        {
+          "value": null
+        }
+      ],
+      "relatedResearchData": [],
+      "url": [],
+      "nationalSubjectCategory": [
+        {
+          "value": null
+        }
+      ],
+      "otherProject": [],
+      "otherFunder": [],
+      "funder": [],
+      "keywords": [
+        {
+          "value": null,
+          "_language": ""
+        }
+      ],
+      "abstract": [
+        {
+          "value": null,
+          "_language": ""
+        }
+      ],
+      "noOfContributors": [
+        {
+          "value": null
+        }
+      ],
+      "author": [],
+      "alternativeTitle": [],
+      "title": {
+        "_language": "lat",
+        "subtitle": [
+          {
+            "value": null
+          }
+        ],
+        "mainTitle": {
+          "value": "Latin"
+        }
+      },
+      "artisticWork": [
+        {
+          "value": null
+        }
+      ],
+      "contentType": [
+        {
+          "value": "otherAcademic"
+        }
+      ],
+      "outputType": {
+        "subType": [
+          {
+            "value": null
+          }
+        ],
+        "type": [
+          {
+            "value": null
+          }
+        ],
+        "outputType": {
+          "value": "conference"
+        }
+      },
+      "domain": {
+        "value": "fmv"
+      }
+    }
+  }
+}

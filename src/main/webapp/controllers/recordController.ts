@@ -48,7 +48,8 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
-    const { lastUpdate, values } = payload;
+    console.log('payload', JSON.stringify(payload, null, 2));
+    const { lastUpdate, created, values } = payload;
     const recordType = Object.keys(values)[0];
 
     const { validationTypePool } = dependencies;
@@ -70,7 +71,9 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
       recordId,
       recordType,
       lastUpdate.updatedBy,
-      lastUpdate.updateAt
+      lastUpdate.updateAt,
+      created.createdBy,
+      created.createdAt
     );
 
     const response = await updateRecordDataById<RecordWrapper>(
