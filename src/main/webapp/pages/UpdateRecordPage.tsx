@@ -37,6 +37,7 @@ import {
   useSectionScroller,
 } from '../components';
 import { FormSchema } from '../components/FormGenerator/types';
+import {removeEmpty} from "../utils/removeEmpty";
 
 export const UpdateRecordPage = () => {
   const { recordId } = useParams();
@@ -81,11 +82,15 @@ export const UpdateRecordPage = () => {
       const { record } = coraRecord;
       const coraUpdates = record ? record.updated : [];
       const lastUpdate = coraUpdates[coraUpdates.length - 1];
-      const payload = { lastUpdate, values };
+      const createdAt = record ? record.createdAt : null;
+      const createdBy = record ? record.createdBy : null;
+      const created = { createdAt, createdBy };
+
+      const payload = { lastUpdate, created, values };
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.post(
         `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,
-        payload,
+        removeEmpty(payload),
       );
       notification(`Record was successfully updated!`, 'success');
     } catch (err: any) {
