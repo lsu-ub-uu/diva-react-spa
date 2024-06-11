@@ -34,6 +34,7 @@ import {
   isComponentRequired,
   isComponentSingularAndOptional,
   isComponentValidForDataCarrying,
+  isParentGroupOptional,
 } from './helper';
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
@@ -42,10 +43,17 @@ export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   return yup.object().shape(obj);
 };
 
-export const generateYupSchema = (components: FormComponent[] | undefined) => {
+export const generateYupSchema = (
+  components: FormComponent[] | undefined,
+  parentGroupOptional: boolean = false,
+) => {
+  const temp = parentGroupOptional;
+  // console.log('temp', temp, components[0].name);
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
-    .map((formComponent) => createYupValidationsFromComponent(formComponent));
+    .map((formComponent) =>
+      createYupValidationsFromComponent(formComponent, parentGroupOptional),
+    );
 
   const obj = Object.assign({}, ...validationsRules) as ObjectShape;
   return yup.object().default({}).shape(obj);
@@ -53,8 +61,9 @@ export const generateYupSchema = (components: FormComponent[] | undefined) => {
 
 export const createYupValidationsFromComponent = (
   component: FormComponent,
-  isParentComponentRepeating: boolean = false,
+  parentComponentRepeating: boolean = false,
 ) => {
+  // console.log('create', component.name, parentComponentRepeating);
   let validationRule: {
     [x: string]: any;
   } = {};
@@ -69,8 +78,11 @@ export const createYupValidationsFromComponent = (
   // eslint-disable-next-line no-lonely-if
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
-      const innerObjectSchema = generateYupSchema(component.components);
-
+      // console.log(isParentGroupOptional(component), component.name);
+      const innerObjectSchema = generateYupSchema(
+        component.components,
+        isParentGroupOptional(component),
+      );
       // Create a new schema by merging the existing schema and attribute fields
       const extendedSchema = yup.object().shape({
         ...innerObjectSchema.fields,
@@ -102,11 +114,12 @@ export const createYupValidationsFromComponent = (
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
+      // console.log('nrV', component.name, parentComponentRepeating);
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(
           component,
           false,
-          isParentComponentRepeating,
+          parentComponentRepeating,
         ),
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
@@ -177,9 +190,15 @@ export const createValidationFromComponentType = (
  */
 const createYupStringRegexpSchema = (
   component: FormComponent,
-  isParentComponentRequired: boolean = false,
+  isParentComponentOptional: boolean = false,
 ) => {
   const regexpValidation = component.validation as FormRegexValidation;
+  const temp2 = isParentComponentOptional;
+
+  if (isParentComponentOptional) {
+    console.log('temp2', temp2, component.name, '');
+    return yup.string().nullable();
+  }
 
   if (isComponentRepeating(component)) {
     return yup

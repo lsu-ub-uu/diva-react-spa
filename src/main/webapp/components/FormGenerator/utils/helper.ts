@@ -77,6 +77,12 @@ export const isComponentSingularAndOptional = (component: FormComponent) => {
   return rMax === 1 && rMin === 0;
 };
 
+export const isParentGroupOptional = (component: FormComponent) => {
+  const componentGroup = component.type === 'group';
+  const rMin = component.repeat?.repeatMin ?? 0;
+  return componentGroup && rMin === 0;
+};
+
 export const checkIfComponentHasValue = (
   getValues: UseFormGetValues<FieldValues>,
   componentValue: string,

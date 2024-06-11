@@ -28,6 +28,7 @@ import {
   isComponentValidForDataCarrying,
   isComponentVariable,
   isFirstLevel,
+  isParentGroupOptional,
 } from '../helper';
 import { FormComponent } from '../../types';
 
@@ -1431,6 +1432,105 @@ describe('helper methods', () => {
     ])('check if %s is singular and optional', (arg1, arg2, arg3) => {
       const expected = isComponentSingularAndOptional(arg2 as FormComponent);
       expect(expected).toStrictEqual(arg3);
+    });
+  });
+  describe('isParentGroupOptional', () => {
+    it('isParentGroupOptional return false for group & repeatMin === 1', () => {
+      const actual = isParentGroupOptional({
+        type: 'group',
+        label: 'someRootFormGroupText',
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'textId345',
+          body: 'defTextId678',
+        },
+        mode: 'input',
+        components: [
+          {
+            type: 'text',
+            name: 'someHeaderText',
+          },
+        ],
+      });
+      expect(actual).toBe(false);
+    });
+
+    it('isParentGroupOptional return true for group & repeatMin === 0', () => {
+      const actual = isParentGroupOptional({
+        type: 'group',
+        label: 'someRootFormGroupText',
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'textId345',
+          body: 'defTextId678',
+        },
+        mode: 'input',
+        components: [
+          {
+            type: 'text',
+            name: 'someHeaderText',
+          },
+        ],
+      });
+      expect(actual).toBe(true);
+    });
+
+    it('isParentGroupOptional return false for non group variable & repeatMin === 0', () => {
+      const actual = isParentGroupOptional({
+        type: 'textVariable',
+        name: 'someInnerNameInData',
+        label: 'someTextId',
+        childStyle: [],
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'someTextId',
+          body: 'someDefTextId',
+        },
+        validation: {
+          type: 'regex',
+          pattern: 'someRegex',
+        },
+        mode: 'input',
+        inputType: 'input',
+      });
+      expect(actual).toBe(false);
+    });
+
+    it('isParentGroupOptional return false for non group variable & repeatMin === 1', () => {
+      const actual = isParentGroupOptional({
+        type: 'textVariable',
+        name: 'someInnerNameInData',
+        label: 'someTextId',
+        childStyle: [],
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'someTextId',
+          body: 'someDefTextId',
+        },
+        validation: {
+          type: 'regex',
+          pattern: 'someRegex',
+        },
+        mode: 'input',
+        inputType: 'input',
+      });
+      expect(actual).toBe(false);
     });
   });
 
