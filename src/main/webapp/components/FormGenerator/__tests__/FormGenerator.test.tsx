@@ -865,6 +865,39 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
+    it('renders a form with a optional numberVariable and attribute and does NOT validates it when variable is written in', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneOptionalNumberVariableWithAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const numberInput = screen.getByPlaceholderText(
+        'someNumberVar2IdPlaceholder',
+      );
+      expect(numberInput).toBeInTheDocument();
+
+      const attributeButton = screen.getByRole('button', { expanded: false });
+      expect(attributeButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(numberInput, '12');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
     it('renders a form with numberVariable and a optional numberVariable and attribute and validates it', async () => {
       it('renders a form with numberVariable and a optional numberVariable and skipable attribute and validates it', async () => {
         const mockSubmit = vi.fn();

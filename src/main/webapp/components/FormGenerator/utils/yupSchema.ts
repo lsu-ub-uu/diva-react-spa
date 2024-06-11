@@ -287,11 +287,17 @@ const createYupStringSchema = (
         isNotNull[0] ? field.required('not valid') : field,
       );
   }
-
   if (isAttribute && !isParentComponentRequired) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
-        ? yup.string().nullable()
+        ? yup
+            .string()
+            .nullable()
+            .test('something', function (value, context) {
+              return (
+                context.parent.value === null || context.parent.value === ''
+              );
+            })
         : yup.string().required();
     });
   }
