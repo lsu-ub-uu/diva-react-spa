@@ -3136,21 +3136,323 @@ export const formDefWithRepeatingAuthorGroupWithNameTextVar = {
     ],
   },
 };
-export const formDefWithOptionalGroupWithRequiredVar = {
-  validationTypeId: 'someValidationTypeId',
+export const formDefWithOptionalGroupWithRequiredTextVar = {
+  validationTypeId: 'thesisManuscript',
   form: {
+    name: 'divaOutput',
     type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
     },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
+    components: [
+      {
+        name: 'alternativeTitle',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'alternativeTitleGroupText',
+          body: 'alternativeTitleGroupDefText',
+        },
+        label: 'alternativeTitleGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'mainTitle',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'mainTitleTextVarText',
+              body: 'mainTitleTextVarDefText',
+            },
+            label: 'mainTitleTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithOptionalGroupWithRequiredNumberVar = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
     mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'alternativeTitle',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'alternativeTitleGroupText',
+          body: 'alternativeTitleGroupDefText',
+        },
+        label: 'alternativeTitleGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            type: 'numberVariable',
+            name: 'someNameInDataNumberVar',
+            label: 'someNumberVarTextId', // hidden
+            showLabel: false,
+            gridColSpan: 3,
+            childStyle: ['threeChildStyle'],
+            placeholder: 'someEmptyTextId',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+              minNumberOfRepeatingToShow: 1,
+            },
+            tooltip: {
+              title: 'someNumberVarTextId',
+              body: 'someNumberVarDefTextId',
+            },
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 20,
+              warningMin: 2,
+              warningMax: 10,
+              numberOfDecimals: 0,
+            },
+            mode: 'input',
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithOptionalGroupWithRequiredRecordLink = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'alternativeTitle',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'alternativeTitleGroupText',
+          body: 'alternativeTitleGroupDefText',
+        },
+        label: 'alternativeTitleGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'funder',
+            type: 'recordLink',
+            mode: 'input',
+            tooltip: {
+              title: 'funderLinkText',
+              body: 'funderLinkDefText',
+            },
+            label: 'funderLinkText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+            recordLinkType: 'funder',
+            presentationRecordLinkId: 'funderPLink',
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'polygon',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'polygonGroupText',
+          body: 'polygonGroupDefText',
+        },
+        label: 'polygonGroupText',
+        showLabel: false,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'point',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'pointGroupText',
+              body: 'pointGroupDefText',
+            },
+            label: 'pointGroupText',
+            headlineLevel: 'h3',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            components: [
+              {
+                name: 'longitude',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'longitudeTextVarText',
+                  body: 'longitudeTextVarDefText',
+                },
+                label: 'longitudeTextVarText',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern:
+                    '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: ['sixChildStyle'],
+                gridColSpan: 6,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
     components: [
       {
         name: 'point',
@@ -3161,33 +3463,73 @@ export const formDefWithOptionalGroupWithRequiredVar = {
           body: 'pointGroupDefText',
         },
         label: 'pointGroupText',
+        headlineLevel: 'h3',
+        showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
-          repeatMax: 0,
+          repeatMin: 1,
+          repeatMax: 1.7976931348623157e308,
         },
         components: [
           {
-            name: 'longitudeTextVar',
+            name: 'longitude',
             type: 'textVariable',
             mode: 'input',
+            inputType: 'input',
             tooltip: {
-              title: 'longitudeVarText',
-              body: 'longitudeVarDefText',
+              title: 'longitudeTextVarText',
+              body: 'longitudeTextVarDefText',
             },
-            label: 'name',
+            label: 'longitudeTextVarText',
+            showLabel: true,
             validation: {
               type: 'regex',
-              pattern: '^[a-zA-Z]$',
+              pattern:
+                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
             },
             repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            placeholder: 'someLongitudeTextId',
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'latitude',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'longitudeTextVarText',
+              body: 'longitudeTextVarDefText',
+            },
+            label: 'longitudeTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern:
+                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
               repeatMin: 1,
               repeatMax: 1,
             },
+            placeholder: 'someLatitudeTextId',
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
           },
         ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
       },
     ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
   },
 };
 

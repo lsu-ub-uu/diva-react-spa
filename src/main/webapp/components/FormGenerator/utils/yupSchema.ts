@@ -47,8 +47,6 @@ export const generateYupSchema = (
   components: FormComponent[] | undefined,
   parentGroupOptional: boolean = false,
 ) => {
-  const temp = parentGroupOptional;
-  // console.log('temp', temp, components[0].name);
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
     .map((formComponent) =>
@@ -63,7 +61,6 @@ export const createYupValidationsFromComponent = (
   component: FormComponent,
   parentComponentRepeating: boolean = false,
 ) => {
-  // console.log('create', component.name, parentComponentRepeating);
   let validationRule: {
     [x: string]: any;
   } = {};
@@ -78,10 +75,9 @@ export const createYupValidationsFromComponent = (
   // eslint-disable-next-line no-lonely-if
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
-      // console.log(isParentGroupOptional(component), component.name);
       const innerObjectSchema = generateYupSchema(
         component.components,
-        isParentGroupOptional(component),
+        isParentGroupOptional(component) || parentComponentRepeating,
       );
       // Create a new schema by merging the existing schema and attribute fields
       const extendedSchema = yup.object().shape({
@@ -108,13 +104,15 @@ export const createYupValidationsFromComponent = (
     // non-repeating group
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
-      const innerSchema = generateYupSchema(component.components);
+      const innerSchema = generateYupSchema(
+        component.components,
+        parentComponentRepeating,
+      );
       validationRule[component.name] = yup.object().shape({
         ...innerSchema.fields,
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
-      // console.log('nrV', component.name, parentComponentRepeating);
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(
           component,
@@ -172,7 +170,10 @@ export const createValidationFromComponentType = (
         isComponentRequired,
       );
     case 'numberVariable':
-      return createYupNumberSchema(component as FormComponent);
+      return createYupNumberSchema(
+        component as FormComponent,
+        isComponentRequired,
+      );
     default: // collectionVariable, recordLink
       return createYupStringSchema(
         component as FormComponent,
@@ -193,11 +194,16 @@ const createYupStringRegexpSchema = (
   isParentComponentOptional: boolean = false,
 ) => {
   const regexpValidation = component.validation as FormRegexValidation;
-  const temp2 = isParentComponentOptional;
 
   if (isParentComponentOptional) {
-    console.log('temp2', temp2, component.name, '');
-    return yup.string().nullable();
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .matches(
+        new RegExp(regexpValidation.pattern ?? '.+'),
+        'Invalid input format',
+      );
   }
 
   if (isComponentRepeating(component)) {
@@ -225,7 +231,10 @@ const createYupStringRegexpSchema = (
  * OBS! In the Yup library, the transform method is executed after the validation process.
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
-export const createYupNumberSchema = (component: FormComponent) => {
+export const createYupNumberSchema = (
+  component: FormComponent,
+  isParentComponentOptional: boolean = false,
+) => {
   const numberValidation = component.validation as FormNumberValidation;
   const { numberOfDecimals, min, max } = numberValidation;
 
@@ -262,6 +271,22 @@ export const createYupNumberSchema = (component: FormComponent) => {
     },
   };
 
+  if (isParentComponentOptional) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .when('$isNotNull', (isNotNull, field) =>
+        isNotNull
+          ? field
+              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .test(testDecimals)
+              .test(testMax)
+              .test(testMin)
+          : field,
+      );
+  }
+
   if (isComponentSingularAndOptional(component)) {
     return yup
       .string()
@@ -295,7 +320,7 @@ export const createYupNumberSchema = (component: FormComponent) => {
 const createYupStringSchema = (
   component: FormComponent,
   isAttribute: boolean = false,
-  isParentComponentRequired: boolean = false,
+  isParentComponentOptional: boolean = false,
 ) => {
   if (isComponentRepeating(component)) {
     return yup
@@ -306,7 +331,18 @@ const createYupStringSchema = (
         isNotNull[0] ? field.required('not valid') : field,
       );
   }
-  if (isAttribute && !isParentComponentRequired) {
+
+  if (isParentComponentOptional) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .when('$isNotNull', (isNotNull, field) =>
+        isNotNull[0] ? field.required('not valid') : field,
+      );
+  }
+
+  if (isAttribute && !isParentComponentOptional) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
         ? yup
