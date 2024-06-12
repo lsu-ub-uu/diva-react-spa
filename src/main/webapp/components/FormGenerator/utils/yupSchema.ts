@@ -40,6 +40,7 @@ import {
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
+  console.log('obj', obj);
   return yup.object().shape(obj);
 };
 
@@ -103,6 +104,7 @@ export const createYupValidationsFromComponent = (
   } else {
     // non-repeating group
     // eslint-disable-next-line no-lonely-if
+
     if (isComponentGroup(component)) {
       const innerSchema = generateYupSchema(
         component.components,
@@ -113,13 +115,23 @@ export const createYupValidationsFromComponent = (
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
+      // console.log(
+      //   'name',
+      //   component.name,
+      //   component.attributes,
+      //   component.repeat?.repeatMin,
+      //   isComponentRepeating(component),
+      // );
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(
           component,
           false,
           parentComponentRepeating,
         ),
-        ...createValidationForAttributesFromComponent(component),
+        ...createValidationForAttributesFromComponent(
+          component,
+          isComponentRepeating(component),
+        ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     }
   }
@@ -129,6 +141,7 @@ export const createYupValidationsFromComponent = (
 
 export const createValidationForAttributesFromComponent = (
   component: FormComponent,
+  siblingRepeat?: boolean,
 ) => {
   const attributeValidation =
     component.attributes?.map(
@@ -137,6 +150,7 @@ export const createValidationForAttributesFromComponent = (
           attributeCollection,
           true,
           isComponentRequired(component),
+          siblingRepeat,
         ),
       }),
     ) ?? [];
@@ -161,24 +175,26 @@ export const createYupArrayFromSchema = (
 export const createValidationFromComponentType = (
   component: FormComponent | FormAttributeCollection,
   isAttribute?: boolean,
-  isComponentRequired?: boolean,
+  isParentRequired?: boolean,
+  siblingRepeat?: boolean,
 ) => {
   switch (component.type) {
     case 'textVariable':
       return createYupStringRegexpSchema(
         component as FormComponent,
-        isComponentRequired,
+        isParentRequired,
       );
     case 'numberVariable':
       return createYupNumberSchema(
         component as FormComponent,
-        isComponentRequired,
+        isParentRequired,
       );
     default: // collectionVariable, recordLink
       return createYupStringSchema(
         component as FormComponent,
         isAttribute,
-        isComponentRequired,
+        isParentRequired,
+        siblingRepeat,
       );
   }
 };
@@ -195,6 +211,13 @@ const createYupStringRegexpSchema = (
 ) => {
   const regexpValidation = component.validation as FormRegexValidation;
 
+  // check if siblings have values
+  // .test('something', function (value, context) {
+  //     return (
+  //       context.parent.value === null || context.parent.value === ''
+  //     );
+  //   })
+
   if (isParentComponentOptional) {
     return yup
       .string()
@@ -203,7 +226,11 @@ const createYupStringRegexpSchema = (
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
         'Invalid input format',
-      );
+      )
+      .test('something', function (value, context) {
+        // @ts-ignore
+        console.log(component.name, context.from[1].value);
+      });
   }
 
   if (isComponentRepeating(component)) {
@@ -321,6 +348,7 @@ const createYupStringSchema = (
   component: FormComponent,
   isAttribute: boolean = false,
   isParentComponentOptional: boolean = false,
+  variableForAttributeRepeat: boolean = false,
 ) => {
   if (isComponentRepeating(component)) {
     return yup
@@ -330,6 +358,9 @@ const createYupStringSchema = (
       .when('$isNotNull', (isNotNull, field) =>
         isNotNull[0] ? field.required('not valid') : field,
       );
+  }
+  if (isParentComponentOptional && isAttribute && !variableForAttributeRepeat) {
+    return yup.string().required();
   }
 
   if (isParentComponentOptional) {

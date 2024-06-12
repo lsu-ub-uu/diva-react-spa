@@ -319,4 +319,23 @@ describe('removeEmpty', () => {
     };
     expect(expected).toStrictEqual(actual);
   });
+  it('clear other mixed objects', () => {
+    const testObject = {
+      _year: { value: '1234' },
+      latitude: { value: '' },
+      longitude: { value: 'a' },
+    };
+    const actual = removeEmpty(testObject);
+    const expected = {};
+    expect(expected).toStrictEqual(actual);
+  });
+  it('clear other 3 mixed objects', () => {
+    const testObject = {
+      latitude: { value: '' },
+      longitude: { value: '' },
+    };
+    const actual = removeEmpty(testObject);
+
+    expect(actual).toEqual({});
+  });
 });

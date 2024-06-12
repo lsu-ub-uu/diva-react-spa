@@ -19,6 +19,7 @@
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormComponent } from '../types';
+import { removeEmpty } from '../../../utils/removeEmpty';
 
 export const countStringCharOccurrences = (
   inputString: string,
@@ -88,4 +89,11 @@ export const checkIfComponentHasValue = (
   componentValue: string,
 ) => {
   return getValues(componentValue) !== '';
+};
+
+export const checkForExistingSiblingValue = (formValues: any) => {
+  // const valuesWithoutAttribs = formValues
+  const cleanedValues = removeEmpty(formValues);
+  const valueLength = Object.keys(cleanedValues).length;
+  return valueLength > 0;
 };

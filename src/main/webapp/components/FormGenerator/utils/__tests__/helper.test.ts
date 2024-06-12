@@ -18,6 +18,7 @@
  */
 
 import {
+  checkForExistingSiblingValue,
   countStringCharOccurrences,
   isComponentContainer,
   isComponentGroup,
@@ -29,6 +30,7 @@ import {
   isComponentVariable,
   isFirstLevel,
   isParentGroupOptional,
+  isSiblingRepeating,
 } from '../helper';
 import { FormComponent } from '../../types';
 
@@ -1529,6 +1531,46 @@ describe('helper methods', () => {
         },
         mode: 'input',
         inputType: 'input',
+      });
+      expect(actual).toBe(false);
+    });
+  });
+
+  describe('checkForSiblingValue', () => {
+    it('checkForSiblingValue', () => {
+      const actual = checkForExistingSiblingValue({
+        latitude: { value: '' },
+        longitude: { value: 'a' },
+      });
+      expect(actual).toBe(true);
+    });
+    it('checkForSiblingValue2', () => {
+      const actual = checkForExistingSiblingValue({
+        latitude: { value: '' },
+        longitude: { value: '' },
+      });
+      expect(actual).toBe(false);
+    });
+    it('checkForSiblingValue3', () => {
+      const actual = checkForExistingSiblingValue({
+        _year: { value: '1234' },
+        latitude: { value: '' },
+        longitude: { value: 'a' },
+      });
+      expect(actual).toBe(true);
+    });
+    it('checkForSiblingValue4', () => {
+      const actual = checkForExistingSiblingValue({
+        maintitle: { value: '' },
+        subtitle: [{ value: 'a' }],
+      });
+      expect(actual).toBe(true);
+    });
+    it('checkForSiblingValue5', () => {
+      const actual = checkForExistingSiblingValue({
+        _year: { value: '1234' },
+        latitude: { value: '' },
+        longitude: { value: '' },
       });
       expect(actual).toBe(false);
     });

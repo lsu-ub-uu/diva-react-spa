@@ -1261,6 +1261,68 @@ export const formDefWithOneOptionalNumberVariableWithAttributeCollection = {
   },
 };
 
+export const formDefWithOneRequiredNumberVariableWithAttributeCollection = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        name: 'abstract',
+        label: 'someNumberVar2IdLabel',
+        placeholder: 'someNumberVar2IdPlaceholder',
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'someNumberVarTextId',
+          body: 'someNumberVarDefTextId',
+        },
+        attributes: [
+          {
+            type: 'collectionVariable',
+            name: 'colour',
+            label: 'someNumberVar2AttributeLabel',
+            placeholder: 'someNumberVar2AttributeId',
+            tooltip: {
+              title: 'exampleCollectionVarText',
+              body: 'exampleCollectionVarDefText',
+            },
+            options: [
+              { value: 'blue', label: 'exampleBlueItemText' },
+              { value: 'pink', label: 'examplePinkItemText' },
+              { value: 'yellow', label: 'exampleYellowItemText' },
+            ],
+            mode: 'input',
+          },
+        ],
+        validation: {
+          type: 'number',
+          min: 0,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefWithOneGroupWithAttributeCollection = {
   validationTypeId: 'manuscript',
   form: {
