@@ -92,8 +92,14 @@ export const checkIfComponentHasValue = (
 };
 
 export const checkForExistingSiblingValue = (formValues: any) => {
-  // const valuesWithoutAttribs = formValues
-  const cleanedValues = removeEmpty(formValues);
+  const valuesWithoutAttribs = Object.keys(formValues)
+    .filter((objKey) => !objKey.startsWith('_'))
+    .reduce((newObj, key) => {
+      // @ts-ignore
+      newObj[key] = formValues[key];
+      return newObj;
+    }, {});
+  const cleanedValues = removeEmpty(valuesWithoutAttribs);
   const valueLength = Object.keys(cleanedValues).length;
   return valueLength > 0;
 };
