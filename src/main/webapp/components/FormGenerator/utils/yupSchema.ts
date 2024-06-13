@@ -28,6 +28,7 @@ import {
   FormSchema,
 } from '../types';
 import {
+  checkForSiblingValue,
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
@@ -76,6 +77,7 @@ export const createYupValidationsFromComponent = (
   // eslint-disable-next-line no-lonely-if
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
+      console.log('aaaa');
       const innerObjectSchema = generateYupSchema(
         component.components,
         isParentGroupOptional(component) || parentComponentRepeating,
@@ -346,6 +348,9 @@ const createYupStringSchema = (
   isParentComponentOptional: boolean = false,
   variableForAttributeRepeat: boolean = false,
 ) => {
+  // Kolla syskonens värde
+  // Sätt yup.sting().nullable() om värdet är null
+
   if (isComponentRepeating(component)) {
     return yup
       .string()
@@ -377,7 +382,9 @@ const createYupStringSchema = (
             .nullable()
             .test('something', function (value, context) {
               return (
-                context.parent.value === null || context.parent.value === ''
+                context.parent.value === null ||
+                context.parent.value === '' ||
+                !checkForSiblingValue(context.from[0].value)
               );
             })
         : yup.string().required();

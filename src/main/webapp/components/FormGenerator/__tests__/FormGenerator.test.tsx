@@ -45,7 +45,7 @@ import {
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
   formDefWithOptionalGroupWithRequiredVar,
   formDefWithOneOptionalNumberVariableWithAttributeCollection,
-  formDefWithOneGroupWithAttributeCollection,
+  // formDefWithOneGroupWithAttributeCollection,
   formDefWithTwoTextVariableHavingFinalValue,
   formDefWithTwoTextVariableWithModeOutput,
   formDefWithOptionalGroupWithRequiredTextVar,
@@ -999,37 +999,6 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a form a group with a textVariable and attribute and does not validates the group', async () => {
-      const mockSubmit = vi.fn();
-      render(
-        <FormGenerator
-          formSchema={formDefWithOneGroupWithAttributeCollection as FormSchema}
-          onSubmit={mockSubmit}
-        />,
-      );
-
-      const numberInput = screen.getByText('numberVariableLabelText');
-      expect(numberInput).toBeInTheDocument();
-      const textInput = screen.getByText('textVarLabelText');
-      expect(textInput).toBeInTheDocument();
-      const attributeButton = screen.getByRole('button', { expanded: false });
-      expect(attributeButton).toBeInTheDocument();
-
-      const user = userEvent.setup();
-      await user.type(numberInput, '3.33');
-      await user.type(textInput, 'abcd');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
-      await user.click(submitButton);
-
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
 

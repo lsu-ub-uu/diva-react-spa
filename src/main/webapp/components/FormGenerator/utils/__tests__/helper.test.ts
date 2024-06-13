@@ -18,7 +18,7 @@
  */
 
 import {
-  checkForExistingSiblingValue,
+  checkForSiblingValue,
   countStringCharOccurrences,
   isComponentContainer,
   isComponentGroup,
@@ -1537,21 +1537,21 @@ describe('helper methods', () => {
 
   describe('checkForSiblingValue', () => {
     it('checkForSiblingValue', () => {
-      const actual = checkForExistingSiblingValue({
+      const actual = checkForSiblingValue({
         latitude: { value: '' },
         longitude: { value: 'a' },
       });
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue2', () => {
-      const actual = checkForExistingSiblingValue({
+      const actual = checkForSiblingValue({
         latitude: { value: '' },
         longitude: { value: '' },
       });
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue3', () => {
-      const actual = checkForExistingSiblingValue({
+      const actual = checkForSiblingValue({
         _year: { value: '1234' },
         latitude: { value: '' },
         longitude: { value: 'a' },
@@ -1559,14 +1559,14 @@ describe('helper methods', () => {
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue4', () => {
-      const actual = checkForExistingSiblingValue({
+      const actual = checkForSiblingValue({
         maintitle: { value: '' },
         subtitle: [{ value: 'a' }],
       });
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue5', () => {
-      const actual = checkForExistingSiblingValue({
+      const actual = checkForSiblingValue({
         _year: { value: '1234' },
         latitude: { value: '' },
         longitude: { value: '' },
@@ -1574,7 +1574,7 @@ describe('helper methods', () => {
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue6', () => {
-      const actual = checkForExistingSiblingValue(undefined);
+      const actual = checkForSiblingValue(undefined);
       expect(actual).toBe(false);
     });
   });
