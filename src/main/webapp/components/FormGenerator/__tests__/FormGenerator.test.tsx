@@ -43,19 +43,17 @@ import {
   formDefWithOneTextVariableBeingRepeating,
   formDefContributorGroupWithAuthorGroupAuthor,
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
-  formDefWithOptionalGroupWithRequiredVar,
   formDefWithOneOptionalNumberVariableWithAttributeCollection,
-  // formDefWithOneGroupWithAttributeCollection,
   formDefWithTwoTextVariableHavingFinalValue,
   formDefWithTwoTextVariableWithModeOutput,
   formDefWithOptionalGroupWithRequiredTextVar,
   formDefWithOptionalGroupWithRequiredNumberVar,
-  formDefWithOptionalGroupWithRequiredRecordLinkWithoutSearch,
   formDefWithOptionalGroupWithRequiredRecordLink,
   formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
   formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars,
   formDefWithOneRequiredNumberVariableWithAttributeCollection,
   formDefWithOneOptionalGroupWithAttributeCollection,
+  formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -977,6 +975,36 @@ describe('<FormGenerator />', () => {
         <FormGenerator
           formSchema={
             formDefWithOneOptionalGroupWithAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+      const textInput = screen.getByPlaceholderText(
+        'mainTitleTextVarPlaceholderText',
+      );
+      expect(textInput).toBeInTheDocument();
+      const attributeButton = screen.getByRole('button', { expanded: false });
+      expect(attributeButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a form with a optional group with attribute amd with a optional textVariable and attribute and validates it', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute as FormSchema
           }
           onSubmit={mockSubmit}
         />,

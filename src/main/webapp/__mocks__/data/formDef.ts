@@ -1413,6 +1413,116 @@ export const formDefWithOneOptionalGroupWithAttributeCollection = {
   },
 };
 
+export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'alternativeTitle',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'alternativeTitleGroupText',
+            body: 'alternativeTitleGroupDefText',
+          },
+          label: 'alternativeTitleGroupText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'aar',
+                  label: 'aarLangItemText',
+                },
+              ],
+            },
+          ],
+
+          components: [
+            {
+              name: 'mainTitle',
+              type: 'textVariable',
+              mode: 'input',
+              placeholder: 'mainTitleTextVarPlaceholderText',
+              inputType: 'input',
+              tooltip: {
+                title: 'mainTitleTextVarText',
+                body: 'mainTitleTextVarDefText',
+              },
+              attributes: [
+                {
+                  type: 'collectionVariable',
+                  name: 'eyeColor',
+                  placeholder: 'Select eye color',
+                  tooltip: {
+                    title: 'Eye color',
+                    body: 'state the author eye color',
+                  },
+                  label: 'Eye color',
+                  options: [
+                    { value: 'blue', label: 'exampleBlueItemText' },
+                    { value: 'pink', label: 'examplePinkItemText' },
+                    { value: 'yellow', label: 'exampleYellowItemText' },
+                  ],
+                  mode: 'input',
+                },
+              ],
+              label: 'mainTitleTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
+
 export const formDefWithOneGroupHavingTextVariableAsChild = {
   validationTypeId: 'someValidationTypeId',
   form: {
