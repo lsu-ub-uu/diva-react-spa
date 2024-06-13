@@ -91,15 +91,18 @@ export const checkIfComponentHasValue = (
   return getValues(componentValue) !== '';
 };
 
-export const checkForExistingSiblingValue = (formValues: any) => {
-  const valuesWithoutAttribs = Object.keys(formValues)
-    .filter((objKey) => !objKey.startsWith('_'))
-    .reduce((newObj, key) => {
-      // @ts-ignore
-      newObj[key] = formValues[key];
-      return newObj;
-    }, {});
-  const cleanedValues = removeEmpty(valuesWithoutAttribs);
-  const valueLength = Object.keys(cleanedValues).length;
-  return valueLength > 0;
+export const checkForExistingSiblingValue = (formValues: any | undefined) => {
+  if (formValues !== undefined) {
+    const valuesWithoutAttribs = Object.keys(formValues)
+      .filter((objKey) => !objKey.startsWith('_'))
+      .reduce((newObj, key) => {
+        // @ts-ignore
+        newObj[key] = formValues[key];
+        return newObj;
+      }, {});
+    const cleanedValues = removeEmpty(valuesWithoutAttribs);
+    const valueLength = Object.keys(cleanedValues).length;
+    return valueLength > 0;
+  }
+  return false;
 };

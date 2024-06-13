@@ -40,7 +40,7 @@ import {
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
-  console.log('obj', obj);
+  // console.log('obj', obj);
   return yup.object().shape(obj);
 };
 
@@ -226,11 +226,7 @@ const createYupStringRegexpSchema = (
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
         'Invalid input format',
-      )
-      .test('something', function (value, context) {
-        // @ts-ignore
-        console.log(component.name, context.from[1].value);
-      });
+      );
   }
 
   if (isComponentRepeating(component)) {

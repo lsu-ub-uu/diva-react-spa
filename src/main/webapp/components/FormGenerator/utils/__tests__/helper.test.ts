@@ -30,7 +30,6 @@ import {
   isComponentVariable,
   isFirstLevel,
   isParentGroupOptional,
-  isSiblingRepeating,
 } from '../helper';
 import { FormComponent } from '../../types';
 
@@ -1572,6 +1571,10 @@ describe('helper methods', () => {
         latitude: { value: '' },
         longitude: { value: '' },
       });
+      expect(actual).toBe(false);
+    });
+    it('checkForSiblingValue6', () => {
+      const actual = checkForExistingSiblingValue(undefined);
       expect(actual).toBe(false);
     });
   });

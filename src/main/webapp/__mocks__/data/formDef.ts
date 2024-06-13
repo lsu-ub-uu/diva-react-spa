@@ -1323,50 +1323,31 @@ export const formDefWithOneRequiredNumberVariableWithAttributeCollection = {
   },
 };
 
-export const formDefWithOneGroupWithAttributeCollection = {
-  validationTypeId: 'manuscript',
+export const formDefWithOneOptionalGroupWithAttributeCollection = {
+  validationTypeId: 'thesisManuscript',
   form: {
     name: 'divaOutput',
     type: 'group',
     mode: 'input',
     tooltip: {
-      title: 'manuscript2NewGroupText',
-      body: 'manuscript2NewGroupDefText',
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
     },
-    label: 'manuscript2NewGroupText',
-    // headlineLevel: 'h1',
-    showLabel: false,
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
     },
     components: [
       {
-        type: 'numberVariable',
-        name: 'someNumberVariableNameInData',
-        placeholder: 'someNumberPlaceholderTextId',
-        label: 'numberVariableLabelText',
-        showLabel: true,
-        validation: {
-          type: 'number',
-          min: 0,
-          max: 20,
-          warningMin: 2,
-          warningMax: 10,
-          numberOfDecimals: 2,
-        },
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-      },
-      {
         name: 'alternativeTitle',
         type: 'group',
         mode: 'input',
         tooltip: {
-          title: 'someTooltipGroupText',
-          body: 'someTooltipGroupDefText',
+          title: 'alternativeTitleGroupText',
+          body: 'alternativeTitleGroupDefText',
         },
         label: 'alternativeTitleGroupText',
         showLabel: true,
@@ -1377,24 +1358,20 @@ export const formDefWithOneGroupWithAttributeCollection = {
         },
         attributes: [
           {
-            name: 'titleType',
+            name: 'language',
             type: 'collectionVariable',
             placeholder: 'initialEmptyValueText',
             mode: 'input',
             tooltip: {
-              title: 'titleTypeCollectionVarText',
-              body: 'titleTypeCollectionVarDefText',
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
             },
-            label: 'titleTypeCollectionVarText',
+            label: 'languageCollectionVarText',
             showLabel: true,
             options: [
               {
-                value: 'alternativeTitle',
-                label: 'alternativeTitleItemText',
-              },
-              {
-                value: 'translatedTitle',
-                label: 'translatedTitleItemText',
+                value: 'aar',
+                label: 'aarLangItemText',
               },
             ],
           },
@@ -1404,12 +1381,13 @@ export const formDefWithOneGroupWithAttributeCollection = {
             name: 'mainTitle',
             type: 'textVariable',
             mode: 'input',
+            placeholder: 'mainTitleTextVarPlaceholderText',
             inputType: 'input',
             tooltip: {
-              title: 'someTooltipTitleText',
-              body: 'someTooltipTitleDefText',
+              title: 'mainTitleTextVarText',
+              body: 'mainTitleTextVarDefText',
             },
-            label: 'textVarLabelText',
+            label: 'mainTitleTextVarText',
             showLabel: true,
             validation: {
               type: 'regex',
@@ -1417,7 +1395,7 @@ export const formDefWithOneGroupWithAttributeCollection = {
             },
             repeat: {
               minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
+              repeatMin: 1,
               repeatMax: 1,
             },
             childStyle: [''],
