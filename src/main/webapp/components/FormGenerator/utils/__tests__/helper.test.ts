@@ -30,6 +30,7 @@ import {
   isComponentVariable,
   isFirstLevel,
   isParentGroupOptional,
+  isSiblingComponentRequired,
 } from '../helper';
 import { FormComponent } from '../../types';
 
@@ -1575,6 +1576,56 @@ describe('helper methods', () => {
     });
     it('checkForSiblingValue6', () => {
       const actual = checkForSiblingValue(undefined);
+      expect(actual).toBe(false);
+    });
+  });
+  describe('isSiblingComponentRepeating', () => {
+    it('isSiblingComponentRepeating return true', () => {
+      const actual = isSiblingComponentRequired({
+        type: 'textVariable',
+        name: 'someInnerNameInData',
+        label: 'someTextId',
+        childStyle: [],
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'someTextId',
+          body: 'someDefTextId',
+        },
+        validation: {
+          type: 'regex',
+          pattern: 'someRegex',
+        },
+        mode: 'input',
+        inputType: 'input',
+      });
+      expect(actual).toBe(true);
+    });
+    it('isSiblingComponentRepeating return false', () => {
+      const actual = isSiblingComponentRequired({
+        type: 'textVariable',
+        name: 'someInnerNameInData',
+        label: 'someTextId',
+        childStyle: [],
+        placeholder: 'someEmptyTextId',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        tooltip: {
+          title: 'someTextId',
+          body: 'someDefTextId',
+        },
+        validation: {
+          type: 'regex',
+          pattern: 'someRegex',
+        },
+        mode: 'input',
+        inputType: 'input',
+      });
       expect(actual).toBe(false);
     });
   });

@@ -1451,13 +1451,13 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
             {
               name: 'language',
               type: 'collectionVariable',
-              placeholder: 'initialEmptyValueText',
+              placeholder: 'someTitleGroupPlaceholderText',
               mode: 'input',
               tooltip: {
-                title: 'languageCollectionVarText',
-                body: 'languageCollectionVarDefText',
+                title: 'someTooltipGroupText',
+                body: 'someTooltipGroupDefText',
               },
-              label: 'languageCollectionVarText',
+              label: 'someTitleGroupText',
               showLabel: true,
               options: [
                 {
@@ -1467,7 +1467,6 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
               ],
             },
           ],
-
           components: [
             {
               name: 'mainTitle',
@@ -1522,6 +1521,7 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
       gridColSpan: 12,
     },
   };
+
 
 export const formDefWithOneGroupHavingTextVariableAsChild = {
   validationTypeId: 'someValidationTypeId',

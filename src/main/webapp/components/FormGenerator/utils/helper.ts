@@ -106,3 +106,7 @@ export const checkForSiblingValue = (formValues: any | undefined) => {
   }
   return false;
 };
+
+export const isSiblingComponentRequired = (component: FormComponent) => {
+  return isComponentRequired(component);
+};

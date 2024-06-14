@@ -36,6 +36,7 @@ import {
   isComponentSingularAndOptional,
   isComponentValidForDataCarrying,
   isParentGroupOptional,
+  isSiblingComponentRequired,
 } from './helper';
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
@@ -77,7 +78,6 @@ export const createYupValidationsFromComponent = (
   // eslint-disable-next-line no-lonely-if
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
-      console.log('aaaa');
       const innerObjectSchema = generateYupSchema(
         component.components,
         isParentGroupOptional(component) || parentComponentRepeating,
@@ -106,7 +106,6 @@ export const createYupValidationsFromComponent = (
   } else {
     // non-repeating group
     // eslint-disable-next-line no-lonely-if
-
     if (isComponentGroup(component)) {
       const innerSchema = generateYupSchema(
         component.components,
@@ -117,13 +116,15 @@ export const createYupValidationsFromComponent = (
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
-      // console.log(
-      //   'name',
-      //   component.name,
-      //   component.attributes,
-      //   component.repeat?.repeatMin,
-      //   isComponentRepeating(component),
-      // );
+      console.log(
+        'name',
+        component.name,
+        component.attributes,
+        component.repeat?.repeatMin,
+        component.repeat?.repeatMax,
+        'rep', isComponentRepeating(component),
+        'req', isSiblingComponentRequired(component)
+      );
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(
           component,
@@ -133,6 +134,7 @@ export const createYupValidationsFromComponent = (
         ...createValidationForAttributesFromComponent(
           component,
           isComponentRepeating(component),
+          isSiblingComponentRequired(component),
         ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     }
@@ -144,6 +146,7 @@ export const createYupValidationsFromComponent = (
 export const createValidationForAttributesFromComponent = (
   component: FormComponent,
   siblingRepeat?: boolean,
+  siblingRequired2?: boolean,
 ) => {
   const attributeValidation =
     component.attributes?.map(
@@ -153,6 +156,7 @@ export const createValidationForAttributesFromComponent = (
           true,
           isComponentRequired(component),
           siblingRepeat,
+          siblingRequired2,
         ),
       }),
     ) ?? [];
@@ -179,6 +183,7 @@ export const createValidationFromComponentType = (
   isAttribute?: boolean,
   isParentRequired?: boolean,
   siblingRepeat?: boolean,
+  siblingRequired?: boolean,
 ) => {
   switch (component.type) {
     case 'textVariable':
@@ -197,6 +202,7 @@ export const createValidationFromComponentType = (
         isAttribute,
         isParentRequired,
         siblingRepeat,
+        siblingRequired,
       );
   }
 };
@@ -347,6 +353,7 @@ const createYupStringSchema = (
   isAttribute: boolean = false,
   isParentComponentOptional: boolean = false,
   variableForAttributeRepeat: boolean = false,
+  siblingComponentRequired: boolean = false,
 ) => {
   // Kolla syskonens värde
   // Sätt yup.sting().nullable() om värdet är null
@@ -360,7 +367,14 @@ const createYupStringSchema = (
         isNotNull[0] ? field.required('not valid') : field,
       );
   }
+
+  if (isParentComponentOptional && isAttribute && siblingComponentRequired) {
+    console.log('here');
+    return yup.string().required();
+  }
+
   if (isParentComponentOptional && isAttribute && !variableForAttributeRepeat) {
+    console.log('here instead');
     return yup.string().required();
   }
 
@@ -385,6 +399,10 @@ const createYupStringSchema = (
                 context.parent.value === null ||
                 context.parent.value === '' ||
                 !checkForSiblingValue(context.from[0].value)
+
+                // !checkForSiblingValue(
+                //   context.from[context.from.length - 2].value,
+                // )
               );
             })
         : yup.string().required();

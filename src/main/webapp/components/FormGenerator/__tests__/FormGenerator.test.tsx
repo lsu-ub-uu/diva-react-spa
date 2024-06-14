@@ -1009,12 +1009,14 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
         />,
       );
+      const attributeButtons = screen.getAllByRole('button', {
+        expanded: false,
+      });
+      expect(attributeButtons).toHaveLength(2);
       const textInput = screen.getByPlaceholderText(
         'mainTitleTextVarPlaceholderText',
       );
       expect(textInput).toBeInTheDocument();
-      const attributeButton = screen.getByRole('button', { expanded: false });
-      expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
 
