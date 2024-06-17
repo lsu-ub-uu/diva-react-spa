@@ -116,15 +116,6 @@ export const createYupValidationsFromComponent = (
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
-      console.log(
-        'name',
-        component.name,
-        component.attributes,
-        component.repeat?.repeatMin,
-        component.repeat?.repeatMax,
-        'rep', isComponentRepeating(component),
-        'req', isSiblingComponentRequired(component)
-      );
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(
           component,
@@ -357,7 +348,7 @@ const createYupStringSchema = (
 ) => {
   // Kolla syskonens värde
   // Sätt yup.sting().nullable() om värdet är null
-
+  console.log('cYSS', component.name, siblingComponentRequired);
   if (isComponentRepeating(component)) {
     return yup
       .string()
@@ -368,17 +359,42 @@ const createYupStringSchema = (
       );
   }
 
+  // yup.object().shape({
+  //   showEmail: yup.boolean(),
+  //   email: yup
+  //     .string()
+  //     .email()
+  //     .when('showEmail', {
+  //       is: true,
+  //       then: yup.string().required('Must enter email address'),
+  //     }),
+  // });
+
   if (isParentComponentOptional && isAttribute && siblingComponentRequired) {
-    console.log('here');
-    return yup.string().required();
+    console.log(component.name, 'here');
+    return yup.string().when('value', ([value]) => {
+      console.log('value', component.name, value);
+      // return value !== null || value !== ''
+      //   ? yup.string().required()
+      //   : yup.string().nullable();
+      if (value === null || value === '') {
+        console.log('florb');
+        return yup.string().nullable();
+      }
+      if (value !== null || value !== '') {
+        console.log('blorb');
+        return yup.string().required();
+      }
+    });
   }
 
   if (isParentComponentOptional && isAttribute && !variableForAttributeRepeat) {
-    console.log('here instead');
+    console.log(component.name, 'here instead');
     return yup.string().required();
   }
 
   if (isParentComponentOptional) {
+    console.log(component.name, 'here instead 3');
     return yup
       .string()
       .nullable()
@@ -389,6 +405,7 @@ const createYupStringSchema = (
   }
 
   if (isAttribute && !isParentComponentOptional) {
+    console.log(component.name, 'here instead 4');
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
         ? yup

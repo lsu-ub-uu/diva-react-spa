@@ -999,7 +999,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a form with a optional group with attribute amd with a optional textVariable and attribute and validates it', async () => {
+    it('renders a form with a optional group with attribute and with a optional textVariable and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
