@@ -35,7 +35,7 @@ import {
 } from '../components';
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
-import {removeEmpty} from "../utils/removeEmpty";
+import { removeEmpty } from '../utils/removeEmpty';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();

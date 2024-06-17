@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { vi } from 'vitest';
+import { expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -54,6 +54,7 @@ import {
   formDefWithOneRequiredNumberVariableWithAttributeCollection,
   formDefWithOneOptionalGroupWithAttributeCollection,
   formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
+  formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -1026,6 +1027,63 @@ describe('<FormGenerator />', () => {
       await waitFor(() => {
         expect(submitButton).toBeInTheDocument();
       });
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a form with a optional group with attribute and with a required textVariable and attribute and validates it 2', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+      const attributeButtons = screen.getAllByRole('button', {
+        expanded: false,
+      });
+      expect(attributeButtons).toHaveLength(2);
+
+      const textInput = screen.getByPlaceholderText(
+        'mainTitleTextVarPlaceholderText',
+      );
+      expect(textInput).toBeInTheDocument();
+
+      const titleTypeAttribute = screen.getByRole('button', {
+        name: 'titleTypeCollectionVarText',
+      });
+      const languageAttribute = screen.getByRole('button', {
+        name: 'languageCollectionVarText',
+      });
+      expect(languageAttribute).toBeInTheDocument();
+      expect(titleTypeAttribute).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.click(textInput);
+      await user.type(textInput, 'someAlternativeTitle');
+
+      await user.click(languageAttribute);
+
+      await waitFor(async () => {
+        const languageElement = await screen.findByRole('listbox');
+        await user.selectOptions(languageElement, 'aarLangItemText');
+      });
+      // screen.debug(languageAttribute);
+      await user.click(titleTypeAttribute);
+
+      await waitFor(async () => {
+        const titleTypeElement = await screen.findByRole('listbox');
+        await user.selectOptions(titleTypeElement, 'alternativeTitleItemText');
+      });
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);

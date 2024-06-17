@@ -42,7 +42,6 @@ import {
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
-  // console.log('obj', obj);
   return yup.object().shape(obj);
 };
 
@@ -346,9 +345,6 @@ const createYupStringSchema = (
   variableForAttributeRepeat: boolean = false,
   siblingComponentRequired: boolean = false,
 ) => {
-  // Kolla syskonens värde
-  // Sätt yup.sting().nullable() om värdet är null
-  console.log('cYSS', component.name, siblingComponentRequired);
   if (isComponentRepeating(component)) {
     return yup
       .string()
@@ -359,42 +355,20 @@ const createYupStringSchema = (
       );
   }
 
-  // yup.object().shape({
-  //   showEmail: yup.boolean(),
-  //   email: yup
-  //     .string()
-  //     .email()
-  //     .when('showEmail', {
-  //       is: true,
-  //       then: yup.string().required('Must enter email address'),
-  //     }),
-  // });
-
   if (isParentComponentOptional && isAttribute && siblingComponentRequired) {
-    console.log(component.name, 'here');
     return yup.string().when('value', ([value]) => {
-      console.log('value', component.name, value);
-      // return value !== null || value !== ''
-      //   ? yup.string().required()
-      //   : yup.string().nullable();
       if (value === null || value === '') {
-        console.log('florb');
         return yup.string().nullable();
       }
-      if (value !== null || value !== '') {
-        console.log('blorb');
-        return yup.string().required();
-      }
+      return yup.string().required();
     });
   }
 
   if (isParentComponentOptional && isAttribute && !variableForAttributeRepeat) {
-    console.log(component.name, 'here instead');
     return yup.string().required();
   }
 
   if (isParentComponentOptional) {
-    console.log(component.name, 'here instead 3');
     return yup
       .string()
       .nullable()
@@ -405,26 +379,26 @@ const createYupStringSchema = (
   }
 
   if (isAttribute && !isParentComponentOptional) {
-    console.log(component.name, 'here instead 4');
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
         ? yup
             .string()
             .nullable()
             .test('something', function (value, context) {
-              return (
-                context.parent.value === null ||
-                context.parent.value === '' ||
-                !checkForSiblingValue(context.from[0].value)
+              if (checkForSiblingValue(value)) {
+                return true;
+              }
+              if (checkForSiblingValue(context.from[0].value) && value) {
+                return true;
+              }
+              if (!checkForSiblingValue(context.from[0].value) && !value) {
+                return true;
+              }
 
-                // !checkForSiblingValue(
-                //   context.from[context.from.length - 2].value,
-                // )
-              );
+              return false;
             })
         : yup.string().required();
     });
   }
-
   return yup.string().required();
 };
