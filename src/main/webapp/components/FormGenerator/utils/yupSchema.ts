@@ -17,7 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AnyObject, ObjectSchema, ObjectShape, TestConfig } from 'yup';
+import {
+  AnyObject,
+  ObjectSchema,
+  ObjectShape,
+  TestConfig,
+  TestContext,
+} from 'yup';
 import * as yup from 'yup';
 import {
   FormAttributeCollection,
@@ -136,7 +142,7 @@ export const createYupValidationsFromComponent = (
 export const createValidationForAttributesFromComponent = (
   component: FormComponent,
   siblingRepeat?: boolean,
-  siblingRequired2?: boolean,
+  siblingRequired?: boolean,
 ) => {
   const attributeValidation =
     component.attributes?.map(
@@ -146,7 +152,7 @@ export const createValidationForAttributesFromComponent = (
           true,
           isComponentRequired(component),
           siblingRepeat,
-          siblingRequired2,
+          siblingRequired,
         ),
       }),
     ) ?? [];
@@ -209,13 +215,6 @@ const createYupStringRegexpSchema = (
 ) => {
   const regexpValidation = component.validation as FormRegexValidation;
 
-  // check if siblings have values
-  // .test('something', function (value, context) {
-  //     return (
-  //       context.parent.value === null || context.parent.value === ''
-  //     );
-  //   })
-
   if (isParentComponentOptional) {
     return yup
       .string()
@@ -258,7 +257,6 @@ export const createYupNumberSchema = (
 ) => {
   const numberValidation = component.validation as FormNumberValidation;
   const { numberOfDecimals, min, max } = numberValidation;
-
   const testDecimals: TestConfig<string | null | undefined, AnyObject> = {
     name: 'decimal-places',
     message: 'Invalid number of decimals', // todo translation
@@ -345,16 +343,6 @@ const createYupStringSchema = (
   variableForAttributeRepeat: boolean = false,
   siblingComponentRequired: boolean = false,
 ) => {
-  if (isComponentRepeating(component)) {
-    return yup
-      .string()
-      .nullable()
-      .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull[0] ? field.required('not valid') : field,
-      );
-  }
-
   if (isParentComponentOptional && isAttribute && siblingComponentRequired) {
     return yup.string().when('value', ([value]) => {
       if (value === null || value === '') {
@@ -368,37 +356,53 @@ const createYupStringSchema = (
     return yup.string().required();
   }
 
-  if (isParentComponentOptional) {
-    return yup
-      .string()
-      .nullable()
-      .transform((value) => (value === '' ? null : value))
-      .when('$isNotNull', (isNotNull, field) =>
-        isNotNull[0] ? field.required('not valid') : field,
-      );
-  }
-
   if (isAttribute && !isParentComponentOptional) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
-        ? yup
-            .string()
-            .nullable()
-            .test('something', function (value, context) {
-              if (checkForSiblingValue(value)) {
-                return true;
-              }
-              if (checkForSiblingValue(context.from[0].value) && value) {
-                return true;
-              }
-              if (!checkForSiblingValue(context.from[0].value) && !value) {
-                return true;
-              }
-
-              return false;
-            })
+        ? yup.string().nullable().test(testSiblingHasValue)
         : yup.string().required();
     });
   }
+
+  if (isComponentRepeating(component) || isParentComponentOptional) {
+    return generateYupSchemaForCollections();
+  }
+
   return yup.string().required();
+};
+
+const testSiblingHasValue: TestConfig<string | null | undefined, AnyObject> = {
+  name: 'something',
+  message: 'This attribute is for a variable with value',
+  test: (value, context) => {
+    return !!(
+      checkForSiblingValue(value) ||
+      testSiblingValueAndValueExistingValue(context, value) ||
+      testSiblingValueAndValueForNotExistingValue(context, value)
+    );
+  },
+};
+
+const generateYupSchemaForCollections = () => {
+  return yup
+    .string()
+    .nullable()
+    .transform((value) => (value === '' ? null : value))
+    .when('$isNotNull', (isNotNull, field) =>
+      isNotNull[0] ? field.required('not valid') : field,
+    );
+};
+
+const testSiblingValueAndValueForNotExistingValue = (
+  context: TestContext<AnyObject>,
+  value: string | undefined | null,
+) => {
+  return !checkForSiblingValue(context.from[0].value) && !value;
+};
+
+const testSiblingValueAndValueExistingValue = (
+  context: TestContext<AnyObject>,
+  value: string | undefined | null,
+) => {
+  return checkForSiblingValue(context.from[0].value) && value;
 };
