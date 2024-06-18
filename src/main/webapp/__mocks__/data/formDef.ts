@@ -1234,6 +1234,144 @@ export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection =
     },
   };
 
+export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          type: 'group',
+          label: 'someChildGroupTextId',
+          name: 'someChildGroupNameInData',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someChildGroupTextId',
+            body: 'someChildGroupDefTextId',
+          },
+          components: [
+            {
+              name: 'alternativeTitle',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'alternativeTitleGroupText',
+                body: 'alternativeTitleGroupDefText',
+              },
+              label: 'alternativeTitleGroupText',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 0,
+                repeatMax: 1,
+              },
+              attributes: [
+                {
+                  name: 'language',
+                  type: 'collectionVariable',
+                  placeholder: 'someEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'aar',
+                      label: 'aarLangItemText',
+                    },
+                  ],
+                },
+                {
+                  name: 'titleType',
+                  type: 'collectionVariable',
+                  placeholder: 'someOtherEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'titleTypeCollectionVarText',
+                    body: 'titleTypeCollectionVarDefText',
+                  },
+                  label: 'titleTypeCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'alternativeTitle',
+                      label: 'alternativeTitleItemText',
+                    },
+                    {
+                      value: 'translatedTitle',
+                      label: 'translatedTitleItemText',
+                    },
+                    {
+                      value: 'abbreviatedTitle',
+                      label: 'abbreviatedTitleItemText',
+                    },
+                    {
+                      value: 'uniformTitle',
+                      label: 'uniformTitleItemText',
+                    },
+                  ],
+                },
+              ],
+              components: [
+                {
+                  name: 'mainTitle',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'mainTitleTextVarText',
+                    body: 'mainTitleTextVarDefText',
+                  },
+                  label: 'mainTitleTextVarText',
+                  placeholder: 'mainTitleTextVarPlaceholderText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          mode: 'input',
+        },
+      ],
+
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
+
 export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection =
   {
     validationTypeId: 'someValidationTypeId',
