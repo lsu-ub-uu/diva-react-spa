@@ -77,6 +77,7 @@ const validationTestsExtras = (
   type: 'string' | 'array' | 'object',
   tests: unknown[],
   defaultParam: Object | undefined,
+  nullable: boolean,
 ) => {
   return {
     optional,
@@ -86,7 +87,7 @@ const validationTestsExtras = (
     label: undefined,
     meta: undefined,
     notOneOf: [],
-    nullable: false,
+    nullable,
     oneOf: [],
   };
 };
@@ -226,13 +227,19 @@ describe('generate yupSchema', () => {
 
     const expectedSchema = {
       someRootNameInData: {
-        ...validationTestsExtras(true, 'object', [], {
-          colour: {
-            value: undefined,
+        ...validationTestsExtras(
+          true,
+          'object',
+          [],
+          {
+            colour: {
+              value: undefined,
+            },
+            someNameInData: undefined,
+            someNumberVariableNameInData: undefined,
           },
-          someNameInData: undefined,
-          someNumberVariableNameInData: undefined,
-        }),
+          false,
+        ),
 
         fields: {
           someNameInData: {
@@ -241,11 +248,18 @@ describe('generate yupSchema', () => {
               'array',
               minMaxValidationTests(0, 2),
               undefined,
+              false,
             ),
             innerType: {
-              ...validationTestsExtras(true, 'object', [], {
-                value: undefined,
-              }),
+              ...validationTestsExtras(
+                true,
+                'object',
+                [],
+                {
+                  value: undefined,
+                },
+                false,
+              ),
               fields: {
                 value: {
                   ...validationTestsExtras(
@@ -260,6 +274,7 @@ describe('generate yupSchema', () => {
                       },
                     ],
                     undefined,
+                    true,
                   ),
 
                   nullable: true,
@@ -269,7 +284,6 @@ describe('generate yupSchema', () => {
           },
           someNumberVariableNameInData: {
             innerType: {
-              // ...validationTestsExtras(),
               fields: {
                 value: {
                   ...validationTestsExtras(
@@ -277,25 +291,39 @@ describe('generate yupSchema', () => {
                     'string',
                     numberValidationTests(0, 20, 2),
                     undefined,
+                    false,
                   ),
                 },
               },
 
-              ...validationTestsExtras(true, 'object', [], {
-                value: undefined,
-              }),
+              ...validationTestsExtras(
+                true,
+                'object',
+                [],
+                {
+                  value: undefined,
+                },
+                false,
+              ),
             },
             ...validationTestsExtras(
               true,
               'array',
               minMaxValidationTests(1, 5),
               undefined,
+              false,
             ),
           },
           colour: {
-            ...validationTestsExtras(true, 'object', [], {
-              value: undefined,
-            }),
+            ...validationTestsExtras(
+              true,
+              'object',
+              [],
+              {
+                value: undefined,
+              },
+              false,
+            ),
 
             fields: {
               value: {
@@ -309,6 +337,7 @@ describe('generate yupSchema', () => {
                     },
                   ],
                   undefined,
+                  false,
                 ),
               },
             },
@@ -332,25 +361,38 @@ describe('generate yupSchema', () => {
             innerType: {
               fields: {
                 value: {
-                  ...validationTestsExtras(true, 'string', [], undefined),
+                  ...validationTestsExtras(true, 'string', [], undefined, true),
                   nullable: true,
                 },
               },
-              ...validationTestsExtras(true, 'object', [], {
-                value: undefined,
-              }),
+              ...validationTestsExtras(
+                true,
+                'object',
+                [],
+                {
+                  value: undefined,
+                },
+                true,
+              ),
             },
             ...validationTestsExtras(
               true,
               'array',
               minMaxValidationTests(0, 3),
               undefined,
+              true,
             ),
           },
         },
-        ...validationTestsExtras(true, 'object', [], {
-          colour: undefined,
-        }),
+        ...validationTestsExtras(
+          true,
+          'object',
+          [],
+          {
+            colour: undefined,
+          },
+          true,
+        ),
       },
     };
     expect(actualSchema).toMatchObject(expectedSchema);
@@ -405,31 +447,51 @@ describe('generate yupSchema', () => {
                         'string',
                         numberValidationTests(0, 20, 2),
                         undefined,
+                        true,
                       ),
                     },
                   },
-                  ...validationTestsExtras(true, 'object', [], {
-                    value: undefined,
-                  }),
+                  ...validationTestsExtras(
+                    true,
+                    'object',
+                    [],
+                    {
+                      value: undefined,
+                    },
+                    true,
+                  ),
                 },
               },
-              ...validationTestsExtras(true, 'object', [], {
-                exampleNumberVar: {
-                  value: undefined,
+              ...validationTestsExtras(
+                true,
+                'object',
+                [],
+                {
+                  exampleNumberVar: {
+                    value: undefined,
+                  },
                 },
-              }),
+                true,
+              ),
             },
             ...validationTestsExtras(
               true,
               'array',
               minMaxValidationTests(0, 10),
               undefined,
+              true,
             ),
           },
         },
-        ...validationTestsExtras(true, 'object', [], {
-          firstChildGroup: undefined,
-        }),
+        ...validationTestsExtras(
+          true,
+          'object',
+          [],
+          {
+            firstChildGroup: undefined,
+          },
+          true,
+        ),
       },
     };
 
@@ -452,7 +514,7 @@ describe('generate yupSchema', () => {
                   innerType: {
                     fields: {
                       firstName: {
-                        ...validationTestsExtras(true, 'object', [], {}),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -460,7 +522,7 @@ describe('generate yupSchema', () => {
                         },
                       },
                       lastName: {
-                        ...validationTestsExtras(true, 'object', [], {}),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -468,7 +530,7 @@ describe('generate yupSchema', () => {
                         },
                       },
                       age: {
-                        ...validationTestsExtras(true, 'object', [], {}),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -477,41 +539,61 @@ describe('generate yupSchema', () => {
                         },
                       },
                     },
-                    ...validationTestsExtras(true, 'object', [], {
-                      age: {
-                        value: undefined,
+                    ...validationTestsExtras(
+                      true,
+                      'object',
+                      [],
+                      {
+                        age: {
+                          value: undefined,
+                        },
+                        firstName: {
+                          value: undefined,
+                        },
+                        lastName: {
+                          value: undefined,
+                        },
                       },
-                      firstName: {
-                        value: undefined,
-                      },
-                      lastName: {
-                        value: undefined,
-                      },
-                    }),
+                      true,
+                    ),
                   },
                   ...validationTestsExtras(
                     true,
                     'array',
                     minMaxValidationTests(1, 100),
                     undefined,
+                    true,
                   ),
                 },
               },
-              ...validationTestsExtras(true, 'object', [], {
-                name: undefined,
-              }),
+              ...validationTestsExtras(
+                true,
+                'object',
+                [],
+                {
+                  name: undefined,
+                },
+                true,
+              ),
             },
             ...validationTestsExtras(
               true,
               'array',
               minMaxValidationTests(1, 10),
               undefined,
+              true,
             ),
           },
         },
-        ...validationTestsExtras(true, 'object', [], {
-          author: undefined,
-        }),
+        ...validationTestsExtras(
+          true,
+          'object',
+          [],
+          {
+            author: undefined,
+          },
+          true,
+        ),
       },
     };
 
@@ -549,6 +631,7 @@ describe('generate yupSchema', () => {
                       },
                     ],
                     undefined,
+                    true,
                   ),
                 },
                 value: {
@@ -557,19 +640,27 @@ describe('generate yupSchema', () => {
                     'string',
                     numberValidationTests(1, 5, 0),
                     undefined,
+                    true,
                   ),
                 },
               },
-              ...validationTestsExtras(true, 'object', [], {
-                _gradeAttribute: undefined,
-                value: undefined,
-              }),
+              ...validationTestsExtras(
+                true,
+                'object',
+                [],
+                {
+                  _gradeAttribute: undefined,
+                  value: undefined,
+                },
+                true,
+              ),
             },
             ...validationTestsExtras(
               true,
               'array',
               minMaxValidationTests(1, 12),
               undefined,
+              true,
             ),
           },
           nonRepeatingGroup: {
@@ -595,6 +686,7 @@ describe('generate yupSchema', () => {
                       },
                     ],
                     undefined,
+                    true,
                   ),
                   // attribute values are always required
                 },
@@ -602,7 +694,7 @@ describe('generate yupSchema', () => {
                   innerType: {
                     fields: {
                       firstName: {
-                        ...validationTestsExtras(true, 'object', [], {}),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -614,7 +706,7 @@ describe('generate yupSchema', () => {
                         },
                       },
                       lastName: {
-                        ...validationTestsExtras(true, 'object', [], {}),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -622,7 +714,7 @@ describe('generate yupSchema', () => {
                         },
                       },
                       age: {
-                        ...validationTestsExtras(true, 'object', [], {}),
+                        ...validationTestsExtras(true, 'object', [], {}, true),
                         fields: {
                           value: {
                             type: 'string',
@@ -631,37 +723,51 @@ describe('generate yupSchema', () => {
                         },
                       },
                     },
-                    ...validationTestsExtras(true, 'object', [], {
-                      age: {
-                        value: undefined,
+                    ...validationTestsExtras(
+                      true,
+                      'object',
+                      [],
+                      {
+                        age: {
+                          value: undefined,
+                        },
+                        firstName: {
+                          _colourAttribute: undefined,
+                          value: undefined,
+                        },
+                        lastName: {
+                          value: undefined,
+                        },
                       },
-                      firstName: {
-                        _colourAttribute: undefined,
-                        value: undefined,
-                      },
-                      lastName: {
-                        value: undefined,
-                      },
-                    }),
+                      true,
+                    ),
                   },
                   ...validationTestsExtras(
                     true,
                     'array',
                     minMaxValidationTests(1, 100),
                     undefined,
+                    true,
                   ),
                 },
               },
-              ...validationTestsExtras(true, 'object', [], {
-                _colourAttribute: undefined,
-                name: undefined,
-              }),
+              ...validationTestsExtras(
+                true,
+                'object',
+                [],
+                {
+                  _colourAttribute: undefined,
+                  name: undefined,
+                },
+                true,
+              ),
             },
             ...validationTestsExtras(
               true,
               'array',
               minMaxValidationTests(1, 10),
               undefined,
+              true,
             ),
           },
         },
