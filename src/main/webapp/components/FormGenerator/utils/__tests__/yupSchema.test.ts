@@ -18,12 +18,7 @@
  */
 
 import * as yup from 'yup';
-import {
-  AnyObject,
-  ArraySchema,
-  ObjectSchema,
-  StringSchema,
-} from 'yup';
+import { AnyObject, ArraySchema, ObjectSchema, StringSchema } from 'yup';
 import {
   createValidationForAttributesFromComponent,
   createValidationFromComponentType,
@@ -613,7 +608,6 @@ describe('generate yupSchema', () => {
 
     const expectedSchema = {
       someRootNameInData: {
-        // type: 'object',
         ...validationTestsExtras(
           true,
           'object',
@@ -675,18 +669,15 @@ describe('generate yupSchema', () => {
             ),
           },
           nonRepeatingGroup: {
-            type: 'object',
-            aaa: 'aaa',
-            label: undefined,
-            meta: undefined,
-            notOneOf: [],
-            nullable: false,
-            oneOf: [],
-            optional: true,
-            tests: [],
-            default: {
-              _groupAttribute: undefined,
-            },
+            ...validationTestsExtras(
+              true,
+              'object',
+              [],
+              {
+                _groupAttribute: undefined,
+              },
+              false,
+            ),
             fields: {
               _groupAttribute: {
                 type: 'string',
@@ -717,7 +708,6 @@ describe('generate yupSchema', () => {
                     undefined,
                     false,
                   ),
-                  // attribute values are always required
                 },
                 name: {
                   innerType: {
@@ -730,7 +720,7 @@ describe('generate yupSchema', () => {
                           },
                           _colourAttribute: {
                             type: 'string',
-                            tests: requiredValidationTests,
+                            tests: [],
                           },
                         },
                       },
@@ -802,7 +792,6 @@ describe('generate yupSchema', () => {
         },
       },
     };
-
     expect(actualSchema).toMatchObject(expectedSchema);
   });
 });
@@ -865,7 +854,6 @@ describe('util functions', () => {
               fields: {
                 firstName: {
                   ...validationExclusiveExtras(false, false),
-                  // _excludedEdges: [],
                   _mutate: undefined,
                   exclusiveTests: {
                     required: false,
