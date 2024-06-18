@@ -397,6 +397,7 @@ const testSiblingValueAndValueForNotExistingValue = (
   context: TestContext<AnyObject>,
   value: string | undefined | null,
 ) => {
+  // @ts-ignore
   return !checkForSiblingValue(context.from[0].value) && !value;
 };
 
@@ -404,5 +405,6 @@ const testSiblingValueAndValueExistingValue = (
   context: TestContext<AnyObject>,
   value: string | undefined | null,
 ) => {
+  // @ts-ignore
   return checkForSiblingValue(context.from[0].value) && value;
 };
