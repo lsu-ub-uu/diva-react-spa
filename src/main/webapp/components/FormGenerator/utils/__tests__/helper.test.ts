@@ -19,6 +19,7 @@
 
 import {
   checkForSiblingValue,
+  checkIfValueExists,
   countStringCharOccurrences,
   isComponentContainer,
   isComponentGroup,
@@ -1627,6 +1628,25 @@ describe('helper methods', () => {
         inputType: 'input',
       });
       expect(actual).toBe(false);
+    });
+  });
+
+  describe('checkIfValueExists', () => {
+    it('checkIfValueExists returns false for empty string', () => {
+      const actual = checkIfValueExists('');
+      expect(actual).toBe(false);
+    });
+    it('checkIfValueExists returns false for null', () => {
+      const actual = checkIfValueExists(null);
+      expect(actual).toBe(false);
+    });
+    it('checkIfValueExists returns false for undefined', () => {
+      const actual = checkIfValueExists(undefined);
+      expect(actual).toBe(false);
+    });
+    it('checkIfValueExists returns true for non-empty string', () => {
+      const actual = checkIfValueExists('someString');
+      expect(actual).toBe(true);
     });
   });
 

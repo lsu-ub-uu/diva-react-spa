@@ -3941,6 +3941,103 @@ export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars = {
   },
 };
 
+export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'point',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'pointGroupText',
+          body: 'pointGroupDefText',
+        },
+        label: 'pointGroupText',
+        headlineLevel: 'h3',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1.7976931348623157e308,
+        },
+        components: [
+          {
+            name: 'longitude',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'longitudeTextVarText',
+              body: 'longitudeTextVarDefText',
+            },
+            label: 'longitudeTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern:
+                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            placeholder: 'someLongitudeTextId',
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'latitude',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'longitudeTextVarText',
+              body: 'longitudeTextVarDefText',
+            },
+            label: 'longitudeTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern:
+                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            placeholder: 'someLatitudeTextId',
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
 export const formDefWithSurroundingContainerAroundTextVariable: FormSchema = {
   validationTypeId: 'book',
   form: {

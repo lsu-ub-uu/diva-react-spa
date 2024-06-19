@@ -56,6 +56,7 @@ import {
   formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
   formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
   formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
+  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -119,6 +120,31 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('Renders a form from a given definition and submits it', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariable as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+
+      expect(inputElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -1343,6 +1369,35 @@ describe('<FormGenerator />', () => {
       // await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
       // });
+    });
+
+    it('validation should fail a group having 1-1 and textVars being 1-1 being partly filled', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputNumberElement = screen.getByPlaceholderText(
+        'someLongitudeTextId',
+      );
+
+      expect(inputNumberElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(inputNumberElement, '1.23');
+      await user.click(submitButton);
+
+      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
+      // expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
 });
