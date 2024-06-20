@@ -4917,3 +4917,72 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
     gridColSpan: 12,
   },
 };
+
+export const formDefAbstractAndNationalSubject = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'abstract',
+        type: 'textVariable',
+        mode: 'input',
+        inputType: 'input',
+        tooltip: {
+          title: 'abstractTextVarText',
+          body: 'abstractTextVarDefText',
+        },
+        label: 'abstractTextVarText',
+        showLabel: true,
+        validation: {
+          type: 'regex',
+          pattern: '.+',
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'nationalSubjectCategory',
+        type: 'recordLink',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryLinkText',
+          body: 'nationalSubjectCategoryLinkDefText',
+        },
+        label: 'nationalSubjectCategoryLinkText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        childStyle: [''],
+        gridColSpan: 12,
+        recordLinkType: 'nationalSubjectCategory',
+        presentationRecordLinkId: 'nationalSubjectCategoryPLink',
+        search: 'nationalSubjectCategorySearch',
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
