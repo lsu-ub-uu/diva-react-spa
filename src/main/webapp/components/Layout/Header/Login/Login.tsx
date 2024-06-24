@@ -92,13 +92,6 @@ export const Login = (): JSX.Element => {
     if (event === undefined) {
       console.log('rM', event);
     }
-
-    console.log(
-      splitSlashFromUrl(
-        splitBasenameFromUrl(window.location.href, 'divaclient'),
-      ),
-      splitSlashFromUrl(event.origin as string),
-    );
     if (
       !messageIsFromWindowOpenedFromHere(
         splitSlashFromUrl(

@@ -59,6 +59,7 @@ import {
   formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
   formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
   formDefWithOptionalGroupWithTwoCollectionVars,
+  formDefWithTextVarAndNestedGroupsWithOneTextVar,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -1439,6 +1440,38 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
           formSchema={
             formDefWithOptionalGroupWithTwoCollectionVars as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+
+      const expandButton = screen.getAllByRole('button', { expanded: false });
+      // expect(expandButton).toBeInTheDocument();
+
+      await user.click(expandButton[0]);
+      const items = screen.getByRole('listbox');
+
+      expect(items.children).toHaveLength(2); // includes None option
+
+      await user.selectOptions(items, 'bthItemText');
+      await user.click(submitButton);
+
+      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('validation should fail a group having 0-1 with textVar having 1-1, a group having 1-1 and nested textVar having 1-1', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithTextVarAndNestedGroupsWithOneTextVar as FormSchema
           }
         />,
       );
