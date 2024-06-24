@@ -415,10 +415,10 @@ const createYupStringSchema = (
     siblingComponentRequired &&
     isComponentRequired(component)
   ) {
+    console.log('here')
     return yup
       .string()
       .nullable()
-      .transform((value) => (value === '' ? null : value))
       .test('checkIfVariableHasSiblingsWithValues', function (value, context) {
         // @ts-ignore
         if (!value && !checkForExistingSiblings(context.from[1].value)) {
