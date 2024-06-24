@@ -56,7 +56,7 @@ import {
   formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
   formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
   formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
-  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
+  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars, formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -1396,7 +1396,36 @@ describe('<FormGenerator />', () => {
       await user.type(inputNumberElement, '1.23');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      // expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('validation should fail a group having 1-1 and numberVars being 1-1 being partly filled', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputNumberElement = screen.getByPlaceholderText(
+        'someLongitudeTextId',
+      );
+
+      expect(inputNumberElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(inputNumberElement, '3');
+      await user.click(submitButton);
+
+      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
       // expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });

@@ -445,7 +445,12 @@ describe('generate yupSchema', () => {
                       ...validationTestsExtras(
                         true,
                         'string',
-                        [],
+                        [
+                          {
+                            name: 'checkIfVariableHasSiblingsWithValues',
+                            params: undefined,
+                          },
+                        ],
                         undefined,
                         true,
                       ),

@@ -34,8 +34,7 @@ import {
   FormSchema,
 } from '../types';
 import {
-  checkForSiblingValue,
-  checkIfValueExists,
+  checkForExistingSiblings,
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
@@ -186,10 +185,8 @@ export const createValidationFromComponentType = (
   siblingRepeat?: boolean,
   siblingRequired?: boolean,
 ) => {
-  // console.log('cVFCT', component.name, siblingRequired);
   switch (component.type) {
     case 'textVariable':
-      // console.log('tV', component.name, component.type, siblingRequired);
       return createYupStringRegexpSchema(
         component as FormComponent,
         isParentRequired,
@@ -199,6 +196,7 @@ export const createValidationFromComponentType = (
       return createYupNumberSchema(
         component as FormComponent,
         isParentRequired,
+        siblingRequired,
       );
     default: // collectionVariable, recordLink
       return createYupStringSchema(
@@ -222,11 +220,13 @@ const createYupStringRegexpSchema = (
   isParentComponentOptional: boolean = false,
   isSiblingRequired: boolean = false,
 ) => {
-  // console.log(component.name, isParentComponentOptional, isSiblingRequired);
   const regexpValidation = component.validation as FormRegexValidation;
 
-  if (isParentComponentOptional && isSiblingRequired) {
-    // console.log('2', component.name);
+  if (
+    isParentComponentOptional &&
+    isSiblingRequired &&
+    isComponentRequired(component)
+  ) {
     return yup
       .string()
       .nullable()
@@ -234,29 +234,22 @@ const createYupStringRegexpSchema = (
       .matches(
         new RegExp(regexpValidation.pattern ?? '.+'),
         'Invalid input format',
-      );
-    // .test('something', function (value, context) {
-    //   /*
-    //    * om var har värde, eller syskon har värde
-    //    * */
-    //
-    //   if (!checkIfValueExists(value)) {
-    //     console.log('1', component.name, isComponentRequired(component));
-    //     if (testSiblingValueAndValueForNotExistingValue(context, value)) {
-    //       console.log('1.2', component.name);
-    //       return false;
-    //     }
-    //     return true;
-    //   }
-    //   if (checkIfValueExists(value)) {
-    //     console.log('5', component.name);
-    //     return true;
-    //   }
-    // });
+      )
+      .test('checkIfVariableHasSiblingsWithValues', function (value, context) {
+        // @ts-ignore
+        if (!value && !checkForExistingSiblings(context.from[1].value)) {
+          return true;
+        }
+        // @ts-ignore
+        if (!value && checkForExistingSiblings(context.from[1].value)) {
+          return false;
+        }
+
+        return true;
+      });
   }
 
   if (isParentComponentOptional) {
-    // console.log('2', component.name);
     return yup
       .string()
       .nullable()
@@ -296,6 +289,7 @@ const createYupStringRegexpSchema = (
 export const createYupNumberSchema = (
   component: FormComponent,
   isParentComponentOptional: boolean = false,
+  isSiblingRequired: boolean = false,
 ) => {
   const numberValidation = component.validation as FormNumberValidation;
   const { numberOfDecimals, min, max } = numberValidation;
@@ -331,6 +325,38 @@ export const createYupNumberSchema = (
       return max >= numValue;
     },
   };
+
+  if (
+    isParentComponentOptional &&
+    isSiblingRequired &&
+    isComponentRequired(component)
+  ) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .when('$isNotNull', (isNotNull, field) =>
+        isNotNull
+          ? field
+              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .test(testDecimals)
+              .test(testMax)
+              .test(testMin)
+          : field,
+      )
+      .test('checkIfVariableHasSiblingsWithValues', function (value, context) {
+        // @ts-ignore
+        if (!value && !checkForExistingSiblings(context.from[1].value)) {
+          return true;
+        }
+        // @ts-ignore
+        if (!value && checkForExistingSiblings(context.from[1].value)) {
+          return false;
+        }
+
+        return true;
+      });
+  }
 
   if (isParentComponentOptional) {
     return yup
@@ -414,11 +440,11 @@ const createYupStringSchema = (
 };
 
 const testSiblingHasValue: TestConfig<string | null | undefined, AnyObject> = {
-  name: 'something',
+  name: 'checkIfVariableHasSiblingsWithValues',
   message: 'This attribute is for a variable with value',
   test: (value, context) => {
     return (
-      checkForSiblingValue(value) ||
+      checkForExistingSiblings(value) ||
       testSiblingValueAndValueExistingValue(context, value) ||
       testSiblingValueAndValueForNotExistingValue(context, value)
     );
@@ -440,7 +466,7 @@ const testSiblingValueAndValueForNotExistingValue = (
   value: string | undefined | null,
 ): boolean => {
   // @ts-ignore
-  return !checkForSiblingValue(context.from[0].value) && !value;
+  return !checkForExistingSiblings(context.from[0].value) && !value;
 };
 
 const testSiblingValueAndValueExistingValue = (
@@ -448,5 +474,5 @@ const testSiblingValueAndValueExistingValue = (
   value: string | undefined | null,
 ): boolean => {
   // @ts-ignore
-  return checkForSiblingValue(context.from[0].value) && value;
+  return checkForExistingSiblings(context.from[0].value) && value;
 };

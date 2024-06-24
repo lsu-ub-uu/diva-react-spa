@@ -3972,7 +3972,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars = {
         showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
+          repeatMin: 0, //For the test
           repeatMax: 1.7976931348623157e308,
         },
         components: [
@@ -4007,15 +4007,118 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars = {
             mode: 'input',
             inputType: 'input',
             tooltip: {
+              title: 'latitudeTextVarText',
+              body: 'latitudeTextVarDefText',
+            },
+            label: 'latitudeTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern:
+                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            placeholder: 'someLatitudeTextId',
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'point',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'pointGroupText',
+          body: 'pointGroupDefText',
+        },
+        label: 'pointGroupText',
+        headlineLevel: 'h3',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0, //For the test
+          repeatMax: 1.7976931348623157e308,
+        },
+        components: [
+          {
+            name: 'longitude',
+            type: 'numberVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
               title: 'longitudeTextVarText',
               body: 'longitudeTextVarDefText',
             },
             label: 'longitudeTextVarText',
             showLabel: true,
             validation: {
-              type: 'regex',
-              pattern:
-                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+              type: 'number',
+              min: 1,
+              max: 20,
+              warningMin: 2,
+              warningMax: 10,
+              numberOfDecimals: 0,
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            placeholder: 'someLongitudeTextId',
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'latitude',
+            type: 'numberVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'latitudeTextVarText',
+              body: 'latitudeTextVarDefText',
+            },
+            label: 'latitudeTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 1,
+              max: 20,
+              warningMin: 2,
+              warningMax: 10,
+              numberOfDecimals: 0,
             },
             repeat: {
               minNumberOfRepeatingToShow: 1,
