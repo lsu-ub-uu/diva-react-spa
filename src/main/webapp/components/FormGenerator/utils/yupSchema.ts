@@ -83,7 +83,6 @@ export const createYupValidationsFromComponent = (
   // eslint-disable-next-line no-lonely-if
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
-      // console.log('gru', component.name);
       const innerObjectSchema = generateYupSchema(
         component.components,
         isParentGroupOptional(component) || parentComponentRepeating,
@@ -122,7 +121,6 @@ export const createYupValidationsFromComponent = (
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
-      // console.log('req', component.name, isSiblingComponentRequired(component));
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(
           component,
@@ -415,7 +413,6 @@ const createYupStringSchema = (
     siblingComponentRequired &&
     isComponentRequired(component)
   ) {
-    console.log('here')
     return yup
       .string()
       .nullable()

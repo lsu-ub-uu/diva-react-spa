@@ -36,7 +36,6 @@ import {
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
-import {formDefWithOptionalGroupWithTwoCollectionVars} from "../__mocks__/data/formDef";
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
@@ -107,7 +106,7 @@ export const CreateRecordPage = () => {
             onInvalid={() => {
               notification(`Form is invalid`, 'error');
             }}
-            formSchema={formDefWithOptionalGroupWithTwoCollectionVars as FormSchema}
+            formSchema={schema as FormSchema}
           />
         </Stack>
       </div>
