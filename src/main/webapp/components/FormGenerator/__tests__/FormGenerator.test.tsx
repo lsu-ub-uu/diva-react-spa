@@ -1479,17 +1479,14 @@ describe('<FormGenerator />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
+      const inputNumberElement = screen.getByPlaceholderText(
+        'someLongitudeTextId',
+      );
+
+      expect(inputNumberElement).toBeInTheDocument();
+
       const user = userEvent.setup();
-
-      const expandButton = screen.getAllByRole('button', { expanded: false });
-      // expect(expandButton).toBeInTheDocument();
-
-      await user.click(expandButton[0]);
-      const items = screen.getByRole('listbox');
-
-      expect(items.children).toHaveLength(2); // includes None option
-
-      await user.selectOptions(items, 'bthItemText');
+      await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
       expect(container.getElementsByClassName('Mui-error').length).toBe(3);

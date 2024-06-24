@@ -219,7 +219,6 @@ const createYupStringRegexpSchema = (
   isSiblingRequired: boolean = false,
 ) => {
   const regexpValidation = component.validation as FormRegexValidation;
-
   if (
     isParentComponentOptional &&
     isSiblingRequired &&
@@ -342,12 +341,16 @@ export const createYupNumberSchema = (
           : field,
       )
       .test('checkIfVariableHasSiblingsWithValues', function (value, context) {
-        // @ts-ignore
-        if (!value && !checkForExistingSiblings(context.from[1].value)) {
+        if (
+          !value &&
+          !checkForExistingSiblings(context.from[context.from.length - 2].value)
+        ) {
           return true;
         }
-        // @ts-ignore
-        if (!value && checkForExistingSiblings(context.from[1].value)) {
+        if (
+          !value &&
+          checkForExistingSiblings(context.from[context.from.length - 2].value)
+        ) {
           return false;
         }
 
