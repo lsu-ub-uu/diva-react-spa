@@ -3972,7 +3972,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars = {
         showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
-          repeatMin: 0, //For the test
+          repeatMin: 0, // For the test
           repeatMax: 1.7976931348623157e308,
         },
         components: [
@@ -4069,7 +4069,7 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars = {
         showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
-          repeatMin: 0, //For the test
+          repeatMin: 0, // For the test
           repeatMax: 1.7976931348623157e308,
         },
         components: [
@@ -4128,6 +4128,103 @@ export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars = {
             placeholder: 'someLatitudeTextId',
             childStyle: ['sixChildStyle'],
             gridColSpan: 6,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithOptionalGroupWithTwoCollectionVars = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'point',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'pointGroupText',
+          body: 'pointGroupDefText',
+        },
+        label: 'pointGroupText',
+        headlineLevel: 'h3',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0, // For the test
+          repeatMax: 1.7976931348623157e308,
+        },
+        components: [
+          {
+            name: 'someCollectionVar',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'domainCollectionVarText',
+              body: 'domainCollectionVarDefText',
+            },
+            label: 'someCollectionVarText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            options: [
+              {
+                value: 'bth',
+                label: 'bthItemText',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'someOtherCollectionVar',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'domainCollectionVarText',
+              body: 'domainCollectionVarDefText',
+            },
+            label: 'someOtherCollectionVarText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            options: [
+              {
+                value: 'bth',
+                label: 'bthItemText',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
           },
         ],
         presentationStyle: '',

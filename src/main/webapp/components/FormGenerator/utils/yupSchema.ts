@@ -261,7 +261,6 @@ const createYupStringRegexpSchema = (
   }
 
   if (isComponentRepeating(component)) {
-    // console.log('3', component.name);
     return yup
       .string()
       .nullable()
@@ -411,6 +410,29 @@ const createYupStringSchema = (
   variableForAttributeRepeat: boolean = false,
   siblingComponentRequired: boolean = false,
 ) => {
+  if (
+    isParentComponentOptional &&
+    siblingComponentRequired &&
+    isComponentRequired(component)
+  ) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .test('checkIfVariableHasSiblingsWithValues', function (value, context) {
+        // @ts-ignore
+        if (!value && !checkForExistingSiblings(context.from[1].value)) {
+          return true;
+        }
+        // @ts-ignore
+        if (!value && checkForExistingSiblings(context.from[1].value)) {
+          return false;
+        }
+
+        return true;
+      });
+  }
+
   if (isParentComponentOptional && isAttribute && siblingComponentRequired) {
     return yup.string().when('value', ([value]) => {
       if (value === null || value === '') {
