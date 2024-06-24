@@ -38,7 +38,15 @@ export const getDivaOutputs = async (req: Request, res: Response) => {
         {
           name: 'include',
           children: [
-            { name: 'includePart', children: [{ name: 'outputGenericSearchTerm', value: '*' }] }
+            {
+              name: 'includePart',
+              children: [
+                {
+                  name: 'genericSearchTerm',
+                  value: '*'
+                }
+              ]
+            }
           ]
         }
       ]
