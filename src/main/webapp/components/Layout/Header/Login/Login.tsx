@@ -93,6 +93,7 @@ export const Login = (): JSX.Element => {
     if (event === undefined || event.data.source === 'react-devtools-bridge') {
       dispatch(hasError('login error'));
     }
+
     if (event.data.source !== 'react-devtools-bridge') {
       if (
         messageIsFromWindowOpenedFromHere(
@@ -109,6 +110,7 @@ export const Login = (): JSX.Element => {
           ),
         );
       }
+
     }
   };
 

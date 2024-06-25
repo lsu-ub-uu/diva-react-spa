@@ -447,7 +447,7 @@ describe('generate yupSchema', () => {
                         'string',
                         [
                           {
-                            name: 'checkIfVariableHasSiblingsWithValues',
+                            name: 'checkIfStringVariableHasSiblingsWithValuesInContext',
                             params: undefined,
                           },
                         ],
@@ -718,14 +718,46 @@ describe('generate yupSchema', () => {
                   innerType: {
                     fields: {
                       firstName: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
+                        ...validationTestsExtras(
+                          true,
+                          'object',
+                          [],
+                          {
+                            _colourAttribute: undefined,
+                            value: undefined,
+                          },
+                          false,
+                        ),
                         fields: {
                           value: {
-                            type: 'string',
+                            ...validationTestsExtras(
+                              true,
+                              'string',
+                              [
+                                {
+                                  name: 'matches',
+                                  params: {
+                                    regex: /^[a-zA-Z]$/,
+                                  },
+                                },
+                              ],
+                              undefined,
+                              false,
+                            ),
                           },
                           _colourAttribute: {
-                            type: 'string',
-                            tests: [],
+                            ...validationTestsExtras(
+                              true,
+                              'string',
+                              [
+                                {
+                                  name: 'checkIfStringVariableHasSiblingsWithValues',
+                                  params: undefined,
+                                },
+                              ],
+                              undefined,
+                              true,
+                            ),
                           },
                         },
                       },
@@ -733,16 +765,42 @@ describe('generate yupSchema', () => {
                         ...validationTestsExtras(true, 'object', [], {}, false),
                         fields: {
                           value: {
-                            type: 'string',
+                            ...validationTestsExtras(
+                              true,
+                              'string',
+                              [
+                                {
+                                  name: 'matches',
+                                  params: {
+                                    regex: /^[a-zA-Z]$/,
+                                  },
+                                },
+                              ],
+                              undefined,
+                              false,
+                            ),
                           },
                         },
                       },
                       age: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
+                        ...validationTestsExtras(
+                          true,
+                          'object',
+                          [],
+                          {
+                            value: undefined,
+                          },
+                          false,
+                        ),
                         fields: {
                           value: {
-                            type: 'string',
-                            tests: numberValidationTests(0, 125, 0),
+                            ...validationTestsExtras(
+                              true,
+                              'string',
+                              numberValidationTests(0, 125, 0),
+                              undefined,
+                              false,
+                            ),
                           },
                         },
                       },
