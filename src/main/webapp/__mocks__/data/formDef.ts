@@ -5377,3 +5377,232 @@ export const formDefAbstractAndNationalSubject = {
     gridColSpan: 12,
   },
 };
+
+export const formDefTwoOptionalGroupsWithRequiredTextVars = {
+  validationTypeId: 'thesisManuscript',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'thesisManuscriptNewGroupText',
+      body: 'thesisManuscriptNewGroupDefText',
+    },
+    label: 'thesisManuscriptNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'authorGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1.7976931348623157e308,
+        },
+        components: [
+          {
+            name: 'givenName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'givenNameTextVarText',
+              body: 'givenNameTextVarDefText',
+            },
+            label: 'givenNameTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'familyName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'familyNameTextVarText',
+              body: 'familyNameTextVarDefText',
+            },
+            label: 'familyNameTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'geoData',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'geoDataGroupText',
+          body: 'geoDataGroupDefText',
+        },
+        label: 'geoDataGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'description',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'divaDescriptionTextVarText',
+              body: 'divaDescriptionTextVarDefText',
+            },
+            label: 'divaDescriptionTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'polygon',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'polygonGroupText',
+              body: 'polygonGroupDefText',
+            },
+            label: 'polygonGroupText',
+            showLabel: false,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'point',
+                type: 'group',
+                mode: 'input',
+                tooltip: {
+                  title: 'pointGroupText',
+                  body: 'pointGroupDefText',
+                },
+                label: 'pointGroupText',
+                headlineLevel: 'h3',
+                showLabel: true,
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1.7976931348623157e308,
+                },
+                components: [
+                  {
+                    name: 'longitude',
+                    placeholder: 'longitude',
+                    type: 'textVariable',
+                    mode: 'input',
+                    inputType: 'input',
+                    tooltip: {
+                      title: 'longitudeTextVarText',
+                      body: 'longitudeTextVarDefText',
+                    },
+                    label: 'longitudeTextVarText',
+                    showLabel: true,
+                    validation: {
+                      type: 'regex',
+                      pattern:
+                        '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+                    },
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    childStyle: ['sixChildStyle'],
+                    gridColSpan: 6,
+                  },
+                  {
+                    name: 'latitude',
+                    placeholder: 'latitude',
+                    type: 'textVariable',
+                    mode: 'input',
+                    inputType: 'input',
+                    tooltip: {
+                      title: 'latitudeTextVarText',
+                      body: 'latitudeTextVarDefText',
+                    },
+                    label: 'latitudeTextVarText',
+                    showLabel: true,
+                    validation: {
+                      type: 'regex',
+                      pattern:
+                        '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|90)\\.[0-9]{1,20}$)',
+                    },
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    childStyle: ['sixChildStyle'],
+                    gridColSpan: 6,
+                  },
+                ],
+                presentationStyle: '',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};

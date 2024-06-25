@@ -60,6 +60,7 @@ import {
   formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
   formDefWithOptionalGroupWithTwoCollectionVars,
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
+  formDefTwoOptionalGroupsWithRequiredTextVars,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -1491,6 +1492,36 @@ describe('<FormGenerator />', () => {
 
       expect(container.getElementsByClassName('Mui-error').length).toBe(3);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('validation should pass a group having 0-1 with nested textVars having 1-1', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefTwoOptionalGroupsWithRequiredTextVars as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const longitudeElement = screen.getByPlaceholderText('longitude');
+      const latitudeElement = screen.getByPlaceholderText('latitude');
+
+      expect(longitudeElement).toBeInTheDocument();
+      expect(latitudeElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(longitudeElement, '1.25');
+      await user.type(latitudeElement, '1.25');
+      await user.click(submitButton);
+
+      // expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
 });

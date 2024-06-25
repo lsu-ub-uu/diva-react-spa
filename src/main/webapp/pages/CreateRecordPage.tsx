@@ -36,7 +36,7 @@ import {
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
-import {formDefWithTextVarAndNestedGroupsWithOneTextVar} from "../__mocks__/data/formDef";
+import { formDefWithTextVarAndNestedGroupsWithOneTextVar } from '../__mocks__/data/formDef';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
@@ -107,7 +107,8 @@ export const CreateRecordPage = () => {
             onInvalid={() => {
               notification(`Form is invalid`, 'error');
             }}
-            formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar as FormSchema}
+            formSchema={schema as FormSchema}
+            // formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar as FormSchema}
           />
         </Stack>
       </div>
