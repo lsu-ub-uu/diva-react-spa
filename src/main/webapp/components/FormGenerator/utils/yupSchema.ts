@@ -431,16 +431,19 @@ const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
   name: 'checkIfStringVariableHasSiblingsWithValuesInContext',
   message: 'This variable is required',
   test: (value, context) => {
-    // @ts-ignore
     if (
       !value &&
-      !checkForExistingSiblings(context.from[context.from.length - 2].value)
+      !checkForExistingSiblings(
+        context.from && context.from[context.from.length - 2].value,
+      )
     ) {
       return true;
     }
     if (
       !value &&
-      checkForExistingSiblings(context.from[context.from.length - 2].value)
+      checkForExistingSiblings(
+        context.from && context.from[context.from.length - 2].value,
+      )
     ) {
       return false;
     }
@@ -456,12 +459,16 @@ const testOptionalParentAndRequiredSiblingWithValue: TestConfig<
   name: 'checkIfStringVariableHasSiblingsWithValues',
   message: 'This variable is required',
   test: (value, context) => {
-    // @ts-ignore
-    if (!value && !checkForExistingSiblings(context.from[1].value)) {
+    if (
+      !value &&
+      !checkForExistingSiblings(context.from && context.from[1].value)
+    ) {
       return true;
     }
-    // @ts-ignore
-    if (!value && checkForExistingSiblings(context.from[1].value)) {
+    if (
+      !value &&
+      checkForExistingSiblings(context.from && context.from[1].value)
+    ) {
       return false;
     }
 
@@ -476,11 +483,9 @@ const testAttributeHasVariableWithValue: TestConfig<
   name: 'checkIfVariableHasSiblingsWithValues',
   message: 'This attribute is for a variable with value',
   test: (value, context) => {
-    return (
-      checkForExistingSiblings(value) ||
+    return (checkForExistingSiblings(value) ||
       testSiblingValueAndValueExistingValue(context, value) ||
-      testSiblingValueAndValueForNotExistingValue(context, value)
-    );
+      testSiblingValueAndValueForNotExistingValue(context, value)) as boolean;
   },
 };
 
@@ -498,14 +503,16 @@ const testSiblingValueAndValueForNotExistingValue = (
   context: TestContext<AnyObject>,
   value: string | undefined | null,
 ): boolean => {
-  // @ts-ignore
-  return !checkForExistingSiblings(context.from[0].value) && !value;
+  return (
+    !checkForExistingSiblings(context.from && context.from[0].value) && !value
+  );
 };
 
 const testSiblingValueAndValueExistingValue = (
   context: TestContext<AnyObject>,
   value: string | undefined | null,
-): boolean => {
-  // @ts-ignore
-  return checkForExistingSiblings(context.from[0].value) && value;
+) => {
+  return (
+    checkForExistingSiblings(context.from && context.from[0].value) && value
+  );
 };

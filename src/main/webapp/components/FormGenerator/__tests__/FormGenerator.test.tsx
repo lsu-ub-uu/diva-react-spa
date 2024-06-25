@@ -1497,7 +1497,7 @@ describe('<FormGenerator />', () => {
     it('validation should pass a group having 0-1 with nested textVars having 1-1', async () => {
       const mockSubmit = vi.fn();
 
-      const { container } = render(
+      render(
         <FormGenerator
           onSubmit={mockSubmit}
           formSchema={
