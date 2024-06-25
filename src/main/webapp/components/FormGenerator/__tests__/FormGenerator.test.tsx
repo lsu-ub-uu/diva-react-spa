@@ -61,6 +61,7 @@ import {
   formDefWithOptionalGroupWithTwoCollectionVars,
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
   formDefTwoOptionalGroupsWithRequiredTextVars,
+  formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -1518,6 +1519,40 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.type(longitudeElement, '1.25');
       await user.type(latitudeElement, '1.25');
+      await user.click(submitButton);
+
+      // expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('validation should pass a group having 0-1 with nested group having 1-1 having textVars having 1-1', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOptionalGroupWithRequiredGroupWithRequiredVars as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const mainTitleElement = screen.getByPlaceholderText(
+        'mainTitleTextVarText',
+      );
+      const subtitleElement = screen.getByPlaceholderText(
+        'subtitleTextVarText',
+      );
+
+      expect(mainTitleElement).toBeInTheDocument();
+      expect(subtitleElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      // await user.type(mainTitleElement, '1.25');
+      // await user.type(subtitleElement, '1.25');
       await user.click(submitButton);
 
       // expect(container.getElementsByClassName('Mui-error').length).toBe(3);

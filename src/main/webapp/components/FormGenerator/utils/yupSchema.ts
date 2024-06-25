@@ -57,9 +57,13 @@ export const generateYupSchema = (
 ) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
-    .map((formComponent) =>
-      createYupValidationsFromComponent(formComponent, parentGroupOptional),
-    );
+    .map((formComponent) => {
+      // console.log('map', formComponent, parentGroupOptional);
+      return createYupValidationsFromComponent(
+        formComponent,
+        parentGroupOptional,
+      );
+    });
 
   const obj = Object.assign({}, ...validationsRules) as ObjectShape;
   return yup.object().default({}).shape(obj);
@@ -112,6 +116,7 @@ export const createYupValidationsFromComponent = (
     // non-repeating group
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
+      console.log('nrg', component.name);
       const innerSchema = generateYupSchema(
         component.components,
         parentComponentRepeating,
@@ -120,6 +125,49 @@ export const createYupValidationsFromComponent = (
         ...innerSchema.fields,
         ...createValidationForAttributesFromComponent(component),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      /* .test('something', function (value, context) {
+          console.log(
+            'something',
+            component.name,
+            checkForExistingSiblings(
+              context.from && context.from[context.from.length - 2].value,
+            ),
+          );
+          if (
+            !checkForExistingSiblings(
+              context.from && context.from[context.from.length - 2].value,
+            )
+          ) {
+            console.log('hello');
+            return true;
+          }
+          if (
+            !checkForExistingSiblings(
+              context.from && context.from[context.from.length - 2].value,
+            )
+          ) {
+            console.log('hello');
+            return true;
+          }
+          console.log('yes');
+          return false;
+          // console.log(
+          //   'something?',
+          //   component.name,
+          //   context.from[1].value,
+          //   checkForExistingSiblings(context.from && context.from[1].value),
+          //   isComponentRequired(component),
+          //   value,
+          // );
+          // if (
+          //   checkForExistingSiblings(context.from && context.from[1].value) &&
+          //   isComponentRequired(component) &&
+          //   !parentComponentRepeating
+          // ) {
+          //   return true;
+          // }
+          // return false;
+        }) */
     } else {
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(
@@ -385,6 +433,7 @@ const createYupStringSchema = (
   variableForAttributeRepeat: boolean = false,
   siblingComponentRequired: boolean = false,
 ) => {
+  console.log('attr', component.name);
   if (
     isParentComponentOptional &&
     siblingComponentRequired &&
@@ -406,6 +455,7 @@ const createYupStringSchema = (
   }
 
   if (isParentComponentOptional && isAttribute && !variableForAttributeRepeat) {
+    console.log('1');
     return yup.string().required();
   }
 
