@@ -108,7 +108,6 @@ export const CreateRecordPage = () => {
               notification(`Form is invalid`, 'error');
             }}
             formSchema={schema as FormSchema}
-            // formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar as FormSchema}
           />
         </Stack>
       </div>

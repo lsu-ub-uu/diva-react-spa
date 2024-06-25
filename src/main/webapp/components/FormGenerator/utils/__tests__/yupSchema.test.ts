@@ -447,7 +447,7 @@ describe('generate yupSchema', () => {
                         'string',
                         [
                           {
-                            name: 'checkIfVariableHasSiblingsWithValues',
+                            name: 'checkIfStringVariableHasSiblingsWithValuesInContext',
                             params: undefined,
                           },
                         ],
@@ -730,7 +730,20 @@ describe('generate yupSchema', () => {
                         ),
                         fields: {
                           value: {
-                            type: 'string',
+                            ...validationTestsExtras(
+                              true,
+                              'string',
+                              [
+                                {
+                                  name: 'matches',
+                                  params: {
+                                    regex: /^[a-zA-Z]$/,
+                                  },
+                                },
+                              ],
+                              undefined,
+                              false,
+                            ),
                           },
                           _colourAttribute: {
                             ...validationTestsExtras(
@@ -738,7 +751,7 @@ describe('generate yupSchema', () => {
                               'string',
                               [
                                 {
-                                  name: 'checkIfVariableHasSiblingsWithValues',
+                                  name: 'checkIfStringVariableHasSiblingsWithValues',
                                   params: undefined,
                                 },
                               ],
@@ -752,7 +765,20 @@ describe('generate yupSchema', () => {
                         ...validationTestsExtras(true, 'object', [], {}, false),
                         fields: {
                           value: {
-                            type: 'string',
+                            ...validationTestsExtras(
+                              true,
+                              'string',
+                              [
+                                {
+                                  name: 'matches',
+                                  params: {
+                                    regex: /^[a-zA-Z]$/,
+                                  },
+                                },
+                              ],
+                              undefined,
+                              false,
+                            ),
                           },
                         },
                       },

@@ -232,18 +232,7 @@ const createYupStringRegexpSchema = (
         new RegExp(regexpValidation.pattern ?? '.+'),
         'Invalid input format',
       )
-      .test('checkIfVariableHasSiblingsWithValues', function (value, context) {
-        // @ts-ignore
-        if (!value && !checkForExistingSiblings(context.from[1].value)) {
-          return true;
-        }
-        // @ts-ignore
-        if (!value && checkForExistingSiblings(context.from[1].value)) {
-          return false;
-        }
-
-        return true;
-      });
+      .test(testOptionalParentAndRequiredSiblingWithValue);
   }
 
   if (isParentComponentOptional) {
@@ -340,22 +329,7 @@ export const createYupNumberSchema = (
               .test(testMin)
           : field,
       )
-      .test('checkIfVariableHasSiblingsWithValues', function (value, context) {
-        if (
-          !value &&
-          !checkForExistingSiblings(context.from[context.from.length - 2].value)
-        ) {
-          return true;
-        }
-        if (
-          !value &&
-          checkForExistingSiblings(context.from[context.from.length - 2].value)
-        ) {
-          return false;
-        }
-
-        return true;
-      });
+      .test(testOptionalParentAndRequiredSiblingFormWholeContextWithValue);
   }
 
   if (isParentComponentOptional) {
@@ -419,18 +393,7 @@ const createYupStringSchema = (
     return yup
       .string()
       .nullable()
-      .test('checkIfVariableHasSiblingsWithValues', function (value, context) {
-        // @ts-ignore
-        if (!value && !checkForExistingSiblings(context.from[1].value)) {
-          return true;
-        }
-        // @ts-ignore
-        if (!value && checkForExistingSiblings(context.from[1].value)) {
-          return false;
-        }
-
-        return true;
-      });
+      .test(testOptionalParentAndRequiredSiblingWithValue);
   }
 
   if (isParentComponentOptional && isAttribute && siblingComponentRequired) {
@@ -449,7 +412,7 @@ const createYupStringSchema = (
   if (isAttribute && !isParentComponentOptional) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
-        ? yup.string().nullable().test(testSiblingHasValue)
+        ? yup.string().nullable().test(testAttributeHasVariableWithValue)
         : yup.string().required();
     });
   }
@@ -461,7 +424,55 @@ const createYupStringSchema = (
   return yup.string().required();
 };
 
-const testSiblingHasValue: TestConfig<string | null | undefined, AnyObject> = {
+const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
+  string | null | undefined,
+  AnyObject
+> = {
+  name: 'checkIfStringVariableHasSiblingsWithValuesInContext',
+  message: 'This variable is required',
+  test: (value, context) => {
+    // @ts-ignore
+    if (
+      !value &&
+      !checkForExistingSiblings(context.from[context.from.length - 2].value)
+    ) {
+      return true;
+    }
+    if (
+      !value &&
+      checkForExistingSiblings(context.from[context.from.length - 2].value)
+    ) {
+      return false;
+    }
+
+    return true;
+  },
+};
+
+const testOptionalParentAndRequiredSiblingWithValue: TestConfig<
+  string | null | undefined,
+  AnyObject
+> = {
+  name: 'checkIfStringVariableHasSiblingsWithValues',
+  message: 'This variable is required',
+  test: (value, context) => {
+    // @ts-ignore
+    if (!value && !checkForExistingSiblings(context.from[1].value)) {
+      return true;
+    }
+    // @ts-ignore
+    if (!value && checkForExistingSiblings(context.from[1].value)) {
+      return false;
+    }
+
+    return true;
+  },
+};
+
+const testAttributeHasVariableWithValue: TestConfig<
+  string | null | undefined,
+  AnyObject
+> = {
   name: 'checkIfVariableHasSiblingsWithValues',
   message: 'This attribute is for a variable with value',
   test: (value, context) => {
