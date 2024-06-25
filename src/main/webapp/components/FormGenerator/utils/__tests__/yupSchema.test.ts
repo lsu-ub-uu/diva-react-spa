@@ -718,14 +718,33 @@ describe('generate yupSchema', () => {
                   innerType: {
                     fields: {
                       firstName: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
+                        ...validationTestsExtras(
+                          true,
+                          'object',
+                          [],
+                          {
+                            _colourAttribute: undefined,
+                            value: undefined,
+                          },
+                          false,
+                        ),
                         fields: {
                           value: {
                             type: 'string',
                           },
                           _colourAttribute: {
-                            type: 'string',
-                            tests: [],
+                            ...validationTestsExtras(
+                              true,
+                              'string',
+                              [
+                                {
+                                  name: 'checkIfVariableHasSiblingsWithValues',
+                                  params: undefined,
+                                },
+                              ],
+                              undefined,
+                              true,
+                            ),
                           },
                         },
                       },
@@ -738,11 +757,24 @@ describe('generate yupSchema', () => {
                         },
                       },
                       age: {
-                        ...validationTestsExtras(true, 'object', [], {}, false),
+                        ...validationTestsExtras(
+                          true,
+                          'object',
+                          [],
+                          {
+                            value: undefined,
+                          },
+                          false,
+                        ),
                         fields: {
                           value: {
-                            type: 'string',
-                            tests: numberValidationTests(0, 125, 0),
+                            ...validationTestsExtras(
+                              true,
+                              'string',
+                              numberValidationTests(0, 125, 0),
+                              undefined,
+                              false,
+                            ),
                           },
                         },
                       },
