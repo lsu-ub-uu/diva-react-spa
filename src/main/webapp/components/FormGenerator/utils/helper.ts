@@ -91,7 +91,7 @@ export const checkIfComponentHasValue = (
   return getValues(componentValue) !== '';
 };
 
-export const checkForSiblingValue = (formValues: any) => {
+export const checkForExistingSiblings = (formValues: any) => {
   if (formValues !== undefined) {
     const valuesWithoutAttribs = Object.keys(formValues)
       .filter((objKey) => !objKey.startsWith('_'))
@@ -109,4 +109,8 @@ export const checkForSiblingValue = (formValues: any) => {
 
 export const isSiblingComponentRequired = (component: FormComponent) => {
   return isComponentRequired(component);
+};
+
+export const checkIfValueExists = (value: unknown) => {
+  return !(value === null || value === '' || value === undefined);
 };

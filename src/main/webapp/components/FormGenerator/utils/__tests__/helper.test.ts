@@ -18,7 +18,8 @@
  */
 
 import {
-  checkForSiblingValue,
+  checkForExistingSiblings,
+  checkIfValueExists,
   countStringCharOccurrences,
   isComponentContainer,
   isComponentGroup,
@@ -1538,21 +1539,21 @@ describe('helper methods', () => {
 
   describe('checkForSiblingValue', () => {
     it('checkForSiblingValue', () => {
-      const actual = checkForSiblingValue({
+      const actual = checkForExistingSiblings({
         latitude: { value: '' },
         longitude: { value: 'a' },
       });
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue2', () => {
-      const actual = checkForSiblingValue({
+      const actual = checkForExistingSiblings({
         latitude: { value: '' },
         longitude: { value: '' },
       });
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue3', () => {
-      const actual = checkForSiblingValue({
+      const actual = checkForExistingSiblings({
         _year: { value: '1234' },
         latitude: { value: '' },
         longitude: { value: 'a' },
@@ -1560,14 +1561,14 @@ describe('helper methods', () => {
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue4', () => {
-      const actual = checkForSiblingValue({
+      const actual = checkForExistingSiblings({
         maintitle: { value: '' },
         subtitle: [{ value: 'a' }],
       });
       expect(actual).toBe(true);
     });
     it('checkForSiblingValue5', () => {
-      const actual = checkForSiblingValue({
+      const actual = checkForExistingSiblings({
         _year: { value: '1234' },
         latitude: { value: '' },
         longitude: { value: '' },
@@ -1575,8 +1576,26 @@ describe('helper methods', () => {
       expect(actual).toBe(false);
     });
     it('checkForSiblingValue6', () => {
-      const actual = checkForSiblingValue(undefined);
+      const actual = checkForExistingSiblings({
+        longitude: {
+          value: '',
+        },
+        latitude: {
+          value: '',
+        },
+      });
       expect(actual).toBe(false);
+    });
+    it('checkForSiblingValue7', () => {
+      const actual = checkForExistingSiblings({
+        longitude: {
+          value: '1',
+        },
+        latitude: {
+          value: '',
+        },
+      });
+      expect(actual).toBe(true);
     });
   });
   describe('isSiblingComponentRepeating', () => {
@@ -1627,6 +1646,25 @@ describe('helper methods', () => {
         inputType: 'input',
       });
       expect(actual).toBe(false);
+    });
+  });
+
+  describe('checkIfValueExists', () => {
+    it('checkIfValueExists returns false for empty string', () => {
+      const actual = checkIfValueExists('');
+      expect(actual).toBe(false);
+    });
+    it('checkIfValueExists returns false for null', () => {
+      const actual = checkIfValueExists(null);
+      expect(actual).toBe(false);
+    });
+    it('checkIfValueExists returns false for undefined', () => {
+      const actual = checkIfValueExists(undefined);
+      expect(actual).toBe(false);
+    });
+    it('checkIfValueExists returns true for non-empty string', () => {
+      const actual = checkIfValueExists('someString');
+      expect(actual).toBe(true);
     });
   });
 

@@ -17,8 +17,8 @@
  */
 
 import { useState, MouseEvent, useEffect } from 'react';
-import { Avatar, Button, Menu, MenuItem, Stack, Box } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
+import { Button, Menu, MenuItem, Stack, Box, IconButton } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useTranslation } from 'react-i18next';
 import { devAccounts, Account } from './devAccounts';
 import {
@@ -92,13 +92,6 @@ export const Login = (): JSX.Element => {
     if (event === undefined) {
       console.log('rM', event);
     }
-
-    console.log(
-      splitSlashFromUrl(
-        splitBasenameFromUrl(window.location.href, 'divaclient'),
-      ),
-      splitSlashFromUrl(event.origin as string),
-    );
     if (
       !messageIsFromWindowOpenedFromHere(
         splitSlashFromUrl(
@@ -129,12 +122,17 @@ export const Login = (): JSX.Element => {
           style={{ marginTop: '-4px' }}
         >
           <Box>{printUserNameOnPage(authState.userSession)}</Box>
-          <Avatar
-            alt='Logout user'
+          <Stack
+            direction='row'
+            spacing={2}
+            alignItems='center'
             onClick={handleLogout}
           >
-            <PersonIcon />
-          </Avatar>
+            {t('divaClient_LogoutText')}
+            <IconButton>
+              <LogoutIcon />
+            </IconButton>
+          </Stack>
         </Stack>
       ) : (
         <Stack>

@@ -34,7 +34,7 @@ import {
   FormSchema,
 } from '../types';
 import {
-  checkForSiblingValue,
+  checkForExistingSiblings,
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
@@ -126,6 +126,8 @@ export const createYupValidationsFromComponent = (
           component,
           false,
           parentComponentRepeating,
+          undefined,
+          isSiblingComponentRequired(component),
         ),
         ...createValidationForAttributesFromComponent(
           component,
@@ -186,11 +188,13 @@ export const createValidationFromComponentType = (
       return createYupStringRegexpSchema(
         component as FormComponent,
         isParentRequired,
+        siblingRequired,
       );
     case 'numberVariable':
       return createYupNumberSchema(
         component as FormComponent,
         isParentRequired,
+        siblingRequired,
       );
     default: // collectionVariable, recordLink
       return createYupStringSchema(
@@ -212,8 +216,24 @@ export const createValidationFromComponentType = (
 const createYupStringRegexpSchema = (
   component: FormComponent,
   isParentComponentOptional: boolean = false,
+  isSiblingRequired: boolean = false,
 ) => {
   const regexpValidation = component.validation as FormRegexValidation;
+  if (
+    isParentComponentOptional &&
+    isSiblingRequired &&
+    isComponentRequired(component)
+  ) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .matches(
+        new RegExp(regexpValidation.pattern ?? '.+'),
+        'Invalid input format',
+      )
+      .test(testOptionalParentAndRequiredSiblingWithValue);
+  }
 
   if (isParentComponentOptional) {
     return yup
@@ -254,6 +274,7 @@ const createYupStringRegexpSchema = (
 export const createYupNumberSchema = (
   component: FormComponent,
   isParentComponentOptional: boolean = false,
+  isSiblingRequired: boolean = false,
 ) => {
   const numberValidation = component.validation as FormNumberValidation;
   const { numberOfDecimals, min, max } = numberValidation;
@@ -289,6 +310,27 @@ export const createYupNumberSchema = (
       return max >= numValue;
     },
   };
+
+  if (
+    isParentComponentOptional &&
+    isSiblingRequired &&
+    isComponentRequired(component)
+  ) {
+    return yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .when('$isNotNull', (isNotNull, field) =>
+        isNotNull
+          ? field
+              .matches(/^[1-9]\d*(\.\d+)?$/, { message: 'Invalid format' })
+              .test(testDecimals)
+              .test(testMax)
+              .test(testMin)
+          : field,
+      )
+      .test(testOptionalParentAndRequiredSiblingFormWholeContextWithValue);
+  }
 
   if (isParentComponentOptional) {
     return yup
@@ -343,6 +385,17 @@ const createYupStringSchema = (
   variableForAttributeRepeat: boolean = false,
   siblingComponentRequired: boolean = false,
 ) => {
+  if (
+    isParentComponentOptional &&
+    siblingComponentRequired &&
+    isComponentRequired(component)
+  ) {
+    return yup
+      .string()
+      .nullable()
+      .test(testOptionalParentAndRequiredSiblingWithValue);
+  }
+
   if (isParentComponentOptional && isAttribute && siblingComponentRequired) {
     return yup.string().when('value', ([value]) => {
       if (value === null || value === '') {
@@ -359,7 +412,7 @@ const createYupStringSchema = (
   if (isAttribute && !isParentComponentOptional) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
-        ? yup.string().nullable().test(testSiblingHasValue)
+        ? yup.string().nullable().test(testAttributeHasVariableWithValue)
         : yup.string().required();
     });
   }
@@ -371,15 +424,68 @@ const createYupStringSchema = (
   return yup.string().required();
 };
 
-const testSiblingHasValue: TestConfig<string | null | undefined, AnyObject> = {
-  name: 'something',
+const testOptionalParentAndRequiredSiblingFormWholeContextWithValue: TestConfig<
+  string | null | undefined,
+  AnyObject
+> = {
+  name: 'checkIfStringVariableHasSiblingsWithValuesInContext',
+  message: 'This variable is required',
+  test: (value, context) => {
+    if (
+      !value &&
+      !checkForExistingSiblings(
+        context.from && context.from[context.from.length - 2].value,
+      )
+    ) {
+      return true;
+    }
+    if (
+      !value &&
+      checkForExistingSiblings(
+        context.from && context.from[context.from.length - 2].value,
+      )
+    ) {
+      return false;
+    }
+
+    return true;
+  },
+};
+
+const testOptionalParentAndRequiredSiblingWithValue: TestConfig<
+  string | null | undefined,
+  AnyObject
+> = {
+  name: 'checkIfStringVariableHasSiblingsWithValues',
+  message: 'This variable is required',
+  test: (value, context) => {
+    if (
+      !value &&
+      !checkForExistingSiblings(context.from && context.from[1].value)
+    ) {
+      return true;
+    }
+    if (
+      !value &&
+      checkForExistingSiblings(context.from && context.from[1].value)
+    ) {
+      return false;
+    }
+
+    return true;
+  },
+};
+
+const testAttributeHasVariableWithValue: TestConfig<
+  string | null | undefined,
+  AnyObject
+> = {
+  name: 'checkIfVariableHasSiblingsWithValues',
   message: 'This attribute is for a variable with value',
   test: (value, context) => {
-    return !!(
-      checkForSiblingValue(value) ||
+    return (checkForExistingSiblings(value) ||
       testSiblingValueAndValueExistingValue(context, value) ||
-      testSiblingValueAndValueForNotExistingValue(context, value)
-    );
+      testSiblingValueAndValueForNotExistingValue(context, value)) as boolean;
   },
 };
 
@@ -396,15 +502,17 @@ const generateYupSchemaForCollections = () => {
 const testSiblingValueAndValueForNotExistingValue = (
   context: TestContext<AnyObject>,
   value: string | undefined | null,
-) => {
-  // @ts-ignore
-  return !checkForSiblingValue(context.from[0].value) && !value;
+): boolean => {
+  return (
+    !checkForExistingSiblings(context.from && context.from[0].value) && !value
+  );
 };
 
 const testSiblingValueAndValueExistingValue = (
   context: TestContext<AnyObject>,
   value: string | undefined | null,
 ) => {
-  // @ts-ignore
-  return checkForSiblingValue(context.from[0].value) && value;
+  return (
+    checkForExistingSiblings(context.from && context.from[0].value) && value
+  );
 };
