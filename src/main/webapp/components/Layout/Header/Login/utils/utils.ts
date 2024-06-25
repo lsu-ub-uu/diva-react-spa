@@ -35,14 +35,14 @@ export const splitSlashFromUrl = (url: string) => {
 };
 
 export const splitBasenameFromUrl = (url: string, basename: string) => {
-  const temp = url.replace(`${basename}/`, '');
+  const newUrl = url.replace(`${basename}/`, '');
 
   if (basename.length === 0) {
     return url;
   }
 
   if (url.slice(-1) === '/') {
-    return temp;
+    return newUrl;
   }
 
   return url.substring(0, url.length - basename.length);
