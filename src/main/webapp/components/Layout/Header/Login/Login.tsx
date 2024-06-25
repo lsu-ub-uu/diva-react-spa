@@ -40,6 +40,7 @@ import {
   splitBasenameFromUrl,
   splitSlashFromUrl,
 } from './utils/utils';
+import { hasError } from '../../../../features/auth/authSlice';
 
 export const Login = (): JSX.Element => {
   const { MODE } = import.meta.env;
@@ -79,7 +80,7 @@ export const Login = (): JSX.Element => {
   ) => {
     try {
       window.open(MODE === 'development' ? 'http://localhost:1234' : url);
-      window.addEventListener('message', receiveMessage, false);
+      window.addEventListener('message', receiveMessage, { once: true });
     } catch (e: any) {
       if (e === undefined) {
         console.log('undef', event);
@@ -89,22 +90,28 @@ export const Login = (): JSX.Element => {
     handleClose();
   };
   const receiveMessage = (event: any) => {
-    if (event === undefined) {
-      console.log('rM', event);
+    console.log('event', event.data.source);
+    if (event === undefined || event.data.source === 'react-devtools-bridge') {
+      dispatch(hasError('login error'));
     }
-    if (
-      !messageIsFromWindowOpenedFromHere(
-        splitSlashFromUrl(
-          splitBasenameFromUrl(window.location.href, 'divaclient'),
-        ),
-        splitSlashFromUrl(event.origin as string),
-      )
-    ) {
-      dispatch(
-        loginWebRedirectAsync(convertWebRedirectToUserSession(event.data), () =>
-          setBackdrop(false),
-        ),
-      );
+
+    if (event.data.source !== 'react-devtools-bridge') {
+      if (
+        messageIsFromWindowOpenedFromHere(
+          splitSlashFromUrl(
+            splitBasenameFromUrl(window.location.href, 'divaclient'),
+          ),
+          splitSlashFromUrl(event.origin as string),
+        )
+      ) {
+        dispatch(
+          loginWebRedirectAsync(
+            convertWebRedirectToUserSession(event.data),
+            () => setBackdrop(false),
+          ),
+        );
+      }
+
     }
   };
 
