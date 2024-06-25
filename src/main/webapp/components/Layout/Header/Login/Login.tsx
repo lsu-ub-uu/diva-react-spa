@@ -90,7 +90,6 @@ export const Login = (): JSX.Element => {
     handleClose();
   };
   const receiveMessage = (event: any) => {
-    console.log('event', event.data.source);
     if (event === undefined || event.data.source === 'react-devtools-bridge') {
       dispatch(hasError('login error'));
     }

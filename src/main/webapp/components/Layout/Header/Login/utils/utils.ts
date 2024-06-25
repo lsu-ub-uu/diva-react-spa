@@ -69,5 +69,5 @@ export const checkTypeOfUser = (user: UserSession) => {
 export const printUserNameOnPage = (user: UserSession) => {
   return checkTypeOfUser(user) === 'appToken'
     ? `${user.firstName} ${user.lastName}`
-    : convertUserIdToShortForm(user.idFromLogin);
+    : convertUserIdToShortForm(user.idFromLogin); // a
 };
