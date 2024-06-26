@@ -188,7 +188,7 @@ describe('Login utils', () => {
         validForNoSeconds: '600',
         idFromLogin: 'johdo290@user.uu.se',
       },
-      'johdo290@user.uu.se',
+      'johdo290',
     ],
   ])('printUserNameOnPage', (user, name) => {
     const actual = printUserNameOnPage(user);

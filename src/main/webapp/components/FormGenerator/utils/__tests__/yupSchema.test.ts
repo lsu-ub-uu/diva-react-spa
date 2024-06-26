@@ -27,7 +27,7 @@ import {
   generateYupSchemaFromFormSchema,
 } from '../yupSchema';
 import {
-  formDef,
+  formDefWithTextVar,
   formDefWithNestedSurroundingContainers,
   formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithRepeatingCollectionVar,
@@ -140,7 +140,9 @@ const validationExclusiveExtras = (
 
 describe('generate yupSchema', () => {
   it('should return correct validationSchema for one textVar and one numberVar', () => {
-    const yupSchema = generateYupSchemaFromFormSchema(formDef as FormSchema);
+    const yupSchema = generateYupSchemaFromFormSchema(
+      formDefWithTextVar as FormSchema,
+    );
     const actualSchema = yupSchema.describe().fields;
 
     const expectedSchema = {

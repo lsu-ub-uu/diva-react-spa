@@ -429,7 +429,7 @@ export const formComponentCollectionVariableWithModeOutput: FormComponent = {
   ],
 };
 
-export const formDef = {
+export const formDefWithTextVar = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -854,6 +854,44 @@ export const formDefWithOneNumberVariable = {
     components: [
       {
         type: 'numberVariable',
+        name: 'someNumberVariableNameInData',
+        placeholder: 'someNumberPlaceholderTextId',
+        validation: {
+          type: 'number',
+          min: 1,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneNumberVariableModeOutput = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        mode: 'output',
         name: 'someNumberVariableNameInData',
         placeholder: 'someNumberPlaceholderTextId',
         validation: {
@@ -1655,6 +1693,119 @@ export const formDefWithOneOptionalGroupWithAttributeCollection = {
             repeat: {
               minNumberOfRepeatingToShow: 1,
               repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithOneRequiredGroupWithAttributeCollection = {
+  validationTypeId: 'divaOutput',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'divaOutputGroupText',
+      body: 'divaOutputGroupDefText',
+    },
+    label: 'divaOutputGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'title',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'titleGroupText',
+          body: 'titleGroupDefText',
+        },
+        label: 'titleGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'aar',
+                label: 'aarLangItemText',
+              },
+            ],
+          },
+        ],
+        components: [
+          {
+            name: 'mainTitle',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'mainTitleTextVarText',
+              body: 'mainTitleTextVarDefText',
+            },
+            label: 'mainTitleTextVarText',
+            placeholder: 'mainTitleTextVarPlaceholderText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'subtitle',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subtitleTextVarText',
+              body: 'subtitleTextVarPlaceholderText',
+            },
+            label: 'subtitleTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
               repeatMax: 1,
             },
             childStyle: [''],
@@ -5587,6 +5738,141 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars = {
                   },
                 ],
                 presentationStyle: '',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithOptionalGroupWithRequiredGroupWithRequiredVars = {
+  validationTypeId: 'divaOutput',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'divaOutputGroupText',
+      body: 'divaOutputGroupDefText',
+    },
+    label: 'divaOutputGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'hostOutput',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'hostOutputGroupText',
+          body: 'hostOutputGroupDefText',
+        },
+        label: 'hostOutputGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'hostTitle',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'hostTitleGroupText',
+              body: 'hostTitleGroupDefText',
+            },
+            label: 'hostTitleGroupText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'nau',
+                    label: 'nauLangItemText',
+                  },
+                ],
+              },
+            ],
+            components: [
+              {
+                name: 'mainTitle',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'mainTitleTextVarText',
+                  body: 'mainTitleTextVarDefText',
+                },
+                label: 'mainTitleTextVarText',
+                placeholder: 'mainTitleTextVarText',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'subtitle',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'subtitleTextVarText',
+                  body: 'subtitleTextVarDefText',
+                },
+                label: 'subtitleTextVarText',
+                placeholder: 'subtitleTextVarText',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
                 childStyle: [''],
                 gridColSpan: 12,
               },

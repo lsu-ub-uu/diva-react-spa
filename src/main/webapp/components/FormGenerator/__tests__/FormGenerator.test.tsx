@@ -21,7 +21,7 @@ import { expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
-  formDef,
+  formDefWithTextVar,
   formDefWithOneNumberVariable,
   formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneTextVariable,
@@ -61,6 +61,9 @@ import {
   formDefWithOptionalGroupWithTwoCollectionVars,
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
   formDefTwoOptionalGroupsWithRequiredTextVars,
+  formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
+  formDefWithOneRequiredGroupWithAttributeCollection,
+  formDefWithOneNumberVariableModeOutput,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -79,11 +82,11 @@ describe('<FormGenerator />', () => {
   }));
 
   describe('form', () => {
-    it('Renders a form from a given definition', () => {
+    it('renders a form from a given definition', () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
-          formSchema={formDef as FormSchema}
+          formSchema={formDefWithTextVar as FormSchema}
           onSubmit={mockSubmit}
         />,
       );
@@ -101,7 +104,7 @@ describe('<FormGenerator />', () => {
       expect(headerElement).toBeInTheDocument();
     });
 
-    it('Renders a form from a given definition and submits it', async () => {
+    it('renders a form from a given definition does validate it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -126,7 +129,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Renders a form from a given definition and submits it', async () => {
+    it('renders a form from a given definition does NOT validate it', async () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
@@ -153,11 +156,11 @@ describe('<FormGenerator />', () => {
   });
 
   describe('form with linked data', () => {
-    it('Renders a form from a given definition', () => {
+    it('renders a form with linked data from a given definition', () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
-          formSchema={formDef as FormSchema}
+          formSchema={formDefWithTextVar as FormSchema}
           onSubmit={mockSubmit}
           linkedData
         />,
@@ -178,7 +181,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('recordLink', () => {
-    it('Validates recordLink being optional and having minNumberToShow 1!', async () => {
+    it('renders a recordLink 0-1 and minNumberToShow 1 and validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -196,7 +199,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Do not validate an empty recordLink being required', async () => {
+    it('renders a recordLink 1-1 and does NOT validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -217,13 +220,13 @@ describe('<FormGenerator />', () => {
   });
 
   describe('textVariable', () => {
-    it('Renders a form with TextVariable and validates it correctly and does not call the submit', async () => {
+    it('renders a textVariable 1-1 and does NOT validate it', async () => {
       const mockSubmit = vi.fn();
 
       render(
         <FormGenerator
           onSubmit={mockSubmit}
-          formSchema={formDef as FormSchema}
+          formSchema={formDefWithTextVar as FormSchema}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -240,43 +243,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('Renders a form with TextVariable and sets a finalValue', async () => {
-      const mockSubmit = vi.fn();
-
-      render(
-        <FormGenerator
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariableHavingFinalValue as FormSchema}
-        />,
-      );
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-      expect(inputElement).toHaveValue('someFinalValue');
-    });
-
-    it('Renders a form with TextVariable and sets a finalValue 2', async () => {
-      const mockSubmit = vi.fn();
-
-      render(
-        <FormGenerator
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariableHavingFinalValue as FormSchema}
-        />,
-      );
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-      expect(inputElement).toHaveValue('someFinalValue');
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-
-      const user = userEvent.setup();
-
-      await user.click(submitButton);
-
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
-    });
-
-    it('Renders a form with TextVariable and sets a finalValue 3', async () => {
+    it('renders a multiple textVariables 1-1 with finalValue ', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -301,7 +268,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Renders a form with TextVariable with mode output', async () => {
+    it('renders a textVariable 1-1 with mode output', async () => {
       const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
@@ -332,7 +299,7 @@ describe('<FormGenerator />', () => {
       expect(inputElement).toBeInTheDocument();
     });
 
-    it('Validates textVariable being optional and having minNumberToShow 1!', async () => {
+    it('renders a textVariable 0-1 and minNumberOfRepeatingToShow 1', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -351,7 +318,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    test.skip('Validates textVariable being optional with repeatMax > 1 and having minNumberToShow 1!', async () => {
+    test('renders a textVariable 0-2 and minNumberOfRepeatingToShow 1', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -370,7 +337,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Does not validate a textVariable being optional and having minNumberToShow 1 with bad input', async () => {
+    it('renders a textVariable 0-1, minNumberToShow 1 and bad input', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -396,7 +363,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('numberVariable', () => {
-    it('Renders a form with numberVariable and validates it correctly and does not call the submit', async () => {
+    it('renders a numberVariable 1-1 and does NOT validate it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -420,7 +387,36 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('Validates numberVariable being  outside the min interval', async () => {
+    it('renders a numberVariable with mode output', async () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            someNumberVariableNameInData: {
+              value: '2',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneNumberVariableModeOutput as FormSchema}
+          record={coraRecord}
+        />,
+      );
+      const inputElement = screen.getByText('2');
+      expect(inputElement).toBeInTheDocument();
+    });
+
+    it('renders a numberVariable 1-1 with input under min', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -444,7 +440,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('Validates numberVariable being outside the max interval', async () => {
+    it('renders a numberVariable 1-1 with input over max', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -468,7 +464,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('Not validating an numberVariable not having correct value', async () => {
+    it('renders a numberVariable 0-1 and does NOT validate text', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -497,7 +493,7 @@ describe('<FormGenerator />', () => {
       });
     });
 
-    it('Validates numberVariable to have correct number of decimals', async () => {
+    it('renders a numberVariable 1-1 with numberOfDecimals 2 and does NOT validate', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -521,7 +517,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('Validates numberVariable to have decimals with two zeros', async () => {
+    it('renders a numberVariable 1-1 with numberOfDecimals 2 and does validate', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -545,7 +541,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Validates numberVariable being optional and having minNumberToShow 1!', async () => {
+    it('renders a numberVariable 0-1 with minNumberOfRepeatingToShow 1 with no input and does validate', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -564,7 +560,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Validates numberVariable being optional (having minNumberToShow 1) and the user enters a valid range value ', async () => {
+    it('renders a numberVariable 0-1 with minNumberOfRepeatingToShow 1 and does validate', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -591,7 +587,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('minNumberOfRepeatingToShow', () => {
-    it('should render number of inputs based on repeatMin', () => {
+    it('renders a textVariable 2-3 should render 2 based on minNumberOfRepeatingToShow', () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -609,7 +605,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('repeatMax', () => {
-    it('Add button should not be rendered when repeatMax is reached', async () => {
+    it('should NOT render add button when repeatMax is reached', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -636,7 +632,7 @@ describe('<FormGenerator />', () => {
       expect(buttonElement).not.toBeInTheDocument();
     });
 
-    it('Move buttons should NOT be rendered when repeatMax is less or equal to one', async () => {
+    it('should NOT render move buttons when repeatMax is less or equal to one', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -696,7 +692,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('collectionVariable', () => {
-    it('Renders a form with collectionVariable and all its options', async () => {
+    it('renders a collectionVariable 1-1 and its options', async () => {
       const mockSubmit = vi.fn();
       const { container } = render(
         <FormGenerator
@@ -712,7 +708,7 @@ describe('<FormGenerator />', () => {
       expect(selectInputs).toHaveLength(1);
     });
 
-    it('Renders a form with collectionVariable and validates it correctly and calls submit', async () => {
+    it('renders a collectionVariable 1-1 and does validate it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -740,7 +736,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('Renders a form with collectionVariable and validates it falsy and does not call submit', async () => {
+    it('renders a collectionVariable 1-1 and does NOT validate it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -759,7 +755,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('Renders a form with CollectionVariable with mode output', async () => {
+    it('renders a collectionVariable 1-1 with mode output', async () => {
       const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
@@ -792,7 +788,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('attribute collection', () => {
-    it('renders a form with numberVariable and attribute and does NOT validate it when skipped', async () => {
+    it('renders a numberVariable 1-1 with attribute and does NOT validate it when skipped', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -832,7 +828,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('renders a form with numberVariable and attribute and validates it when filled', async () => {
+    it('renders a numberVariable 1-1 with attribute and validates it when filled', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -869,7 +865,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a form with a optional numberVariable and attribute and validates it when variable is skipped', async () => {
+    it('renders a numberVariable 0-1 with attribute and validates it when skipped', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -903,7 +899,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a form with a required numberVariable and attribute and does NOT validate it when variable is skipped', async () => {
+    it('renders a numberVariable 1-1 and attribute and does NOT validate it when only attribute is picked', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -937,7 +933,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('renders a form with a optional numberVariable and attribute and does NOT validates it when variable is written in', async () => {
+    it('renders a numberVariable 0-1 and attribute and does NOT validates it when variable is written in', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -970,7 +966,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('renders a form with numberVariable and a optional numberVariable and skipable attribute and validates it', async () => {
+    it('renders a numberVariable 1-1 and a numberVariable 0-1 with attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1001,7 +997,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a form with a optional group with a optional textVariable and attribute and validates it', async () => {
+    it('renders a group 0-1 with attribute and textVariable 1-1 and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1031,7 +1027,114 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a form with a optional group with attribute and with a optional textVariable and attribute and validates it', async () => {
+    it('renders a group 1-1 with a textVariable 1-1 and attribute and validates it', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneRequiredGroupWithAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+      const textInput = screen.getByPlaceholderText(
+        'mainTitleTextVarPlaceholderText',
+      );
+      expect(textInput).toBeInTheDocument();
+      // const attributeButton = screen.getByRole('button', { expanded: false });
+      // expect(attributeButton).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      const expandButton = screen.getAllByRole('button', { expanded: false });
+
+      await user.click(expandButton[0]);
+      const items = screen.getByRole('listbox');
+
+      expect(items.children).toHaveLength(2); // includes None option
+
+      await user.selectOptions(items, 'aarLangItemText');
+      await user.type(textInput, 'aaaa');
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      await waitFor(() => {
+        expect(submitButton).toBeInTheDocument();
+      });
+
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a group 0-1 with a group 1-1 having textVars 1-1 an validates it', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOptionalGroupWithRequiredGroupWithRequiredVars as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const mainTitleElement = screen.getByPlaceholderText(
+        'mainTitleTextVarText',
+      );
+      const subtitleElement = screen.getByPlaceholderText(
+        'subtitleTextVarText',
+      );
+
+      expect(mainTitleElement).toBeInTheDocument();
+      expect(subtitleElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      // await user.type(mainTitleElement, '1.25');
+      // await user.type(subtitleElement, '1.25');
+      await user.click(submitButton);
+
+      // expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a group having 0-1 with a group having 1-1 having textVars having 1-1 and does NOT validate it', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOptionalGroupWithRequiredGroupWithRequiredVars as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const mainTitleElement = screen.getByPlaceholderText(
+        'mainTitleTextVarText',
+      );
+      const subtitleElement = screen.getByPlaceholderText(
+        'subtitleTextVarText',
+      );
+
+      expect(mainTitleElement).toBeInTheDocument();
+      expect(subtitleElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(mainTitleElement, '1.25');
+      await user.click(submitButton);
+
+      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('renders a group 0-1 with attribute and with a textVariable 0-1 and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1063,7 +1166,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a form with a optional group with multiple attributes and with a required textVariable and attribute and validates it', async () => {
+    it('renders a optional group with multiple attributes and with a required textVariable and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1120,7 +1223,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a form with a optional group with attribute with a optional group and with a required textVariable and attribute and validates it', async () => {
+    it('renders a optional group with attribute with a optional group and with a required textVariable and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1179,7 +1282,7 @@ describe('<FormGenerator />', () => {
   });
 
   describe('group', () => {
-    it('renders a form with group and renders its textVariable child', async () => {
+    it('renders a group 1-1 with textVariable 1-1 child', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1194,7 +1297,7 @@ describe('<FormGenerator />', () => {
       expect(textInput).toBeInTheDocument();
     });
 
-    it('renders a form with non-repeating group and headlineLevel', async () => {
+    it('renders a group 1-10 and headlineLevel 1', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1210,7 +1313,7 @@ describe('<FormGenerator />', () => {
       expect(headlineElement).toBeInTheDocument();
     });
 
-    it('renders a form with repeating group and headlineLevel', async () => {
+    it('renders a group 1-10 and headlineLevel 3', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1226,7 +1329,7 @@ describe('<FormGenerator />', () => {
       expect(headlineElement).toBeInTheDocument();
     });
 
-    it('renders a form with group and default headlineLevel', async () => {
+    it('renders a group 1-10 and headlineLevel default', async () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -1242,7 +1345,7 @@ describe('<FormGenerator />', () => {
       expect(headlineElement).toBeInTheDocument();
     });
 
-    it('validation should pass a group having 0-0 and textVariable being 1-1', async () => {
+    it('renders a group 0-1 and textVariable 1-1 and validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -1261,7 +1364,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('validation should pass a group having 0-0 and numberVariable being 1-1', async () => {
+    it('renders a group group 0-1 and numberVariable being 1-1 and validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -1282,7 +1385,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('validation should pass a group having 0-0 and recordLink being 1-1', async () => {
+    it('renders a group 0-1 and recordLink being 1-1 and validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -1303,7 +1406,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('validation should pass a group having 0-0 having a child group 1-X and textVar being 1-1', async () => {
+    it('render a group 0-1 with a child group 1-X and textVar being 1-1 and validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -1324,7 +1427,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('validation should fail a group having 1-1 and some sub groups being 0-1', async () => {
+    it('render a group 1-1 and some sub groups 0-1 and does NOT validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -1345,7 +1448,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('validation should fail a group having 1-1 and some textVars being 0-1 and 1-1', async () => {
+    it('renders a group 1-1 and some textVars 0-1 and 1-1 and does NOT validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -1375,7 +1478,7 @@ describe('<FormGenerator />', () => {
       // });
     });
 
-    it('validation should fail a group having 1-1 and textVars being 1-1 being partly filled', async () => {
+    it('renders a group 1-1 and textVars 1-1 being partially filled and does NOT validate it', async () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
@@ -1404,7 +1507,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('validation should fail a group having 1-1 and numberVars being 1-1 being partly filled', async () => {
+    it('renders a group 1-1 and numberVars 1-1 being partially filled and does NOT validate it', async () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
@@ -1433,7 +1536,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('validation should fail a group having 1-1 and collectionVars being 1-1 being partly filled', async () => {
+    it('renders a group 1-1 and collectionVars being partially filled and does NOT validate it', async () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
@@ -1465,7 +1568,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('validation should fail a group having 0-1 with textVar having 1-1, a group having 1-1 and nested textVar having 1-1', async () => {
+    it('renders a group 0-1 with textVar having 1-1, a group having 1-1 with textVar 1-1 and does NOT validate it', async () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
@@ -1494,7 +1597,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
-    it('validation should pass a group having 0-1 with nested textVars having 1-1', async () => {
+    it('renders a group 0-1 with nested textVars 1-1 and does validate it', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -1527,7 +1630,7 @@ describe('<FormGenerator />', () => {
 });
 
 describe('guiElementLink', () => {
-  it('renders a form with numberVariable and a gui element link', async () => {
+  it('renders a numberVariable 1-1 and guiElementLink', async () => {
     const mockSubmit = vi.fn();
     render(
       <FormGenerator
