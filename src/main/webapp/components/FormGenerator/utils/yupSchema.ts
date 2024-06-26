@@ -54,16 +54,17 @@ export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
 export const generateYupSchema = (
   components: FormComponent[] | undefined,
   parentGroupOptional: boolean = false,
+  groupOptional: boolean = false,
 ) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
-    .map((formComponent) => {
-      // console.log('map', formComponent, parentGroupOptional);
-      return createYupValidationsFromComponent(
+    .map((formComponent) =>
+      createYupValidationsFromComponent(
         formComponent,
         parentGroupOptional,
-      );
-    });
+        groupOptional,
+      ),
+    );
 
   const obj = Object.assign({}, ...validationsRules) as ObjectShape;
   return yup.object().default({}).shape(obj);
@@ -72,6 +73,7 @@ export const generateYupSchema = (
 export const createYupValidationsFromComponent = (
   component: FormComponent,
   parentComponentRepeating: boolean = false,
+  parentGroupRepeating: boolean = false,
 ) => {
   let validationRule: {
     [x: string]: any;
@@ -90,6 +92,7 @@ export const createYupValidationsFromComponent = (
       const innerObjectSchema = generateYupSchema(
         component.components,
         isParentGroupOptional(component) || parentComponentRepeating,
+        isComponentRepeating(component),
       );
       // Create a new schema by merging the existing schema and attribute fields
       const extendedSchema = yup.object().shape({
@@ -116,58 +119,19 @@ export const createYupValidationsFromComponent = (
     // non-repeating group
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
-      console.log('nrg', component.name);
       const innerSchema = generateYupSchema(
         component.components,
         parentComponentRepeating,
       );
       validationRule[component.name] = yup.object().shape({
         ...innerSchema.fields,
-        ...createValidationForAttributesFromComponent(component),
+        ...createValidationForAttributesFromComponent(
+          component,
+          parentComponentRepeating,
+          false,
+          parentGroupRepeating,
+        ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      /* .test('something', function (value, context) {
-          console.log(
-            'something',
-            component.name,
-            checkForExistingSiblings(
-              context.from && context.from[context.from.length - 2].value,
-            ),
-          );
-          if (
-            !checkForExistingSiblings(
-              context.from && context.from[context.from.length - 2].value,
-            )
-          ) {
-            console.log('hello');
-            return true;
-          }
-          if (
-            !checkForExistingSiblings(
-              context.from && context.from[context.from.length - 2].value,
-            )
-          ) {
-            console.log('hello');
-            return true;
-          }
-          console.log('yes');
-          return false;
-          // console.log(
-          //   'something?',
-          //   component.name,
-          //   context.from[1].value,
-          //   checkForExistingSiblings(context.from && context.from[1].value),
-          //   isComponentRequired(component),
-          //   value,
-          // );
-          // if (
-          //   checkForExistingSiblings(context.from && context.from[1].value) &&
-          //   isComponentRequired(component) &&
-          //   !parentComponentRepeating
-          // ) {
-          //   return true;
-          // }
-          // return false;
-        }) */
     } else {
       validationRule[component.name] = yup.object().shape({
         value: createValidationFromComponentType(
@@ -193,6 +157,7 @@ export const createValidationForAttributesFromComponent = (
   component: FormComponent,
   siblingRepeat?: boolean,
   siblingRequired?: boolean,
+  parentGroupRequired?: boolean,
 ) => {
   const attributeValidation =
     component.attributes?.map(
@@ -203,6 +168,7 @@ export const createValidationForAttributesFromComponent = (
           isComponentRequired(component),
           siblingRepeat,
           siblingRequired,
+          parentGroupRequired,
         ),
       }),
     ) ?? [];
@@ -230,6 +196,7 @@ export const createValidationFromComponentType = (
   isParentRequired?: boolean,
   siblingRepeat?: boolean,
   siblingRequired?: boolean,
+  parentGroupRequired?: boolean,
 ) => {
   switch (component.type) {
     case 'textVariable':
@@ -251,6 +218,7 @@ export const createValidationFromComponentType = (
         isParentRequired,
         siblingRepeat,
         siblingRequired,
+        parentGroupRequired,
       );
   }
 };
@@ -432,8 +400,15 @@ const createYupStringSchema = (
   isParentComponentOptional: boolean = false,
   variableForAttributeRepeat: boolean = false,
   siblingComponentRequired: boolean = false,
+  grandParentGroupRequired: boolean = false,
 ) => {
-  console.log('attr', component.name);
+  if (isAttribute && grandParentGroupRequired) {
+    return yup
+      .string()
+      .nullable()
+      .test(testOptionalParentAndRequiredSiblingWithValue);
+  }
+
   if (
     isParentComponentOptional &&
     siblingComponentRequired &&
@@ -455,7 +430,6 @@ const createYupStringSchema = (
   }
 
   if (isParentComponentOptional && isAttribute && !variableForAttributeRepeat) {
-    console.log('1');
     return yup.string().required();
   }
 

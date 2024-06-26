@@ -35,7 +35,7 @@ import {
   formComponentGroupWithChildren,
   formComponentGroupWithinGroupWithAttributes,
   formComponentRepeatingTextVariable,
-  formDef,
+  formDefWithTextVar,
   formDefRealDemo,
   formDefRealDemoWithAttributes,
   formDefRealDemoWithFinalValues,
@@ -64,7 +64,7 @@ describe('FormGenerator Utils', () => {
         },
       };
       const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDef as FormSchema,
+        formDefWithTextVar as FormSchema,
       );
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
@@ -501,7 +501,7 @@ describe('FormGenerator Utils', () => {
         };
 
         const actualDefaultValues = createDefaultValuesFromFormSchema(
-          formDef as FormSchema,
+          formDefWithTextVar as FormSchema,
           existingRecordData,
         );
 
