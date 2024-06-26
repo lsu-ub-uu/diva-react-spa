@@ -110,7 +110,6 @@ export const Login = (): JSX.Element => {
           ),
         );
       }
-
     }
   };
 
@@ -125,14 +124,17 @@ export const Login = (): JSX.Element => {
           direction='row'
           spacing={2}
           alignItems='center'
-          style={{ marginTop: '-4px' }}
+          style={{ marginTop: '-1px' }}
         >
-          <Box>{printUserNameOnPage(authState.userSession)}</Box>
+          <Box style={{ fontSize: '14px' }}>
+            {printUserNameOnPage(authState.userSession)}
+          </Box>
           <Stack
             direction='row'
             spacing={2}
             alignItems='center'
             onClick={handleLogout}
+            style={{ fontSize: '14px' }}
           >
             {t('divaClient_LogoutText')}
             <IconButton>
@@ -142,7 +144,12 @@ export const Login = (): JSX.Element => {
         </Stack>
       ) : (
         <Stack>
-          <Button onClick={handleClick}>{t('divaClient_LoginText')}</Button>
+          <Button
+            style={{ fontSize: '14px' }}
+            onClick={handleClick}
+          >
+            {t('divaClient_LoginText')}
+          </Button>
           <Menu
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
