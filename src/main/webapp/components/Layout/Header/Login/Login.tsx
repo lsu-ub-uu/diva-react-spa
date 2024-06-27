@@ -79,8 +79,7 @@ export const Login = (): JSX.Element => {
     url: string,
   ) => {
     try {
-      window.open('http://localhost:1234');
-      // window.open(MODE === 'development' ? 'http://localhost:1234' : url);
+      window.open(MODE === 'development' ? 'http://localhost:1234' : url);
       window.addEventListener('message', receiveMessage, { once: true });
     } catch (e: any) {
       if (e === undefined) {
@@ -91,12 +90,6 @@ export const Login = (): JSX.Element => {
     handleClose();
   };
   const receiveMessage = (event: any) => {
-    console.log(
-      'Hejsan',
-      splitSlashFromUrl(
-        splitBasenameFromUrl(window.location.href, 'divaclient'),
-      ),
-    );
     if (event === undefined || event.data.source === 'react-devtools-bridge') {
       dispatch(hasError('login error'));
     }
