@@ -17,7 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataGroup, DataListWrapper, RecordLink, RecordWrapper } from '../utils/cora-data/CoraData';
+import {
+  DataAtomic,
+  DataGroup,
+  DataListWrapper,
+  RecordLink,
+  RecordWrapper
+} from '../utils/cora-data/CoraData';
 import {
   extractIdFromRecordInfo,
   extractAttributeValueByName
@@ -62,11 +68,12 @@ const transformRecordGroupMetadataToBFF = (dataRecordGroup: DataGroup) => {
     case 'group': {
       return transformMetadataGroup(dataRecordGroup, metadata);
     }
-    case 'textVariable': {
-      return transformTextVariable(dataRecordGroup, metadata);
-    }
+    case 'textVariable':
     case 'numberVariable': {
-      return transformNumberVariable(dataRecordGroup, metadata);
+      return transformMetadataVariable<BFFMetadataTextVariable | BFFMetadataNumberVariable>(
+        dataRecordGroup,
+        metadata
+      );
     }
     case 'collectionVariable': {
       return transformCollectionVariable(dataRecordGroup, metadata);
@@ -104,50 +111,34 @@ const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
   } as BFFMetadata;
 };
 
-const transformTextVariable = (dataRecordGroup: DataGroup, metadata: BFFMetadata): BFFMetadata => {
-  if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
-    const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
-    metadata = { ...metadata, finalValue } as BFFMetadata;
-  }
-  if (containsChildWithNameInData(dataRecordGroup, 'attributeReferences')) {
-    const attributeReferences = extractAttributesReferences(dataRecordGroup);
-    metadata = { ...metadata, attributeReferences } as BFFMetadata;
-  }
-
-  const regEx = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'regEx');
-  return { ...metadata, regEx } as BFFMetadataTextVariable;
-};
-
-const transformNumberVariable = (
+function transformMetadataVariable<T extends BFFMetadata>(
   dataRecordGroup: DataGroup,
   metadata: BFFMetadata
-): BFFMetadata => {
-  if (containsChildWithNameInData(dataRecordGroup, 'finalValue')) {
-    const finalValue = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'finalValue');
-    metadata = { ...metadata, finalValue } as BFFMetadata;
-  }
-
+): BFFMetadata {
   const attributeReferences = extractAttributesReferences(dataRecordGroup);
-
-  const min = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'min');
-  const max = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'max');
-  const warningMin = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'warningMin');
-  const warningMax = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'warningMax');
-  const numberOfDecimals = getFirstDataAtomicValueWithNameInData(
-    dataRecordGroup,
-    'numberOfDecimals'
-  );
-
   return removeEmpty({
-    ...metadata,
-    min,
-    max,
-    warningMin,
-    warningMax,
-    numberOfDecimals,
-    attributeReferences
-  }) as BFFMetadataNumberVariable;
-};
+    attributeReferences,
+    ...getAtomics(dataRecordGroup),
+    ...metadata
+  }) as T;
+}
+
+function getAtomics(dataRecordGroup: DataGroup) {
+  return reduceAtomics(getAtomicChildren(dataRecordGroup));
+}
+
+function reduceAtomics(atomics: DataAtomic[]) {
+  return atomics.reduce<Record<string, string>>((prev, current) => {
+    prev[current.name] = current.value;
+    return prev;
+  }, {});
+}
+
+function getAtomicChildren(dataRecordGroup: DataGroup) {
+  return dataRecordGroup.children.filter((record) =>
+    Object.hasOwn(record, 'value')
+  ) as DataAtomic[];
+}
 
 const transformCollectionVariable = (
   dataRecordGroup: DataGroup,
