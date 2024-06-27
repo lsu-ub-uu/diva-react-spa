@@ -35,6 +35,7 @@ interface ControlledTextFieldProps {
   displayMode?: string;
   parentPresentationStyle?: string;
   showLabel?: boolean;
+  inputFormat?: 'password';
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
@@ -102,6 +103,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 fullWidth
                 variant='outlined'
                 helperText={error !== undefined ? error.message : ' '}
+                type={props.inputFormat}
                 InputProps={{
                   readOnly: props.readOnly,
                   endAdornment: (

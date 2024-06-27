@@ -5892,3 +5892,77 @@ export const formDefWithOptionalGroupWithRequiredGroupWithRequiredVars = {
     gridColSpan: 12,
   },
 };
+
+export const formDefForLoginUnitWithPassword = {
+  validationTypeId: 'loginUnit',
+  loginDescription: 'uuSystemOnePasswordLoginUnitText',
+  type: 'loginPassword',
+  presentation: {
+    form: {
+      type: 'group',
+      showLabel: true,
+      label: 'viewDefinitionPasswordGroupText',
+      name: 'password',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'viewDefinitionPasswordGroupText',
+        body: 'viewDefinitionPasswordGroupDefText',
+      },
+      components: [
+        {
+          name: 'loginId',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'loginIdTextVarText',
+            body: 'loginIdTextVarDefText',
+          },
+          label: 'loginIdTextVarText',
+          placeholder: 'loginIdTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+        {
+          name: 'password',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          inputFormat: 'password',
+          tooltip: {
+            title: 'loginPasswordTextVarText',
+            body: 'loginPasswordTextVarDefText',
+          },
+          label: 'loginPasswordTextVarText',
+          placeholder: 'loginPasswordTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      mode: 'input',
+    },
+  },
+};

@@ -77,6 +77,7 @@ export interface FormComponent {
   recordLinkType?: string;
   presentationRecordLinkId?: string;
   search?: string;
+  inputFormat?: 'password';
 }
 
 type FormAttributeCollection = Omit<

@@ -36,18 +36,17 @@ import {
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
+import { formDefForLoginUnitWithPassword } from '../__mocks__/data/formDef';
 
-export const CreateRecordPage = () => {
+export const LoginPage = () => {
   const { validationType } = useParams();
   const activeSection = useSectionScroller();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
-  const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
-    validationType,
-    'create',
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
@@ -60,24 +59,25 @@ export const CreateRecordPage = () => {
     setBackdrop(isLoading || isSubmitting);
   }, [isLoading, setBackdrop, isSubmitting]);
 
-  const handleSubmit = async (values: FieldValues) => {
-    try {
-      setIsSubmitting(true);
-      const response = await axios.post(
-        `/record/${schema?.validationTypeId}`,
-        removeEmpty(values),
-      );
-      notification(
-        `Record was successfully created ${response.data.id}`,
-        'success',
-      );
-    } catch (err: any) {
-      setIsSubmitting(false);
-      notification(`${err.message}`, 'error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  // const handleSubmit = async (values: FieldValues) => {
+  //   try {
+  //     setIsSubmitting(true);
+  //     const response = await axios.post(
+  //       `/record/${schema?.validationTypeId}`,
+  //       removeEmpty(values),
+  //     );
+  //     notification(
+  //       `Record was successfully created ${response.data.id}`,
+  //       'success',
+  //     );
+  //   } catch (err: any) {
+  //     setIsSubmitting(false);
+  //     notification(`${err.message}`, 'error');
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+  const schema = formDefForLoginUnitWithPassword.presentation;
 
   if (error) return <Alert severity='error'>{error}</Alert>;
   if (isLoading)
@@ -87,22 +87,19 @@ export const CreateRecordPage = () => {
         height={800}
       />
     );
-
   return (
     <>
       <Helmet>
         <title>{t(schema?.form.label as string)} | DiVA</title>
       </Helmet>
       <AsidePortal>
-        <NavigationPanel
-          links={schema ? linksFromFormSchema(schema) || [] : []}
-          activeLinkName={activeSection}
-        />
+        <p>loginPage</p>
       </AsidePortal>
       <div>
         <Stack spacing={2}>
           <FormGenerator
-            onSubmit={handleSubmit}
+            onSubmit={() => {}}
+            // onSubmit={handleSubmit}
             onInvalid={() => {
               notification(`Form is invalid`, 'error');
             }}

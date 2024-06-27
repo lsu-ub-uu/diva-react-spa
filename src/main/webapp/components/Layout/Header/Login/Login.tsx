@@ -41,6 +41,8 @@ import {
   splitSlashFromUrl,
 } from './utils/utils';
 import { hasError } from '../../../../features/auth/authSlice';
+import { formDefForLoginUnitWithPassword } from '../../../../__mocks__/data/formDef';
+import { FormSchema } from '../../../FormGenerator/types';
 
 export const Login = (): JSX.Element => {
   const { MODE } = import.meta.env;
@@ -89,6 +91,7 @@ export const Login = (): JSX.Element => {
     }
     handleClose();
   };
+
   const receiveMessage = (event: any) => {
     if (event === undefined || event.data.source === 'react-devtools-bridge') {
       dispatch(hasError('login error'));
@@ -111,6 +114,21 @@ export const Login = (): JSX.Element => {
         );
       }
     }
+  };
+
+  const handlePasswordSelection = (
+    event: MouseEvent<HTMLElement>,
+    presentation: FormSchema,
+  ) => {
+    try {
+      console.log(presentation);
+    } catch (e: any) {
+      if (e === undefined) {
+        console.log('undef', event);
+      }
+      console.log(e.message());
+    }
+    handleClose();
   };
 
   const handleLogout = () => {
@@ -180,6 +198,17 @@ export const Login = (): JSX.Element => {
                 {t(loginUnit.loginDescription)}
               </MenuItem>
             ))}
+            <MenuItem
+              key='tempLoginUnitPassword'
+              onClick={(event) => {
+                handlePasswordSelection(
+                  event,
+                  formDefForLoginUnitWithPassword.presentation as FormSchema,
+                );
+              }}
+            >
+              {formDefForLoginUnitWithPassword.loginDescription}
+            </MenuItem>
           </Menu>
         </Stack>
       )}
