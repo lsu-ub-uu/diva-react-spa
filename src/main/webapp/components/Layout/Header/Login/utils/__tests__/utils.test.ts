@@ -80,6 +80,14 @@ describe('Login utils', () => {
       );
       expect(actual).toEqual('https://cora.epc.ub.uu.se/');
     });
+
+    it('splitBasenameFromUrl returns epc url with manuscript with removed basename without /', () => {
+      const actual = splitBasenameFromUrl(
+        'https://cora.epc.ub.uu.se/divaclient/create/record/thesisManuscript',
+        'divaclient',
+      );
+      expect(actual).toEqual('https://cora.epc.ub.uu.se/');
+    });
   });
 
   it('convertWebRedirectToUserSession converts to UserSession', () => {
