@@ -53,7 +53,7 @@ afterEach(() => {
 
 describe('requestAuthTokenOnLogin', () => {
   describe('requestAuthTokenOnLoginNew', () => {
-    it('Returns an appToken', async () => {
+    it('Returns an appToken from authToken', async () => {
       const { CORA_LOGIN_URL } = process.env;
       const rootUrl = `${CORA_LOGIN_URL}/apptoken/`;
       const coraUser = 'coraUser:111111111111111';
@@ -62,7 +62,30 @@ describe('requestAuthTokenOnLogin', () => {
       mockAxios.onPost(url).reply(200, authUser);
       const response = await requestAuthTokenOnLogin(
         coraUser,
-        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        'apptoken'
+      );
+
+      expect(response).toEqual({
+        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        idFromLogin: 'coraUser:111111111111111',
+        lastName: 'DiVA',
+        firstName: 'Everything'
+      });
+    });
+    it('Returns an password from authToken', async () => {
+      const { CORA_LOGIN_URL } = process.env;
+      const rootUrl = `${CORA_LOGIN_URL}/password/`;
+      const coraUser = 'coraUser:111111111111111';
+      const url = `${rootUrl}${coraUser}`;
+
+      mockAxios.onPost(url).reply(200, authUser);
+      const response = await requestAuthTokenOnLogin(
+        coraUser,
+        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        'password'
       );
 
       expect(response).toEqual({

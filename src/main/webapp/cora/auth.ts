@@ -24,12 +24,12 @@ import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDa
 
 export async function requestAuthTokenOnLogin(
   user: string,
-  authToken: string | undefined
+  authToken: string | undefined,
+  loginType: 'apptoken' | 'password'
 ): Promise<Auth> {
   const { CORA_LOGIN_URL } = process.env;
-  const rootUrl = `${CORA_LOGIN_URL}/apptoken/`;
+  const url = `${CORA_LOGIN_URL}/${loginType}/${user}`;
 
-  const url = `${rootUrl}${user}`;
   const headers = {
     'Content-Type': 'text/plain;charset=UTF-8'
   };
