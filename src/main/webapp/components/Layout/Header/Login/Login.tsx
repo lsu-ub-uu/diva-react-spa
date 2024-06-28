@@ -20,6 +20,7 @@ import { useState, MouseEvent, useEffect } from 'react';
 import { Button, Menu, MenuItem, Stack, Box, IconButton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { devAccounts, Account } from './devAccounts';
 import {
   loginAsync,
@@ -121,7 +122,7 @@ export const Login = (): JSX.Element => {
     presentation: FormSchema,
   ) => {
     try {
-      console.log(presentation);
+      console.log(JSON.stringify(presentation));
     } catch (e: any) {
       if (e === undefined) {
         console.log('undef', event);
@@ -207,7 +208,13 @@ export const Login = (): JSX.Element => {
                 );
               }}
             >
-              {formDefForLoginUnitWithPassword.loginDescription}
+              <Link
+                to={`/login?presentation=${JSON.stringify(
+                  formDefForLoginUnitWithPassword.presentation,
+                )}`}
+              >
+                {formDefForLoginUnitWithPassword.loginDescription}
+              </Link>
             </MenuItem>
           </Menu>
         </Stack>

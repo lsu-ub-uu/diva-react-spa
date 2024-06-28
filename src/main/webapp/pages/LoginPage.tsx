@@ -24,7 +24,7 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import {
   useBackdrop,
   FormGenerator,
@@ -39,7 +39,7 @@ import { removeEmpty } from '../utils/removeEmpty';
 import { formDefForLoginUnitWithPassword } from '../__mocks__/data/formDef';
 
 export const LoginPage = () => {
-  const { validationType } = useParams();
+  // const { validationType } = useParams();
   const activeSection = useSectionScroller();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
@@ -47,7 +47,8 @@ export const LoginPage = () => {
   const { setBackdrop } = useBackdrop();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [presentationParam, setPresentationParam] = useSearchParams();
+  const [schema, setSchema] = useState<null | FormSchema>(null);
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
       variant,
@@ -59,25 +60,14 @@ export const LoginPage = () => {
     setBackdrop(isLoading || isSubmitting);
   }, [isLoading, setBackdrop, isSubmitting]);
 
-  // const handleSubmit = async (values: FieldValues) => {
-  //   try {
-  //     setIsSubmitting(true);
-  //     const response = await axios.post(
-  //       `/record/${schema?.validationTypeId}`,
-  //       removeEmpty(values),
-  //     );
-  //     notification(
-  //       `Record was successfully created ${response.data.id}`,
-  //       'success',
-  //     );
-  //   } catch (err: any) {
-  //     setIsSubmitting(false);
-  //     notification(`${err.message}`, 'error');
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
-  const schema = formDefForLoginUnitWithPassword.presentation;
+  useEffect(() => {
+    const parsedPresentation = JSON.parse(
+      presentationParam.get('presentation') as string,
+    );
+    setSchema(parsedPresentation);
+    // presentationParam.delete('presentation');
+    setPresentationParam({});
+  }, []);
 
   if (error) return <Alert severity='error'>{error}</Alert>;
   if (isLoading)
@@ -90,21 +80,25 @@ export const LoginPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t(schema?.form.label as string)} | DiVA</title>
+        <title>{t('divaClient_loginPageText')} | DiVA</title>
       </Helmet>
       <AsidePortal>
         <p>loginPage</p>
       </AsidePortal>
       <div>
         <Stack spacing={2}>
-          <FormGenerator
-            onSubmit={() => {}}
-            // onSubmit={handleSubmit}
-            onInvalid={() => {
-              notification(`Form is invalid`, 'error');
-            }}
-            formSchema={schema as FormSchema}
-          />
+          {schema !== null ? (
+            <FormGenerator
+              onSubmit={() => {}}
+              // onSubmit={handleSubmit}
+              onInvalid={() => {
+                notification(`Form is invalid`, 'error');
+              }}
+              formSchema={schema as FormSchema}
+            />
+          ) : (
+            <span />
+          )}
         </Stack>
       </div>
     </>
