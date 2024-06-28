@@ -174,28 +174,34 @@ export const Login = (): JSX.Element => {
                 {devAccount.firstName}
               </MenuItem>
             ))}
-            {loginUnitsState?.loginUnits.map((loginUnit, index) => (
-              <MenuItem
-                key={`${index}_${loginUnit.loginDescription}`}
-                onClick={(event) =>
-                  handleWebRedirectSelection(event, loginUnit.url)
-                }
-              >
-                {t(loginUnit.loginDescription)}
-              </MenuItem>
-            ))}
+            {loginUnitsState?.loginUnits.map((loginUnit, index) =>
+              loginUnit.type === 'webRedirect' ? (
+                <MenuItem
+                  key={`${index}_${loginUnit.loginDescription}`}
+                  onClick={(event) =>
+                    handleWebRedirectSelection(event, loginUnit.url)
+                  }
+                >
+                  {t(loginUnit.loginDescription)}
+                </MenuItem>
+              ) : null,
+            )}
             <MenuItem
               key='tempLoginUnitPassword'
-              onClick={(event) => {
+              onClick={() => {
                 handleClose();
               }}
             >
               <Link
+                style={{
+                  color: 'black',
+                  textDecorationLine: 'none',
+                }}
                 to={`/login?presentation=${JSON.stringify(
                   loginUnitformDefForLoginUnitWithPassword.presentation,
                 )}`}
               >
-                {loginUnitformDefForLoginUnitWithPassword.loginDescription}
+                {t(loginUnitformDefForLoginUnitWithPassword.loginDescription)}
               </Link>
             </MenuItem>
           </Menu>

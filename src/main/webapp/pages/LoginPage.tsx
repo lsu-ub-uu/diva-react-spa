@@ -29,27 +29,18 @@ import {
   useBackdrop,
   FormGenerator,
   AsidePortal,
-  NavigationPanel,
-  linksFromFormSchema,
   useSectionScroller,
 } from '../components';
 import {
   useAppDispatch,
-  useCoraFormSchemaByValidationType,
 } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
-import { removeEmpty } from '../utils/removeEmpty';
-import { loginUnitformDefForLoginUnitWithPassword } from '../__mocks__/data/formDef';
-import { renameObjectKey } from '../utils';
 import {
   loginPasswordAsync,
-  loginWebRedirectAsync,
+
 } from '../features/auth/actions';
-import { convertWebRedirectToUserSession } from '../components/Layout/Header/Login/utils/utils';
 
 export const LoginPage = () => {
-  // const { validationType } = useParams();
-  const activeSection = useSectionScroller();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
