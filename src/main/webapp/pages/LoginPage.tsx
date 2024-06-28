@@ -19,26 +19,15 @@
 
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import axios from 'axios';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
-import {
-  useBackdrop,
-  FormGenerator,
-  AsidePortal,
-  useSectionScroller,
-} from '../components';
-import {
-  useAppDispatch,
-} from '../app/hooks';
+import { useBackdrop, FormGenerator, AsidePortal } from '../components';
+import { useAppDispatch } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
-import {
-  loginPasswordAsync,
-
-} from '../features/auth/actions';
+import { loginPasswordAsync } from '../features/auth/actions';
 
 export const LoginPage = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -50,6 +39,8 @@ export const LoginPage = () => {
   const [presentationParam, setPresentationParam] = useSearchParams();
   const [schema, setSchema] = useState<null | FormSchema>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
       variant,
@@ -66,13 +57,14 @@ export const LoginPage = () => {
       presentationParam.get('presentation') as string,
     );
     setSchema(parsedPresentation);
-    setPresentationParam({});
+    // setPresentationParam({});
   }, []);
 
   const handlePasswordSelection = async (values: FieldValues) => {
     try {
       setIsSubmitting(true);
       dispatch(loginPasswordAsync(values, () => setBackdrop(false)));
+      navigate('/');
     } catch (err: any) {
       setIsSubmitting(false);
       notification(`${err.message}`, 'error');
