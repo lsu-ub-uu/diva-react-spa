@@ -63,7 +63,7 @@ import {
   formDefTwoOptionalGroupsWithRequiredTextVars,
   formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
   formDefWithOneRequiredGroupWithAttributeCollection,
-  formDefWithOneNumberVariableModeOutput,
+  formDefWithOneNumberVariableModeOutput, loginUnitformDefForLoginUnitWithPassword,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -343,7 +343,7 @@ describe('<FormGenerator />', () => {
       render(
         <FormGenerator
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+          formSchema={loginUnitformDefForLoginUnitWithPassword as FormSchema}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -354,6 +354,30 @@ describe('<FormGenerator />', () => {
 
       const user = userEvent.setup();
       await user.type(inputElement, '????'); // enter some invalid text
+      await user.click(submitButton);
+
+      await waitFor(() => {
+        expect(mockSubmit).toHaveBeenCalledTimes(0);
+      });
+    });
+
+    it('renders a textVariable 0-1 as password', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const inputElement = screen.getByPlaceholderText('loginPasswordTextVarText');
+
+      const user = userEvent.setup();
+      await user.type(inputElement, 'password'); // enter some invalid text
       await user.click(submitButton);
 
       await waitFor(() => {
@@ -1627,23 +1651,24 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
-});
+  describe('guiElementLink', () => {
+    it('renders a numberVariable 1-1 and guiElementLink', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={formDefWithOneNumberVariableAndGuiElementLink as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
 
-describe('guiElementLink', () => {
-  it('renders a numberVariable 1-1 and guiElementLink', async () => {
-    const mockSubmit = vi.fn();
-    render(
-      <FormGenerator
-        formSchema={formDefWithOneNumberVariableAndGuiElementLink as FormSchema}
-        onSubmit={mockSubmit}
-      />,
-    );
+      const link = screen.getByRole('link');
 
-    const link = screen.getByRole('link');
-
-    expect(link).toHaveAttribute('href', 'http://www.google.se');
+      expect(link).toHaveAttribute('href', 'http://www.google.se');
+    });
   });
 });
+
+
 
 describe.skip('checkIfComponentHasValue', () => {
   it('checkIfComponentHasValue hides variable in output with no value', () => {

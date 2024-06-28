@@ -5893,11 +5893,11 @@ export const formDefWithOptionalGroupWithRequiredGroupWithRequiredVars = {
   },
 };
 
-export const formDefForLoginUnitWithPassword = {
-  validationTypeId: 'loginUnit',
+export const loginUnitformDefForLoginUnitWithPassword = {
   loginDescription: 'uuSystemOnePasswordLoginUnitText',
   type: 'loginPassword',
   presentation: {
+    validationTypeId: 'loginUnit',
     form: {
       type: 'group',
       showLabel: true,
@@ -5926,7 +5926,7 @@ export const formDefForLoginUnitWithPassword = {
           showLabel: true,
           validation: {
             type: 'regex',
-            pattern: '.+',
+            pattern: '^[0-9A-Za-z:\\-_]{2,50}@[0-9A-Za-z:\\-_.]{2,300}$',
           },
           repeat: {
             minNumberOfRepeatingToShow: 1,
@@ -5951,7 +5951,7 @@ export const formDefForLoginUnitWithPassword = {
           showLabel: true,
           validation: {
             type: 'regex',
-            pattern: '.+',
+            pattern: '(^[0-9A-Za-z:-_]{2,50}$)',
           },
           repeat: {
             minNumberOfRepeatingToShow: 1,

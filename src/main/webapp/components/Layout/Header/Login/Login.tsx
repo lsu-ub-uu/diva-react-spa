@@ -42,7 +42,7 @@ import {
   splitSlashFromUrl,
 } from './utils/utils';
 import { hasError } from '../../../../features/auth/authSlice';
-import { formDefForLoginUnitWithPassword } from '../../../../__mocks__/data/formDef';
+import { loginUnitformDefForLoginUnitWithPassword } from '../../../../__mocks__/data/formDef';
 import { FormSchema } from '../../../FormGenerator/types';
 
 export const Login = (): JSX.Element => {
@@ -117,21 +117,6 @@ export const Login = (): JSX.Element => {
     }
   };
 
-  const handlePasswordSelection = (
-    event: MouseEvent<HTMLElement>,
-    presentation: FormSchema,
-  ) => {
-    try {
-      console.log(JSON.stringify(presentation));
-    } catch (e: any) {
-      if (e === undefined) {
-        console.log('undef', event);
-      }
-      console.log(e.message());
-    }
-    handleClose();
-  };
-
   const handleLogout = () => {
     dispatch(logoutAsync());
   };
@@ -202,18 +187,15 @@ export const Login = (): JSX.Element => {
             <MenuItem
               key='tempLoginUnitPassword'
               onClick={(event) => {
-                handlePasswordSelection(
-                  event,
-                  formDefForLoginUnitWithPassword.presentation as FormSchema,
-                );
+                handleClose();
               }}
             >
               <Link
                 to={`/login?presentation=${JSON.stringify(
-                  formDefForLoginUnitWithPassword.presentation,
+                  loginUnitformDefForLoginUnitWithPassword.presentation,
                 )}`}
               >
-                {formDefForLoginUnitWithPassword.loginDescription}
+                {loginUnitformDefForLoginUnitWithPassword.loginDescription}
               </Link>
             </MenuItem>
           </Menu>

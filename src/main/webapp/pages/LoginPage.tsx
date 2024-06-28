@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
@@ -33,10 +33,19 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '../components';
-import { useCoraFormSchemaByValidationType } from '../app/hooks';
+import {
+  useAppDispatch,
+  useCoraFormSchemaByValidationType,
+} from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
-import { formDefForLoginUnitWithPassword } from '../__mocks__/data/formDef';
+import { loginUnitformDefForLoginUnitWithPassword } from '../__mocks__/data/formDef';
+import { renameObjectKey } from '../utils';
+import {
+  loginPasswordAsync,
+  loginWebRedirectAsync,
+} from '../features/auth/actions';
+import { convertWebRedirectToUserSession } from '../components/Layout/Header/Login/utils/utils';
 
 export const LoginPage = () => {
   // const { validationType } = useParams();
@@ -49,6 +58,7 @@ export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [presentationParam, setPresentationParam] = useSearchParams();
   const [schema, setSchema] = useState<null | FormSchema>(null);
+  const dispatch = useAppDispatch();
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
       variant,
@@ -65,9 +75,20 @@ export const LoginPage = () => {
       presentationParam.get('presentation') as string,
     );
     setSchema(parsedPresentation);
-    // presentationParam.delete('presentation');
     setPresentationParam({});
   }, []);
+
+  const handlePasswordSelection = async (values: FieldValues) => {
+    try {
+      setIsSubmitting(true);
+      dispatch(loginPasswordAsync(values, () => setBackdrop(false)));
+    } catch (err: any) {
+      setIsSubmitting(false);
+      notification(`${err.message}`, 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (error) return <Alert severity='error'>{error}</Alert>;
   if (isLoading)
@@ -89,8 +110,7 @@ export const LoginPage = () => {
         <Stack spacing={2}>
           {schema !== null ? (
             <FormGenerator
-              onSubmit={() => {}}
-              // onSubmit={handleSubmit}
+              onSubmit={handlePasswordSelection}
               onInvalid={() => {
                 notification(`Form is invalid`, 'error');
               }}

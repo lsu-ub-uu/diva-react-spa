@@ -17,6 +17,7 @@
  */
 
 import axios from 'axios';
+import { FieldValues } from 'react-hook-form';
 import { AppThunk } from '../../app/store';
 import {
   authenticated,
@@ -29,6 +30,7 @@ import { Account } from '../../components/Layout/Header/Login/devAccounts';
 import { loadPublicationTypesAsync } from '../publicationTypes';
 import { loadPublicationsAsync } from '../publications';
 import { deleteFromCora, isValidJSON } from './utils/utils';
+import { renameObjectKey } from '../../utils';
 
 const { VITE_BFF_API_URL } = import.meta.env;
 const LOCAL_STORAGE_NAME = 'diva_session';
@@ -46,6 +48,30 @@ export const loginAsync =
         { token: account.appToken },
         options,
       );
+      dispatch(authenticated(response.data.authToken));
+      dispatch(loadPublicationTypesAsync());
+      dispatch(loadPublicationsAsync());
+    } catch (e) {
+      dispatch(hasError('login error'));
+    } finally {
+      if (callback) callback();
+    }
+  };
+
+export const loginPasswordAsync =
+  (values: FieldValues, callback?: Function): AppThunk =>
+  async (dispatch) => {
+    try {
+      dispatch(authenticating());
+      const options = {
+        headers: { 'Content-Type': 'application/json' },
+      };
+      const response = await axios.post(
+        `/auth/password/${values.password.loginId.value}`,
+        renameObjectKey(values.password.password, 'password'),
+        options,
+      );
+      console.log('lPA', response.data);
 
       dispatch(authenticated(response.data.authToken));
       dispatch(loadPublicationTypesAsync());
