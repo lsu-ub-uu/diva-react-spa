@@ -63,7 +63,7 @@ import {
   formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
   formDefWithOneRequiredGroupWithAttributeCollection,
   formDefWithOneNumberVariableModeOutput,
-  loginUnitformDefForLoginUnitWithPassword, formDefWithOneTextVariableBeingPassword,
+  formDefWithOneTextVariableBeingPassword,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -1500,9 +1500,7 @@ describe('<FormGenerator />', () => {
       await user.type(inputNumberElement, '1.23');
       await user.click(submitButton);
 
-      // await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
-      // });
     });
 
     it('renders a group 1-1 and textVars 1-1 being partially filled and does NOT validate it', async () => {
