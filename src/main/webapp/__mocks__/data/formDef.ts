@@ -4998,6 +4998,41 @@ export const formDefWithOneTextVariableBeingOptional = {
     mode: 'input',
   },
 };
+export const formDefWithOneTextVariableBeingPassword = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        placeholder: 'loginPasswordTextVarText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+        inputFormat: 'password',
+      },
+    ],
+    mode: 'input',
+  },
+};
 
 export const formDefWithOneRecordLinkBeingOptional = {
   validationTypeId: 'someValidationTypeId',

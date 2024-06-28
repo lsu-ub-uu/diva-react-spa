@@ -26,7 +26,6 @@ import {
   formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneTextVariable,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
-  formDefWithOneTextVariableHavingFinalValue,
   formDefWithOneCollectionVariable,
   formDefWithOneNumberVariableWithAttributeCollection,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
@@ -63,7 +62,8 @@ import {
   formDefTwoOptionalGroupsWithRequiredTextVars,
   formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
   formDefWithOneRequiredGroupWithAttributeCollection,
-  formDefWithOneNumberVariableModeOutput, loginUnitformDefForLoginUnitWithPassword,
+  formDefWithOneNumberVariableModeOutput,
+  loginUnitformDefForLoginUnitWithPassword, formDefWithOneTextVariableBeingPassword,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -343,7 +343,7 @@ describe('<FormGenerator />', () => {
       render(
         <FormGenerator
           onSubmit={mockSubmit}
-          formSchema={loginUnitformDefForLoginUnitWithPassword as FormSchema}
+          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -367,17 +367,20 @@ describe('<FormGenerator />', () => {
       render(
         <FormGenerator
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+          formSchema={formDefWithOneTextVariableBeingPassword as FormSchema}
         />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const inputElement = screen.getByPlaceholderText('loginPasswordTextVarText');
+      const inputElement = screen.getByPlaceholderText(
+        'loginPasswordTextVarText',
+      );
 
       const user = userEvent.setup();
-      await user.type(inputElement, 'password'); // enter some invalid text
+      await user.type(inputElement, 'password');
+      expect(inputElement).toHaveAttribute('type', 'password');
       await user.click(submitButton);
 
       await waitFor(() => {
@@ -1656,7 +1659,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
-          formSchema={formDefWithOneNumberVariableAndGuiElementLink as FormSchema}
+          formSchema={
+            formDefWithOneNumberVariableAndGuiElementLink as FormSchema
+          }
           onSubmit={mockSubmit}
         />,
       );
@@ -1667,8 +1672,6 @@ describe('<FormGenerator />', () => {
     });
   });
 });
-
-
 
 describe.skip('checkIfComponentHasValue', () => {
   it('checkIfComponentHasValue hides variable in output with no value', () => {
