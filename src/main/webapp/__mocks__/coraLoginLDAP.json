@@ -27,7 +27,7 @@
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/system/cora",
+                        "description": "https://cora.epc.ub.uu.se/diva/rest/record/system/cora",
                         "accept": "application/vnd.uub.record+json"
                       }
                     },
@@ -48,7 +48,7 @@
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/login",
+                        "description": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/login",
                         "accept": "application/vnd.uub.record+json"
                       }
                     },
@@ -205,13 +205,13 @@
                 "name": "description"
               },
               {
-                "name": "url",
+                "name": "description",
                 "value": "http://www.google.se"
               }
             ],
             "name": "login",
             "attributes": {
-              "type": "ldap"
+              "type": "password"
             }
           },
           "actionLinks": {

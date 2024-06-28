@@ -17,11 +17,12 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { BFFLoginPassword, BFFLoginWebRedirect } from './bffTypes';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
+import { createFormDefinition } from '../formDefinition/formDefinition';
+import { dependencies } from './configureServer';
 
 export const transformLogin = (
   dataListWrapper: DataListWrapper
@@ -44,18 +45,20 @@ const transformCoraLoginToBFFLogin = (
   const { attributes } = dataRecordGroup;
   const type = attributes?.type as string;
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
 
   if (type === 'webRedirect') {
+    const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
     const loginName = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'loginName');
-    return { id, loginName, url, type };
+    return { id, loginName, url, type } as BFFLoginWebRedirect;
   }
 
+  const description = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'description');
+  const formDef = createFormDefinition(dependencies, 'loginPassword', 'create');
   return {
     id,
     type,
     metadata: '',
-    presentation: '',
-    url
+    presentation: formDef,
+    description
   };
 };

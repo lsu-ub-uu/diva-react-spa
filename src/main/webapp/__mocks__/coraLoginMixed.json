@@ -205,13 +205,13 @@
                 "name": "description"
               },
               {
-                "name": "url",
+                "name": "description",
                 "value": "http://www.google.se"
               }
             ],
             "name": "login",
             "attributes": {
-              "type": "ldap"
+              "type": "password"
             }
           },
           "actionLinks": {
