@@ -84,11 +84,27 @@ export const isParentGroupOptional = (component: FormComponent) => {
   return componentGroup && rMin === 0;
 };
 
+// export const checkIfComponentHasValue = (
+//   getValues: UseFormGetValues<FieldValues>,
+//   componentValue: string,
+// ) => {
+//   return getValues(componentValue) !== '';
+// };
+
 export const checkIfComponentHasValue = (
   getValues: UseFormGetValues<FieldValues>,
   componentValue: string,
 ) => {
-  return getValues(componentValue) !== '';
+  const values = getValues(componentValue);
+
+  if (Array.isArray(values)) {
+    return values.some((value) => value.value !== '');
+  }
+
+  if (values && typeof values === 'object') {
+    return values.value !== '';
+  }
+  return false;
 };
 
 export const checkForExistingSiblings = (formValues: any) => {

@@ -670,6 +670,21 @@ const createRecordLinkWithoutSearchLink = (
   name: string,
   control: Control<any>,
 ) => {
+  //
+  // const values = getValues();
+  //
+  // console.log(JSON.stringify(values, null , 2));
+
+  // console.log(values.divaOutput.domain);
+
+  // if (values.divaOutput) {
+  //   Object.keys(values.divaOutput).forEach((key) => {
+  //    // console.log(`Name: ${key}, Value:`, values.divaOutput[key]);
+  //     console.log(checkIfComponentHasValue(getValues, key));
+  //   });
+  // }
+
+  // console.log('hasValue:', hasValue);
   return (
     <Grid
       key={reactKey}
