@@ -179,6 +179,7 @@ export const FormGenerator = ({
           `${currentComponentNamePath}.value`,
           true,
           parentPresentationStyle,
+          getValues,
         )}
       </React.Fragment>
     );
@@ -438,6 +439,7 @@ export const FormGenerator = ({
               `${variableArrayPath}.value`,
               false,
               parentPresentationStyle,
+              getValues,
             ),
           ];
         }}
@@ -535,6 +537,7 @@ export const renderLeafComponent = (
   name: string,
   renderElementGridWrapper: boolean,
   parentPresentationStyle?: string,
+  getValues: UseFormGetValues<FieldValues>,
 ): JSX.Element | null => {
   switch (component.type) {
     case 'textVariable':
@@ -546,6 +549,7 @@ export const renderLeafComponent = (
         name,
         control,
         parentPresentationStyle,
+        getValues,
       );
     }
     case 'recordLink': {
@@ -564,6 +568,7 @@ export const renderLeafComponent = (
         component,
         name,
         control,
+        getValues,
       );
     }
     case 'collectionVariable': {
@@ -593,7 +598,11 @@ const createTextOrNumberVariable = (
   name: string,
   control: Control<any>,
   parentPresentationStyle: string | undefined,
+  getValues: UseFormGetValues<FieldValues>,
 ) => {
+  const hasValue = checkIfComponentHasValue(getValues, name);
+  console.log('ctf', name, hasValue);
+
   return (
     <Grid
       key={reactKey}
@@ -618,6 +627,7 @@ const createTextOrNumberVariable = (
         readOnly={!!component.finalValue}
         displayMode={component.mode}
         parentPresentationStyle={parentPresentationStyle}
+        hasValue={hasValue}
       />
     </Grid>
   );
@@ -669,50 +679,45 @@ const createRecordLinkWithoutSearchLink = (
   component: FormComponent,
   name: string,
   control: Control<any>,
+  getValues: UseFormGetValues<FieldValues>,
 ) => {
-  //
-  // const values = getValues();
-  //
-  // console.log(JSON.stringify(values, null , 2));
+  const hasValue = checkIfComponentHasValue(getValues, name);
 
-  // console.log(values.divaOutput.domain);
-
-  // if (values.divaOutput) {
-  //   Object.keys(values.divaOutput).forEach((key) => {
-  //    // console.log(`Name: ${key}, Value:`, values.divaOutput[key]);
-  //     console.log(checkIfComponentHasValue(getValues, key));
-  //   });
-  // }
-
-  // console.log('hasValue:', hasValue);
   return (
-    <Grid
-      key={reactKey}
-      item
-      xs={12}
-      sm={renderElementGridWrapper ? component.gridColSpan : 12}
-    >
-      {component.mode === 'input' ? (
-        <ControlledTextField
-          multiline={component.inputType === 'textarea'}
-          label={component.label ?? ''}
-          name={name}
-          showLabel={component.showLabel}
-          placeholder={component.placeholder}
-          tooltip={component.tooltip}
-          control={control}
-          readOnly={!!component.finalValue}
-          displayMode={component.mode}
-        />
-      ) : (
-        <ControlledLinkedRecord
-          control={control}
-          name={name}
-          recordType={component.recordLinkType ?? ''}
-          presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-        />
-      )}
-    </Grid>
+    <div>
+      {hasValue ? (
+        <Grid
+          key={reactKey}
+          item
+          xs={12}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
+        >
+          {component.mode === 'output' ? (
+            <ControlledTextField
+              multiline={component.inputType === 'textarea'}
+              label={component.label ?? ''}
+              name={name}
+              showLabel={component.showLabel}
+              placeholder={component.placeholder}
+              tooltip={component.tooltip}
+              control={control}
+              readOnly={!!component.finalValue}
+              displayMode={component.mode}
+              hasValue={hasValue}
+            />
+          ) : (
+            <ControlledLinkedRecord
+              control={control}
+              name={name}
+              recordType={component.recordLinkType ?? ''}
+              presentationRecordLinkId={
+                component.presentationRecordLinkId ?? ''
+              }
+            />
+          )}
+        </Grid>
+      ) : null}
+    </div>
   );
 };
 

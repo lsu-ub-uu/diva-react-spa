@@ -64,6 +64,8 @@ import {
   formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
   formDefWithOneRequiredGroupWithAttributeCollection,
   formDefWithOneNumberVariableModeOutput,
+  formDefForCheckTextValue,
+  formDefForCheckNumberValue,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -1645,36 +1647,7 @@ describe('guiElementLink', () => {
   });
 });
 
-describe.skip('checkIfComponentHasValue', () => {
-  it('checkIfComponentHasValue hides variable in output with no value', () => {
-    const mockSubmit = vi.fn();
-    const coraRecord = {
-      id: 'divaOutput:519333261463755',
-      recordType: 'divaOutput',
-      validationType: 'someValidationTypeId',
-      createdAt: '2023-10-11T09:24:30.511487Z',
-      createdBy: 'coraUser:490742519075086',
-      userRights: ['read', 'update', 'index', 'delete'],
-      updated: [],
-      data: {
-        someRootNameInData: {
-          someOtherTextVar: {
-            value: 'someTestText',
-          },
-        },
-      },
-    };
-    render(
-      <FormGenerator
-        onSubmit={mockSubmit}
-        formSchema={formDefWithTwoTextVariableWithModeOutput as FormSchema}
-        record={coraRecord}
-      />,
-    );
-    const inputElement = screen.queryByLabelText('someMetadataTextVarText');
-    expect(inputElement).not.toBeInTheDocument();
-  });
-
+describe('checkIfComponentHasValue', () => {
   it('checkIfComponentHasValue does not hides variable in output with value', () => {
     const mockSubmit = vi.fn();
     const coraRecord = {
@@ -1687,8 +1660,8 @@ describe.skip('checkIfComponentHasValue', () => {
       updated: [],
       data: {
         someRootNameInData: {
-          someOtherTextVar: {
-            value: 'someTestText',
+          someTextVar: {
+            value: 'aaaaa',
           },
         },
       },
@@ -1696,11 +1669,71 @@ describe.skip('checkIfComponentHasValue', () => {
     render(
       <FormGenerator
         onSubmit={mockSubmit}
-        formSchema={formDefWithTwoTextVariableWithModeOutput as FormSchema}
+        formSchema={formDefForCheckTextValue as FormSchema}
         record={coraRecord}
       />,
     );
-    const inputElement = screen.getByLabelText('someMetadataOtherTextVarText');
+    const inputElement = screen.getByLabelText('someMetadataTextVarText');
     expect(inputElement).toBeInTheDocument();
+  });
+
+  it('checkIfComponentHasValue hides variable in output with no value', () => {
+    const mockSubmit = vi.fn();
+    const coraRecord = {
+      id: 'divaOutput:519333261463755',
+      recordType: 'divaOutput',
+      validationType: 'someValidationTypeId',
+      createdAt: '2023-10-11T09:24:30.511487Z',
+      createdBy: 'coraUser:490742519075086',
+      userRights: ['read', 'update', 'index', 'delete'],
+      updated: [],
+      data: {
+        someRootNameInData: {
+          someTextVar: { value: 'bbb' },
+        },
+      },
+    };
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDefForCheckTextValue as FormSchema}
+        record={coraRecord}
+      />,
+    );
+    const input1Element = screen.queryByLabelText('someMetadataTextVarText');
+    const input2Element = screen.queryByLabelText(
+      'someOtherMetadataTextVarText',
+    );
+    expect(input1Element).toBeInTheDocument();
+    expect(input2Element).not.toBeInTheDocument();
+  });
+
+  it('checkIfComponentHasValue hides variable in output with no value 2', () => {
+    const mockSubmit = vi.fn();
+    const coraRecord = {
+      id: 'divaOutput:519333261463755',
+      recordType: 'divaOutput',
+      validationType: 'someValidationTypeId',
+      createdAt: '2023-10-11T09:24:30.511487Z',
+      createdBy: 'coraUser:490742519075086',
+      userRights: ['read', 'update', 'index', 'delete'],
+      updated: [],
+      data: {
+        someRootNameInData: {
+          someTextVar: { value: 'bbb' },
+        },
+      },
+    };
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDefForCheckNumberValue as FormSchema}
+        record={coraRecord}
+      />,
+    );
+    const input1Element = screen.queryByLabelText('someMetadataTextVarText');
+    const input2Element = screen.queryByLabelText('someMetadataNumberVarText');
+    expect(input1Element).toBeInTheDocument();
+    expect(input2Element).not.toBeInTheDocument();
   });
 });
