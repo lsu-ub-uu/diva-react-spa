@@ -26,14 +26,16 @@ import {
   RecordLink,
   RecordWrapper
 } from '../utils/cora-data/CoraData';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  extractIdFromRecordInfo,
+  extractLinkedRecordIdFromNamedRecordLink
+} from '../utils/cora-data/CoraDataTransforms';
 import {
   containsChildWithNameInData,
   getAllChildrenWithNameInData,
   getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import { FormMetaData } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';

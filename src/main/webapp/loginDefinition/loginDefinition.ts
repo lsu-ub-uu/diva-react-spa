@@ -17,7 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 
 interface LoginDefinition {
   loginDescription: string;
@@ -26,18 +28,26 @@ interface LoginDefinition {
 }
 export const createLoginDefinition = (dependencies: Dependencies): LoginDefinition[] => {
   const { loginUnitPool, loginPool } = dependencies;
-
   const loginItemDefinitions: LoginDefinition[] = [];
 
   const loginUnitEntries = Array.from(loginUnitPool.entries());
 
   loginUnitEntries.forEach((login: any) => {
     const { url, type } = loginPool.get(login[1].login);
-    const item = {
+    const item: LoginDefinition = {
       loginDescription: login[1].loginDescription,
       url,
       type
     };
+    if (item.type === 'password') {
+      console.log('login', item);
+      // item.presentation = createLinkedRecordDefinition(
+      //   dependencies,
+      //   metadataGroup,
+      //   presentationGroup
+      // );
+    }
+
     loginItemDefinitions.push(item);
   });
   return loginItemDefinitions;

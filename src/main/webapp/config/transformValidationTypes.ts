@@ -1,7 +1,10 @@
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  extractIdFromRecordInfo,
+  extractLinkedRecordIdFromNamedRecordLink
+} from '../utils/cora-data/CoraDataTransforms';
 import { BFFValidationType } from './bffTypes';
 
 export const transformCoraValidationTypes = (
@@ -62,10 +65,3 @@ const transformRecordGroupToBFF = (dataRecordGroup: DataGroup) => {
 };
 
 // TODO: move to /CoraDataTransform.ts and write tests
-export const extractLinkedRecordIdFromNamedRecordLink = (
-  coraRecordGroup: DataGroup,
-  linkName: string
-) => {
-  const recordLink = getFirstDataGroupWithNameInData(coraRecordGroup, linkName) as DataGroup;
-  return getFirstDataAtomicValueWithNameInData(recordLink, 'linkedRecordId');
-};

@@ -20,9 +20,9 @@
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   extractAttributeValueByName,
-  extractIdFromRecordInfo
+  extractIdFromRecordInfo,
+  extractLinkedRecordIdFromNamedRecordLink
 } from '../utils/cora-data/CoraDataTransforms';
-import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import {
   BFFPresentationSurroundingContainer,

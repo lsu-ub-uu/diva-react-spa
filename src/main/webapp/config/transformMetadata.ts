@@ -26,7 +26,8 @@ import {
 } from '../utils/cora-data/CoraData';
 import {
   extractIdFromRecordInfo,
-  extractAttributeValueByName
+  extractAttributeValueByName,
+  extractLinkedRecordIdFromNamedRecordLink
 } from '../utils/cora-data/CoraDataTransforms';
 import {
   containsChildWithNameInData,
@@ -35,7 +36,6 @@ import {
   getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import {
   BFFMetadata,
   BFFMetadataGroup,

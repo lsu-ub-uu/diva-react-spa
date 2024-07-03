@@ -1,8 +1,10 @@
 import {
   extractIdFromRecordInfo,
-  extractAttributeValueByName
+  extractAttributeValueByName,
+  extractLinkedRecordIdFromNamedRecordLink
   // extractLinkedRecordIdFromNamedRecordLink,
 } from '../CoraDataTransforms';
+import { DataGroup, RecordLink } from '../CoraData';
 
 const someRecordGroup = {
   name: 'parent',
@@ -75,24 +77,236 @@ describe('CoraDataTransform', () => {
       }
     });
   });
-  /*   describe.only('extractLinkedRecordIdFromNamedRecordLink', () => {
+  describe.only('extractLinkedRecordIdFromNamedRecordLink', () => {
+    const temp: DataGroup = {
+      children: [
+        {
+          children: [
+            {
+              name: 'id',
+              value: 'testLoginPassword'
+            },
+            {
+              children: [
+                {
+                  name: 'linkedRecordType',
+                  value: 'recordType'
+                },
+                {
+                  name: 'linkedRecordId',
+                  value: 'login'
+                }
+              ],
+              actionLinks: {
+                read: {
+                  requestMethod: 'GET',
+                  rel: 'read',
+                  url: 'https://cora.epc.ub.uu.se/diva/rest/record/recordType/login',
+                  accept: 'application/vnd.uub.record+json'
+                }
+              },
+              name: 'type'
+            },
+            {
+              children: [
+                {
+                  name: 'linkedRecordType',
+                  value: 'validationType'
+                },
+                {
+                  name: 'linkedRecordId',
+                  value: 'loginPassword'
+                }
+              ],
+              actionLinks: {
+                read: {
+                  requestMethod: 'GET',
+                  rel: 'read',
+                  url: 'https://cora.epc.ub.uu.se/diva/rest/record/validationType/loginPassword',
+                  accept: 'application/vnd.uub.record+json'
+                }
+              },
+              name: 'validationType'
+            },
+            {
+              children: [
+                {
+                  name: 'linkedRecordType',
+                  value: 'system'
+                },
+                {
+                  name: 'linkedRecordId',
+                  value: 'divaPre'
+                }
+              ],
+              actionLinks: {
+                read: {
+                  requestMethod: 'GET',
+                  rel: 'read',
+                  url: 'https://cora.epc.ub.uu.se/diva/rest/record/system/divaPre',
+                  accept: 'application/vnd.uub.record+json'
+                }
+              },
+              name: 'dataDivider'
+            },
+            {
+              repeatId: '0',
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'user'
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: '161616'
+                    }
+                  ],
+                  name: 'updatedBy'
+                },
+                {
+                  name: 'tsUpdated',
+                  value: '2024-07-03T12:19:18.204502Z'
+                }
+              ],
+              name: 'updated'
+            },
+            {
+              repeatId: '1',
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'user'
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: '161616'
+                    }
+                  ],
+                  name: 'updatedBy'
+                },
+                {
+                  name: 'tsUpdated',
+                  value: '2024-07-03T12:19:31.565473Z'
+                }
+              ],
+              name: 'updated'
+            },
+            {
+              repeatId: '2',
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'linkedRecordType',
+                      value: 'user'
+                    },
+                    {
+                      name: 'linkedRecordId',
+                      value: '161616'
+                    }
+                  ],
+                  name: 'updatedBy'
+                },
+                {
+                  name: 'tsUpdated',
+                  value: '2024-07-03T12:36:04.197154Z'
+                }
+              ],
+              name: 'updated'
+            },
+            {
+              children: [
+                {
+                  name: 'linkedRecordType',
+                  value: 'user'
+                },
+                {
+                  name: 'linkedRecordId',
+                  value: '161616'
+                }
+              ],
+              name: 'createdBy'
+            },
+            {
+              name: 'tsCreated',
+              value: '2024-07-03T12:19:18.204502Z'
+            }
+          ],
+          name: 'recordInfo'
+        },
+        {
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'metadata'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'viewDefinitionPasswordGroup'
+            }
+          ],
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'read',
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/metadata/viewDefinitionPasswordGroup',
+              accept: 'application/vnd.uub.record+json'
+            }
+          },
+          name: 'viewDefinition'
+        },
+        {
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'presentation'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'viewDefinitionPasswordPGroup'
+            }
+          ],
+          actionLinks: {
+            read: {
+              requestMethod: 'GET',
+              rel: 'read',
+              url: 'https://cora.epc.ub.uu.se/diva/rest/record/presentation/viewDefinitionPasswordPGroup',
+              accept: 'application/vnd.uub.record+json'
+            }
+          },
+          name: 'viewPresentation'
+        },
+        {
+          name: 'description',
+          value: 'Test Password login for Diva'
+        }
+      ],
+      name: 'login',
+      attributes: {
+        type: 'password'
+      }
+    };
     it('Throws error when linkedRecordId does not exist', () => {
       expect(() => {
-        extractLinkedRecordIdFromNamedRecordLink(someGroupWithRecordLink, 'notSomeLinkName');
-        }).toThrow(Error);
-      
+        extractLinkedRecordIdFromNamedRecordLink(temp, 'notSomeLinkName');
+      }).toThrow(Error);
+
       try {
-        extractLinkedRecordIdFromNamedRecordLink(someGroupWithRecordLink, 'notSomeLinkName');
+        extractLinkedRecordIdFromNamedRecordLink(temp, 'notSomeLinkName');
       } catch (error: unknown) {
         const childMissingError: Error = <Error>error;
         expect(childMissingError.message).toStrictEqual(
-          'Child with name [notSomeLinkName] does not exist',
+          'Child with name [notSomeLinkName] does not exist'
         );
       }
-    })
+    });
     it('return linkedRecordId from namedRecordLink', () => {
-      const id = extractLinkedRecordIdFromNamedRecordLink(someGroupWithRecordLink, 'linkedRecordId');
-      
-    })
-  }) */
+      const id = extractLinkedRecordIdFromNamedRecordLink(temp, 'viewPresentation');
+      expect(id).toEqual('viewDefinitionPasswordPGroup');
+    });
+  });
 });

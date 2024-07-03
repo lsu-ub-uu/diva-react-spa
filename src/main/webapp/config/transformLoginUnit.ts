@@ -19,8 +19,10 @@
 
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { BFFLoginUnit } from './bffTypes';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
-import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
+import {
+  extractIdFromRecordInfo,
+  extractLinkedRecordIdFromNamedRecordLink
+} from '../utils/cora-data/CoraDataTransforms';
 import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 
 export const transformLoginUnit = (dataListWrapper: DataListWrapper): BFFLoginUnit[] => {

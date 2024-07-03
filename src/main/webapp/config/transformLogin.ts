@@ -17,12 +17,23 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import * as console from 'console';
+import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { BFFLoginPassword, BFFLoginWebRedirect } from './bffTypes';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  extractIdFromRecordInfo,
+  extractLinkedRecordIdFromNamedRecordLink
+} from '../utils/cora-data/CoraDataTransforms';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import { createFormDefinition } from '../formDefinition/formDefinition';
 import { dependencies } from './configureServer';
+import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import {
+  getAllRecordLinksWithNameInData,
+  getFirstChildWithNameInData,
+  getFirstDataGroupWithNameInData
+} from '../utils/cora-data/CoraDataUtils';
+import { recordRoute } from '../routes';
 
 export const transformLogin = (
   dataListWrapper: DataListWrapper
@@ -37,6 +48,7 @@ export const transformLogin = (
 //
 const transformCoraLoginToBFFLogin = (
   coraRecordWrapper: RecordWrapper
+  // dependencies: Dependencies,
 ): BFFLoginWebRedirect | BFFLoginPassword => {
   const coraRecord = coraRecordWrapper.record;
 
@@ -51,14 +63,29 @@ const transformCoraLoginToBFFLogin = (
     const loginName = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'loginName');
     return { id, loginName, url, type } as BFFLoginWebRedirect;
   }
-
   const description = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'description');
-  const formDef = createFormDefinition(dependencies, 'loginPassword', 'create');
+  const recordInfo = getFirstDataGroupWithNameInData(dataRecordGroup, 'recordInfo');
+
+  const validationType = extractLinkedRecordIdFromNamedRecordLink(
+    recordInfo as DataGroup,
+    'validationType'
+  );
+  console.log('coraRecord', validationType);
+  const viewDefinition = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'viewDefinition'
+  );
+  const viewPresentation = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'viewPresentation'
+  );
+
   return {
     id,
     type,
-    metadata: '',
-    presentation: formDef,
+    validationType,
+    viewDefinition,
+    viewPresentation,
     description
   };
 };
