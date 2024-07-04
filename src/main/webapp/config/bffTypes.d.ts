@@ -196,6 +196,7 @@ export interface BFFValidationType extends BFFBase {
 }
 
 export interface BFFLoginUnit extends BFFBase {
+  login: string;
   loginDescription: string;
 }
 
@@ -210,6 +211,6 @@ export interface BFFLoginWebRedirect extends BFFLogin {
 export interface BFFLoginPassword extends BFFLogin {
   viewDefinition: string;
   viewPresentation: unknown;
-  validationType: string;
+  // validationType: string;1
   description: string;
 }

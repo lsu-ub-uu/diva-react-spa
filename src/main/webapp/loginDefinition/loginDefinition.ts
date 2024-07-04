@@ -17,14 +17,15 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
+import { removeEmpty } from '../utils/structs/removeEmpty';
 
 interface LoginDefinition {
   loginDescription: string;
-  url: string;
+  url?: string;
   type: string;
+  presentation?: any;
 }
 export const createLoginDefinition = (dependencies: Dependencies): LoginDefinition[] => {
   const { loginUnitPool, loginPool } = dependencies;
@@ -33,22 +34,20 @@ export const createLoginDefinition = (dependencies: Dependencies): LoginDefiniti
   const loginUnitEntries = Array.from(loginUnitPool.entries());
 
   loginUnitEntries.forEach((login: any) => {
-    const { url, type } = loginPool.get(login[1].login);
-    const item: LoginDefinition = {
-      loginDescription: login[1].loginDescription,
-      url,
-      type
-    };
+    const { url, type, viewDefinition, viewPresentation } = loginPool.get(login[1].login);
+    let item: LoginDefinition = { loginDescription: login[1].loginDescription, url, type };
     if (item.type === 'password') {
-      console.log('login', item);
-      // item.presentation = createLinkedRecordDefinition(
-      //   dependencies,
-      //   metadataGroup,
-      //   presentationGroup
-      // );
+      item = {
+        ...item,
+        presentation: createLinkedRecordDefinition(
+          dependencies,
+          dependencies.metadataPool.get(viewDefinition),
+          dependencies.presentationPool.get(viewPresentation)
+        )
+      };
     }
 
-    loginItemDefinitions.push(item);
+    loginItemDefinitions.push(removeEmpty(item));
   });
   return loginItemDefinitions;
 };

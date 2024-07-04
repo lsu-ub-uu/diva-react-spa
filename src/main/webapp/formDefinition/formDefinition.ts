@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import {
   BFFAttributeReference,
   BFFCollectionItemReference,
@@ -227,7 +226,6 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
 ) => {
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
   const formRootPresentationReference = createBFFPresentationReference(presentationGroup.id);
-
   return createDetailedPresentationBasedOnPresentationType(
     dependencies,
     [formRootReference],

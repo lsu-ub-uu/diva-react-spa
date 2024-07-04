@@ -17,23 +17,15 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
-import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
+import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { BFFLoginPassword, BFFLoginWebRedirect } from './bffTypes';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink
 } from '../utils/cora-data/CoraDataTransforms';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import { createFormDefinition } from '../formDefinition/formDefinition';
-import { dependencies } from './configureServer';
-import { Dependencies } from '../formDefinition/formDefinitionsDep';
-import {
-  getAllRecordLinksWithNameInData,
-  getFirstChildWithNameInData,
-  getFirstDataGroupWithNameInData
-} from '../utils/cora-data/CoraDataUtils';
-import { recordRoute } from '../routes';
+
+import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
 
 export const transformLogin = (
   dataListWrapper: DataListWrapper
@@ -64,13 +56,12 @@ const transformCoraLoginToBFFLogin = (
     return { id, loginName, url, type } as BFFLoginWebRedirect;
   }
   const description = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'description');
-  const recordInfo = getFirstDataGroupWithNameInData(dataRecordGroup, 'recordInfo');
+  // const recordInfo = getFirstDataGroupWithNameInData(dataRecordGroup, 'recordInfo');
 
-  const validationType = extractLinkedRecordIdFromNamedRecordLink(
-    recordInfo as DataGroup,
-    'validationType'
-  );
-  console.log('coraRecord', validationType);
+  // const validationType = extractLinkedRecordIdFromNamedRecordLink(
+  //   recordInfo as DataGroup,
+  //   'validationType'
+  // );
   const viewDefinition = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
     'viewDefinition'
@@ -83,7 +74,7 @@ const transformCoraLoginToBFFLogin = (
   return {
     id,
     type,
-    validationType,
+    // validationType,
     viewDefinition,
     viewPresentation,
     description
