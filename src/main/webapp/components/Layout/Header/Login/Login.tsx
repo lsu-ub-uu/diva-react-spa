@@ -42,8 +42,6 @@ import {
   splitSlashFromUrl,
 } from './utils/utils';
 import { hasError } from '../../../../features/auth/authSlice';
-import { loginUnitformDefForLoginUnitWithPassword } from '../../../../__mocks__/data/formDef';
-import { FormSchema } from '../../../FormGenerator/types';
 
 export const Login = (): JSX.Element => {
   const { MODE } = import.meta.env;
@@ -184,26 +182,45 @@ export const Login = (): JSX.Element => {
                 >
                   {t(loginUnit.loginDescription)}
                 </MenuItem>
-              ) : null,
+              ) : (
+                <MenuItem
+                  key='tempLoginUnitPassword'
+                  onClick={() => {
+                    handleClose();
+                  }}
+                >
+                  <Link
+                    style={{
+                      color: 'black',
+                      textDecorationLine: 'none',
+                    }}
+                    to={`/login?presentation=${JSON.stringify(
+                      loginUnit.presentation,
+                    )}`}
+                  >
+                    {t(loginUnit.loginDescription)}
+                  </Link>
+                </MenuItem>
+              ),
             )}
-            <MenuItem
-              key='tempLoginUnitPassword'
-              onClick={() => {
-                handleClose();
-              }}
-            >
-              <Link
-                style={{
-                  color: 'black',
-                  textDecorationLine: 'none',
-                }}
-                to={`/login?presentation=${JSON.stringify(
-                  loginUnitformDefForLoginUnitWithPassword.presentation,
-                )}`}
-              >
-                {t(loginUnitformDefForLoginUnitWithPassword.loginDescription)}
-              </Link>
-            </MenuItem>
+            {/* <MenuItem */}
+            {/*  key='tempLoginUnitPassword' */}
+            {/*  onClick={() => { */}
+            {/*    handleClose(); */}
+            {/*  }} */}
+            {/* > */}
+            {/*  <Link */}
+            {/*    style={{ */}
+            {/*      color: 'black', */}
+            {/*      textDecorationLine: 'none', */}
+            {/*    }} */}
+            {/*    to={`/login?presentation=${JSON.stringify( */}
+            {/*      loginUnitformDefForLoginUnitWithPassword.presentation, */}
+            {/*    )}`} */}
+            {/*  > */}
+            {/*    {t(loginUnitformDefForLoginUnitWithPassword.loginDescription)} */}
+            {/*  </Link> */}
+            {/* </MenuItem> */}
           </Menu>
         </Stack>
       )}

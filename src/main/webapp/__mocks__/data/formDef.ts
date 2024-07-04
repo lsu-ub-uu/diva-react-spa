@@ -5936,7 +5936,7 @@ export const loginUnitformDefForLoginUnitWithPassword = {
     form: {
       type: 'group',
       showLabel: true,
-      label: 'viewDefinitionPasswordGroupText',
+      label: 'aaaaaaaa',
       name: 'password',
       repeat: {
         repeatMin: 1,
