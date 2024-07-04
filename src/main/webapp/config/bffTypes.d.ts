@@ -122,6 +122,7 @@ export interface BFFPresentation extends BFFBase {
   emptyTextId?: string;
   specifiedLabelTextId?: string;
   showLabel?: string;
+  inputFormat?: 'password';
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentation {
@@ -211,6 +212,6 @@ export interface BFFLoginWebRedirect extends BFFLogin {
 export interface BFFLoginPassword extends BFFLogin {
   viewDefinition: string;
   viewPresentation: unknown;
-  // validationType: string;1
+  // validationType: string;
   description: string;
 }
