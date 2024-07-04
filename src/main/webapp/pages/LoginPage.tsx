@@ -64,10 +64,11 @@ export const LoginPage = () => {
     try {
       setIsSubmitting(true);
       dispatch(loginPasswordAsync(values, () => setBackdrop(false)));
-      navigate('/');
+      // navigate('/');
     } catch (err: any) {
+      console.log(err);
       setIsSubmitting(false);
-      notification(`${err.message}`, 'error');
+      // navigate('');
     } finally {
       setIsSubmitting(false);
     }
