@@ -17,14 +17,13 @@
  */
 
 import { expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
 import { Login } from '../Login';
 import { reduxRender } from '../../../../../utils/testUtils';
-import { Breadcrumbs } from '../../../Breadcrumbs/Breadcrumbs';
 
 /**
  * @vitest-environment jsdom
@@ -66,16 +65,6 @@ describe('<Login/>', () => {
       const unitUrl: string = `/auth/loginUnits`;
       mockAxios.onGet(unitUrl).reply(200, loginUnits);
       const user = userEvent.setup();
-      // reduxRender(<Login />, {
-      //   preloadedState: {
-      //     loginUnits: {
-      //       loginUnits,
-      //       isLoading: false,
-      //       isError: false,
-      //       message: '',
-      //     },
-      //   },
-      // });
 
       reduxRender(
         <MemoryRouter initialEntries={['/']}>
@@ -101,7 +90,7 @@ describe('<Login/>', () => {
       await waitFor(() => {
         const userNameList = screen.queryAllByRole('menuitem');
         const listItems = userNameList.map((item) => item.textContent);
-        expect(listItems).toHaveLength(9);
+        expect(listItems).toHaveLength(8);
         expect(listItems).toEqual([
           'DiVAUser',
           'DiVAEverything',
@@ -111,7 +100,6 @@ describe('<Login/>', () => {
           'rkhTestDiVALoginUnitText',
           'skhTestDiVALoginUnitText',
           'ltuDiVALoginUnitText',
-          'uuSystemOnePasswordLoginUnitText',
         ]);
       });
     });

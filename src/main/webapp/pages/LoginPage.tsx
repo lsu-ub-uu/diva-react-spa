@@ -25,9 +25,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
 import { useBackdrop, FormGenerator, AsidePortal } from '../components';
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { loginPasswordAsync } from '../features/auth/actions';
+import { AppDispatch } from '../app/store';
+import { authStateSelector } from '../features/auth/selectors';
 
 export const LoginPage = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -38,7 +40,9 @@ export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [presentationParam, setPresentationParam] = useSearchParams();
   const [schema, setSchema] = useState<null | FormSchema>(null);
-  const dispatch = useAppDispatch();
+  const [formIsDiry, setFormIsDirty] = useState(false);
+  const authState = useAppSelector(authStateSelector);
+  const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const notification = (message: string, variant: VariantType) => {
@@ -53,6 +57,16 @@ export const LoginPage = () => {
   }, [isLoading, setBackdrop, isSubmitting]);
 
   useEffect(() => {
+    if (authState.hasError && authState.userSession === null && formIsDiry) {
+      notification(`Loggin error`, 'error');
+    }
+    if (!authState.hasError && authState.userSession !== null && formIsDiry) {
+      notification(`Loggin success`, 'success');
+      navigate('/');
+    }
+  }, [authState]);
+
+  useEffect(() => {
     const parsedPresentation = JSON.parse(
       presentationParam.get('presentation') as string,
     );
@@ -61,12 +75,15 @@ export const LoginPage = () => {
   }, []);
 
   const handlePasswordSelection = async (values: FieldValues) => {
+    setFormIsDirty(true);
     try {
       setIsSubmitting(true);
-      dispatch(loginPasswordAsync(values, () => setBackdrop(false)));
-      // navigate('/');
+      dispatch(
+        loginPasswordAsync(values, () => {
+          setBackdrop(false);
+        }),
+      );
     } catch (err: any) {
-      console.log(err);
       setIsSubmitting(false);
       // navigate('');
     } finally {

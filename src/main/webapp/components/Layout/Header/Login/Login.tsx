@@ -203,24 +203,6 @@ export const Login = (): JSX.Element => {
                 </MenuItem>
               ),
             )}
-            {/* <MenuItem */}
-            {/*  key='tempLoginUnitPassword' */}
-            {/*  onClick={() => { */}
-            {/*    handleClose(); */}
-            {/*  }} */}
-            {/* > */}
-            {/*  <Link */}
-            {/*    style={{ */}
-            {/*      color: 'black', */}
-            {/*      textDecorationLine: 'none', */}
-            {/*    }} */}
-            {/*    to={`/login?presentation=${JSON.stringify( */}
-            {/*      loginUnitformDefForLoginUnitWithPassword.presentation, */}
-            {/*    )}`} */}
-            {/*  > */}
-            {/*    {t(loginUnitformDefForLoginUnitWithPassword.loginDescription)} */}
-            {/*  </Link> */}
-            {/* </MenuItem> */}
           </Menu>
         </Stack>
       )}
