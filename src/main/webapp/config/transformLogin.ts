@@ -56,12 +56,6 @@ const transformCoraLoginToBFFLogin = (
     return { id, loginName, url, type } as BFFLoginWebRedirect;
   }
   const description = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'description');
-  // const recordInfo = getFirstDataGroupWithNameInData(dataRecordGroup, 'recordInfo');
-
-  // const validationType = extractLinkedRecordIdFromNamedRecordLink(
-  //   recordInfo as DataGroup,
-  //   'validationType'
-  // );
   const viewDefinition = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
     'viewDefinition'
