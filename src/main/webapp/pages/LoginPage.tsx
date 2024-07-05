@@ -60,7 +60,7 @@ export const LoginPage = () => {
     if (authState.hasError && authState.userSession === null && formIsDiry) {
       notification(`Loggin error`, 'error');
     }
-    if (!authState.hasError && authState.userSession !== null && formIsDiry) {
+    if (authState.userSession !== null && formIsDiry) {
       notification(`Loggin success`, 'success');
       navigate('/');
     }
