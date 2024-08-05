@@ -25,8 +25,6 @@ import {
 } from '../utils/cora-data/CoraDataTransforms';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
-import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
-
 export const transformLogin = (
   dataListWrapper: DataListWrapper
 ): (BFFLoginWebRedirect | BFFLoginPassword)[] => {
@@ -37,7 +35,7 @@ export const transformLogin = (
   const coraRecords = dataListWrapper.dataList.data;
   return coraRecords.map(transformCoraLoginToBFFLogin).filter((item) => item !== undefined);
 };
-//
+
 const transformCoraLoginToBFFLogin = (
   coraRecordWrapper: RecordWrapper
   // dependencies: Dependencies,
@@ -68,7 +66,6 @@ const transformCoraLoginToBFFLogin = (
   return {
     id,
     type,
-    // validationType,
     viewDefinition,
     viewPresentation,
     description

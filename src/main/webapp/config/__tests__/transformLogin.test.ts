@@ -58,10 +58,10 @@ describe('transformLogin', () => {
       const login = transformLogin(testLoginLDAP);
       expect(login).toHaveLength(1);
       expect(login[0]).toStrictEqual({
-        id: 'someLDAP',
-        metadata: '',
-        presentation: '',
-        description: 'http://www.google.se',
+        id: 'systemOneLoginPassword',
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'Password login for systemOne',
         type: 'password'
       });
     });
@@ -70,17 +70,17 @@ describe('transformLogin', () => {
       const login = transformLogin(testLoginWithTwoLDAP);
       expect(login).toHaveLength(2);
       expect(login[0]).toStrictEqual({
-        id: 'someLoginUnitId',
-        metadata: '',
-        presentation: '',
-        description: 'http://www.google.se',
+        id: 'systemOneLoginPassword',
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'Password login for systemOne',
         type: 'password'
       });
       expect(login[1]).toStrictEqual({
-        id: 'someLoginOtherUnitId',
-        metadata: '',
-        presentation: '',
-        description: 'http://www.google.se',
+        id: 'systemOneLoginPassword2',
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'Password login for systemOne',
         type: 'password'
       });
     });
@@ -91,10 +91,10 @@ describe('transformLogin', () => {
       const login = transformLogin(testLoginMixed);
       expect(login).toHaveLength(2);
       expect(login[0]).toStrictEqual({
-        id: 'uppsalaLDAP',
-        metadata: '',
-        presentation: '',
-        description: 'http://www.google.se',
+        id: 'systemOneLoginPassword',
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'Password login for systemOne',
         type: 'password'
       });
       expect(login[1]).toStrictEqual({

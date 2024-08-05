@@ -10,28 +10,7 @@
                 "children": [
                   {
                     "name": "id",
-                    "value": "uppsalaLDAP"
-                  },
-                  {
-                    "children": [
-                      {
-                        "name": "linkedRecordType",
-                        "value": "system"
-                      },
-                      {
-                        "name": "linkedRecordId",
-                        "value": "cora"
-                      }
-                    ],
-                    "actionLinks": {
-                      "read": {
-                        "requestMethod": "GET",
-                        "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/system/cora",
-                        "accept": "application/vnd.uub.record+json"
-                      }
-                    },
-                    "name": "dataDivider"
+                    "value": "systemOneLoginPassword"
                   },
                   {
                     "children": [
@@ -48,7 +27,7 @@
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/recordType/login",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/recordType/login",
                         "accept": "application/vnd.uub.record+json"
                       }
                     },
@@ -62,18 +41,39 @@
                       },
                       {
                         "name": "linkedRecordId",
-                        "value": "loginLDAP"
+                        "value": "loginPassword"
                       }
                     ],
                     "actionLinks": {
                       "read": {
                         "requestMethod": "GET",
                         "rel": "read",
-                        "url": "https://cora.epc.ub.uu.se/diva/rest/record/validationType/loginLDAP",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/validationType/loginPassword",
                         "accept": "application/vnd.uub.record+json"
                       }
                     },
                     "name": "validationType"
+                  },
+                  {
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "systemOne"
+                      }
+                    ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/system/systemOne",
+                        "accept": "application/vnd.uub.record+json"
+                      }
+                    },
+                    "name": "dataDivider"
                   },
                   {
                     "repeatId": "0",
@@ -89,11 +89,19 @@
                             "value": "141414"
                           }
                         ],
+                        "actionLinks": {
+                          "read": {
+                            "requestMethod": "GET",
+                            "rel": "read",
+                            "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
+                            "accept": "application/vnd.uub.record+json"
+                          }
+                        },
                         "name": "updatedBy"
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2019-01-30T10:43:41.849000Z"
+                        "value": "2024-05-30T10:12:15.004367Z"
                       }
                     ],
                     "name": "updated"
@@ -112,11 +120,50 @@
                             "value": "141414"
                           }
                         ],
+                        "actionLinks": {
+                          "read": {
+                            "requestMethod": "GET",
+                            "rel": "read",
+                            "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
+                            "accept": "application/vnd.uub.record+json"
+                          }
+                        },
                         "name": "updatedBy"
                       },
                       {
                         "name": "tsUpdated",
-                        "value": "2023-03-02T15:29:14.490999Z"
+                        "value": "2024-05-30T13:51:29.223185Z"
+                      }
+                    ],
+                    "name": "updated"
+                  },
+                  {
+                    "repeatId": "2",
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "141414"
+                          }
+                        ],
+                        "actionLinks": {
+                          "read": {
+                            "requestMethod": "GET",
+                            "rel": "read",
+                            "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
+                            "accept": "application/vnd.uub.record+json"
+                          }
+                        },
+                        "name": "updatedBy"
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2024-05-30T13:51:39.428206Z"
                       }
                     ],
                     "name": "updated"
@@ -132,11 +179,19 @@
                         "value": "141414"
                       }
                     ],
+                    "actionLinks": {
+                      "read": {
+                        "requestMethod": "GET",
+                        "rel": "read",
+                        "url": "https://cora.epc.ub.uu.se/systemone/rest/record/user/141414",
+                        "accept": "application/vnd.uub.record+json"
+                      }
+                    },
                     "name": "createdBy"
                   },
                   {
                     "name": "tsCreated",
-                    "value": "2019-01-30T10:43:41.849000Z"
+                    "value": "2024-05-30T10:12:15.004367Z"
                   }
                 ],
                 "name": "recordInfo"
@@ -149,18 +204,18 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "ldapGroup"
+                    "value": "viewDefinitionPasswordGroup"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/diva/rest/record/metadata/ldapGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/metadata/viewDefinitionPasswordGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
-                "name": "ldapMetadata"
+                "name": "viewDefinition"
               },
               {
                 "children": [
@@ -170,43 +225,22 @@
                   },
                   {
                     "name": "linkedRecordId",
-                    "value": "ldapPGroup"
+                    "value": "viewDefinitionPasswordPGroup"
                   }
                 ],
                 "actionLinks": {
                   "read": {
                     "requestMethod": "GET",
                     "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/diva/rest/record/presentation/ldapPGroup",
+                    "url": "https://cora.epc.ub.uu.se/systemone/rest/record/presentation/viewDefinitionPasswordPGroup",
                     "accept": "application/vnd.uub.record+json"
                   }
                 },
-                "name": "ldapPresentation"
-              },
-              {
-                "children": [
-                  {
-                    "name": "linkedRecordType",
-                    "value": "text"
-                  },
-                  {
-                    "name": "linkedRecordId",
-                    "value": "ldapGroupText"
-                  }
-                ],
-                "actionLinks": {
-                  "read": {
-                    "requestMethod": "GET",
-                    "rel": "read",
-                    "url": "https://cora.epc.ub.uu.se/diva/rest/record/text/ldapGroupText",
-                    "accept": "application/vnd.uub.record+json"
-                  }
-                },
-                "name": "description"
+                "name": "viewPresentation"
               },
               {
                 "name": "description",
-                "value": "http://www.google.se"
+                "value": "Password login for systemOne"
               }
             ],
             "name": "login",
@@ -218,7 +252,20 @@
             "read": {
               "requestMethod": "GET",
               "rel": "read",
-              "url": "https://cora.epc.ub.uu.se/diva/rest/record/login/uppsalaLDAP",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/login/systemOneLoginPassword",
+              "accept": "application/vnd.uub.record+json"
+            },
+            "read_incoming_links": {
+              "requestMethod": "GET",
+              "rel": "read_incoming_links",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/login/systemOneLoginPassword/incomingLinks",
+              "accept": "application/vnd.uub.recordList+json"
+            },
+            "update": {
+              "requestMethod": "POST",
+              "rel": "update",
+              "contentType": "application/vnd.uub.record+json",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/login/systemOneLoginPassword",
               "accept": "application/vnd.uub.record+json"
             },
             "index": {
@@ -241,7 +288,7 @@
                   },
                   {
                     "name": "recordId",
-                    "value": "uppsalaLDAP"
+                    "value": "systemOneLoginPassword"
                   },
                   {
                     "name": "type",
@@ -251,7 +298,7 @@
                 "name": "workOrder"
               },
               "contentType": "application/vnd.uub.record+json",
-              "url": "https://cora.epc.ub.uu.se/diva/rest/record/workOrder/",
+              "url": "https://cora.epc.ub.uu.se/systemone/rest/record/workOrder/",
               "accept": "application/vnd.uub.record+json"
             }
           }
