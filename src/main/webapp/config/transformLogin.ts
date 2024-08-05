@@ -17,10 +17,12 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { BFFLoginPassword, BFFLoginWebRedirect } from './bffTypes';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  extractIdFromRecordInfo,
+  extractLinkedRecordIdFromNamedRecordLink
+} from '../utils/cora-data/CoraDataTransforms';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
 export const transformLogin = (
@@ -33,9 +35,10 @@ export const transformLogin = (
   const coraRecords = dataListWrapper.dataList.data;
   return coraRecords.map(transformCoraLoginToBFFLogin).filter((item) => item !== undefined);
 };
-//
+
 const transformCoraLoginToBFFLogin = (
   coraRecordWrapper: RecordWrapper
+  // dependencies: Dependencies,
 ): BFFLoginWebRedirect | BFFLoginPassword => {
   const coraRecord = coraRecordWrapper.record;
 
@@ -44,18 +47,27 @@ const transformCoraLoginToBFFLogin = (
   const { attributes } = dataRecordGroup;
   const type = attributes?.type as string;
   const id = extractIdFromRecordInfo(dataRecordGroup);
-  const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
 
   if (type === 'webRedirect') {
+    const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
     const loginName = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'loginName');
-    return { id, loginName, url, type };
+    return { id, loginName, url, type } as BFFLoginWebRedirect;
   }
+  const description = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'description');
+  const viewDefinition = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'viewDefinition'
+  );
+  const viewPresentation = extractLinkedRecordIdFromNamedRecordLink(
+    dataRecordGroup,
+    'viewPresentation'
+  );
 
   return {
     id,
     type,
-    metadata: '',
-    presentation: '',
-    url
+    viewDefinition,
+    viewPresentation,
+    description
   };
 };

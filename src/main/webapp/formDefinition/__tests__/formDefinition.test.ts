@@ -241,7 +241,8 @@ describe('formDefinition', () => {
   const createTextVar = (
     id: string,
     nameInData: string,
-    attributeReferenceIds: string[]
+    attributeReferenceIds: string[],
+    regEx: string = '.*'
   ): BFFMetadataTextVariable => {
     const metadata: BFFMetadataTextVariable = {
       id,
@@ -249,7 +250,7 @@ describe('formDefinition', () => {
       type: 'textVariable',
       textId: 'someTextId',
       defTextId: 'someDefTextId',
-      regEx: '.*'
+      regEx
     };
     if (attributeReferenceIds.length > 0) {
       const attributeIds = attributeReferenceIds?.map((attrId) => {
@@ -266,13 +267,16 @@ describe('formDefinition', () => {
   const createPresentationVar = (
     id: string,
     presentationOf: string,
-    type: string
+    type: string,
+    mode: 'input' | 'output' = 'output',
+    inputFormat?: 'password'
   ): BFFPresentation => {
     const pVar = {
       id,
       presentationOf,
       type,
-      mode: 'output'
+      mode,
+      inputFormat
     };
     dependencies.presentationPool.set(id, pVar);
     return pVar as BFFPresentation;
@@ -386,7 +390,7 @@ describe('formDefinition', () => {
       return {
         childId,
         repeatMin: '1',
-        repeatMax: '3'
+        repeatMax: '1'
       };
     });
   };
@@ -459,14 +463,15 @@ describe('formDefinition', () => {
   const createPresentationGroup = (
     id: string,
     presentationOf: string,
-    children: BFFPresentationChildReference[]
+    children: BFFPresentationChildReference[],
+    mode: 'input' | 'output' = 'output'
   ): BFFPresentationGroup => {
     const pGroup = {
       id,
       type: 'pGroup',
       presentationOf,
       presentationStyle: '',
-      mode: 'output',
+      mode,
       children
     } as BFFPresentationGroup;
     dependencies.presentationPool.set(id, pGroup);
@@ -1861,7 +1866,7 @@ describe('formDefinition', () => {
               name: 'someNameInData6',
               placeholder: 'someEmptyTextId',
               repeat: {
-                repeatMax: 3,
+                repeatMax: 1,
                 repeatMin: 1
               },
               tooltip: {
@@ -1972,7 +1977,7 @@ describe('formDefinition', () => {
                   mode: 'output',
                   name: 'familyName',
                   repeat: {
-                    repeatMax: 3,
+                    repeatMax: 1,
                     repeatMin: 1
                   },
                   showLabel: true,
@@ -2004,7 +2009,7 @@ describe('formDefinition', () => {
                       childStyle: [''],
                       name: 'givenName',
                       repeat: {
-                        repeatMax: 3,
+                        repeatMax: 1,
                         repeatMin: 1
                       },
                       showLabel: true,
@@ -2029,7 +2034,7 @@ describe('formDefinition', () => {
               name: 'personNameGroup',
               presentationStyle: '',
               repeat: {
-                repeatMax: 3,
+                repeatMax: 1,
                 repeatMin: 1
               },
               showLabel: true,
@@ -2170,7 +2175,7 @@ describe('formDefinition', () => {
                   mode: 'output',
                   name: 'nationalSubjectCategoryName',
                   repeat: {
-                    repeatMax: 3,
+                    repeatMax: 1,
                     repeatMin: 1
                   },
                   showLabel: true,
@@ -2187,7 +2192,7 @@ describe('formDefinition', () => {
               name: 'name',
               presentationStyle: '',
               repeat: {
-                repeatMax: 3,
+                repeatMax: 1,
                 repeatMin: 1
               },
               showLabel: true,
@@ -2219,7 +2224,7 @@ describe('formDefinition', () => {
                   mode: 'output',
                   name: 'nationalSubjectCategoryName',
                   repeat: {
-                    repeatMax: 3,
+                    repeatMax: 1,
                     repeatMin: 1
                   },
                   showLabel: true,
@@ -2236,7 +2241,7 @@ describe('formDefinition', () => {
               name: 'alternativeName',
               presentationStyle: '',
               repeat: {
-                repeatMax: 3,
+                repeatMax: 1,
                 repeatMin: 1
               },
               showLabel: true,
@@ -2265,7 +2270,7 @@ describe('formDefinition', () => {
               mode: 'output',
               name: 'subjectCode',
               repeat: {
-                repeatMax: 3,
+                repeatMax: 1,
                 repeatMin: 1
               },
               showLabel: true,
@@ -2299,6 +2304,134 @@ describe('formDefinition', () => {
           type: 'group'
         }
       });
+    });
+  });
+
+  it('should return a linked record definition for a password', () => {
+    createGroup('viewDefinitionPasswordGroup', 'password', [
+      'loginIdTextVar',
+      'loginPasswordTextVar'
+    ]);
+    createPresentationGroup(
+      'viewDefinitionPasswordPGroup',
+      'viewDefinitionPasswordGroup',
+      [
+        {
+          childId: 'loginIdPVar',
+          type: 'presentation'
+        },
+        {
+          childId: 'loginPasswordPVar',
+          type: 'presentation'
+        }
+      ],
+      'input'
+    );
+    createTextVar('loginIdTextVar', 'loginId', [], '^[0-9A-Za-z:-_]{2,50}@[0-9A-Za-z:-_.]{2,300}$');
+    createTextVar('loginPasswordTextVar', 'password', [], '(^[0-9A-Za-z:-_]{2,50}$)');
+    createPresentationVar('loginIdPVar', 'loginIdTextVar', 'pVar', 'input');
+    createPresentationVar('loginPasswordPVar', 'loginPasswordTextVar', 'pVar', 'input', 'password');
+
+    const passwordGroup = createLinkedRecordDefinition(
+      dependencies,
+      {
+        id: 'viewDefinitionPasswordGroup',
+        nameInData: 'password',
+        type: 'group',
+        textId: 'viewDefinitionPasswordGroupText',
+        defTextId: 'viewDefinitionPasswordGroupDefText',
+        children: [
+          { childId: 'loginIdTextVar', repeatMin: '1', repeatMax: '1' },
+          { childId: 'loginPasswordTextVar', repeatMin: '1', repeatMax: '1' }
+        ]
+      } as BFFMetadataGroup,
+      {
+        id: 'viewDefinitionPasswordPGroup',
+        presentationOf: 'viewDefinitionPasswordGroup',
+        mode: 'input',
+        children: [
+          {
+            childId: 'loginIdPVar',
+            type: 'presentation',
+            minNumberOfRepeatingToShow: '1',
+            childStyle: []
+          },
+          {
+            childId: 'loginPasswordPVar',
+            type: 'presentation',
+            minNumberOfRepeatingToShow: '1',
+            childStyle: []
+          }
+        ],
+        type: 'pGroup'
+      }
+    );
+    expect(passwordGroup.form.components).toHaveLength(2);
+    expect(passwordGroup).toStrictEqual({
+      form: {
+        childStyle: [''],
+        components: [
+          {
+            childStyle: [''],
+            gridColSpan: 12,
+            label: 'someTextId',
+            mode: 'input',
+            name: 'loginId',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'someDefTextId',
+              title: 'someTextId'
+            },
+            type: 'textVariable',
+            validation: {
+              pattern: '^[0-9A-Za-z:-_]{2,50}@[0-9A-Za-z:-_.]{2,300}$',
+              type: 'regex'
+            }
+          },
+          {
+            childStyle: [''],
+            gridColSpan: 12,
+            label: 'someTextId',
+            mode: 'input',
+            name: 'password',
+            inputFormat: 'password',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'someDefTextId',
+              title: 'someTextId'
+            },
+            type: 'textVariable',
+            validation: {
+              pattern: '(^[0-9A-Za-z:-_]{2,50}$)',
+              type: 'regex'
+            }
+          }
+        ],
+        gridColSpan: 12,
+        label: 'someTextId',
+        mode: 'input',
+        name: 'password',
+
+        presentationStyle: '',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        showLabel: true,
+        tooltip: {
+          body: 'someDefTextId',
+          title: 'someTextId'
+        },
+        type: 'group'
+      }
     });
   });
 
@@ -2828,7 +2961,7 @@ describe('formDefinition', () => {
               mode: 'output',
               name: 'abstract',
               repeat: {
-                repeatMax: 3,
+                repeatMax: 1,
                 repeatMin: 1
               },
               showLabel: true,

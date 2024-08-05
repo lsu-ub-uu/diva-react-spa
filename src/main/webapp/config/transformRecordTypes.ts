@@ -1,7 +1,9 @@
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  extractIdFromRecordInfo,
+  extractLinkedRecordIdFromNamedRecordLink
+} from '../utils/cora-data/CoraDataTransforms';
 import { BFFRecordType } from './bffTypes';
-import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { containsChildWithNameInData } from '../utils/cora-data/CoraDataUtils';
 

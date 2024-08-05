@@ -193,7 +193,7 @@ export const getAllDataGroupsWithNameInDataAndAttributes = (
 };
 
 export default {
-  getFirstRecordLinkWithNameInData,
+  // getFirstRecordLinkWithNameInData,
   getFirstChildWithNameInData,
   getAllChildrenWithNameInData,
   getFirstDataAtomicWithNameInData,

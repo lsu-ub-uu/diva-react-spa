@@ -23,7 +23,8 @@ import {
   BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,
-  BFFMetadata,
+  BFFMetadataGroup,
+  BFFMetadataTextVariable,
   BFFPresentation,
   BFFPresentationGroup,
   BFFRecordType,
@@ -69,18 +70,84 @@ describe('loginDefinition', () => {
       },
       {
         id: 'uppsalaLDAP',
-        metadata: 'someMetadata',
-        presentation: 'somePresentation',
-        url: 'http://www.google.se',
-        type: 'ldap'
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'someDescription',
+        // validationType: 'someValidationType',
+        type: 'password'
+      }
+    ]);
+    const metadataPool = listToPool<BFFMetadataGroup | BFFMetadataTextVariable>([
+      {
+        id: 'viewDefinitionPasswordGroup',
+        nameInData: 'password',
+        type: 'group',
+        textId: 'viewDefinitionPasswordGroupText',
+        defTextId: 'viewDefinitionPasswordGroupDefText',
+        children: [
+          { childId: 'loginIdTextVar', repeatMin: '1', repeatMax: '1' },
+          { childId: 'loginPasswordTextVar', repeatMin: '1', repeatMax: '1' }
+        ]
+      },
+      {
+        nameInData: 'loginId',
+        regEx: '^[0-9A-Za-z:\\-_]{2,50}@[0-9A-Za-z:\\-_.]{2,300}$',
+        id: 'loginIdTextVar',
+        type: 'textVariable',
+        textId: 'loginIdTextVarText',
+        defTextId: 'loginIdTextVarDefText'
+      },
+      {
+        nameInData: 'password',
+        regEx: '(^[0-9A-Za-z:-_]{2,50}$)',
+        id: 'loginPasswordTextVar',
+        type: 'textVariable',
+        textId: 'loginPasswordTextVarText',
+        defTextId: 'loginPasswordTextVarDefText'
+      }
+    ]);
+    const presentationPool = listToPool<BFFPresentationGroup | BFFPresentation>([
+      {
+        id: 'viewDefinitionPasswordPGroup',
+        presentationOf: 'viewDefinitionPasswordGroup',
+        mode: 'input',
+        children: [
+          {
+            childId: 'loginIdPVar',
+            type: 'presentation',
+            minNumberOfRepeatingToShow: '1',
+            childStyle: []
+          },
+          {
+            childId: 'loginPasswordPVar',
+            type: 'presentation',
+            minNumberOfRepeatingToShow: '1',
+            childStyle: []
+          }
+        ],
+        type: 'pGroup'
+      },
+      {
+        id: 'loginIdPVar',
+        presentationOf: 'loginIdTextVar',
+        mode: 'input',
+        type: 'pVar',
+        inputType: 'input'
+      },
+      {
+        id: 'loginPasswordPVar',
+        presentationOf: 'loginPasswordTextVar',
+        mode: 'input',
+        type: 'pVar',
+        inputType: 'input'
       }
     ]);
 
     dependencies = {
       textPool: listToPool<BFFText>([]),
       validationTypePool: listToPool<BFFValidationType>([]),
-      metadataPool: listToPool<BFFMetadata>([]),
-      presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
+      metadataPool,
+      presentationPool,
       recordTypePool: listToPool<BFFRecordType>([]),
       searchPool: listToPool<BFFSearch>([]),
       loginUnitPool,
@@ -102,8 +169,75 @@ describe('loginDefinition', () => {
       },
       {
         loginDescription: 'someDiVALoginUnitText2',
-        type: 'ldap',
-        url: 'http://www.google.se'
+        type: 'password',
+        presentation: {
+          form: {
+            childStyle: [''],
+            components: [
+              {
+                childStyle: [''],
+                gridColSpan: 12,
+                inputType: 'input',
+                label: 'loginIdTextVarText',
+                mode: 'input',
+                name: 'loginId',
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMax: 1,
+                  repeatMin: 1
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'loginIdTextVarDefText',
+                  title: 'loginIdTextVarText'
+                },
+                type: 'textVariable',
+                validation: {
+                  pattern: '^[0-9A-Za-z:\\-_]{2,50}@[0-9A-Za-z:\\-_.]{2,300}$',
+                  type: 'regex'
+                }
+              },
+              {
+                childStyle: [''],
+                gridColSpan: 12,
+                inputType: 'input',
+                label: 'loginPasswordTextVarText',
+                mode: 'input',
+                name: 'password',
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMax: 1,
+                  repeatMin: 1
+                },
+                showLabel: true,
+                tooltip: {
+                  body: 'loginPasswordTextVarDefText',
+                  title: 'loginPasswordTextVarText'
+                },
+                type: 'textVariable',
+                validation: {
+                  pattern: '(^[0-9A-Za-z:-_]{2,50}$)',
+                  type: 'regex'
+                }
+              }
+            ],
+            gridColSpan: 12,
+            label: 'viewDefinitionPasswordGroupText',
+            mode: 'input',
+            name: 'password',
+            presentationStyle: '',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1
+            },
+            showLabel: true,
+            tooltip: {
+              body: 'viewDefinitionPasswordGroupDefText',
+              title: 'viewDefinitionPasswordGroupText'
+            },
+            type: 'group'
+          }
+        }
       }
     ];
 

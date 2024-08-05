@@ -31,6 +31,7 @@ import coraPresentationWithMiscTypes from '../../__mocks__/coraPresentationWithM
 import coraPresentationWithOneCollectionVariable from '../../__mocks__/coraPresentationWithOneCollectionVariable.json';
 import coraPresentationWithOneTextVariableHavingSpecifiedLabel from '../../__mocks__/coraPresentationWithOneTextVariableHavingSpecifiedLabel.json';
 import coraPresentationWithOneTextVariableHavingShowLabelFalse from '../../__mocks__/coraPresentationWithOneTextVariableHavingShowLabelFalse.json';
+import coraPresentationWithTextVariableInputFormat from '../../__mocks__/coraPresentationWithTextVariableInputFormat.json';
 import coraPresentationSurroundingContainer from '../../__mocks__/coraPresentationSurroundingContainer.json';
 import coraPresentationSurroundingContainerWithTwoVarPresentationsOf from '../../__mocks__/coraPresentationSurroundingContainerWithTwoVarsPresentationsOf.json';
 import coraPresentationRepeatingContainer from '../../__mocks__/coraPresentationRepeatingContainer.json';
@@ -93,6 +94,18 @@ describe('transformCoraPresentations', () => {
         inputType: 'someInputType',
         emptyTextId: 'somePlaceholderText',
         showLabel: 'false'
+      });
+    });
+    it('Returns one BFFPresentation for one pVar entry with label inputFormat', () => {
+      const transformData = transformCoraPresentations(coraPresentationWithTextVariableInputFormat);
+      expect(transformData[0]).toStrictEqual({
+        id: 'someTextVarPVar',
+        type: 'pVar',
+        presentationOf: 'someTextVar',
+        mode: 'input',
+        inputType: 'someInputType',
+        emptyTextId: 'somePlaceholderText',
+        inputFormat: 'password'
       });
     });
 

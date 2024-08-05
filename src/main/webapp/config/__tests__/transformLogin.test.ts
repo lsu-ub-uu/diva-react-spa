@@ -24,7 +24,7 @@ describe('transformLogin', () => {
   });
 
   describe('webRedirect', () => {
-    it('Returns one login entry with correct keyes', () => {
+    it('Returns one login entry with correct keys', () => {
       const login = transformLogin(testLoginWebRedirect);
       expect(login).toHaveLength(1);
       expect(login[0]).toStrictEqual({
@@ -35,7 +35,7 @@ describe('transformLogin', () => {
       });
     });
 
-    it('Returns two login entries correct keyes', () => {
+    it('Returns two login entries correct keys', () => {
       const login = transformLogin(testLoginWithTwoWebRedirect);
       expect(login).toHaveLength(2);
       expect(login[0]).toStrictEqual({
@@ -52,35 +52,36 @@ describe('transformLogin', () => {
       });
     });
   });
+
   describe('ldap', () => {
-    it('Returns one login entry with correct keyes', () => {
+    it('Returns one login entry with correct keys', () => {
       const login = transformLogin(testLoginLDAP);
       expect(login).toHaveLength(1);
       expect(login[0]).toStrictEqual({
-        id: 'someLDAP',
-        metadata: '',
-        presentation: '',
-        url: 'http://www.google.se',
-        type: 'ldap'
+        id: 'systemOneLoginPassword',
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'Password login for systemOne',
+        type: 'password'
       });
     });
 
-    it('Returns two login entries correct keyes', () => {
+    it('Returns two login entries correct keys', () => {
       const login = transformLogin(testLoginWithTwoLDAP);
       expect(login).toHaveLength(2);
       expect(login[0]).toStrictEqual({
-        id: 'someLoginUnitId',
-        metadata: '',
-        presentation: '',
-        url: 'http://www.google.se',
-        type: 'ldap'
+        id: 'systemOneLoginPassword',
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'Password login for systemOne',
+        type: 'password'
       });
       expect(login[1]).toStrictEqual({
-        id: 'someLoginOtherUnitId',
-        metadata: '',
-        presentation: '',
-        url: 'http://www.google.se',
-        type: 'ldap'
+        id: 'systemOneLoginPassword2',
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'Password login for systemOne',
+        type: 'password'
       });
     });
   });
@@ -90,11 +91,11 @@ describe('transformLogin', () => {
       const login = transformLogin(testLoginMixed);
       expect(login).toHaveLength(2);
       expect(login[0]).toStrictEqual({
-        id: 'uppsalaLDAP',
-        metadata: '',
-        presentation: '',
-        url: 'http://www.google.se',
-        type: 'ldap'
+        id: 'systemOneLoginPassword',
+        viewDefinition: 'viewDefinitionPasswordGroup',
+        viewPresentation: 'viewDefinitionPasswordPGroup',
+        description: 'Password login for systemOne',
+        type: 'password'
       });
       expect(login[1]).toStrictEqual({
         id: 'someLoginUnitId',

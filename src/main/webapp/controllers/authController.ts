@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import * as console from 'console';
 import { deleteAuthTokenFromCora, requestAuthTokenOnLogin } from '../cora/auth';
 import { errorHandler } from '../server';
-import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
-import { getSearchResultDataListBySearchType } from '../cora/record';
 import { createLoginDefinition } from '../loginDefinition/loginDefinition';
 import { dependencies } from '../config/configureServer';
 
@@ -16,7 +14,7 @@ export const postAppTokenToGetAuthToken = async (req: Request, res: Response) =>
   const { user } = req.params;
   const appToken = req.body.token;
   try {
-    const authToken = await requestAuthTokenOnLogin(user, appToken);
+    const authToken = await requestAuthTokenOnLogin(user, appToken, 'apptoken');
     res.status(201).json({ authToken });
   } catch (error: unknown) {
     console.log(error);
@@ -53,6 +51,24 @@ export const getAllLoginUnits = async (req: Request, res: Response) => {
     const loginList = createLoginDefinition(dependencies);
     res.status(200).json(loginList);
   } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
+/**
+ * @desc Post userName and password to get authToken
+ * @route POST /api/auth/password/:user
+ * @access Public
+ */
+export const postUserNameAndPasswordToGetAuthToken = async (req: Request, res: Response) => {
+  const { user } = req.params;
+  const { password } = req.body;
+  try {
+    const authToken = await requestAuthTokenOnLogin(user, password, 'password');
+    res.status(201).json({ authToken });
+  } catch (error: unknown) {
+    console.log(error);
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }

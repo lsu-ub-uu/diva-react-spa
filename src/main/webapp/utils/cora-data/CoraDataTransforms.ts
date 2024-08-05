@@ -20,3 +20,11 @@ export const extractAttributeValueByName = (
 
   return dataRecordGroup.attributes[attributeName];
 };
+
+export const extractLinkedRecordIdFromNamedRecordLink = (
+  coraRecordGroup: DataGroup,
+  linkName: string
+) => {
+  const recordLink = getFirstDataGroupWithNameInData(coraRecordGroup, linkName) as DataGroup;
+  return getFirstDataAtomicValueWithNameInData(recordLink, 'linkedRecordId');
+};

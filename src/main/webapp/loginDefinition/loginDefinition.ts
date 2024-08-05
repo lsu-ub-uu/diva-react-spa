@@ -18,27 +18,36 @@
  */
 
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
+import { removeEmpty } from '../utils/structs/removeEmpty';
 
 interface LoginDefinition {
   loginDescription: string;
-  url: string;
+  url?: string;
   type: string;
+  presentation?: any;
 }
 export const createLoginDefinition = (dependencies: Dependencies): LoginDefinition[] => {
   const { loginUnitPool, loginPool } = dependencies;
-
   const loginItemDefinitions: LoginDefinition[] = [];
 
   const loginUnitEntries = Array.from(loginUnitPool.entries());
 
   loginUnitEntries.forEach((login: any) => {
-    const { url, type } = loginPool.get(login[1].login);
-    const item = {
-      loginDescription: login[1].loginDescription,
-      url,
-      type
-    };
-    loginItemDefinitions.push(item);
+    const { url, type, viewDefinition, viewPresentation } = loginPool.get(login[1].login);
+    let item: LoginDefinition = { loginDescription: login[1].loginDescription, url, type };
+    if (item.type === 'password') {
+      item = {
+        ...item,
+        presentation: createLinkedRecordDefinition(
+          dependencies,
+          dependencies.metadataPool.get(viewDefinition),
+          dependencies.presentationPool.get(viewPresentation)
+        )
+      };
+    }
+
+    loginItemDefinitions.push(removeEmpty(item));
   });
   return loginItemDefinitions;
 };

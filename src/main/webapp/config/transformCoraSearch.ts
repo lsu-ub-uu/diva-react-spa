@@ -19,9 +19,11 @@
 
 import { DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
 import { BFFSearch } from './bffTypes';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
+import {
+  extractIdFromRecordInfo,
+  extractLinkedRecordIdFromNamedRecordLink
+} from '../utils/cora-data/CoraDataTransforms';
 import { getAllRecordLinksWithNameInData } from '../utils/cora-data/CoraDataUtils';
-import { extractLinkedRecordIdFromNamedRecordLink } from './transformValidationTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 

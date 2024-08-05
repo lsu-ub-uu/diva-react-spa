@@ -226,7 +226,6 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
 ) => {
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
   const formRootPresentationReference = createBFFPresentationReference(presentationGroup.id);
-
   return createDetailedPresentationBasedOnPresentationType(
     dependencies,
     [formRootReference],
@@ -574,6 +573,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   let recordLinkType;
   let presentationRecordLinkId;
   let search;
+  let inputFormat;
 
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
@@ -601,6 +601,7 @@ const createDetailedPresentationBasedOnPresentationType = (
     const textVariable = metadata as BFFMetadataTextVariable;
     validation = createTextVariableValidation(textVariable);
     finalValue = textVariable.finalValue;
+    inputFormat = presentation.inputFormat;
     attributes = checkForAttributes(textVariable, metadataPool, undefined, presentation);
   }
 
@@ -695,7 +696,8 @@ const createDetailedPresentationBasedOnPresentationType = (
     gridColSpan,
     recordLinkType,
     presentationRecordLinkId,
-    search
+    search,
+    inputFormat
   });
 };
 const findMetadataChildReferenceById = (
