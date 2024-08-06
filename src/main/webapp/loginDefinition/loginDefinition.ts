@@ -17,14 +17,15 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
 interface LoginDefinition {
   loginDescription: string;
-  url?: string;
   type: string;
+  url?: string;
   presentation?: any;
 }
 export const createLoginDefinition = (dependencies: Dependencies): LoginDefinition[] => {
@@ -34,8 +35,16 @@ export const createLoginDefinition = (dependencies: Dependencies): LoginDefiniti
   const loginUnitEntries = Array.from(loginUnitPool.entries());
 
   loginUnitEntries.forEach((login: any) => {
+    let item: LoginDefinition;
     const { url, type, viewDefinition, viewPresentation } = loginPool.get(login[1].login);
-    let item: LoginDefinition = { loginDescription: login[1].loginDescription, url, type };
+    item = { loginDescription: login[1].loginDescription, type };
+
+    if (item.type === 'webRedirect') {
+      item = {
+        ...item,
+        url
+      };
+    }
     if (item.type === 'password') {
       item = {
         ...item,

@@ -155,93 +155,106 @@ describe('loginDefinition', () => {
     };
   });
 
-  it('should generate a object from loginUnits and logins', () => {
-    const result = [
-      {
-        loginDescription: 'someDiVALoginUnitText',
-        url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
-        type: 'webRedirect'
-      },
-      {
-        loginDescription: 'someDiVALoginUnitText2',
-        url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
-        type: 'webRedirect'
-      },
-      {
-        loginDescription: 'someDiVALoginUnitText2',
-        type: 'password',
-        presentation: {
-          form: {
-            childStyle: [''],
-            components: [
-              {
-                childStyle: [''],
-                gridColSpan: 12,
-                inputType: 'input',
-                label: 'loginIdTextVarText',
-                mode: 'input',
-                name: 'loginId',
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMax: 1,
-                  repeatMin: 1
-                },
-                showLabel: true,
-                tooltip: {
-                  body: 'loginIdTextVarDefText',
-                  title: 'loginIdTextVarText'
-                },
-                type: 'textVariable',
-                validation: {
-                  pattern: '^[0-9A-Za-z:\\-_]{2,50}@[0-9A-Za-z:\\-_.]{2,300}$',
-                  type: 'regex'
-                }
+  const result = [
+    {
+      loginDescription: 'someDiVALoginUnitText',
+      url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
+      type: 'webRedirect'
+    },
+    {
+      loginDescription: 'someDiVALoginUnitText2',
+      url: 'https://www.diva-portal.org/Shibboleth.sso/Login/liu?target=https://www.diva-portal.org/diva-test/idplogin/login',
+      type: 'webRedirect'
+    },
+    {
+      loginDescription: 'someDiVALoginUnitText2',
+      type: 'password',
+      presentation: {
+        form: {
+          childStyle: [''],
+          components: [
+            {
+              childStyle: [''],
+              gridColSpan: 12,
+              inputType: 'input',
+              label: 'loginIdTextVarText',
+              mode: 'input',
+              name: 'loginId',
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMax: 1,
+                repeatMin: 1
               },
-              {
-                childStyle: [''],
-                gridColSpan: 12,
-                inputType: 'input',
-                label: 'loginPasswordTextVarText',
-                mode: 'input',
-                name: 'password',
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMax: 1,
-                  repeatMin: 1
-                },
-                showLabel: true,
-                tooltip: {
-                  body: 'loginPasswordTextVarDefText',
-                  title: 'loginPasswordTextVarText'
-                },
-                type: 'textVariable',
-                validation: {
-                  pattern: '(^[0-9A-Za-z:-_]{2,50}$)',
-                  type: 'regex'
-                }
+              showLabel: true,
+              tooltip: {
+                body: 'loginIdTextVarDefText',
+                title: 'loginIdTextVarText'
+              },
+              type: 'textVariable',
+              validation: {
+                pattern: '^[0-9A-Za-z:\\-_]{2,50}@[0-9A-Za-z:\\-_.]{2,300}$',
+                type: 'regex'
               }
-            ],
-            gridColSpan: 12,
-            label: 'viewDefinitionPasswordGroupText',
-            mode: 'input',
-            name: 'password',
-            presentationStyle: '',
-            repeat: {
-              repeatMax: 1,
-              repeatMin: 1
             },
-            showLabel: true,
-            tooltip: {
-              body: 'viewDefinitionPasswordGroupDefText',
-              title: 'viewDefinitionPasswordGroupText'
-            },
-            type: 'group'
-          }
+            {
+              childStyle: [''],
+              gridColSpan: 12,
+              inputType: 'input',
+              label: 'loginPasswordTextVarText',
+              mode: 'input',
+              name: 'password',
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMax: 1,
+                repeatMin: 1
+              },
+              showLabel: true,
+              tooltip: {
+                body: 'loginPasswordTextVarDefText',
+                title: 'loginPasswordTextVarText'
+              },
+              type: 'textVariable',
+              validation: {
+                pattern: '(^[0-9A-Za-z:-_]{2,50}$)',
+                type: 'regex'
+              }
+            }
+          ],
+          gridColSpan: 12,
+          label: 'viewDefinitionPasswordGroupText',
+          mode: 'input',
+          name: 'password',
+          presentationStyle: '',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          showLabel: true,
+          tooltip: {
+            body: 'viewDefinitionPasswordGroupDefText',
+            title: 'viewDefinitionPasswordGroupText'
+          },
+          type: 'group'
         }
       }
-    ];
-
+    }
+  ];
+  it('should generate a object from loginUnits and logins', () => {
     const actual = createLoginDefinition(dependencies);
     expect(actual).toStrictEqual(result);
+  });
+
+  it('webRedirect should contain correct keys', () => {
+    const actual = createLoginDefinition(dependencies);
+    expect(actual[1].type).toBe('webRedirect');
+    expect(Object.hasOwn(actual[1], 'url')).toBe(true);
+    expect(Object.hasOwn(actual[1], 'presentation')).toBe(false);
+  });
+
+  it('password should contain correct keys', () => {
+    const actual = createLoginDefinition(dependencies);
+    expect(actual[2].type).toBe('password');
+    expect(Object.hasOwn(actual[2], 'url')).toBe(false);
+    expect(Object.hasOwn(actual[2], 'presentation')).toBe(true);
   });
 });
