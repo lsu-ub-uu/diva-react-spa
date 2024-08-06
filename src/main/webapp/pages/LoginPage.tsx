@@ -21,33 +21,29 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import axios from 'axios';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import {
-  useBackdrop,
-  FormGenerator,
-  AsidePortal,
-  NavigationPanel,
-  linksFromFormSchema,
-  useSectionScroller,
-} from '../components';
-import { useCoraFormSchemaByValidationType } from '../app/hooks';
+import { useBackdrop, FormGenerator, AsidePortal } from '../components';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
-import { removeEmpty } from '../utils/removeEmpty';
+import { loginPasswordAsync } from '../features/auth/actions';
+import { AppDispatch } from '../app/store';
+import { authStateSelector } from '../features/auth/selectors';
 
-export const CreateRecordPage = () => {
-  const { validationType } = useParams();
-  const activeSection = useSectionScroller();
+export const LoginPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
-  const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
-    validationType,
-    'create',
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [presentationParam, setPresentationParam] = useSearchParams();
+  const [schema, setSchema] = useState<null | FormSchema>(null);
+  const [formIsDiry, setFormIsDirty] = useState(false);
+  const authState = useAppSelector(authStateSelector);
+  const dispatch: AppDispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
@@ -60,20 +56,36 @@ export const CreateRecordPage = () => {
     setBackdrop(isLoading || isSubmitting);
   }, [isLoading, setBackdrop, isSubmitting]);
 
-  const handleSubmit = async (values: FieldValues) => {
+  useEffect(() => {
+    if (authState.hasError && authState.userSession === null && formIsDiry) {
+      notification(`Loggin error`, 'error');
+    }
+    if (authState.userSession !== null && formIsDiry) {
+      notification(`Loggin success`, 'success');
+      navigate('/');
+    }
+  }, [authState]);
+
+  useEffect(() => {
+    const parsedPresentation = JSON.parse(
+      presentationParam.get('presentation') as string,
+    );
+    setSchema(parsedPresentation);
+    // setPresentationParam({});
+  }, []);
+
+  const handlePasswordSelection = async (values: FieldValues) => {
+    setFormIsDirty(true);
     try {
       setIsSubmitting(true);
-      const response = await axios.post(
-        `/record/${schema?.validationTypeId}`,
-        removeEmpty(values),
-      );
-      notification(
-        `Record was successfully created ${response.data.id}`,
-        'success',
+      dispatch(
+        loginPasswordAsync(values, () => {
+          setBackdrop(false);
+        }),
       );
     } catch (err: any) {
       setIsSubmitting(false);
-      notification(`${err.message}`, 'error');
+      // navigate('');
     } finally {
       setIsSubmitting(false);
     }
@@ -87,27 +99,27 @@ export const CreateRecordPage = () => {
         height={800}
       />
     );
-
   return (
     <>
       <Helmet>
-        <title>{t(schema?.form.label as string)} | DiVA</title>
+        <title>{t('divaClient_loginPageText')} | DiVA</title>
       </Helmet>
       <AsidePortal>
-        <NavigationPanel
-          links={schema ? linksFromFormSchema(schema) || [] : []}
-          activeLinkName={activeSection}
-        />
+        <p>loginPage</p>
       </AsidePortal>
       <div>
         <Stack spacing={2}>
-          <FormGenerator
-            onSubmit={handleSubmit}
-            onInvalid={() => {
-              notification(`Form is invalid`, 'error');
-            }}
-            formSchema={schema as FormSchema}
-          />
+          {schema !== null ? (
+            <FormGenerator
+              onSubmit={handlePasswordSelection}
+              onInvalid={() => {
+                notification(`Form is invalid`, 'error');
+              }}
+              formSchema={schema as FormSchema}
+            />
+          ) : (
+            <span />
+          )}
         </Stack>
       </div>
     </>

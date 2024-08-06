@@ -21,6 +21,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { MemoryRouter } from 'react-router-dom';
 import { Login } from '../Login';
 import { reduxRender } from '../../../../../utils/testUtils';
 
@@ -64,16 +65,22 @@ describe('<Login/>', () => {
       const unitUrl: string = `/auth/loginUnits`;
       mockAxios.onGet(unitUrl).reply(200, loginUnits);
       const user = userEvent.setup();
-      reduxRender(<Login />, {
-        preloadedState: {
-          loginUnits: {
-            loginUnits,
-            isLoading: false,
-            isError: false,
-            message: '',
+
+      reduxRender(
+        <MemoryRouter initialEntries={['/']}>
+          <Login />
+        </MemoryRouter>,
+        {
+          preloadedState: {
+            loginUnits: {
+              loginUnits,
+              isLoading: false,
+              isError: false,
+              message: '',
+            },
           },
         },
-      });
+      );
 
       const loginButton = screen.getByRole('button', {
         name: 'divaClient_LoginText',
@@ -108,16 +115,21 @@ describe('<Login/>', () => {
         const user = userEvent.setup();
         window.open = vi.fn();
 
-        reduxRender(<Login />, {
-          preloadedState: {
-            loginUnits: {
-              loginUnits,
-              isLoading: false,
-              isError: false,
-              message: '',
+        reduxRender(
+          <MemoryRouter initialEntries={['/']}>
+            <Login />
+          </MemoryRouter>,
+          {
+            preloadedState: {
+              loginUnits: {
+                loginUnits,
+                isLoading: false,
+                isError: false,
+                message: '',
+              },
             },
           },
-        });
+        );
 
         const loginButton = screen.getByRole('button', {
           name: 'divaClient_LoginText',
@@ -149,16 +161,21 @@ describe('<Login/>', () => {
       });
 
       const user = userEvent.setup();
-      reduxRender(<Login />, {
-        preloadedState: {
-          loginUnits: {
-            loginUnits,
-            isLoading: false,
-            isError: false,
-            message: '',
+      reduxRender(
+        <MemoryRouter initialEntries={['/']}>
+          <Login />
+        </MemoryRouter>,
+        {
+          preloadedState: {
+            loginUnits: {
+              loginUnits,
+              isLoading: false,
+              isError: false,
+              message: '',
+            },
           },
         },
-      });
+      );
 
       const loginButton = screen.getByRole('button', {
         name: 'divaClient_LoginText',
@@ -179,16 +196,21 @@ describe('<Login/>', () => {
       const unitUrl: string = `/auth/loginUnits`;
       mockAxios.onGet(unitUrl).reply(200, loginUnits);
       const user = userEvent.setup();
-      reduxRender(<Login />, {
-        preloadedState: {
-          loginUnits: {
-            loginUnits,
-            isLoading: false,
-            isError: false,
-            message: '',
+      reduxRender(
+        <MemoryRouter initialEntries={['/']}>
+          <Login />
+        </MemoryRouter>,
+        {
+          preloadedState: {
+            loginUnits: {
+              loginUnits,
+              isLoading: false,
+              isError: false,
+              message: '',
+            },
           },
         },
-      });
+      );
 
       const loginButton = screen.getByRole('button', {
         name: 'divaClient_LoginText',
@@ -209,16 +231,21 @@ describe('<Login/>', () => {
       const user = userEvent.setup();
       window.open = vi.fn();
 
-      reduxRender(<Login />, {
-        preloadedState: {
-          loginUnits: {
-            loginUnits,
-            isLoading: false,
-            isError: false,
-            message: '',
+      reduxRender(
+        <MemoryRouter initialEntries={['/']}>
+          <Login />
+        </MemoryRouter>,
+        {
+          preloadedState: {
+            loginUnits: {
+              loginUnits,
+              isLoading: false,
+              isError: false,
+              message: '',
+            },
           },
         },
-      });
+      );
 
       const loginButton = screen.getByRole('button', {
         name: 'divaClient_LoginText',
@@ -234,6 +261,47 @@ describe('<Login/>', () => {
       waitFor(async () => {
         const logedInUser = await screen.findByText('johdo290');
         expect(logedInUser).toBeInTheDocument();
+      });
+    });
+
+    it('should should show name of chosen password user', async () => {
+      const unitUrl: string = `/auth/loginUnits`;
+      mockAxios.onGet(unitUrl).reply(200, loginUnits);
+      const user = userEvent.setup();
+      window.open = vi.fn();
+
+      reduxRender(
+        <MemoryRouter initialEntries={['/']}>
+          <Login />
+        </MemoryRouter>,
+        {
+          preloadedState: {
+            loginUnits: {
+              loginUnits,
+              isLoading: false,
+              isError: false,
+              message: '',
+            },
+          },
+        },
+      );
+
+      const loginButton = screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      });
+      await user.click(loginButton);
+
+      const loginUrl = screen.queryByText(
+        'uuSystemOnePasswordLoginUnitText',
+      ) as HTMLElement;
+
+      await user.click(loginUrl);
+
+      waitFor(async () => {
+        const loginInput = await screen.findByPlaceholderText(
+          'loginIdTextVarText',
+        );
+        expect(loginInput).toBeInTheDocument();
       });
     });
   });

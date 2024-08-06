@@ -618,6 +618,7 @@ const createTextOrNumberVariable = (
         readOnly={!!component.finalValue}
         displayMode={component.mode}
         parentPresentationStyle={parentPresentationStyle}
+        inputFormat={component.inputFormat}
       />
     </Grid>
   );

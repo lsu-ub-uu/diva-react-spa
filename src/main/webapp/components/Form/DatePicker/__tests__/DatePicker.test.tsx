@@ -72,23 +72,4 @@ describe('<DatePicker />', () => {
 
     expect(dateInput).toBeValid();
   });
-
-  /* it('Today button click gives todays date', async () => {
-    const today = dayjs().format('YYYY-MM-DD');
-    render(
-      <DatePicker
-        onChange={vi.fn()}
-        value={dayjs()}
-      />,
-    );
-    const user = userEvent.setup();
-    const button = screen.getByRole('button', { name: 'Choose date' });
-    await user.click(button);
-    const todayButton = screen.getByRole('button', { name: 'Today' });
-    user.click(todayButton);
-    const dateInput = screen.getByRole('textbox');
-    waitFor(() => {
-      expect(dateInput).toHaveValue(today.toString());
-    });
-  }); */
 });
