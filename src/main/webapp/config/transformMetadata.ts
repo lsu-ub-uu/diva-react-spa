@@ -17,33 +17,28 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { DataGroup, DataListWrapper, RecordLink, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
-  DataAtomic,
-  DataGroup,
-  DataListWrapper,
-  RecordLink,
-  RecordWrapper
-} from '../utils/cora-data/CoraData';
-import {
-  extractIdFromRecordInfo,
   extractAttributeValueByName,
+  extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink
 } from '../utils/cora-data/CoraDataTransforms';
 import {
   containsChildWithNameInData,
   getAllChildrenWithNameInData,
+  getAllDataAtomicValueFromDataGroup,
   getAllDataGroupsWithNameInDataAndAttributes,
   getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import {
   BFFMetadata,
-  BFFMetadataGroup,
   BFFMetadataChildReference,
-  BFFMetadataTextVariable,
-  BFFMetadataNumberVariable,
   BFFMetadataCollectionVariable,
-  BFFMetadataRecordLink
+  BFFMetadataGroup,
+  BFFMetadataNumberVariable,
+  BFFMetadataRecordLink,
+  BFFMetadataTextVariable
 } from './bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 
@@ -111,34 +106,17 @@ const transformBasicMetadata = (dataRecordGroup: DataGroup) => {
   } as BFFMetadata;
 };
 
-function transformMetadataVariable<T extends BFFMetadata>(
+const transformMetadataVariable = <T extends BFFMetadata>(
   dataRecordGroup: DataGroup,
   metadata: BFFMetadata
-): BFFMetadata {
+): BFFMetadata => {
   const attributeReferences = extractAttributesReferences(dataRecordGroup);
   return removeEmpty({
     attributeReferences,
-    ...getAtomics(dataRecordGroup),
+    ...getAllDataAtomicValueFromDataGroup(dataRecordGroup),
     ...metadata
   }) as T;
-}
-
-function getAtomics(dataRecordGroup: DataGroup) {
-  return reduceAtomics(getAtomicChildren(dataRecordGroup));
-}
-
-function reduceAtomics(atomics: DataAtomic[]) {
-  return atomics.reduce<Record<string, string>>((prev, current) => {
-    prev[current.name] = current.value;
-    return prev;
-  }, {});
-}
-
-function getAtomicChildren(dataRecordGroup: DataGroup) {
-  return dataRecordGroup.children.filter((record) =>
-    Object.hasOwn(record, 'value')
-  ) as DataAtomic[];
-}
+};
 
 const transformCollectionVariable = (
   dataRecordGroup: DataGroup,

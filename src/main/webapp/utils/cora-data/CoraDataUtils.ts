@@ -192,6 +192,21 @@ export const getAllDataGroupsWithNameInDataAndAttributes = (
   return matchingDataGroups;
 };
 
+export const getAllDataAtomicValueFromDataGroup = (dataRecordGroup: DataGroup) => {
+  return reduceAtomics(getAtomicChildren(dataRecordGroup));
+};
+const reduceAtomics = (atomics: DataAtomic[]) => {
+  return atomics.reduce<Record<string, string>>((prev, current) => {
+    prev[current.name] = current.value;
+    return prev;
+  }, {});
+};
+const getAtomicChildren = (dataRecordGroup: DataGroup) => {
+  return dataRecordGroup.children.filter((record) =>
+    Object.hasOwn(record, 'value')
+  ) as DataAtomic[];
+};
+
 export default {
   // getFirstRecordLinkWithNameInData,
   getFirstChildWithNameInData,

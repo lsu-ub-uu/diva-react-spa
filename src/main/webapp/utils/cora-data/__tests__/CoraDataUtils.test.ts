@@ -19,6 +19,7 @@
 
 import * as cdu from '../CoraDataUtils';
 import { DataGroup, DataElement, DataAtomic } from '../CoraData';
+import { getAllDataAtomicValueFromDataGroup } from '../CoraDataUtils';
 
 const dataGroupWithOneRecordLink: DataGroup = {
   name: 'someDataGroupName',
@@ -1061,6 +1062,28 @@ describe('getAllDataGroupsWithNameInDataAndAttributes', () => {
           ]
         }
       ]);
+    });
+  });
+});
+
+describe('getAllDataAtomicValueFromDataGroup', () => {
+  it('should return no results', () => {
+    const actual = getAllDataAtomicValueFromDataGroup(dataGroupWithEmptyChildren);
+    expect(actual).toStrictEqual({});
+  });
+  it('should return one key for nested groups', () => {
+    const actual = getAllDataAtomicValueFromDataGroup(dataGroupWithOnlyMatchingGroups);
+    expect(actual).toStrictEqual({ someOtherUninterestingChildName: 'someValue' });
+  });
+  it('should return one key for identical atomics', () => {
+    const actual = getAllDataAtomicValueFromDataGroup(dataGroupWithOnlyMatchingAtomics);
+    expect(actual).toStrictEqual({ someInterestingChildName: 'someOtherValue' });
+  });
+  it('should return all keys for atomics', () => {
+    const actual = getAllDataAtomicValueFromDataGroup(dataGroupWithNonMatchingDataElements);
+    expect(actual).toStrictEqual({
+      someOtherUninterestingChildName: 'someValue',
+      someUninterestingChildName: 'someValue'
     });
   });
 });

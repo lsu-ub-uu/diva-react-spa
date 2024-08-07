@@ -23,7 +23,7 @@ import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink
 } from '../utils/cora-data/CoraDataTransforms';
-import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
+import { getAllDataAtomicValueFromDataGroup } from '../utils/cora-data/CoraDataUtils';
 
 export const transformLogin = (
   dataListWrapper: DataListWrapper
@@ -38,7 +38,6 @@ export const transformLogin = (
 
 const transformCoraLoginToBFFLogin = (
   coraRecordWrapper: RecordWrapper
-  // dependencies: Dependencies,
 ): BFFLoginWebRedirect | BFFLoginPassword => {
   const coraRecord = coraRecordWrapper.record;
 
@@ -48,26 +47,21 @@ const transformCoraLoginToBFFLogin = (
   const type = attributes?.type as string;
   const id = extractIdFromRecordInfo(dataRecordGroup);
 
-  if (type === 'webRedirect') {
-    const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
-    const loginName = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'loginName');
-    return { id, loginName, url, type } as BFFLoginWebRedirect;
-  }
-  const description = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'description');
-  const viewDefinition = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'viewDefinition'
-  );
-  const viewPresentation = extractLinkedRecordIdFromNamedRecordLink(
-    dataRecordGroup,
-    'viewPresentation'
-  );
+  const getValues = getAllDataAtomicValueFromDataGroup(dataRecordGroup);
 
-  return {
-    id,
-    type,
-    viewDefinition,
-    viewPresentation,
-    description
-  };
+  let getMetadataAndPresentation;
+  if (type === 'password') {
+    const viewDefinition = extractLinkedRecordIdFromNamedRecordLink(
+      dataRecordGroup,
+      'viewDefinition'
+    );
+    const viewPresentation = extractLinkedRecordIdFromNamedRecordLink(
+      dataRecordGroup,
+      'viewPresentation'
+    );
+    getMetadataAndPresentation = { viewDefinition, viewPresentation };
+  }
+  return { id, type, ...getValues, ...getMetadataAndPresentation } as
+    | BFFLoginWebRedirect
+    | BFFLoginPassword;
 };
