@@ -4,6 +4,9 @@ GET http://localhost:8080/api/refreshDefinitions
 GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/refreshDefinitions
 
 ###
+GET http://localhost:9877/api/refreshDefinitions
+
+###
 GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/validationTypes
 Content-Type: application/json
 Authtoken: 65904f00-c785-45c1-893d-81af309cbb650
