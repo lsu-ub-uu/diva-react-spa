@@ -71,7 +71,6 @@ export const loginPasswordAsync =
         renameObjectKey(values.password.password, 'password'),
         options,
       );
-      console.log('lPA', response.data);
 
       dispatch(authenticated(response.data.authToken));
       dispatch(loadPublicationTypesAsync());
