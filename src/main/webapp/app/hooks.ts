@@ -72,6 +72,46 @@ export const useCoraFormSchemaByValidationType = (
   return { isLoading, schema, error };
 };
 
+export const useCoraFormSchemaBySearchId = (
+  id: string | undefined,
+): UseFormSchemaByValidationType => {
+  const [schema, setSchema] = useState<FormSchema>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchFormSchema = async () => {
+      try {
+        const response = await axios.get(`/search/form/${id}`);
+        if (isMounted) {
+          setError(null);
+          setSchema(response.data as FormSchema);
+          setIsLoading(false);
+        }
+      } catch (err: unknown) {
+        if (isMounted) {
+          if (axios.isAxiosError(err)) {
+            setError(err.message);
+          } else {
+            setError('Unexpected error occurred');
+          }
+          setIsLoading(false);
+        }
+      }
+    };
+
+    if (id !== undefined) fetchFormSchema().then();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
+
+  return { isLoading, schema, error };
+};
+
 interface UseCoraRecordByTypeAndId {
   record?: CoraRecord;
   isLoading: boolean;

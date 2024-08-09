@@ -17,6 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { removeEmpty } from './removeEmpty';
+
 export const renameObjectKey = (
   obj: { [key: string]: string },
   newKey: string,
@@ -29,4 +31,11 @@ export const renameObjectKey = (
       Object.keys(obj)[0],
     ) as PropertyDescriptor,
   );
+};
+
+export const convertObjectToUrl = (obj: any) => {
+  const cleanedObj = removeEmpty(obj);
+  // console.log(JSON.stringify(cleanedObj).toString())
+  const urlSearchParam = new URLSearchParams(JSON.stringify(cleanedObj)).toString();
+  return urlSearchParam;
 };

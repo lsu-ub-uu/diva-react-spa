@@ -33,9 +33,13 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '../components';
-import { useCoraFormSchemaByValidationType } from '../app/hooks';
+import {
+  useCoraFormSchemaBySearchId,
+  useCoraFormSchemaByValidationType,
+} from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
+import { convertObjectToUrl } from '../utils';
 
 export const SearchPage = () => {
   const { id } = useParams();
@@ -44,10 +48,7 @@ export const SearchPage = () => {
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
-  const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
-    id,
-    'create',
-  );
+  const { error, isLoading, schema } = useCoraFormSchemaBySearchId(id);
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
@@ -61,16 +62,13 @@ export const SearchPage = () => {
   }, [isLoading, setBackdrop, isSubmitting]);
 
   const handleSubmit = async (values: FieldValues) => {
-    console.log('values', values)
+    console.log('values1', values);
+    console.log('values2', convertObjectToUrl(values));
     // try {
     //   setIsSubmitting(true);
     //   const response = await axios.post(
     //     `/record/${schema?.validationTypeId}`,
     //     removeEmpty(values),
-    //   );
-    //   notification(
-    //     `Record was successfully created ${response.data.id}`,
-    //     'success',
     //   );
     // } catch (err: any) {
     //   setIsSubmitting(false);
@@ -94,9 +92,7 @@ export const SearchPage = () => {
       <Helmet>
         <title>{t(schema?.form.label as string)} | DiVA</title>
       </Helmet>
-      <AsidePortal>
-        Search
-      </AsidePortal>
+      <AsidePortal>Search</AsidePortal>
       <div>
         <Stack spacing={2}>
           <FormGenerator
