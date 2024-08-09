@@ -78,7 +78,7 @@ export const ControlledAutocomplete = (
           return undefined;
         }
         const response = await axios.get(
-          `/search/${props.searchLink}?searchTermValue=${inputValue}`,
+          `/search/results/${props.searchLink}?searchTermValue=${inputValue}`,
         );
 
         if (isMounted) {
