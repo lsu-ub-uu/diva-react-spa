@@ -301,6 +301,39 @@ describe('<FormGenerator />', () => {
       expect(inputElement).toBeInTheDocument();
     });
 
+    it('does not render a textVariable 1-1 with mode output with no data', async () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            exampleWrongTextVar: {
+              value: 'someTestText',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOneRepeatingTextVariableWithModeOutput as FormSchema
+          }
+          record={coraRecord}
+        />,
+      );
+      const label = screen.queryByLabelText('exampleWrongTextVar');
+      const inputElement = screen.queryByText('someTestText');
+      expect(label).not.toBeInTheDocument();
+      expect(inputElement).not.toBeInTheDocument();
+    });
+
     it('renders a textVariable 0-1 and minNumberOfRepeatingToShow 1', async () => {
       const mockSubmit = vi.fn();
 
@@ -416,6 +449,39 @@ describe('<FormGenerator />', () => {
       );
       const inputElement = screen.getByText('2');
       expect(inputElement).toBeInTheDocument();
+    });
+
+    it('does not render a numberVariable 1-1 with mode output with no data', async () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            exampleWrongTextVar: {
+              value: 'someTestText',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOneRepeatingTextVariableWithModeOutput as FormSchema
+          }
+          record={coraRecord}
+        />,
+      );
+      const label = screen.queryByLabelText('exampleWrongNumberVar');
+      const inputElement = screen.queryByText('12');
+      expect(label).not.toBeInTheDocument();
+      expect(inputElement).not.toBeInTheDocument();
     });
 
     it('renders a numberVariable 1-1 with input under min', async () => {

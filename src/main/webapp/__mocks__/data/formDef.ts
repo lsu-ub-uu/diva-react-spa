@@ -466,6 +466,7 @@ export const formDefWithTextVar = {
           pattern: '^[a-zA-Z]$',
         },
         inputType: 'input',
+        mode: 'input',
       },
       {
         type: 'numberVariable',
@@ -484,6 +485,7 @@ export const formDefWithTextVar = {
           repeatMin: 1,
           repeatMax: 1,
         },
+        mode: 'input',
       },
     ],
     mode: 'input',
