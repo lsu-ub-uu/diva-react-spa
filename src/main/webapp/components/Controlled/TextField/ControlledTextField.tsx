@@ -41,6 +41,10 @@ interface ControlledTextFieldProps {
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode = props.displayMode ?? 'input';
+  const hasValueAndIsOutput =
+    props.hasValue === true && displayMode === 'output';
+  const showLabelAndIsInput =
+    props.showLabel === true && displayMode === 'input';
 
   return (
     <Controller
@@ -58,7 +62,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             }}
           >
             <>
-              {props.hasValue === true && displayMode === 'output' ? (
+              {hasValueAndIsOutput || showLabelAndIsInput ? (
                 <FormLabel
                   htmlFor={field.name}
                   aria-label={props.label}
