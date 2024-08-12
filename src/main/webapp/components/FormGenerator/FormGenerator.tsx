@@ -90,6 +90,7 @@ export const FormGenerator = ({
     path: string,
     parentPresentationStyle?: string,
   ) => {
+    console.log('5', component.name);
     const reactKey = `key_${idx}`;
 
     let currentComponentNamePath;
@@ -150,6 +151,7 @@ export const FormGenerator = ({
     }
 
     if (isComponentGroupAndRepeating(component)) {
+      {console.log('6', component.name)}
       return createComponentGroupAndRepeating(
         currentComponentNamePath,
         reactKey,
@@ -339,6 +341,7 @@ export const FormGenerator = ({
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
   ) => {
+    console.log('1', component.name, isFirstLevel(currentComponentNamePath));
     return isFirstLevel(currentComponentNamePath) ? (
       <FieldArrayComponent
         key={reactKey}
@@ -454,6 +457,7 @@ export const FormGenerator = ({
     parentPresentationStyle?: string,
   ): JSX.Element[] => {
     return components.map((c, i) => {
+      console.log('4', c.name);
       return generateFormComponent(
         c,
         i,
@@ -540,6 +544,7 @@ export const renderLeafComponent = (
   parentPresentationStyle?: string,
   getValues: UseFormGetValues<FieldValues>,
 ): JSX.Element | null => {
+
   switch (component.type) {
     case 'textVariable':
     case 'numberVariable': {

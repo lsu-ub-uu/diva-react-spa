@@ -44,7 +44,6 @@ import {
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
   formDefWithOneOptionalNumberVariableWithAttributeCollection,
   formDefWithTwoTextVariableHavingFinalValue,
-  formDefWithTwoTextVariableWithModeOutput,
   formDefWithOptionalGroupWithRequiredTextVar,
   formDefWithOptionalGroupWithRequiredNumberVar,
   formDefWithOptionalGroupWithRequiredRecordLink,
@@ -65,6 +64,7 @@ import {
   formDefWithOneNumberVariableModeOutput,
   formDefForCheckTextValue,
   formDefForCheckNumberValue,
+  formDefWithOneNumberVariableBeingOptionalOutput, formDefPreprintWithOnlyAuthorName,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
 import { FormSchema } from '../types';
@@ -460,7 +460,7 @@ describe('<FormGenerator />', () => {
         updated: [],
         data: {
           someRootNameInData: {
-            exampleWrongTextVar: {
+            someOtherNumberVariableNameInData: {
               value: 'someTestText',
             },
           },
@@ -470,12 +470,14 @@ describe('<FormGenerator />', () => {
         <FormGenerator
           onSubmit={mockSubmit}
           formSchema={
-            formDefWithOneRepeatingTextVariableWithModeOutput as FormSchema
+            formDefWithOneNumberVariableBeingOptionalOutput as FormSchema
           }
           record={coraRecord}
         />,
       );
-      const label = screen.queryByLabelText('exampleWrongNumberVar');
+      const label = screen.queryByPlaceholderText(
+        'someNumberPlaceholderTextId',
+      );
       const inputElement = screen.queryByText('12');
       expect(label).not.toBeInTheDocument();
       expect(inputElement).not.toBeInTheDocument();
@@ -1607,7 +1609,7 @@ describe('<FormGenerator />', () => {
       await user.type(inputNumberElement, '1.23');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
@@ -1636,7 +1638,7 @@ describe('<FormGenerator />', () => {
       await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
@@ -1697,7 +1699,7 @@ describe('<FormGenerator />', () => {
       await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
@@ -1729,6 +1731,54 @@ describe('<FormGenerator />', () => {
 
       // expect(container.getElementsByClassName('Mui-error').length).toBe(3);
       expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a group 0-1 with nested textVars 1-1 with mode output with data', async () => {
+      const mockSubmit = vi.fn();
+
+      const givenAndFamilyName = {
+        id: 'divaOutput:8988822974651200',
+        recordType: 'divaOutput',
+        validationType: 'preprint',
+        createdAt: '2024-08-12T12:07:41.366883Z',
+        createdBy: '161616',
+        updated: [
+          {
+            updateAt: '2024-08-12T12:07:41.366883Z',
+            updatedBy: '161616',
+          },
+        ],
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          divaOutput: {
+            author: [
+              {
+                givenName: {
+                  value: 'eeee',
+                },
+                familyName: {
+                  value: 'ssss',
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefPreprintWithOnlyAuthorName as FormSchema}
+          record={givenAndFamilyName}
+        />,
+
+      );
+
+      const givenName = screen.getByText('eeee');
+      const familyName = screen.getByText('ssss');
+
+      expect(givenName).toBeInTheDocument();
+      expect(familyName).toBeInTheDocument();
     });
   });
 });

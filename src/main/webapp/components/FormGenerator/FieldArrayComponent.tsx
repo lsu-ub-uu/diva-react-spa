@@ -40,13 +40,13 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
+  console.log('2')
   const { t } = useTranslation();
   const { fields, append, move, remove } = useFieldArray({
     control: props.control,
     name: props.name,
   });
 
-  console.log('a', props.name)
   const handleAppend = async () => {
     append(createDefaultValuesFromComponent(props.component, true));
   };
@@ -158,7 +158,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       </>
     );
   }
-
+  console.log('3')
   return isFirstLevel(props.name) ? (
     <span
       key={props.name}
