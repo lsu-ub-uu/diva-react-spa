@@ -602,7 +602,7 @@ const createTextOrNumberVariable = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-  console.log('ctf', name, hasValue, component.mode);
+  // console.log('ctf', name, hasValue, component.mode);
 
   return (
     <Grid

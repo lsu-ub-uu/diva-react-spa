@@ -46,6 +46,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     name: props.name,
   });
 
+  console.log('a', props.name)
   const handleAppend = async () => {
     append(createDefaultValuesFromComponent(props.component, true));
   };
@@ -70,10 +71,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         />
         {fields.map((field, index) => (
           <div
-            key={`${field.id}_${index}`}
+            key={field.id}
             style={{ position: 'relative', marginTop: '10px' }}
           >
-            {console.log('a', props.name, field.id)}
             {!isComponentSingularAndOptional(props.component) && (
               <Box
                 sx={{
@@ -119,21 +119,24 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                 entityType={props.component.type}
               />
             )}
-            <Grid
-              container
-              item
-              xs={12}
-              spacing={2}
-              justifyContent='flex-start'
-              alignItems='center'
-              direction='row'
-            >
-              {
-                props.renderCallback(
-                  `${props.name}[${index}]` as const,
-                ) as JSX.Element
-              }
-            </Grid>
+            {props.component.mode === 'input' && (
+              <Grid
+                key={`${field.id}_${index}`}
+                container
+                item
+                xs={12}
+                spacing={2}
+                justifyContent='flex-start'
+                alignItems='center'
+                direction='row'
+              >
+                {
+                  props.renderCallback(
+                    `${props.name}[${index}]` as const,
+                  ) as JSX.Element
+                }
+              </Grid>
+            )}
           </div>
         ))}
         {props.component.mode === 'input' &&
@@ -196,6 +199,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     </span>
   ) : (
     <Grid
+      key={props.name}
       item
       xs={12}
       sm={props.component.gridColSpan}
@@ -208,7 +212,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         }
       }
     >
-      {getContent()}
+      <React.Fragment key={`${props.name}_grid`}>{getContent()}</React.Fragment>
     </Grid>
   );
 };
