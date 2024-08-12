@@ -70,9 +70,10 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         />
         {fields.map((field, index) => (
           <div
-            key={field.id}
+            key={`${field.id}_${index}`}
             style={{ position: 'relative', marginTop: '10px' }}
           >
+            {console.log('a', props.name, field.id)}
             {!isComponentSingularAndOptional(props.component) && (
               <Box
                 sx={{

@@ -395,6 +395,7 @@ export const FormGenerator = ({
         )}
 
         <FieldArrayComponent
+          key={reactKey}
           control={control}
           component={component}
           name={currentComponentNamePath}

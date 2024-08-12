@@ -26,7 +26,6 @@ import {
   formDefWithOneNumberVariableHavingDecimals,
   formDefWithOneTextVariable,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
-  formDefWithOneTextVariableHavingFinalValue,
   formDefWithOneCollectionVariable,
   formDefWithOneNumberVariableWithAttributeCollection,
   formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
@@ -152,7 +151,7 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
@@ -234,9 +233,7 @@ describe('<FormGenerator />', () => {
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      const inputElement = screen.getByRole('textbox', {
-        name: 'someLabelTextId',
-      });
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
 
       const user = userEvent.setup();
       await user.type(inputElement, 'does not validate');
@@ -853,6 +850,37 @@ describe('<FormGenerator />', () => {
       const inputElement = screen.getByText('exampleBlueItemText');
       expect(inputElement.tagName).toBe('SPAN');
     });
+
+    it('does not render a collectionVariable 1-1 with mode output without data', async () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            colour: {
+              value: 'blue',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOneCollectionVariableWithModeOutput as FormSchema
+          }
+          record={coraRecord}
+        />,
+      );
+      const inputElement = screen.getByText('exampleBlueItemText');
+      expect(inputElement.tagName).toBe('SPAN');
+    });
   });
 
   describe('attribute collection', () => {
@@ -944,7 +972,9 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const numberInput = screen.getByLabelText('someNumberVar2IdLabel');
+      const numberInput = screen.getByPlaceholderText(
+        'someNumberVar2IdPlaceholder',
+      );
       expect(numberInput).toBeInTheDocument();
       const attributeButton = screen.getByRole('button', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
@@ -978,7 +1008,9 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const numberInput = screen.getByLabelText('someNumberVar2IdLabel');
+      const numberInput = screen.getByPlaceholderText(
+        'someNumberVar2IdPlaceholder',
+      );
       expect(numberInput).toBeInTheDocument();
       const attributeButton = screen.getByRole('button', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
@@ -1044,9 +1076,13 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
         />,
       );
-      const numberInput = screen.getByLabelText('someNumberVarIdLabel');
+      const numberInput = screen.getByPlaceholderText(
+        'someNumberVarIdPlaceholder',
+      );
       expect(numberInput).toBeInTheDocument();
-      const numberInput2 = screen.getByLabelText('someNumberVar2IdLabel');
+      const numberInput2 = screen.getByPlaceholderText(
+        'someNumberVar2IdPlaceholder',
+      );
       expect(numberInput2).toBeInTheDocument();
       const attributeButton = screen.getByRole('button', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
@@ -1571,7 +1607,7 @@ describe('<FormGenerator />', () => {
       await user.type(inputNumberElement, '1.23');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
@@ -1600,7 +1636,7 @@ describe('<FormGenerator />', () => {
       await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
@@ -1661,7 +1697,7 @@ describe('<FormGenerator />', () => {
       await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
