@@ -1671,16 +1671,8 @@ describe('helper methods', () => {
 
   describe('checkIfComponentHasValue', () => {
     it('Should return false if the value is empty', () => {
-      const values = {
-        divaOutput: {
-          recordInfo: {},
-          domain: {},
-        },
-      };
-
-      const mockGetValues = vi.fn((name) => {
-        // @ts-ignore
-        return values.divaOutput[name];
+      const mockGetValues = vi.fn(() => {
+        return '';
       });
 
       // @ts-ignore
@@ -1697,9 +1689,8 @@ describe('helper methods', () => {
         },
       };
 
-      const mockGetValues = vi.fn((name) => {
-        // @ts-ignore
-        return values.divaOutput[name];
+      const mockGetValues = vi.fn(() => {
+        return values.divaOutput.domain.value;
       });
 
       // @ts-ignore

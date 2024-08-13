@@ -61,7 +61,6 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
     const option = array.find((opt) => opt.value === value);
     return option?.label ?? 'Failed to translate';
   };
-
   return (
     <Controller
       control={props.control}
@@ -80,7 +79,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 error={error !== undefined}
                 sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
               >
-                {t(props.label)}
+                {props.showLabel === true ? t(props.label) : null}
                 {props.tooltip && (
                   <Tooltip
                     title={t(props.tooltip.title)}

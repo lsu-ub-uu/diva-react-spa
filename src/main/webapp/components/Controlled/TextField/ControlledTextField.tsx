@@ -113,24 +113,18 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                   variant='outlined'
                   helperText={error !== undefined ? error.message : ' '}
                   InputProps={{
-                  readOnly: props.readOnly,
+                    readOnly: props.readOnly,
                     endAdornment: (
-                    <ErrorIcon
-                      sx={{
-                    color: '#ff0000',
-                      visibility:
-                    error !== undefined ? 'visible' : 'hidden',
+                      <ErrorIcon
+                        sx={{
+                          color: '#ff0000',
+                          visibility:
+                            error !== undefined ? 'visible' : 'hidden',
+                        }}
+                      />
+                    ),
                   }}
                   type={props.inputFormat}
-                  />
-            ) : (
-              <>
-                <span>{field.value}</span>
-                <input
-                  type='hidden'
-                  value={field.value}
-                  name={field.name}
-
                 />
               ) : (
                 <>

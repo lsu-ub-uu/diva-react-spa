@@ -1444,7 +1444,7 @@ export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndA
                 {
                   name: 'language',
                   type: 'collectionVariable',
-                  placeholder: 'someEmptyValueText',
+                  placeholder: 'languagePlaceholderText',
                   mode: 'input',
                   tooltip: {
                     title: 'languageCollectionVarText',
@@ -1462,7 +1462,7 @@ export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndA
                 {
                   name: 'titleType',
                   type: 'collectionVariable',
-                  placeholder: 'someOtherEmptyValueText',
+                  placeholder: 'titleTypePlaceholderText',
                   mode: 'input',
                   tooltip: {
                     title: 'titleTypeCollectionVarText',
