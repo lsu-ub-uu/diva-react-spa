@@ -69,7 +69,7 @@ describe('<ControlledTextField />', () => {
   });
 
   it('renders component multiline', async () => {
-    const DummyFormWithLabel = (): JSX.Element => {
+    const DummyFormWithMultiline = (): JSX.Element => {
       const methods = useForm({ defaultValues: { title: 'test' } });
 
       return (
@@ -84,7 +84,7 @@ describe('<ControlledTextField />', () => {
       );
     };
 
-    render(<DummyFormWithLabel />);
+    render(<DummyFormWithMultiline />);
     const multiline = screen.getByRole('textbox');
     const row = multiline.getAttribute('rows');
     expect(multiline).toBeInTheDocument();
@@ -112,6 +112,29 @@ describe('<ControlledTextField />', () => {
     const row = multiline.getAttribute('rows');
     expect(multiline).toBeInTheDocument();
     expect(row).toBe('1');
+  });
+
+  it('renders component as password', async () => {
+    const DummyFormWithLabel = (): JSX.Element => {
+      const methods = useForm({ defaultValues: { title: 'test' } });
+
+      return (
+        <ControlledTextField
+          required={false}
+          placeholder='Enter Title'
+          control={methods.control}
+          name='title'
+          label='Title'
+          showLabel
+          inputFormat='password'
+        />
+      );
+    };
+
+    render(<DummyFormWithLabel />);
+    const label = screen.getByPlaceholderText('Enter Title');
+    expect(label).toBeInTheDocument();
+    expect(label).toHaveAttribute('type', 'password');
   });
 
   it('renders component and finds a new entered value', async () => {

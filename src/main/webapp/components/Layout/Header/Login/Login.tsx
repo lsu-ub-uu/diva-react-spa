@@ -20,6 +20,7 @@ import { useState, MouseEvent, useEffect } from 'react';
 import { Button, Menu, MenuItem, Stack, Box, IconButton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { devAccounts, Account } from './devAccounts';
 import {
   loginAsync,
@@ -89,6 +90,7 @@ export const Login = (): JSX.Element => {
     }
     handleClose();
   };
+
   const receiveMessage = (event: any) => {
     if (event === undefined || event.data.source === 'react-devtools-bridge') {
       dispatch(hasError('login error'));
@@ -170,16 +172,37 @@ export const Login = (): JSX.Element => {
                 {devAccount.firstName}
               </MenuItem>
             ))}
-            {loginUnitsState?.loginUnits.map((loginUnit, index) => (
-              <MenuItem
-                key={`${index}_${loginUnit.loginDescription}`}
-                onClick={(event) =>
-                  handleWebRedirectSelection(event, loginUnit.url)
-                }
-              >
-                {t(loginUnit.loginDescription)}
-              </MenuItem>
-            ))}
+            {loginUnitsState?.loginUnits.map((loginUnit, index) =>
+              loginUnit.type === 'webRedirect' ? (
+                <MenuItem
+                  key={`${index}_${loginUnit.loginDescription}`}
+                  onClick={(event) =>
+                    handleWebRedirectSelection(event, loginUnit.url)
+                  }
+                >
+                  {t(loginUnit.loginDescription)}
+                </MenuItem>
+              ) : (
+                <MenuItem
+                  key='tempLoginUnitPassword'
+                  onClick={() => {
+                    handleClose();
+                  }}
+                >
+                  <Link
+                    style={{
+                      color: 'black',
+                      textDecorationLine: 'none',
+                    }}
+                    to={`/login?presentation=${JSON.stringify(
+                      loginUnit.presentation,
+                    )}`}
+                  >
+                    {t(loginUnit.loginDescription)}
+                  </Link>
+                </MenuItem>
+              ),
+            )}
           </Menu>
         </Stack>
       )}

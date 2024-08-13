@@ -26,6 +26,7 @@ interface LoginUnitsState {
 }
 
 export interface LoginUnitsArray {
+  presentation?: any;
   loginDescription: string;
   url: string;
   type: string;

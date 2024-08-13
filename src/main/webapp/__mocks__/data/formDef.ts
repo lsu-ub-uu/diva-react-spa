@@ -5163,6 +5163,41 @@ export const formDefWithOneTextVariableBeingOptional = {
     mode: 'input',
   },
 };
+export const formDefWithOneTextVariableBeingPassword = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'textVariable',
+        name: 'someNameInData',
+        placeholder: 'loginPasswordTextVarText',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
+        },
+        validation: {
+          type: 'regex',
+          pattern: '^[a-zA-Z]$',
+        },
+        inputType: 'input',
+        inputFormat: 'password',
+      },
+    ],
+    mode: 'input',
+  },
+};
 
 export const formDefWithOneRecordLinkBeingOptional = {
   validationTypeId: 'someValidationTypeId',
@@ -6147,5 +6182,79 @@ export const formDefWithOptionalGroupWithRequiredGroupWithRequiredVars = {
     presentationStyle: '',
     childStyle: [''],
     gridColSpan: 12,
+  },
+};
+
+export const loginUnitformDefForLoginUnitWithPassword = {
+  loginDescription: 'uuSystemOnePasswordLoginUnitText',
+  type: 'loginPassword',
+  presentation: {
+    validationTypeId: 'loginUnit',
+    form: {
+      type: 'group',
+      showLabel: true,
+      label: 'aaaaaaaa',
+      name: 'password',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'viewDefinitionPasswordGroupText',
+        body: 'viewDefinitionPasswordGroupDefText',
+      },
+      components: [
+        {
+          name: 'loginId',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'loginIdTextVarText',
+            body: 'loginIdTextVarDefText',
+          },
+          label: 'loginIdTextVarText',
+          placeholder: 'loginIdTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '^[0-9A-Za-z:\\-_]{2,50}@[0-9A-Za-z:\\-_.]{2,300}$',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+        {
+          name: 'password',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          inputFormat: 'password',
+          tooltip: {
+            title: 'loginPasswordTextVarText',
+            body: 'loginPasswordTextVarDefText',
+          },
+          label: 'loginPasswordTextVarText',
+          placeholder: 'loginPasswordTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '(^[0-9A-Za-z:-_]{2,50}$)',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      mode: 'input',
+    },
   },
 };
