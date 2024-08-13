@@ -46,7 +46,7 @@ export { LinkedRecord } from './LinkedRecord/LinkedRecord';
 export {
   useSectionScroller,
   linksFromFormSchema,
-} from './NavigationPanel/useSectionScroller';
+} from './NavigationPanel/utils';
 
 export interface SelectItem {
   id: string;

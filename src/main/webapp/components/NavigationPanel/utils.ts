@@ -20,6 +20,7 @@
 import { useEffect, useState } from 'react';
 import { FormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
+import { RecordData } from '../FormGenerator/utils';
 
 export const linksFromFormSchema = (
   formSchema: FormSchema,
@@ -27,6 +28,10 @@ export const linksFromFormSchema = (
   formSchema?.form.components
     ?.filter((c) => !['text', 'container'].includes(c.type))
     .map((c) => ({ name: c.name, label: c.label } as NavigationPanelLink));
+
+export const hasLinkValues = (formSchema: FormSchema, record: RecordData) => {
+  return 'aaa';
+};
 
 export const useSectionScroller = () => {
   const [activeSection, setActiveSection] = useState<string>('');
