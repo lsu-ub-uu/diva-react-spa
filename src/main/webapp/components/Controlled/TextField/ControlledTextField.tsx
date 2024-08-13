@@ -45,7 +45,6 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
     props.hasValue === true && displayMode === 'output';
   const showLabelAndIsInput =
     props.showLabel === true && displayMode === 'input';
-  console.log(props.name, hasValueAndIsOutput)
   return (
     <Controller
       control={props.control}

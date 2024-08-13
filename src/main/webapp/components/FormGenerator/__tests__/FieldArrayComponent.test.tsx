@@ -68,16 +68,8 @@ describe('<FieldArrayComponent />', () => {
         }
         renderCallback={(variableArrayPath) => {
           return [
-            renderLeafComponent(
-              formDefWithOneTextVariableBeingOptional.form
-                .components[1] as FormComponent,
-              variableArrayPath,
-              control as Control<any>,
-              `${variableArrayPath}.value`,
-              false,
-              undefined,
-              getValues as UseFormGetValues<FieldValues>,
-            ),
+            renderLeafComponent(formDefWithOneTextVariableBeingOptional.form
+              .components[1] as FormComponent, variableArrayPath, control as Control<any>, `${variableArrayPath}.value`, false, getValues as UseFormGetValues<FieldValues>, undefined),
           ];
         }}
       />,

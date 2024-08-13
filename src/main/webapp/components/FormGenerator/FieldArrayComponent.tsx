@@ -40,7 +40,6 @@ interface FieldArrayComponentProps {
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
-  console.log('2')
   const { t } = useTranslation();
   const { fields, append, move, remove } = useFieldArray({
     control: props.control,
@@ -119,24 +118,22 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                 entityType={props.component.type}
               />
             )}
-            {props.component.mode === 'input' && (
-              <Grid
-                key={`${field.id}_${index}`}
-                container
-                item
-                xs={12}
-                spacing={2}
-                justifyContent='flex-start'
-                alignItems='center'
-                direction='row'
-              >
-                {
-                  props.renderCallback(
-                    `${props.name}[${index}]` as const,
-                  ) as JSX.Element
-                }
-              </Grid>
-            )}
+            <Grid
+              key={`${field.id}_${index}`}
+              container
+              item
+              xs={12}
+              spacing={2}
+              justifyContent='flex-start'
+              alignItems='center'
+              direction='row'
+            >
+              {
+                props.renderCallback(
+                  `${props.name}[${index}]` as const,
+                ) as JSX.Element
+              }
+            </Grid>
           </div>
         ))}
         {props.component.mode === 'input' &&
@@ -158,7 +155,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       </>
     );
   }
-  console.log('3')
   return isFirstLevel(props.name) ? (
     <span
       key={props.name}

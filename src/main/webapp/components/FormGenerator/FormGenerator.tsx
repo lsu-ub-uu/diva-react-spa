@@ -90,7 +90,6 @@ export const FormGenerator = ({
     path: string,
     parentPresentationStyle?: string,
   ) => {
-    console.log('5', component.name);
     const reactKey = `key_${idx}`;
 
     let currentComponentNamePath;
@@ -151,7 +150,6 @@ export const FormGenerator = ({
     }
 
     if (isComponentGroupAndRepeating(component)) {
-      {console.log('6', component.name)}
       return createComponentGroupAndRepeating(
         currentComponentNamePath,
         reactKey,
@@ -180,8 +178,8 @@ export const FormGenerator = ({
           control,
           `${currentComponentNamePath}.value`,
           true,
-          parentPresentationStyle,
           getValues,
+          parentPresentationStyle,
         )}
       </React.Fragment>
     );
@@ -341,7 +339,6 @@ export const FormGenerator = ({
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
   ) => {
-    console.log('1', component.name, isFirstLevel(currentComponentNamePath));
     return isFirstLevel(currentComponentNamePath) ? (
       <FieldArrayComponent
         key={reactKey}
@@ -442,8 +439,8 @@ export const FormGenerator = ({
               control,
               `${variableArrayPath}.value`,
               false,
-              parentPresentationStyle,
               getValues,
+              parentPresentationStyle,
             ),
           ];
         }}
@@ -457,7 +454,6 @@ export const FormGenerator = ({
     parentPresentationStyle?: string,
   ): JSX.Element[] => {
     return components.map((c, i) => {
-      console.log('4', c.name);
       return generateFormComponent(
         c,
         i,
@@ -541,10 +537,9 @@ export const renderLeafComponent = (
   control: Control<any>,
   name: string,
   renderElementGridWrapper: boolean,
-  parentPresentationStyle?: string,
   getValues: UseFormGetValues<FieldValues>,
+  parentPresentationStyle?: string,
 ): JSX.Element | null => {
-
   switch (component.type) {
     case 'textVariable':
     case 'numberVariable': {
@@ -584,6 +579,7 @@ export const renderLeafComponent = (
         component,
         name,
         control,
+        getValues,
       );
     }
     case 'text': {
@@ -607,7 +603,6 @@ const createTextOrNumberVariable = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-  // console.log('ctf', name, hasValue, component.mode);
 
   return (
     <Grid
@@ -733,7 +728,10 @@ const createCollectionVariable = (
   component: FormComponent,
   name: string,
   control: Control<any>,
+  getValues: UseFormGetValues<FieldValues>,
 ) => {
+  const hasValue = checkIfComponentHasValue(getValues, name);
+
   return (
     <Grid
       key={reactKey}
@@ -752,6 +750,7 @@ const createCollectionVariable = (
         options={component.options}
         readOnly={!!component.finalValue}
         displayMode={component.mode}
+        hasValue={hasValue}
       />
     </Grid>
   );
