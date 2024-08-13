@@ -44,7 +44,6 @@ import {
   formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
   formDefWithOneOptionalNumberVariableWithAttributeCollection,
   formDefWithTwoTextVariableHavingFinalValue,
-  formDefWithTwoTextVariableWithModeOutput,
   formDefWithOptionalGroupWithRequiredTextVar,
   formDefWithOptionalGroupWithRequiredNumberVar,
   formDefWithOptionalGroupWithRequiredRecordLink,
@@ -63,6 +62,9 @@ import {
   formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
   formDefWithOneRequiredGroupWithAttributeCollection,
   formDefWithOneNumberVariableModeOutput,
+  formDefForCheckTextValue,
+  formDefForCheckNumberValue,
+  formDefWithOneNumberVariableBeingOptionalOutput, formDefPreprintWithOnlyAuthorName,
   formDefWithOneTextVariableBeingPassword,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
@@ -150,7 +152,7 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
   });
@@ -232,9 +234,7 @@ describe('<FormGenerator />', () => {
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      const inputElement = screen.getByRole('textbox', {
-        name: 'someLabelTextId',
-      });
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
 
       const user = userEvent.setup();
       await user.type(inputElement, 'does not validate');
@@ -297,6 +297,39 @@ describe('<FormGenerator />', () => {
       );
       const inputElement = screen.getByText('someTestText');
       expect(inputElement).toBeInTheDocument();
+    });
+
+    it('does not render a textVariable 1-1 with mode output with no data', async () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            exampleWrongTextVar: {
+              value: 'someTestText',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOneRepeatingTextVariableWithModeOutput as FormSchema
+          }
+          record={coraRecord}
+        />,
+      );
+      const label = screen.queryByLabelText('exampleWrongTextVar');
+      const inputElement = screen.queryByText('someTestText');
+      expect(label).not.toBeInTheDocument();
+      expect(inputElement).not.toBeInTheDocument();
     });
 
     it('renders a textVariable 0-1 and minNumberOfRepeatingToShow 1', async () => {
@@ -441,6 +474,41 @@ describe('<FormGenerator />', () => {
       );
       const inputElement = screen.getByText('2');
       expect(inputElement).toBeInTheDocument();
+    });
+
+    it('does not render a numberVariable 1-1 with mode output with no data', async () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            someOtherNumberVariableNameInData: {
+              value: 'someTestText',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOneNumberVariableBeingOptionalOutput as FormSchema
+          }
+          record={coraRecord}
+        />,
+      );
+      const label = screen.queryByPlaceholderText(
+        'someNumberPlaceholderTextId',
+      );
+      const inputElement = screen.queryByText('12');
+      expect(label).not.toBeInTheDocument();
+      expect(inputElement).not.toBeInTheDocument();
     });
 
     it('renders a numberVariable 1-1 with input under min', async () => {
@@ -812,6 +880,37 @@ describe('<FormGenerator />', () => {
       const inputElement = screen.getByText('exampleBlueItemText');
       expect(inputElement.tagName).toBe('SPAN');
     });
+
+    it('does not render a collectionVariable 1-1 with mode output without data', async () => {
+      const mockSubmit = vi.fn();
+      const coraRecord = {
+        id: 'divaOutput:519333261463755',
+        recordType: 'divaOutput',
+        validationType: 'someValidationTypeId',
+        createdAt: '2023-10-11T09:24:30.511487Z',
+        createdBy: 'coraUser:490742519075086',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [],
+        data: {
+          someRootNameInData: {
+            colour: {
+              value: 'blue',
+            },
+          },
+        },
+      };
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefWithOneCollectionVariableWithModeOutput as FormSchema
+          }
+          record={coraRecord}
+        />,
+      );
+      const inputElement = screen.getByText('exampleBlueItemText');
+      expect(inputElement.tagName).toBe('SPAN');
+    });
   });
 
   describe('attribute collection', () => {
@@ -903,7 +1002,9 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const numberInput = screen.getByLabelText('someNumberVar2IdLabel');
+      const numberInput = screen.getByPlaceholderText(
+        'someNumberVar2IdPlaceholder',
+      );
       expect(numberInput).toBeInTheDocument();
       const attributeButton = screen.getByRole('button', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
@@ -937,7 +1038,9 @@ describe('<FormGenerator />', () => {
         />,
       );
 
-      const numberInput = screen.getByLabelText('someNumberVar2IdLabel');
+      const numberInput = screen.getByPlaceholderText(
+        'someNumberVar2IdPlaceholder',
+      );
       expect(numberInput).toBeInTheDocument();
       const attributeButton = screen.getByRole('button', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
@@ -1003,9 +1106,13 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
         />,
       );
-      const numberInput = screen.getByLabelText('someNumberVarIdLabel');
+      const numberInput = screen.getByPlaceholderText(
+        'someNumberVarIdPlaceholder',
+      );
       expect(numberInput).toBeInTheDocument();
-      const numberInput2 = screen.getByLabelText('someNumberVar2IdLabel');
+      const numberInput2 = screen.getByPlaceholderText(
+        'someNumberVar2IdPlaceholder',
+      );
       expect(numberInput2).toBeInTheDocument();
       const attributeButton = screen.getByRole('button', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
@@ -1651,6 +1758,54 @@ describe('<FormGenerator />', () => {
       // expect(container.getElementsByClassName('Mui-error').length).toBe(3);
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
+
+    it('renders a group 0-1 with nested textVars 1-1 with mode output with data', async () => {
+      const mockSubmit = vi.fn();
+
+      const givenAndFamilyName = {
+        id: 'divaOutput:8988822974651200',
+        recordType: 'divaOutput',
+        validationType: 'preprint',
+        createdAt: '2024-08-12T12:07:41.366883Z',
+        createdBy: '161616',
+        updated: [
+          {
+            updateAt: '2024-08-12T12:07:41.366883Z',
+            updatedBy: '161616',
+          },
+        ],
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          divaOutput: {
+            author: [
+              {
+                givenName: {
+                  value: 'eeee',
+                },
+                familyName: {
+                  value: 'ssss',
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefPreprintWithOnlyAuthorName as FormSchema}
+          record={givenAndFamilyName}
+        />,
+
+      );
+
+      const givenName = screen.getByText('eeee');
+      const familyName = screen.getByText('ssss');
+
+      expect(givenName).toBeInTheDocument();
+      expect(familyName).toBeInTheDocument();
+    });
   });
   describe('guiElementLink', () => {
     it('renders a numberVariable 1-1 and guiElementLink', async () => {
@@ -1671,36 +1826,7 @@ describe('<FormGenerator />', () => {
   });
 });
 
-describe.skip('checkIfComponentHasValue', () => {
-  it('checkIfComponentHasValue hides variable in output with no value', () => {
-    const mockSubmit = vi.fn();
-    const coraRecord = {
-      id: 'divaOutput:519333261463755',
-      recordType: 'divaOutput',
-      validationType: 'someValidationTypeId',
-      createdAt: '2023-10-11T09:24:30.511487Z',
-      createdBy: 'coraUser:490742519075086',
-      userRights: ['read', 'update', 'index', 'delete'],
-      updated: [],
-      data: {
-        someRootNameInData: {
-          someOtherTextVar: {
-            value: 'someTestText',
-          },
-        },
-      },
-    };
-    render(
-      <FormGenerator
-        onSubmit={mockSubmit}
-        formSchema={formDefWithTwoTextVariableWithModeOutput as FormSchema}
-        record={coraRecord}
-      />,
-    );
-    const inputElement = screen.queryByLabelText('someMetadataTextVarText');
-    expect(inputElement).not.toBeInTheDocument();
-  });
-
+describe('checkIfComponentHasValue', () => {
   it('checkIfComponentHasValue does not hides variable in output with value', () => {
     const mockSubmit = vi.fn();
     const coraRecord = {
@@ -1713,8 +1839,8 @@ describe.skip('checkIfComponentHasValue', () => {
       updated: [],
       data: {
         someRootNameInData: {
-          someOtherTextVar: {
-            value: 'someTestText',
+          someTextVar: {
+            value: 'aaaaa',
           },
         },
       },
@@ -1722,11 +1848,71 @@ describe.skip('checkIfComponentHasValue', () => {
     render(
       <FormGenerator
         onSubmit={mockSubmit}
-        formSchema={formDefWithTwoTextVariableWithModeOutput as FormSchema}
+        formSchema={formDefForCheckTextValue as FormSchema}
         record={coraRecord}
       />,
     );
-    const inputElement = screen.getByLabelText('someMetadataOtherTextVarText');
+    const inputElement = screen.getByLabelText('someMetadataTextVarText');
     expect(inputElement).toBeInTheDocument();
+  });
+
+  it('checkIfComponentHasValue hides variable in output with no value', () => {
+    const mockSubmit = vi.fn();
+    const coraRecord = {
+      id: 'divaOutput:519333261463755',
+      recordType: 'divaOutput',
+      validationType: 'someValidationTypeId',
+      createdAt: '2023-10-11T09:24:30.511487Z',
+      createdBy: 'coraUser:490742519075086',
+      userRights: ['read', 'update', 'index', 'delete'],
+      updated: [],
+      data: {
+        someRootNameInData: {
+          someTextVar: { value: 'bbb' },
+        },
+      },
+    };
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDefForCheckTextValue as FormSchema}
+        record={coraRecord}
+      />,
+    );
+    const input1Element = screen.queryByLabelText('someMetadataTextVarText');
+    const input2Element = screen.queryByLabelText(
+      'someOtherMetadataTextVarText',
+    );
+    expect(input1Element).toBeInTheDocument();
+    expect(input2Element).not.toBeInTheDocument();
+  });
+
+  it('checkIfComponentHasValue hides variable in output with no value 2', () => {
+    const mockSubmit = vi.fn();
+    const coraRecord = {
+      id: 'divaOutput:519333261463755',
+      recordType: 'divaOutput',
+      validationType: 'someValidationTypeId',
+      createdAt: '2023-10-11T09:24:30.511487Z',
+      createdBy: 'coraUser:490742519075086',
+      userRights: ['read', 'update', 'index', 'delete'],
+      updated: [],
+      data: {
+        someRootNameInData: {
+          someTextVar: { value: 'bbb' },
+        },
+      },
+    };
+    render(
+      <FormGenerator
+        onSubmit={mockSubmit}
+        formSchema={formDefForCheckNumberValue as FormSchema}
+        record={coraRecord}
+      />,
+    );
+    const input1Element = screen.queryByLabelText('someMetadataTextVarText');
+    const input2Element = screen.queryByLabelText('someMetadataNumberVarText');
+    expect(input1Element).toBeInTheDocument();
+    expect(input2Element).not.toBeInTheDocument();
   });
 });

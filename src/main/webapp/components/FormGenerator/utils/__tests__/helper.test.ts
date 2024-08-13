@@ -19,6 +19,7 @@
 
 import {
   checkForExistingSiblings,
+  checkIfComponentHasValue,
   checkIfValueExists,
   countStringCharOccurrences,
   isComponentContainer,
@@ -1668,21 +1669,42 @@ describe('helper methods', () => {
     });
   });
 
-  // describe('check', () => {
-  //   it('s', () => {
-  //     const actual = checkIfComponentHasValue()
-  //     expect(actual).toStrictEqual(false)
-  //   })
-  //   it('s', () => {
-  //     const actual = checkIfComponentHasValue()
-  //     expect(actual).toStrictEqual(true)
-  //   })
-  // })
+  describe('checkIfComponentHasValue', () => {
+    it('Should return false if the value is empty', () => {
+      const values = {
+        divaOutput: {
+          recordInfo: {},
+          domain: {},
+        },
+      };
 
-  // // console.log(
-  // //   'gV',
-  // //   checkIfComponentHasValue(`${currentComponentNamePath}.value`),
-  // // );
-  //
-  // console.log(`${currentComponentNamePath}.value`)
+      const mockGetValues = vi.fn((name) => {
+        // @ts-ignore
+        return values.divaOutput[name];
+      });
+
+      // @ts-ignore
+      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
+      expect(actual).toStrictEqual(false);
+    });
+    it('Should return true if the value is not empty', () => {
+      const values = {
+        divaOutput: {
+          recordInfo: {},
+          domain: {
+            value: 'hig',
+          },
+        },
+      };
+
+      const mockGetValues = vi.fn((name) => {
+        // @ts-ignore
+        return values.divaOutput[name];
+      });
+
+      // @ts-ignore
+      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
+      expect(actual).toStrictEqual(true);
+    });
+  });
 });

@@ -466,6 +466,7 @@ export const formDefWithTextVar = {
           pattern: '^[a-zA-Z]$',
         },
         inputType: 'input',
+        mode: 'input',
       },
       {
         type: 'numberVariable',
@@ -484,6 +485,7 @@ export const formDefWithTextVar = {
           repeatMin: 1,
           repeatMax: 1,
         },
+        mode: 'input',
       },
     ],
     mode: 'input',
@@ -652,6 +654,125 @@ export const formDefWithTwoTextVariableWithModeOutput = {
         validation: {
           type: 'regex',
           pattern: '.*',
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+    ],
+    mode: 'output',
+  },
+};
+export const formDefForCheckTextValue = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'someTextVar',
+        type: 'textVariable',
+        mode: 'output',
+        inputType: 'input',
+        tooltip: {
+          title: 'exampleMetadataTextVarText',
+          body: 'exampleMetadataTextVarDefText',
+        },
+        label: 'someMetadataTextVarText',
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        name: 'someOtherTextVar',
+        type: 'textVariable',
+        mode: 'output',
+        inputType: 'input',
+        tooltip: {
+          title: 'exampleMetadataTextVarText',
+          body: 'exampleMetadataTextVarDefText',
+        },
+        label: 'someOtherMetadataTextVarText',
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+    ],
+    mode: 'output',
+  },
+};
+
+export const formDefForCheckNumberValue = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'someTextVar',
+        type: 'textVariable',
+        mode: 'output',
+        inputType: 'input',
+        tooltip: {
+          title: 'exampleMetadataTextVarText',
+          body: 'exampleMetadataTextVarDefText',
+        },
+        label: 'someMetadataTextVarText',
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+      {
+        name: 'someNumberVar',
+        type: 'numberVariable',
+        mode: 'output',
+        inputType: 'input',
+        tooltip: {
+          title: 'exampleMetadataTextVarText',
+          body: 'exampleMetadataTextVarDefText',
+        },
+        label: 'someMetadataNumberVarText',
+        validation: {
+          type: 'number',
+          min: 1,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
         },
         repeat: {
           repeatMin: 1,
@@ -4958,6 +5079,48 @@ export const formDefWithOneNumberVariableBeingOptional = {
           repeatMax: 1,
           minNumberOfRepeatingToShow: 1,
         },
+        showLabel: true,
+        mode: 'input',
+      },
+    ],
+    mode: 'input',
+  },
+};
+
+export const formDefWithOneNumberVariableBeingOptionalOutput = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        type: 'numberVariable',
+        name: 'someNumberVariableNameInData',
+        placeholder: 'someNumberPlaceholderTextId',
+        validation: {
+          type: 'number',
+          min: 1,
+          max: 20,
+          warningMin: 2,
+          warningMax: 10,
+          numberOfDecimals: 0,
+        },
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
+        },
+        showLabel: true,
+        mode: 'output',
       },
     ],
     mode: 'input',
@@ -4983,6 +5146,8 @@ export const formDefWithOneTextVariableBeingOptional = {
         type: 'textVariable',
         name: 'someNameInData',
         placeholder: 'someEmptyTextId',
+        showLabel: true,
+        mode: 'input',
         repeat: {
           repeatMin: 0,
           repeatMax: 1,
@@ -5780,6 +5945,98 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars = {
             presentationStyle: '',
             childStyle: [''],
             gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefPreprintWithOnlyAuthorName = {
+  validationTypeId: 'preprint',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'output',
+    tooltip: {
+      title: 'divaOutputGroupText',
+      body: 'divaOutputGroupDefText',
+    },
+    label: 'divaOutputGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'output',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'authorGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1.7976931348623157e308,
+        },
+        components: [
+          {
+            name: 'givenName',
+            type: 'textVariable',
+            mode: 'output',
+            inputType: 'input',
+            tooltip: {
+              title: 'givenNameTextVarText',
+              body: 'givenNameTextVarDefText',
+            },
+            label: 'givenNameTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'familyName',
+            type: 'textVariable',
+            mode: 'output',
+            inputType: 'input',
+            tooltip: {
+              title: 'familyNameTextVarText',
+              body: 'familyNameTextVarDefText',
+            },
+            label: 'familyNameTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
           },
         ],
         presentationStyle: '',

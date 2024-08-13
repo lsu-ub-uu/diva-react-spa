@@ -178,6 +178,7 @@ export const FormGenerator = ({
           control,
           `${currentComponentNamePath}.value`,
           true,
+          getValues,
           parentPresentationStyle,
         )}
       </React.Fragment>
@@ -394,6 +395,7 @@ export const FormGenerator = ({
         )}
 
         <FieldArrayComponent
+          key={reactKey}
           control={control}
           component={component}
           name={currentComponentNamePath}
@@ -437,6 +439,7 @@ export const FormGenerator = ({
               control,
               `${variableArrayPath}.value`,
               false,
+              getValues,
               parentPresentationStyle,
             ),
           ];
@@ -534,6 +537,7 @@ export const renderLeafComponent = (
   control: Control<any>,
   name: string,
   renderElementGridWrapper: boolean,
+  getValues: UseFormGetValues<FieldValues>,
   parentPresentationStyle?: string,
 ): JSX.Element | null => {
   switch (component.type) {
@@ -546,6 +550,7 @@ export const renderLeafComponent = (
         name,
         control,
         parentPresentationStyle,
+        getValues,
       );
     }
     case 'recordLink': {
@@ -564,6 +569,7 @@ export const renderLeafComponent = (
         component,
         name,
         control,
+        getValues,
       );
     }
     case 'collectionVariable': {
@@ -573,6 +579,7 @@ export const renderLeafComponent = (
         component,
         name,
         control,
+        getValues,
       );
     }
     case 'text': {
@@ -593,7 +600,10 @@ const createTextOrNumberVariable = (
   name: string,
   control: Control<any>,
   parentPresentationStyle: string | undefined,
+  getValues: UseFormGetValues<FieldValues>,
 ) => {
+  const hasValue = checkIfComponentHasValue(getValues, name);
+
   return (
     <Grid
       key={reactKey}
@@ -618,6 +628,7 @@ const createTextOrNumberVariable = (
         readOnly={!!component.finalValue}
         displayMode={component.mode}
         parentPresentationStyle={parentPresentationStyle}
+        hasValue={hasValue}
         inputFormat={component.inputFormat}
       />
     </Grid>
@@ -670,35 +681,45 @@ const createRecordLinkWithoutSearchLink = (
   component: FormComponent,
   name: string,
   control: Control<any>,
+  getValues: UseFormGetValues<FieldValues>,
 ) => {
+  const hasValue = checkIfComponentHasValue(getValues, name);
+
   return (
-    <Grid
-      key={reactKey}
-      item
-      xs={12}
-      sm={renderElementGridWrapper ? component.gridColSpan : 12}
-    >
-      {component.mode === 'input' ? (
-        <ControlledTextField
-          multiline={component.inputType === 'textarea'}
-          label={component.label ?? ''}
-          name={name}
-          showLabel={component.showLabel}
-          placeholder={component.placeholder}
-          tooltip={component.tooltip}
-          control={control}
-          readOnly={!!component.finalValue}
-          displayMode={component.mode}
-        />
-      ) : (
-        <ControlledLinkedRecord
-          control={control}
-          name={name}
-          recordType={component.recordLinkType ?? ''}
-          presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-        />
-      )}
-    </Grid>
+    <div>
+      {hasValue ? (
+        <Grid
+          key={reactKey}
+          item
+          xs={12}
+          sm={renderElementGridWrapper ? component.gridColSpan : 12}
+        >
+          {component.mode === 'output' ? (
+            <ControlledTextField
+              multiline={component.inputType === 'textarea'}
+              label={component.label ?? ''}
+              name={name}
+              showLabel={component.showLabel}
+              placeholder={component.placeholder}
+              tooltip={component.tooltip}
+              control={control}
+              readOnly={!!component.finalValue}
+              displayMode={component.mode}
+              hasValue={hasValue}
+            />
+          ) : (
+            <ControlledLinkedRecord
+              control={control}
+              name={name}
+              recordType={component.recordLinkType ?? ''}
+              presentationRecordLinkId={
+                component.presentationRecordLinkId ?? ''
+              }
+            />
+          )}
+        </Grid>
+      ) : null}
+    </div>
   );
 };
 
@@ -708,7 +729,10 @@ const createCollectionVariable = (
   component: FormComponent,
   name: string,
   control: Control<any>,
+  getValues: UseFormGetValues<FieldValues>,
 ) => {
+  const hasValue = checkIfComponentHasValue(getValues, name);
+
   return (
     <Grid
       key={reactKey}
@@ -727,6 +751,7 @@ const createCollectionVariable = (
         options={component.options}
         readOnly={!!component.finalValue}
         displayMode={component.mode}
+        hasValue={hasValue}
       />
     </Grid>
   );

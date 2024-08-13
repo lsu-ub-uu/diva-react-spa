@@ -119,6 +119,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               />
             )}
             <Grid
+              key={`${field.id}_${index}`}
               container
               item
               xs={12}
@@ -154,7 +155,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       </>
     );
   }
-
   return isFirstLevel(props.name) ? (
     <span
       key={props.name}
@@ -195,6 +195,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     </span>
   ) : (
     <Grid
+      key={props.name}
       item
       xs={12}
       sm={props.component.gridColSpan}
@@ -207,7 +208,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         }
       }
     >
-      {getContent()}
+      <React.Fragment key={`${props.name}_grid`}>{getContent()}</React.Fragment>
     </Grid>
   );
 };

@@ -35,12 +35,17 @@ interface ControlledTextFieldProps {
   displayMode?: string;
   parentPresentationStyle?: string;
   showLabel?: boolean;
+  hasValue?: boolean;
   inputFormat?: 'password';
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode = props.displayMode ?? 'input';
+  const hasValueAndIsOutput =
+    props.hasValue === true && displayMode === 'output';
+  const showLabelAndIsInput =
+    props.showLabel === true && displayMode === 'input';
   return (
     <Controller
       control={props.control}
@@ -56,66 +61,68 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               alignItems: 'baseline',
             }}
           >
-            <FormLabel
-              htmlFor={field.name}
-              aria-label={props.label}
-              required={props.required}
-              error={error !== undefined}
-              sx={{
-                p: '2px 4px',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {props.showLabel === true ? t(props.label) : null}
-              {props.tooltip && (
-                <Tooltip
-                  title={t(props.tooltip.title)}
-                  body={t(props.tooltip.body)}
+            <>
+              {hasValueAndIsOutput || showLabelAndIsInput ? (
+                <FormLabel
+                  htmlFor={field.name}
+                  aria-label={props.label}
+                  required={props.required}
+                  error={error !== undefined}
+                  sx={{
+                    p: '2px 4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
                 >
-                  <IconButton
-                    edge='end'
-                    aria-label='Help'
-                    disableRipple
-                    color='default'
-                  >
-                    <InfoIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
-            </FormLabel>
-            {displayMode === 'input' ? (
-              <TextField
-                multiline={props.multiline ?? false}
-                rows={props.multiline ? 3 : 1}
-                id={field.name}
-                size='small'
-                error={error !== undefined}
-                {...fieldWithoutRef}
-                inputRef={field.ref}
-                onBlur={field.onBlur}
-                autoComplete='off'
-                placeholder={
-                  props.placeholder !== undefined
-                    ? (t(props.placeholder) as string)
-                    : ''
-                }
-                fullWidth
-                variant='outlined'
-                helperText={error !== undefined ? error.message : ' '}
-                type={props.inputFormat}
-                InputProps={{
+                  {props.showLabel === true ? t(props.label) : null}
+                  {props.tooltip && (
+                    <Tooltip
+                      title={t(props.tooltip.title)}
+                      body={t(props.tooltip.body)}
+                    >
+                      <IconButton
+                        edge='end'
+                        aria-label='Help'
+                        disableRipple
+                        color='default'
+                      >
+                        <InfoIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </FormLabel>
+              ) : null}
+
+              {displayMode === 'input' ? (
+                <TextField
+                  multiline={props.multiline ?? false}
+                  rows={props.multiline ? 3 : 1}
+                  id={field.name}
+                  size='small'
+                  error={error !== undefined}
+                  {...fieldWithoutRef}
+                  inputRef={field.ref}
+                  onBlur={field.onBlur}
+                  autoComplete='off'
+                  placeholder={
+                    props.placeholder !== undefined
+                      ? (t(props.placeholder) as string)
+                      : ''
+                  }
+                  fullWidth
+                  variant='outlined'
+                  helperText={error !== undefined ? error.message : ' '}
+                  InputProps={{
                   readOnly: props.readOnly,
-                  endAdornment: (
+                    endAdornment: (
                     <ErrorIcon
                       sx={{
-                        color: '#ff0000',
-                        visibility: error !== undefined ? 'visible' : 'hidden',
-                      }}
-                    />
-                  ),
-                }}
-              />
+                    color: '#ff0000',
+                      visibility:
+                    error !== undefined ? 'visible' : 'hidden',
+                  }}
+                  type={props.inputFormat}
+                  />
             ) : (
               <>
                 <span>{field.value}</span>
@@ -123,9 +130,23 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                   type='hidden'
                   value={field.value}
                   name={field.name}
+
                 />
-              </>
-            )}
+              ) : (
+                <>
+                  {props.hasValue === true ? (
+                    <>
+                      <span>{field.value}</span>
+                      <input
+                        type='hidden'
+                        value={field.value}
+                        name={field.name}
+                      />
+                    </>
+                  ) : null}
+                </>
+              )}
+            </>
           </FormControl>
         );
       }}
