@@ -20,7 +20,7 @@
 import { useEffect, useState } from 'react';
 import { FormComponent, FormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
-import { RecordData } from '../FormGenerator/utils';
+import { CoraRecord } from '../../app/hooks';
 
 export const linksFromFormSchema = (
   formSchema: FormSchema,
@@ -31,7 +31,7 @@ export const linksFromFormSchema = (
 
 export const removeComponentsWithoutValuesFromSchema = (
   formSchema: FormSchema,
-  record: RecordData,
+  record: CoraRecord,
 ): FormSchema => {
   const schema = formSchema;
   let componentsFromSchema = formSchema.form.components;
@@ -39,16 +39,21 @@ export const removeComponentsWithoutValuesFromSchema = (
   const flattenedRecord = flattenObject(record.data);
   const keysAsString = toShortString(flattenedRecord);
   const lastKeyFromString = getLastKeyFromString(keysAsString);
+  console.log('k', lastKeyFromString);
+  componentsFromSchema = componentsFromSchema?.filter((component) => {
+    // nested groups -> look into groups
+    // console.log('a', component);
 
-  componentsFromSchema = componentsFromSchema?.filter((component) =>
-    [...lastKeyFromString].includes(component.name),
-  );
+    return [...lastKeyFromString].includes(component.name);
+  });
+  console.log('h', componentsFromSchema);
+
   schema.form.components = componentsFromSchema;
   return schema;
 };
 
-export const flattenObject = (obj: any, prefix = '') =>
-  Object.keys(obj).reduce((acc: any, k) => {
+export const flattenObject = (obj: any, prefix = '') => {
+  return Object.keys(obj).reduce((acc: any, k) => {
     const pre = prefix.length ? `${prefix}.` : '';
     if (
       typeof obj[k] === 'object' &&
@@ -59,10 +64,11 @@ export const flattenObject = (obj: any, prefix = '') =>
     else acc[pre + k] = obj[k];
     return acc;
   }, {});
+};
 
 export const toShortString = (objects: any) => {
-  return Object.entries(objects).map((object: any) => {
-    return object[0].split('.value')[0];
+  return Object.entries(objects).map((object) => {
+    return `${object[0].split('.')[0]}.${object[0].split('.')[1]}`;
   });
 };
 

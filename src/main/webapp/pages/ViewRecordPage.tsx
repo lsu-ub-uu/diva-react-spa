@@ -22,6 +22,7 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import {
+  CoraRecord,
   useCoraFormSchemaByValidationType,
   useCoraRecordByTypeAndId,
 } from '../app/hooks';
@@ -33,6 +34,7 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '../components';
+import { removeComponentsWithoutValuesFromSchema } from '../components/NavigationPanel/utils';
 
 export const ViewRecordPage = () => {
   const { recordId } = useParams();
@@ -79,7 +81,12 @@ export const ViewRecordPage = () => {
         <NavigationPanel
           links={
             coraSchema.schema
-              ? linksFromFormSchema(coraSchema.schema) || []
+              ? linksFromFormSchema(
+                  removeComponentsWithoutValuesFromSchema(
+                    coraSchema.schema,
+                    coraRecord.record as CoraRecord,
+                  ),
+                ) || []
               : []
           }
           activeLinkName={activeSection}
