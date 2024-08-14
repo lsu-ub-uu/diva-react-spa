@@ -30,7 +30,40 @@ export const linksFromFormSchema = (
     .map((c) => ({ name: c.name, label: c.label } as NavigationPanelLink));
 
 export const hasLinkValues = (formSchema: FormSchema, record: RecordData) => {
-  return 'aaa';
+  const flattenedRecord = flattenObject(record);
+  const keysAsString = toShortString(flattenedRecord);
+  const lastKeyFromString = getLastKeyFromString(keysAsString);
+
+  const { components } = formSchema.form;
+  return components?.filter((component) =>
+    [...lastKeyFromString].includes(component.name),
+  );
+};
+
+export const flattenObject = (obj: any, prefix = '') =>
+  Object.keys(obj).reduce((acc: any, k) => {
+    const pre = prefix.length ? `${prefix}.` : '';
+    if (
+      typeof obj[k] === 'object' &&
+      obj[k] !== null &&
+      Object.keys(obj[k]).length > 0
+    )
+      Object.assign(acc, flattenObject(obj[k], pre + k));
+    else acc[pre + k] = obj[k];
+    return acc;
+  }, {});
+
+export const toShortString = (objects: any) => {
+  return Object.entries(objects).map((object: any) => {
+    return object[0].split('.value')[0];
+  });
+};
+
+export const getLastKeyFromString = (keys: string[]) => {
+  return keys.map((key: string) => {
+    const stringArray = key.split('.');
+    return stringArray[stringArray.length - 1];
+  });
 };
 
 export const useSectionScroller = () => {
