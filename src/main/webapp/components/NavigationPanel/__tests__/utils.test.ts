@@ -24,8 +24,9 @@
 import {
   flattenObject,
   getLastKeyFromString,
-  hasLinkValues,
+  getComponentsWithValue,
   toShortString,
+  removeComponentsWithoutValuesFromSchema,
 } from '../utils';
 import { formDefWithTwoTextVariableWithModeOutput } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../../FormGenerator/types';
@@ -66,76 +67,53 @@ const coraRecord2 = {
     },
   },
 };
-
-describe('hasLinkValue', () => {
-  it('returns a coraSchema for one variable without variables with no data', () => {
-    const actual = hasLinkValues(
+describe('removeComponentsWithoutValuesFromSchema', () => {
+  it('aaas', () => {
+    const actual = removeComponentsWithoutValuesFromSchema(
       formDefWithTwoTextVariableWithModeOutput as FormSchema,
-      coraRecord.data,
+      coraRecord,
     );
-    expect(actual).toStrictEqual([
-      {
-        name: 'someTextVar',
-        type: 'textVariable',
-        mode: 'output',
-        inputType: 'input',
-        tooltip: {
-          title: 'exampleMetadataTextVarText',
-          body: 'exampleMetadataTextVarDefText',
-        },
-        label: 'someMetadataTextVarText',
-        validation: { type: 'regex', pattern: '.*' },
-        repeat: { repeatMin: 1, repeatMax: 1 },
-      },
-    ]);
-  });
-  it('returns a coraSchema for two variables without variables with no data', () => {
-    const actual = hasLinkValues(
-      formDefWithTwoTextVariableWithModeOutput as FormSchema,
-      coraRecord2.data,
-    );
-    expect(actual).toStrictEqual([
-      {
-        name: 'someTextVar',
-        type: 'textVariable',
-        mode: 'output',
-        inputType: 'input',
-        tooltip: {
-          title: 'exampleMetadataTextVarText',
-          body: 'exampleMetadataTextVarDefText',
-        },
-        label: 'someMetadataTextVarText',
-        validation: {
-          type: 'regex',
-          pattern: '.*',
-        },
+    expect(actual).toStrictEqual({
+      validationTypeId: 'someValidationTypeId',
+      form: {
+        type: 'group',
+        label: 'someRootFormGroupText',
+        name: 'someRootNameInData',
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
         },
-      },
-      {
-        name: 'someOtherTextVar',
-        type: 'textVariable',
-        mode: 'output',
-        inputType: 'input',
         tooltip: {
-          title: 'exampleMetadataTextVarText',
-          body: 'exampleMetadataTextVarDefText',
+          title: 'textId345',
+          body: 'defTextId678',
         },
-        label: 'someMetadataOtherTextVarText',
-        validation: {
-          type: 'regex',
-          pattern: '.*',
-        },
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
+        components: [
+          {
+            name: 'someTextVar',
+            type: 'textVariable',
+            mode: 'output',
+            inputType: 'input',
+            tooltip: {
+              title: 'exampleMetadataTextVarText',
+              body: 'exampleMetadataTextVarDefText',
+            },
+            label: 'someMetadataTextVarText',
+            validation: {
+              type: 'regex',
+              pattern: '.*',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+        mode: 'output',
       },
-    ]);
+    });
   });
 });
+
 describe('flattenObj', () => {
   it(' returns flattened object with one variable', () => {
     const actual = flattenObject(coraRecord.data);

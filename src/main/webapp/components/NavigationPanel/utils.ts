@@ -18,7 +18,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { FormSchema } from '../FormGenerator/types';
+import { FormComponent, FormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
 import { RecordData } from '../FormGenerator/utils';
 
@@ -29,15 +29,22 @@ export const linksFromFormSchema = (
     ?.filter((c) => !['text', 'container'].includes(c.type))
     .map((c) => ({ name: c.name, label: c.label } as NavigationPanelLink));
 
-export const hasLinkValues = (formSchema: FormSchema, record: RecordData) => {
-  const flattenedRecord = flattenObject(record);
+export const removeComponentsWithoutValuesFromSchema = (
+  formSchema: FormSchema,
+  record: RecordData,
+): FormSchema => {
+  const schema = formSchema;
+  let componentsFromSchema = formSchema.form.components;
+
+  const flattenedRecord = flattenObject(record.data);
   const keysAsString = toShortString(flattenedRecord);
   const lastKeyFromString = getLastKeyFromString(keysAsString);
 
-  const { components } = formSchema.form;
-  return components?.filter((component) =>
+  componentsFromSchema = componentsFromSchema?.filter((component) =>
     [...lastKeyFromString].includes(component.name),
   );
+  schema.form.components = componentsFromSchema;
+  return schema;
 };
 
 export const flattenObject = (obj: any, prefix = '') =>
