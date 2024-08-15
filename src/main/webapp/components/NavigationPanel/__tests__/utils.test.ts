@@ -236,234 +236,6 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
                 childStyle: ['sixChildStyle'],
                 gridColSpan: 6,
               },
-              {
-                name: 'deathYear',
-                type: 'textVariable',
-                mode: 'output',
-                inputType: 'input',
-                tooltip: {
-                  title: 'deathYearTextVarText',
-                  body: 'deathYearTextVarDefText',
-                },
-                label: 'deathYearTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern: '(^[0-9]{4,4}$)',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                childStyle: ['sixChildStyle'],
-                gridColSpan: 6,
-              },
-              {
-                name: 'email',
-                type: 'textVariable',
-                mode: 'output',
-                inputType: 'input',
-                tooltip: {
-                  title: 'contributorEmailTextVarText',
-                  body: 'contributorEmailTextVarDefText',
-                },
-                label: 'contributorEmailTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern: '^([\\w].*?@([\\w].*\\.\\w{2,4}))$',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                childStyle: ['nineChildStyle'],
-                gridColSpan: 9,
-              },
-              {
-                name: 'correspondingAuthor',
-                type: 'collectionVariable',
-                placeholder: 'initialEmptyValueText',
-                mode: 'output',
-                tooltip: {
-                  title: 'correspondingAuthorCollectionVarText',
-                  body: 'correspondingAuthorCollectionVarDefText',
-                },
-                label: 'correspondingAuthorCollectionVarText',
-                showLabel: true,
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                options: [
-                  {
-                    value: 'true',
-                    label: 'trueDivaItemText',
-                  },
-                ],
-                childStyle: ['threeChildStyle'],
-                gridColSpan: 3,
-              },
-              {
-                name: 'localUserId',
-                type: 'textVariable',
-                mode: 'output',
-                inputType: 'input',
-                tooltip: {
-                  title: 'localUserIdTextVarText',
-                  body: 'localUserIdTextVarDefText',
-                },
-                label: 'localUserIdTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern: '.+',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                childStyle: ['sixChildStyle'],
-                gridColSpan: 6,
-              },
-              {
-                name: 'orcid',
-                type: 'textVariable',
-                mode: 'output',
-                inputType: 'input',
-                tooltip: {
-                  title: 'orcidTextVarText',
-                  body: 'orcidTextVarDefText',
-                },
-                label: 'orcidTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern: '^(\\d{4})-(\\d{4})-(\\d{4})-(\\d{3}[0-9X])$',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                childStyle: ['sixChildStyle'],
-                gridColSpan: 6,
-              },
-              {
-                name: 'otherOrganisation',
-                type: 'group',
-                mode: 'output',
-                tooltip: {
-                  title: 'otherOrganisationGroupText',
-                  body: 'otherOrganisationGroupDefText',
-                },
-                label: 'otherOrganisationGroupText',
-                showLabel: true,
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1.7976931348623157e308,
-                },
-                components: [
-                  {
-                    name: 'name',
-                    type: 'textVariable',
-                    mode: 'output',
-                    inputType: 'input',
-                    tooltip: {
-                      title: 'nameTextVarText',
-                      body: 'nameTextVarDefText',
-                    },
-                    label: 'nameTextVarText',
-                    showLabel: true,
-                    validation: {
-                      type: 'regex',
-                      pattern: '.+',
-                    },
-                    repeat: {
-                      minNumberOfRepeatingToShow: 1,
-                      repeatMin: 0,
-                      repeatMax: 1,
-                    },
-                    childStyle: [''],
-                    gridColSpan: 12,
-                  },
-                  {
-                    name: 'rorId',
-                    type: 'textVariable',
-                    mode: 'output',
-                    inputType: 'input',
-                    tooltip: {
-                      title: 'rorIdTextVarText',
-                      body: 'rorIdTextVarDefText',
-                    },
-                    label: 'rorIdTextVarText',
-                    showLabel: true,
-                    validation: {
-                      type: 'regex',
-                      pattern:
-                        '^(https://ror.org/0[a-hj-km-np-tv-z|0-9]{6}[0-9]{2})$',
-                    },
-                    repeat: {
-                      minNumberOfRepeatingToShow: 1,
-                      repeatMin: 0,
-                      repeatMax: 1,
-                    },
-                    childStyle: [''],
-                    gridColSpan: 12,
-                  },
-                ],
-                presentationStyle: '',
-                childStyle: [''],
-                gridColSpan: 12,
-              },
-              {
-                name: 'researchGroup',
-                type: 'recordLink',
-                mode: 'output',
-                tooltip: {
-                  title: 'researchGroupLinkText',
-                  body: 'researchGroupLinkDefText',
-                },
-                label: 'researchGroupLinkText',
-                showLabel: true,
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1.7976931348623157e308,
-                },
-                childStyle: [''],
-                gridColSpan: 12,
-                recordLinkType: 'researchGroup',
-                presentationRecordLinkId: 'researchGroupOutputPLink',
-              },
-              {
-                name: 'otherResearchGroup',
-                type: 'textVariable',
-                mode: 'output',
-                inputType: 'input',
-                tooltip: {
-                  title: 'otherResearchGroupTextVarText',
-                  body: 'otherResearchGroupTextVarDefText',
-                },
-                label: 'otherResearchGroupTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern: '.+',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1.7976931348623157e308,
-                },
-                childStyle: [''],
-                gridColSpan: 12,
-              },
             ],
             presentationStyle: '',
             childStyle: [''],
@@ -487,21 +259,25 @@ describe('flattenObj', () => {
     });
   });
 
-  it(' returns flattened object with one variable with attribute', () => {
-    const actual = flattenObject(coraRecord3.data);
-
-    expect(actual).toStrictEqual({
-      'divaOutput.title.mainTitle.value': 'asdasd',
-      'divaOutput.title._language': 'akk',
-    });
-  });
-
-  it(' returns flattened object with two variable', () => {
+  it(' returns flattened object with two variables', () => {
     const actual = flattenObject(coraRecord2.data);
 
     expect(actual).toStrictEqual({
       'someRootNameInData.someOtherTextVar.value': 'someOtherTestText',
       'someRootNameInData.someTextVar.value': 'someTestText',
+    });
+  });
+
+  it(' returns flattened object with multiple variables and attributes', () => {
+    const actual = flattenObject(coraRecord3.data);
+
+    expect(actual).toStrictEqual({
+      'divaOutput.author.0.familyName.value': 'Swenning',
+      'divaOutput.author.0.givenName.value': 'Egil',
+      'divaOutput.domain.value': 'du',
+      'divaOutput.outputType.outputType.value': 'publication',
+      'divaOutput.title._language': 'ady',
+      'divaOutput.title.mainTitle.value': 'aaaaa',
     });
   });
 });

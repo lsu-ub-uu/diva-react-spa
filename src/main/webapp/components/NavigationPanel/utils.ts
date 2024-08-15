@@ -49,6 +49,9 @@ export const removeComponentsWithoutValuesFromSchema = (
   console.log('h', componentsFromSchema);
 
   schema.form.components = componentsFromSchema;
+
+  console.log('schema', schema);
+
   return schema;
 };
 
