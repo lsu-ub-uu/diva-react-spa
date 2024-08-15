@@ -106,6 +106,7 @@ export const FormGenerator = ({
       aPath: string,
     ) => {
       return (aComponent.attributes ?? []).map((attribute, index) => {
+        const hasValue = checkIfComponentHasValue(getValues, attribute.name);
         return (
           <Grid
             key={attribute.name}
@@ -125,6 +126,7 @@ export const FormGenerator = ({
               options={attribute.options}
               readOnly={!!attribute.finalValue}
               displayMode={attribute.mode}
+              hasValue={hasValue}
             />
           </Grid>
         );

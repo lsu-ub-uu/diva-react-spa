@@ -39,19 +39,11 @@ export const removeComponentsWithoutValuesFromSchema = (
   const flattenedRecord = flattenObject(record.data);
   const keysAsString = toShortString(flattenedRecord);
   const lastKeyFromString = getLastKeyFromString(keysAsString);
-  console.log('k', lastKeyFromString);
-  componentsFromSchema = componentsFromSchema?.filter((component) => {
-    // nested groups -> look into groups
-    // console.log('a', component);
 
+  componentsFromSchema = componentsFromSchema?.filter((component) => {
     return [...lastKeyFromString].includes(component.name);
   });
-  console.log('h', componentsFromSchema);
-
   schema.form.components = componentsFromSchema;
-
-  console.log('schema', schema);
-
   return schema;
 };
 
