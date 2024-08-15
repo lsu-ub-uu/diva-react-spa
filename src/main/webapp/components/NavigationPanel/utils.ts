@@ -67,9 +67,10 @@ export const flattenObject = (obj: any, prefix = '') => {
 };
 
 export const toShortString = (objects: any) => {
-  return Object.entries(objects).map((object) => {
+  const shortStrings = Object.entries(objects).map((object) => {
     return `${object[0].split('.')[0]}.${object[0].split('.')[1]}`;
   });
+  return [...new Set(shortStrings)];
 };
 
 export const getLastKeyFromString = (keys: string[]) => {
