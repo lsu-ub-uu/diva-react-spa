@@ -184,7 +184,10 @@ export const ControlledAutocomplete = (
               }}
               renderOption={(renderProps, option) => {
                 return (
-                  <li {...renderProps}>
+                  <li
+                    {...renderProps}
+                    key={option.id}
+                  >
                     <FormGenerator
                       record={option}
                       onSubmit={() => {}}

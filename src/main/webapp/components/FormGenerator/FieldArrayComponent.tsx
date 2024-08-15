@@ -37,6 +37,7 @@ interface FieldArrayComponentProps {
   name: string;
   component: FormComponent;
   renderCallback: (path: string) => unknown;
+  hasValue?: boolean;
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
@@ -45,7 +46,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     control: props.control,
     name: props.name,
   });
-
   const handleAppend = async () => {
     append(createDefaultValuesFromComponent(props.component, true));
   };
@@ -58,6 +58,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     remove(index);
   };
 
+  const checkForFieldValue = (fieldsValue: any) => {
+    return fieldsValue[0] === undefined || fieldsValue[0].value === '';
+  };
   function getContent() {
     return (
       <>
@@ -70,11 +73,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         />
         {fields.map((field, index) => (
           <div
-            key={field.id}
+            key={`${field.id}_${index}_a`}
             style={{ position: 'relative', marginTop: '10px' }}
           >
             {!isComponentSingularAndOptional(props.component) && (
               <Box
+                key={`${field.id}_${index}_b`}
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -83,6 +87,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                 }}
               >
                 <div
+                  key={`${field.id}_${index}_c`}
                   style={{
                     borderTop: '1px solid rgba(0, 0, 0, 0.12)',
                     width: '25%',
@@ -90,9 +95,11 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   }}
                 />
                 <Chip
+                  key={`${field.id}_${index}_d`}
                   label={`${t(props.component.label ?? '')} ${index + 1}`}
                 />
                 <div
+                  key={`${field.id}_${index}_e`}
                   style={{
                     borderTop: '1px solid rgba(0, 0, 0, 0.12)',
                     width: '25%',
@@ -116,10 +123,10 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                 }
                 deleteButtonAction={() => handleRemove(index)}
                 entityType={props.component.type}
+                key={`${field.id}_${index}_f`}
               />
             )}
             <Grid
-              key={`${field.id}_${index}`}
               container
               item
               xs={12}
@@ -155,60 +162,65 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       </>
     );
   }
-  return isFirstLevel(props.name) ? (
-    <span
-      key={props.name}
-      className='anchorLink'
-      id={`anchor_${props.component.name}`}
-    >
-      <Box sx={{ mb: 2 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          {props.component.showLabel === true ? (
-            <Typography
-              text={props.component?.label ?? ''}
-              variant={headlineLevelToTypographyVariant(
-                props.component.headlineLevel,
-              )}
-            />
-          ) : null}
-          <Tooltip
-            title={t(props.component.tooltip?.title as string)}
-            body={t(props.component.tooltip?.body as string)}
+
+  function renderFirstLevel() {
+    return (
+      <span
+        key={props.name}
+        className='anchorLink'
+        id={`anchor_${props.component.name}`}
+      >
+        <Box sx={{ mb: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
           >
-            <IconButton
-              disableRipple
-              color='info'
-              aria-label='info'
+            {props.component.showLabel === true ? (
+              <Typography
+                text={props.component?.label ?? ''}
+                variant={headlineLevelToTypographyVariant(
+                  props.component.headlineLevel,
+                )}
+              />
+            ) : null}
+            <Tooltip
+              title={t(props.component.tooltip?.title as string)}
+              body={t(props.component.tooltip?.body as string)}
             >
-              <InfoIcon />
-            </IconButton>
-          </Tooltip>
+              <IconButton
+                disableRipple
+                color='info'
+                aria-label='info'
+              >
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          {getContent()}
         </Box>
-        {getContent()}
-      </Box>
-    </span>
-  ) : (
-    <Grid
-      key={props.name}
-      item
-      xs={12}
-      sm={props.component.gridColSpan}
-      id='temp2'
-      flexDirection='column'
-      style={
-        {
-          // flexBasis:
-          //   props.component.presentationStyle === 'inline' ? 'auto' : '100%',
-        }
-      }
-    >
-      <React.Fragment key={`${props.name}_grid`}>{getContent()}</React.Fragment>
-    </Grid>
-  );
+      </span>
+    );
+  }
+
+  function renderOtherLevels() {
+    return !checkForFieldValue(fields) && props.component.mode === 'output' ? (
+      <Grid
+        key={props.name}
+        item
+        xs={12}
+        sm={props.component.gridColSpan}
+        id={`${props.name}_id`}
+        flexDirection='column'
+      >
+        <React.Fragment key={`${props.name}_grid`}>
+          {getContent()}
+        </React.Fragment>
+      </Grid>
+    ) : null;
+  }
+
+  return isFirstLevel(props.name) ? renderFirstLevel() : renderOtherLevels();
 };

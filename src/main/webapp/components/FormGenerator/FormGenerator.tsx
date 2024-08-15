@@ -90,8 +90,8 @@ export const FormGenerator = ({
     path: string,
     parentPresentationStyle?: string,
   ) => {
-    const reactKey = `key_${idx}`;
-
+    const reactKey = `key_${component.name}_${idx}`;
+    // console.log(component.name, reactKey);
     let currentComponentNamePath;
     if (isComponentContainer(component)) {
       currentComponentNamePath = path;
@@ -169,6 +169,7 @@ export const FormGenerator = ({
         currentComponentNamePath,
         createFormComponentAttributes,
         parentPresentationStyle,
+        getValues,
       );
     }
 
@@ -396,7 +397,6 @@ export const FormGenerator = ({
             </Tooltip>
           </Box>
         )}
-
         <FieldArrayComponent
           key={reactKey}
           control={control}
@@ -426,7 +426,9 @@ export const FormGenerator = ({
       aPath: string,
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
+    getValues: UseFormGetValues<FieldValues>,
   ) => {
+    const hasValue = checkIfComponentHasValue(getValues, component.name);
     return (
       <FieldArrayComponent
         key={reactKey}
@@ -447,6 +449,7 @@ export const FormGenerator = ({
             ),
           ];
         }}
+        hasValue={hasValue}
       />
     );
   };
