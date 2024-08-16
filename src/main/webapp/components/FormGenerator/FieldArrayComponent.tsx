@@ -205,8 +205,8 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     );
   }
 
-  function renderOtherLevels() {
-    return !checkForFieldValue(fields) && props.component.mode === 'output' ? (
+  function renderOutput() {
+    return checkForFieldValue(fields) && props.component.mode === 'output' ? (
       <Grid
         key={props.name}
         item
@@ -220,6 +220,27 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         </React.Fragment>
       </Grid>
     ) : null;
+  }
+
+  function renderOtherLevels() {
+    return props.component.mode === 'input' ? (
+      <Grid
+        key={props.name}
+        item
+        xs={12}
+        sm={props.component.gridColSpan}
+        id={`${props.name}_id`}
+        flexDirection='column'
+      >
+        <React.Fragment key={`${props.name}_grid`}>
+          {getContent()}
+        </React.Fragment>
+      </Grid>
+    ) : (
+      renderOutput()
+    );
+
+    /* checkForFieldValue(fields) && props.component.mode === 'output' */
   }
 
   return isFirstLevel(props.name) ? renderFirstLevel() : renderOtherLevels();
