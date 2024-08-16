@@ -690,9 +690,8 @@ const createRecordLinkWithoutSearchLink = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-  console.log('a', component.name, reactKey)
   return (
-    <div>
+    <div key={`${reactKey}_${name}`}>
       {hasValue ? (
         <Grid
           key={reactKey}
