@@ -690,7 +690,7 @@ const createRecordLinkWithoutSearchLink = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-
+  console.log('a', component.name, reactKey)
   return (
     <div>
       {hasValue ? (
