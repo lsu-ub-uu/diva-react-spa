@@ -1906,6 +1906,11 @@ describe('formDefinition', () => {
       const metaDataGroup = createGroup(recordType.metadataId, 'validationTypeIdOutputGroup', [
         'nationalSubjectCategoryId'
       ]);
+      createPresentationVar(
+        'pNationalSubjectCategoryId',
+        'nationalSubjectCategoryId',
+        'pRecordLink'
+      );
 
       const presentationChild = {
         childId: 'pNationalSubjectCategoryId',
@@ -1916,11 +1921,11 @@ describe('formDefinition', () => {
       ]);
       createRecordType('nationalSubjectCategory');
       createRecordLink('nationalSubjectCategoryId', 'nationalSubjectCategory');
-      createPresentationVar(
+
+      createPresentationRecordLink(
         'pNationalSubjectCategoryId',
-        'nationalSubjectCategoryId',
-        'output',
-        'output'
+        'pRecordLink',
+        'nationalSubjectCategoryId'
       );
 
       const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_VIEW);
@@ -1936,7 +1941,7 @@ describe('formDefinition', () => {
             title: 'someTextId'
           },
           label: 'someTextId',
-          headlineLevel: 'h1',
+
           showLabel: true,
           repeat: {
             repeatMin: 1,
@@ -1944,24 +1949,22 @@ describe('formDefinition', () => {
           },
           components: [
             {
-              name: 'nationalSubjectCategory',
+              name: 'somenationalSubjectCategoryIdrecordLink',
               type: 'recordLink',
               mode: 'output',
               tooltip: {
-                title: 'nationalSubjectCategoryLinkText',
-                body: 'nationalSubjectCategoryLinkDefText'
+                body: 'somenationalSubjectCategoryIdDefTextId',
+                title: 'somenationalSubjectCategoryIdTextId'
               },
-              label: 'nationalSubjectCategoryLinkText',
+              label: 'somenationalSubjectCategoryIdTextId',
               showLabel: true,
               repeat: {
-                minNumberOfRepeatingToShow: 1,
-                repeatMin: 0,
-                repeatMax: 1.7976931348623157e308
+                repeatMin: 1,
+                repeatMax: 1
               },
+              presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
               childStyle: [''],
               gridColSpan: 12,
-              recordLinkType: 'nationalSubjectCategory',
-              presentationRecordLinkId: 'nationalSubjectCategoryOutputPLink',
               linkedPresentation: {
                 form: {
                   name: 'nationalSubjectCategory',
