@@ -49,6 +49,7 @@ import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
 import { Lookup } from '../utils/structs/lookup';
 import { createNumberVariableValidation, createTextVariableValidation } from './formValidation';
+import * as console from 'console';
 
 type BFFMetadataTypes =
   | BFFMetadataCollectionVariable
@@ -574,12 +575,12 @@ const createDetailedPresentationBasedOnPresentationType = (
   let presentationRecordLinkId;
   let search;
   let inputFormat;
-
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
-
+  console.log('child', presentationChildReference)
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
+  console.log('p', presentation);
 
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {

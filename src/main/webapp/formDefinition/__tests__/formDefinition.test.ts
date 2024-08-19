@@ -1899,41 +1899,32 @@ describe('formDefinition', () => {
     });
 
     it('should return a form definition for (output) view presentation metadata group with a linked presentation', () => {
-      const validationTypeId = 'validationTypeId';
+      const validationTypeId = 'divaOutput';
       const validationType = createValidationType(validationTypeId);
       const recordType = createRecordType(validationType.validatesRecordTypeId);
 
-      const metaDataGroup = createGroup(recordType.metadataId, 'validationTypeIdOutputGroup', [
-        'nationalSubjectCategoryId'
-      ]);
+      createGroup(recordType.metadataId, 'divaOutputOutputGroup', ['nationalSubjectCategoryLink']);
+
       createPresentationVar(
-        'pNationalSubjectCategoryId',
-        'nationalSubjectCategoryId',
+        'nationalSubjectCategoryPLink',
+        'nationalSubjectCategoryLink',
         'pRecordLink'
       );
-
-      const presentationChild = {
-        childId: 'pNationalSubjectCategoryId',
-        type: 'presentation'
-      } as BFFPresentationChildReference;
-      createPresentationGroup(recordType.presentationViewId, metaDataGroup.nameInData, [
-        presentationChild
+      createPresentationGroup(recordType.presentationViewId, 'divaOutputOutputGroup', [
+        {
+          childId: 'nationalSubjectCategoryPLink',
+          type: 'presentation'
+        }
       ]);
+      createRecordLink('nationalSubjectCategoryLink', 'nationalSubjectCategoryOutputGroup');
       createRecordType('nationalSubjectCategory');
-      createRecordLink('nationalSubjectCategoryId', 'nationalSubjectCategory');
-
-      createPresentationRecordLink(
-        'pNationalSubjectCategoryId',
-        'pRecordLink',
-        'nationalSubjectCategoryId'
-      );
 
       const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_VIEW);
       expect(formDefinition.form.components).toHaveLength(1);
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
-          name: 'validationTypeIdOutputGroup',
+          name: 'divaOutputOutputGroup',
           type: 'group',
           mode: 'output',
           tooltip: {
@@ -1949,20 +1940,21 @@ describe('formDefinition', () => {
           },
           components: [
             {
-              name: 'somenationalSubjectCategoryIdrecordLink',
+              name: 'somenationalSubjectCategoryLinkrecordLink',
               type: 'recordLink',
               mode: 'output',
               tooltip: {
-                body: 'somenationalSubjectCategoryIdDefTextId',
-                title: 'somenationalSubjectCategoryIdTextId'
+                body: 'somenationalSubjectCategoryLinkDefTextId',
+                title: 'somenationalSubjectCategoryLinkTextId'
               },
-              label: 'somenationalSubjectCategoryIdTextId',
+              label: 'somenationalSubjectCategoryLinkTextId',
               showLabel: true,
               repeat: {
                 repeatMin: 1,
                 repeatMax: 1
               },
               presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
+              recordLinkType: 'nationalSubjectCategoryOutputGroup',
               childStyle: [''],
               gridColSpan: 12,
               linkedPresentation: {
