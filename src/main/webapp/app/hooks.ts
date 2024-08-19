@@ -98,6 +98,7 @@ export interface CoraRecord {
 export const useCoraRecordByTypeAndId = (
   recordType: string,
   recordId: string | undefined,
+  presentationRecordLinkId?: string | undefined,
 ): UseCoraRecordByTypeAndId => {
   const [record, setRecord] = useState<CoraRecord>();
   const [isLoading, setIsLoading] = useState(true);
@@ -105,12 +106,13 @@ export const useCoraRecordByTypeAndId = (
 
   useEffect(() => {
     let isMounted = true;
-
+    const url =
+      presentationRecordLinkId === undefined
+        ? `/record/${recordType}/${recordId}`
+        : `/record/${recordType}/${recordId}?presentationRecordLinkId=${presentationRecordLinkId}`;
     const fetchRecord = async () => {
       try {
-        const response = await axios.get<CoraRecord>(
-          `/record/${recordType}/${recordId}`,
-        );
+        const response = await axios.get<CoraRecord>(url);
         if (isMounted) {
           setError(null);
           setRecord(response.data as CoraRecord);
