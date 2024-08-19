@@ -106,7 +106,6 @@ export interface BFFMetadataChildReference {
 }
 
 export interface BFFPresentation extends BFFBase {
-  // Types below are a little bit weird, metadata definitions needs to checked up on (attributes)
   type:
     | 'pGroup'
     | 'pVar'

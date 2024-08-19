@@ -49,7 +49,6 @@ import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
 import { Lookup } from '../utils/structs/lookup';
 import { createNumberVariableValidation, createTextVariableValidation } from './formValidation';
-import * as console from 'console';
 
 type BFFMetadataTypes =
   | BFFMetadataCollectionVariable
@@ -87,7 +86,7 @@ export const createLinkedRecordDefinition = (
   dependencies: Dependencies,
   metadataGroup: BFFMetadataGroup,
   presentationGroup: BFFPresentationGroup
-) => {
+): { form: any } => {
   const form = createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
     metadataGroup,
@@ -575,12 +574,11 @@ const createDetailedPresentationBasedOnPresentationType = (
   let presentationRecordLinkId;
   let search;
   let inputFormat;
+  let linkedPresentation;
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
-  console.log('child', presentationChildReference)
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-  console.log('p', presentation);
 
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
@@ -628,6 +626,23 @@ const createDetailedPresentationBasedOnPresentationType = (
       search = presentationRecordLink.search;
     }
     presentationRecordLinkId = presentation.id;
+
+    if (
+      presentation.mode === 'output' &&
+      hasLinkedPresentation(presentation as BFFPresentationRecordLink)
+    ) {
+      if (presentation === undefined) {
+        return undefined;
+      }
+      const rLPresentation = presentation as BFFPresentationRecordLink;
+      const newPresentation: BFFPresentationGroup = presentationPool.get(
+        rLPresentation.linkedRecordPresentations[0].presentationId
+      );
+      const newMetadata: BFFMetadataGroup = metadataPool.get(newPresentation.presentationOf);
+
+      linkedPresentation = createLinkedRecordDefinition(dependencies, newMetadata, newPresentation);
+    }
+
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
 
@@ -698,7 +713,8 @@ const createDetailedPresentationBasedOnPresentationType = (
     recordLinkType,
     presentationRecordLinkId,
     search,
-    inputFormat
+    inputFormat,
+    linkedPresentation
   });
 };
 const findMetadataChildReferenceById = (
@@ -841,4 +857,8 @@ const checkIfSpecifiedHeadlineLevelExist = (presentation: BFFPresentationGroup) 
 const checkIfShowHeadlineExist = (presentation: BFFPresentationGroup) => {
   // eslint-disable-next-line no-prototype-builtins
   return Object.hasOwn(presentation, 'showHeadline');
+};
+
+const hasLinkedPresentation = (RLPresentation: BFFPresentationRecordLink): boolean => {
+  return RLPresentation.linkedRecordPresentations.length > 0;
 };

@@ -1905,17 +1905,43 @@ describe('formDefinition', () => {
 
       createGroup(recordType.metadataId, 'divaOutputOutputGroup', ['nationalSubjectCategoryLink']);
 
-      createPresentationVar(
-        'nationalSubjectCategoryPLink',
-        'nationalSubjectCategoryLink',
-        'pRecordLink'
+      dependencies.presentationPool.set('nationalSubjectCategoryPLink', {
+        id: 'nationalSubjectCategoryPLink',
+        type: 'pRecordLink',
+        presentationOf: 'nationalSubjectCategoryLink',
+        mode: 'output',
+        linkedRecordPresentations: [
+          {
+            presentedRecordType: 'nationalSubjectCategory',
+            presentationId: 'nationalSubjectCategoryWhenLinkedOutputPGroup'
+          }
+        ]
+      });
+
+      createPresentationGroup(
+        'nationalSubjectCategoryWhenLinkedOutputPGroup',
+        'nationalSubjectCategoryWhenLinkedOutputGroup',
+        [
+          {
+            childId: 'codeOutputPVar',
+            type: 'presentation'
+          }
+        ]
       );
+      createPresentationVar('codeOutputPVar', 'codeTextVar', 'pVar');
+      createTextVar('codeTextVar', 'code', [], '.*');
+
       createPresentationGroup(recordType.presentationViewId, 'divaOutputOutputGroup', [
         {
           childId: 'nationalSubjectCategoryPLink',
           type: 'presentation'
         }
       ]);
+
+      createGroup('nationalSubjectCategoryWhenLinkedOutputGroup', 'nationalSubjectCategory', [
+        'codeTextVar'
+      ]);
+
       createRecordLink('nationalSubjectCategoryLink', 'nationalSubjectCategoryOutputGroup');
       createRecordType('nationalSubjectCategory');
 
@@ -1953,137 +1979,51 @@ describe('formDefinition', () => {
                 repeatMin: 1,
                 repeatMax: 1
               },
-              presentationRecordLinkId: 'nationalSubjectCategoryPLinkId',
+              presentationRecordLinkId: 'nationalSubjectCategoryPLink',
               recordLinkType: 'nationalSubjectCategoryOutputGroup',
               childStyle: [''],
               gridColSpan: 12,
               linkedPresentation: {
                 form: {
-                  name: 'nationalSubjectCategory',
-                  type: 'group',
-                  mode: 'output',
-                  tooltip: {
-                    title: 'nationalSubjectCategoryRecordTypeGroupText',
-                    body: 'nationalSubjectCategoryRecordTypeGroupDefText'
-                  },
-                  label: 'nationalSubjectCategoryRecordTypeGroupText',
-                  showLabel: true,
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1
-                  },
+                  childStyle: [''],
                   components: [
                     {
-                      name: 'recordInfo',
-                      type: 'group',
-                      mode: 'output',
-                      tooltip: {
-                        title: 'recordInfoNationalSubjectCategoryRecordTypeGroupText',
-                        body: 'recordInfoNationalSubjectCategoryRecordTypeGroupDefText'
-                      },
-                      label: 'recordInfoNationalSubjectCategoryRecordTypeGroupText',
-                      headlineLevel: 'h2',
-                      showLabel: true,
-                      repeat: {
-                        minNumberOfRepeatingToShow: 1,
-                        repeatMin: 1,
-                        repeatMax: 1
-                      },
-                      presentationStyle: '',
-                      childStyle: [''],
-                      gridColSpan: 12
-                    },
-                    {
-                      name: 'subject',
-                      type: 'textVariable',
-                      mode: 'output',
-                      inputType: 'input',
-                      tooltip: {
-                        title: 'subjectSweTextVarText',
-                        body: 'subjectSweTextVarDefText'
-                      },
-                      label: 'subjectSweTextVarText',
-                      showLabel: true,
-                      validation: {
-                        type: 'regex',
-                        pattern: '.+'
-                      },
-                      repeat: {
-                        minNumberOfRepeatingToShow: 1,
-                        repeatMin: 1,
-                        repeatMax: 1
-                      },
-                      attributes: [
-                        {
-                          name: 'language',
-                          type: 'collectionVariable',
-                          placeholder: 'initialEmptyValueText',
-                          mode: 'output',
-                          tooltip: {
-                            title: 'languageCollectionVarText',
-                            body: 'languageCollectionVarDefText'
-                          },
-                          label: 'languageCollectionVarText',
-                          showLabel: true,
-                          options: [
-                            {
-                              value: 'aar',
-                              label: 'aarLangItemText'
-                            }
-                          ],
-                          finalValue: 'eng'
-                        }
-                      ],
-                      childStyle: [''],
-                      gridColSpan: 12
-                    },
-                    {
-                      name: 'code',
-                      type: 'textVariable',
-                      mode: 'output',
-                      inputType: 'input',
-                      tooltip: {
-                        title: 'codeTextVarText',
-                        body: 'codeTextVarDefText'
-                      },
-                      label: 'codeTextVarText',
-                      showLabel: true,
-                      validation: {
-                        type: 'regex',
-                        pattern: '^[0-9]{1,5}$'
-                      },
-                      repeat: {
-                        minNumberOfRepeatingToShow: 1,
-                        repeatMin: 1,
-                        repeatMax: 1
-                      },
-                      childStyle: [''],
-                      gridColSpan: 12
-                    },
-                    {
-                      name: 'parent',
-                      type: 'recordLink',
-                      mode: 'output',
-                      tooltip: {
-                        title: 'parentNationalSubjectCategoryLinkText',
-                        body: 'parentNationalSubjectCategoryLinkDefText'
-                      },
-                      label: 'parentNationalSubjectCategoryLinkText',
-                      showLabel: true,
-                      repeat: {
-                        minNumberOfRepeatingToShow: 1,
-                        repeatMin: 0,
-                        repeatMax: 1
-                      },
                       childStyle: [''],
                       gridColSpan: 12,
-                      recordLinkType: 'nationalSubjectCategory',
-                      presentationRecordLinkId: 'parentNationalSubjectCategoryOutputPLink'
+                      label: 'someTextId',
+                      mode: 'output',
+                      name: 'code',
+                      repeat: {
+                        repeatMax: 1,
+                        repeatMin: 1
+                      },
+                      showLabel: true,
+                      tooltip: {
+                        body: 'someDefTextId',
+                        title: 'someTextId'
+                      },
+                      type: 'textVariable',
+                      validation: {
+                        pattern: '.*',
+                        type: 'regex'
+                      }
                     }
                   ],
+                  gridColSpan: 12,
+                  label: 'someTextId',
+                  mode: 'output',
+                  name: 'nationalSubjectCategory',
                   presentationStyle: '',
-                  childStyle: [''],
-                  gridColSpan: 12
+                  repeat: {
+                    repeatMax: 1,
+                    repeatMin: 1
+                  },
+                  showLabel: true,
+                  tooltip: {
+                    body: 'someDefTextId',
+                    title: 'someTextId'
+                  },
+                  type: 'group'
                 }
               }
             }
