@@ -118,7 +118,8 @@ import {
   createLinkedRecordDefinition,
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
-  getAttributesByAttributeReferences
+  getAttributesByAttributeReferences,
+  hasLinkedPresentation
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
@@ -3061,6 +3062,34 @@ describe('formDefinition', () => {
         };
         expect(actual).toStrictEqual(expected);
       });
+    });
+  });
+  describe('hasLinkedPresentation', () => {
+    it('return true for link presentation with presentation', () => {
+      const presentation = {
+        id: 'nationalSubjectCategoryPLink',
+        type: 'pRecordLink',
+        presentationOf: 'nationalSubjectCategoryLink',
+        mode: 'output',
+        linkedRecordPresentations: [
+          {
+            presentedRecordType: 'nationalSubjectCategory',
+            presentationId: 'nationalSubjectCategoryWhenLinkedOutputPGroup'
+          }
+        ]
+      };
+      const actual = hasLinkedPresentation(presentation as BFFPresentationRecordLink);
+      expect(actual).toBeTruthy();
+    });
+    it('return false for link presentation with presentation', () => {
+      const presentation = {
+        id: 'nationalSubjectCategoryPLink',
+        type: 'pRecordLink',
+        presentationOf: 'nationalSubjectCategoryLink',
+        mode: 'output'
+      };
+      const actual = hasLinkedPresentation(presentation as BFFPresentationRecordLink);
+      expect(actual).toBeFalsy();
     });
   });
 

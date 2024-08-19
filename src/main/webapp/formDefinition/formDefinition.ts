@@ -859,6 +859,9 @@ const checkIfShowHeadlineExist = (presentation: BFFPresentationGroup) => {
   return Object.hasOwn(presentation, 'showHeadline');
 };
 
-const hasLinkedPresentation = (RLPresentation: BFFPresentationRecordLink): boolean => {
-  return RLPresentation.linkedRecordPresentations.length > 0;
+export const hasLinkedPresentation = (rLPresentation: BFFPresentationRecordLink): boolean => {
+  if (rLPresentation.linkedRecordPresentations === undefined) {
+    return false;
+  }
+  return rLPresentation.linkedRecordPresentations.length > 0;
 };
