@@ -178,10 +178,6 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
       const listPresentationGroup = dependencies.presentationPool.get(
         dependencies.recordTypePool.get(recordType).listPresentationViewId
       );
-      const autoCompletePresentationGroup = dependencies.presentationPool.get(
-        dependencies.recordTypePool.get(recordType).autocompletePresentationView
-      );
-
       record.presentation = createLinkedRecordDefinition(
         dependencies,
         metadataGroup,
@@ -191,11 +187,6 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
         dependencies,
         metadataGroup,
         listPresentationGroup
-      );
-      record.autoCompletePresentation = createLinkedRecordDefinition(
-        dependencies,
-        metadataGroup,
-        autoCompletePresentationGroup
       );
     }
 
