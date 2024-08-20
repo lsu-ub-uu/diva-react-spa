@@ -31,7 +31,6 @@ import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import InfoIcon from '@mui/icons-material/Info';
-import axios from 'axios';
 import {
   ControlledTextField,
   ControlledSelectField,
@@ -58,7 +57,7 @@ import {
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
-import { CoraRecord, useCoraRecordByTypeAndId } from '../../app/hooks';
+import { CoraRecord } from '../../app/hooks';
 
 interface FormGeneratorProps {
   record?: CoraRecord;
@@ -84,13 +83,14 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
+
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
     path: string,
     parentPresentationStyle?: string,
   ) => {
-    const reactKey = `key_${component.name}_${idx}`;
+    const reactKey = `key_${idx}`;
 
     let currentComponentNamePath;
     if (isComponentContainer(component)) {
@@ -397,6 +397,7 @@ export const FormGenerator = ({
             </Tooltip>
           </Box>
         )}
+
         <FieldArrayComponent
           key={reactKey}
           control={control}
@@ -690,13 +691,6 @@ const createRecordLinkWithoutSearchLink = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-  const getLinkedRecordValue = getValues(name);
-  const result = useCoraRecordByTypeAndId(
-    component.recordLinkType as string,
-    getLinkedRecordValue,
-    component.presentationRecordLinkId,
-  );
-  // console.log(result);
 
   return (
     <div key={`${reactKey}_${name}`}>
@@ -707,39 +701,12 @@ const createRecordLinkWithoutSearchLink = (
           xs={12}
           sm={renderElementGridWrapper ? component.gridColSpan : 12}
         >
-          {component.mode === 'output' &&
-          result.isLoading === false ? (
-            <>
-              <FormGenerator
-                formSchema={result.record?.presentation as FormSchema}
-                onSubmit={() => {}}
-                record={result.record?.data as CoraRecord}
-                linkedData
-              />
-
-              {/* <ControlledTextField
-                multiline={component.inputType === 'textarea'}
-                label={component.label ?? ''}
-                name={name}
-                showLabel={component.showLabel}
-                placeholder={component.placeholder}
-                tooltip={component.tooltip}
-                control={control}
-                readOnly={!!component.finalValue}
-                displayMode={component.mode}
-                hasValue={hasValue}
-              /> */}
-            </>
-          ) : (
-            <ControlledLinkedRecord
-              control={control}
-              name={name}
-              recordType={component.recordLinkType ?? ''}
-              presentationRecordLinkId={
-                component.presentationRecordLinkId ?? ''
-              }
-            />
-          )}
+          <ControlledLinkedRecord
+            control={control}
+            name={name}
+            recordType={component.recordLinkType ?? ''}
+            presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+          />
         </Grid>
       ) : null}
     </div>
