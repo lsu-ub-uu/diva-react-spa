@@ -18,6 +18,7 @@
  */
 
 import { Request, Response } from 'express';
+import * as console from 'node:console';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   deleteRecordDataById,
@@ -174,12 +175,30 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
         dependencies,
         presentationRecordLinkId as string
       );
+      const listPresentationGroup = dependencies.presentationPool.get(
+        dependencies.recordTypePool.get(recordType).listPresentationViewId
+      );
+      const autoCompletePresentationGroup = dependencies.presentationPool.get(
+        dependencies.recordTypePool.get(recordType).autocompletePresentationView
+      );
+
       record.presentation = createLinkedRecordDefinition(
         dependencies,
         metadataGroup,
         presentationGroup
       );
+      record.listPresentation = createLinkedRecordDefinition(
+        dependencies,
+        metadataGroup,
+        listPresentationGroup
+      );
+      record.autoCompletePresentation = createLinkedRecordDefinition(
+        dependencies,
+        metadataGroup,
+        autoCompletePresentationGroup
+      );
     }
+
     res.status(response.status).json(record);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
