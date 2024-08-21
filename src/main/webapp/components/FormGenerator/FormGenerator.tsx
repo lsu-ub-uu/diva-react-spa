@@ -693,7 +693,7 @@ const createRecordLinkWithoutSearchLink = (
   const hasValue = checkIfComponentHasValue(getValues, name);
 
   return (
-    <div key={`${reactKey}_${name}`}>
+    <React.Fragment key={`${reactKey}_${name}`}>
       {hasValue ? (
         <Grid
           key={reactKey}
@@ -709,7 +709,7 @@ const createRecordLinkWithoutSearchLink = (
           />
         </Grid>
       ) : null}
-    </div>
+    </React.Fragment>
   );
 };
 
