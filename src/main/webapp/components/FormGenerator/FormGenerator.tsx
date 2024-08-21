@@ -290,48 +290,63 @@ export const FormGenerator = ({
         </Box>
       </span>
     ) : (
-      <Box
-        key={reactKey}
-        id={component.name}
-        className='aaaaaaaaa'
-        sx={{
-          display: 'flex',
-          flexDirection: checkIfRootLevelForFlexDirection(
-            currentComponentNamePath,
-            linkedData,
+      <>
+        {console.log(
+          component.name,
+          (linkedData && isRootLevel(currentComponentNamePath)) ||
+            isFirstLevel(currentComponentNamePath),
+          checkIfPresentationStyleOrParentIsInline(
             component,
+            parentPresentationStyle,
           ),
-          flexWrap: 'wrap',
-          alignItems: checkIfPresentationStyleOrParentIsInline(
-            component,
-            parentPresentationStyle,
-          )
-            ? 'center'
-            : null,
-          gap: checkIfPresentationStyleOrParentIsInline(
-            component,
-            parentPresentationStyle,
-          )
-            ? '0.2em'
-            : null,
-        }}
-      >
-        {component?.showLabel && (
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
         )}
-        {createFormComponentAttributes(component, currentComponentNamePath)}
-        {component.components &&
-          createFormComponents(
-            component.components,
-            currentComponentNamePath,
-            checkIfPresentationStyleIsUndefinedOrEmpty(component)
-              ? parentPresentationStyle
-              : component.presentationStyle,
+        <Box
+          key={reactKey}
+          id={component.name}
+          className='aaaaaaaaa'
+          sx={{
+            display: 'flex',
+            flexDirection: linkedData ? 'row' : 'column',
+
+            // linkedData -> bara länkad data
+            // presentationStyle -> inline eller inte
+            // isFirstLevel -> grupp.barn
+            // isRootLevel -> namepath
+
+            flexWrap: 'wrap',
+            alignItems: checkIfPresentationStyleOrParentIsInline(
+              component,
+              parentPresentationStyle,
+            )
+              ? 'center'
+              : null,
+            gap: checkIfPresentationStyleOrParentIsInline(
+              component,
+              parentPresentationStyle,
+            )
+              ? '0.2em'
+              : null,
+          }}
+        >
+          {component?.showLabel && (
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
           )}
-      </Box>
+          {createFormComponentAttributes(component, currentComponentNamePath)}
+          {component.components &&
+            createFormComponents(
+              component.components,
+              currentComponentNamePath,
+              checkIfPresentationStyleIsUndefinedOrEmpty(component)
+                ? parentPresentationStyle
+                : component.presentationStyle,
+            )}
+        </Box>
+      </>
     );
   };
 
@@ -850,6 +865,36 @@ const checkIfPresentationStyleOrParentIsInline = (
   );
 };
 
+const checkIfGridColSpanExist = (component: FormComponent) => {
+  return component.gridColSpan < 12 || component.gridColSpan !== undefined;
+};
+
+function getFlexDirection(
+  linkedData: undefined | boolean,
+  component: FormComponent,
+  parentPresentationStyle: string | undefined,
+  currentComponentNamePath: string,
+) {
+  console.log('1', component.name, currentComponentNamePath);
+  if (
+    linkedData &&
+    checkIfPresentationStyleOrParentIsInline(component, parentPresentationStyle)
+  ) {
+    return 'row';
+  }
+  if (
+    linkedData &&
+    checkIfPresentationStyleIsUndefinedOrEmpty(component) &&
+    checkIfGridColSpanExist(component)
+  ) {
+    return 'row';
+  }
+  if (linkedData && isFirstLevel(currentComponentNamePath)) {
+    return 'column';
+  }
+  return 'column';
+}
+
 const checkIfRootLevelForFlexDirection = (
   currentComponentNamePath: string,
   linkedData: boolean,
@@ -863,15 +908,36 @@ const checkIfRootLevelForFlexDirection = (
     isFirstLevel(currentComponentNamePath),
     isRootLevel(currentComponentNamePath),
   );
-
-  if (linkedData && isFirstLevel(currentComponentNamePath)) {
+  if (!linkedData) {
+    console.log('1', component.name);
     return 'column';
   }
-
-  if (linkedData && isRootLevel(currentComponentNamePath)) {
+  if (
+    linkedData &&
+    component.gridColSpan === 12 &&
+    !isRootLevel(currentComponentNamePath)
+  ) {
+    console.log(
+      '2',
+      currentComponentNamePath,
+      !isRootLevel(currentComponentNamePath),
+      'column',
+    );
+    return 'column';
+  }
+  if (
+    linkedData &&
+    component.gridColSpan === 12 &&
+    isRootLevel(currentComponentNamePath)
+  ) {
+    console.log(
+      '3',
+      currentComponentNamePath,
+      isRootLevel(currentComponentNamePath),
+      'row',
+    );
     return 'row';
   }
-  return 'column';
 };
 
 const checkIfPresentationStyleIsUndefinedOrEmpty = (
