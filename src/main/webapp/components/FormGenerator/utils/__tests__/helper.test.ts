@@ -32,6 +32,7 @@ import {
   isComponentVariable,
   isFirstLevel,
   isParentGroupOptional,
+  isRootLevel,
   isSiblingComponentRequired,
 } from '../helper';
 import { FormComponent } from '../../types';
@@ -55,6 +56,17 @@ describe('helper methods', () => {
       ['someRootNameInData.someGroup.numberVar2', false],
     ])('check if %p is isFirstLevel', (arg1, arg2) => {
       const expected = isFirstLevel(arg1);
+      expect(expected).toStrictEqual(arg2);
+    });
+  });
+
+  describe('isRootLevel', () => {
+    it.each([
+      ['someRootNameInData', true],
+      ['someRootNameInData.numberVar2', false],
+      ['someRootNameInData.someGroup.numberVar2', false],
+    ])('check if %p is isRootLevel', (arg1, arg2) => {
+      const expected = isRootLevel(arg1);
       expect(expected).toStrictEqual(arg2);
     });
   });

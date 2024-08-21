@@ -32,6 +32,10 @@ export const isFirstLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.') === 1;
 };
 
+export const isRootLevel = (pathName: string) => {
+  return countStringCharOccurrences(pathName, '.') === 0;
+};
+
 export const isComponentVariable = (component: FormComponent) =>
   [
     'numberVariable',

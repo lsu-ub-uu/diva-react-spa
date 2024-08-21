@@ -47,6 +47,7 @@ import {
   isComponentSurroundingContainer,
   isComponentVariable,
   isFirstLevel,
+  isRootLevel,
 } from './utils/helper';
 import {
   Typography,
@@ -292,14 +293,15 @@ export const FormGenerator = ({
       <Box
         key={reactKey}
         id={component.name}
+        className='aaaaaaaaa'
         sx={{
           display: 'flex',
-          flexDirection: checkIfPresentationStyleOrParentIsInline(
+          flexDirection: checkIfRootLevelForFlexDirection(
+            currentComponentNamePath,
+            linkedData,
             component,
-            parentPresentationStyle,
-          )
-            ? 'row'
-            : 'column',
+          ),
+          flexWrap: 'wrap',
           alignItems: checkIfPresentationStyleOrParentIsInline(
             component,
             parentPresentationStyle,
@@ -846,6 +848,30 @@ const checkIfPresentationStyleOrParentIsInline = (
     component.presentationStyle === 'inline' ||
     parentPresentationStyle === 'inline'
   );
+};
+
+const checkIfRootLevelForFlexDirection = (
+  currentComponentNamePath: string,
+  linkedData: boolean,
+  component: FormComponent,
+) => {
+  console.log(
+    'f',
+    component.name,
+    currentComponentNamePath,
+    linkedData,
+    isFirstLevel(currentComponentNamePath),
+    isRootLevel(currentComponentNamePath),
+  );
+
+  if (linkedData && isFirstLevel(currentComponentNamePath)) {
+    return 'column';
+  }
+
+  if (linkedData && isRootLevel(currentComponentNamePath)) {
+    return 'row';
+  }
+  return 'column';
 };
 
 const checkIfPresentationStyleIsUndefinedOrEmpty = (
