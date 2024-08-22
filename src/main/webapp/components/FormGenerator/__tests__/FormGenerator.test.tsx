@@ -64,7 +64,8 @@ import {
   formDefWithOneNumberVariableModeOutput,
   formDefForCheckTextValue,
   formDefForCheckNumberValue,
-  formDefWithOneNumberVariableBeingOptionalOutput, formDefPreprintWithOnlyAuthorName,
+  formDefWithOneNumberVariableBeingOptionalOutput,
+  formDefPreprintWithOnlyAuthorName,
   formDefWithOneTextVariableBeingPassword,
 } from '../../../__mocks__/data/formDef';
 import { FormGenerator } from '../FormGenerator';
@@ -1315,9 +1316,7 @@ describe('<FormGenerator />', () => {
       });
       expect(attributeButtons).toHaveLength(2);
 
-      const textInput = screen.getByPlaceholderText(
-        'mainTitleTextVarPlaceholderText',
-      );
+      const textInput = screen.getByPlaceholderText('givenNameTextVarText');
       expect(textInput).toBeInTheDocument();
 
       const titleTypeAttribute = screen.getByRole('button', {
@@ -1797,7 +1796,6 @@ describe('<FormGenerator />', () => {
           formSchema={formDefPreprintWithOnlyAuthorName as FormSchema}
           record={givenAndFamilyName}
         />,
-
       );
 
       const givenName = screen.getByText('eeee');

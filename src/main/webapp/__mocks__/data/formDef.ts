@@ -1292,25 +1292,25 @@ export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection =
       },
       components: [
         {
-          name: 'alternativeTitle',
+          name: 'author',
           type: 'group',
           mode: 'input',
           tooltip: {
-            title: 'alternativeTitleGroupText',
-            body: 'alternativeTitleGroupDefText',
+            title: 'authorGroupText',
+            body: 'authorGroupDefText',
           },
-          label: 'alternativeTitleGroupText',
+          label: 'authorGroupText',
           showLabel: true,
           repeat: {
             minNumberOfRepeatingToShow: 1,
             repeatMin: 0,
-            repeatMax: 1,
+            repeatMax: 1.7976931348623157e308,
           },
           attributes: [
             {
               name: 'language',
               type: 'collectionVariable',
-              placeholder: 'someEmptyValueText',
+              placeholder: 'initialEmptyValueText',
               mode: 'input',
               tooltip: {
                 title: 'languageCollectionVarText',
@@ -1325,49 +1325,38 @@ export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection =
                 },
               ],
             },
+
             {
               name: 'titleType',
               type: 'collectionVariable',
-              placeholder: 'someOtherEmptyValueText',
+              placeholder: 'initialEmptyValueText',
               mode: 'input',
               tooltip: {
-                title: 'titleTypeCollectionVarText',
-                body: 'titleTypeCollectionVarDefText',
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
               },
               label: 'titleTypeCollectionVarText',
               showLabel: true,
               options: [
                 {
-                  value: 'alternativeTitle',
+                  value: 'type',
                   label: 'alternativeTitleItemText',
-                },
-                {
-                  value: 'translatedTitle',
-                  label: 'translatedTitleItemText',
-                },
-                {
-                  value: 'abbreviatedTitle',
-                  label: 'abbreviatedTitleItemText',
-                },
-                {
-                  value: 'uniformTitle',
-                  label: 'uniformTitleItemText',
                 },
               ],
             },
           ],
           components: [
             {
-              name: 'mainTitle',
+              name: 'givenName',
               type: 'textVariable',
               mode: 'input',
               inputType: 'input',
               tooltip: {
-                title: 'mainTitleTextVarText',
-                body: 'mainTitleTextVarDefText',
+                title: 'givenNameTextVarText',
+                body: 'givenNameTextVarDefText',
               },
-              label: 'mainTitleTextVarText',
-              placeholder: 'mainTitleTextVarPlaceholderText',
+              label: 'givenNameTextVarText',
+              placeholder: 'givenNameTextVarText',
               showLabel: true,
               validation: {
                 type: 'regex',
@@ -5831,7 +5820,7 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars = {
         },
         components: [
           {
-            name: 'description',
+            name: 'longitude',
             type: 'textVariable',
             mode: 'input',
             inputType: 'input',

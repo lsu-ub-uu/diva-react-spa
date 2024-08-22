@@ -18,8 +18,9 @@
  */
 
 import { useEffect, useState } from 'react';
-import { FormSchema } from '../FormGenerator/types';
+import { FormComponent, FormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
+import { CoraRecord } from '../../app/hooks';
 
 export const linksFromFormSchema = (
   formSchema: FormSchema,
@@ -27,6 +28,52 @@ export const linksFromFormSchema = (
   formSchema?.form.components
     ?.filter((c) => !['text', 'container'].includes(c.type))
     .map((c) => ({ name: c.name, label: c.label } as NavigationPanelLink));
+
+export const removeComponentsWithoutValuesFromSchema = (
+  formSchema: FormSchema,
+  record: CoraRecord,
+): FormSchema => {
+  const schema = formSchema;
+  let componentsFromSchema = formSchema.form.components;
+
+  const flattenedRecord = flattenObject(record.data);
+  const keysAsString = toShortString(flattenedRecord);
+  const lastKeyFromString = getLastKeyFromString(keysAsString);
+
+  componentsFromSchema = componentsFromSchema?.filter((component) => {
+    return [...lastKeyFromString].includes(component.name);
+  });
+  schema.form.components = componentsFromSchema;
+  return schema;
+};
+
+export const flattenObject = (obj: any, prefix = '') => {
+  return Object.keys(obj).reduce((acc: any, k) => {
+    const pre = prefix.length ? `${prefix}.` : '';
+    if (
+      typeof obj[k] === 'object' &&
+      obj[k] !== null &&
+      Object.keys(obj[k]).length > 0
+    )
+      Object.assign(acc, flattenObject(obj[k], pre + k));
+    else acc[pre + k] = obj[k];
+    return acc;
+  }, {});
+};
+
+export const toShortString = (objects: any) => {
+  const shortStrings = Object.entries(objects).map((object) => {
+    return `${object[0].split('.')[0]}.${object[0].split('.')[1]}`;
+  });
+  return [...new Set(shortStrings)];
+};
+
+export const getLastKeyFromString = (keys: string[]) => {
+  return keys.map((key: string) => {
+    const stringArray = key.split('.');
+    return stringArray[stringArray.length - 1];
+  });
+};
 
 export const useSectionScroller = () => {
   const [activeSection, setActiveSection] = useState<string>('');

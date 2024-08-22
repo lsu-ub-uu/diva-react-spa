@@ -47,6 +47,7 @@ import {
   isComponentSurroundingContainer,
   isComponentVariable,
   isFirstLevel,
+  isRootLevel,
 } from './utils/helper';
 import {
   Typography,
@@ -106,6 +107,7 @@ export const FormGenerator = ({
       aPath: string,
     ) => {
       return (aComponent.attributes ?? []).map((attribute, index) => {
+        const hasValue = checkIfComponentHasValue(getValues, attribute.name);
         return (
           <Grid
             key={attribute.name}
@@ -125,6 +127,7 @@ export const FormGenerator = ({
               options={attribute.options}
               readOnly={!!attribute.finalValue}
               displayMode={attribute.mode}
+              hasValue={hasValue}
             />
           </Grid>
         );
@@ -167,6 +170,7 @@ export const FormGenerator = ({
         currentComponentNamePath,
         createFormComponentAttributes,
         parentPresentationStyle,
+        getValues,
       );
     }
 
@@ -289,14 +293,13 @@ export const FormGenerator = ({
       <Box
         key={reactKey}
         id={component.name}
+        className='aaaaaaaaa'
         sx={{
           display: 'flex',
-          flexDirection: checkIfPresentationStyleOrParentIsInline(
-            component,
-            parentPresentationStyle,
-          )
+          flexDirection: checkIfPresentationStyleOrIsInline(component)
             ? 'row'
             : 'column',
+          flexWrap: 'wrap',
           alignItems: checkIfPresentationStyleOrParentIsInline(
             component,
             parentPresentationStyle,
@@ -424,7 +427,9 @@ export const FormGenerator = ({
       aPath: string,
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
+    getValues: UseFormGetValues<FieldValues>,
   ) => {
+    const hasValue = checkIfComponentHasValue(getValues, component.name);
     return (
       <FieldArrayComponent
         key={reactKey}
@@ -445,6 +450,7 @@ export const FormGenerator = ({
             ),
           ];
         }}
+        hasValue={hasValue}
       />
     );
   };
@@ -687,7 +693,7 @@ const createRecordLinkWithoutSearchLink = (
   const hasValue = checkIfComponentHasValue(getValues, name);
 
   return (
-    <div>
+    <React.Fragment key={`${reactKey}_${name}`}>
       {hasValue ? (
         <Grid
           key={reactKey}
@@ -695,32 +701,15 @@ const createRecordLinkWithoutSearchLink = (
           xs={12}
           sm={renderElementGridWrapper ? component.gridColSpan : 12}
         >
-          {component.mode === 'output' ? (
-            <ControlledTextField
-              multiline={component.inputType === 'textarea'}
-              label={component.label ?? ''}
-              name={name}
-              showLabel={component.showLabel}
-              placeholder={component.placeholder}
-              tooltip={component.tooltip}
-              control={control}
-              readOnly={!!component.finalValue}
-              displayMode={component.mode}
-              hasValue={hasValue}
-            />
-          ) : (
-            <ControlledLinkedRecord
-              control={control}
-              name={name}
-              recordType={component.recordLinkType ?? ''}
-              presentationRecordLinkId={
-                component.presentationRecordLinkId ?? ''
-              }
-            />
-          )}
+          <ControlledLinkedRecord
+            control={control}
+            name={name}
+            recordType={component.recordLinkType ?? ''}
+            presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+          />
         </Grid>
       ) : null}
-    </div>
+    </React.Fragment>
   );
 };
 

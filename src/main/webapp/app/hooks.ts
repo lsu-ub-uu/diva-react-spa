@@ -16,14 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useDispatch, useSelector } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import type { RootState, AppDispatch } from './store';
 import { FormSchema } from '../components/FormGenerator/types';
 
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
-export const useAppSelector = useSelector.withTypes<RootState>();
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 interface UseFormSchemaByValidationType {
   schema: FormSchema | undefined;
@@ -98,6 +98,7 @@ export interface CoraRecord {
 export const useCoraRecordByTypeAndId = (
   recordType: string,
   recordId: string | undefined,
+  presentationRecordLinkId?: string | undefined,
 ): UseCoraRecordByTypeAndId => {
   const [record, setRecord] = useState<CoraRecord>();
   const [isLoading, setIsLoading] = useState(true);
@@ -105,12 +106,13 @@ export const useCoraRecordByTypeAndId = (
 
   useEffect(() => {
     let isMounted = true;
-
+    const url =
+      presentationRecordLinkId === undefined
+        ? `/record/${recordType}/${recordId}`
+        : `/record/${recordType}/${recordId}?presentationRecordLinkId=${presentationRecordLinkId}`;
     const fetchRecord = async () => {
       try {
-        const response = await axios.get<CoraRecord>(
-          `/record/${recordType}/${recordId}`,
-        );
+        const response = await axios.get<CoraRecord>(url);
         if (isMounted) {
           setError(null);
           setRecord(response.data as CoraRecord);

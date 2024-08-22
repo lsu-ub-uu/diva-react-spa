@@ -37,6 +37,7 @@ interface FieldArrayComponentProps {
   name: string;
   component: FormComponent;
   renderCallback: (path: string) => unknown;
+  hasValue?: boolean;
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
@@ -45,7 +46,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     control: props.control,
     name: props.name,
   });
-
   const handleAppend = async () => {
     append(createDefaultValuesFromComponent(props.component, true));
   };
@@ -58,6 +58,10 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     remove(index);
   };
 
+  const checkForFieldValue = (fieldsValue: any) => {
+    return fieldsValue[0] === undefined || fieldsValue[0].value === '';
+  };
+
   function getContent() {
     return (
       <>
@@ -68,74 +72,80 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             <span style={{ color: 'red' }}>{fieldState.error?.message}</span>
           )}
         />
-        {fields.map((field, index) => (
-          <div
-            key={field.id}
-            style={{ position: 'relative', marginTop: '10px' }}
-          >
-            {!isComponentSingularAndOptional(props.component) && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  mb: 2,
-                }}
-              >
-                <div
-                  style={{
-                    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-                    width: '25%',
-                    marginRight: '5px',
-                  }}
-                />
-                <Chip
-                  label={`${t(props.component.label ?? '')} ${index + 1}`}
-                />
-                <div
-                  style={{
-                    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-                    width: '25%',
-                    marginLeft: '5px',
-                  }}
-                />
-              </Box>
-            )}
-            {props.component.mode === 'input' && (
-              <ActionButtonGroup
-                entityName={`${t(props.component.label ?? '')}`}
-                hideMoveButtons={isComponentSingularAndOptional(
-                  props.component,
-                )}
-                moveUpButtonDisabled={index === 0}
-                moveUpButtonAction={() => handleMove(index, index - 1)}
-                moveDownButtonDisabled={index === fields.length - 1}
-                moveDownButtonAction={() => handleMove(index, index + 1)}
-                deleteButtonDisabled={
-                  fields.length <= (props.component.repeat?.repeatMin ?? 1)
-                }
-                deleteButtonAction={() => handleRemove(index)}
-                entityType={props.component.type}
-              />
-            )}
-            <Grid
-              key={`${field.id}_${index}`}
-              container
-              item
-              xs={12}
-              spacing={2}
-              justifyContent='flex-start'
-              alignItems='center'
-              direction='row'
+        {fields.map((field, index) => {
+          return (
+            <div
+              key={`${field.id}_${index}_a`}
+              style={{ position: 'relative', marginTop: '10px' }}
             >
-              {
-                props.renderCallback(
-                  `${props.name}[${index}]` as const,
-                ) as JSX.Element
-              }
-            </Grid>
-          </div>
-        ))}
+              {!isComponentSingularAndOptional(props.component) && (
+                <Box
+                  key={`${field.id}_${index}_b`}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mb: 2,
+                  }}
+                >
+                  <div
+                    key={`${field.id}_${index}_c`}
+                    style={{
+                      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+                      width: '25%',
+                      marginRight: '5px',
+                    }}
+                  />
+                  <Chip
+                    key={`${field.id}_${index}_d`}
+                    label={`${t(props.component.label ?? '')} ${index + 1}`}
+                  />
+                  <div
+                    key={`${field.id}_${index}_e`}
+                    style={{
+                      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+                      width: '25%',
+                      marginLeft: '5px',
+                    }}
+                  />
+                </Box>
+              )}
+              {props.component.mode === 'input' && (
+                <ActionButtonGroup
+                  entityName={`${t(props.component.label ?? '')}`}
+                  hideMoveButtons={isComponentSingularAndOptional(
+                    props.component,
+                  )}
+                  moveUpButtonDisabled={index === 0}
+                  moveUpButtonAction={() => handleMove(index, index - 1)}
+                  moveDownButtonDisabled={index === fields.length - 1}
+                  moveDownButtonAction={() => handleMove(index, index + 1)}
+                  deleteButtonDisabled={
+                    fields.length <= (props.component.repeat?.repeatMin ?? 1)
+                  }
+                  deleteButtonAction={() => handleRemove(index)}
+                  entityType={props.component.type}
+                  key={`${field.id}_${index}_f`}
+                />
+              )}
+              <Grid
+                container
+                item
+                xs={12}
+                spacing={2}
+                justifyContent='flex-start'
+                alignItems='center'
+                direction='row'
+              >
+                {
+                  props.renderCallback(
+                    `${props.name}[${index}]` as const,
+                  ) as JSX.Element
+                }
+              </Grid>
+            </div>
+          );
+        })}
         {props.component.mode === 'input' &&
           fields.length < (props.component.repeat?.repeatMax ?? 1) && (
             <Button
@@ -155,60 +165,66 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       </>
     );
   }
-  return isFirstLevel(props.name) ? (
-    <span
-      key={props.name}
-      className='anchorLink'
-      id={`anchor_${props.component.name}`}
-    >
-      <Box sx={{ mb: 2 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          {props.component.showLabel === true ? (
-            <Typography
-              text={props.component?.label ?? ''}
-              variant={headlineLevelToTypographyVariant(
-                props.component.headlineLevel,
-              )}
-            />
-          ) : null}
-          <Tooltip
-            title={t(props.component.tooltip?.title as string)}
-            body={t(props.component.tooltip?.body as string)}
+
+  function renderFirstLevel() {
+    return (
+      <span
+        key={props.name}
+        className='anchorLink'
+        id={`anchor_${props.component.name}`}
+      >
+        <Box sx={{ mb: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
           >
-            <IconButton
-              disableRipple
-              color='info'
-              aria-label='info'
+            {props.component.showLabel === true ? (
+              <Typography
+                text={props.component?.label ?? ''}
+                variant={headlineLevelToTypographyVariant(
+                  props.component.headlineLevel,
+                )}
+              />
+            ) : null}
+            <Tooltip
+              title={t(props.component.tooltip?.title as string)}
+              body={t(props.component.tooltip?.body as string)}
             >
-              <InfoIcon />
-            </IconButton>
-          </Tooltip>
+              <IconButton
+                disableRipple
+                color='info'
+                aria-label='info'
+              >
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          {getContent()}
         </Box>
-        {getContent()}
-      </Box>
-    </span>
-  ) : (
-    <Grid
-      key={props.name}
-      item
-      xs={12}
-      sm={props.component.gridColSpan}
-      id='temp2'
-      flexDirection='column'
-      style={
-        {
-          // flexBasis:
-          //   props.component.presentationStyle === 'inline' ? 'auto' : '100%',
-        }
-      }
-    >
-      <React.Fragment key={`${props.name}_grid`}>{getContent()}</React.Fragment>
-    </Grid>
-  );
+      </span>
+    );
+  }
+
+  function renderOtherLevels() {
+    return (!checkForFieldValue(fields) && props.component.mode === 'output') ||
+      props.component.mode === 'input' ? (
+      <Grid
+        key={props.name}
+        item
+        xs={12}
+        sm={props.component.gridColSpan}
+        id={`${props.name}_id`}
+        flexDirection='column'
+      >
+        <React.Fragment key={`${props.name}_grid`}>
+          {getContent()}
+        </React.Fragment>
+      </Grid>
+    ) : null;
+  }
+
+  return isFirstLevel(props.name) ? renderFirstLevel() : renderOtherLevels();
 };
