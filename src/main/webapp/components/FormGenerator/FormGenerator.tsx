@@ -864,3 +864,10 @@ const checkIfPresentationStyleOrIsInline = (component: FormComponent) => {
 const checkIfComponentContainsSearchId = (component: FormComponent) => {
   return component.search !== undefined;
 };
+
+const checkIfStylingApplies = (
+  linkedData: boolean,
+  component: FormComponent,
+) => {
+  return true;
+};
