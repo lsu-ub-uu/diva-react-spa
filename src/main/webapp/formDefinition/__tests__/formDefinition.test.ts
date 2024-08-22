@@ -400,9 +400,7 @@ describe('formDefinition', () => {
       id,
       metadataId: `${id}OutputGroup`,
       presentationViewId: `${id}OutputPGroup`,
-      listPresentationViewId: `${id}ListPGroup`,
-      menuPresentationViewId: `${id}MenuPGroup`,
-      autocompletePresentationView: `${id}AutocompletePGroup`
+      listPresentationViewId: `${id}ListPGroup`
     };
 
     recordTypePool.set(metadata.id, metadata);
