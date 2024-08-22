@@ -78,7 +78,6 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
       const metadataGroup = dependencies.metadataPool.get(
         presentationGroup.presentationOf
       ) as BFFMetadataGroup;
-
       transformedRecord.presentation = createLinkedRecordDefinition(
         dependencies,
         metadataGroup,

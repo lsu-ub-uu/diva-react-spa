@@ -118,7 +118,8 @@ import {
   createLinkedRecordDefinition,
   findMetadataChildReferenceByNameInDataAndAttributes,
   firstAttributesExistsInSecond,
-  getAttributesByAttributeReferences
+  getAttributesByAttributeReferences,
+  hasLinkedPresentation
 } from '../formDefinition';
 import { Dependencies } from '../formDefinitionsDep';
 
@@ -137,7 +138,6 @@ describe('formDefinition', () => {
   const FORM_MODE_NEW = 'create';
   const FORM_MODE_EDIT = 'update';
   const FORM_MODE_VIEW = 'view'; // used to present the record
-  // TODO list_view, menu_view, autocomplete_view
 
   let dependencies: Dependencies;
 
@@ -400,9 +400,7 @@ describe('formDefinition', () => {
       id,
       metadataId: `${id}OutputGroup`,
       presentationViewId: `${id}OutputPGroup`,
-      listPresentationViewId: `${id}ListPGroup`,
-      menuPresentationViewId: `${id}MenuPGroup`,
-      autocompletePresentationView: `${id}AutocompletePGroup`
+      listPresentationViewId: `${id}ListPGroup`
     };
 
     recordTypePool.set(metadata.id, metadata);
@@ -2925,6 +2923,34 @@ describe('formDefinition', () => {
         };
         expect(actual).toStrictEqual(expected);
       });
+    });
+  });
+  describe('hasLinkedPresentation', () => {
+    it('return true for link presentation with presentation', () => {
+      const presentation = {
+        id: 'nationalSubjectCategoryPLink',
+        type: 'pRecordLink',
+        presentationOf: 'nationalSubjectCategoryLink',
+        mode: 'output',
+        linkedRecordPresentations: [
+          {
+            presentedRecordType: 'nationalSubjectCategory',
+            presentationId: 'nationalSubjectCategoryWhenLinkedOutputPGroup'
+          }
+        ]
+      };
+      const actual = hasLinkedPresentation(presentation as BFFPresentationRecordLink);
+      expect(actual).toBeTruthy();
+    });
+    it('return false for link presentation with presentation', () => {
+      const presentation = {
+        id: 'nationalSubjectCategoryPLink',
+        type: 'pRecordLink',
+        presentationOf: 'nationalSubjectCategoryLink',
+        mode: 'output'
+      };
+      const actual = hasLinkedPresentation(presentation as BFFPresentationRecordLink);
+      expect(actual).toBeFalsy();
     });
   });
 

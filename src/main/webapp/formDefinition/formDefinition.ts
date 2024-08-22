@@ -574,10 +574,8 @@ const createDetailedPresentationBasedOnPresentationType = (
   let presentationRecordLinkId;
   let search;
   let inputFormat;
-
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
-
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
 
@@ -627,6 +625,7 @@ const createDetailedPresentationBasedOnPresentationType = (
       search = presentationRecordLink.search;
     }
     presentationRecordLinkId = presentation.id;
+
     attributes = checkForAttributes(recordLink, metadataPool, options, presentation);
   }
 
@@ -840,4 +839,11 @@ const checkIfSpecifiedHeadlineLevelExist = (presentation: BFFPresentationGroup) 
 const checkIfShowHeadlineExist = (presentation: BFFPresentationGroup) => {
   // eslint-disable-next-line no-prototype-builtins
   return Object.hasOwn(presentation, 'showHeadline');
+};
+
+export const hasLinkedPresentation = (rLPresentation: BFFPresentationRecordLink): boolean => {
+  if (rLPresentation.linkedRecordPresentations === undefined) {
+    return false;
+  }
+  return rLPresentation.linkedRecordPresentations.length > 0;
 };

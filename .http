@@ -63,6 +63,11 @@ GET http://localhost:8080/api/divaOutputs
 Content-Type: application/json
 Authtoken: a9afefcd-f4f1-4037-bc8c-afb758331b89
 
+
+###
+GET http://localhost:8080/api/record/nationalSubjectCategory/10101?presentationRecordLinkId=nationalSubjectCategoryOutputPLink
+Authtoken: 1f9714a7-d50d-4a1b-9d0c-5c0fcbf56c49
+
 ###
 POST http://localhost:8080/api/record/manuscript
 Content-Type: application/json

@@ -126,6 +126,8 @@ interface TransformRecordInterface {
   userRights: Array<'read' | 'read_incoming_links' | 'update' | 'index'>;
   data: unknown;
   presentation?: unknown;
+  listPresentation?: unknown;
+  autoCompletePresentation?: unknown;
 }
 
 interface TransformRecordDataInterface {

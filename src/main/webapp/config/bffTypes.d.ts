@@ -34,8 +34,6 @@ export interface BFFRecordType extends BFFBase {
   metadataId: string;
   presentationViewId: string;
   listPresentationViewId: string;
-  menuPresentationViewId: string;
-  autocompletePresentationView?: string;
 }
 
 export abstract interface BFFMetadata extends BFFBase {
@@ -106,7 +104,6 @@ export interface BFFMetadataChildReference {
 }
 
 export interface BFFPresentation extends BFFBase {
-  // Types below are a little bit weird, metadata definitions needs to checked up on (attributes)
   type:
     | 'pGroup'
     | 'pVar'
