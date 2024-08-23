@@ -108,7 +108,8 @@ export const FormGenerator = ({
     ) => {
       return (aComponent.attributes ?? []).map((attribute, index) => {
         const hasValue = checkIfComponentHasValue(getValues, attribute.name);
-        return (
+        const attributesToShow = checkIfAttributesToShowIsAValue(component);
+        return attributesToShow === 'all' ? (
           <Grid
             key={attribute.name}
             item
@@ -130,7 +131,7 @@ export const FormGenerator = ({
               hasValue={hasValue}
             />
           </Grid>
-        );
+        ) : null;
       });
     };
 
@@ -231,7 +232,7 @@ export const FormGenerator = ({
     createFormComponentAttributes: (
       aComponent: FormComponent,
       aPath: string,
-    ) => JSX.Element[],
+    ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
   ) => {
     return isComponentFirstLevelAndNOTLinkedData(
@@ -319,17 +320,14 @@ export const FormGenerator = ({
         }}
       >
         {component?.showLabel && (
-          <>
-            {console.log('here', { component })}
-            <span style={{ width: '100%' }}>
-              <Typography
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
-            </span>
-          </>
+          <span style={{ width: '100%' }}>
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
+          </span>
         )}
         {createFormComponentAttributes(component, currentComponentNamePath)}
         {component.components &&
@@ -351,7 +349,7 @@ export const FormGenerator = ({
     createFormComponentAttributes: (
       aComponent: FormComponent,
       aPath: string,
-    ) => JSX.Element[],
+    ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
   ) => {
     return isFirstLevel(currentComponentNamePath) ? (
@@ -436,7 +434,7 @@ export const FormGenerator = ({
     createFormComponentAttributes: (
       aComponent: FormComponent,
       aPath: string,
-    ) => JSX.Element[],
+    ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
     getValues: UseFormGetValues<FieldValues>,
   ) => {
@@ -866,6 +864,19 @@ const checkIfPresentationStyleIsUndefinedOrEmpty = (
     component.presentationStyle === undefined ||
     component.presentationStyle === ''
   );
+};
+
+const checkIfAttributesToShowIsAValue = (component: FormComponent) => {
+  if (
+    component.attributesToShow === 'all' ||
+    component.attributesToShow === undefined
+  ) {
+    return 'all';
+  }
+  if (component.attributesToShow === 'selectable') {
+    return 'selectable';
+  }
+  return 'none';
 };
 
 const checkIfPresentationStyleOrIsInline = (component: FormComponent) => {
