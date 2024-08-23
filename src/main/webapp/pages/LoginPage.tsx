@@ -62,6 +62,9 @@ export const LoginPage = () => {
     }
     if (authState.userSession !== null && formIsDiry) {
       notification(`Loggin success`, 'success');
+      if (window.history.length === 1) {
+        navigate('/');
+      }
       navigate(-1);
     }
   }, [authState]);
