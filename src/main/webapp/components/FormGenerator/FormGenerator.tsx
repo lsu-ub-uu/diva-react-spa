@@ -296,7 +296,11 @@ export const FormGenerator = ({
         className='aaaaaaaaa'
         sx={{
           display: 'flex',
-          flexDirection: checkIfPresentationStyleOrIsInline(component)
+          flexDirection: checkIfStylingApplies(
+            component,
+            linkedData,
+            currentComponentNamePath,
+          )
             ? 'row'
             : 'column',
           flexWrap: 'wrap',
@@ -315,10 +319,17 @@ export const FormGenerator = ({
         }}
       >
         {component?.showLabel && (
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
+          <>
+            {console.log('here', { component })}
+            <span style={{ width: '100%' }}>
+              <Typography
+                text={component?.label ?? ''}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
+            </span>
+          </>
         )}
         {createFormComponentAttributes(component, currentComponentNamePath)}
         {component.components &&
@@ -866,8 +877,14 @@ const checkIfComponentContainsSearchId = (component: FormComponent) => {
 };
 
 const checkIfStylingApplies = (
-  linkedData: boolean,
   component: FormComponent,
+  linkedData: boolean,
+  currentComponentNamePath: string,
 ) => {
-  return true;
+  return (
+    checkIfPresentationStyleOrIsInline(component) ||
+    (linkedData &&
+      checkIfPresentationStyleIsUndefinedOrEmpty(component) &&
+      isRootLevel(currentComponentNamePath))
+  );
 };
