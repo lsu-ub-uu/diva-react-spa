@@ -1280,6 +1280,67 @@ describe('FormGenerator Utils', () => {
         );
         expect(expectedData).toStrictEqual(actualData);
       });
+
+      it('merges one target with a larger overlay', () => {
+        const expectedData = {
+          nationalSubjectCategory: {
+            subject: [
+              {
+                value: 'Algebra och logik',
+                _language: 'swe',
+              },
+              {
+                value: 'Algebra and Logic',
+                _language: 'eng',
+              },
+            ],
+            code: {
+              value: '10103',
+            },
+            parent: [
+              {
+                value: '',
+              },
+            ],
+          },
+        };
+        const actualData = mergeObjects(
+          {
+            nationalSubjectCategory: {
+              subject: {
+                value: '',
+                _language: 'eng',
+              },
+              code: {
+                value: '',
+              },
+              parent: [
+                {
+                  value: '',
+                },
+              ],
+            },
+          },
+          {
+            nationalSubjectCategory: {
+              subject: [
+                {
+                  value: 'Algebra och logik',
+                  _language: 'swe',
+                },
+                {
+                  value: 'Algebra and Logic',
+                  _language: 'eng',
+                },
+              ],
+              code: {
+                value: '10103',
+              },
+            },
+          },
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
       it('merges one value', () => {
         const expectedData = {
           someRootNameInData: 'testValue',
@@ -1341,6 +1402,21 @@ describe('FormGenerator Utils', () => {
             {
               value: 'override2',
             },
+          ],
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+
+      it('merges array with two object 2', () => {
+        const expectedData = [
+          { value: 'Algebra och logik', _language: 'swe' },
+          { value: 'Algebra and Logic', _language: 'eng' },
+        ];
+        const actualData = mergeArrays(
+          [{ value: '', _language: 'eng' }],
+          [
+            { value: 'Algebra och logik', _language: 'swe' },
+            { value: 'Algebra and Logic', _language: 'eng' },
           ],
         );
         expect(expectedData).toStrictEqual(actualData);

@@ -618,6 +618,7 @@ const createTextOrNumberVariable = (
   parentPresentationStyle: string | undefined,
   getValues: UseFormGetValues<FieldValues>,
 ) => {
+  console.log('x', name, component, getValues(name));
   const hasValue = checkIfComponentHasValue(getValues, name);
 
   return (
@@ -633,6 +634,7 @@ const createTextOrNumberVariable = (
             : '100%',
       }}
     >
+      {console.log(name)}
       <ControlledTextField
         multiline={component.inputType === 'textarea'}
         label={component.label ?? ''}

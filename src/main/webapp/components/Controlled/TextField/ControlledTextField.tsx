@@ -46,6 +46,8 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
     props.hasValue === true && displayMode === 'output';
   const showLabelAndIsInput =
     props.showLabel === true && displayMode === 'input';
+  console.log('fv', props.control?._formValues)
+  console.log(props.name, hasValueAndIsOutput, props.hasValue)
   return (
     <Controller
       control={props.control}
@@ -130,6 +132,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 <>
                   {props.hasValue === true ? (
                     <>
+                      {console.log('hv', field.value)}
                       <span>{field.value}</span>
                       <input
                         type='hidden'

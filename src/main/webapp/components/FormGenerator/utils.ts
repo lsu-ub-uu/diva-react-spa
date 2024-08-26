@@ -132,8 +132,11 @@ export const mergeObjects = (
   target: RecordData,
   overlay: RecordData,
 ): RecordData => {
+  console.log('t', target, 'o', overlay);
   Object.entries(overlay).forEach(([key]) => {
+    console.log('here');
     if (Object.hasOwn(overlay, key)) {
+      console.log('here2');
       if (
         typeof overlay[key] === 'object' &&
         overlay[key] !== null &&
@@ -143,6 +146,13 @@ export const mergeObjects = (
         target[key] = mergeObjects(target[key] || {}, overlay[key]);
       } else if (Array.isArray(overlay[key])) {
         // Handle arrays
+        console.log('here3', target[key]);
+        console.log('here4', overlay[key]);
+        if (!Array.isArray(target[key])) {
+          console.log('5', Array.isArray(target[key]));
+          const temp = [target[key]];
+          target[key] = mergeArrays(temp || [], overlay[key]);
+        }
         target[key] = mergeArrays(target[key] || [], overlay[key]);
       } else {
         // Assign non-object values directly
@@ -154,6 +164,7 @@ export const mergeObjects = (
 };
 
 export const mergeArrays = (target: any[], overlay: any[]): any[] => {
+  // console.log('t', target, 'o', overlay)
   const result = [...target];
 
   overlay.forEach((item, index) => {
