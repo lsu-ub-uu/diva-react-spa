@@ -752,6 +752,40 @@ describe('FormGenerator Utils', () => {
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });
+
+      it('should take a formDef with linked data being added', () => {
+        const expectedDefaultValues = {
+          nationalSubjectCategory: {
+            subject: [
+              {
+                value: 'Matematisk analys',
+                _language: 'swe',
+              },
+              {
+                value: 'Mathematical Analysis',
+                _language: 'eng',
+              },
+            ],
+            code: {
+              value: '10101',
+            },
+          },
+        };
+
+        const existingRecordData = {
+          someRootNameInData: {
+            bookTitle: {
+              value: 'someValueFromServerThatWillNeverBeSavedEverAgain',
+            },
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithFinalValues as FormSchema,
+          existingRecordData,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
   });
 

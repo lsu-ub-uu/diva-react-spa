@@ -102,6 +102,11 @@ export const FormGenerator = ({
         : `${path}.${component.name}`;
     }
 
+    // console.log(
+    //   'gFC4',
+    //   component.name,
+    //   isLinkedDataRepeating(props.record as CoraRecord, component, linkedData),
+    // );
     const createFormComponentAttributes = (
       aComponent: FormComponent,
       aPath: string,
@@ -174,6 +179,33 @@ export const FormGenerator = ({
         getValues,
       );
     }
+
+    // if (
+    //   isLinkedDataRepeating(props.record as CoraRecord, component, linkedData)
+    // ) {
+    //   const currentComponents = currentComponentsFromRecord(
+    //     props.record,
+    //     component,
+    //     linkedData,
+    //   );
+    //   currentComponents.map((linkedComponent) => {
+    //     console.log('lC', linkedComponent, component);
+    //     return (
+    //       <React.Fragment key={reactKey}>
+    //         {createFormComponentAttributes(component, currentComponentNamePath)}
+    //         {renderLeafComponent(
+    //           component,
+    //           reactKey,
+    //           control,
+    //           `${currentComponentNamePath}.value`,
+    //           true,
+    //           getValues,
+    //           parentPresentationStyle,
+    //         )}
+    //       </React.Fragment>
+    //     );
+    //   });
+    // }
 
     return (
       <React.Fragment key={reactKey}>
@@ -618,7 +650,6 @@ const createTextOrNumberVariable = (
   parentPresentationStyle: string | undefined,
   getValues: UseFormGetValues<FieldValues>,
 ) => {
-  console.log('x', name, component, getValues(name));
   const hasValue = checkIfComponentHasValue(getValues, name);
 
   return (
@@ -634,7 +665,6 @@ const createTextOrNumberVariable = (
             : '100%',
       }}
     >
-      {console.log(name)}
       <ControlledTextField
         multiline={component.inputType === 'textarea'}
         label={component.label ?? ''}
@@ -901,3 +931,56 @@ const checkIfStylingApplies = (
       isRootLevel(currentComponentNamePath))
   );
 };
+
+// export const isLinkedDataRepeating = (
+//   record: CoraRecord | undefined,
+//   linkedComponent: FormComponent,
+//   isLinkedData: boolean,
+// ) => {
+//   if (record === undefined) {
+//     return false;
+//   }
+//   // @ts-ignore
+//   const currentGroup: unknown = Object.entries(record.data)[0][1];
+//   // @ts-ignore
+//   const currentVariable = currentGroup[linkedComponent.name];
+//   return (
+//     Array.isArray(currentVariable) &&
+//     currentVariable.length >= 2 &&
+//     isLinkedData
+//   );
+// };
+//
+// export const nameOfComponentFromRecord = (
+//   record: CoraRecord | undefined,
+//   linkedComponent: FormComponent,
+//   isLinkedData: boolean,
+// ) => {
+//   if (record === undefined) {
+//     return false;
+//   }
+//   if (!isLinkedData) {
+//     return false;
+//   }
+//   // @ts-ignore
+//   const currentGroup: unknown = Object.entries(record.data)[0][1];
+//   // @ts-ignore
+//   return Object.keys(currentGroup).filter(
+//     (variable) => variable === linkedComponent.name,
+//   )[0];
+// };
+// export const currentComponentsFromRecord = (
+//   record: CoraRecord | undefined,
+//   linkedComponent: FormComponent,
+//   isLinkedData: boolean,
+// ) => {
+//   if (record === undefined) {
+//     return [];
+//   }
+//   if (!isLinkedData) {
+//     return [];
+//   }
+//   // @ts-ignore
+//   console.log(Object.entries(record.data)[0][1][linkedComponent.name]);
+//   return Object.entries(record.data)[0][1][linkedComponent.name];
+// };
