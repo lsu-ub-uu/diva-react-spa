@@ -61,6 +61,7 @@ export const CreateRecordPage = () => {
   }, [isLoading, setBackdrop, isSubmitting]);
 
   const handleSubmit = async (values: FieldValues) => {
+    console.log('values', values);
     try {
       setIsSubmitting(true);
       const response = await axios.post(

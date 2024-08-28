@@ -121,7 +121,6 @@ export const createDefaultValuesFromFormSchema = (
   formSchema: FormSchema,
   existingRecordData: RecordData | undefined = undefined,
 ) => {
-  console.log('ee', formSchema, existingRecordData);
   let defaultValues = createDefaultValuesFromComponent(formSchema.form);
   if (existingRecordData !== undefined) {
     defaultValues = mergeObjects(defaultValues, existingRecordData);
@@ -175,4 +174,15 @@ export const mergeArrays = (target: any[], overlay: any[]): any[] => {
   });
 
   return result;
+};
+
+export const addAttributesToName = (component: FormComponent, name: string) => {
+  const temp: any[] = [];
+  if (component.attributes === undefined) {
+    return component.name;
+  }
+  (component.attributes ?? []).forEach((attribute, index) => {
+    temp.push(`${attribute.name}_${attribute.finalValue}`);
+  });
+  return `${name}_${temp.join('_')}`;
 };

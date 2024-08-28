@@ -38,6 +38,7 @@ interface FieldArrayComponentProps {
   component: FormComponent;
   renderCallback: (path: string) => unknown;
   hasValue?: boolean;
+  linkedPresentation?: boolean;
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
@@ -46,6 +47,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     control: props.control,
     name: props.name,
   });
+
+  const isLinkedPresentation = props.linkedPresentation;
+
   const handleAppend = async () => {
     append(createDefaultValuesFromComponent(props.component, true));
   };
@@ -78,38 +82,40 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               key={`${field.id}_${index}_a`}
               style={{ position: 'relative', marginTop: '10px' }}
             >
-              {!isComponentSingularAndOptional(props.component) && (
-                <Box
-                  key={`${field.id}_${index}_b`}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    mb: 2,
-                  }}
-                >
-                  <div
-                    key={`${field.id}_${index}_c`}
-                    style={{
-                      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-                      width: '25%',
-                      marginRight: '5px',
-                    }}
-                  />
-                  <Chip
-                    key={`${field.id}_${index}_d`}
-                    label={`${t(props.component.label ?? '')} ${index + 1}`}
-                  />
-                  <div
-                    key={`${field.id}_${index}_e`}
-                    style={{
-                      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-                      width: '25%',
-                      marginLeft: '5px',
-                    }}
-                  />
-                </Box>
-              )}
+              {!isComponentSingularAndOptional(props.component) ||
+                (!isComponentSingularAndOptional(props.component) &&
+                  !isLinkedPresentation && (
+                    <Box
+                      key={`${field.id}_${index}_b`}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 2,
+                      }}
+                    >
+                      <div
+                        key={`${field.id}_${index}_c`}
+                        style={{
+                          borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+                          width: '25%',
+                          marginRight: '5px',
+                        }}
+                      />
+                      <Chip
+                        key={`${field.id}_${index}_d`}
+                        label={`${t(props.component.label ?? '')} ${index + 1}`}
+                      />
+                      <div
+                        key={`${field.id}_${index}_e`}
+                        style={{
+                          borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+                          width: '25%',
+                          marginLeft: '5px',
+                        }}
+                      />
+                    </Box>
+                  ))}
               {props.component.mode === 'input' && (
                 <ActionButtonGroup
                   entityName={`${t(props.component.label ?? '')}`}
@@ -224,6 +230,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         </React.Fragment>
       </Grid>
     ) : null;
+  }
+  if (isLinkedPresentation) {
+    return renderOtherLevels();
   }
 
   return isFirstLevel(props.name) ? renderFirstLevel() : renderOtherLevels();

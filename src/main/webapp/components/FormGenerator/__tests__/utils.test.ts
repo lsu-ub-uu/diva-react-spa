@@ -19,6 +19,7 @@
 
 import * as yup from 'yup';
 import {
+  addAttributesToName,
   createDefaultValue,
   createDefaultValuesFromComponent,
   createDefaultValuesFromComponents,
@@ -769,19 +770,217 @@ describe('FormGenerator Utils', () => {
             code: {
               value: '10101',
             },
+            parent: [
+              {
+                value: '',
+              },
+            ],
+            recordInfo: {},
           },
         };
 
         const existingRecordData = {
-          someRootNameInData: {
-            bookTitle: {
-              value: 'someValueFromServerThatWillNeverBeSavedEverAgain',
+          nationalSubjectCategory: {
+            subject: [
+              {
+                value: 'Matematisk analys',
+                _language: 'swe',
+              },
+              {
+                value: 'Mathematical Analysis',
+                _language: 'eng',
+              },
+            ],
+            code: {
+              value: '10101',
             },
           },
         };
-
+        const formDef = {
+          form: {
+            name: 'nationalSubjectCategory',
+            type: 'group',
+            mode: 'output',
+            tooltip: {
+              title: 'nationalSubjectCategoryRecordTypeGroupText',
+              body: 'nationalSubjectCategoryRecordTypeGroupDefText',
+            },
+            label: 'nationalSubjectCategoryRecordTypeGroupText',
+            showLabel: true,
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'recordInfo',
+                type: 'group',
+                mode: 'output',
+                tooltip: {
+                  title: 'recordInfoNationalSubjectCategoryRecordTypeGroupText',
+                  body: 'recordInfoNationalSubjectCategoryRecordTypeGroupDefText',
+                },
+                label: 'recordInfoNationalSubjectCategoryRecordTypeGroupText',
+                headlineLevel: 'h2',
+                showLabel: true,
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                presentationStyle: '',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'subject',
+                type: 'textVariable',
+                mode: 'output',
+                inputType: 'input',
+                tooltip: {
+                  title: 'subjectSweTextVarText',
+                  body: 'subjectSweTextVarDefText',
+                },
+                label: 'subjectSweTextVarText',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                attributes: [
+                  {
+                    name: 'language',
+                    type: 'collectionVariable',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'output',
+                    tooltip: {
+                      title: 'languageCollectionVarText',
+                      body: 'languageCollectionVarDefText',
+                    },
+                    label: 'languageCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'eng',
+                        label: 'engLangItemText',
+                      },
+                      {
+                        value: 'swe',
+                        label: 'sweLangItemText',
+                      },
+                    ],
+                    finalValue: 'swe',
+                  },
+                ],
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'subject',
+                type: 'textVariable',
+                mode: 'output',
+                inputType: 'input',
+                tooltip: {
+                  title: 'subjectEngTextVarText',
+                  body: 'subjectEngTextVarDefText',
+                },
+                label: 'subjectEngTextVarText',
+                showLabel: true,
+                attributesToShow: 'all',
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                attributes: [
+                  {
+                    name: 'language',
+                    type: 'collectionVariable',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'output',
+                    tooltip: {
+                      title: 'languageCollectionVarText',
+                      body: 'languageCollectionVarDefText',
+                    },
+                    label: 'languageCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'eng',
+                        label: 'engLangItemText',
+                      },
+                      {
+                        value: 'swe',
+                        label: 'sweLangItemText',
+                      },
+                    ],
+                    finalValue: 'eng',
+                  },
+                ],
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'code',
+                type: 'textVariable',
+                mode: 'output',
+                inputType: 'input',
+                tooltip: {
+                  title: 'codeTextVarText',
+                  body: 'codeTextVarDefText',
+                },
+                label: 'codeTextVarText',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '^[0-9]{1,5}$',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'parent',
+                type: 'recordLink',
+                mode: 'output',
+                tooltip: {
+                  title: 'parentNationalSubjectCategoryLinkText',
+                  body: 'parentNationalSubjectCategoryLinkDefText',
+                },
+                label: 'parentNationalSubjectCategoryLinkText',
+                showLabel: true,
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+                recordLinkType: 'nationalSubjectCategory',
+                presentationRecordLinkId:
+                  'parentNationalSubjectCategoryOutputPLink',
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        };
         const actualDefaultValues = createDefaultValuesFromFormSchema(
-          formDefRealDemoWithFinalValues as FormSchema,
+          formDef as FormSchema,
           existingRecordData,
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
@@ -1455,6 +1654,175 @@ describe('FormGenerator Utils', () => {
         );
         expect(expectedData).toStrictEqual(actualData);
       });
+    });
+  });
+
+  describe('addAttributesToName', () => {
+    it('addAttributesToName adds attributes to name of variable', () => {
+      const actual = addAttributesToName(
+        {
+          name: 'subject',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'subjectEngTextVarText',
+            body: 'subjectEngTextVarDefText',
+          },
+          label: 'subjectEngTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'eng',
+                  label: 'engLangItemText',
+                },
+                {
+                  value: 'swe',
+                  label: 'sweLangItemText',
+                },
+              ],
+              finalValue: 'eng',
+            },
+          ],
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+        'nationalSubjectCategory.subject.value',
+      );
+      expect(actual).toEqual(
+        'nationalSubjectCategory.subject.value_language_eng',
+      );
+    });
+
+    it('addAttributesToName adds multiple attributes to name of variable', () => {
+      const actual = addAttributesToName(
+        {
+          name: 'subject',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'subjectEngTextVarText',
+            body: 'subjectEngTextVarDefText',
+          },
+          label: 'subjectEngTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'eng',
+                  label: 'engLangItemText',
+                },
+                {
+                  value: 'swe',
+                  label: 'sweLangItemText',
+                },
+              ],
+              finalValue: 'eng',
+            },
+            {
+              name: 'language2',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'eng',
+                  label: 'engLangItemText',
+                },
+                {
+                  value: 'swe',
+                  label: 'sweLangItemText',
+                },
+              ],
+              finalValue: 'swe',
+            },
+          ],
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+        'nationalSubjectCategory.subject.value',
+      );
+      expect(actual).toEqual(
+        'nationalSubjectCategory.subject.value_language_eng_language2_swe',
+      );
+    });
+
+    it('addAttributesToName returns name if no attributes', () => {
+      const actual = addAttributesToName(
+        {
+          name: 'subject',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'subjectEngTextVarText',
+            body: 'subjectEngTextVarDefText',
+          },
+          label: 'subjectEngTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+        'nationalSubjectCategory.subject.value',
+      );
+      expect(actual).toEqual('subject');
     });
   });
 });
