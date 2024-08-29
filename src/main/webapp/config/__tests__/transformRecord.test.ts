@@ -19,21 +19,19 @@
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
 import recordManuscriptWithoutCreatedAndUpdates from '../../__mocks__/coraRecordManuscriptPublicWithoutSensitiveData.json';
-import coraNationalSubjectCategories from '../../__mocks__/coraNationalSubjectCategories.json';
 import {
   isDataAtomic,
   isDataGroup,
   isRecordLink,
+  isRepeating,
   transformObjectAttributes,
   transformRecord,
-  transformRecords,
   traverseDataGroup
 } from '../transformRecord';
 import {
   Attributes,
   DataAtomic,
   DataGroup,
-  DataListWrapper,
   RecordLink,
   RecordWrapper
 } from '../../utils/cora-data/CoraData';
@@ -612,12 +610,98 @@ describe('transformRecord', () => {
   });
 
   describe('transformRecords', () => {
-    it.skip('should be able to transform a DataListWrapper to something', () => {
-      const expected = transformRecords(
-        dependencies,
-        coraNationalSubjectCategories as DataListWrapper
-      );
-      console.log(JSON.stringify(expected, null, 4));
+    it('isDataGroup return true', () => {
+      const actual = isDataGroup({
+        name: 'isGroup',
+        children: []
+      });
+
+      expect(actual).toBe(true);
+    });
+
+    it('isDataGroup return false', () => {
+      const actual = isDataGroup({
+        name: 'isAtomic',
+        value: 'notAGroup'
+      });
+
+      expect(actual).toBe(false);
+    });
+
+    it('isDataAtomic return true', () => {
+      const actual = isDataAtomic({
+        name: 'isAtomic',
+        value: 'notAGroup'
+      });
+      expect(actual).toBe(true);
+    });
+
+    it('isDataAtomic return false', () => {
+      const actual = isDataAtomic({
+        name: 'isGroup',
+        children: []
+      });
+      expect(actual).toBe(false);
+    });
+
+    it('isRecordLink return false for not DataGroup', () => {
+      const actual = isRecordLink({
+        name: 'isAtomic',
+        value: 'notARecordLink'
+      });
+
+      expect(actual).toBe(false);
+    });
+
+    it('isRecordLink return true for RecordLink', () => {
+      const actual = isRecordLink({
+        name: 'isGroup',
+        children: [
+          {
+            name: 'linkedRecordType',
+            value: 'aLinkedRecordType'
+          },
+          {
+            name: 'linkedRecordId',
+            value: 'aLinkedRecordId'
+          }
+        ]
+      });
+      expect(actual).toBe(true);
+    });
+
+    it('isRepeating return false for repeating', () => {
+      const actual = isRepeating({ name: 'domain', value: 'hh' }, 'divaOutput.domain', {
+        'divaOutput.domain': {
+          name: 'domain',
+          type: 'collectionVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        }
+      });
+
+      expect(actual).toBe(false);
+    });
+
+    it('isRepeating return true for repeating', () => {
+      const actual = isRepeating({ name: 'domain', value: 'hh' }, 'divaOutput.domain', {
+        'divaOutput.domain': {
+          name: 'domain',
+          type: 'collectionVariable',
+          repeat: { repeatMin: 0, repeatMax: 1 }
+        }
+      });
+
+      expect(actual).toBe(true);
+    });
+
+    it('transformObjectAttributes convert empty attributes', () => {
+      const actual = transformObjectAttributes(undefined);
+      expect(actual).toStrictEqual([]);
+    });
+
+    it('transformObjectAttributes convert attributes', () => {
+      const actual = transformObjectAttributes({ colour: 'red' });
+      expect(actual).toStrictEqual([{ _colour: 'red' }]);
     });
   });
 });
