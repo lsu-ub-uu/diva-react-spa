@@ -20,6 +20,7 @@
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
 import recordManuscriptWithoutCreatedAndUpdates from '../../__mocks__/coraRecordManuscriptPublicWithoutSensitiveData.json';
 import {
+  hasSameNameInDatas,
   isDataAtomic,
   isDataGroup,
   isRecordLink,
@@ -608,6 +609,41 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
+  it('should return a root group with multiple variables having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          attributes: {
+            language: 'eng'
+          },
+          name: 'subject',
+          value: 'value1'
+        },
+        {
+          attributes: {
+            language: 'swe'
+          },
+          name: 'subject',
+          value: 'value2'
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        'nationalSubjectCategory[0]': {
+          value: 'nationalSubjectCategory:6325370460697648',
+          _language: 'eng'
+        },
+        nationalSubjectCategory_language_swe: {
+          value: 'nationalSubjectCategory:6325370460697641',
+          _language: 'swe'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
 
   describe('transformRecords', () => {
     it('isDataGroup return true', () => {
@@ -702,6 +738,39 @@ describe('transformRecord', () => {
     it('transformObjectAttributes convert attributes', () => {
       const actual = transformObjectAttributes({ colour: 'red' });
       expect(actual).toStrictEqual([{ _colour: 'red' }]);
+    });
+    it('hasSameNameInDatas returns true when multiple siblings exist', () => {
+      const actual = hasSameNameInDatas(
+        [
+          {
+            name: 'subject',
+            value: 'Naturvetenskap',
+            attributes: { language: 'swe' }
+          },
+          {
+            name: 'subject',
+            value: 'Natural sciences',
+            attributes: { language: 'eng' }
+          },
+          { name: 'code', value: '1' }
+        ],
+        'subject'
+      );
+      expect(actual).toBe(true);
+    });
+    it('hasSameNameInDatas returns false when single', () => {
+      const actual = hasSameNameInDatas(
+        [
+          {
+            name: 'subject',
+            value: 'Natural sciences',
+            attributes: { language: 'eng' }
+          },
+          { name: 'code', value: '1' }
+        ],
+        'subject'
+      );
+      expect(actual).toBe(false);
     });
   });
 });
