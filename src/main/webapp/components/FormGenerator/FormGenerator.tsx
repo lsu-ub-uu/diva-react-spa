@@ -84,7 +84,7 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
-
+  console.log('dv', control);
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
@@ -863,4 +863,34 @@ const checkIfPresentationStyleOrIsInline = (component: FormComponent) => {
 
 const checkIfComponentContainsSearchId = (component: FormComponent) => {
   return component.search !== undefined;
+};
+
+export const hasComponentSameNameInData = (component: FormComponent) => {
+  if (component.components === undefined) {
+    return false;
+  }
+
+  if (component.components.length === 1) {
+    return false;
+  }
+
+  if (!isComponentGroup(component)) {
+    return false;
+  }
+  const nameArray = getChildArray(component);
+  return getChildrenWithSameNameInData(nameArray).length >= 1;
+};
+export const getChildArray = (component: FormComponent) => {
+  if (!isComponentGroup(component)) {
+    return [];
+  }
+  const nameArray: any[] = [];
+  (component.components ?? []).forEach((childComponent, index) => {
+    nameArray.push(childComponent.name);
+  });
+  return nameArray;
+};
+
+export const getChildrenWithSameNameInData = (childArray: string[]) => {
+  return childArray.filter((item, index) => childArray.indexOf(item) !== index);
 };
