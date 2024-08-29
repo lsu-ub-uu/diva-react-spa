@@ -88,11 +88,12 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
-  console.log('dv', control);
+  // console.log('dv', control);
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
     path: string,
+    repeatingNameInDatas: string[] = [],
     parentPresentationStyle?: string,
   ) => {
     const reactKey = `key_${idx}`;
@@ -102,13 +103,19 @@ export const FormGenerator = ({
       currentComponentNamePath = path;
     } else {
       currentComponentNamePath = !path
-        ? `${addAttributesToName(component, component.name)}`
-        : `${path}.${addAttributesToName(component, component.name)}`;
+        ? `${component.name}`
+        : `${path}.${component.name}`;
     }
+
+    const childrenWithSameNameInData = getChildrenWithSameNameInData(
+      getChildArray(component),
+    );
     console.log(
-      'currentComponentNamePath',
-      `${path}.${component.name}`,
-      `${path}.${addAttributesToName(component, component.name)}`,
+      'cFC',
+      component.name,
+      childrenWithSameNameInData,
+      'or',
+      repeatingNameInDatas,
     );
     const createFormComponentAttributes = (
       aComponent: FormComponent,
@@ -153,12 +160,14 @@ export const FormGenerator = ({
     }
 
     if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
+      console.log('cGNOTR', component.name, childrenWithSameNameInData);
       return createComponentGroupOrRepeatingContainerAndNOTRepeating(
         currentComponentNamePath,
         reactKey,
         component,
         createFormComponentAttributes,
         parentPresentationStyle,
+        childrenWithSameNameInData,
       );
     }
 
@@ -203,39 +212,16 @@ export const FormGenerator = ({
           parentPresentationStyle,
           getValues,
           linkedPresentation,
-          props.record,
         )
       );
     }
-
-    // if (
-    //   isLinkedDataRepeating(props.record as CoraRecord, component, linkedData)
-    // ) {
-    //   const currentComponents = currentComponentsFromRecord(
-    //     props.record,
-    //     component,
-    //     linkedData,
-    //   );
-    //   console.log('cC', currentComponents);
-    //   // currentComponents.map((linkedComponent) => {
-    //   //   console.log('lC', linkedComponent, component);
-    //   //   return (
-    //   //     <React.Fragment key={reactKey}>
-    //   //       {createFormComponentAttributes(component, currentComponentNamePath)}
-    //   //       {renderLeafComponent(
-    //   //         component,
-    //   //         reactKey,
-    //   //         control,
-    //   //         `${currentComponentNamePath}.value`,
-    //   //         true,
-    //   //         getValues,
-    //   //         parentPresentationStyle,
-    //   //       )}
-    //   //     </React.Fragment>
-    //   //   );
-    //   // });
-    // }
-
+    console.log(
+      'rf',
+      component.name,
+      childrenWithSameNameInData,
+      'or',
+      repeatingNameInDatas,
+    );
     return (
       <React.Fragment key={reactKey}>
         {createFormComponentAttributes(component, currentComponentNamePath)}
@@ -243,7 +229,7 @@ export const FormGenerator = ({
           component,
           reactKey,
           control,
-          `${currentComponentNamePath}.value`,
+          `${currentComponentNamePath}.value`, // turnery for checking if same nameInData,
           true,
           getValues,
           parentPresentationStyle,
@@ -295,7 +281,18 @@ export const FormGenerator = ({
       aPath: string,
     ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
+    childrenWithSameNameInData: string[],
   ) => {
+    // I barn, kolla listan uppdatera namn
+    console.log('createGroup', component.name, childrenWithSameNameInData);
+    console.log(
+      'firstLe',
+      component.name,
+      isComponentFirstLevelAndNOTLinkedData(
+        currentComponentNamePath,
+        linkedData,
+      ),
+    );
     return isComponentFirstLevelAndNOTLinkedData(
       currentComponentNamePath,
       linkedData,
@@ -346,6 +343,7 @@ export const FormGenerator = ({
                 component.components,
                 currentComponentNamePath,
                 component.presentationStyle ?? parentPresentationStyle,
+                childrenWithSameNameInData,
               )}
           </Grid>
         </Box>
@@ -397,6 +395,7 @@ export const FormGenerator = ({
             checkIfPresentationStyleIsUndefinedOrEmpty(component)
               ? parentPresentationStyle
               : component.presentationStyle,
+            childrenWithSameNameInData,
           )}
       </Box>
     );
@@ -530,12 +529,14 @@ export const FormGenerator = ({
     components: FormComponent[],
     path = '',
     parentPresentationStyle?: string,
+    repeatingNameInDatas: string[] = [],
   ): JSX.Element[] => {
     return components.map((c, i) => {
       return generateFormComponent(
         c,
         i,
         path,
+        repeatingNameInDatas,
         parentPresentationStyle as string,
       );
     });
@@ -680,8 +681,7 @@ const createTextOrNumberVariable = (
   parentPresentationStyle: string | undefined,
   getValues: UseFormGetValues<FieldValues>,
 ) => {
-  // console.log(component.attributes[0].name, component.attributes[0].finalValue);
-  console.log('name', name);
+  // console.log('name', name);
 
   const hasValue = checkIfComponentHasValue(getValues, name);
   return (
@@ -1005,14 +1005,44 @@ export const nameOfComponentFromRecord = (
 export const currentComponentsFromRecord = (
   record: CoraRecord | undefined,
   linkedComponent: FormComponent,
-  // isLinkedData: boolean,
+  isLinkedData: boolean,
 ) => {
   if (record === undefined) {
     return [];
   }
-  // if (!isLinkedData) {
-  //   return [];
-  // }
+  if (!isLinkedData) {
+    return [];
+  }
   // @ts-ignore
   return Object.entries(record.data)[0][1][linkedComponent.name];
+};
+
+export const hasComponentSameNameInData = (component: FormComponent) => {
+  if (component.components === undefined) {
+    return false;
+  }
+
+  if (component.components.length === 1) {
+    return false;
+  }
+
+  if (!isComponentGroup(component)) {
+    return false;
+  }
+  const nameArray = getChildArray(component);
+  return getChildrenWithSameNameInData(nameArray).length >= 1;
+};
+export const getChildArray = (component: FormComponent) => {
+  if (!isComponentGroup(component)) {
+    return [];
+  }
+  const nameArray: any[] = [];
+  (component.components ?? []).forEach((childComponent, index) => {
+    nameArray.push(childComponent.name);
+  });
+  return nameArray;
+};
+
+export const getChildrenWithSameNameInData = (childArray: string[]) => {
+  return childArray.filter((item, index) => childArray.indexOf(item) !== index);
 };

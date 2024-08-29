@@ -177,12 +177,12 @@ export const mergeArrays = (target: any[], overlay: any[]): any[] => {
 };
 
 export const addAttributesToName = (component: FormComponent, name: string) => {
-  const temp: any[] = [];
+  const nameArray: any[] = [];
   if (component.attributes === undefined) {
     return component.name;
   }
   (component.attributes ?? []).forEach((attribute, index) => {
-    temp.push(`${attribute.name}_${attribute.finalValue}`);
+    nameArray.push(`${attribute.name}_${attribute.finalValue}`);
   });
-  return `${name}_${temp.join('_')}`;
+  return `${name}_${nameArray.join('_')}`;
 };
