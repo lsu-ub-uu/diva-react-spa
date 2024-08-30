@@ -26,6 +26,7 @@ import {
   createDefaultValuesFromFormSchema,
   generateRepeatingObject,
   getMinNumberOfRepeatingToShow,
+  hasCurrentComponentSameNameInData,
   mergeArrays,
   mergeObjects,
   removeRootObject,
@@ -1513,6 +1514,34 @@ describe('FormGenerator Utils', () => {
           'nationalSubjectCategory.subject.value',
         );
         expect(actual).toEqual('subject');
+      });
+    });
+    describe('hasCurrentComponentSameNameInData', () => {
+      it('has same name', () => {
+        const actual = hasCurrentComponentSameNameInData(
+          ['subject'],
+          'subject',
+        );
+        expect(actual).toBe(true);
+      });
+      it('has same name', () => {
+        const actual = hasCurrentComponentSameNameInData(
+          ['subject', 'notSubject'],
+          'subject',
+        );
+        expect(actual).toBe(true);
+      });
+      it('has different name', () => {
+        const actual = hasCurrentComponentSameNameInData(
+          ['notSubject'],
+          'subject',
+        );
+        expect(actual).toBe(false);
+      });
+
+      it('has empty array', () => {
+        const actual = hasCurrentComponentSameNameInData([], 'subject');
+        expect(actual).toBe(false);
       });
     });
   });

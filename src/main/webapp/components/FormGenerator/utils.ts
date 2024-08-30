@@ -175,3 +175,10 @@ export const addAttributesToName = (component: FormComponent, name: string) => {
   });
   return `${name}_${nameArray.join('_')}`;
 };
+
+export const hasCurrentComponentSameNameInData = (
+  childArray: string[],
+  componentName: string,
+) => {
+  return childArray.includes(componentName);
+};

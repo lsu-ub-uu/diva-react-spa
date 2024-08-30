@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as yup from 'yup';
 import {
   AnyObject,
   ObjectSchema,
@@ -24,7 +25,6 @@ import {
   TestConfig,
   TestContext,
 } from 'yup';
-import * as yup from 'yup';
 import {
   FormAttributeCollection,
   FormComponent,
@@ -44,36 +44,27 @@ import {
   isParentGroupOptional,
   isSiblingComponentRequired,
 } from './helper';
+import {
+  getChildArrayWithSameNameInData,
+  getChildrenWithSameNameInData,
+} from '../FormGenerator';
+import {
+  addAttributesToName,
+  hasCurrentComponentSameNameInData,
+} from '../utils';
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
+  console.log('rule', rule);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
   return yup.object().shape(obj);
-};
-
-export const generateYupSchema = (
-  components: FormComponent[] | undefined,
-  parentGroupOptional: boolean = false,
-  groupOptional: boolean = false,
-) => {
-  const validationsRules = (components ?? [])
-    .filter(isComponentValidForDataCarrying)
-    .map((formComponent) =>
-      createYupValidationsFromComponent(
-        formComponent,
-        parentGroupOptional,
-        groupOptional,
-      ),
-    );
-
-  const obj = Object.assign({}, ...validationsRules) as ObjectShape;
-  return yup.object().default({}).shape(obj);
 };
 
 export const createYupValidationsFromComponent = (
   component: FormComponent,
   parentComponentRepeating: boolean = false,
   parentGroupRepeating: boolean = false,
+  childWithSameNameInData: string[] = [],
 ) => {
   let validationRule: {
     [x: string]: any;
@@ -119,9 +110,15 @@ export const createYupValidationsFromComponent = (
     // non-repeating group
     // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
+      const childrenWithSameNameInData = getChildrenWithSameNameInData(
+        getChildArrayWithSameNameInData(component),
+      );
+      console.log('yup', component.name, childrenWithSameNameInData);
       const innerSchema = generateYupSchema(
         component.components,
         parentComponentRepeating,
+        undefined,
+        childrenWithSameNameInData,
       );
       validationRule[component.name] = yup.object().shape({
         ...innerSchema.fields,
@@ -132,25 +129,83 @@ export const createYupValidationsFromComponent = (
           parentGroupRepeating,
         ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      console.log('validationRule', validationRule);
     } else {
-      validationRule[component.name] = yup.object().shape({
-        value: createValidationFromComponentType(
-          component,
-          false,
-          parentComponentRepeating,
-          undefined,
-          isSiblingComponentRequired(component),
+      console.log('yup2', component.name, childWithSameNameInData);
+      console.log(
+        'yup3',
+        component.name,
+        hasCurrentComponentSameNameInData(
+          childWithSameNameInData,
+          component.name,
         ),
-        ...createValidationForAttributesFromComponent(
-          component,
-          isComponentRepeating(component),
-          isSiblingComponentRequired(component),
-        ),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      );
+
+      console.log('yup5', addAttributesToName(component, component.name));
+      if (
+        hasCurrentComponentSameNameInData(
+          childWithSameNameInData,
+          component.name,
+        )
+      ) {
+        console.log('yup6');
+        validationRule[addAttributesToName(component, component.name)] = yup
+          .object()
+          .shape({
+            value: createValidationFromComponentType(
+              component,
+              false,
+              parentComponentRepeating,
+              undefined,
+              isSiblingComponentRequired(component),
+            ),
+            ...createValidationForAttributesFromComponent(
+              component,
+              isComponentRepeating(component),
+              isSiblingComponentRequired(component),
+            ),
+          }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      } else {
+        validationRule[component.name] = yup.object().shape({
+          value: createValidationFromComponentType(
+            component,
+            false,
+            parentComponentRepeating,
+            undefined,
+            isSiblingComponentRequired(component),
+          ),
+          ...createValidationForAttributesFromComponent(
+            component,
+            isComponentRepeating(component),
+            isSiblingComponentRequired(component),
+          ),
+        }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      }
     }
   }
-
+  console.log('yup4', validationRule);
   return validationRule;
+};
+
+export const generateYupSchema = (
+  components: FormComponent[] | undefined,
+  parentGroupOptional: boolean = false,
+  groupOptional: boolean = false,
+  childrenWithSameNameInData: string[] = [],
+) => {
+  const validationsRules = (components ?? [])
+    .filter(isComponentValidForDataCarrying)
+    .map((formComponent) =>
+      createYupValidationsFromComponent(
+        formComponent,
+        parentGroupOptional,
+        groupOptional,
+        childrenWithSameNameInData,
+      ),
+    );
+
+  const obj = Object.assign({}, ...validationsRules) as ObjectShape;
+  return yup.object().default({}).shape(obj);
 };
 
 export const createValidationForAttributesFromComponent = (

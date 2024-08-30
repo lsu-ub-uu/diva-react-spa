@@ -36,7 +36,12 @@ import {
   ControlledSelectField,
   ControlledLinkedRecord,
 } from '../Controlled';
-import { createDefaultValuesFromFormSchema, RecordData } from './utils';
+import {
+  addAttributesToName,
+  createDefaultValuesFromFormSchema,
+  hasCurrentComponentSameNameInData,
+  RecordData,
+} from './utils';
 import { generateYupSchemaFromFormSchema } from './utils/yupSchema';
 import {
   checkIfComponentHasValue,
@@ -47,7 +52,6 @@ import {
   isComponentSurroundingContainer,
   isComponentVariable,
   isFirstLevel,
-  isRootLevel,
 } from './utils/helper';
 import {
   Typography,
@@ -89,18 +93,38 @@ export const FormGenerator = ({
     component: FormComponent,
     idx: number,
     path: string,
+    childWithNameInDataArray: string[] = [],
     parentPresentationStyle?: string,
   ) => {
     const reactKey = `key_${idx}`;
 
     let currentComponentNamePath;
+
+    const childrenWithSameNameInData = getChildrenWithSameNameInData(
+      getChildArrayWithSameNameInData(component),
+    );
+    console.log(
+      'g',
+      component.name,
+      childrenWithSameNameInData,
+      childWithNameInDataArray,
+    );
+    const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
+      childWithNameInDataArray,
+      component.name,
+    );
+
     if (isComponentContainer(component)) {
       currentComponentNamePath = path;
     } else {
       currentComponentNamePath = !path
-        ? `${component.name}`
-        : `${path}.${component.name}`;
+        ? `${addAttributesToName(component, component.name)}`
+        : `${path}.${addAttributesToName(component, component.name)}`;
     }
+
+    console.log(component.name, currentComponentSameNameInData);
+    // uppdatera currenComponentNamePath2
+    console.log('path', currentComponentNamePath);
 
     const createFormComponentAttributes = (
       aComponent: FormComponent,
@@ -108,6 +132,7 @@ export const FormGenerator = ({
     ) => {
       return (aComponent.attributes ?? []).map((attribute, index) => {
         const hasValue = checkIfComponentHasValue(getValues, attribute.name);
+        console.log('att', `${aPath}._${attribute.name}`);
         return (
           <Grid
             key={attribute.name}
@@ -144,12 +169,14 @@ export const FormGenerator = ({
     }
 
     if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
+      console.log('isG', childrenWithSameNameInData);
       return createComponentGroupOrRepeatingContainerAndNOTRepeating(
         currentComponentNamePath,
         reactKey,
         component,
         createFormComponentAttributes,
         parentPresentationStyle,
+        childrenWithSameNameInData,
       );
     }
 
@@ -217,6 +244,7 @@ export const FormGenerator = ({
             createFormComponents(
               component.components,
               currentComponentNamePath,
+              [],
               component.presentationStyle ?? parentPresentationStyle,
             )}
         </div>
@@ -233,7 +261,9 @@ export const FormGenerator = ({
       aPath: string,
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
+    childWithNameInDataArray: string[],
   ) => {
+    console.log('cg', childWithNameInDataArray);
     return isComponentFirstLevelAndNOTLinkedData(
       currentComponentNamePath,
       linkedData,
@@ -284,6 +314,7 @@ export const FormGenerator = ({
               createFormComponents(
                 component.components,
                 currentComponentNamePath,
+                childWithNameInDataArray,
                 component.presentationStyle ?? parentPresentationStyle,
               )}
           </Grid>
@@ -325,6 +356,7 @@ export const FormGenerator = ({
           createFormComponents(
             component.components,
             currentComponentNamePath,
+            childWithNameInDataArray,
             checkIfPresentationStyleIsUndefinedOrEmpty(component)
               ? parentPresentationStyle
               : component.presentationStyle,
@@ -355,6 +387,7 @@ export const FormGenerator = ({
             ...createFormComponents(
               component.components ?? [],
               arrayPath,
+              [],
               component.presentationStyle ?? parentPresentationStyle,
             ),
           ];
@@ -409,6 +442,7 @@ export const FormGenerator = ({
               ...createFormComponents(
                 component.components ?? [],
                 arrayPath,
+                [],
                 component.presentationStyle ?? parentPresentationStyle,
               ),
             ];
@@ -458,13 +492,16 @@ export const FormGenerator = ({
   const createFormComponents = (
     components: FormComponent[],
     path = '',
+    childWithNameInDataArray: string[],
     parentPresentationStyle?: string,
   ): JSX.Element[] => {
     return components.map((c, i) => {
+      console.log('map', childWithNameInDataArray);
       return generateFormComponent(
         c,
         i,
         path,
+        childWithNameInDataArray,
         parentPresentationStyle as string,
       );
     });
@@ -877,10 +914,10 @@ export const hasComponentSameNameInData = (component: FormComponent) => {
   if (!isComponentGroup(component)) {
     return false;
   }
-  const nameArray = getChildArray(component);
+  const nameArray = getChildArrayWithSameNameInData(component);
   return getChildrenWithSameNameInData(nameArray).length >= 1;
 };
-export const getChildArray = (component: FormComponent) => {
+export const getChildArrayWithSameNameInData = (component: FormComponent) => {
   if (!isComponentGroup(component)) {
     return [];
   }

@@ -70,7 +70,7 @@ import {
 } from '../../../__mocks__/data/formDef';
 import {
   FormGenerator,
-  getChildArray,
+  getChildArrayWithSameNameInData,
   getChildrenWithSameNameInData,
   hasComponentSameNameInData,
 } from '../FormGenerator';
@@ -2713,7 +2713,7 @@ describe('checkIfComponentHasValue', () => {
     });
   });
 
-  describe('getChildArray', () => {
+  describe('getChildrenWithSameNameInData', () => {
     it('when component has same nameInData', () => {
       const formGroup = {
         name: 'nationalSubjectCategory',
@@ -2831,7 +2831,9 @@ describe('checkIfComponentHasValue', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = getChildArray(formGroup as FormComponent);
+      const actual = getChildArrayWithSameNameInData(
+        formGroup as FormComponent,
+      );
       expect(actual).toStrictEqual(['subject', 'subject']);
     });
 
@@ -2860,7 +2862,9 @@ describe('checkIfComponentHasValue', () => {
         childStyle: ['fiveChildStyle'],
         gridColSpan: 5,
       };
-      const actual = getChildArray(formVariable as FormComponent);
+      const actual = getChildArrayWithSameNameInData(
+        formVariable as FormComponent,
+      );
       expect(actual).toStrictEqual([]);
     });
   });
