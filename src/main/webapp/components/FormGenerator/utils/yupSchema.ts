@@ -55,7 +55,7 @@ import {
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
-  console.log('rule', rule);
+  // console.log('rule', rule);
   const obj = Object.assign({}, ...[rule]) as ObjectShape;
   return yup.object().shape(obj);
 };
@@ -113,7 +113,7 @@ export const createYupValidationsFromComponent = (
       const childrenWithSameNameInData = getChildrenWithSameNameInData(
         getChildArrayWithSameNameInData(component),
       );
-      console.log('yup', component.name, childrenWithSameNameInData);
+      // console.log('yup', component.name, childrenWithSameNameInData);
       const innerSchema = generateYupSchema(
         component.components,
         parentComponentRepeating,
@@ -129,26 +129,26 @@ export const createYupValidationsFromComponent = (
           parentGroupRepeating,
         ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      console.log('validationRule', validationRule);
+      // console.log('validationRule', validationRule);
     } else {
-      console.log('yup2', component.name, childWithSameNameInData);
-      console.log(
-        'yup3',
-        component.name,
-        hasCurrentComponentSameNameInData(
-          childWithSameNameInData,
-          component.name,
-        ),
-      );
-
-      console.log('yup5', addAttributesToName(component, component.name));
+      // console.log('yup2', component.name, childWithSameNameInData);
+      // console.log(
+      //   'yup3',
+      //   component.name,
+      //   hasCurrentComponentSameNameInData(
+      //     childWithSameNameInData,
+      //     component.name,
+      //   ),
+      // );
+      //
+      // console.log('yup5', addAttributesToName(component, component.name));
       if (
         hasCurrentComponentSameNameInData(
           childWithSameNameInData,
           component.name,
         )
       ) {
-        console.log('yup6');
+        // console.log('yup6');
         validationRule[addAttributesToName(component, component.name)] = yup
           .object()
           .shape({
@@ -183,7 +183,7 @@ export const createYupValidationsFromComponent = (
       }
     }
   }
-  console.log('yup4', validationRule);
+  // console.log('yup4', validationRule);
   return validationRule;
 };
 

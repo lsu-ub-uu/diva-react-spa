@@ -103,12 +103,12 @@ export const FormGenerator = ({
     const childrenWithSameNameInData = getChildrenWithSameNameInData(
       getChildArrayWithSameNameInData(component),
     );
-    console.log(
-      'g',
-      component.name,
-      childrenWithSameNameInData,
-      childWithNameInDataArray,
-    );
+    // console.log(
+    //   'g',
+    //   component.name,
+    //   childrenWithSameNameInData,
+    //   childWithNameInDataArray,
+    // );
     const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
       childWithNameInDataArray,
       component.name,
@@ -122,22 +122,20 @@ export const FormGenerator = ({
         : `${path}.${addAttributesToName(component, component.name)}`;
     }
 
-    console.log(component.name, currentComponentSameNameInData);
-    // uppdatera currenComponentNamePath2
-    console.log('path', currentComponentNamePath);
-
     const createFormComponentAttributes = (
       aComponent: FormComponent,
       aPath: string,
     ) => {
+      // console.log('aC', aComponent);
       return (aComponent.attributes ?? []).map((attribute, index) => {
         const hasValue = checkIfComponentHasValue(getValues, attribute.name);
-        console.log('att', `${aPath}._${attribute.name}`);
+        console.log('att ', `${aPath}._${attribute.name}`);
+        // console.log('att ', attribute.options);
         return (
           <Grid
             key={attribute.name}
             item
-            xs={12}
+            xs={6}
           >
             <ControlledSelectField
               key={`${attribute.name}_${index}`}
@@ -169,7 +167,7 @@ export const FormGenerator = ({
     }
 
     if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
-      console.log('isG', childrenWithSameNameInData);
+      // console.log('isG', childrenWithSameNameInData);
       return createComponentGroupOrRepeatingContainerAndNOTRepeating(
         currentComponentNamePath,
         reactKey,
@@ -263,7 +261,7 @@ export const FormGenerator = ({
     parentPresentationStyle: string | undefined,
     childWithNameInDataArray: string[],
   ) => {
-    console.log('cg', childWithNameInDataArray);
+    // console.log('cg', childWithNameInDataArray);
     return isComponentFirstLevelAndNOTLinkedData(
       currentComponentNamePath,
       linkedData,
@@ -496,7 +494,7 @@ export const FormGenerator = ({
     parentPresentationStyle?: string,
   ): JSX.Element[] => {
     return components.map((c, i) => {
-      console.log('map', childWithNameInDataArray);
+      // console.log('map', childWithNameInDataArray);
       return generateFormComponent(
         c,
         i,
