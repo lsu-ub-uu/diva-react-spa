@@ -21,13 +21,42 @@ import { useEffect, useState } from 'react';
 import { FormComponent, FormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
 import { CoraRecord } from '../../app/hooks';
+import {
+  addAttributesToName,
+  hasCurrentComponentSameNameInData,
+} from '../FormGenerator/utils';
+import {
+  getChildArrayWithSameNameInData,
+  getChildrenWithSameNameInData,
+  getChildrenWithSameNameInDataFromSchema,
+} from '../FormGenerator/FormGenerator';
 
 export const linksFromFormSchema = (
   formSchema: FormSchema,
-): NavigationPanelLink[] | undefined =>
-  formSchema?.form.components
+): NavigationPanelLink[] | undefined => {
+  const childrenWithSameNameInData =
+    getChildrenWithSameNameInDataFromSchema(formSchema);
+  // console.log(getChildArrayWithSameNameInData(formSchema?.form.components));
+  // getChildArrayWithSameNameInData(
+  //   getChildrenWithSameNameInData(formSchema?.form.components),
+  // ),
+
+  return formSchema?.form.components
     ?.filter((c) => !['text', 'container'].includes(c.type))
-    .map((c) => ({ name: c.name, label: c.label } as NavigationPanelLink));
+    .map((c) => {
+      const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
+        childrenWithSameNameInData,
+        c.name,
+      );
+      if (currentComponentSameNameInData) {
+        return {
+          name: `${addAttributesToName(c, c.name)}`,
+          label: c.label,
+        } as NavigationPanelLink;
+      }
+      return { name: `${c.name}`, label: c.label } as NavigationPanelLink;
+    });
+};
 
 export const removeComponentsWithoutValuesFromSchema = (
   formSchema: FormSchema,

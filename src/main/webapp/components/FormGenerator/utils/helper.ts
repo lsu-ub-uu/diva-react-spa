@@ -28,8 +28,12 @@ export const countStringCharOccurrences = (
   return inputString.split('').filter((char) => char === targetChar).length;
 };
 
-export const isFirstLevel = (pathName: string) => {
+export const isFirstLevelGroup = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.') === 1;
+};
+
+export const isFirstLevelVariable = (pathName: string) => {
+  return countStringCharOccurrences(pathName, '.') === 2;
 };
 
 export const isRootLevel = (pathName: string) => {

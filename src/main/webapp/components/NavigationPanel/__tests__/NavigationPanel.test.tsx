@@ -33,12 +33,33 @@ describe('NavigationPanel', () => {
     { name: 'anchor2', label: 'Anchor 2' },
     { name: 'anchor3', label: 'Anchor 3' },
   ];
+
+  const linksSameNameInData: NavigationPanelLink[] = [
+    { name: 'anchor1', label: 'Anchor 1' },
+    { name: 'anchor1', label: 'Anchor 2' },
+    { name: 'anchor3', label: 'Anchor 3' },
+  ];
+
   it('NavigationPanel renders with correct nr of links', () => {
     const activeLinkName = 'anchor1';
 
     render(
       <NavigationPanel
         links={links}
+        activeLinkName={activeLinkName}
+      />,
+    );
+
+    const navigationLinks = screen.getAllByRole('link');
+    expect(navigationLinks).toHaveLength(3);
+  });
+
+  it('NavigationPanel renders with correct nr of links but same nameInData', () => {
+    const activeLinkName = 'anchor1';
+
+    render(
+      <NavigationPanel
+        links={linksSameNameInData}
         activeLinkName={activeLinkName}
       />,
     );

@@ -66,12 +66,14 @@ import {
   formDefForCheckNumberValue,
   formDefWithOneNumberVariableBeingOptionalOutput,
   formDefPreprintWithOnlyAuthorName,
-  formDefWithOneTextVariableBeingPassword, formDefTextVarsWithSameNameInData,
+  formDefWithOneTextVariableBeingPassword,
+  formDefTextVarsWithSameNameInData,
 } from '../../../__mocks__/data/formDef';
 import {
   FormGenerator,
   getChildArrayWithSameNameInData,
   getChildrenWithSameNameInData,
+  getChildrenWithSameNameInDataFromSchema,
   hasComponentSameNameInData,
 } from '../FormGenerator';
 import { FormComponent, FormSchema } from '../types';
@@ -160,7 +162,7 @@ describe('<FormGenerator />', () => {
 
       expect(container.getElementsByClassName('Mui-error').length).toBe(2);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
-    })
+    });
 
     it('renders a form from a given definition for variables with same nameInData and validates it', async () => {
       const mockSubmit = vi.fn();
@@ -2894,6 +2896,14 @@ describe('checkIfComponentHasValue', () => {
         formVariable as FormComponent,
       );
       expect(actual).toStrictEqual([]);
+    });
+  });
+  describe('getChildrenWithSameNameInDataFromSchema', () => {
+    it('returns array without duplicates from schema', () => {
+      const actual = getChildrenWithSameNameInDataFromSchema(
+        formDefTextVarsWithSameNameInData as FormSchema,
+      );
+      expect(actual).toStrictEqual(['subject']);
     });
   });
 });

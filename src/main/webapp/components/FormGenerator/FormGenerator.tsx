@@ -51,7 +51,8 @@ import {
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
-  isFirstLevel,
+  isFirstLevelGroup,
+  isFirstLevelVariable,
 } from './utils/helper';
 import {
   Typography,
@@ -371,7 +372,7 @@ export const FormGenerator = ({
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
   ) => {
-    return isFirstLevel(currentComponentNamePath) ? (
+    return isFirstLevelGroup(currentComponentNamePath) ? (
       <FieldArrayComponent
         key={reactKey}
         control={control}
@@ -642,6 +643,13 @@ const createTextOrNumberVariable = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
+  console.log(
+    'first',
+    name,
+    isFirstLevelVariable(name)
+      ? `anchor_${addAttributesToName(component, component.name)}`
+      : '',
+  );
   return (
     <Grid
       key={reactKey}
@@ -654,6 +662,11 @@ const createTextOrNumberVariable = (
             ? 'auto'
             : '100%',
       }}
+      id={
+        isFirstLevelVariable(name)
+          ? `anchor_${addAttributesToName(component, component.name)}`
+          : ''
+      }
     >
       <ControlledTextField
         multiline={component.inputType === 'textarea'}
@@ -860,7 +873,7 @@ function isComponentFirstLevelAndNOTLinkedData(
   currentComponentNamePath: string,
   linkedData: boolean | undefined,
 ) {
-  return isFirstLevel(currentComponentNamePath) && !linkedData;
+  return isFirstLevelGroup(currentComponentNamePath) && !linkedData;
 }
 
 export const convertChildStyleToString = (
@@ -911,6 +924,11 @@ export const hasComponentSameNameInData = (component: FormComponent) => {
   const nameArray = getChildArrayWithSameNameInData(component);
   return getChildrenWithSameNameInData(nameArray).length >= 1;
 };
+
+export const getChildrenWithSameNameInData = (childArray: string[]) => {
+  return childArray.filter((item, index) => childArray.indexOf(item) !== index);
+};
+
 export const getChildArrayWithSameNameInData = (component: FormComponent) => {
   if (!isComponentGroup(component)) {
     return [];
@@ -921,7 +939,10 @@ export const getChildArrayWithSameNameInData = (component: FormComponent) => {
   });
   return nameArray;
 };
-
-export const getChildrenWithSameNameInData = (childArray: string[]) => {
-  return childArray.filter((item, index) => childArray.indexOf(item) !== index);
+export const getChildrenWithSameNameInDataFromSchema = (
+  formSchema: FormSchema,
+) => {
+  return getChildrenWithSameNameInData(
+    getChildArrayWithSameNameInData(formSchema?.form),
+  );
 };
