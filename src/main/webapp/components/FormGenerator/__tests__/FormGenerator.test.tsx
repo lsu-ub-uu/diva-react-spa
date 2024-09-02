@@ -66,7 +66,7 @@ import {
   formDefForCheckNumberValue,
   formDefWithOneNumberVariableBeingOptionalOutput,
   formDefPreprintWithOnlyAuthorName,
-  formDefWithOneTextVariableBeingPassword,
+  formDefWithOneTextVariableBeingPassword, formDefTextVarsWithSameNameInData,
 } from '../../../__mocks__/data/formDef';
 import {
   FormGenerator,
@@ -160,6 +160,34 @@ describe('<FormGenerator />', () => {
 
       expect(container.getElementsByClassName('Mui-error').length).toBe(2);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
+    })
+
+    it('renders a form from a given definition for variables with same nameInData and validates it', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefTextVarsWithSameNameInData as FormSchema}
+        />,
+      );
+      const user = userEvent.setup();
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
+      const sweElement = screen.getByPlaceholderText('subjectSweTextVarText');
+      expect(sweElement).toBeInTheDocument();
+      await user.type(sweElement, 'svenska');
+
+      const engElement = screen.getByPlaceholderText('subjectEngTextVarText');
+      expect(engElement).toBeInTheDocument();
+      await user.type(engElement, 'english');
+
+      await user.click(submitButton);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
 
