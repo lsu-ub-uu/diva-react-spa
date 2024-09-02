@@ -94,10 +94,10 @@ export const CreateRecordPage = () => {
         <title>{t(schema?.form.label as string)} | DiVA</title>
       </Helmet>
       <AsidePortal>
-        <NavigationPanel
-          links={schema ? linksFromFormSchema(schema) || [] : []}
-          activeLinkName={activeSection}
-        />
+        {/*<NavigationPanel*/}
+        {/*  links={schema ? linksFromFormSchema(schema) || [] : []}*/}
+        {/*  activeLinkName={activeSection}*/}
+        {/*/>*/}
       </AsidePortal>
       <div>
         <Stack spacing={2}>

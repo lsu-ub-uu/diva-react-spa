@@ -88,7 +88,6 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
-  console.log('dv', control);
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
@@ -103,34 +102,35 @@ export const FormGenerator = ({
     const childrenWithSameNameInData = getChildrenWithSameNameInData(
       getChildArrayWithSameNameInData(component),
     );
-    // console.log(
-    //   'g',
-    //   component.name,
-    //   childrenWithSameNameInData,
-    //   childWithNameInDataArray,
-    // );
     const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
       childWithNameInDataArray,
       component.name,
     );
 
+    const addAttributesForMatchingNameInDataWithoutPath =
+      currentComponentSameNameInData
+        ? `${addAttributesToName(component, component.name)}`
+        : `${component.name}`;
+
+    const addAttributesForMatchingNameInDataWithPath =
+      currentComponentSameNameInData
+        ? `${path}.${addAttributesToName(component, component.name)}`
+        : `${path}.${component.name}`;
+
     if (isComponentContainer(component)) {
       currentComponentNamePath = path;
     } else {
       currentComponentNamePath = !path
-        ? `${addAttributesToName(component, component.name)}`
-        : `${path}.${addAttributesToName(component, component.name)}`;
+        ? addAttributesForMatchingNameInDataWithoutPath
+        : addAttributesForMatchingNameInDataWithPath;
     }
 
     const createFormComponentAttributes = (
       aComponent: FormComponent,
       aPath: string,
     ) => {
-      // console.log('aC', aComponent);
       return (aComponent.attributes ?? []).map((attribute, index) => {
         const hasValue = checkIfComponentHasValue(getValues, attribute.name);
-        console.log('att ', `${aPath}._${attribute.name}`);
-        // console.log('att ', attribute.options);
         return (
           <Grid
             key={attribute.name}
@@ -167,7 +167,6 @@ export const FormGenerator = ({
     }
 
     if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
-      // console.log('isG', childrenWithSameNameInData);
       return createComponentGroupOrRepeatingContainerAndNOTRepeating(
         currentComponentNamePath,
         reactKey,
@@ -261,7 +260,6 @@ export const FormGenerator = ({
     parentPresentationStyle: string | undefined,
     childWithNameInDataArray: string[],
   ) => {
-    // console.log('cg', childWithNameInDataArray);
     return isComponentFirstLevelAndNOTLinkedData(
       currentComponentNamePath,
       linkedData,
@@ -494,7 +492,6 @@ export const FormGenerator = ({
     parentPresentationStyle?: string,
   ): JSX.Element[] => {
     return components.map((c, i) => {
-      // console.log('map', childWithNameInDataArray);
       return generateFormComponent(
         c,
         i,
@@ -645,7 +642,6 @@ const createTextOrNumberVariable = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-
   return (
     <Grid
       key={reactKey}
