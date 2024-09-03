@@ -278,7 +278,7 @@ describe('formDefinition', () => {
       mode,
       inputFormat
     };
-    dependencies.presentationPool.set(id, pVar);
+    presentationPool.set(id, pVar);
     return pVar as BFFPresentation;
   };
 
@@ -472,7 +472,7 @@ describe('formDefinition', () => {
       mode,
       children
     } as BFFPresentationGroup;
-    dependencies.presentationPool.set(id, pGroup);
+    presentationPool.set(id, pGroup);
     return pGroup;
   };
 
@@ -508,7 +508,7 @@ describe('formDefinition', () => {
       linkedRecordPresentations
     } as BFFPresentationRecordLink;
 
-    dependencies.presentationPool.set(id, pLink);
+    presentationPool.set(id, pLink);
     return pLink;
   };
   const createPresentationSContainer = (
@@ -525,7 +525,7 @@ describe('formDefinition', () => {
       repeat: 'children'
     } as BFFPresentationSurroundingContainer;
 
-    dependencies.presentationPool.set(id, container);
+    presentationPool.set(id, container);
     return container;
   };
 
