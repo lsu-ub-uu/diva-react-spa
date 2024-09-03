@@ -114,4 +114,38 @@ describe('createFormMetaDataPathLookup', () => {
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
+
+  it('should return form meta data for a given validation type with variables with same nameInData', () => {
+    const formMetaData: FormMetaData = {
+      name: 'nationalSubjectCategory',
+      type: 'group',
+      repeat: { repeatMin: 1, repeatMax: 1 },
+      children: [
+        { name: 'subject', type: 'textVariable', repeat: { repeatMin: 1, repeatMax: 1 } },
+        { name: 'subject', type: 'textVariable', repeat: { repeatMin: 1, repeatMax: 1 } }
+      ]
+    };
+
+    const expectedMetadataLookup = {
+      nationalSubjectCategory: {
+        name: 'nationalSubjectCategory',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'nationalSubjectCategory.subject': {
+        name: 'subject',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'textVariable'
+      }
+    };
+
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
 });

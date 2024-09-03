@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import {
   createLeaf,
   findChildrenAttributes,
@@ -1158,11 +1159,14 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'nationalSubjectCategory';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(
         formMetaDataPathLookup,
         testFormPayloadWithGroupWithAttributesAndTextVar
       );
+      console.log('transformData', transformData);
       expect(transformData[0]).toStrictEqual(expected);
     });
 

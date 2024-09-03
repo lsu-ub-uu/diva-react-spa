@@ -140,11 +140,11 @@ export const transformToCoraData = (
   repeatId?: string
 ): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
-  // console.log('p', payload);
+  console.log('p', payload);
   Object.keys(payload).forEach((fieldKey) => {
     const value = payload[fieldKey];
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
-    // console.log('1');
+    console.log('1', fieldKey);
     if (!fieldKey.startsWith('_')) {
       const currentMetadataLookup = lookup[currentPath];
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
