@@ -74,6 +74,9 @@ export interface FormMetaData {
   repeat: FormMetaDataRepeat;
   children?: FormMetaData[];
   linkedRecordType?: string;
+  attributes?: {
+    [key: string]: string;
+  };
 }
 
 /**

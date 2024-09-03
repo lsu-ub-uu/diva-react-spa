@@ -146,6 +146,7 @@ describe('createFormMetaDataPathLookup', () => {
     };
 
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    console.log('hello', formMetaDataPathLookup);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
 });

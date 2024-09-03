@@ -1129,7 +1129,9 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(
         formMetaDataPathLookup,
         testFormPayloadWithGroupWithAttributesAndTextVar
@@ -1166,7 +1168,7 @@ describe('transformToCora', () => {
         formMetaDataPathLookup,
         testFormPayloadWithGroupWithAttributesAndTextVar
       );
-      console.log('transformData', transformData);
+      //console.log('transformData', transformData);
       expect(transformData[0]).toStrictEqual(expected);
     });
 

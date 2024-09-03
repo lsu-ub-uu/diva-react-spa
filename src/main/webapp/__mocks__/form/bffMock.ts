@@ -1440,7 +1440,7 @@ export const newNationalSubjectCategoryRecordTypeNewGroup: BFFMetadataGroup = {
       repeatMax: '1'
     },
     {
-      childId: 'subjectSweTextVar',
+      childId: 'subjectEngTextVar',
       repeatMin: '1',
       repeatMax: '1'
     }
@@ -1460,7 +1460,7 @@ export const newNationalSubjectCategoryRecordTypeGroup: BFFMetadataGroup = {
       repeatMax: '1'
     },
     {
-      childId: 'subjectSweTextVar',
+      childId: 'subjectEngTextVar',
       repeatMin: '1',
       repeatMax: '1'
     }

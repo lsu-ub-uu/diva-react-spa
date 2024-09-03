@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { createFormMetaData } from '../formMetadata';
+import { createFormMetaData, createMetaDataFromChildReference } from '../formMetadata';
 import { FormMetaData } from '../formDefinition';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { listToPool } from '../../utils/structs/listToPool';
@@ -36,6 +36,16 @@ import {
   BFFValidationType
 } from '../../config/bffTypes';
 import {
+  newNationalSubjectCategoryRecordTypeGroup,
+  newNationalSubjectCategoryRecordTypeNewGroup,
+  newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
+  newNationSubjectCategoryMetadataSubjectEngTextVariable,
+  newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
+  newNationSubjectCategoryMetadataSubjectSweTextVariable,
+  newNationSubjectCategoryValidationType,
+  pNewNationSubjectCategoryEngVar,
+  pNewNationSubjectCategoryMetadataGroup,
+  pNewNationSubjectCategorySweVar,
   someMetadataChildGroup,
   someMetadataRecordLink,
   someMetadataTextVariable,
@@ -45,6 +55,7 @@ import {
 } from '../../__mocks__/form/bffMock';
 import { Lookup } from '../../utils/structs/lookup';
 import { Dependencies } from '../formDefinitionsDep';
+import { dependencies } from '../../config/configureServer';
 
 describe('formMetadata', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -61,17 +72,30 @@ describe('formMetadata', () => {
 
   let dependencies: Dependencies;
   beforeEach(() => {
-    validationTypePool = listToPool<BFFValidationType>([someSimpleValidationTypeData]);
+    validationTypePool = listToPool<BFFValidationType>([
+      someSimpleValidationTypeData,
+      newNationSubjectCategoryValidationType
+    ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
       someMetadataTextVariable,
       someRecordInfo,
       someMetadataChildGroup,
       someMetadataRecordLink,
-      someNewSimpleMetadataGroup
+      someNewSimpleMetadataGroup,
+      newNationalSubjectCategoryRecordTypeNewGroup,
+      newNationalSubjectCategoryRecordTypeGroup,
+      newNationSubjectCategoryMetadataSubjectSweTextVariable,
+      newNationSubjectCategoryMetadataSubjectEngTextVariable,
+      newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
+      newNationSubjectCategoryMetadataSubjectEngLangCollVariable
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
-    >([]);
+    >([
+      pNewNationSubjectCategoryMetadataGroup,
+      pNewNationSubjectCategorySweVar,
+      pNewNationSubjectCategoryEngVar
+    ]);
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
     searchPool = listToPool<BFFSearch>([]);
@@ -187,5 +211,133 @@ describe('formMetadata', () => {
     expect(formMetaData).toStrictEqual(expected);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+  it('should return form meta data for a given validation type with attributes', () => {
+    const FORM_MODE_NEW = 'create';
+    const validationTypeId = 'nationalSubjectCategory';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+
+    const expected: FormMetaData = {
+      children: [
+        {
+          name: 'subject',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'textVariable',
+          attributes: { language: 'swe' }
+        },
+        {
+          name: 'subject',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'textVariable',
+          attributes: { language: 'eng' }
+        }
+      ],
+      name: 'nationalSubjectCategory',
+      repeat: {
+        repeatMax: 1,
+        repeatMin: 1
+      },
+      type: 'group'
+    };
+
+    const expectedMetadataLookup = {
+      nationalSubjectCategory: {
+        name: 'nationalSubjectCategory',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'nationalSubjectCategory.subject_language_swe': {
+        name: 'subject',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        attributes: {
+          language: 'swe'
+        },
+        type: 'textVariable'
+      },
+      'nationalSubjectCategory.subject_language_eng': {
+        name: 'subject',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        attributes: {
+          language: 'eng'
+        },
+        type: 'textVariable'
+      }
+    };
+
+    expect(formMetaData).toStrictEqual(expected);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+  describe('createMetaDataFromChildReference', () => {
+    it('creates metadata from child references', () => {
+      const actual = createMetaDataFromChildReference(
+        {
+          childId: 'someNewMetadataGroup2Id',
+          repeatMax: '1',
+          repeatMin: '1'
+        },
+        dependencies.metadataPool
+      );
+      expect(actual).toStrictEqual({
+        name: 'someNewMetadataGroupNameInData',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
+        },
+        children: [
+          {
+            name: 'someNameInData',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 3
+            }
+          },
+          {
+            name: 'someChildGroupNameInData',
+            type: 'group',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            children: [
+              {
+                name: 'someNameInData',
+                type: 'textVariable',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                }
+              }
+            ]
+          },
+          {
+            name: 'nationalSubjectCategory',
+            type: 'recordLink',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            linkedRecordType: 'nationalSubjectCategory'
+          }
+        ]
+      });
+    });
   });
 });
