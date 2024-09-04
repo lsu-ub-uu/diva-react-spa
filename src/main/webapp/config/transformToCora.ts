@@ -140,15 +140,18 @@ export const transformToCoraData = (
   repeatId?: string
 ): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
-  console.log('p', payload);
   Object.keys(payload).forEach((fieldKey) => {
-    console.log('1', fieldKey);
     const newFieldKey = fieldKey.split('_')[0];
-    console.log('newFieldKey', newFieldKey);
     const value = payload[fieldKey];
-    console.log('value', value);
+
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
     if (!fieldKey.startsWith('_')) {
+      // haka på attribut på pathen från value
+      const addAttributeToPath = (path: string, value: any) => {
+        const attributes = Object.entries(value);
+        console.log(attributes);
+      };
+      addAttributeToPath(currentPath, value);
       const currentMetadataLookup = lookup[currentPath];
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
 
@@ -179,7 +182,6 @@ export const transformToCoraData = (
           }
         });
       } else if (typeof value === 'object' && value !== null && 'value' in value) {
-        console.log('herer', newFieldKey);
         const attributes = findChildrenAttributes(value);
         result.push(
           createLeaf(currentMetadataLookup, newFieldKey, value.value, undefined, attributes)
@@ -197,4 +199,11 @@ export const transformToCoraData = (
     }
   });
   return result;
+};
+
+export const removeAttributesFromNameInLookup = (lookup: any) => {
+  const newLookup = Object.entries(lookup).map(([key, value]) => {
+    return { [key.split('_')[0]]: value };
+  });
+  return Object.assign({}, ...newLookup);
 };

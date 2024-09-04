@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import * as console from 'node:console';
 import { removeEmpty } from './removeEmpty';
 import { FormMetaData } from '../../formDefinition/formDefinition';
 
@@ -27,15 +26,8 @@ export const createFormMetaDataPathLookup = (
   childWithSameNameInData: string[] = []
 ) => {
   const childrenWithSameNameInData: string[] = [];
-  // console.log(
-  //   'childrenWithSameNameInData',
-  //   metaDataGroup.name,
-  //   childrenWithSameNameInData,
-  //   childWithSameNameInData
-  // );
 
   path = createPath(path, metaDataGroup, childWithSameNameInData);
-  console.log(path);
   if (metaDataGroup.type === 'group') {
     (metaDataGroup.children ?? []).map((child: FormMetaData) => {
       childrenWithSameNameInData.push(child.name);

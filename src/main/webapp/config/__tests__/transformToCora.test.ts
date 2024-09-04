@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import {
   createLeaf,
   findChildrenAttributes,
@@ -26,6 +25,7 @@ import {
   generateRecordInfo,
   generateRecordLink,
   injectRecordInfoIntoDataGroup,
+  removeAttributesFromNameInLookup,
   transformToCoraData
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
@@ -71,7 +71,8 @@ import {
   newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
   pNewNationSubjectCategoryMetadataGroup,
   pNewNationSubjectCategorySweVar,
-  pNewNationSubjectCategoryEngVar
+  pNewNationSubjectCategoryEngVar,
+  someMetadataCollectionVariable
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -102,6 +103,7 @@ describe('transformToCora', () => {
       someMetadataNumberVarWithAttribute,
       someMetadataRepeatingRecordLinkWithAttributes,
       someMetadataRecordLinkWithAttributes,
+      someMetadataCollectionVariable,
       newNationalSubjectCategoryRecordTypeNewGroup,
       newNationalSubjectCategoryRecordTypeGroup,
       newNationSubjectCategoryMetadataSubjectSweTextVariable,
@@ -1129,9 +1131,9 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-      console.log('formM', formMetaData);
+      // console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-      console.log('formP', formMetaDataPathLookup);
+      // console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(
         formMetaDataPathLookup,
         testFormPayloadWithGroupWithAttributesAndTextVar
@@ -1161,9 +1163,9 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'nationalSubjectCategory';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-      console.log('formM', formMetaData);
+      // console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-      console.log('formP', formMetaDataPathLookup);
+      // console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(formMetaDataPathLookup, {
         nationalSubjectCategory: {
           subject_language_swe: {
@@ -1214,6 +1216,52 @@ describe('transformToCora', () => {
         testFormPayloadWithGroupWithGroupWithRepeatingGroups
       );
       expect(transformData[0]).toStrictEqual(expected);
+    });
+  });
+  describe('newLookup', () => {
+    it('a', () => {
+      const actual = removeAttributesFromNameInLookup({
+        'someNewMetadataGroupWithAttributesNameInData.someNameInData': {
+          name: 'someNameInData',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        },
+        'someNewMetadataGroupWithAttributesNameInData.someNameInDataNumberWithAttributeVar_colour_pink':
+          {
+            name: 'someNameInDataNumberWithAttributeVar',
+            type: 'numberVariable',
+            attributes: { colour: 'pink' },
+            repeat: { repeatMin: 1, repeatMax: 2 }
+          },
+        'someNewMetadataGroupWithAttributesNameInData.nationalSubjectCategoryWithAttributes_colour_pink':
+          {
+            name: 'nationalSubjectCategoryWithAttributes',
+            type: 'recordLink',
+            attributes: { colour: 'pink' },
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            linkedRecordType: 'nationalSubjectCategory2'
+          }
+      });
+      expect(actual).toStrictEqual({
+        'someNewMetadataGroupWithAttributesNameInData.someNameInData': {
+          name: 'someNameInData',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        },
+        'someNewMetadataGroupWithAttributesNameInData.someNameInDataNumberWithAttributeVar': {
+          name: 'someNameInDataNumberWithAttributeVar',
+          type: 'numberVariable',
+          attributes: { colour: 'pink' },
+          repeat: { repeatMin: 1, repeatMax: 2 }
+        },
+        'someNewMetadataGroupWithAttributesNameInData.nationalSubjectCategoryWithAttributes': {
+          name: 'nationalSubjectCategoryWithAttributes',
+          type: 'recordLink',
+          attributes: { colour: 'pink' },
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          linkedRecordType: 'nationalSubjectCategory2'
+        }
+      });
     });
   });
 });
