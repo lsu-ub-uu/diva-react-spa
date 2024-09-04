@@ -19,21 +19,20 @@
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
 import recordManuscriptWithoutCreatedAndUpdates from '../../__mocks__/coraRecordManuscriptPublicWithoutSensitiveData.json';
-import coraNationalSubjectCategories from '../../__mocks__/coraNationalSubjectCategories.json';
 import {
+  hasSameNameInDatas,
   isDataAtomic,
   isDataGroup,
   isRecordLink,
+  isRepeating,
   transformObjectAttributes,
   transformRecord,
-  transformRecords,
   traverseDataGroup
 } from '../transformRecord';
 import {
   Attributes,
   DataAtomic,
   DataGroup,
-  DataListWrapper,
   RecordLink,
   RecordWrapper
 } from '../../utils/cora-data/CoraData';
@@ -610,14 +609,168 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
+  it('should return a root group with multiple variables having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          attributes: {
+            language: 'eng'
+          },
+          name: 'subject',
+          value: 'value1'
+        },
+        {
+          attributes: {
+            language: 'swe'
+          },
+          name: 'subject',
+          value: 'value2'
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        'nationalSubjectCategory[0]': {
+          value: 'nationalSubjectCategory:6325370460697648',
+          _language: 'eng'
+        },
+        nationalSubjectCategory_language_swe: {
+          value: 'nationalSubjectCategory:6325370460697641',
+          _language: 'swe'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
 
   describe('transformRecords', () => {
-    it.skip('should be able to transform a DataListWrapper to something', () => {
-      const expected = transformRecords(
-        dependencies,
-        coraNationalSubjectCategories as DataListWrapper
+    it('isDataGroup return true', () => {
+      const actual = isDataGroup({
+        name: 'isGroup',
+        children: []
+      });
+
+      expect(actual).toBe(true);
+    });
+
+    it('isDataGroup return false', () => {
+      const actual = isDataGroup({
+        name: 'isAtomic',
+        value: 'notAGroup'
+      });
+
+      expect(actual).toBe(false);
+    });
+
+    it('isDataAtomic return true', () => {
+      const actual = isDataAtomic({
+        name: 'isAtomic',
+        value: 'notAGroup'
+      });
+      expect(actual).toBe(true);
+    });
+
+    it('isDataAtomic return false', () => {
+      const actual = isDataAtomic({
+        name: 'isGroup',
+        children: []
+      });
+      expect(actual).toBe(false);
+    });
+
+    it('isRecordLink return false for not DataGroup', () => {
+      const actual = isRecordLink({
+        name: 'isAtomic',
+        value: 'notARecordLink'
+      });
+
+      expect(actual).toBe(false);
+    });
+
+    it('isRecordLink return true for RecordLink', () => {
+      const actual = isRecordLink({
+        name: 'isGroup',
+        children: [
+          {
+            name: 'linkedRecordType',
+            value: 'aLinkedRecordType'
+          },
+          {
+            name: 'linkedRecordId',
+            value: 'aLinkedRecordId'
+          }
+        ]
+      });
+      expect(actual).toBe(true);
+    });
+
+    it('isRepeating return false for repeating', () => {
+      const actual = isRepeating({ name: 'domain', value: 'hh' }, 'divaOutput.domain', {
+        'divaOutput.domain': {
+          name: 'domain',
+          type: 'collectionVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        }
+      });
+
+      expect(actual).toBe(false);
+    });
+
+    it('isRepeating return true for repeating', () => {
+      const actual = isRepeating({ name: 'domain', value: 'hh' }, 'divaOutput.domain', {
+        'divaOutput.domain': {
+          name: 'domain',
+          type: 'collectionVariable',
+          repeat: { repeatMin: 0, repeatMax: 1 }
+        }
+      });
+
+      expect(actual).toBe(true);
+    });
+
+    it('transformObjectAttributes convert empty attributes', () => {
+      const actual = transformObjectAttributes(undefined);
+      expect(actual).toStrictEqual([]);
+    });
+
+    it('transformObjectAttributes convert attributes', () => {
+      const actual = transformObjectAttributes({ colour: 'red' });
+      expect(actual).toStrictEqual([{ _colour: 'red' }]);
+    });
+    it('hasSameNameInDatas returns true when multiple siblings exist', () => {
+      const actual = hasSameNameInDatas(
+        [
+          {
+            name: 'subject',
+            value: 'Naturvetenskap',
+            attributes: { language: 'swe' }
+          },
+          {
+            name: 'subject',
+            value: 'Natural sciences',
+            attributes: { language: 'eng' }
+          },
+          { name: 'code', value: '1' }
+        ],
+        'subject'
       );
-      console.log(JSON.stringify(expected, null, 4));
+      expect(actual).toBe(true);
+    });
+    it('hasSameNameInDatas returns false when single', () => {
+      const actual = hasSameNameInDatas(
+        [
+          {
+            name: 'subject',
+            value: 'Natural sciences',
+            attributes: { language: 'eng' }
+          },
+          { name: 'code', value: '1' }
+        ],
+        'subject'
+      );
+      expect(actual).toBe(false);
     });
   });
 });

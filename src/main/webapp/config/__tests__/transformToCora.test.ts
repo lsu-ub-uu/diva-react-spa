@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import {
   createLeaf,
   findChildrenAttributes,
@@ -60,7 +61,17 @@ import {
   someMetadataTextVariableWithAttributeVar,
   someMetadataNumberVarWithAttribute,
   someMetadataRepeatingRecordLinkWithAttributes,
-  someMetadataRecordLinkWithAttributes
+  someMetadataRecordLinkWithAttributes,
+  newNationSubjectCategoryValidationType,
+  newNationalSubjectCategoryRecordTypeNewGroup,
+  newNationalSubjectCategoryRecordTypeGroup,
+  newNationSubjectCategoryMetadataSubjectSweTextVariable,
+  newNationSubjectCategoryMetadataSubjectEngTextVariable,
+  newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
+  newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
+  pNewNationSubjectCategoryMetadataGroup,
+  pNewNationSubjectCategorySweVar,
+  pNewNationSubjectCategoryEngVar
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -68,6 +79,7 @@ import { createFormMetaData } from '../../formDefinition/formMetadata';
 describe('transformToCora', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
   let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
+  let presentationPool: Lookup<string, BFFPresentation | BFFPresentationGroup>;
   const FORM_MODE_NEW = 'create';
   let dependencies: Dependencies;
 
@@ -75,7 +87,8 @@ describe('transformToCora', () => {
     validationTypePool = listToPool<BFFValidationType>([
       someSimpleValidationTypeData,
       someSimpleValidationTypeDataWithAttributes,
-      someSimpleValidationTypeRepeatingGroups
+      someSimpleValidationTypeRepeatingGroups,
+      newNationSubjectCategoryValidationType
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -88,14 +101,25 @@ describe('transformToCora', () => {
       someMetadataTextVariableWithAttributeVar,
       someMetadataNumberVarWithAttribute,
       someMetadataRepeatingRecordLinkWithAttributes,
-      someMetadataRecordLinkWithAttributes
+      someMetadataRecordLinkWithAttributes,
+      newNationalSubjectCategoryRecordTypeNewGroup,
+      newNationalSubjectCategoryRecordTypeGroup,
+      newNationSubjectCategoryMetadataSubjectSweTextVariable,
+      newNationSubjectCategoryMetadataSubjectEngTextVariable,
+      newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
+      newNationSubjectCategoryMetadataSubjectEngLangCollVariable
+    ]);
+    presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
+      pNewNationSubjectCategoryMetadataGroup,
+      pNewNationSubjectCategorySweVar,
+      pNewNationSubjectCategoryEngVar
     ]);
 
     dependencies = {
       validationTypePool,
       metadataPool,
       textPool: listToPool<BFFText>([]),
-      presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
+      presentationPool,
       recordTypePool: listToPool<BFFRecordType>([]),
       searchPool: listToPool<BFFSearch>([]),
       loginUnitPool: listToPool<BFFLoginUnit>([]),
@@ -1105,11 +1129,54 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(
         formMetaDataPathLookup,
         testFormPayloadWithGroupWithAttributesAndTextVar
       );
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with group containing variables with attributes', () => {
+      const expected: DataGroup = {
+        name: 'nationalSubjectCategory',
+        children: [
+          {
+            name: 'subject',
+            value: 'someValue',
+            attributes: {
+              language: 'swe'
+            }
+          },
+          {
+            name: 'subject',
+            value: 'someOtherValue',
+            attributes: {
+              language: 'eng'
+            }
+          }
+        ]
+      };
+      const validationTypeId = 'nationalSubjectCategory';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      console.log('formM', formMetaData);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      console.log('formP', formMetaDataPathLookup);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        nationalSubjectCategory: {
+          subject_language_swe: {
+            _language: 'swe',
+            value: 'someValue'
+          },
+          subject_language_eng: {
+            _language: 'eng',
+            value: 'someOtherValue'
+          }
+        }
+      });
+      // console.log('transformData', transformData);
       expect(transformData[0]).toStrictEqual(expected);
     });
 

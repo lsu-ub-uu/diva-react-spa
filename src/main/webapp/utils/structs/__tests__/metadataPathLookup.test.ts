@@ -17,7 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { FormMetaData } from '../../../formDefinition/formDefinition';
-import { createFormMetaDataPathLookup } from '../metadataPathLookup';
+import {
+  addAttributesToName,
+  createFormMetaDataPathLookup,
+  createPath
+} from '../metadataPathLookup';
 
 describe('createFormMetaDataPathLookup', () => {
   it('should return form meta data for a given validation type', () => {
@@ -113,5 +117,117 @@ describe('createFormMetaDataPathLookup', () => {
 
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+
+  it('should return form meta data for a given validation type with variables with same nameInData', () => {
+    const formMetaData: FormMetaData = {
+      name: 'nationalSubjectCategory',
+      type: 'group',
+      repeat: { repeatMin: 1, repeatMax: 1 },
+      children: [
+        { name: 'subject', type: 'textVariable', repeat: { repeatMin: 1, repeatMax: 1 } },
+        { name: 'subject', type: 'textVariable', repeat: { repeatMin: 1, repeatMax: 1 } }
+      ]
+    };
+
+    const expectedMetadataLookup = {
+      nationalSubjectCategory: {
+        name: 'nationalSubjectCategory',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'nationalSubjectCategory.subject': {
+        name: 'subject',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'textVariable'
+      }
+    };
+
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    console.log('hello', formMetaDataPathLookup);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+
+  describe('addAttributesToName', () => {
+    it('adds no attributes to name when not available', () => {
+      const actual = addAttributesToName({
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 }
+      });
+      expect(actual).toStrictEqual('subject');
+    });
+
+    it('adds attributes to name when available', () => {
+      const actual = addAttributesToName({
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        attributes: {
+          language: 'swe'
+        }
+      });
+      expect(actual).toStrictEqual('subject_language_swe');
+    });
+
+    it('adds multiple attributes to name when available', () => {
+      const actual = addAttributesToName({
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        attributes: {
+          language: 'swe',
+          otherLanguage: 'aak'
+        }
+      });
+      expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
+    });
+  });
+
+  describe('createPath', () => {
+    it('creates a path for empty path', () => {
+      const actual = createPath('', {
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 }
+      });
+      expect(actual).toStrictEqual('subject');
+    });
+    it('creates a path for non empty path', () => {
+      const actual = createPath('nationalSubjectCategory', {
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 }
+      });
+      expect(actual).toStrictEqual('nationalSubjectCategory.subject');
+    });
+    it('creates a path for empty path with attributes', () => {
+      const actual = createPath('', {
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        attributes: {
+          language: 'swe'
+        }
+      });
+      expect(actual).toStrictEqual('subject_language_swe');
+    });
+    it('creates a path for non empty path with attributes', () => {
+      const actual = createPath('nationalSubjectCategory', {
+        name: 'subject',
+        type: 'textVariable',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        attributes: {
+          language: 'swe'
+        }
+      });
+      expect(actual).toStrictEqual('nationalSubjectCategory.subject_language_swe');
+    });
   });
 });

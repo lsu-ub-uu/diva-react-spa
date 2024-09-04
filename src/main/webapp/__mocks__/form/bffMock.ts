@@ -1413,3 +1413,135 @@ export const nationSubjectCategoryValidationTypeData: BFFValidationType = {
   nameTextId: 'name123',
   defTextId: 'defName456'
 };
+
+export const newNationSubjectCategoryValidationType: BFFValidationType = {
+  id: 'nationalSubjectCategory',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'nationalSubjectCategoryRecordTypeNewGroup',
+  newPresentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
+  // Update/Edit
+  metadataGroupId: 'nationalSubjectCategoryRecordTypeGroup',
+  presentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const newNationalSubjectCategoryRecordTypeNewGroup: BFFMetadataGroup = {
+  id: 'nationalSubjectCategoryRecordTypeNewGroup',
+  nameInData: 'nationalSubjectCategory',
+  type: 'group',
+  textId: 'nationalSubjectCategoryRecordTypeNewGroupText',
+  defTextId: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+  children: [
+    {
+      childId: 'subjectSweTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'subjectEngTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const newNationalSubjectCategoryRecordTypeGroup: BFFMetadataGroup = {
+  id: 'nationalSubjectCategoryRecordTypeGroup',
+  nameInData: 'nationalSubjectCategory',
+  type: 'group',
+  textId: 'nationalSubjectCategoryRecordTypeNewGroupText',
+  defTextId: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+  children: [
+    {
+      childId: 'subjectSweTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'subjectEngTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const newNationSubjectCategoryMetadataSubjectSweTextVariable: BFFMetadataTextVariable = {
+  id: 'subjectSweTextVar',
+  nameInData: 'subject',
+  type: 'textVariable',
+  textId: 'subjectSweTextVarText',
+  defTextId: 'subjectSweTextVarDefText',
+  regEx: '.+',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageSweCollectionVar'
+    }
+  ]
+};
+export const newNationSubjectCategoryMetadataSubjectEngTextVariable: BFFMetadataTextVariable = {
+  id: 'subjectEngTextVar',
+  nameInData: 'subject',
+  type: 'textVariable',
+  textId: 'subjectEngTextVarText',
+  defTextId: 'subjectEngTextVarDefText',
+  regEx: '.+',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageEngCollectionVar'
+    }
+  ]
+};
+
+export const newNationSubjectCategoryMetadataSubjectSweLangCollVariable: BFFMetadataCollectionVariable =
+  {
+    id: 'languageSweCollectionVar',
+    nameInData: 'language',
+    type: 'collectionVariable',
+    textId: 'languageCollectionVarText',
+    defTextId: 'languageCollectionVarDefText',
+    refCollection: 'languageCollection',
+    finalValue: 'swe' // added this for now
+  };
+
+export const newNationSubjectCategoryMetadataSubjectEngLangCollVariable: BFFMetadataCollectionVariable =
+  {
+    id: 'languageEngCollectionVar',
+    nameInData: 'language',
+    type: 'collectionVariable',
+    textId: 'languageCollectionVarText',
+    defTextId: 'languageCollectionVarDefText',
+    refCollection: 'languageCollection',
+    finalValue: 'eng' // added this for now
+  };
+
+export const pNewNationSubjectCategoryMetadataGroup: BFFPresentationGroup = {
+  id: 'nationalSubjectCategoryRecordTypePGroup',
+  type: 'pGroup',
+  presentationOf: 'nationalSubjectCategoryRecordTypeGroup', // metadata
+  mode: 'input',
+  children: [
+    {
+      childId: 'subjectSwePVar',
+      type: 'presentation'
+    },
+    {
+      childId: 'subjectEngPVar',
+      type: 'presentation'
+    }
+  ]
+};
+export const pNewNationSubjectCategorySweVar: BFFPresentation = {
+  id: 'subjectSwePVar',
+  type: 'pVar',
+  presentationOf: 'subjectSweTextVar',
+  mode: 'input'
+};
+
+export const pNewNationSubjectCategoryEngVar: BFFPresentation = {
+  id: 'subjectEngPVar',
+  type: 'pVar',
+  presentationOf: 'subjectEngTextVar',
+  mode: 'input'
+};

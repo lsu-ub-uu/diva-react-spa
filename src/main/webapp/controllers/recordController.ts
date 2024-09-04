@@ -140,6 +140,7 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
+    console.log('tra', transformData[0] as DataGroup);
     const newGroup = injectRecordInfoIntoDataGroup(
       transformData[0] as DataGroup,
       validationTypeId,

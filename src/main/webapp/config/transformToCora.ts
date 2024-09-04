@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-data/CoraData';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
@@ -134,15 +135,16 @@ export const createLeaf = (
 
 export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
-  obj: any,
+  payload: any,
   path?: string,
   repeatId?: string
 ): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
-  Object.keys(obj).forEach((fieldKey) => {
-    const value = obj[fieldKey];
+  /* console.log('p', payload); */
+  Object.keys(payload).forEach((fieldKey) => {
+    const value = payload[fieldKey];
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
-
+    /* console.log('1', fieldKey); */
     if (!fieldKey.startsWith('_')) {
       const currentMetadataLookup = lookup[currentPath];
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;

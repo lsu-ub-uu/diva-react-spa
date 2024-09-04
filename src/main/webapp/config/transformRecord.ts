@@ -85,6 +85,20 @@ export function isRepeating(
   return Object.hasOwn(item, 'repeatId') || isFormDataRepeating;
 }
 
+export const hasSameNameInDatas = (
+  children: (DataGroup | DataAtomic | RecordLink)[],
+  currentName: string
+) => {
+  const nameInDatas: string[] = [];
+
+  children.map((child) => {
+    nameInDatas.push(child.name);
+  });
+
+  const numberOfOccurrences = nameInDatas.reduce((a, v) => (v === currentName ? a + 1 : a), 0);
+  return numberOfOccurrences > 1;
+};
+
 const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {
   return getFirstDataGroupWithNameInData(coraRecordGroup, 'recordInfo') as DataGroup;
 };
@@ -246,6 +260,20 @@ export const traverseDataGroup = (
         isGroup = true;
         const childGroup = child as DataGroup;
         return traverseDataGroup(childGroup, formPathLookup, currentPath);
+      }
+
+      if (
+        isDataAtomic(child) &&
+        !isRepeating(child, currentPath, formPathLookup)
+        // &&
+        // hasSameNameInDatas()
+      ) {
+        repeating = false;
+        isGroup = false;
+        const dataAtomic = child as DataAtomic;
+        const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
+        const { value } = child as DataAtomic;
+        return { [name]: Object.assign({ value }, ...atomicAttributes) };
       }
 
       if (isDataAtomic(child) && !isRepeating(child, currentPath, formPathLookup)) {
