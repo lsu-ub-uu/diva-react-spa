@@ -81,8 +81,8 @@ export const NavigationPanel = (props: NavigationPanelProps) => {
       nonLinear
       activeStep={findActiveLinkNameIndex(activeLinkName)}
     >
-      {props.links.map((item) => (
-        <Step key={item.name}>
+      {props.links.map((item, index) => (
+        <Step key={`${item.name}_[${index}]`}>
           <StepButton
             focusRipple
             // disableRipple

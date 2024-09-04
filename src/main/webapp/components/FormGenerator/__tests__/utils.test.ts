@@ -19,12 +19,14 @@
 
 import * as yup from 'yup';
 import {
-  createDefaultValue,
+  addAttributesToName,
+  createDefaultValueFromFinalValue,
   createDefaultValuesFromComponent,
   createDefaultValuesFromComponents,
   createDefaultValuesFromFormSchema,
   generateRepeatingObject,
   getMinNumberOfRepeatingToShow,
+  hasCurrentComponentSameNameInData,
   mergeArrays,
   mergeObjects,
   removeRootObject,
@@ -327,6 +329,143 @@ describe('FormGenerator Utils', () => {
       const actualDefaultValues = createDefaultValuesFromComponent(
         formComponentRepeatingTextVariable,
         true,
+      );
+      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+    });
+
+    it('createDefaultValuesFromComponent should construct a default value object for textVariables with same NameInData', () => {
+      const expectedDefaultValues = {
+        secondChildGroup: {
+          exampleNumberVar_language_eng: {
+            _language: 'eng',
+            value: '12',
+          },
+          exampleNumberVar_language_swe: {
+            _language: 'swe',
+            value: '12',
+          },
+        },
+      };
+      const actualDefaultValues = createDefaultValuesFromComponent(
+        {
+          name: 'secondChildGroup',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+            body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+          },
+          label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          showLabel: true,
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'exampleNumberVar',
+              type: 'numberVariable',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleMetadataNumberVarText',
+                body: 'exampleMetadataNumberVarDefText',
+              },
+              label: 'exampleMetadataNumberVarText',
+              attributes: [
+                {
+                  name: 'language',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'eng',
+                      label: 'engLangItemText',
+                    },
+                    {
+                      value: 'swe',
+                      label: 'sweLangItemText',
+                    },
+                  ],
+                  finalValue: 'eng',
+                },
+              ],
+              finalValue: '12',
+              showLabel: true,
+              validation: {
+                type: 'number',
+                min: 0,
+                max: 100,
+                warningMin: 10,
+                warningMax: 90,
+                numberOfDecimals: 2,
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+            {
+              name: 'exampleNumberVar',
+              type: 'numberVariable',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleMetadataNumberVarText',
+                body: 'exampleMetadataNumberVarDefText',
+              },
+              label: 'exampleMetadataNumberVarText',
+              attributes: [
+                {
+                  name: 'language',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'eng',
+                      label: 'engLangItemText',
+                    },
+                    {
+                      value: 'swe',
+                      label: 'sweLangItemText',
+                    },
+                  ],
+                  finalValue: 'swe',
+                },
+              ],
+              finalValue: '12',
+              showLabel: true,
+              validation: {
+                type: 'number',
+                min: 0,
+                max: 100,
+                warningMin: 10,
+                warningMax: 90,
+                numberOfDecimals: 2,
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+        false,
       );
       expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
     });
@@ -912,10 +1051,10 @@ describe('FormGenerator Utils', () => {
       });
       expect(expectedData).toStrictEqual(actualData);
     });
-    describe('createDefaultValue', () => {
-      it('createDefaultValue without finalValue return empty default value', () => {
+    describe('createDefaultValueFromFinalValue', () => {
+      it('createDefaultValueFromFinalValue without finalValue return empty default value', () => {
         const expectedData = '';
-        const actualData = createDefaultValue({
+        const actualData = createDefaultValueFromFinalValue({
           name: 'exampleNumberVar',
           type: 'numberVariable',
           mode: 'input',
@@ -940,9 +1079,10 @@ describe('FormGenerator Utils', () => {
         });
         expect(expectedData).toStrictEqual(actualData);
       });
-      it('createDefaultValue with finalValue return set default value', () => {
+      it('createDefaultValueFromFinalValue with finalValue return set default value', () => {
         const expectedData = '12';
-        const actualData = createDefaultValue({
+        const actualData = createDefaultValueFromFinalValue({
+          // createDefaultValueFromFinalValue
           name: 'exampleNumberVar',
           type: 'numberVariable',
           mode: 'input',
@@ -1090,7 +1230,8 @@ describe('FormGenerator Utils', () => {
         ]);
         expect(expectedData).toStrictEqual(actualData);
       });
-      it('create default value from one component', () => {
+
+      it('create default value from two component', () => {
         const expectedData = {
           exampleNumberVar: {
             value: '12',
@@ -1151,11 +1292,124 @@ describe('FormGenerator Utils', () => {
         ]);
         expect(expectedData).toStrictEqual(actualData);
       });
+
       it('create default value from undefined', () => {
         const expectedData = {};
         const actualData = createDefaultValuesFromComponents([]);
         expect(expectedData).toStrictEqual(actualData);
       });
+
+      // it('create default value from two component with same nameInData', () => {
+      //   const expectedData = {
+      //     exampleNumberVart_language_eng: {
+      //       value: '12',
+      //     },
+      //     exampleNumberVar2t_language_swe: {
+      //       value: '12',
+      //     },
+      //   };
+      //   const actualData = createDefaultValuesFromComponents([
+      //     {
+      //       name: 'exampleNumberVar',
+      //       type: 'numberVariable',
+      //       mode: 'input',
+      //       tooltip: {
+      //         title: 'exampleMetadataNumberVarText',
+      //         body: 'exampleMetadataNumberVarDefText',
+      //       },
+      //       label: 'exampleMetadataNumberVarText',
+      //       attributes: [
+      //         {
+      //           name: 'language',
+      //           type: 'collectionVariable',
+      //           placeholder: 'initialEmptyValueText',
+      //           mode: 'input',
+      //           tooltip: {
+      //             title: 'languageCollectionVarText',
+      //             body: 'languageCollectionVarDefText',
+      //           },
+      //           label: 'languageCollectionVarText',
+      //           showLabel: true,
+      //           options: [
+      //             {
+      //               value: 'eng',
+      //               label: 'engLangItemText',
+      //             },
+      //             {
+      //               value: 'swe',
+      //               label: 'sweLangItemText',
+      //             },
+      //           ],
+      //           finalValue: 'eng',
+      //         },
+      //       ],
+      //       finalValue: '12',
+      //       showLabel: true,
+      //       validation: {
+      //         type: 'number',
+      //         min: 0,
+      //         max: 100,
+      //         warningMin: 10,
+      //         warningMax: 90,
+      //         numberOfDecimals: 2,
+      //       },
+      //       repeat: {
+      //         repeatMin: 1,
+      //         repeatMax: 1,
+      //       },
+      //     },
+      //     {
+      //       name: 'exampleNumberVar',
+      //       type: 'numberVariable',
+      //       mode: 'input',
+      //       tooltip: {
+      //         title: 'exampleMetadataNumberVarText',
+      //         body: 'exampleMetadataNumberVarDefText',
+      //       },
+      //       label: 'exampleMetadataNumberVarText',
+      //       attributes: [
+      //         {
+      //           name: 'language',
+      //           type: 'collectionVariable',
+      //           placeholder: 'initialEmptyValueText',
+      //           mode: 'input',
+      //           tooltip: {
+      //             title: 'languageCollectionVarText',
+      //             body: 'languageCollectionVarDefText',
+      //           },
+      //           label: 'languageCollectionVarText',
+      //           showLabel: true,
+      //           options: [
+      //             {
+      //               value: 'eng',
+      //               label: 'engLangItemText',
+      //             },
+      //             {
+      //               value: 'swe',
+      //               label: 'sweLangItemText',
+      //             },
+      //           ],
+      //           finalValue: 'swe',
+      //         },
+      //       ],
+      //       finalValue: '12',
+      //       showLabel: true,
+      //       validation: {
+      //         type: 'number',
+      //         min: 0,
+      //         max: 100,
+      //         warningMin: 10,
+      //         warningMax: 90,
+      //         numberOfDecimals: 2,
+      //       },
+      //       repeat: {
+      //         repeatMin: 1,
+      //         repeatMax: 1,
+      //       },
+      //     },
+      //   ]);
+      //   expect(expectedData).toStrictEqual(actualData);
+      // });
     });
     describe('mergeObjects', () => {
       it('merges one object', () => {
@@ -1344,6 +1598,202 @@ describe('FormGenerator Utils', () => {
           ],
         );
         expect(expectedData).toStrictEqual(actualData);
+      });
+    });
+    describe('addAttributesToName', () => {
+      it('addAttributesToName adds attributes to name of variable', () => {
+        const actual = addAttributesToName(
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          'nationalSubjectCategory.subject.value',
+        );
+        expect(actual).toEqual(
+          'nationalSubjectCategory.subject.value_language_eng',
+        );
+      });
+
+      it('addAttributesToName adds multiple attributes to name of variable', () => {
+        const actual = addAttributesToName(
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+              {
+                name: 'language2',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          'nationalSubjectCategory.subject.value',
+        );
+        expect(actual).toEqual(
+          'nationalSubjectCategory.subject.value_language_eng_language2_swe',
+        );
+      });
+
+      it('addAttributesToName returns name if no attributes', () => {
+        const actual = addAttributesToName(
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          'nationalSubjectCategory.subject.value',
+        );
+        expect(actual).toEqual('subject');
+      });
+    });
+    describe('hasCurrentComponentSameNameInData', () => {
+      it('has same name', () => {
+        const actual = hasCurrentComponentSameNameInData(
+          ['subject'],
+          'subject',
+        );
+        expect(actual).toBe(true);
+      });
+      it('has same name', () => {
+        const actual = hasCurrentComponentSameNameInData(
+          ['subject', 'notSubject'],
+          'subject',
+        );
+        expect(actual).toBe(true);
+      });
+      it('has different name', () => {
+        const actual = hasCurrentComponentSameNameInData(
+          ['notSubject'],
+          'subject',
+        );
+        expect(actual).toBe(false);
+      });
+
+      it('has empty array', () => {
+        const actual = hasCurrentComponentSameNameInData([], 'subject');
+        expect(actual).toBe(false);
       });
     });
   });

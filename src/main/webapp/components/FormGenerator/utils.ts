@@ -20,6 +20,7 @@
 import { FormAttributeCollection, FormComponent, FormSchema } from './types';
 import {
   isComponentContainer,
+  isComponentGroup,
   isComponentRepeating,
   isComponentValidForDataCarrying,
   isComponentVariable,
@@ -37,16 +38,15 @@ export const removeRootObject = (obj: object) => {
   }
 };
 
-export const createDefaultValue = (
+export const createDefaultValueFromFinalValue = (
   component: FormComponent | FormAttributeCollection,
 ) => (component.finalValue ? component.finalValue : '');
-
 export const generateComponentAttributes = (component: FormComponent) => {
   const attributeValues =
     component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
         [`_${attributeCollection.name}`]:
-          createDefaultValue(attributeCollection),
+          createDefaultValueFromFinalValue(attributeCollection),
       }),
     ) ?? [];
   return {
@@ -69,19 +69,44 @@ export const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
 export const createDefaultValuesFromComponent = (
   component: FormComponent,
   forceDefaultValuesForAppend = false,
+  childWithSameNameInData: string[] = [],
 ) => {
   let defaultValues: {
     [x: string]: string | number | ({} | undefined)[] | undefined | unknown[];
   } = {};
 
+  const getChildArrayWithSameNameInData = (component: FormComponent) => {
+    if (!isComponentGroup(component)) {
+      return [];
+    }
+    const nameArray: any[] = [];
+    (component.components ?? []).forEach((childComponent, index) => {
+      nameArray.push(childComponent.name);
+    });
+    return nameArray;
+  };
+
+  const getChildrenWithSameNameInData = (childArray: string[]) => {
+    return childArray.filter(
+      (item, index) => childArray.indexOf(item) !== index,
+    );
+  };
+
+  const childrenWithSameNameInData = getChildrenWithSameNameInData(
+    getChildArrayWithSameNameInData(component),
+  );
+
   const formDefaultObject = isComponentVariable(component)
     ? {
-        value: createDefaultValue(component),
+        value: createDefaultValueFromFinalValue(component),
         ...generateComponentAttributes(component),
       }
     : {
         // groups
-        ...createDefaultValuesFromComponents(component.components),
+        ...createDefaultValuesFromComponents(
+          component.components,
+          childrenWithSameNameInData,
+        ),
         ...generateComponentAttributes(component),
       };
 
@@ -96,7 +121,16 @@ export const createDefaultValuesFromComponent = (
         formDefaultObject,
       );
     } else {
-      defaultValues[component.name] = formDefaultObject;
+      const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
+        childWithSameNameInData,
+        component.name,
+      );
+      if (currentComponentSameNameInData) {
+        defaultValues[addAttributesToName(component, component.name)] =
+          formDefaultObject;
+      } else {
+        defaultValues[component.name] = formDefaultObject;
+      }
     }
   }
 
@@ -110,10 +144,17 @@ export const createDefaultValuesFromComponent = (
 
 export const createDefaultValuesFromComponents = (
   components: FormComponent[] | undefined,
+  childrenWithSameNameInData?: string[],
 ): { [p: string]: any } => {
   const formDefaultValuesArray = (components ?? [])
     .filter(isComponentValidForDataCarrying)
-    .map((formComponent) => createDefaultValuesFromComponent(formComponent));
+    .map((formComponent) =>
+      createDefaultValuesFromComponent(
+        formComponent,
+        false,
+        childrenWithSameNameInData,
+      ),
+    );
   return Object.assign({}, ...formDefaultValuesArray);
 };
 
@@ -163,4 +204,22 @@ export const mergeArrays = (target: any[], overlay: any[]): any[] => {
   });
 
   return result;
+};
+
+export const addAttributesToName = (component: FormComponent, name: string) => {
+  const nameArray: any[] = [];
+  if (component.attributes === undefined) {
+    return component.name;
+  }
+  (component.attributes ?? []).forEach((attribute, index) => {
+    nameArray.push(`${attribute.name}_${attribute.finalValue}`);
+  });
+  return `${name}_${nameArray.join('_')}`;
+};
+
+export const hasCurrentComponentSameNameInData = (
+  childArray: string[],
+  componentName: string,
+) => {
+  return childArray.includes(componentName);
 };

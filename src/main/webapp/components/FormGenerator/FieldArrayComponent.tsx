@@ -27,7 +27,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import { FormComponent } from './types';
 import { createDefaultValuesFromComponent } from './utils';
-import { isComponentSingularAndOptional, isFirstLevel } from './utils/helper';
+import {
+  isComponentSingularAndOptional,
+  isFirstLevelGroup,
+} from './utils/helper';
 import { Typography } from '../Typography/Typography';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { headlineLevelToTypographyVariant } from './FormGenerator';
@@ -226,5 +229,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     ) : null;
   }
 
-  return isFirstLevel(props.name) ? renderFirstLevel() : renderOtherLevels();
+  return isFirstLevelGroup(props.name)
+    ? renderFirstLevel()
+    : renderOtherLevels();
 };

@@ -6247,3 +6247,144 @@ export const loginUnitformDefForLoginUnitWithPassword = {
     },
   },
 };
+
+export const formDefTextVarsWithSameNameInData = {
+  validationTypeId: 'nationalSubjectCategory',
+  form: {
+    name: 'nationalSubjectCategory',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+      body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+    },
+    label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'recordInfo',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'recordInfoNationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'recordInfoNationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'recordInfoNationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: false,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'subject',
+        type: 'textVariable',
+        mode: 'input',
+        inputType: 'input',
+        tooltip: {
+          title: 'subjectSweTextVarText',
+          body: 'subjectSweTextVarDefText',
+        },
+        label: 'subjectSweTextVarText',
+        placeholder: 'subjectSweTextVarText',
+        showLabel: true,
+        validation: {
+          type: 'regex',
+          pattern: '.+',
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+            finalValue: 'swe',
+          },
+        ],
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'subject',
+        type: 'textVariable',
+        mode: 'input',
+        inputType: 'input',
+        tooltip: {
+          title: 'subjectEngTextVarText',
+          body: 'subjectEngTextVarDefText',
+        },
+        label: 'subjectEngTextVarText',
+        placeholder: 'subjectEngTextVarText',
+        showLabel: true,
+        validation: {
+          type: 'regex',
+          pattern: '.+',
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+            finalValue: 'eng',
+          },
+        ],
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};

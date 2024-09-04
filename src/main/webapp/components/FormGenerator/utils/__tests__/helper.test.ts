@@ -30,7 +30,8 @@ import {
   isComponentSurroundingContainer,
   isComponentValidForDataCarrying,
   isComponentVariable,
-  isFirstLevel,
+  isFirstLevelGroup,
+  isFirstLevelVariable,
   isParentGroupOptional,
   isRootLevel,
   isSiblingComponentRequired,
@@ -49,13 +50,24 @@ describe('helper methods', () => {
     });
   });
 
-  describe('isFirstLevel', () => {
+  describe('isFirstLevelGroup', () => {
     it.each([
       ['someRootNameInData', false],
       ['someRootNameInData.numberVar2', true],
       ['someRootNameInData.someGroup.numberVar2', false],
     ])('check if %p is isFirstLevel', (arg1, arg2) => {
-      const expected = isFirstLevel(arg1);
+      const expected = isFirstLevelGroup(arg1);
+      expect(expected).toStrictEqual(arg2);
+    });
+  });
+
+  describe('isFirstLevelVariable', () => {
+    it.each([
+      ['someRootNameInData.value', false],
+      ['someRootNameInData.numberVar2.value', true],
+      ['someRootNameInData.someGroup.numberVar2.value', false],
+    ])('check if %p is isFirstLevel', (arg1, arg2) => {
+      const expected = isFirstLevelVariable(arg1);
       expect(expected).toStrictEqual(arg2);
     });
   });

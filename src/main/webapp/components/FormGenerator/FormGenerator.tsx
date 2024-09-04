@@ -36,7 +36,12 @@ import {
   ControlledSelectField,
   ControlledLinkedRecord,
 } from '../Controlled';
-import { createDefaultValuesFromFormSchema, RecordData } from './utils';
+import {
+  addAttributesToName,
+  createDefaultValuesFromFormSchema,
+  hasCurrentComponentSameNameInData,
+  RecordData,
+} from './utils';
 import { generateYupSchemaFromFormSchema } from './utils/yupSchema';
 import {
   checkIfComponentHasValue,
@@ -46,8 +51,8 @@ import {
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
-  isFirstLevel,
-  isRootLevel,
+  isFirstLevelGroup,
+  isFirstLevelVariable,
 } from './utils/helper';
 import {
   Typography,
@@ -84,22 +89,41 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
-
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
     path: string,
+    childWithNameInDataArray: string[] = [],
     parentPresentationStyle?: string,
   ) => {
     const reactKey = `key_${idx}`;
 
     let currentComponentNamePath;
+
+    const childrenWithSameNameInData = getChildrenWithSameNameInData(
+      getChildArrayWithSameNameInData(component),
+    );
+    const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
+      childWithNameInDataArray,
+      component.name,
+    );
+
+    const addAttributesForMatchingNameInDataWithoutPath =
+      currentComponentSameNameInData
+        ? `${addAttributesToName(component, component.name)}`
+        : `${component.name}`;
+
+    const addAttributesForMatchingNameInDataWithPath =
+      currentComponentSameNameInData
+        ? `${path}.${addAttributesToName(component, component.name)}`
+        : `${path}.${component.name}`;
+
     if (isComponentContainer(component)) {
       currentComponentNamePath = path;
     } else {
       currentComponentNamePath = !path
-        ? `${component.name}`
-        : `${path}.${component.name}`;
+        ? addAttributesForMatchingNameInDataWithoutPath
+        : addAttributesForMatchingNameInDataWithPath;
     }
 
     const createFormComponentAttributes = (
@@ -112,7 +136,7 @@ export const FormGenerator = ({
           <Grid
             key={attribute.name}
             item
-            xs={12}
+            xs={6}
           >
             <ControlledSelectField
               key={`${attribute.name}_${index}`}
@@ -150,6 +174,7 @@ export const FormGenerator = ({
         component,
         createFormComponentAttributes,
         parentPresentationStyle,
+        childrenWithSameNameInData,
       );
     }
 
@@ -217,6 +242,7 @@ export const FormGenerator = ({
             createFormComponents(
               component.components,
               currentComponentNamePath,
+              [],
               component.presentationStyle ?? parentPresentationStyle,
             )}
         </div>
@@ -233,6 +259,7 @@ export const FormGenerator = ({
       aPath: string,
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
+    childWithNameInDataArray: string[],
   ) => {
     return isComponentFirstLevelAndNOTLinkedData(
       currentComponentNamePath,
@@ -284,6 +311,7 @@ export const FormGenerator = ({
               createFormComponents(
                 component.components,
                 currentComponentNamePath,
+                childWithNameInDataArray,
                 component.presentationStyle ?? parentPresentationStyle,
               )}
           </Grid>
@@ -325,6 +353,7 @@ export const FormGenerator = ({
           createFormComponents(
             component.components,
             currentComponentNamePath,
+            childWithNameInDataArray,
             checkIfPresentationStyleIsUndefinedOrEmpty(component)
               ? parentPresentationStyle
               : component.presentationStyle,
@@ -343,7 +372,7 @@ export const FormGenerator = ({
     ) => JSX.Element[],
     parentPresentationStyle: string | undefined,
   ) => {
-    return isFirstLevel(currentComponentNamePath) ? (
+    return isFirstLevelGroup(currentComponentNamePath) ? (
       <FieldArrayComponent
         key={reactKey}
         control={control}
@@ -355,6 +384,7 @@ export const FormGenerator = ({
             ...createFormComponents(
               component.components ?? [],
               arrayPath,
+              [],
               component.presentationStyle ?? parentPresentationStyle,
             ),
           ];
@@ -409,6 +439,7 @@ export const FormGenerator = ({
               ...createFormComponents(
                 component.components ?? [],
                 arrayPath,
+                [],
                 component.presentationStyle ?? parentPresentationStyle,
               ),
             ];
@@ -458,6 +489,7 @@ export const FormGenerator = ({
   const createFormComponents = (
     components: FormComponent[],
     path = '',
+    childWithNameInDataArray: string[],
     parentPresentationStyle?: string,
   ): JSX.Element[] => {
     return components.map((c, i) => {
@@ -465,6 +497,7 @@ export const FormGenerator = ({
         c,
         i,
         path,
+        childWithNameInDataArray,
         parentPresentationStyle as string,
       );
     });
@@ -610,7 +643,13 @@ const createTextOrNumberVariable = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-
+  console.log(
+    'first',
+    name,
+    isFirstLevelVariable(name)
+      ? `anchor_${addAttributesToName(component, component.name)}`
+      : '',
+  );
   return (
     <Grid
       key={reactKey}
@@ -623,6 +662,11 @@ const createTextOrNumberVariable = (
             ? 'auto'
             : '100%',
       }}
+      id={
+        isFirstLevelVariable(name)
+          ? `anchor_${addAttributesToName(component, component.name)}`
+          : ''
+      }
     >
       <ControlledTextField
         multiline={component.inputType === 'textarea'}
@@ -829,7 +873,7 @@ function isComponentFirstLevelAndNOTLinkedData(
   currentComponentNamePath: string,
   linkedData: boolean | undefined,
 ) {
-  return isFirstLevel(currentComponentNamePath) && !linkedData;
+  return isFirstLevelGroup(currentComponentNamePath) && !linkedData;
 }
 
 export const convertChildStyleToString = (
@@ -863,4 +907,42 @@ const checkIfPresentationStyleOrIsInline = (component: FormComponent) => {
 
 const checkIfComponentContainsSearchId = (component: FormComponent) => {
   return component.search !== undefined;
+};
+
+export const hasComponentSameNameInData = (component: FormComponent) => {
+  if (component.components === undefined) {
+    return false;
+  }
+
+  if (component.components.length === 1) {
+    return false;
+  }
+
+  if (!isComponentGroup(component)) {
+    return false;
+  }
+  const nameArray = getChildArrayWithSameNameInData(component);
+  return getChildrenWithSameNameInData(nameArray).length >= 1;
+};
+
+export const getChildrenWithSameNameInData = (childArray: string[]) => {
+  return childArray.filter((item, index) => childArray.indexOf(item) !== index);
+};
+
+export const getChildArrayWithSameNameInData = (component: FormComponent) => {
+  if (!isComponentGroup(component)) {
+    return [];
+  }
+  const nameArray: any[] = [];
+  (component.components ?? []).forEach((childComponent, index) => {
+    nameArray.push(childComponent.name);
+  });
+  return nameArray;
+};
+export const getChildrenWithSameNameInDataFromSchema = (
+  formSchema: FormSchema,
+) => {
+  return getChildrenWithSameNameInData(
+    getChildArrayWithSameNameInData(formSchema?.form),
+  );
 };

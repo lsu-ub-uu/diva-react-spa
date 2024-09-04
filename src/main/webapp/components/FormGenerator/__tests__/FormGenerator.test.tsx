@@ -67,9 +67,16 @@ import {
   formDefWithOneNumberVariableBeingOptionalOutput,
   formDefPreprintWithOnlyAuthorName,
   formDefWithOneTextVariableBeingPassword,
+  formDefTextVarsWithSameNameInData,
 } from '../../../__mocks__/data/formDef';
-import { FormGenerator } from '../FormGenerator';
-import { FormSchema } from '../types';
+import {
+  FormGenerator,
+  getChildArrayWithSameNameInData,
+  getChildrenWithSameNameInData,
+  getChildrenWithSameNameInDataFromSchema,
+  hasComponentSameNameInData,
+} from '../FormGenerator';
+import { FormComponent, FormSchema } from '../types';
 
 /**
  * @vitest-environment jsdom
@@ -155,6 +162,34 @@ describe('<FormGenerator />', () => {
 
       expect(container.getElementsByClassName('Mui-error').length).toBe(2);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('renders a form from a given definition for variables with same nameInData and validates it', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefTextVarsWithSameNameInData as FormSchema}
+        />,
+      );
+      const user = userEvent.setup();
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
+      const sweElement = screen.getByPlaceholderText('subjectSweTextVarText');
+      expect(sweElement).toBeInTheDocument();
+      await user.type(sweElement, 'svenska');
+
+      const engElement = screen.getByPlaceholderText('subjectEngTextVarText');
+      expect(engElement).toBeInTheDocument();
+      await user.type(engElement, 'english');
+
+      await user.click(submitButton);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -1912,5 +1947,963 @@ describe('checkIfComponentHasValue', () => {
     const input2Element = screen.queryByLabelText('someMetadataNumberVarText');
     expect(input1Element).toBeInTheDocument();
     expect(input2Element).not.toBeInTheDocument();
+  });
+
+  describe('getChildrenWithSameNameInData', () => {
+    it('when component is single', () => {
+      const childArray = ['someNameInData'];
+      const actual = getChildrenWithSameNameInData(childArray);
+      expect(actual).toStrictEqual([]);
+    });
+
+    it('when component has same nameInData', () => {
+      const childArray = ['someNameInData', 'someNameInData'];
+      const actual = getChildrenWithSameNameInData(childArray);
+      expect(actual).toStrictEqual(['someNameInData']);
+    });
+
+    it('when component has same nameInData and not', () => {
+      const childArray = [
+        'someNameInData',
+        'someNameInData',
+        'someOtherNameInData',
+      ];
+      const actual = getChildrenWithSameNameInData(childArray);
+      expect(actual).toStrictEqual(['someNameInData']);
+    });
+
+    it('when component has sibling with different nameInData', () => {
+      const childArray = ['someNameInData', 'someOtherNameInData'];
+      const actual = getChildrenWithSameNameInData(childArray);
+      expect(actual).toStrictEqual([]);
+    });
+
+    it('when component has multiple siblings with same nameInData', () => {
+      const childArray = [
+        'someNameInData',
+        'someNameInData',
+        'someOtherNameInData',
+        'someOtherNameInData',
+      ];
+      const actual = getChildrenWithSameNameInData(childArray);
+      expect(actual).toStrictEqual(['someNameInData', 'someOtherNameInData']);
+    });
+  });
+
+  describe('hasComponentSameNameInData', () => {
+    it('when component does not exist', () => {
+      const formGroup = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      expect(actual).toBeFalsy();
+    });
+    it('when component is single', () => {
+      const formGroup = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectSweTextVarText',
+              body: 'subjectSweTextVarDefText',
+            },
+            label: 'subjectSweTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      expect(actual).toBeFalsy();
+    });
+
+    it('when component has same nameInData', () => {
+      const formGroup = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectSweTextVarText',
+              body: 'subjectSweTextVarDefText',
+            },
+            label: 'subjectSweTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      expect(actual).toBeTruthy();
+    });
+    it('when component has same nameInData and not', () => {
+      const formGroup = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectSweTextVarText',
+              body: 'subjectSweTextVarDefText',
+            },
+            label: 'subjectSweTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'notSubject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      expect(actual).toBeTruthy();
+    });
+
+    it('when component has multiple children with same nameInData', () => {
+      const formGroup = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectSweTextVarText',
+              body: 'subjectSweTextVarDefText',
+            },
+            label: 'subjectSweTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'notSubject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'notSubject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      expect(actual).toBeTruthy();
+    });
+
+    it('when component has sibling with different nameInData', () => {
+      const formGroup = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectSweTextVarText',
+              body: 'subjectSweTextVarDefText',
+            },
+            label: 'subjectSweTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'notSubject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      expect(actual).toBeFalsy();
+    });
+    it('when component has is not a group', () => {
+      const formVariable = {
+        name: 'subject',
+        type: 'textVariable',
+        mode: 'output',
+        inputType: 'input',
+        tooltip: {
+          title: 'subjectSweTextVarText',
+          body: 'subjectSweTextVarDefText',
+        },
+        label: 'subjectSweTextVarText',
+        showLabel: true,
+        attributesToShow: 'none',
+        validation: {
+          type: 'regex',
+          pattern: '.+',
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        childStyle: ['fiveChildStyle'],
+        gridColSpan: 5,
+      };
+      const actual = hasComponentSameNameInData(formVariable as FormComponent);
+      expect(actual).toBeFalsy();
+    });
+  });
+
+  describe('getChildrenWithSameNameInData', () => {
+    it('when component has same nameInData', () => {
+      const formGroup = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectSweTextVarText',
+              body: 'subjectSweTextVarDefText',
+            },
+            label: 'subjectSweTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+      const actual = getChildArrayWithSameNameInData(
+        formGroup as FormComponent,
+      );
+      expect(actual).toStrictEqual(['subject', 'subject']);
+    });
+
+    it('when component has is not a group', () => {
+      const formVariable = {
+        name: 'subject',
+        type: 'textVariable',
+        mode: 'output',
+        inputType: 'input',
+        tooltip: {
+          title: 'subjectSweTextVarText',
+          body: 'subjectSweTextVarDefText',
+        },
+        label: 'subjectSweTextVarText',
+        showLabel: true,
+        attributesToShow: 'none',
+        validation: {
+          type: 'regex',
+          pattern: '.+',
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        childStyle: ['fiveChildStyle'],
+        gridColSpan: 5,
+      };
+      const actual = getChildArrayWithSameNameInData(
+        formVariable as FormComponent,
+      );
+      expect(actual).toStrictEqual([]);
+    });
+  });
+  describe('getChildrenWithSameNameInDataFromSchema', () => {
+    it('returns array without duplicates from schema', () => {
+      const actual = getChildrenWithSameNameInDataFromSchema(
+        formDefTextVarsWithSameNameInData as FormSchema,
+      );
+      expect(actual).toStrictEqual(['subject']);
+    });
   });
 });
