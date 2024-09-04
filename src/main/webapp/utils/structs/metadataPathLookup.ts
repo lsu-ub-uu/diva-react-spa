@@ -40,7 +40,7 @@ export const createFormMetaDataPathLookup = (
     childWithSameNameInData
   );
 
-  path = createPath(path, metaDataGroup);
+  path = path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
   if (metaDataGroup.type === 'group') {
     (metaDataGroup.children ?? []).map((child: FormMetaData) => {
       childrenWithSameNameInData.push(child.name);
