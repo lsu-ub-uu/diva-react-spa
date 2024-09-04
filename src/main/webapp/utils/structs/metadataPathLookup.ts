@@ -20,12 +20,6 @@ import * as console from 'node:console';
 import { removeEmpty } from './removeEmpty';
 import { FormMetaData } from '../../formDefinition/formDefinition';
 
-export const createPath = (path: string, metaDataGroup: FormMetaData) => {
-  return path
-    ? `${path}.${addAttributesToName(metaDataGroup)}`
-    : addAttributesToName(metaDataGroup);
-};
-
 export const createFormMetaDataPathLookup = (
   metaDataGroup: FormMetaData,
   path: string = '',
@@ -33,14 +27,15 @@ export const createFormMetaDataPathLookup = (
   childWithSameNameInData: string[] = []
 ) => {
   const childrenWithSameNameInData: string[] = [];
-  console.log(
-    'childrenWithSameNameInData',
-    metaDataGroup.name,
-    childrenWithSameNameInData,
-    childWithSameNameInData
-  );
+  // console.log(
+  //   'childrenWithSameNameInData',
+  //   metaDataGroup.name,
+  //   childrenWithSameNameInData,
+  //   childWithSameNameInData
+  // );
 
-  path = path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
+  path = createPath(path, metaDataGroup, childWithSameNameInData);
+  console.log(path);
   if (metaDataGroup.type === 'group') {
     (metaDataGroup.children ?? []).map((child: FormMetaData) => {
       childrenWithSameNameInData.push(child.name);
@@ -52,6 +47,17 @@ export const createFormMetaDataPathLookup = (
   });
   lookup[path] = removeEmpty({ ...metaDataGroup, children: undefined });
   return lookup;
+};
+
+export const createPath = (path: string, metaDataGroup: FormMetaData, childArray: string[]) => {
+  const hasMetaDataSameNameInData = childArray.includes(metaDataGroup.name);
+  const hasPath = path.length > 0 || path !== undefined;
+  if (hasMetaDataSameNameInData && hasPath) {
+    return path
+      ? `${path}.${addAttributesToName(metaDataGroup)}`
+      : addAttributesToName(metaDataGroup);
+  }
+  return path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
 };
 
 export const addAttributesToName = (metaDataGroup: FormMetaData) => {

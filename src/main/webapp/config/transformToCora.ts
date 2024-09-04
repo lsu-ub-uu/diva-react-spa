@@ -140,11 +140,14 @@ export const transformToCoraData = (
   repeatId?: string
 ): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
-  /* console.log('p', payload); */
+  console.log('p', payload);
   Object.keys(payload).forEach((fieldKey) => {
+    console.log('1', fieldKey);
+    const newFieldKey = fieldKey.split('_')[0];
+    console.log('newFieldKey', newFieldKey);
     const value = payload[fieldKey];
+    console.log('value', value);
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
-    /* console.log('1', fieldKey); */
     if (!fieldKey.startsWith('_')) {
       const currentMetadataLookup = lookup[currentPath];
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
@@ -176,9 +179,10 @@ export const transformToCoraData = (
           }
         });
       } else if (typeof value === 'object' && value !== null && 'value' in value) {
+        console.log('herer', newFieldKey);
         const attributes = findChildrenAttributes(value);
         result.push(
-          createLeaf(currentMetadataLookup, fieldKey, value.value, undefined, attributes)
+          createLeaf(currentMetadataLookup, newFieldKey, value.value, undefined, attributes)
         );
       } else {
         // If Group
