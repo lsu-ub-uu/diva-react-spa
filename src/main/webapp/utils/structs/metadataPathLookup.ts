@@ -20,6 +20,12 @@ import * as console from 'node:console';
 import { removeEmpty } from './removeEmpty';
 import { FormMetaData } from '../../formDefinition/formDefinition';
 
+export const createPath = (path: string, metaDataGroup: FormMetaData) => {
+  return path
+    ? `${path}.${addAttributesToName(metaDataGroup)}`
+    : addAttributesToName(metaDataGroup);
+};
+
 export const createFormMetaDataPathLookup = (
   metaDataGroup: FormMetaData,
   path: string = '',
@@ -34,15 +40,12 @@ export const createFormMetaDataPathLookup = (
     childWithSameNameInData
   );
 
-  path = path ? `${path}.${addAttributesToName(metaDataGroup)}` : metaDataGroup.name;
-  console.log(metaDataGroup.name, path);
+  path = createPath(path, metaDataGroup);
   if (metaDataGroup.type === 'group') {
     (metaDataGroup.children ?? []).map((child: FormMetaData) => {
       childrenWithSameNameInData.push(child.name);
     });
-    console.log('child', childrenWithSameNameInData);
   }
-  console.log('hello', metaDataGroup);
 
   metaDataGroup.children?.forEach((metaData) => {
     createFormMetaDataPathLookup(metaData, path, lookup, childrenWithSameNameInData);
@@ -59,6 +62,5 @@ export const addAttributesToName = (metaDataGroup: FormMetaData) => {
   Object.entries(metaDataGroup.attributes).forEach(([key, value]) => {
     nameArray.push(`${key}_${value}`);
   });
-  console.log('array', nameArray);
   return `${metaDataGroup.name}_${nameArray.join('_')}`;
 };
