@@ -1145,14 +1145,14 @@ describe('transformToCora', () => {
         children: [
           {
             name: 'subject',
-            value: '',
+            value: 'someValue',
             attributes: {
               language: 'swe'
             }
           },
           {
             name: 'subject',
-            value: '',
+            value: 'someOtherValue',
             attributes: {
               language: 'eng'
             }
@@ -1164,11 +1164,19 @@ describe('transformToCora', () => {
       console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
       console.log('formP', formMetaDataPathLookup);
-      const transformData = transformToCoraData(
-        formMetaDataPathLookup,
-        testFormPayloadWithGroupWithAttributesAndTextVar
-      );
-      //console.log('transformData', transformData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        nationalSubjectCategory: {
+          subject_language_swe: {
+            _language: 'swe',
+            value: 'someValue'
+          },
+          subject_language_eng: {
+            _language: 'eng',
+            value: 'someOtherValue'
+          }
+        }
+      });
+      // console.log('transformData', transformData);
       expect(transformData[0]).toStrictEqual(expected);
     });
 
