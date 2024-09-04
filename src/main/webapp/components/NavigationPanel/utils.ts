@@ -36,10 +36,6 @@ export const linksFromFormSchema = (
 ): NavigationPanelLink[] | undefined => {
   const childrenWithSameNameInData =
     getChildrenWithSameNameInDataFromSchema(formSchema);
-  // console.log(getChildArrayWithSameNameInData(formSchema?.form.components));
-  // getChildArrayWithSameNameInData(
-  //   getChildrenWithSameNameInData(formSchema?.form.components),
-  // ),
 
   return formSchema?.form.components
     ?.filter((c) => !['text', 'container'].includes(c.type))
