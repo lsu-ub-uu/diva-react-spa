@@ -25,7 +25,7 @@ import {
   generateRecordInfo,
   generateRecordLink,
   injectRecordInfoIntoDataGroup,
-  removeAttributesFromNameInLookup,
+  removeAttributeFromName,
   transformToCoraData
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
@@ -72,7 +72,15 @@ import {
   pNewNationSubjectCategoryMetadataGroup,
   pNewNationSubjectCategorySweVar,
   pNewNationSubjectCategoryEngVar,
-  someMetadataCollectionVariable
+  someMetadataCollectionVariable,
+  divaOutputValidationType,
+  preprintNewGroup,
+  domainCollectionVar,
+  outputTypeGroup,
+  outputTypeCollectionVar,
+  typeOutputTypeCollectionVar,
+  titleGroup,
+  mainTitleTextVar
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -89,7 +97,8 @@ describe('transformToCora', () => {
       someSimpleValidationTypeData,
       someSimpleValidationTypeDataWithAttributes,
       someSimpleValidationTypeRepeatingGroups,
-      newNationSubjectCategoryValidationType
+      newNationSubjectCategoryValidationType,
+      divaOutputValidationType
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -109,7 +118,14 @@ describe('transformToCora', () => {
       newNationSubjectCategoryMetadataSubjectSweTextVariable,
       newNationSubjectCategoryMetadataSubjectEngTextVariable,
       newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
-      newNationSubjectCategoryMetadataSubjectEngLangCollVariable
+      newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
+      preprintNewGroup,
+      domainCollectionVar,
+      outputTypeGroup,
+      outputTypeCollectionVar,
+      typeOutputTypeCollectionVar,
+      titleGroup,
+      mainTitleTextVar
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pNewNationSubjectCategoryMetadataGroup,
@@ -1131,9 +1147,7 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-      // console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-      // console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(
         formMetaDataPathLookup,
         testFormPayloadWithGroupWithAttributesAndTextVar
@@ -1163,9 +1177,7 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'nationalSubjectCategory';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-      // console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-      // console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(formMetaDataPathLookup, {
         nationalSubjectCategory: {
           subject_language_swe: {
@@ -1178,7 +1190,6 @@ describe('transformToCora', () => {
           }
         }
       });
-      // console.log('transformData', transformData);
       expect(transformData[0]).toStrictEqual(expected);
     });
 
@@ -1217,51 +1228,74 @@ describe('transformToCora', () => {
       );
       expect(transformData[0]).toStrictEqual(expected);
     });
-  });
-  describe('newLookup', () => {
-    it('a', () => {
-      const actual = removeAttributesFromNameInLookup({
-        'someNewMetadataGroupWithAttributesNameInData.someNameInData': {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 }
-        },
-        'someNewMetadataGroupWithAttributesNameInData.someNameInDataNumberWithAttributeVar_colour_pink':
+
+    it('should take a form payload with repeating groups2', () => {
+      const expected: DataGroup = {
+        children: [
           {
-            name: 'someNameInDataNumberWithAttributeVar',
-            type: 'numberVariable',
-            attributes: { colour: 'pink' },
-            repeat: { repeatMin: 1, repeatMax: 2 }
+            attributes: {
+              languageTerm: 'akk'
+            },
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'asdasdasd'
+              }
+            ],
+            name: 'title'
           },
-        'someNewMetadataGroupWithAttributesNameInData.nationalSubjectCategoryWithAttributes_colour_pink':
           {
-            name: 'nationalSubjectCategoryWithAttributes',
-            type: 'recordLink',
-            attributes: { colour: 'pink' },
-            repeat: { repeatMin: 1, repeatMax: 1 },
-            linkedRecordType: 'nationalSubjectCategory2'
+            children: [
+              {
+                attributes: {
+                  type: 'outputType'
+                },
+                name: 'genre',
+                value: 'publication_newspaper-article'
+              }
+            ],
+            name: 'outputType'
+          },
+          {
+            name: 'domain',
+            value: 'hh'
           }
-      });
-      expect(actual).toStrictEqual({
-        'someNewMetadataGroupWithAttributesNameInData.someNameInData': {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: { repeatMin: 1, repeatMax: 1 }
-        },
-        'someNewMetadataGroupWithAttributesNameInData.someNameInDataNumberWithAttributeVar': {
-          name: 'someNameInDataNumberWithAttributeVar',
-          type: 'numberVariable',
-          attributes: { colour: 'pink' },
-          repeat: { repeatMin: 1, repeatMax: 2 }
-        },
-        'someNewMetadataGroupWithAttributesNameInData.nationalSubjectCategoryWithAttributes': {
-          name: 'nationalSubjectCategoryWithAttributes',
-          type: 'recordLink',
-          attributes: { colour: 'pink' },
-          repeat: { repeatMin: 1, repeatMax: 1 },
-          linkedRecordType: 'nationalSubjectCategory2'
+        ],
+        name: 'divaOutput'
+      };
+      const validationTypeId = 'preprint';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        divaOutput: {
+          title: {
+            _languageTerm: 'akk',
+            mainTitle: {
+              value: 'asdasdasd'
+            }
+          },
+          outputType: {
+            genre: {
+              value: 'publication_newspaper-article',
+              _type: 'outputType'
+            }
+          },
+          domain: {
+            value: 'hh'
+          }
         }
       });
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+  });
+  describe('removeAttributeFromName', () => {
+    it('does not remove anything if no attribute', () => {
+      const actual = removeAttributeFromName('subject', { language: 'eng' });
+      expect(actual).toStrictEqual('subject');
+    });
+    it('does remove attribute if it exist', () => {
+      const actual = removeAttributeFromName('subject_language_eng', { language: 'eng' });
+      expect(actual).toStrictEqual('subject');
     });
   });
 });

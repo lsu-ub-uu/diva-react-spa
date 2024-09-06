@@ -19,6 +19,7 @@
 import { FormMetaData } from '../../../formDefinition/formDefinition';
 import {
   addAttributesToName,
+  addNamesToArray,
   createFormMetaDataPathLookup,
   createPath
 } from '../metadataPathLookup';
@@ -150,7 +151,6 @@ describe('createFormMetaDataPathLookup', () => {
     };
 
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    console.log('hello', formMetaDataPathLookup);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
 
@@ -274,6 +274,106 @@ describe('createFormMetaDataPathLookup', () => {
         ['subject']
       );
       expect(actual).toStrictEqual('nationalSubjectCategory.subject_language_swe');
+    });
+  });
+  describe('addNamesToArray', () => {
+    it('1', () => {
+      const data = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
+        },
+        children: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            }
+          },
+          {
+            name: 'notSubject',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            }
+          }
+        ]
+      };
+      const actual = addNamesToArray(data as FormMetaData);
+      expect(actual).toStrictEqual([]);
+    });
+    it('2', () => {
+      const data = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
+        },
+        children: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            }
+          },
+          {
+            name: 'subject',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            }
+          }
+        ]
+      };
+      const actual = addNamesToArray(data as FormMetaData);
+      expect(actual).toStrictEqual(['subject']);
+    });
+    it('3', () => {
+      const data = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
+        },
+        children: [
+          {
+            name: 'subject',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            }
+          },
+          {
+            name: 'subject',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            }
+          },
+          {
+            name: 'notSubject',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            }
+          }
+        ]
+      };
+      const actual = addNamesToArray(data as FormMetaData);
+      expect(actual).toStrictEqual(['subject']);
     });
   });
 });

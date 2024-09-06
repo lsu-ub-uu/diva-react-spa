@@ -55,7 +55,6 @@ import {
 } from '../../__mocks__/form/bffMock';
 import { Lookup } from '../../utils/structs/lookup';
 import { Dependencies } from '../formDefinitionsDep';
-import { dependencies } from '../../config/configureServer';
 
 describe('formMetadata', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

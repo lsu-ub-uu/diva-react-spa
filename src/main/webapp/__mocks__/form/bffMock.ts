@@ -512,25 +512,6 @@ export const someMetadataNumberVarWithOtherAttributeId: BFFMetadataNumberVariabl
   ]
 };
 
-export const someMetadataNumberVarWithAttributeExampleCollectionVarId2: BFFMetadataNumberVariable =
-  {
-    id: 'someMetadataNumberWithAttributeVar2Id',
-    nameInData: 'someNameInDataNumberWithAttributeVar',
-    type: 'numberVariable',
-    textId: 'someNumberVarTextId',
-    defTextId: 'someNumberVarDefTextId',
-    min: '0',
-    max: '20',
-    warningMin: '2',
-    warningMax: '10',
-    numberOfDecimals: '0',
-    attributeReferences: [
-      {
-        refCollectionVarId: 'exampleCollectionVarId2'
-      }
-    ]
-  };
-
 export const someMetadataNumberVarWithoutAttribute: BFFMetadataNumberVariable = {
   id: 'someMetadataNumberVarWithoutAttributeId',
   nameInData: 'someNameInDataNumberWithAttributeVar',
@@ -1544,4 +1525,113 @@ export const pNewNationSubjectCategoryEngVar: BFFPresentation = {
   type: 'pVar',
   presentationOf: 'subjectEngTextVar',
   mode: 'input'
+};
+
+export const divaOutputValidationType: BFFValidationType = {
+  id: 'preprint',
+  validatesRecordTypeId: 'divaOutput',
+  // New
+  newMetadataGroupId: 'preprintNewGroup',
+  newPresentationGroupId: 'divaOutputPGroup',
+  // Update/Edit
+  metadataGroupId: 'divaOutputPGroup',
+  presentationGroupId: 'divaOutputPGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const preprintNewGroup: BFFMetadataGroup = {
+  id: 'preprintNewGroup',
+  nameInData: 'divaOutput',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'domainCollectionVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'outputTypeGroup',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'titleGroup',
+      repeatMin: '0',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const domainCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'domainCollectionVar',
+  nameInData: 'domain',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection'
+};
+
+export const outputTypeGroup: BFFMetadataGroup = {
+  id: 'outputTypeGroup',
+  nameInData: 'outputType',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'outputTypeCollectionVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+export const outputTypeCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'outputTypeCollectionVar',
+  nameInData: 'genre',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'typeOutputTypeCollectionVar'
+    }
+  ]
+};
+
+export const typeOutputTypeCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'typeOutputTypeCollectionVar',
+  nameInData: 'type',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  finalValue: 'outputType'
+};
+
+export const titleGroup: BFFMetadataGroup = {
+  id: 'titleGroup',
+  nameInData: 'title',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'mainTitle',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const mainTitleTextVar: BFFMetadataTextVariable = {
+  id: 'mainTitle',
+  nameInData: 'mainTitle',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: '.+'
 };

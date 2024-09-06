@@ -65,21 +65,15 @@ export const createMetaDataFromChildReference = (
   let children;
   let linkedRecordType;
   let attributes;
-  // console.log('mcr', metadata);
   if (metadata.attributeReferences !== undefined) {
     const temp = getAttributesByAttributeReferences(metadataPool, metadata.attributeReferences);
-    // console.log(Object.entries(temp))
     Object.entries(temp).forEach(([key, value]) => {
       attributes = { [key]: value.toString() };
     });
   }
   if (metadata.type === 'group') {
     const metadataGroup = metadata as BFFMetadataGroup;
-
-    // console.log('mg', metadataGroup);
     children = metadataGroup.children.map((childRef) => {
-      // console.log('cr', childRef);
-
       return createMetaDataFromChildReference(childRef, metadataPool);
     });
   }

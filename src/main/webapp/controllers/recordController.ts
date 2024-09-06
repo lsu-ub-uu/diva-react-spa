@@ -18,7 +18,6 @@
  */
 
 import { Request, Response } from 'express';
-import * as console from 'node:console';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   deleteRecordDataById,
@@ -49,7 +48,6 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
-    console.log('payload', JSON.stringify(payload, null, 2));
     const { lastUpdate, created, values } = payload;
     const recordType = Object.keys(values)[0];
 
@@ -138,15 +136,15 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     const dataDivider = 'divaData';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
-    console.log('tra', transformData[0] as DataGroup);
+
     const newGroup = injectRecordInfoIntoDataGroup(
       transformData[0] as DataGroup,
       validationTypeId,
       dataDivider
     );
-
     const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
     const id = extractIdFromRecordInfo(response.data.record.data);
     res.status(response.status).json({ id }); // return id for now

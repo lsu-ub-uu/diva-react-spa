@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-data/CoraData';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
@@ -133,28 +132,38 @@ export const createLeaf = (
   return generateRecordLink(name, metaData.linkedRecordType ?? '', value, inAttributes, repeatId);
 };
 
+function isNotAttribute(fieldKey: string) {
+  return !fieldKey.startsWith('_');
+}
+
+function isRepeatingVariable(value: any) {
+  return Array.isArray(value);
+}
+
+function isVariable(item: DataGroup | DataAtomic) {
+  return 'value' in item;
+}
+
+function isNonRepeatingVariable(value: any) {
+  return typeof value === 'object' && value !== null && 'value' in value;
+}
+
 export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
   payload: any,
   path?: string,
-  repeatId?: string
+  repeatId?: string,
+  hasSiblings?: boolean
 ): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
   Object.keys(payload).forEach((fieldKey) => {
-    const newFieldKey = fieldKey.split('_')[0];
     const value = payload[fieldKey];
-
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
+    const checkIfHasSiblings = siblingWithSameNameInData(value) || hasSiblings;
+
     if (!fieldKey.startsWith('_')) {
-      // haka på attribut på pathen från value
-      const addAttributeToPath = (path: string, value: any) => {
-        const attributes = Object.entries(value);
-        console.log(attributes);
-      };
-      addAttributeToPath(currentPath, value);
       const currentMetadataLookup = lookup[currentPath];
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
-
       if (Array.isArray(value)) {
         value.forEach((item: DataGroup | DataAtomic, index: number) => {
           if ('value' in item) {
@@ -184,7 +193,13 @@ export const transformToCoraData = (
       } else if (typeof value === 'object' && value !== null && 'value' in value) {
         const attributes = findChildrenAttributes(value);
         result.push(
-          createLeaf(currentMetadataLookup, newFieldKey, value.value, undefined, attributes)
+          createLeaf(
+            currentMetadataLookup,
+            removeAttributeFromName(fieldKey, attributes),
+            value.value,
+            undefined,
+            attributes
+          )
         );
       } else {
         // If Group
@@ -192,7 +207,7 @@ export const transformToCoraData = (
           removeEmpty({
             name: fieldKey,
             attributes: findChildrenAttributes(value),
-            children: transformToCoraData(lookup, value, currentPath, repeatId)
+            children: transformToCoraData(lookup, value, currentPath, repeatId, checkIfHasSiblings)
           } as DataGroup)
         );
       }
@@ -201,9 +216,33 @@ export const transformToCoraData = (
   return result;
 };
 
-export const removeAttributesFromNameInLookup = (lookup: any) => {
-  const newLookup = Object.entries(lookup).map(([key, value]) => {
-    return { [key.split('_')[0]]: value };
+const siblingWithSameNameInData = (value: any) => {
+  const stripedNames = Object.keys(value).map((names) => {
+    return names.split('_')[0];
   });
-  return Object.assign({}, ...newLookup);
+  return stripedNames.filter((item, index) => !(stripedNames.indexOf(item) === index)).length > 0;
+};
+
+const addAttributeToPath = (path: string, lookup: any) => {
+  const getVariable = (part: string, o: any): any =>
+    Object.entries(o).find(([k, v]) => k.startsWith(part))?.[1];
+  const attribute = getVariable(path, lookup)?.attributes;
+  const attributeArray: string[] = [];
+  if (attribute === undefined) {
+    return path;
+  }
+  Object.entries(attribute).forEach(([key, value]) => {
+    attributeArray.push(`${key}_${value}`);
+  });
+  return `${path}_${attributeArray.join('_')}`;
+};
+
+export const removeAttributeFromName = (
+  name: string,
+  value: { [key: string]: string } | undefined
+) => {
+  if (value === undefined) {
+    return name;
+  }
+  return name.split('_')[0];
 };
