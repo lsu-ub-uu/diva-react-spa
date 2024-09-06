@@ -273,6 +273,7 @@ export const traverseDataGroup = (
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
         const { value } = child as DataAtomic;
+        // hasSameNameInDatas -> lägg till attribut i namn i returnen
         return { [name]: Object.assign({ value }, ...atomicAttributes) };
       }
 

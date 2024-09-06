@@ -609,7 +609,7 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
-  it.skip('should return a root group with multiple variables having attributes', () => {
+  it('should return a root group with multiple variables with same nameInData having attributes', () => {
     const test = {
       name: 'divaOutput',
       children: [
