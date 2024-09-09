@@ -39,7 +39,10 @@ import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDa
 import { FormMetaData } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
-import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
+import {
+  addAttributesToName,
+  createFormMetaDataPathLookup
+} from '../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../formDefinition/formMetadata';
 
 /**
@@ -84,20 +87,6 @@ export function isRepeating(
   }
   return Object.hasOwn(item, 'repeatId') || isFormDataRepeating;
 }
-
-export const hasSameNameInDatas = (
-  children: (DataGroup | DataAtomic | RecordLink)[],
-  currentName: string
-) => {
-  const nameInDatas: string[] = [];
-
-  children.map((child) => {
-    nameInDatas.push(child.name);
-  });
-
-  const numberOfOccurrences = nameInDatas.reduce((a, v) => (v === currentName ? a + 1 : a), 0);
-  return numberOfOccurrences > 1;
-};
 
 const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {
   return getFirstDataGroupWithNameInData(coraRecordGroup, 'recordInfo') as DataGroup;
@@ -224,7 +213,6 @@ export const traverseDataGroup = (
 
   // handle attributes on the current group
   const groupAttributes = transformObjectAttributes(dataGroup.attributes);
-
   const object: unknown[] = [];
   groupedEntries.forEach(([name, groupedChildren]) => {
     const currentPath = path ? `${path}.${name}` : name;
@@ -262,19 +250,17 @@ export const traverseDataGroup = (
         return traverseDataGroup(childGroup, formPathLookup, currentPath);
       }
 
-      if (
-        isDataAtomic(child) &&
-        !isRepeating(child, currentPath, formPathLookup)
-        // &&
-        // hasSameNameInDatas()
-      ) {
+      if (isDataAtomic(child) && !isRepeating(child, currentPath, formPathLookup)) {
         repeating = false;
         isGroup = false;
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
         const { value } = child as DataAtomic;
         // hasSameNameInDatas -> lägg till attribut i namn i returnen
-        return { [name]: Object.assign({ value }, ...atomicAttributes) };
+        const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
+          ? addAttributesToName(child)
+          : name;
+        return { [possiblyNameWithAttribute]: Object.assign({ value }, ...atomicAttributes) };
       }
 
       if (isDataAtomic(child) && !isRepeating(child, currentPath, formPathLookup)) {
@@ -306,4 +292,18 @@ export const traverseDataGroup = (
   });
 
   return { [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) };
+};
+
+export const hasSameNameInDatas = (
+  children: (DataGroup | DataAtomic | RecordLink)[],
+  currentName: string
+) => {
+  const nameInDatas: string[] = [];
+
+  children.map((child) => {
+    nameInDatas.push(child.name);
+  });
+
+  const numberOfOccurrences = nameInDatas.reduce((a, v) => (v === currentName ? a + 1 : a), 0);
+  return numberOfOccurrences > 1;
 };

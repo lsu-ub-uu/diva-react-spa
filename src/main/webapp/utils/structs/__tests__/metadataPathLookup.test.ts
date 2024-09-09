@@ -155,38 +155,72 @@ describe('createFormMetaDataPathLookup', () => {
   });
 
   describe('addAttributesToName', () => {
-    it('adds no attributes to name when not available', () => {
-      const actual = addAttributesToName({
-        name: 'subject',
-        type: 'textVariable',
-        repeat: { repeatMin: 1, repeatMax: 1 }
+    describe('formMetaData', () => {
+      it('adds no attributes to name when not available', () => {
+        const actual = addAttributesToName({
+          name: 'subject',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        });
+        expect(actual).toStrictEqual('subject');
       });
-      expect(actual).toStrictEqual('subject');
-    });
 
-    it('adds attributes to name when available', () => {
-      const actual = addAttributesToName({
-        name: 'subject',
-        type: 'textVariable',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-        attributes: {
-          language: 'swe'
-        }
+      it('adds attributes to name when available', () => {
+        const actual = addAttributesToName({
+          name: 'subject',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          attributes: {
+            language: 'swe'
+          }
+        });
+        expect(actual).toStrictEqual('subject_language_swe');
       });
-      expect(actual).toStrictEqual('subject_language_swe');
-    });
 
-    it('adds multiple attributes to name when available', () => {
-      const actual = addAttributesToName({
-        name: 'subject',
-        type: 'textVariable',
-        repeat: { repeatMin: 1, repeatMax: 1 },
-        attributes: {
-          language: 'swe',
-          otherLanguage: 'aak'
-        }
+      it('adds multiple attributes to name when available', () => {
+        const actual = addAttributesToName({
+          name: 'subject',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          attributes: {
+            language: 'swe',
+            otherLanguage: 'aak'
+          }
+        });
+        expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
       });
-      expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
+    });
+    describe('Cora MetaData', () => {
+      it('adds no attributes to name when not available', () => {
+        const actual = addAttributesToName({
+          name: 'subject',
+          value: 'Naturvetenskap'
+        });
+        expect(actual).toStrictEqual('subject');
+      });
+
+      it('adds attributes to name when available', () => {
+        const actual = addAttributesToName({
+          name: 'subject',
+          value: 'Naturvetenskap',
+          attributes: {
+            language: 'swe'
+          }
+        });
+        expect(actual).toStrictEqual('subject_language_swe');
+      });
+
+      it('adds multiple attributes to name when available', () => {
+        const actual = addAttributesToName({
+          name: 'subject',
+          value: 'Naturvetenskap',
+          attributes: {
+            language: 'swe',
+            otherLanguage: 'aak'
+          }
+        });
+        expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
+      });
     });
   });
 

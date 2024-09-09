@@ -632,11 +632,11 @@ describe('transformRecord', () => {
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {
-        nationalSubjectCategory_language_eng: {
+        subject_language_eng: {
           value: 'value1',
           _language: 'eng'
         },
-        nationalSubjectCategory_language_swe: {
+        subject_language_swe: {
           value: 'value2',
           _language: 'swe'
         }

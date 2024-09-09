@@ -132,22 +132,6 @@ export const createLeaf = (
   return generateRecordLink(name, metaData.linkedRecordType ?? '', value, inAttributes, repeatId);
 };
 
-function isNotAttribute(fieldKey: string) {
-  return !fieldKey.startsWith('_');
-}
-
-function isRepeatingVariable(value: any) {
-  return Array.isArray(value);
-}
-
-function isVariable(item: DataGroup | DataAtomic) {
-  return 'value' in item;
-}
-
-function isNonRepeatingVariable(value: any) {
-  return typeof value === 'object' && value !== null && 'value' in value;
-}
-
 export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
   payload: any,
@@ -161,12 +145,12 @@ export const transformToCoraData = (
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
     const checkIfHasSiblings = siblingWithSameNameInData(value) || hasSiblings;
 
-    if (!fieldKey.startsWith('_')) {
+    if (isNotAttribute(fieldKey)) {
       const currentMetadataLookup = lookup[currentPath];
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
-      if (Array.isArray(value)) {
+      if (isRepeatingVariable(value)) {
         value.forEach((item: DataGroup | DataAtomic, index: number) => {
-          if ('value' in item) {
+          if (isVariable(item)) {
             const atomic = item as DataAtomic;
             const attributes = findChildrenAttributes(atomic);
             result.push(
@@ -190,7 +174,7 @@ export const transformToCoraData = (
             );
           }
         });
-      } else if (typeof value === 'object' && value !== null && 'value' in value) {
+      } else if (isNonRepeatingVariable(value)) {
         const attributes = findChildrenAttributes(value);
         result.push(
           createLeaf(
@@ -223,20 +207,6 @@ const siblingWithSameNameInData = (value: any) => {
   return stripedNames.filter((item, index) => !(stripedNames.indexOf(item) === index)).length > 0;
 };
 
-const addAttributeToPath = (path: string, lookup: any) => {
-  const getVariable = (part: string, o: any): any =>
-    Object.entries(o).find(([k, v]) => k.startsWith(part))?.[1];
-  const attribute = getVariable(path, lookup)?.attributes;
-  const attributeArray: string[] = [];
-  if (attribute === undefined) {
-    return path;
-  }
-  Object.entries(attribute).forEach(([key, value]) => {
-    attributeArray.push(`${key}_${value}`);
-  });
-  return `${path}_${attributeArray.join('_')}`;
-};
-
 export const removeAttributeFromName = (
   name: string,
   value: { [key: string]: string } | undefined
@@ -245,4 +215,20 @@ export const removeAttributeFromName = (
     return name;
   }
   return name.split('_')[0];
+};
+
+const isNotAttribute = (fieldKey: string) => {
+  return !fieldKey.startsWith('_');
+};
+
+const isRepeatingVariable = (value: any) => {
+  return Array.isArray(value);
+};
+
+const isVariable = (item: DataGroup | DataAtomic) => {
+  return 'value' in item;
+};
+
+const isNonRepeatingVariable = (value: any) => {
+  return typeof value === 'object' && value !== null && 'value' in value;
 };

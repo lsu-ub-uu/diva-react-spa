@@ -19,6 +19,7 @@
 
 import { removeEmpty } from './removeEmpty';
 import { FormMetaData } from '../../formDefinition/formDefinition';
+import { DataAtomic, DataGroup, RecordLink } from '../cora-data/CoraData';
 
 export const createFormMetaDataPathLookup = (
   metaDataGroup: FormMetaData,
@@ -51,7 +52,9 @@ export const createPath = (path: string, metaDataGroup: FormMetaData, childArray
   return path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
 };
 
-export const addAttributesToName = (metaDataGroup: FormMetaData) => {
+export const addAttributesToName = (
+  metaDataGroup: FormMetaData | (DataGroup | DataAtomic | RecordLink)
+) => {
   if (metaDataGroup.attributes === undefined) {
     return metaDataGroup.name;
   }
