@@ -144,10 +144,13 @@ export const transformToCoraData = (
     const value = payload[fieldKey];
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
     const checkIfHasSiblings = siblingWithSameNameInData(value) || hasSiblings;
+    // console.log('cS', value);
+    // console.log('lu', lookup);
 
     if (isNotAttribute(fieldKey)) {
       const currentMetadataLookup = lookup[currentPath];
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
+      // console.log('fk', fieldKey);
       if (isRepeatingVariable(value)) {
         value.forEach((item: DataGroup | DataAtomic, index: number) => {
           if (isVariable(item)) {
@@ -187,10 +190,11 @@ export const transformToCoraData = (
         );
       } else {
         // If Group
+        const attributes = findChildrenAttributes(value);
         result.push(
           removeEmpty({
-            name: fieldKey,
-            attributes: findChildrenAttributes(value),
+            name: removeAttributeFromName(fieldKey, attributes),
+            attributes,
             children: transformToCoraData(lookup, value, currentPath, repeatId, checkIfHasSiblings)
           } as DataGroup)
         );

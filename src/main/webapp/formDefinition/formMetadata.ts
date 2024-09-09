@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import * as console from 'node:console';
+
 import {
   BFFAttributeReference,
   BFFMetadata,
@@ -52,9 +52,9 @@ export const createFormMetaData = (
   }
 
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
-
   return createMetaDataFromChildReference(formRootReference, metadataPool);
 };
+
 export const createMetaDataFromChildReference = (
   metadataChildReference: BFFMetadataChildReference,
   metadataPool: any
@@ -82,7 +82,6 @@ export const createMetaDataFromChildReference = (
     const metadataRecordLink = metadata as BFFMetadataRecordLink;
     linkedRecordType = metadataRecordLink.linkedRecordType;
   }
-
   return removeEmpty({
     name: metadata.nameInData,
     type: metadata.type,

@@ -80,7 +80,13 @@ import {
   outputTypeCollectionVar,
   typeOutputTypeCollectionVar,
   titleGroup,
-  mainTitleTextVar
+  mainTitleTextVar,
+  someValidationTypeForRepeatingGroupsNameInDataId,
+  someNewMetadataGroupRepeatingGroupsNameInDataGroup,
+  authorGroup,
+  authorGroup2,
+  givenNameTextVar,
+  familyNameTextVar
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -98,7 +104,8 @@ describe('transformToCora', () => {
       someSimpleValidationTypeDataWithAttributes,
       someSimpleValidationTypeRepeatingGroups,
       newNationSubjectCategoryValidationType,
-      divaOutputValidationType
+      divaOutputValidationType,
+      someValidationTypeForRepeatingGroupsNameInDataId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -125,7 +132,12 @@ describe('transformToCora', () => {
       outputTypeCollectionVar,
       typeOutputTypeCollectionVar,
       titleGroup,
-      mainTitleTextVar
+      mainTitleTextVar,
+      someNewMetadataGroupRepeatingGroupsNameInDataGroup,
+      authorGroup,
+      authorGroup2,
+      givenNameTextVar,
+      familyNameTextVar
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pNewNationSubjectCategoryMetadataGroup,
@@ -1187,6 +1199,72 @@ describe('transformToCora', () => {
           subject_language_eng: {
             _language: 'eng',
             value: 'someOtherValue'
+          }
+        }
+      });
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with group with same nameInData and variables', () => {
+      const expected: DataGroup = {
+        name: 'someRootNameInData',
+        children: [
+          {
+            name: 'author',
+            children: [
+              {
+                name: 'givenName',
+                value: 'Egil'
+              },
+              {
+                name: 'familyName',
+                value: 'Swenning'
+              }
+            ],
+            attributes: {
+              language: 'swe'
+            }
+          },
+          {
+            name: 'author',
+            children: [
+              {
+                name: 'givenName',
+                value: 'Daniel'
+              },
+              {
+                name: 'familyName',
+                value: 'Flores'
+              }
+            ],
+            attributes: {
+              language: 'eng'
+            }
+          }
+        ]
+      };
+      const validationTypeId = 'someValidationTypeForRepeatingGroupsNameInDataId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        someRootNameInData: {
+          author_language_swe: {
+            givenName: {
+              value: 'Egil'
+            },
+            familyName: {
+              value: 'Swenning'
+            },
+            _language: 'swe'
+          },
+          author_language_eng: {
+            givenName: {
+              value: 'Daniel'
+            },
+            familyName: {
+              value: 'Flores'
+            },
+            _language: 'eng'
           }
         }
       });

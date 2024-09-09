@@ -1635,3 +1635,103 @@ export const mainTitleTextVar: BFFMetadataTextVariable = {
   defTextId: 'someDefTextId',
   regEx: '.+'
 };
+
+export const someValidationTypeForRepeatingGroupsNameInDataId: BFFValidationType = {
+  id: 'someValidationTypeForRepeatingGroupsNameInDataId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupRepeatingGroupsNameInDataGroup',
+  newPresentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
+  // Update/Edit
+  metadataGroupId: 'nationalSubjectCategoryRecordTypeGroup',
+  presentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupRepeatingGroupsNameInDataGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupRepeatingGroupsNameInDataGroup',
+  nameInData: 'someRootNameInData',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'authorGroup',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'authorOtherGroup',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const authorGroup: BFFMetadataGroup = {
+  id: 'authorGroup',
+  nameInData: 'author',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+
+  children: [
+    {
+      childId: 'givenNameTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'familyNameTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ],
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageSweCollectionVar'
+    }
+  ]
+};
+export const authorGroup2: BFFMetadataGroup = {
+  id: 'authorOtherGroup',
+  nameInData: 'author',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'givenNameTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'familyNameTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ],
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageEngCollectionVar'
+    }
+  ]
+};
+
+export const givenNameTextVar: BFFMetadataTextVariable = {
+  id: 'givenNameTextVar',
+  nameInData: 'givenName',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+export const familyNameTextVar: BFFMetadataTextVariable = {
+  id: 'familyNameTextVar',
+  nameInData: 'familyName',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};

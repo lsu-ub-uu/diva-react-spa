@@ -37,6 +37,7 @@ import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import * as TYPES from '../config/bffTypes';
 
+
 /**
  * @desc Post an update to a record to Cora
  * @route POST /api/record/:validationTypeId/:recordId
@@ -136,7 +137,6 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     const dataDivider = 'divaData';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
 
