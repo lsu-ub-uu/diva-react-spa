@@ -114,6 +114,236 @@ describe('<FormGenerator />', () => {
       expect(headerElement).toBeInTheDocument();
     });
 
+    it('renders a form from a given definition for a update definition', () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          record={{
+            id: 'divaOutput:1729757581842184',
+            recordType: 'divaOutput',
+            validationType: 'nationalSubjectCategory',
+            createdAt: '2024-09-09T08:29:02.073117Z',
+            createdBy: '161616',
+            updated: [
+              {
+                updateAt: '2024-09-09T08:29:02.073117Z',
+                updatedBy: '161616',
+              },
+            ],
+            userRights: ['read', 'update', 'index', 'delete'],
+            data: {
+              nationalSubjectCategory: {
+                subject_language_swe: {
+                  value: 'Svensk Nationell ämneskategori',
+                  _language: 'swe',
+                },
+                subject_language_eng: {
+                  value: 'English National Subject Category',
+                  _language: 'eng',
+                },
+                code: {
+                  value: '1',
+                },
+              },
+            },
+          }}
+          onSubmit={mockSubmit}
+          formSchema={{
+            validationTypeId: 'nationalSubjectCategory',
+            form: {
+              name: 'nationalSubjectCategory',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+                body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+              },
+              label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+              showLabel: true,
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              components: [
+                {
+                  name: 'recordInfo',
+                  type: 'group',
+                  mode: 'input',
+                  tooltip: {
+                    title:
+                      'recordInfoNationalSubjectCategoryRecordTypeNewGroupText',
+                    body: 'recordInfoNationalSubjectCategoryRecordTypeNewGroupDefText',
+                  },
+                  label:
+                    'recordInfoNationalSubjectCategoryRecordTypeNewGroupText',
+                  showLabel: false,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  presentationStyle: '',
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+                {
+                  name: 'subject',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'subjectSweTextVarText',
+                    body: 'subjectSweTextVarDefText',
+                  },
+                  label: 'subjectSweTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  attributes: [
+                    {
+                      name: 'language',
+                      type: 'collectionVariable',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'input',
+                      tooltip: {
+                        title: 'languageCollectionVarText',
+                        body: 'languageCollectionVarDefText',
+                      },
+                      label: 'languageCollectionVarText',
+                      showLabel: true,
+                      options: [
+                        {
+                          value: 'eng',
+                          label: 'engLangItemText',
+                        },
+                        {
+                          value: 'swe',
+                          label: 'sweLangItemText',
+                        },
+                      ],
+                      finalValue: 'swe',
+                    },
+                  ],
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+                {
+                  name: 'subject',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'subjectEngTextVarText',
+                    body: 'subjectEngTextVarDefText',
+                  },
+                  label: 'subjectEngTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  attributes: [
+                    {
+                      name: 'language',
+                      type: 'collectionVariable',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'input',
+                      tooltip: {
+                        title: 'languageCollectionVarText',
+                        body: 'languageCollectionVarDefText',
+                      },
+                      label: 'languageCollectionVarText',
+                      showLabel: true,
+                      options: [
+                        {
+                          value: 'eng',
+                          label: 'engLangItemText',
+                        },
+                        {
+                          value: 'swe',
+                          label: 'sweLangItemText',
+                        },
+                      ],
+                      finalValue: 'eng',
+                    },
+                  ],
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+                {
+                  name: 'code',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'codeTextVarText',
+                    body: 'codeTextVarDefText',
+                  },
+                  label: 'codeTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '^[0-9]{1,5}$',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+                {
+                  name: 'parent',
+                  type: 'recordLink',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'parentNationalSubjectCategoryLinkText',
+                    body: 'parentNationalSubjectCategoryLinkDefText',
+                  },
+                  label: 'parentNationalSubjectCategoryLinkText',
+                  showLabel: true,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 0,
+                    repeatMin: 0,
+                    repeatMax: 1,
+                  },
+                  childStyle: [''],
+                  gridColSpan: 12,
+                  recordLinkType: 'nationalSubjectCategory',
+                  presentationRecordLinkId:
+                    'parentNationalSubjectCategoryPLink',
+                  search: 'nationalSubjectCategorySearch',
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          }}
+        />,
+      );
+      const swedishElement = screen.getByDisplayValue('Svensk Nationell ämneskategori');
+      expect(swedishElement).toBeInTheDocument();
+
+      const englishElement = screen.getByDisplayValue(
+        'English National Subject Category',
+      );
+      expect(englishElement).toBeInTheDocument();
+    });
+
     it('renders a form from a given definition does validate it', async () => {
       const mockSubmit = vi.fn();
 

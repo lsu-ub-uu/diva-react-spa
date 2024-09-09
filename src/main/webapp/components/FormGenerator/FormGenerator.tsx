@@ -643,13 +643,7 @@ const createTextOrNumberVariable = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-  console.log(
-    'first',
-    name,
-    isFirstLevelVariable(name)
-      ? `anchor_${addAttributesToName(component, component.name)}`
-      : '',
-  );
+
   return (
     <Grid
       key={reactKey}
