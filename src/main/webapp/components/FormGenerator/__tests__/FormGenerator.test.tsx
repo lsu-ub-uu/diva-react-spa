@@ -68,6 +68,7 @@ import {
   formDefPreprintWithOnlyAuthorName,
   formDefWithOneTextVariableBeingPassword,
   formDefTextVarsWithSameNameInData,
+  formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
 } from '../../../__mocks__/data/formDef';
 import {
   FormGenerator,
@@ -114,7 +115,7 @@ describe('<FormGenerator />', () => {
       expect(headerElement).toBeInTheDocument();
     });
 
-    it('renders a form from a given definition for a update definition', () => {
+    it('renders a form from a given definition for a update definition with same nameInData', () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -335,7 +336,9 @@ describe('<FormGenerator />', () => {
           }}
         />,
       );
-      const swedishElement = screen.getByDisplayValue('Svensk Nationell ämneskategori');
+      const swedishElement = screen.getByDisplayValue(
+        'Svensk Nationell ämneskategori',
+      );
       expect(swedishElement).toBeInTheDocument();
 
       const englishElement = screen.getByDisplayValue(
@@ -2017,6 +2020,42 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.type(longitudeElement, '1.25');
       await user.type(latitudeElement, '1.25');
+      await user.click(submitButton);
+
+      // expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a group 0-1 with same nameInData with nested textVars 1-1 and does validate it ', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const familyName1 = screen.getByPlaceholderText('familyNameTextVarText1');
+      expect(familyName1).toBeInTheDocument();
+      const givenName1 = screen.getByPlaceholderText('givenNameTextVarText1');
+      expect(givenName1).toBeInTheDocument();
+      const familyName2 = screen.getByPlaceholderText('familyNameTextVarText2');
+      expect(familyName2).toBeInTheDocument();
+      const givenName2 = screen.getByPlaceholderText('givenNameTextVarText2');
+      expect(givenName2).toBeInTheDocument();
+      // screen.debug(familyName1);
+
+      const user = userEvent.setup();
+      await user.type(familyName1, 'Swenning');
+      await user.type(givenName1, 'Egil');
+      await user.type(familyName2, 'Flores');
+      await user.type(givenName2, 'Daniel');
       await user.click(submitButton);
 
       // expect(container.getElementsByClassName('Mui-error').length).toBe(3);

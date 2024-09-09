@@ -5947,6 +5947,214 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars = {
   },
 };
 
+export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'authorGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'nau',
+                label: 'nauLangItemText',
+              },
+              {
+                value: 'uwu',
+                label: 'uwuLangItemText',
+              },
+            ],
+            finalValue: 'uwu',
+          },
+        ],
+        components: [
+          {
+            name: 'givenName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'givenNameTextVarText',
+              body: 'givenNameTextVarDefText',
+            },
+            label: 'givenNameTextVarText',
+            placeholder: 'givenNameTextVarText1',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'familyName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'familyNameTextVarText',
+              body: 'familyNameTextVarDefText',
+            },
+            label: 'familyNameTextVarText',
+            placeholder: 'familyNameTextVarText1',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'authorGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'nau',
+                label: 'nauLangItemText',
+              },
+              {
+                value: 'uwu',
+                label: 'uwuLangItemText',
+              },
+            ],
+            finalValue: 'nau',
+          },
+        ],
+        components: [
+          {
+            name: 'givenName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'givenNameTextVarText',
+              body: 'givenNameTextVarDefText',
+            },
+            label: 'givenNameTextVarText',
+            placeholder: 'givenNameTextVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'familyName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'familyNameTextVarText',
+              body: 'familyNameTextVarDefText',
+            },
+            label: 'familyNameTextVarText',
+            placeholder: 'familyNameTextVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefPreprintWithOnlyAuthorName = {
   validationTypeId: 'preprint',
   form: {
