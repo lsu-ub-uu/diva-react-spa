@@ -107,10 +107,10 @@ export const CreateRecordPage = () => {
             onInvalid={() => {
               notification(`Form is invalid`, 'error');
             }}
-            // formSchema={schema as FormSchema}
-            formSchema={
-              formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars as FormSchema
-            }
+            formSchema={schema as FormSchema}
+            // formSchema={
+            //   formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars as FormSchema
+            // }
           />
         </Stack>
       </div>

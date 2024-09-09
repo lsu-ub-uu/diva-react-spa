@@ -77,6 +77,12 @@ export const createYupValidationsFromComponent = (
     return validationRule;
   }
   // eslint-disable-next-line no-lonely-if
+  const currentNameInData = hasCurrentComponentSameNameInData(
+    childWithSameNameInData,
+    component.name,
+  )
+    ? addAttributesToName(component, component.name)
+    : component.name;
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
       const innerObjectSchema = generateYupSchema(
@@ -118,55 +124,17 @@ export const createYupValidationsFromComponent = (
         undefined,
         childrenWithSameNameInData,
       );
-      if (
-        hasCurrentComponentSameNameInData(
-          childWithSameNameInData,
-          component.name,
-        )
-      ) {
-        validationRule[addAttributesToName(component, component.name)] = yup
-          .object()
-          .shape({
-            ...innerSchema.fields,
-            ...createValidationForAttributesFromComponent(
-              component,
-              parentComponentRepeating,
-              false,
-              parentGroupRepeating,
-            ),
-          }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      } else {
-        validationRule[component.name] = yup.object().shape({
-          ...innerSchema.fields,
-          ...createValidationForAttributesFromComponent(
-            component,
-            parentComponentRepeating,
-            false,
-            parentGroupRepeating,
-          ),
-        }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      }
-    } else if (
-      hasCurrentComponentSameNameInData(childWithSameNameInData, component.name)
-    ) {
-      validationRule[addAttributesToName(component, component.name)] = yup
-        .object()
-        .shape({
-          value: createValidationFromComponentType(
-            component,
-            false,
-            parentComponentRepeating,
-            undefined,
-            isSiblingComponentRequired(component),
-          ),
-          ...createValidationForAttributesFromComponent(
-            component,
-            isComponentRepeating(component),
-            isSiblingComponentRequired(component),
-          ),
-        }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      validationRule[currentNameInData] = yup.object().shape({
+        ...innerSchema.fields,
+        ...createValidationForAttributesFromComponent(
+          component,
+          parentComponentRepeating,
+          false,
+          parentGroupRepeating,
+        ),
+      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
-      validationRule[component.name] = yup.object().shape({
+      validationRule[currentNameInData] = yup.object().shape({
         value: createValidationFromComponentType(
           component,
           false,

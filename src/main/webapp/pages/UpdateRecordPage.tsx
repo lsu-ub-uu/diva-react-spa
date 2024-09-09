@@ -131,7 +131,7 @@ export const UpdateRecordPage = () => {
               record={coraRecord.record}
               onSubmit={handleSubmit}
               onInvalid={() => notification(`Update Form is invalid`, 'error')}
-              formSchema={coraSchema.schema as FormSchema}
+              formSchema={coraSchema.schema}
             />
           )}
         </Stack>
