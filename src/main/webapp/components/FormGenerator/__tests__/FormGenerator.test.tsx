@@ -115,7 +115,7 @@ describe('<FormGenerator />', () => {
       expect(headerElement).toBeInTheDocument();
     });
 
-    it('renders a form from a given definition for a update definition with same nameInData', () => {
+    it('renders a form from a given definition for a update definition with variables with same nameInData', () => {
       const mockSubmit = vi.fn();
       render(
         <FormGenerator
@@ -345,6 +345,291 @@ describe('<FormGenerator />', () => {
         'English National Subject Category',
       );
       expect(englishElement).toBeInTheDocument();
+    });
+
+    it('renders a form from a given definition for a update definition with group with same nameInData', () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          record={{
+            id: 'divaOutput:1729757581842184',
+            recordType: 'divaOutput',
+            validationType: 'nationalSubjectCategory',
+            createdAt: '2024-09-09T08:29:02.073117Z',
+            createdBy: '161616',
+            updated: [
+              {
+                updateAt: '2024-09-09T08:29:02.073117Z',
+                updatedBy: '161616',
+              },
+            ],
+            userRights: ['read', 'update', 'index', 'delete'],
+            data: {
+              someRootNameInData: {
+                author_language_uwu: {
+                  givenName: {
+                    value: 'Egil',
+                  },
+                  familyName: {
+                    value: 'Swenning',
+                  },
+                  _language: 'uwu',
+                },
+                author_language_nau: {
+                  givenName: {
+                    value: 'Daniel',
+                  },
+                  familyName: {
+                    value: 'Flores',
+                  },
+                  _language: 'nau',
+                },
+              },
+            },
+          }}
+          onSubmit={mockSubmit}
+          formSchema={{
+            validationTypeId: 'nationalSubjectCategory',
+            form: {
+              mode: 'input',
+              type: 'group',
+              label: 'someRootFormGroupText',
+              name: 'someRootNameInData',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              tooltip: {
+                title: 'textId345',
+                body: 'defTextId678',
+              },
+              showLabel: true,
+              components: [
+                {
+                  name: 'recordInfo',
+                  type: 'group',
+                  mode: 'input',
+                  tooltip: {
+                    title:
+                      'recordInfoNationalSubjectCategoryRecordTypeNewGroupText',
+                    body: 'recordInfoNationalSubjectCategoryRecordTypeNewGroupDefText',
+                  },
+                  label:
+                    'recordInfoNationalSubjectCategoryRecordTypeNewGroupText',
+                  showLabel: false,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  presentationStyle: '',
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+                {
+                  name: 'author',
+                  type: 'group',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'authorGroupText',
+                    body: 'authorGroupDefText',
+                  },
+                  label: 'authorGroupText',
+                  showLabel: true,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  attributes: [
+                    {
+                      name: 'language',
+                      type: 'collectionVariable',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'input',
+                      tooltip: {
+                        title: 'languageCollectionVarText',
+                        body: 'languageCollectionVarDefText',
+                      },
+                      label: 'languageCollectionVarText',
+                      showLabel: true,
+                      options: [
+                        {
+                          value: 'nau',
+                          label: 'nauLangItemText',
+                        },
+                        {
+                          value: 'uwu',
+                          label: 'uwuLangItemText',
+                        },
+                      ],
+                      finalValue: 'uwu',
+                    },
+                  ],
+                  components: [
+                    {
+                      name: 'givenName',
+                      type: 'textVariable',
+                      mode: 'input',
+                      inputType: 'input',
+                      tooltip: {
+                        title: 'givenNameTextVarText',
+                        body: 'givenNameTextVarDefText',
+                      },
+                      label: 'givenNameTextVarText',
+                      placeholder: 'givenNameTextVarText1',
+                      showLabel: true,
+                      validation: {
+                        type: 'regex',
+                        pattern: '.+',
+                      },
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                      childStyle: ['sixChildStyle'],
+                      gridColSpan: 6,
+                    },
+                    {
+                      name: 'familyName',
+                      type: 'textVariable',
+                      mode: 'input',
+                      inputType: 'input',
+                      tooltip: {
+                        title: 'familyNameTextVarText',
+                        body: 'familyNameTextVarDefText',
+                      },
+                      label: 'familyNameTextVarText',
+                      placeholder: 'familyNameTextVarText1',
+                      showLabel: true,
+                      validation: {
+                        type: 'regex',
+                        pattern: '.+',
+                      },
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                      childStyle: ['sixChildStyle'],
+                      gridColSpan: 6,
+                    },
+                  ],
+                  presentationStyle: '',
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+                {
+                  name: 'author',
+                  type: 'group',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'authorGroupText',
+                    body: 'authorGroupDefText',
+                  },
+                  label: 'authorGroupText',
+                  showLabel: true,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  attributes: [
+                    {
+                      name: 'language',
+                      type: 'collectionVariable',
+                      placeholder: 'initialEmptyValueText',
+                      mode: 'input',
+                      tooltip: {
+                        title: 'languageCollectionVarText',
+                        body: 'languageCollectionVarDefText',
+                      },
+                      label: 'languageCollectionVarText',
+                      showLabel: true,
+                      options: [
+                        {
+                          value: 'nau',
+                          label: 'nauLangItemText',
+                        },
+                        {
+                          value: 'uwu',
+                          label: 'uwuLangItemText',
+                        },
+                      ],
+                      finalValue: 'nau',
+                    },
+                  ],
+                  components: [
+                    {
+                      name: 'givenName',
+                      type: 'textVariable',
+                      mode: 'input',
+                      inputType: 'input',
+                      tooltip: {
+                        title: 'givenNameTextVarText',
+                        body: 'givenNameTextVarDefText',
+                      },
+                      label: 'givenNameTextVarText',
+                      placeholder: 'givenNameTextVarText2',
+                      showLabel: true,
+                      validation: {
+                        type: 'regex',
+                        pattern: '.+',
+                      },
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                      childStyle: ['sixChildStyle'],
+                      gridColSpan: 6,
+                    },
+                    {
+                      name: 'familyName',
+                      type: 'textVariable',
+                      mode: 'input',
+                      inputType: 'input',
+                      tooltip: {
+                        title: 'familyNameTextVarText',
+                        body: 'familyNameTextVarDefText',
+                      },
+                      label: 'familyNameTextVarText',
+                      placeholder: 'familyNameTextVarText2',
+                      showLabel: true,
+                      validation: {
+                        type: 'regex',
+                        pattern: '.+',
+                      },
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1,
+                        repeatMax: 1,
+                      },
+                      childStyle: ['sixChildStyle'],
+                      gridColSpan: 6,
+                    },
+                  ],
+                  presentationStyle: '',
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          }}
+        />,
+      );
+      const egilElement = screen.getByDisplayValue('Egil');
+      expect(egilElement).toBeInTheDocument();
+      const swenningElement = screen.getByDisplayValue('Swenning');
+      expect(swenningElement).toBeInTheDocument();
+      const danielElement = screen.getByDisplayValue('Daniel');
+      expect(danielElement).toBeInTheDocument();
+      const floresElement = screen.getByDisplayValue('Flores');
+      expect(floresElement).toBeInTheDocument();
     });
 
     it('renders a form from a given definition does validate it', async () => {
