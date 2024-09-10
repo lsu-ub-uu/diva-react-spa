@@ -1735,3 +1735,64 @@ export const familyNameTextVar: BFFMetadataTextVariable = {
   defTextId: 'someDefTextId',
   regEx: 'someRegex'
 };
+
+export const someValidationTypeForRepeatingCollectionsNameInDataId: BFFValidationType = {
+  id: 'someValidationTypeForRepeatingCollectionsNameInDataId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupRepeatingCollectionNameInDataGroup',
+  newPresentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
+  // Update/Edit
+  metadataGroupId: 'nationalSubjectCategoryRecordTypeGroup',
+  presentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupRepeatingCollectionNameInDataGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupRepeatingCollectionNameInDataGroup',
+  nameInData: 'genreGroup',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'genreCollectionVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'genreOtherCollectionVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const genreCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'genreCollectionVar',
+  nameInData: 'genre',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageSweCollectionVar'
+    }
+  ]
+};
+
+export const genreOtherCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'genreOtherCollectionVar',
+  nameInData: 'genre',
+  type: 'collectionVariable',
+  textId: 'exampleCollectionVarText',
+  defTextId: 'exampleCollectionVarDefText',
+  refCollection: 'exampleCollection',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageEngCollectionVar'
+    }
+  ]
+};

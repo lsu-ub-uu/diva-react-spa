@@ -86,7 +86,11 @@ import {
   authorGroup,
   authorGroup2,
   givenNameTextVar,
-  familyNameTextVar
+  familyNameTextVar,
+  someValidationTypeForRepeatingCollectionsNameInDataId,
+  someNewMetadataGroupRepeatingCollectionNameInDataGroup,
+  genreCollectionVar,
+  genreOtherCollectionVar
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -105,7 +109,8 @@ describe('transformToCora', () => {
       someSimpleValidationTypeRepeatingGroups,
       newNationSubjectCategoryValidationType,
       divaOutputValidationType,
-      someValidationTypeForRepeatingGroupsNameInDataId
+      someValidationTypeForRepeatingGroupsNameInDataId,
+      someValidationTypeForRepeatingCollectionsNameInDataId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -137,7 +142,10 @@ describe('transformToCora', () => {
       authorGroup,
       authorGroup2,
       givenNameTextVar,
-      familyNameTextVar
+      familyNameTextVar,
+      someNewMetadataGroupRepeatingCollectionNameInDataGroup,
+      genreCollectionVar,
+      genreOtherCollectionVar
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pNewNationSubjectCategoryMetadataGroup,
@@ -1167,7 +1175,7 @@ describe('transformToCora', () => {
       expect(transformData[0]).toStrictEqual(expected);
     });
 
-    it('should take a form payload with group containing variables with attributes', () => {
+    it('should take a form payload with group with same nameInData containing variables with attributes', () => {
       const expected: DataGroup = {
         name: 'nationalSubjectCategory',
         children: [
@@ -1199,6 +1207,44 @@ describe('transformToCora', () => {
           subject_language_eng: {
             _language: 'eng',
             value: 'someOtherValue'
+          }
+        }
+      });
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with group with same nameInData containing collVar with attributes', () => {
+      const expected: DataGroup = {
+        name: 'genreGroup',
+        children: [
+          {
+            name: 'genre',
+            value: 'artistic-work_artistic-thesis',
+            attributes: {
+              language: 'swe'
+            }
+          },
+          {
+            name: 'genre',
+            value: 'artistic-work_original-creative-work',
+            attributes: {
+              language: 'eng'
+            }
+          }
+        ]
+      };
+      const validationTypeId = 'someValidationTypeForRepeatingCollectionsNameInDataId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        genreGroup: {
+          genre_language_swe: {
+            value: 'artistic-work_artistic-thesis',
+            _language: 'swe'
+          },
+          genre_language_eng: {
+            value: 'artistic-work_original-creative-work',
+            _language: 'eng'
           }
         }
       });
