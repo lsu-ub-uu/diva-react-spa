@@ -6642,7 +6642,7 @@ export const formDefCollVarsWithSameNameInData = {
           title: 'outputTypeCollectionVarText',
           body: 'outputTypeCollectionVarDefText',
         },
-        label: 'outputTypeCollectionVarText',
+        label: 'outputTypeCollectionVarText1',
         showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
@@ -6690,13 +6690,13 @@ export const formDefCollVarsWithSameNameInData = {
       {
         name: 'genre',
         type: 'collectionVariable',
-        placeholder: 'initialEmptyValueText',
+        placeholder: 'initialEmptyValueText2',
         mode: 'input',
         tooltip: {
           title: 'outputTypeCollectionVarText',
           body: 'outputTypeCollectionVarDefText',
         },
-        label: 'outputTypeCollectionVarText',
+        label: 'outputTypeCollectionVarText2',
         showLabel: true,
         repeat: {
           minNumberOfRepeatingToShow: 1,
@@ -6717,7 +6717,7 @@ export const formDefCollVarsWithSameNameInData = {
           {
             name: 'type',
             type: 'collectionVariable',
-            placeholder: 'initialEmptyValueText',
+            placeholder: 'initialEmptyValueText1',
             mode: 'input',
             tooltip: {
               title: 'typeCollectionVarText',

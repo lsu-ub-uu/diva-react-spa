@@ -69,6 +69,7 @@ import {
   formDefWithOneTextVariableBeingPassword,
   formDefTextVarsWithSameNameInData,
   formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
+  formDefCollVarsWithSameNameInData,
 } from '../../../__mocks__/data/formDef';
 import {
   FormGenerator,
@@ -347,6 +348,51 @@ describe('<FormGenerator />', () => {
       expect(englishElement).toBeInTheDocument();
     });
 
+    it('renders a form from a given definition for a update definition with colVar with same nameInData', () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          record={{
+            id: 'divaOutput:1729757581842184',
+            recordType: 'divaOutput',
+            validationType: 'nationalSubjectCategory',
+            createdAt: '2024-09-09T08:29:02.073117Z',
+            createdBy: '161616',
+            updated: [
+              {
+                updateAt: '2024-09-09T08:29:02.073117Z',
+                updatedBy: '161616',
+              },
+            ],
+            userRights: ['read', 'update', 'index', 'delete'],
+            data: {
+              nationalSubjectCategory: {
+                genre_type_code: {
+                  value: 'artistic-work_original-creative-work',
+                  _type: 'code',
+                },
+                genre_type_contentType: {
+                  value: 'artistic-work_artistic-thesis',
+                  _type: 'contentType',
+                },
+              },
+            },
+          }}
+          onSubmit={mockSubmit}
+          formSchema={formDefCollVarsWithSameNameInData as FormSchema}
+        />,
+      );
+      const thesisElement = screen.getByDisplayValue(
+        'artistic-work_artistic-thesis',
+      );
+      expect(thesisElement).toBeInTheDocument();
+
+      const creativeElement = screen.getByDisplayValue(
+        'artistic-work_original-creative-work',
+      );
+      expect(creativeElement).toBeInTheDocument();
+    });
+
     it('renders a form from a given definition does validate it', async () => {
       const mockSubmit = vi.fn();
 
@@ -431,7 +477,7 @@ describe('<FormGenerator />', () => {
       render(
         <FormGenerator
           onSubmit={mockSubmit}
-          formSchema={formDefTextVarsWithSameNameInData as FormSchema}
+          formSchema={formDefCollVarsWithSameNameInData as FormSchema}
         />,
       );
       const user = userEvent.setup();
@@ -441,14 +487,24 @@ describe('<FormGenerator />', () => {
       });
       expect(submitButton).toBeInTheDocument();
 
-      const sweElement = screen.getByPlaceholderText('subjectSweTextVarText');
-      expect(sweElement).toBeInTheDocument();
-      await user.type(sweElement, 'svenska');
-
-      const engElement = screen.getByPlaceholderText('subjectEngTextVarText');
-      expect(engElement).toBeInTheDocument();
-      await user.type(engElement, 'english');
-
+      const collections = screen.getAllByRole('button', { expanded: false });
+      expect(collections).toHaveLength(4);
+      const firstCollection = collections[3];
+      await user.click(firstCollection);
+      const firstItems = screen.getByRole('listbox');
+      expect(firstItems.children).toHaveLength(3);
+      await user.selectOptions(
+        firstItems,
+        'artisticWorkOriginalCreativeWorkItemText',
+      );
+      const secondCollection = collections[1];
+      await user.click(secondCollection);
+      const secondItems = screen.getByRole('listbox');
+      expect(secondItems.children).toHaveLength(3);
+      await user.selectOptions(
+        secondItems,
+        'artisticWorkArtisticThesisItemText',
+      );
       await user.click(submitButton);
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
@@ -1404,7 +1460,6 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.click(expandButton);
       const items = screen.getByRole('listbox');
-
       expect(items.children).toHaveLength(4); // includes None option
 
       await user.selectOptions(items, 'exampleBlueItemText');

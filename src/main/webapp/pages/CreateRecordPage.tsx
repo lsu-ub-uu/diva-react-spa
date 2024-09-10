@@ -36,7 +36,6 @@ import {
 import { useCoraFormSchemaByValidationType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
-import { formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars } from '../__mocks__/data/formDef';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
