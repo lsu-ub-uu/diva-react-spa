@@ -18,6 +18,7 @@
  */
 
 import _ from 'lodash';
+import * as console from 'console';
 import {
   Attributes,
   DataAtomic,
@@ -214,13 +215,18 @@ export const traverseDataGroup = (
   // handle attributes on the current group
   const groupAttributes = transformObjectAttributes(dataGroup.attributes);
   const object: unknown[] = [];
+
   groupedEntries.forEach(([name, groupedChildren]) => {
     const currentPath = path ? `${path}.${name}` : name;
-
     // iterate over the name array
     let repeating = false;
     let isGroup = false;
+
     const thisLevelChildren = groupedChildren.map((child) => {
+      const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
+        ? addAttributesToName(child)
+        : name;
+
       if (isRecordLink(child) && !isRepeating(child, currentPath, formPathLookup)) {
         const childGroup = child as DataGroup;
         const recordLinkAttributes = transformObjectAttributes(childGroup.attributes);
@@ -239,7 +245,10 @@ export const traverseDataGroup = (
       if (isDataGroup(child) && !isRepeating(child, currentPath, formPathLookup)) {
         repeating = false;
         isGroup = true;
-        const childGroup = child as DataGroup;
+        const childGroup = updateGroupWithPossibleNewNameWithAttribute(
+          child as DataGroup,
+          possiblyNameWithAttribute
+        );
         return traverseDataGroup(childGroup, formPathLookup, currentPath);
       }
 
@@ -256,10 +265,6 @@ export const traverseDataGroup = (
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
         const { value } = child as DataAtomic;
-        // hasSameNameInDatas -> lägg till attribut i namn i returnen
-        const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
-          ? addAttributesToName(child)
-          : name;
         return { [possiblyNameWithAttribute]: Object.assign({ value }, ...atomicAttributes) };
       }
 
@@ -290,7 +295,6 @@ export const traverseDataGroup = (
       object.push(Object.assign({}, ...thisLevelChildren));
     }
   });
-
   return { [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) };
 };
 
@@ -306,4 +310,14 @@ export const hasSameNameInDatas = (
 
   const numberOfOccurrences = nameInDatas.reduce((a, v) => (v === currentName ? a + 1 : a), 0);
   return numberOfOccurrences > 1;
+};
+
+export const updateGroupWithPossibleNewNameWithAttribute = (
+  childGroup: DataGroup,
+  possiblyNameWithAttribute: string
+) => {
+  return {
+    ...childGroup,
+    name: possiblyNameWithAttribute
+  } as DataGroup;
 };

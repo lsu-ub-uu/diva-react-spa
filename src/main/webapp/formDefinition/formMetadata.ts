@@ -18,14 +18,9 @@
  */
 
 import {
-  BFFAttributeReference,
-  BFFMetadata,
   BFFMetadataChildReference,
-  BFFMetadataCollectionVariable,
   BFFMetadataGroup,
-  BFFMetadataNumberVariable,
   BFFMetadataRecordLink,
-  BFFMetadataTextVariable,
   BFFValidationType
 } from '../config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';

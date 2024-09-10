@@ -27,7 +27,8 @@ import {
   isRepeating,
   transformObjectAttributes,
   transformRecord,
-  traverseDataGroup
+  traverseDataGroup,
+  updateGroupWithPossibleNewNameWithAttribute
 } from '../transformRecord';
 import {
   Attributes,
@@ -609,6 +610,7 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
+
   it('should return a root group with multiple variables with same nameInData having attributes', () => {
     const test = {
       name: 'divaOutput',
@@ -639,6 +641,56 @@ describe('transformRecord', () => {
         subject_language_swe: {
           value: 'value2',
           _language: 'swe'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group with groups with same nameInData having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'author',
+          children: [
+            {
+              name: 'name',
+              value: 'value1'
+            }
+          ],
+          attributes: {
+            language: 'eng'
+          }
+        },
+        {
+          name: 'author',
+          children: [
+            {
+              name: 'name',
+              value: 'value2'
+            }
+          ],
+          attributes: {
+            language: 'swe'
+          }
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        author_language_eng: {
+          _language: 'eng',
+          name: {
+            value: 'value1'
+          }
+        },
+        author_language_swe: {
+          _language: 'swe',
+          name: {
+            value: 'value2'
+          }
         }
       }
     };
@@ -771,6 +823,38 @@ describe('transformRecord', () => {
         'subject'
       );
       expect(actual).toBe(false);
+    });
+  });
+  describe('updateGroupNameWithAttribute', () => {
+    it('updates name with possible name', () => {
+      const actual = updateGroupWithPossibleNewNameWithAttribute(
+        {
+          name: 'author',
+          children: [{ name: 'name', value: 'value2' }],
+          attributes: { language: 'swe' }
+        },
+        'author_language_swe'
+      );
+      expect(actual).toStrictEqual({
+        name: 'author_language_swe',
+        children: [{ name: 'name', value: 'value2' }],
+        attributes: { language: 'swe' }
+      });
+    });
+    it('updates name with previous name', () => {
+      const actual = updateGroupWithPossibleNewNameWithAttribute(
+        {
+          name: 'author',
+          children: [{ name: 'name', value: 'value2' }],
+          attributes: { language: 'swe' }
+        },
+        'author'
+      );
+      expect(actual).toStrictEqual({
+        name: 'author',
+        children: [{ name: 'name', value: 'value2' }],
+        attributes: { language: 'swe' }
+      });
     });
   });
 });
