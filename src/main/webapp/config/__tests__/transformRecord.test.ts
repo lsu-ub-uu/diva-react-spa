@@ -647,6 +647,42 @@ describe('transformRecord', () => {
     expect(transformData).toStrictEqual(expected);
   });
 
+  it('should return a root group with multiple colVar with same nameInData having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          attributes: {
+            language: 'eng'
+          },
+          name: 'domain',
+          value: 'hb'
+        },
+        {
+          attributes: {
+            language: 'swe'
+          },
+          name: 'domain',
+          value: 'uu'
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        domain_language_eng: {
+          value: 'hb',
+          _language: 'eng'
+        },
+        domain_language_swe: {
+          value: 'uu',
+          _language: 'swe'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
   it('should return a root group with groups with same nameInData having attributes', () => {
     const test = {
       name: 'divaOutput',
