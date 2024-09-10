@@ -347,6 +347,112 @@ describe('<FormGenerator />', () => {
       expect(englishElement).toBeInTheDocument();
     });
 
+    it('renders a form from a given definition does validate it', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariable as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+
+      expect(inputElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.type(inputElement, 'a');
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a form from a given definition does NOT validate it', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithOneTextVariable as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
+      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
+
+      expect(inputElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('renders a form from a given definition for variables with same nameInData and validates it', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefTextVarsWithSameNameInData as FormSchema}
+        />,
+      );
+      const user = userEvent.setup();
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
+      const sweElement = screen.getByPlaceholderText('subjectSweTextVarText');
+      expect(sweElement).toBeInTheDocument();
+      await user.type(sweElement, 'svenska');
+
+      const engElement = screen.getByPlaceholderText('subjectEngTextVarText');
+      expect(engElement).toBeInTheDocument();
+      await user.type(engElement, 'english');
+
+      await user.click(submitButton);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders a form from a given definition for collectionVariables with same nameInData and validates it', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefTextVarsWithSameNameInData as FormSchema}
+        />,
+      );
+      const user = userEvent.setup();
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
+      const sweElement = screen.getByPlaceholderText('subjectSweTextVarText');
+      expect(sweElement).toBeInTheDocument();
+      await user.type(sweElement, 'svenska');
+
+      const engElement = screen.getByPlaceholderText('subjectEngTextVarText');
+      expect(engElement).toBeInTheDocument();
+      await user.type(engElement, 'english');
+
+      await user.click(submitButton);
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+    });
+
     it('renders a form from a given definition for a update definition with group with same nameInData', () => {
       const mockSubmit = vi.fn();
       render(
@@ -630,84 +736,6 @@ describe('<FormGenerator />', () => {
       expect(danielElement).toBeInTheDocument();
       const floresElement = screen.getByDisplayValue('Flores');
       expect(floresElement).toBeInTheDocument();
-    });
-
-    it('renders a form from a given definition does validate it', async () => {
-      const mockSubmit = vi.fn();
-
-      render(
-        <FormGenerator
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariable as FormSchema}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      expect(submitButton).toBeInTheDocument();
-
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-
-      expect(inputElement).toBeInTheDocument();
-
-      const user = userEvent.setup();
-      await user.type(inputElement, 'a');
-      await user.click(submitButton);
-
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
-    });
-
-    it('renders a form from a given definition does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
-      const { container } = render(
-        <FormGenerator
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariable as FormSchema}
-        />,
-      );
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      expect(submitButton).toBeInTheDocument();
-
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-
-      expect(inputElement).toBeInTheDocument();
-
-      const user = userEvent.setup();
-      await user.click(submitButton);
-
-      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
-    });
-
-    it('renders a form from a given definition for variables with same nameInData and validates it', async () => {
-      const mockSubmit = vi.fn();
-
-      render(
-        <FormGenerator
-          onSubmit={mockSubmit}
-          formSchema={formDefTextVarsWithSameNameInData as FormSchema}
-        />,
-      );
-      const user = userEvent.setup();
-
-      const submitButton = screen.getByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      expect(submitButton).toBeInTheDocument();
-
-      const sweElement = screen.getByPlaceholderText('subjectSweTextVarText');
-      expect(sweElement).toBeInTheDocument();
-      await user.type(sweElement, 'svenska');
-
-      const engElement = screen.getByPlaceholderText('subjectEngTextVarText');
-      expect(engElement).toBeInTheDocument();
-      await user.type(engElement, 'english');
-
-      await user.click(submitButton);
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
   });
 
