@@ -71,8 +71,8 @@ import {
   formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
   formDefCollVarsWithSameNameInData,
   formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
-  formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
   formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
+  formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
 } from '../../../__mocks__/data/formDef';
 import {
   FormGenerator,

@@ -6865,6 +6865,123 @@ export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes = {
   },
 };
 
+export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes = {
+  validationTypeId: 'preprint',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'preprintNewGroupText',
+      body: 'preprintNewGroupDefText',
+    },
+    label: 'preprintNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'subject',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'keywordsGroupText',
+          body: 'keywordsGroupDefText',
+        },
+        label: 'keywordsGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1.7976931348623157e308,
+        },
+        attributes: [
+          {
+            name: 'lang',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+          },
+        ],
+        components: [
+          {
+            name: 'topic',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'keywordsTextVarText',
+              body: 'keywordsTextVarDefText',
+            },
+            label: 'keywordsTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            attributes: [
+              {
+                name: 'lang',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
 export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes =
   {
     validationTypeId: 'preprint',
