@@ -135,6 +135,11 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     showLabel = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'showLabel');
   }
 
+  let attributesToShow;
+  if (containsChildWithNameInData(dataRecordGroup, 'attributesToShow')) {
+    attributesToShow = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'attributesToShow');
+  }
+
   return removeEmpty({
     id,
     presentationOf,
@@ -143,7 +148,8 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     type,
     specifiedLabelTextId,
     showLabel,
-    inputFormat
+    inputFormat,
+    attributesToShow
   } as BFFPresentation);
 };
 

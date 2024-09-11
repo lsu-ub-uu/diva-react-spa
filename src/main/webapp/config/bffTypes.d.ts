@@ -120,6 +120,7 @@ export interface BFFPresentation extends BFFBase {
   specifiedLabelTextId?: string;
   showLabel?: string;
   inputFormat?: 'password';
+  attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentation {

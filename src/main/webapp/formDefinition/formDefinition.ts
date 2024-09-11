@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import {
   BFFAttributeReference,
   BFFCollectionItemReference,
@@ -741,6 +742,7 @@ const createCommonParameters = (
     : metadata.textId;
   let showLabel = true;
   let headlineLevel;
+  let attributesToShow;
 
   const presentationGroup = presentation as BFFPresentationGroup;
 
@@ -766,6 +768,10 @@ const createCommonParameters = (
     showLabel = false;
   }
 
+  if (checkIfAttributesToShowExist(presentation)) {
+    attributesToShow = presentation.attributesToShow;
+  }
+  console.log(attributesToShow);
   return removeEmpty({
     name,
     type,
@@ -775,7 +781,8 @@ const createCommonParameters = (
     tooltip,
     label,
     headlineLevel,
-    showLabel
+    showLabel,
+    attributesToShow
   });
 };
 
@@ -842,6 +849,10 @@ const checkIfSpecifiedHeadlineLevelExist = (presentation: BFFPresentationGroup) 
 const checkIfShowHeadlineExist = (presentation: BFFPresentationGroup) => {
   // eslint-disable-next-line no-prototype-builtins
   return Object.hasOwn(presentation, 'showHeadline');
+};
+
+const checkIfAttributesToShowExist = (presentation: BFFPresentation) => {
+  return Object.hasOwn(presentation, 'attributesToShow');
 };
 
 export const hasLinkedPresentation = (rLPresentation: BFFPresentationRecordLink): boolean => {

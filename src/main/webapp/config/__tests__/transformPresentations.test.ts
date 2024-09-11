@@ -41,6 +41,7 @@ import coraPresentationWithGuiElementLink from '../../__mocks__/coraPresentation
 import coraPresentationGroupSpecifiedHeadlineText from '../../__mocks__/coraPresentationGroupSpecifiedHeadlineText.json';
 import coraPresentationGroupWithShowLabel from '../../__mocks__/coraPresentationGroupWithShowLabel.json';
 import coraPresentationGroupSpecifiedHeadlineLevel from '../../__mocks__/coraPresentationGroupSpecifiedHeadlineLevel.json';
+import coraPresentationWithAttributesToShow from '../../__mocks__/coraPresentationWithThreeTextVariablesWithAttributesToShow.json';
 import { DataListWrapper } from '../../utils/cora-data/CoraData';
 
 describe('transformCoraPresentations', () => {
@@ -64,6 +65,45 @@ describe('transformCoraPresentations', () => {
         mode: 'input',
         inputType: 'someInputType',
         emptyTextId: 'somePlaceholderText'
+      });
+    });
+
+    describe('attributesToShow', () => {
+      it('Returns one BFFPresentation for one pVar entry with attributesToShow none', () => {
+        const transformData = transformCoraPresentations(coraPresentationWithAttributesToShow);
+        expect(transformData[0]).toStrictEqual({
+          id: 'someTextVarPVar',
+          type: 'pVar',
+          presentationOf: 'someTextVar',
+          mode: 'input',
+          attributesToShow: 'none',
+          inputType: 'someInputType',
+          emptyTextId: 'somePlaceholderText'
+        });
+      });
+      it('Returns one BFFPresentation for one pVar entry with attributesToShow 2', () => {
+        const transformData = transformCoraPresentations(coraPresentationWithAttributesToShow);
+        expect(transformData[1]).toStrictEqual({
+          id: 'someTextVarPVar',
+          type: 'pVar',
+          presentationOf: 'someTextVar2',
+          mode: 'input',
+          attributesToShow: 'selectable',
+          inputType: 'textarea',
+          emptyTextId: 'someTextareaPlaceholderText'
+        });
+      });
+      it('Returns one BFFPresentation for one pVar entry with attributesToShow 3', () => {
+        const transformData = transformCoraPresentations(coraPresentationWithAttributesToShow);
+        expect(transformData[2]).toStrictEqual({
+          id: 'someTextVarPVar',
+          type: 'pVar',
+          presentationOf: 'someTextVar2',
+          mode: 'input',
+          attributesToShow: 'all',
+          inputType: 'textarea',
+          emptyTextId: 'someTextareaPlaceholderText'
+        });
       });
     });
 
