@@ -16,6 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import { createFormMetaData, createMetaDataFromChildReference } from '../formMetadata';
 import { FormMetaData } from '../formDefinition';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
@@ -36,6 +37,14 @@ import {
   BFFValidationType
 } from '../../config/bffTypes';
 import {
+  authorGroup,
+  authorGroup2,
+  domainCollectionVar,
+  familyNameTextVar,
+  genreCollectionVar,
+  genreOtherCollectionVar,
+  givenNameTextVar,
+  mainTitleTextVar,
   newNationalSubjectCategoryRecordTypeGroup,
   newNationalSubjectCategoryRecordTypeNewGroup,
   newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
@@ -43,19 +52,31 @@ import {
   newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
   newNationSubjectCategoryMetadataSubjectSweTextVariable,
   newNationSubjectCategoryValidationType,
+  outputTypeCollectionVar,
+  outputTypeGroup,
   pNewNationSubjectCategoryEngVar,
   pNewNationSubjectCategoryMetadataGroup,
   pNewNationSubjectCategorySweVar,
+  preprintNewGroup,
   someMetadataChildGroup,
   someMetadataRecordLink,
   someMetadataTextVariable,
+  someNewMetadataGroupRepeatingCollectionNameInDataGroup,
+  someNewMetadataGroupRepeatingGroupsNameInDataGroup,
+  someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+  someNewRecordLinkId,
   someNewSimpleMetadataGroup,
+  someOtherNewRecordLinkId,
   someRecordInfo,
-  someSimpleValidationTypeData
+  someSimpleValidationTypeData,
+  someValidationTypeForRepeatingCollectionsNameInDataId,
+  someValidationTypeForRepeatingGroupsNameInDataId,
+  someValidationTypeForRepeatingRecordLinksNameInDataId,
+  titleGroup,
+  typeOutputTypeCollectionVar
 } from '../../__mocks__/form/bffMock';
 import { Lookup } from '../../utils/structs/lookup';
 import { Dependencies } from '../formDefinitionsDep';
-import { dependencies } from '../../config/configureServer';
 
 describe('formMetadata', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
@@ -74,7 +95,10 @@ describe('formMetadata', () => {
   beforeEach(() => {
     validationTypePool = listToPool<BFFValidationType>([
       someSimpleValidationTypeData,
-      newNationSubjectCategoryValidationType
+      newNationSubjectCategoryValidationType,
+      someValidationTypeForRepeatingCollectionsNameInDataId,
+      someValidationTypeForRepeatingGroupsNameInDataId,
+      someValidationTypeForRepeatingRecordLinksNameInDataId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
       someMetadataTextVariable,
@@ -87,7 +111,25 @@ describe('formMetadata', () => {
       newNationSubjectCategoryMetadataSubjectSweTextVariable,
       newNationSubjectCategoryMetadataSubjectEngTextVariable,
       newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
-      newNationSubjectCategoryMetadataSubjectEngLangCollVariable
+      newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
+      preprintNewGroup,
+      domainCollectionVar,
+      outputTypeGroup,
+      outputTypeCollectionVar,
+      typeOutputTypeCollectionVar,
+      titleGroup,
+      mainTitleTextVar,
+      someNewMetadataGroupRepeatingGroupsNameInDataGroup,
+      authorGroup,
+      authorGroup2,
+      givenNameTextVar,
+      familyNameTextVar,
+      someNewMetadataGroupRepeatingCollectionNameInDataGroup,
+      genreCollectionVar,
+      genreOtherCollectionVar,
+      someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+      someNewRecordLinkId,
+      someOtherNewRecordLinkId
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -212,7 +254,7 @@ describe('formMetadata', () => {
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
-  it('should return form meta data for a given validation type with attributes', () => {
+  it('should return form meta data for a given validation type with variables with same nameInData and attributes', () => {
     const FORM_MODE_NEW = 'create';
     const validationTypeId = 'nationalSubjectCategory';
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
@@ -283,6 +325,306 @@ describe('formMetadata', () => {
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
+
+  it('should return form meta data for a given validation type with collVar with same nameInData and attributes', () => {
+    const FORM_MODE_NEW = 'create';
+    const validationTypeId = 'someValidationTypeForRepeatingCollectionsNameInDataId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+
+    const expected: FormMetaData = {
+      children: [
+        {
+          attributes: {
+            language: 'swe'
+          },
+          name: 'genre',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'collectionVariable'
+        },
+        {
+          attributes: {
+            language: 'eng'
+          },
+          name: 'genre',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'collectionVariable'
+        }
+      ],
+      name: 'genreGroup',
+      repeat: {
+        repeatMax: 1,
+        repeatMin: 1
+      },
+      type: 'group'
+    };
+
+    const expectedMetadataLookup = {
+      genreGroup: {
+        name: 'genreGroup',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'genreGroup.genre_language_eng': {
+        attributes: {
+          language: 'eng'
+        },
+        name: 'genre',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'collectionVariable'
+      },
+      'genreGroup.genre_language_swe': {
+        attributes: {
+          language: 'swe'
+        },
+        name: 'genre',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'collectionVariable'
+      }
+    };
+
+    expect(formMetaData).toStrictEqual(expected);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+
+  it('should return form meta data for a given validation type with recordLinks with same nameInData and attributes', () => {
+    const FORM_MODE_NEW = 'create';
+    const validationTypeId = 'someValidationTypeForRepeatingRecordLinksNameInDataId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const expected: FormMetaData = {
+      name: 'recordLinkGroup',
+      type: 'group',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1
+      },
+      children: [
+        {
+          name: 'newRecordLink',
+          type: 'recordLink',
+          attributes: {
+            language: 'swe'
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          linkedRecordType: 'nationalSubjectCategory'
+        },
+        {
+          name: 'newRecordLink',
+          type: 'recordLink',
+          attributes: {
+            language: 'eng'
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          linkedRecordType: 'nationalSubjectCategory'
+        }
+      ]
+    };
+
+    const expectedMetadataLookup = {
+      recordLinkGroup: {
+        name: 'recordLinkGroup',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'recordLinkGroup.newRecordLink_language_swe': {
+        attributes: {
+          language: 'swe'
+        },
+        linkedRecordType: 'nationalSubjectCategory',
+        name: 'newRecordLink',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'recordLink'
+      },
+      'recordLinkGroup.newRecordLink_language_eng': {
+        attributes: {
+          language: 'eng'
+        },
+        linkedRecordType: 'nationalSubjectCategory',
+        name: 'newRecordLink',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'recordLink'
+      }
+    };
+
+    expect(formMetaData).toStrictEqual(expected);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+
+  it('should return form meta data for a given validation type with groups with same nameInData and attributes', () => {
+    const FORM_MODE_NEW = 'create';
+    const validationTypeId = 'someValidationTypeForRepeatingGroupsNameInDataId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+
+    const expected: FormMetaData = {
+      children: [
+        {
+          attributes: {
+            language: 'swe'
+          },
+          children: [
+            {
+              name: 'givenName',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1
+              },
+              type: 'textVariable'
+            },
+            {
+              name: 'familyName',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1
+              },
+              type: 'textVariable'
+            }
+          ],
+          name: 'author',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        },
+        {
+          attributes: {
+            language: 'eng'
+          },
+          children: [
+            {
+              name: 'givenName',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1
+              },
+              type: 'textVariable'
+            },
+            {
+              name: 'familyName',
+              repeat: {
+                repeatMax: 1,
+                repeatMin: 1
+              },
+              type: 'textVariable'
+            }
+          ],
+          name: 'author',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        }
+      ],
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMax: 1,
+        repeatMin: 1
+      },
+      type: 'group'
+    };
+
+    const expectedMetadataLookup = {
+      someRootNameInData: {
+        name: 'someRootNameInData',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'someRootNameInData.author_language_eng': {
+        attributes: {
+          language: 'eng'
+        },
+        name: 'author',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'someRootNameInData.author_language_eng.familyName': {
+        name: 'familyName',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'textVariable'
+      },
+      'someRootNameInData.author_language_eng.givenName': {
+        name: 'givenName',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'textVariable'
+      },
+      'someRootNameInData.author_language_swe': {
+        attributes: {
+          language: 'swe'
+        },
+        name: 'author',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'someRootNameInData.author_language_swe.familyName': {
+        name: 'familyName',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'textVariable'
+      },
+      'someRootNameInData.author_language_swe.givenName': {
+        name: 'givenName',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'textVariable'
+      }
+    };
+
+    expect(formMetaData).toStrictEqual(expected);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+
   describe('createMetaDataFromChildReference', () => {
     it('creates metadata from child references', () => {
       const actual = createMetaDataFromChildReference(

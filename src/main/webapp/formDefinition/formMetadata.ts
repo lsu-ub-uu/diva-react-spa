@@ -16,16 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import * as console from 'node:console';
+
 import {
-  BFFAttributeReference,
-  BFFMetadata,
   BFFMetadataChildReference,
-  BFFMetadataCollectionVariable,
   BFFMetadataGroup,
-  BFFMetadataNumberVariable,
   BFFMetadataRecordLink,
-  BFFMetadataTextVariable,
   BFFValidationType
 } from '../config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
@@ -52,9 +47,9 @@ export const createFormMetaData = (
   }
 
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
-
   return createMetaDataFromChildReference(formRootReference, metadataPool);
 };
+
 export const createMetaDataFromChildReference = (
   metadataChildReference: BFFMetadataChildReference,
   metadataPool: any
@@ -65,21 +60,15 @@ export const createMetaDataFromChildReference = (
   let children;
   let linkedRecordType;
   let attributes;
-  // console.log('mcr', metadata);
   if (metadata.attributeReferences !== undefined) {
     const temp = getAttributesByAttributeReferences(metadataPool, metadata.attributeReferences);
-    // console.log(Object.entries(temp))
     Object.entries(temp).forEach(([key, value]) => {
       attributes = { [key]: value.toString() };
     });
   }
   if (metadata.type === 'group') {
     const metadataGroup = metadata as BFFMetadataGroup;
-
-    // console.log('mg', metadataGroup);
     children = metadataGroup.children.map((childRef) => {
-      // console.log('cr', childRef);
-
       return createMetaDataFromChildReference(childRef, metadataPool);
     });
   }
@@ -88,7 +77,6 @@ export const createMetaDataFromChildReference = (
     const metadataRecordLink = metadata as BFFMetadataRecordLink;
     linkedRecordType = metadataRecordLink.linkedRecordType;
   }
-
   return removeEmpty({
     name: metadata.nameInData,
     type: metadata.type,

@@ -21,6 +21,7 @@
     "import/no-cycle": "off",
     "no-console": "off",
     "curly": "error",
-    "radix": ["error", "as-needed"]
+    "radix": ["error", "as-needed"],
+    "no-restricted-imports": ["error","console"]
   }
 }

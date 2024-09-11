@@ -16,15 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-import * as console from 'node:console';
+
 import { removeEmpty } from './removeEmpty';
 import { FormMetaData } from '../../formDefinition/formDefinition';
-
-export const createPath = (path: string, metaDataGroup: FormMetaData) => {
-  return path
-    ? `${path}.${addAttributesToName(metaDataGroup)}`
-    : addAttributesToName(metaDataGroup);
-};
+import { DataAtomic, DataGroup, RecordLink } from '../cora-data/CoraData';
 
 export const createFormMetaDataPathLookup = (
   metaDataGroup: FormMetaData,
@@ -32,19 +27,11 @@ export const createFormMetaDataPathLookup = (
   lookup: Record<string, FormMetaData> = {},
   childWithSameNameInData: string[] = []
 ) => {
-  const childrenWithSameNameInData: string[] = [];
-  console.log(
-    'childrenWithSameNameInData',
-    metaDataGroup.name,
-    childrenWithSameNameInData,
-    childWithSameNameInData
-  );
+  let childrenWithSameNameInData: string[] = [];
 
-  path = path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
+  path = createPath(path, metaDataGroup, childWithSameNameInData);
   if (metaDataGroup.type === 'group') {
-    (metaDataGroup.children ?? []).map((child: FormMetaData) => {
-      childrenWithSameNameInData.push(child.name);
-    });
+    childrenWithSameNameInData = addNamesToArray(metaDataGroup);
   }
 
   metaDataGroup.children?.forEach((metaData) => {
@@ -54,7 +41,20 @@ export const createFormMetaDataPathLookup = (
   return lookup;
 };
 
-export const addAttributesToName = (metaDataGroup: FormMetaData) => {
+export const createPath = (path: string, metaDataGroup: FormMetaData, childArray: string[]) => {
+  const hasMetaDataSameNameInData = childArray.includes(metaDataGroup.name);
+  const hasPath = path.length > 0 || path !== undefined;
+  if (hasMetaDataSameNameInData && hasPath) {
+    return path
+      ? `${path}.${addAttributesToName(metaDataGroup)}`
+      : addAttributesToName(metaDataGroup);
+  }
+  return path ? `${path}.${metaDataGroup.name}` : metaDataGroup.name;
+};
+
+export const addAttributesToName = (
+  metaDataGroup: FormMetaData | (DataGroup | DataAtomic | RecordLink)
+) => {
   if (metaDataGroup.attributes === undefined) {
     return metaDataGroup.name;
   }
@@ -63,4 +63,13 @@ export const addAttributesToName = (metaDataGroup: FormMetaData) => {
     nameArray.push(`${key}_${value}`);
   });
   return `${metaDataGroup.name}_${nameArray.join('_')}`;
+};
+
+export const addNamesToArray = (metaDataGroup: FormMetaData) => {
+  const tempArray: string[] = [];
+  (metaDataGroup.children ?? []).forEach((child: FormMetaData) => {
+    tempArray.push(child.name);
+  });
+  const duplicates = tempArray.filter((item, index) => tempArray.indexOf(item) !== index);
+  return Array.from(new Set(duplicates));
 };

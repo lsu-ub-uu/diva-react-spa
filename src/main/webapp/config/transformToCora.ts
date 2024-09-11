@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-data/CoraData';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
@@ -137,21 +136,21 @@ export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
   payload: any,
   path?: string,
-  repeatId?: string
+  repeatId?: string,
+  hasSiblings?: boolean
 ): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
-  /* console.log('p', payload); */
   Object.keys(payload).forEach((fieldKey) => {
     const value = payload[fieldKey];
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
-    /* console.log('1', fieldKey); */
-    if (!fieldKey.startsWith('_')) {
+    const checkIfHasSiblings = siblingWithSameNameInData(value) || hasSiblings;
+
+    if (isNotAttribute(fieldKey)) {
       const currentMetadataLookup = lookup[currentPath];
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
-
-      if (Array.isArray(value)) {
+      if (isRepeatingVariable(value)) {
         value.forEach((item: DataGroup | DataAtomic, index: number) => {
-          if ('value' in item) {
+          if (isVariable(item)) {
             const atomic = item as DataAtomic;
             const attributes = findChildrenAttributes(atomic);
             result.push(
@@ -175,22 +174,62 @@ export const transformToCoraData = (
             );
           }
         });
-      } else if (typeof value === 'object' && value !== null && 'value' in value) {
+      } else if (isNonRepeatingVariable(value)) {
         const attributes = findChildrenAttributes(value);
         result.push(
-          createLeaf(currentMetadataLookup, fieldKey, value.value, undefined, attributes)
+          createLeaf(
+            currentMetadataLookup,
+            removeAttributeFromName(fieldKey, attributes),
+            value.value,
+            undefined,
+            attributes
+          )
         );
       } else {
         // If Group
+        const attributes = findChildrenAttributes(value);
         result.push(
           removeEmpty({
-            name: fieldKey,
-            attributes: findChildrenAttributes(value),
-            children: transformToCoraData(lookup, value, currentPath, repeatId)
+            name: removeAttributeFromName(fieldKey, attributes),
+            attributes,
+            children: transformToCoraData(lookup, value, currentPath, repeatId, checkIfHasSiblings)
           } as DataGroup)
         );
       }
     }
   });
   return result;
+};
+
+const siblingWithSameNameInData = (value: any) => {
+  const stripedNames = Object.keys(value).map((names) => {
+    return names.split('_')[0];
+  });
+  return stripedNames.filter((item, index) => !(stripedNames.indexOf(item) === index)).length > 0;
+};
+
+export const removeAttributeFromName = (
+  name: string,
+  value: { [key: string]: string } | undefined
+) => {
+  if (value === undefined) {
+    return name;
+  }
+  return name.split('_')[0];
+};
+
+const isNotAttribute = (fieldKey: string) => {
+  return !fieldKey.startsWith('_');
+};
+
+const isRepeatingVariable = (value: any) => {
+  return Array.isArray(value);
+};
+
+const isVariable = (item: DataGroup | DataAtomic) => {
+  return 'value' in item;
+};
+
+const isNonRepeatingVariable = (value: any) => {
+  return typeof value === 'object' && value !== null && 'value' in value;
 };

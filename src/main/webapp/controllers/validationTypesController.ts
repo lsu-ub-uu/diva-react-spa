@@ -42,7 +42,7 @@ export const getSearchedValidationTypes = async (req: Request, res: Response) =>
               children: [
                 {
                   name: 'validatesRecordTypeSearchTerm',
-                  value: 'recordType_divaOutput'
+                  value: 'recordType_divaOutput*'
                 }
               ]
             }

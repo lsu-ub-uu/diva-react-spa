@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import {
   createLeaf,
   findChildrenAttributes,
@@ -26,6 +25,7 @@ import {
   generateRecordInfo,
   generateRecordLink,
   injectRecordInfoIntoDataGroup,
+  removeAttributeFromName,
   transformToCoraData
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
@@ -71,7 +71,30 @@ import {
   newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
   pNewNationSubjectCategoryMetadataGroup,
   pNewNationSubjectCategorySweVar,
-  pNewNationSubjectCategoryEngVar
+  pNewNationSubjectCategoryEngVar,
+  someMetadataCollectionVariable,
+  divaOutputValidationType,
+  preprintNewGroup,
+  domainCollectionVar,
+  outputTypeGroup,
+  outputTypeCollectionVar,
+  typeOutputTypeCollectionVar,
+  titleGroup,
+  mainTitleTextVar,
+  someValidationTypeForRepeatingGroupsNameInDataId,
+  someNewMetadataGroupRepeatingGroupsNameInDataGroup,
+  authorGroup,
+  authorGroup2,
+  givenNameTextVar,
+  familyNameTextVar,
+  someValidationTypeForRepeatingCollectionsNameInDataId,
+  someNewMetadataGroupRepeatingCollectionNameInDataGroup,
+  genreCollectionVar,
+  genreOtherCollectionVar,
+  someValidationTypeForRepeatingRecordLinksNameInDataId,
+  someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+  someNewRecordLinkId,
+  someOtherNewRecordLinkId
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -88,7 +111,11 @@ describe('transformToCora', () => {
       someSimpleValidationTypeData,
       someSimpleValidationTypeDataWithAttributes,
       someSimpleValidationTypeRepeatingGroups,
-      newNationSubjectCategoryValidationType
+      newNationSubjectCategoryValidationType,
+      divaOutputValidationType,
+      someValidationTypeForRepeatingGroupsNameInDataId,
+      someValidationTypeForRepeatingCollectionsNameInDataId,
+      someValidationTypeForRepeatingRecordLinksNameInDataId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -102,12 +129,31 @@ describe('transformToCora', () => {
       someMetadataNumberVarWithAttribute,
       someMetadataRepeatingRecordLinkWithAttributes,
       someMetadataRecordLinkWithAttributes,
+      someMetadataCollectionVariable,
       newNationalSubjectCategoryRecordTypeNewGroup,
       newNationalSubjectCategoryRecordTypeGroup,
       newNationSubjectCategoryMetadataSubjectSweTextVariable,
       newNationSubjectCategoryMetadataSubjectEngTextVariable,
       newNationSubjectCategoryMetadataSubjectSweLangCollVariable,
-      newNationSubjectCategoryMetadataSubjectEngLangCollVariable
+      newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
+      preprintNewGroup,
+      domainCollectionVar,
+      outputTypeGroup,
+      outputTypeCollectionVar,
+      typeOutputTypeCollectionVar,
+      titleGroup,
+      mainTitleTextVar,
+      someNewMetadataGroupRepeatingGroupsNameInDataGroup,
+      authorGroup,
+      authorGroup2,
+      givenNameTextVar,
+      familyNameTextVar,
+      someNewMetadataGroupRepeatingCollectionNameInDataGroup,
+      genreCollectionVar,
+      genreOtherCollectionVar,
+      someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+      someNewRecordLinkId,
+      someOtherNewRecordLinkId
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pNewNationSubjectCategoryMetadataGroup,
@@ -1129,9 +1175,7 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'someSimpleValidationTypeWithAttributesId';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-      console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-      console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(
         formMetaDataPathLookup,
         testFormPayloadWithGroupWithAttributesAndTextVar
@@ -1139,7 +1183,7 @@ describe('transformToCora', () => {
       expect(transformData[0]).toStrictEqual(expected);
     });
 
-    it('should take a form payload with group containing variables with attributes', () => {
+    it('should take a form payload with group with same nameInData containing variables with attributes', () => {
       const expected: DataGroup = {
         name: 'nationalSubjectCategory',
         children: [
@@ -1161,9 +1205,7 @@ describe('transformToCora', () => {
       };
       const validationTypeId = 'nationalSubjectCategory';
       const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-      console.log('formM', formMetaData);
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-      console.log('formP', formMetaDataPathLookup);
       const transformData = transformToCoraData(formMetaDataPathLookup, {
         nationalSubjectCategory: {
           subject_language_swe: {
@@ -1176,7 +1218,166 @@ describe('transformToCora', () => {
           }
         }
       });
-      // console.log('transformData', transformData);
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with group with same nameInData containing collVar with attributes', () => {
+      const expected: DataGroup = {
+        name: 'genreGroup',
+        children: [
+          {
+            name: 'genre',
+            value: 'artistic-work_artistic-thesis',
+            attributes: {
+              language: 'swe'
+            }
+          },
+          {
+            name: 'genre',
+            value: 'artistic-work_original-creative-work',
+            attributes: {
+              language: 'eng'
+            }
+          }
+        ]
+      };
+      const validationTypeId = 'someValidationTypeForRepeatingCollectionsNameInDataId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        genreGroup: {
+          genre_language_swe: {
+            value: 'artistic-work_artistic-thesis',
+            _language: 'swe'
+          },
+          genre_language_eng: {
+            value: 'artistic-work_original-creative-work',
+            _language: 'eng'
+          }
+        }
+      });
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with group with same nameInData containing recordLinks with attributes', () => {
+      const expected: DataGroup = {
+        children: [
+          {
+            attributes: {
+              language: 'swe'
+            },
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'nationalSubjectCategory'
+              },
+              {
+                name: 'linkedRecordId',
+                value: '1'
+              }
+            ],
+            name: 'newRecordLink'
+          },
+          {
+            attributes: {
+              language: 'eng'
+            },
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'nationalSubjectCategory'
+              },
+              {
+                name: 'linkedRecordId',
+                value: '2'
+              }
+            ],
+            name: 'newRecordLink'
+          }
+        ],
+        name: 'recordLinkGroup'
+      };
+      const validationTypeId = 'someValidationTypeForRepeatingRecordLinksNameInDataId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        recordLinkGroup: {
+          newRecordLink_language_swe: {
+            value: '1',
+            _language: 'swe'
+          },
+          newRecordLink_language_eng: {
+            value: '2',
+            _language: 'eng'
+          }
+        }
+      });
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with group with same nameInData and variables', () => {
+      const expected: DataGroup = {
+        name: 'someRootNameInData',
+        children: [
+          {
+            name: 'author',
+            children: [
+              {
+                name: 'givenName',
+                value: 'Egil'
+              },
+              {
+                name: 'familyName',
+                value: 'Swenning'
+              }
+            ],
+            attributes: {
+              language: 'swe'
+            }
+          },
+          {
+            name: 'author',
+            children: [
+              {
+                name: 'givenName',
+                value: 'Daniel'
+              },
+              {
+                name: 'familyName',
+                value: 'Flores'
+              }
+            ],
+            attributes: {
+              language: 'eng'
+            }
+          }
+        ]
+      };
+      const validationTypeId = 'someValidationTypeForRepeatingGroupsNameInDataId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        someRootNameInData: {
+          author_language_swe: {
+            givenName: {
+              value: 'Egil'
+            },
+            familyName: {
+              value: 'Swenning'
+            },
+            _language: 'swe'
+          },
+          author_language_eng: {
+            givenName: {
+              value: 'Daniel'
+            },
+            familyName: {
+              value: 'Flores'
+            },
+            _language: 'eng'
+          }
+        }
+      });
       expect(transformData[0]).toStrictEqual(expected);
     });
 
@@ -1214,6 +1415,75 @@ describe('transformToCora', () => {
         testFormPayloadWithGroupWithGroupWithRepeatingGroups
       );
       expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with repeating groups2', () => {
+      const expected: DataGroup = {
+        children: [
+          {
+            attributes: {
+              languageTerm: 'akk'
+            },
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'asdasdasd'
+              }
+            ],
+            name: 'title'
+          },
+          {
+            children: [
+              {
+                attributes: {
+                  type: 'outputType'
+                },
+                name: 'genre',
+                value: 'publication_newspaper-article'
+              }
+            ],
+            name: 'outputType'
+          },
+          {
+            name: 'domain',
+            value: 'hh'
+          }
+        ],
+        name: 'divaOutput'
+      };
+      const validationTypeId = 'preprint';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        divaOutput: {
+          title: {
+            _languageTerm: 'akk',
+            mainTitle: {
+              value: 'asdasdasd'
+            }
+          },
+          outputType: {
+            genre: {
+              value: 'publication_newspaper-article',
+              _type: 'outputType'
+            }
+          },
+          domain: {
+            value: 'hh'
+          }
+        }
+      });
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+  });
+  describe('removeAttributeFromName', () => {
+    it('does not remove anything if no attribute', () => {
+      const actual = removeAttributeFromName('subject', { language: 'eng' });
+      expect(actual).toStrictEqual('subject');
+    });
+    it('does remove attribute if it exist', () => {
+      const actual = removeAttributeFromName('subject_language_eng', { language: 'eng' });
+      expect(actual).toStrictEqual('subject');
     });
   });
 });

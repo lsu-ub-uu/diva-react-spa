@@ -18,7 +18,6 @@
  */
 
 import { Request, Response } from 'express';
-import * as console from 'node:console';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   deleteRecordDataById,
@@ -49,12 +48,10 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
-    console.log('payload', JSON.stringify(payload, null, 2));
     const { lastUpdate, created, values } = payload;
-    const recordType = Object.keys(values)[0];
 
     const { validationTypePool } = dependencies;
-
+    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
@@ -126,10 +123,9 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
-    const recordType = Object.keys(payload)[0];
 
     const { validationTypePool } = dependencies;
-
+    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
@@ -140,7 +136,7 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
-    console.log('tra', transformData[0] as DataGroup);
+
     const newGroup = injectRecordInfoIntoDataGroup(
       transformData[0] as DataGroup,
       validationTypeId,

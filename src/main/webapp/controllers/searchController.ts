@@ -28,7 +28,7 @@ import { BFFMetadataGroup } from '../config/bffTypes';
 import { getSearchTermNameFromSearchLink } from '../cora/search';
 
 /**
- * @desc Get result of a public person search
+ * @desc Get result of a public search results
  * @route GET /api/search
  * @access Public
  */

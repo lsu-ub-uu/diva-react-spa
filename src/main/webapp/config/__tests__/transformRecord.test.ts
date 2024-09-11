@@ -27,7 +27,8 @@ import {
   isRepeating,
   transformObjectAttributes,
   transformRecord,
-  traverseDataGroup
+  traverseDataGroup,
+  updateGroupWithPossibleNewNameWithAttribute
 } from '../transformRecord';
 import {
   Attributes,
@@ -609,7 +610,8 @@ describe('transformRecord', () => {
     };
     expect(transformData).toStrictEqual(expected);
   });
-  it('should return a root group with multiple variables having attributes', () => {
+
+  it('should return a root group with multiple variables with same nameInData having attributes', () => {
     const test = {
       name: 'divaOutput',
       children: [
@@ -632,13 +634,154 @@ describe('transformRecord', () => {
     const transformData = traverseDataGroup(test);
     const expected = {
       divaOutput: {
-        'nationalSubjectCategory[0]': {
-          value: 'nationalSubjectCategory:6325370460697648',
+        subject_language_eng: {
+          value: 'value1',
           _language: 'eng'
         },
-        nationalSubjectCategory_language_swe: {
-          value: 'nationalSubjectCategory:6325370460697641',
+        subject_language_swe: {
+          value: 'value2',
           _language: 'swe'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group with multiple colVar with same nameInData having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          attributes: {
+            language: 'eng'
+          },
+          name: 'domain',
+          value: 'hb'
+        },
+        {
+          attributes: {
+            language: 'swe'
+          },
+          name: 'domain',
+          value: 'uu'
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        domain_language_eng: {
+          value: 'hb',
+          _language: 'eng'
+        },
+        domain_language_swe: {
+          value: 'uu',
+          _language: 'swe'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group with multiple recordLinks with same nameInData having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'nationalSubjectCategory',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'nationalSubjectCategory'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'nationalSubjectCategory:1111111111111111'
+            }
+          ],
+          attributes: {
+            language: 'swe'
+          }
+        },
+        {
+          name: 'nationalSubjectCategory',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'nationalSubjectCategory'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'nationalSubjectCategory:2222222222222222'
+            }
+          ],
+          attributes: {
+            language: 'eng'
+          }
+        }
+      ]
+    };
+
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        nationalSubjectCategory_language_swe: {
+          value: 'nationalSubjectCategory:1111111111111111',
+          _language: 'swe'
+        },
+        nationalSubjectCategory_language_eng: {
+          value: 'nationalSubjectCategory:2222222222222222',
+          _language: 'eng'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
+  it('should return a root group with groups with same nameInData having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'author',
+          children: [
+            {
+              name: 'name',
+              value: 'value1'
+            }
+          ],
+          attributes: {
+            language: 'eng'
+          }
+        },
+        {
+          name: 'author',
+          children: [
+            {
+              name: 'name',
+              value: 'value2'
+            }
+          ],
+          attributes: {
+            language: 'swe'
+          }
+        }
+      ]
+    };
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        author_language_eng: {
+          _language: 'eng',
+          name: {
+            value: 'value1'
+          }
+        },
+        author_language_swe: {
+          _language: 'swe',
+          name: {
+            value: 'value2'
+          }
         }
       }
     };
@@ -771,6 +914,38 @@ describe('transformRecord', () => {
         'subject'
       );
       expect(actual).toBe(false);
+    });
+  });
+  describe('updateGroupNameWithAttribute', () => {
+    it('updates name with possible name', () => {
+      const actual = updateGroupWithPossibleNewNameWithAttribute(
+        {
+          name: 'author',
+          children: [{ name: 'name', value: 'value2' }],
+          attributes: { language: 'swe' }
+        },
+        'author_language_swe'
+      );
+      expect(actual).toStrictEqual({
+        name: 'author_language_swe',
+        children: [{ name: 'name', value: 'value2' }],
+        attributes: { language: 'swe' }
+      });
+    });
+    it('updates name with previous name', () => {
+      const actual = updateGroupWithPossibleNewNameWithAttribute(
+        {
+          name: 'author',
+          children: [{ name: 'name', value: 'value2' }],
+          attributes: { language: 'swe' }
+        },
+        'author'
+      );
+      expect(actual).toStrictEqual({
+        name: 'author',
+        children: [{ name: 'name', value: 'value2' }],
+        attributes: { language: 'swe' }
+      });
     });
   });
 });
