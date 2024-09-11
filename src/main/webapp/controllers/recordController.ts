@@ -37,7 +37,6 @@ import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import * as TYPES from '../config/bffTypes';
 
-
 /**
  * @desc Post an update to a record to Cora
  * @route POST /api/record/:validationTypeId/:recordId
@@ -50,10 +49,9 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
 
     const payload = cleanJson(req.body);
     const { lastUpdate, created, values } = payload;
-    const recordType = Object.keys(values)[0];
 
     const { validationTypePool } = dependencies;
-
+    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
@@ -125,10 +123,9 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
-    const recordType = Object.keys(payload)[0];
 
     const { validationTypePool } = dependencies;
-
+    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
@@ -145,6 +142,7 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
       validationTypeId,
       dataDivider
     );
+
     const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
     const id = extractIdFromRecordInfo(response.data.record.data);
     res.status(response.status).json({ id }); // return id for now
