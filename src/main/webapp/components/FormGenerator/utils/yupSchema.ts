@@ -103,7 +103,12 @@ export const createYupValidationsFromComponent = (
       // repeating variables
       const extendedSchema = yup.object().shape({
         value: createValidationFromComponentType(component),
-        ...createValidationForAttributesFromComponent(component),
+        ...createValidationForAttributesFromComponent(
+          component,
+          false,
+          isSiblingComponentRequired(component),
+          isParentGroupOptional(component),
+        ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 
       validationRule[component.name] = createYupArrayFromSchema(
@@ -162,14 +167,14 @@ export const generateYupSchema = (
 ) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
-    .map((formComponent) =>
-      createYupValidationsFromComponent(
+    .map((formComponent) => {
+      return createYupValidationsFromComponent(
         formComponent,
         parentGroupOptional,
         groupOptional,
         childrenWithSameNameInData,
-      ),
-    );
+      );
+    });
 
   const obj = Object.assign({}, ...validationsRules) as ObjectShape;
   return yup.object().default({}).shape(obj);
