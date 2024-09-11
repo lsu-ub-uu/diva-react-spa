@@ -18,7 +18,6 @@
  */
 
 import _ from 'lodash';
-import * as console from 'console';
 import {
   Attributes,
   DataAtomic,
@@ -231,7 +230,9 @@ export const traverseDataGroup = (
         const childGroup = child as DataGroup;
         const recordLinkAttributes = transformObjectAttributes(childGroup.attributes);
         const recordId = getFirstDataAtomicValueWithNameInData(childGroup, 'linkedRecordId');
-        return { [name]: Object.assign({ value: recordId }, ...recordLinkAttributes) };
+        return {
+          [possiblyNameWithAttribute]: Object.assign({ value: recordId }, ...recordLinkAttributes)
+        };
       }
 
       if (isRecordLink(child) && isRepeating(child, currentPath, formPathLookup)) {
@@ -304,7 +305,7 @@ export const hasSameNameInDatas = (
 ) => {
   const nameInDatas: string[] = [];
 
-  children.map((child) => {
+  children.forEach((child) => {
     nameInDatas.push(child.name);
   });
 

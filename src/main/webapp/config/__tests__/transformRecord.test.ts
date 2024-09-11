@@ -683,6 +683,61 @@ describe('transformRecord', () => {
     expect(transformData).toStrictEqual(expected);
   });
 
+  it('should return a root group with multiple recordLinks with same nameInData having attributes', () => {
+    const test = {
+      name: 'divaOutput',
+      children: [
+        {
+          name: 'nationalSubjectCategory',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'nationalSubjectCategory'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'nationalSubjectCategory:1111111111111111'
+            }
+          ],
+          attributes: {
+            language: 'swe'
+          }
+        },
+        {
+          name: 'nationalSubjectCategory',
+          children: [
+            {
+              name: 'linkedRecordType',
+              value: 'nationalSubjectCategory'
+            },
+            {
+              name: 'linkedRecordId',
+              value: 'nationalSubjectCategory:2222222222222222'
+            }
+          ],
+          attributes: {
+            language: 'eng'
+          }
+        }
+      ]
+    };
+
+    const transformData = traverseDataGroup(test);
+    const expected = {
+      divaOutput: {
+        nationalSubjectCategory_language_swe: {
+          value: 'nationalSubjectCategory:1111111111111111',
+          _language: 'swe'
+        },
+        nationalSubjectCategory_language_eng: {
+          value: 'nationalSubjectCategory:2222222222222222',
+          _language: 'eng'
+        }
+      }
+    };
+    expect(transformData).toStrictEqual(expected);
+  });
+
   it('should return a root group with groups with same nameInData having attributes', () => {
     const test = {
       name: 'divaOutput',
