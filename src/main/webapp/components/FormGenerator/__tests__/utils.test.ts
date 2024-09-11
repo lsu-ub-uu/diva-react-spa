@@ -54,437 +54,673 @@ import { removeEmpty } from '../../../utils/removeEmpty';
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
-    it('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          someNameInData: {
-            value: '',
-          },
-          someNumberVariableNameInData: {
-            value: '',
-          },
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefWithTextVar as FormSchema,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromFormSchema should take a formDef with a surrounding container and make default values object with that object level left out', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          someNameInData: {
-            value: '',
-          },
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefWithSurroundingContainerAroundTextVariable as FormSchema,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromFormSchema should take a formDef with a repeating container and make default values object with that object level left out', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          someNameInData: [
-            {
+    describe('createDefaultValuesFromFormSchema', () => {
+      it('createDefaultValuesFromFormSchema should take a formDef and make default values object', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            someNameInData: {
               value: '',
             },
-            {
-              value: '',
-            },
-          ],
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefWithARepeatingContainer as FormSchema,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    // group
-    it('createDefaultValuesFromFormSchema should take a more complex formDef with groups and make default values object', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          bookTitle: {
-            value: '',
-          },
-          keeptHis: [
-            {
-              value: '',
-            },
-          ],
-          firstChildGroup: {
-            exampleNumberVar: {
-              value: '',
-            },
-            exampleTextVar: {
+            someNumberVariableNameInData: {
               value: '',
             },
           },
-          recordInfo: {},
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefRealDemo as FormSchema,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithTextVar as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
 
-    it('createDefaultValuesFromFormSchema should take a more complex formDef with repeating groups and make default values object', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          bookTitle: {
-            value: '',
-          },
-          keeptHis: [
-            {
-              value: '',
-            },
-          ],
-          firstChildGroup: [
-            {
-              exampleNumberVar: {
-                value: '',
-              },
-              exampleTextVar: {
-                value: '',
-              },
-            },
-            {
-              exampleNumberVar: {
-                value: '',
-              },
-              exampleTextVar: {
-                value: '',
-              },
-            },
-          ],
-          recordInfo: {},
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefRealDemoWithRepeatingGroups as FormSchema,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromComponent should construct a default value object for repeating component', () => {
-      const expectedDefaultValues = {
-        exampleNumberVar: {
-          value: '',
-        },
-        exampleTextVar: {
-          value: '',
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromComponent(
-        formComponentGroup,
-        true,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromComponent should construct a default value object for complex children in repeating component', () => {
-      const expectedDefaultValues = {
-        exampleNumberVar: [
-          {
-            value: '',
-          },
-        ],
-        exampleTextVar: [
-          {
-            value: '',
-          },
-          {
-            value: '',
-          },
-        ],
-      };
-      const actualDefaultValues = createDefaultValuesFromComponent(
-        formComponentGroupWithChildren,
-        true,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromComponent should construct a default value object for group within group having repeating vars and minNumberToShow set', () => {
-      const expectedDefaultValues = {
-        exampleTextVar: {
-          value: '',
-        },
-        innerChildGroup: [
-          {
-            exampleNumberVar: [
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-            ],
-            exampleTextVar: {
-              value: '',
-            },
-          },
-          {
-            exampleNumberVar: [
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-              {
-                value: '12',
-              },
-            ],
-            exampleTextVar: {
-              value: '',
-            },
-          },
-        ],
-      };
-      const actualDefaultValues = createDefaultValuesFromComponent(
-        formComponentGroupAndTextVariableWithinGroup,
-        true,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromComponent should construct a default value object for group with attributes and attributes for vars within group', () => {
-      const expectedDefaultValues = {
-        _firstChildGroupColor: 'yellow',
-        _firstChildGroupSecondAttribute: '',
-        secondChildGroup: [
-          {
-            exampleNumberVar: {
-              value: '',
-            },
-            exampleTextVar: {
-              _colour: '',
-              value: '',
-            },
-          },
-        ],
-      };
-      const actualDefaultValues = createDefaultValuesFromComponent(
-        formComponentGroupWithinGroupWithAttributes,
-        true,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromComponent should construct a default value object for textVariable component', () => {
-      const expectedDefaultValues = {
-        value: '',
-      };
-      const actualDefaultValues = createDefaultValuesFromComponent(
-        formComponentRepeatingTextVariable,
-        true,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromComponent should construct a default value object for textVariables with same NameInData', () => {
-      const expectedDefaultValues = {
-        secondChildGroup: {
-          exampleNumberVar_language_eng: {
-            _language: 'eng',
-            value: '12',
-          },
-          exampleNumberVar_language_swe: {
-            _language: 'swe',
-            value: '12',
-          },
-        },
-      };
-      const actualDefaultValues = createDefaultValuesFromComponent(
-        {
-          name: 'secondChildGroup',
-          type: 'group',
-          mode: 'input',
-          tooltip: {
-            title: 'nationalSubjectCategoryRecordTypeNewGroupText',
-            body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
-          },
-          label: 'nationalSubjectCategoryRecordTypeNewGroupText',
-          showLabel: true,
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-          components: [
-            {
-              name: 'exampleNumberVar',
-              type: 'numberVariable',
-              mode: 'input',
-              tooltip: {
-                title: 'exampleMetadataNumberVarText',
-                body: 'exampleMetadataNumberVarDefText',
-              },
-              label: 'exampleMetadataNumberVarText',
-              attributes: [
-                {
-                  name: 'language',
-                  type: 'collectionVariable',
-                  placeholder: 'initialEmptyValueText',
-                  mode: 'input',
-                  tooltip: {
-                    title: 'languageCollectionVarText',
-                    body: 'languageCollectionVarDefText',
-                  },
-                  label: 'languageCollectionVarText',
-                  showLabel: true,
-                  options: [
-                    {
-                      value: 'eng',
-                      label: 'engLangItemText',
-                    },
-                    {
-                      value: 'swe',
-                      label: 'sweLangItemText',
-                    },
-                  ],
-                  finalValue: 'eng',
-                },
-              ],
-              finalValue: '12',
-              showLabel: true,
-              validation: {
-                type: 'number',
-                min: 0,
-                max: 100,
-                warningMin: 10,
-                warningMax: 90,
-                numberOfDecimals: 2,
-              },
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-            },
-            {
-              name: 'exampleNumberVar',
-              type: 'numberVariable',
-              mode: 'input',
-              tooltip: {
-                title: 'exampleMetadataNumberVarText',
-                body: 'exampleMetadataNumberVarDefText',
-              },
-              label: 'exampleMetadataNumberVarText',
-              attributes: [
-                {
-                  name: 'language',
-                  type: 'collectionVariable',
-                  placeholder: 'initialEmptyValueText',
-                  mode: 'input',
-                  tooltip: {
-                    title: 'languageCollectionVarText',
-                    body: 'languageCollectionVarDefText',
-                  },
-                  label: 'languageCollectionVarText',
-                  showLabel: true,
-                  options: [
-                    {
-                      value: 'eng',
-                      label: 'engLangItemText',
-                    },
-                    {
-                      value: 'swe',
-                      label: 'sweLangItemText',
-                    },
-                  ],
-                  finalValue: 'swe',
-                },
-              ],
-              finalValue: '12',
-              showLabel: true,
-              validation: {
-                type: 'number',
-                min: 0,
-                max: 100,
-                warningMin: 10,
-                warningMax: 90,
-                numberOfDecimals: 2,
-              },
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1,
-              },
-            },
-          ],
-          presentationStyle: '',
-          childStyle: [''],
-          gridColSpan: 12,
-        },
-        false,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
-    });
-
-    it('createDefaultValuesFromFormSchema should construct a default value object for one single group having textVar as child component', () => {
-      const expectedDefaultValues = {
-        someRootNameInData: {
-          someChildGroupNameInData: {
+      it('should take a formDef with a surrounding container and make default values object with that object level left out', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
             someNameInData: {
               value: '',
             },
           },
-        },
-      };
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithSurroundingContainerAroundTextVariable as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
 
-      const actualDefaultValues = createDefaultValuesFromFormSchema(
-        formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
-      );
-      expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      it('should take a formDef with a repeating container and make default values object with that object level left out', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            someNameInData: [
+              {
+                value: '',
+              },
+              {
+                value: '',
+              },
+            ],
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithARepeatingContainer as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      // group
+      it('should take a more complex formDef with groups and make default values object', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: '',
+            },
+            keeptHis: [
+              {
+                value: '',
+              },
+            ],
+            firstChildGroup: {
+              exampleNumberVar: {
+                value: '',
+              },
+              exampleTextVar: {
+                value: '',
+              },
+            },
+            recordInfo: {},
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemo as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should take a more complex formDef with repeating groups and make default values object', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            bookTitle: {
+              value: '',
+            },
+            keeptHis: [
+              {
+                value: '',
+              },
+            ],
+            firstChildGroup: [
+              {
+                exampleNumberVar: {
+                  value: '',
+                },
+                exampleTextVar: {
+                  value: '',
+                },
+              },
+              {
+                exampleNumberVar: {
+                  value: '',
+                },
+                exampleTextVar: {
+                  value: '',
+                },
+              },
+            ],
+            recordInfo: {},
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefRealDemoWithRepeatingGroups as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('createDefaultValuesFromFormSchema should construct a default value object for one single group having textVar as child component', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            someChildGroupNameInData: {
+              someNameInData: {
+                value: '',
+              },
+            },
+          },
+        };
+
+        const actualDefaultValues = createDefaultValuesFromFormSchema(
+          formDefWithOneGroupHavingTextVariableAsChild as FormSchema,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+    });
+    describe('createDefaultValuesFromComponent', () => {
+      it('should construct a default value object for repeating component', () => {
+        const expectedDefaultValues = {
+          exampleNumberVar: {
+            value: '',
+          },
+          exampleTextVar: {
+            value: '',
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          formComponentGroup,
+          true,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should construct a default value object for complex children in repeating component', () => {
+        const expectedDefaultValues = {
+          exampleNumberVar: [
+            {
+              value: '',
+            },
+          ],
+          exampleTextVar: [
+            {
+              value: '',
+            },
+            {
+              value: '',
+            },
+          ],
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          formComponentGroupWithChildren,
+          true,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should construct a default value object for group within group having repeating vars and minNumberToShow set', () => {
+        const expectedDefaultValues = {
+          exampleTextVar: {
+            value: '',
+          },
+          innerChildGroup: [
+            {
+              exampleNumberVar: [
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+              ],
+              exampleTextVar: {
+                value: '',
+              },
+            },
+            {
+              exampleNumberVar: [
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+                {
+                  value: '12',
+                },
+              ],
+              exampleTextVar: {
+                value: '',
+              },
+            },
+          ],
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          formComponentGroupAndTextVariableWithinGroup,
+          true,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should construct a default value object for group with attributes and attributes for vars within group', () => {
+        const expectedDefaultValues = {
+          _firstChildGroupColor: 'yellow',
+          _firstChildGroupSecondAttribute: '',
+          secondChildGroup: [
+            {
+              exampleNumberVar: {
+                value: '',
+              },
+              exampleTextVar: {
+                _colour: '',
+                value: '',
+              },
+            },
+          ],
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          formComponentGroupWithinGroupWithAttributes,
+          true,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should construct a default value object for textVariable component', () => {
+        const expectedDefaultValues = {
+          value: '',
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          formComponentRepeatingTextVariable,
+          true,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should construct a default value object for textVariables with same NameInData', () => {
+        const expectedDefaultValues = {
+          secondChildGroup: {
+            exampleNumberVar_language_eng: {
+              _language: 'eng',
+              value: '12',
+            },
+            exampleNumberVar_language_swe: {
+              _language: 'swe',
+              value: '12',
+            },
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          {
+            name: 'secondChildGroup',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+              body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+            },
+            label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+            showLabel: true,
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'exampleNumberVar',
+                type: 'numberVariable',
+                mode: 'input',
+                tooltip: {
+                  title: 'exampleMetadataNumberVarText',
+                  body: 'exampleMetadataNumberVarDefText',
+                },
+                label: 'exampleMetadataNumberVarText',
+                attributes: [
+                  {
+                    name: 'language',
+                    type: 'collectionVariable',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'languageCollectionVarText',
+                      body: 'languageCollectionVarDefText',
+                    },
+                    label: 'languageCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'eng',
+                        label: 'engLangItemText',
+                      },
+                      {
+                        value: 'swe',
+                        label: 'sweLangItemText',
+                      },
+                    ],
+                    finalValue: 'eng',
+                  },
+                ],
+                finalValue: '12',
+                showLabel: true,
+                validation: {
+                  type: 'number',
+                  min: 0,
+                  max: 100,
+                  warningMin: 10,
+                  warningMax: 90,
+                  numberOfDecimals: 2,
+                },
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+              },
+              {
+                name: 'exampleNumberVar',
+                type: 'numberVariable',
+                mode: 'input',
+                tooltip: {
+                  title: 'exampleMetadataNumberVarText',
+                  body: 'exampleMetadataNumberVarDefText',
+                },
+                label: 'exampleMetadataNumberVarText',
+                attributes: [
+                  {
+                    name: 'language',
+                    type: 'collectionVariable',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'languageCollectionVarText',
+                      body: 'languageCollectionVarDefText',
+                    },
+                    label: 'languageCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'eng',
+                        label: 'engLangItemText',
+                      },
+                      {
+                        value: 'swe',
+                        label: 'sweLangItemText',
+                      },
+                    ],
+                    finalValue: 'swe',
+                  },
+                ],
+                finalValue: '12',
+                showLabel: true,
+                validation: {
+                  type: 'number',
+                  min: 0,
+                  max: 100,
+                  warningMin: 10,
+                  warningMax: 90,
+                  numberOfDecimals: 2,
+                },
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          false,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should construct a default value object for groups with same NameInData', () => {
+        const expectedDefaultValues = {
+          someRootNameInData: {
+            author_language_uwu: {
+              _language: 'uwu',
+              givenName: {
+                value: '',
+              },
+              familyName: {
+                value: '',
+              },
+            },
+            author_language_nau: {
+              _language: 'nau',
+              givenName: {
+                value: '',
+              },
+              familyName: {
+                value: '',
+              },
+            },
+          },
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          {
+            type: 'group',
+            label: 'someRootFormGroupText',
+            name: 'someRootNameInData',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            tooltip: {
+              title: 'textId345',
+              body: 'defTextId678',
+            },
+            components: [
+              {
+                name: 'author',
+                type: 'group',
+                mode: 'input',
+                tooltip: {
+                  title: 'authorGroupText',
+                  body: 'authorGroupDefText',
+                },
+                label: 'authorGroupText',
+                showLabel: true,
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                attributes: [
+                  {
+                    name: 'language',
+                    type: 'collectionVariable',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'languageCollectionVarText',
+                      body: 'languageCollectionVarDefText',
+                    },
+                    label: 'languageCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'nau',
+                        label: 'nauLangItemText',
+                      },
+                      {
+                        value: 'uwu',
+                        label: 'uwuLangItemText',
+                      },
+                    ],
+                    finalValue: 'uwu',
+                  },
+                ],
+                components: [
+                  {
+                    name: 'givenName',
+                    type: 'textVariable',
+                    mode: 'input',
+                    inputType: 'input',
+                    tooltip: {
+                      title: 'givenNameTextVarText',
+                      body: 'givenNameTextVarDefText',
+                    },
+                    label: 'givenNameTextVarText',
+                    placeholder: 'givenNameTextVarText1',
+                    showLabel: true,
+                    validation: {
+                      type: 'regex',
+                      pattern: '.+',
+                    },
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    childStyle: ['sixChildStyle'],
+                    gridColSpan: 6,
+                  },
+                  {
+                    name: 'familyName',
+                    type: 'textVariable',
+                    mode: 'input',
+                    inputType: 'input',
+                    tooltip: {
+                      title: 'familyNameTextVarText',
+                      body: 'familyNameTextVarDefText',
+                    },
+                    label: 'familyNameTextVarText',
+                    placeholder: 'familyNameTextVarText1',
+                    showLabel: true,
+                    validation: {
+                      type: 'regex',
+                      pattern: '.+',
+                    },
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    childStyle: ['sixChildStyle'],
+                    gridColSpan: 6,
+                  },
+                ],
+                presentationStyle: '',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+              {
+                name: 'author',
+                type: 'group',
+                mode: 'input',
+                tooltip: {
+                  title: 'authorGroupText',
+                  body: 'authorGroupDefText',
+                },
+                label: 'authorGroupText',
+                showLabel: true,
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                attributes: [
+                  {
+                    name: 'language',
+                    type: 'collectionVariable',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'languageCollectionVarText',
+                      body: 'languageCollectionVarDefText',
+                    },
+                    label: 'languageCollectionVarText',
+                    showLabel: true,
+                    options: [
+                      {
+                        value: 'nau',
+                        label: 'nauLangItemText',
+                      },
+                      {
+                        value: 'uwu',
+                        label: 'uwuLangItemText',
+                      },
+                    ],
+                    finalValue: 'nau',
+                  },
+                ],
+                components: [
+                  {
+                    name: 'givenName',
+                    type: 'textVariable',
+                    mode: 'input',
+                    inputType: 'input',
+                    tooltip: {
+                      title: 'givenNameTextVarText',
+                      body: 'givenNameTextVarDefText',
+                    },
+                    label: 'givenNameTextVarText',
+                    placeholder: 'givenNameTextVarText2',
+                    showLabel: true,
+                    validation: {
+                      type: 'regex',
+                      pattern: '.+',
+                    },
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    childStyle: ['sixChildStyle'],
+                    gridColSpan: 6,
+                  },
+                  {
+                    name: 'familyName',
+                    type: 'textVariable',
+                    mode: 'input',
+                    inputType: 'input',
+                    tooltip: {
+                      title: 'familyNameTextVarText',
+                      body: 'familyNameTextVarDefText',
+                    },
+                    label: 'familyNameTextVarText',
+                    placeholder: 'familyNameTextVarText2',
+                    showLabel: true,
+                    validation: {
+                      type: 'regex',
+                      pattern: '.+',
+                    },
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    childStyle: ['sixChildStyle'],
+                    gridColSpan: 6,
+                  },
+                ],
+                presentationStyle: '',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            mode: 'input',
+          },
+          false,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
     });
 
     describe('finalValues', () => {
@@ -1299,117 +1535,339 @@ describe('FormGenerator Utils', () => {
         expect(expectedData).toStrictEqual(actualData);
       });
 
-      // it('create default value from two component with same nameInData', () => {
-      //   const expectedData = {
-      //     exampleNumberVart_language_eng: {
-      //       value: '12',
-      //     },
-      //     exampleNumberVar2t_language_swe: {
-      //       value: '12',
-      //     },
-      //   };
-      //   const actualData = createDefaultValuesFromComponents([
-      //     {
-      //       name: 'exampleNumberVar',
-      //       type: 'numberVariable',
-      //       mode: 'input',
-      //       tooltip: {
-      //         title: 'exampleMetadataNumberVarText',
-      //         body: 'exampleMetadataNumberVarDefText',
-      //       },
-      //       label: 'exampleMetadataNumberVarText',
-      //       attributes: [
-      //         {
-      //           name: 'language',
-      //           type: 'collectionVariable',
-      //           placeholder: 'initialEmptyValueText',
-      //           mode: 'input',
-      //           tooltip: {
-      //             title: 'languageCollectionVarText',
-      //             body: 'languageCollectionVarDefText',
-      //           },
-      //           label: 'languageCollectionVarText',
-      //           showLabel: true,
-      //           options: [
-      //             {
-      //               value: 'eng',
-      //               label: 'engLangItemText',
-      //             },
-      //             {
-      //               value: 'swe',
-      //               label: 'sweLangItemText',
-      //             },
-      //           ],
-      //           finalValue: 'eng',
-      //         },
-      //       ],
-      //       finalValue: '12',
-      //       showLabel: true,
-      //       validation: {
-      //         type: 'number',
-      //         min: 0,
-      //         max: 100,
-      //         warningMin: 10,
-      //         warningMax: 90,
-      //         numberOfDecimals: 2,
-      //       },
-      //       repeat: {
-      //         repeatMin: 1,
-      //         repeatMax: 1,
-      //       },
-      //     },
-      //     {
-      //       name: 'exampleNumberVar',
-      //       type: 'numberVariable',
-      //       mode: 'input',
-      //       tooltip: {
-      //         title: 'exampleMetadataNumberVarText',
-      //         body: 'exampleMetadataNumberVarDefText',
-      //       },
-      //       label: 'exampleMetadataNumberVarText',
-      //       attributes: [
-      //         {
-      //           name: 'language',
-      //           type: 'collectionVariable',
-      //           placeholder: 'initialEmptyValueText',
-      //           mode: 'input',
-      //           tooltip: {
-      //             title: 'languageCollectionVarText',
-      //             body: 'languageCollectionVarDefText',
-      //           },
-      //           label: 'languageCollectionVarText',
-      //           showLabel: true,
-      //           options: [
-      //             {
-      //               value: 'eng',
-      //               label: 'engLangItemText',
-      //             },
-      //             {
-      //               value: 'swe',
-      //               label: 'sweLangItemText',
-      //             },
-      //           ],
-      //           finalValue: 'swe',
-      //         },
-      //       ],
-      //       finalValue: '12',
-      //       showLabel: true,
-      //       validation: {
-      //         type: 'number',
-      //         min: 0,
-      //         max: 100,
-      //         warningMin: 10,
-      //         warningMax: 90,
-      //         numberOfDecimals: 2,
-      //       },
-      //       repeat: {
-      //         repeatMin: 1,
-      //         repeatMax: 1,
-      //       },
-      //     },
-      //   ]);
-      //   expect(expectedData).toStrictEqual(actualData);
-      // });
+      it('create default value from two component with same nameInData, with attributes', () => {
+        const expectedData = {
+          exampleNumberVar_language_eng: {
+            _language: 'eng',
+            value: '12',
+          },
+          exampleNumberVar_language_swe: {
+            _language: 'swe',
+            value: '12',
+          },
+        };
+        const actualData = createDefaultValuesFromComponents(
+          [
+            {
+              name: 'exampleNumberVar',
+              type: 'numberVariable',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleMetadataNumberVarText',
+                body: 'exampleMetadataNumberVarDefText',
+              },
+              label: 'exampleMetadataNumberVarText',
+              attributes: [
+                {
+                  name: 'language',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'eng',
+                      label: 'engLangItemText',
+                    },
+                    {
+                      value: 'swe',
+                      label: 'sweLangItemText',
+                    },
+                  ],
+                  finalValue: 'eng',
+                },
+              ],
+              finalValue: '12',
+              showLabel: true,
+              validation: {
+                type: 'number',
+                min: 0,
+                max: 100,
+                warningMin: 10,
+                warningMax: 90,
+                numberOfDecimals: 2,
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+            {
+              name: 'exampleNumberVar',
+              type: 'numberVariable',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleMetadataNumberVarText',
+                body: 'exampleMetadataNumberVarDefText',
+              },
+              label: 'exampleMetadataNumberVarText',
+              attributes: [
+                {
+                  name: 'language',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'eng',
+                      label: 'engLangItemText',
+                    },
+                    {
+                      value: 'swe',
+                      label: 'sweLangItemText',
+                    },
+                  ],
+                  finalValue: 'swe',
+                },
+              ],
+              finalValue: '12',
+              showLabel: true,
+              validation: {
+                type: 'number',
+                min: 0,
+                max: 100,
+                warningMin: 10,
+                warningMax: 90,
+                numberOfDecimals: 2,
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+          ],
+          ['exampleNumberVar'],
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+
+      it('create default value from two groups with same nameInData, with attributes', () => {
+        const expectedData = {
+          author_language_nau: {
+            _language: 'nau',
+            familyName: {
+              value: '',
+            },
+            givenName: {
+              value: '',
+            },
+          },
+          author_language_uwu: {
+            _language: 'uwu',
+            familyName: {
+              value: '',
+            },
+            givenName: {
+              value: '',
+            },
+          },
+        };
+        const actualData = createDefaultValuesFromComponents(
+          [
+            {
+              name: 'author',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'authorGroupText',
+                body: 'authorGroupDefText',
+              },
+              label: 'authorGroupText',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              attributes: [
+                {
+                  name: 'language',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'nau',
+                      label: 'nauLangItemText',
+                    },
+                    {
+                      value: 'uwu',
+                      label: 'uwuLangItemText',
+                    },
+                  ],
+                  finalValue: 'uwu',
+                },
+              ],
+              components: [
+                {
+                  name: 'givenName',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'givenNameTextVarText',
+                    body: 'givenNameTextVarDefText',
+                  },
+                  label: 'givenNameTextVarText',
+                  placeholder: 'givenNameTextVarText1',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+                {
+                  name: 'familyName',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'familyNameTextVarText',
+                    body: 'familyNameTextVarDefText',
+                  },
+                  label: 'familyNameTextVarText',
+                  placeholder: 'familyNameTextVarText1',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+            {
+              name: 'author',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'authorGroupText',
+                body: 'authorGroupDefText',
+              },
+              label: 'authorGroupText',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              attributes: [
+                {
+                  name: 'language',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'nau',
+                      label: 'nauLangItemText',
+                    },
+                    {
+                      value: 'uwu',
+                      label: 'uwuLangItemText',
+                    },
+                  ],
+                  finalValue: 'nau',
+                },
+              ],
+              components: [
+                {
+                  name: 'givenName',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'givenNameTextVarText',
+                    body: 'givenNameTextVarDefText',
+                  },
+                  label: 'givenNameTextVarText',
+                  placeholder: 'givenNameTextVarText2',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+                {
+                  name: 'familyName',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'familyNameTextVarText',
+                    body: 'familyNameTextVarDefText',
+                  },
+                  label: 'familyNameTextVarText',
+                  placeholder: 'familyNameTextVarText2',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          ['author'],
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
     });
     describe('mergeObjects', () => {
       it('merges one object', () => {
@@ -1432,6 +1890,7 @@ describe('FormGenerator Utils', () => {
         );
         expect(expectedData).toStrictEqual(actualData);
       });
+
       it('merges one nested object', () => {
         const expectedData = {
           someRootNameInData: {
@@ -1458,6 +1917,7 @@ describe('FormGenerator Utils', () => {
         );
         expect(expectedData).toStrictEqual(actualData);
       });
+
       it('merges one object with an extra object', () => {
         const expectedData = {
           someRootNameInData: {
@@ -1490,6 +1950,7 @@ describe('FormGenerator Utils', () => {
         );
         expect(expectedData).toStrictEqual(actualData);
       });
+
       it('merges one array', () => {
         const expectedData = {
           someRootNameInData: {
@@ -1534,6 +1995,7 @@ describe('FormGenerator Utils', () => {
         );
         expect(expectedData).toStrictEqual(actualData);
       });
+
       it('merges one value', () => {
         const expectedData = {
           someRootNameInData: 'testValue',
@@ -1544,6 +2006,72 @@ describe('FormGenerator Utils', () => {
           },
           {
             someRootNameInData: 'testValue',
+          },
+        );
+        expect(expectedData).toStrictEqual(actualData);
+      });
+
+      it('merges one object group', () => {
+        const expectedData = {
+          author_language_nau: {
+            _language: 'nau',
+            familyName: {
+              value: 'Flores',
+            },
+            givenName: {
+              value: 'Daniel',
+            },
+          },
+          author_language_uwu: {
+            _language: 'uwu',
+            familyName: {
+              value: 'Swenning',
+            },
+            givenName: {
+              value: 'Egil',
+            },
+          },
+        };
+        const actualData = mergeObjects(
+          {
+            author_language_nau: {
+              _language: 'nau',
+              familyName: {
+                value: '',
+              },
+              givenName: {
+                value: '',
+              },
+            },
+            author_language_uwu: {
+              _language: 'uwu',
+              familyName: {
+                value: '',
+              },
+              givenName: {
+                value: '',
+              },
+            },
+          },
+          {
+            author_language_uwu: {
+              givenName: {
+                value: 'Egil',
+              },
+              familyName: {
+                value: 'Swenning',
+              },
+              _language: 'uwu',
+            },
+            author_language_nau: {
+              givenName: {
+                value: 'Daniel',
+              },
+              familyName: {
+                value: 'Flores',
+              },
+              _language: 'nau',
+            },
           },
         );
         expect(expectedData).toStrictEqual(actualData);

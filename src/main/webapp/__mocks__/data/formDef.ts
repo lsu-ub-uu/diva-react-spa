@@ -5947,6 +5947,214 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars = {
   },
 };
 
+export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars = {
+  validationTypeId: 'someValidationTypeId',
+  form: {
+    type: 'group',
+    label: 'someRootFormGroupText',
+    name: 'someRootNameInData',
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    tooltip: {
+      title: 'textId345',
+      body: 'defTextId678',
+    },
+    components: [
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'authorGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'nau',
+                label: 'nauLangItemText',
+              },
+              {
+                value: 'uwu',
+                label: 'uwuLangItemText',
+              },
+            ],
+            finalValue: 'uwu',
+          },
+        ],
+        components: [
+          {
+            name: 'givenName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'givenNameTextVarText',
+              body: 'givenNameTextVarDefText',
+            },
+            label: 'givenNameTextVarText',
+            placeholder: 'givenNameTextVarText1',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'familyName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'familyNameTextVarText',
+              body: 'familyNameTextVarDefText',
+            },
+            label: 'familyNameTextVarText',
+            placeholder: 'familyNameTextVarText1',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'author',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'authorGroupText',
+          body: 'authorGroupDefText',
+        },
+        label: 'authorGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        attributes: [
+          {
+            name: 'language',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'nau',
+                label: 'nauLangItemText',
+              },
+              {
+                value: 'uwu',
+                label: 'uwuLangItemText',
+              },
+            ],
+            finalValue: 'nau',
+          },
+        ],
+        components: [
+          {
+            name: 'givenName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'givenNameTextVarText',
+              body: 'givenNameTextVarDefText',
+            },
+            label: 'givenNameTextVarText',
+            placeholder: 'givenNameTextVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+          {
+            name: 'familyName',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'familyNameTextVarText',
+              body: 'familyNameTextVarDefText',
+            },
+            label: 'familyNameTextVarText',
+            placeholder: 'familyNameTextVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: ['sixChildStyle'],
+            gridColSpan: 6,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    mode: 'input',
+  },
+};
+
 export const formDefPreprintWithOnlyAuthorName = {
   validationTypeId: 'preprint',
   form: {
@@ -6388,3 +6596,506 @@ export const formDefTextVarsWithSameNameInData = {
     gridColSpan: 12,
   },
 };
+
+export const formDefCollVarsWithSameNameInData = {
+  validationTypeId: 'nationalSubjectCategory',
+  form: {
+    name: 'nationalSubjectCategory',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+      body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+    },
+    label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'recordInfo',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'recordInfoNationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'recordInfoNationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'recordInfoNationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: false,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'genre',
+        type: 'collectionVariable',
+        placeholder: 'initialEmptyValueText',
+        mode: 'input',
+        tooltip: {
+          title: 'outputTypeCollectionVarText',
+          body: 'outputTypeCollectionVarDefText',
+        },
+        label: 'outputTypeCollectionVarText1',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        options: [
+          {
+            value: 'artistic-work_original-creative-work',
+            label: 'artisticWorkOriginalCreativeWorkItemText',
+          },
+          {
+            value: 'artistic-work_artistic-thesis',
+            label: 'artisticWorkArtisticThesisItemText',
+          },
+        ],
+        attributes: [
+          {
+            name: 'type',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'typeCollectionVarText',
+              body: 'typeCollectionVarDefText',
+            },
+            label: 'typeCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'code',
+                label: 'codeItemText',
+              },
+              {
+                value: 'contentType',
+                label: 'contentTypeItemText',
+              },
+            ],
+            finalValue: 'code',
+          },
+        ],
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'genre',
+        type: 'collectionVariable',
+        placeholder: 'initialEmptyValueText2',
+        mode: 'input',
+        tooltip: {
+          title: 'outputTypeCollectionVarText',
+          body: 'outputTypeCollectionVarDefText',
+        },
+        label: 'outputTypeCollectionVarText2',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        options: [
+          {
+            value: 'artistic-work_original-creative-work',
+            label: 'artisticWorkOriginalCreativeWorkItemText',
+          },
+          {
+            value: 'artistic-work_artistic-thesis',
+            label: 'artisticWorkArtisticThesisItemText',
+          },
+        ],
+        attributes: [
+          {
+            name: 'type',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText1',
+            mode: 'input',
+            tooltip: {
+              title: 'typeCollectionVarText',
+              body: 'typeCollectionVarDefText',
+            },
+            label: 'typeCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'code',
+                label: 'codeItemText',
+              },
+              {
+                value: 'contentType',
+                label: 'contentTypeItemText',
+              },
+            ],
+            finalValue: 'contentType',
+          },
+        ],
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes = {
+  validationTypeId: 'preprint',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'preprintNewGroupText',
+      body: 'preprintNewGroupDefText',
+    },
+    label: 'preprintNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'subject',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'keywordsGroupText',
+          body: 'keywordsGroupDefText',
+        },
+        label: 'keywordsGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1.7976931348623157e308,
+        },
+        attributes: [
+          {
+            name: 'lang',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+          },
+        ],
+        components: [
+          {
+            name: 'topic',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'keywordsTextVarText',
+              body: 'keywordsTextVarDefText',
+            },
+            label: 'keywordsTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            attributes: [
+              {
+                name: 'lang',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes = {
+  validationTypeId: 'preprint',
+  form: {
+    name: 'divaOutput',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'preprintNewGroupText',
+      body: 'preprintNewGroupDefText',
+    },
+    label: 'preprintNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'subject',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'keywordsGroupText',
+          body: 'keywordsGroupDefText',
+        },
+        label: 'keywordsGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1.7976931348623157e308,
+        },
+        attributes: [
+          {
+            name: 'lang',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+          },
+        ],
+        components: [
+          {
+            name: 'topic',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'keywordsTextVarText',
+              body: 'keywordsTextVarDefText',
+            },
+            label: 'keywordsTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            attributes: [
+              {
+                name: 'lang',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes =
+  {
+    validationTypeId: 'preprint',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'preprintNewGroupText',
+        body: 'preprintNewGroupDefText',
+      },
+      label: 'preprintNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'nationalSubjectCategory',
+          type: 'recordLink',
+          mode: 'input',
+          tooltip: {
+            title: 'nationalSubjectCategoryLinkText',
+            body: 'nationalSubjectCategoryLinkDefText',
+          },
+          label: 'nationalSubjectCategoryLinkText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+          recordLinkType: 'nationalSubjectCategory',
+          presentationRecordLinkId: 'nationalSubjectCategoryPLink',
+          search: 'nationalSubjectCategorySearch',
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'swe',
+                  label: 'sweLangItemText',
+                },
+                {
+                  value: 'eng',
+                  label: 'engLangItemText',
+                },
+              ],
+              finalValue: 'swe',
+            },
+          ],
+        },
+        {
+          name: 'nationalSubjectCategory',
+          type: 'recordLink',
+          mode: 'input',
+          tooltip: {
+            title: 'nationalSubjectCategoryLinkText',
+            body: 'nationalSubjectCategoryLinkDefText',
+          },
+          label: 'nationalSubjectCategoryLinkText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+          recordLinkType: 'nationalSubjectCategory',
+          presentationRecordLinkId: 'nationalSubjectCategoryPLink',
+          search: 'nationalSubjectCategorySearch',
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'swe',
+                  label: 'sweLangItemText',
+                },
+                {
+                  value: 'eng',
+                  label: 'engLangItemText',
+                },
+              ],
+              finalValue: 'eng',
+            },
+          ],
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };

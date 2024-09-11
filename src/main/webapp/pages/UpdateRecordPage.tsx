@@ -37,7 +37,7 @@ import {
   useSectionScroller,
 } from '../components';
 import { FormSchema } from '../components/FormGenerator/types';
-import {removeEmpty} from "../utils/removeEmpty";
+import { removeEmpty } from '../utils/removeEmpty';
 
 export const UpdateRecordPage = () => {
   const { recordId } = useParams();
