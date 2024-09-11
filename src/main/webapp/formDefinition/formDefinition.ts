@@ -771,7 +771,7 @@ const createCommonParameters = (
   if (checkIfAttributesToShowExist(presentation)) {
     attributesToShow = presentation.attributesToShow;
   }
-  console.log(attributesToShow);
+
   return removeEmpty({
     name,
     type,
