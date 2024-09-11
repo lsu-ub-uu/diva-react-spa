@@ -56,6 +56,9 @@ export const Typography = (props: TypographyProps) => {
       mb={2}
       variant={props.variant}
       gutterBottom
+      sx={{
+        width: '100%',
+      }}
     >
       {t(props.text)}
     </MuiTypography>
