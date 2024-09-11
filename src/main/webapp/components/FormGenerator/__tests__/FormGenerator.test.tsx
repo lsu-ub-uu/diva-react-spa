@@ -72,6 +72,7 @@ import {
   formDefCollVarsWithSameNameInData,
   formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
   formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
+  formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
 } from '../../../__mocks__/data/formDef';
 import {
   FormGenerator,
@@ -2396,7 +2397,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a group 0-1 with same nameInData with nested textVars 1-1 and does validate it ', async () => {
+    it('renders a group 1-1 with same nameInData with nested textVars 1-1 and does validate it ', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -2432,7 +2433,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a group 0-1 with same nameInData with nested textVars 1-1 with attributes for both and does validate it ', async () => {
+    it('renders a group 0-1 with with nested textVars  1-1 with attributes for both and does validate it ', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -2453,7 +2454,7 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a group 1-1 with same nameInData with nested textVars 1-1 with attributes for both and does validate it ', async () => {
+    it('renders a group 1-1 with with nested textVars 1-1 with attributes for both and does validate it ', async () => {
       const mockSubmit = vi.fn();
 
       render(
@@ -2472,6 +2473,27 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('renders a group 1-1 with same nameInData with nested recordLinks 1-1 with attributes and does validate it ', async () => {
+      const mockSubmit = vi.fn();
+
+      render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={
+            formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes as FormSchema
+          }
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 with nested textVars 1-1 with mode output with data', async () => {
