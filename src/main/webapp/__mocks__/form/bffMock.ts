@@ -1796,3 +1796,64 @@ export const genreOtherCollectionVar: BFFMetadataCollectionVariable = {
     }
   ]
 };
+
+export const someValidationTypeForRepeatingRecordLinksNameInDataId: BFFValidationType = {
+  id: 'someValidationTypeForRepeatingRecordLinksNameInDataId',
+  validatesRecordTypeId: 'record123',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupRepeatingRecordLinksNameInDataGroup',
+  newPresentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
+  // Update/Edit
+  metadataGroupId: 'nationalSubjectCategoryRecordTypeGroup',
+  presentationGroupId: 'nationalSubjectCategoryRecordTypePGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupRepeatingRecordLinksNameInDataGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupRepeatingRecordLinksNameInDataGroup',
+  nameInData: 'recordLinkGroup',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someNewRecordLinkId',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someOtherNewRecordLinkId',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someNewRecordLinkId: BFFMetadataRecordLink = {
+  id: 'someNewRecordLinkId',
+  nameInData: 'newRecordLink',
+  type: 'recordLink',
+  textId: 'nationalSubjectCategoryLinkText',
+  defTextId: 'nationalSubjectCategoryLinkDefText',
+  linkedRecordType: 'nationalSubjectCategory',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageSweCollectionVar'
+    }
+  ]
+};
+
+export const someOtherNewRecordLinkId: BFFMetadataRecordLink = {
+  id: 'someOtherNewRecordLinkId',
+  nameInData: 'newRecordLink',
+  type: 'recordLink',
+  textId: 'nationalSubjectCategoryLinkText',
+  defTextId: 'nationalSubjectCategoryLinkDefText',
+  linkedRecordType: 'nationalSubjectCategory',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageEngCollectionVar'
+    }
+  ]
+};

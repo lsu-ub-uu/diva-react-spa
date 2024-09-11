@@ -90,7 +90,11 @@ import {
   someValidationTypeForRepeatingCollectionsNameInDataId,
   someNewMetadataGroupRepeatingCollectionNameInDataGroup,
   genreCollectionVar,
-  genreOtherCollectionVar
+  genreOtherCollectionVar,
+  someValidationTypeForRepeatingRecordLinksNameInDataId,
+  someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+  someNewRecordLinkId,
+  someOtherNewRecordLinkId
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -110,7 +114,8 @@ describe('transformToCora', () => {
       newNationSubjectCategoryValidationType,
       divaOutputValidationType,
       someValidationTypeForRepeatingGroupsNameInDataId,
-      someValidationTypeForRepeatingCollectionsNameInDataId
+      someValidationTypeForRepeatingCollectionsNameInDataId,
+      someValidationTypeForRepeatingRecordLinksNameInDataId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -145,7 +150,10 @@ describe('transformToCora', () => {
       familyNameTextVar,
       someNewMetadataGroupRepeatingCollectionNameInDataGroup,
       genreCollectionVar,
-      genreOtherCollectionVar
+      genreOtherCollectionVar,
+      someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+      someNewRecordLinkId,
+      someOtherNewRecordLinkId
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pNewNationSubjectCategoryMetadataGroup,
@@ -1244,6 +1252,62 @@ describe('transformToCora', () => {
           },
           genre_language_eng: {
             value: 'artistic-work_original-creative-work',
+            _language: 'eng'
+          }
+        }
+      });
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with group with same nameInData containing recordLinks with attributes', () => {
+      const expected: DataGroup = {
+        children: [
+          {
+            attributes: {
+              language: 'swe'
+            },
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'nationalSubjectCategory'
+              },
+              {
+                name: 'linkedRecordId',
+                value: '1'
+              }
+            ],
+            name: 'newRecordLink'
+          },
+          {
+            attributes: {
+              language: 'eng'
+            },
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'nationalSubjectCategory'
+              },
+              {
+                name: 'linkedRecordId',
+                value: '2'
+              }
+            ],
+            name: 'newRecordLink'
+          }
+        ],
+        name: 'recordLinkGroup'
+      };
+      const validationTypeId = 'someValidationTypeForRepeatingRecordLinksNameInDataId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        recordLinkGroup: {
+          newRecordLink_language_swe: {
+            value: '1',
+            _language: 'swe'
+          },
+          newRecordLink_language_eng: {
+            value: '2',
             _language: 'eng'
           }
         }

@@ -16,6 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import { createFormMetaData, createMetaDataFromChildReference } from '../formMetadata';
 import { FormMetaData } from '../formDefinition';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
@@ -62,11 +63,15 @@ import {
   someMetadataTextVariable,
   someNewMetadataGroupRepeatingCollectionNameInDataGroup,
   someNewMetadataGroupRepeatingGroupsNameInDataGroup,
+  someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+  someNewRecordLinkId,
   someNewSimpleMetadataGroup,
+  someOtherNewRecordLinkId,
   someRecordInfo,
   someSimpleValidationTypeData,
   someValidationTypeForRepeatingCollectionsNameInDataId,
   someValidationTypeForRepeatingGroupsNameInDataId,
+  someValidationTypeForRepeatingRecordLinksNameInDataId,
   titleGroup,
   typeOutputTypeCollectionVar
 } from '../../__mocks__/form/bffMock';
@@ -92,7 +97,8 @@ describe('formMetadata', () => {
       someSimpleValidationTypeData,
       newNationSubjectCategoryValidationType,
       someValidationTypeForRepeatingCollectionsNameInDataId,
-      someValidationTypeForRepeatingGroupsNameInDataId
+      someValidationTypeForRepeatingGroupsNameInDataId,
+      someValidationTypeForRepeatingRecordLinksNameInDataId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
       someMetadataTextVariable,
@@ -120,7 +126,10 @@ describe('formMetadata', () => {
       familyNameTextVar,
       someNewMetadataGroupRepeatingCollectionNameInDataGroup,
       genreCollectionVar,
-      genreOtherCollectionVar
+      genreOtherCollectionVar,
+      someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+      someNewRecordLinkId,
+      someOtherNewRecordLinkId
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -385,6 +394,85 @@ describe('formMetadata', () => {
           repeatMin: 1
         },
         type: 'collectionVariable'
+      }
+    };
+
+    expect(formMetaData).toStrictEqual(expected);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+
+  it('should return form meta data for a given validation type with recordLinks with same nameInData and attributes', () => {
+    const FORM_MODE_NEW = 'create';
+    const validationTypeId = 'someValidationTypeForRepeatingRecordLinksNameInDataId';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const expected: FormMetaData = {
+      name: 'recordLinkGroup',
+      type: 'group',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1
+      },
+      children: [
+        {
+          name: 'newRecordLink',
+          type: 'recordLink',
+          attributes: {
+            language: 'swe'
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          linkedRecordType: 'nationalSubjectCategory'
+        },
+        {
+          name: 'newRecordLink',
+          type: 'recordLink',
+          attributes: {
+            language: 'eng'
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          linkedRecordType: 'nationalSubjectCategory'
+        }
+      ]
+    };
+
+    const expectedMetadataLookup = {
+      recordLinkGroup: {
+        name: 'recordLinkGroup',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'recordLinkGroup.newRecordLink_language_swe': {
+        attributes: {
+          language: 'swe'
+        },
+        linkedRecordType: 'nationalSubjectCategory',
+        name: 'newRecordLink',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'recordLink'
+      },
+      'recordLinkGroup.newRecordLink_language_eng': {
+        attributes: {
+          language: 'eng'
+        },
+        linkedRecordType: 'nationalSubjectCategory',
+        name: 'newRecordLink',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'recordLink'
       }
     };
 

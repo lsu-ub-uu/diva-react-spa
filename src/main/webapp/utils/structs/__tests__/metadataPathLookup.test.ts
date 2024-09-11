@@ -409,5 +409,33 @@ describe('createFormMetaDataPathLookup', () => {
       const actual = addNamesToArray(data as FormMetaData);
       expect(actual).toStrictEqual(['subject']);
     });
+    it('4', () => {
+      const data = {
+        name: 'nationalSubjectCategory',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
+        },
+        children: [
+          {
+            name: 'newRecordLink',
+            type: 'recordLink',
+            attributes: { language: 'swe' },
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            linkedRecordType: 'nationalSubjectCategory'
+          },
+          {
+            name: 'newRecordLink',
+            type: 'recordLink',
+            attributes: { language: 'eng' },
+            repeat: { repeatMin: 1, repeatMax: 1 },
+            linkedRecordType: 'nationalSubjectCategory'
+          }
+        ]
+      };
+      const actual = addNamesToArray(data as FormMetaData);
+      expect(actual).toStrictEqual(['newRecordLink']);
+    });
   });
 });
