@@ -1722,7 +1722,7 @@ describe('helper methods', () => {
       const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
       expect(actual).toStrictEqual(true);
     });
-    it('Should return false if the value is empty 2', () => {
+    it('Should return false if the value is undefined', () => {
       const mockGetValues = vi.fn(() => {
         return undefined;
       });
@@ -1741,6 +1741,19 @@ describe('helper methods', () => {
       // @ts-ignore
       const actual = checkIfSingularComponentHasValue(
         mockGetValues,
+        'domain.value',
+      );
+      expect(actual).toStrictEqual(false);
+    });
+
+    it('Should return false if the value is undefined', () => {
+      const mockGetValues = vi.fn(() => {
+        return undefined;
+      });
+
+      // @ts-ignore
+      const actual = checkIfSingularComponentHasValue(
+        mockGetValues as any,
         'domain.value',
       );
       expect(actual).toStrictEqual(false);
