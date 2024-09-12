@@ -824,6 +824,7 @@ describe('formDefinition', () => {
                 title: 'someNumberVarTextId',
                 body: 'someNumberVarDefTextId'
               },
+              attributesToShow: 'none',
               attributes: [
                 {
                   finalValue: 'pink',
@@ -1469,6 +1470,7 @@ describe('formDefinition', () => {
                 title: 'someNumberVarTextId',
                 body: 'someNumberVarDefTextId'
               },
+              attributesToShow: 'none',
               attributes: [
                 {
                   finalValue: 'pink',
