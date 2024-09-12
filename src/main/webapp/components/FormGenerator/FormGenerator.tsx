@@ -90,6 +90,7 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
+
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
@@ -620,6 +621,7 @@ export const renderLeafComponent = (
           component,
           name,
           control,
+          getValues,
         );
       }
       return createRecordLinkWithoutSearchLink(
@@ -704,7 +706,9 @@ const createRecordLinkWithSearchLink = (
   component: FormComponent,
   name: string,
   control: Control<any>,
+  getValues: UseFormGetValues<FieldValues>,
 ) => {
+  const hasValue = checkIfComponentHasValue(getValues, name);
   return (
     <Grid
       key={reactKey}
@@ -712,7 +716,7 @@ const createRecordLinkWithSearchLink = (
       xs={12}
       sm={renderElementGridWrapper ? component.gridColSpan : 12}
     >
-      {component.mode === 'input' ? (
+      {component.mode === 'input' && !hasValue ? (
         <ControlledAutocomplete
           label={component.label ?? ''}
           name={name}
