@@ -1594,6 +1594,29 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
+    it('renders a numberVariable 1-1 with attribute has styling for attribute', async () => {
+      const mockSubmit = vi.fn();
+      render(
+        <FormGenerator
+          formSchema={
+            formDefWithOneOptionalGroupWithAttributeCollection as FormSchema
+          }
+          onSubmit={mockSubmit}
+        />,
+      );
+      // const expandButton = screen.getByRole('button', { expanded: false });
+      const attribute = screen.getByText('languageCollectionVarText');
+      const attributeStyle = getComputedStyle(attribute);
+      const input = screen.getByPlaceholderText(
+        'mainTitleTextVarPlaceholderText',
+      );
+      const inputStyle = getComputedStyle(input);
+      expect(attribute).toBeInTheDocument();
+      expect(attributeStyle.fontStyle).toBe('italic');
+      expect(input).toBeInTheDocument();
+      expect(inputStyle.fontStyle).not.toBe('italic');
+    });
+
     it('renders a numberVariable 1-1 with attribute and validates it when filled', async () => {
       const mockSubmit = vi.fn();
       render(

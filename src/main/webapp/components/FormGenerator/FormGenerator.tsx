@@ -139,7 +139,7 @@ export const FormGenerator = ({
           <Grid
             key={attribute.name}
             item
-            xs={12}
+            xs={6}
           >
             <ControlledSelectField
               key={`${attribute.name}_${index}`}

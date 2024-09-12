@@ -52,6 +52,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
     props.hasValue === true && displayMode === 'output';
   const showLabelAndIsInput =
     props.showLabel === true && displayMode === 'input';
+  const isAttribute = props.name.split('_')[1] !== undefined;
 
   const findOptionLabelByValue = (
     array: Option[] | undefined,
@@ -77,7 +78,12 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 aria-label={props.label}
                 required={props.required}
                 error={error !== undefined}
-                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
+                sx={{
+                  p: '2px 4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontStyle: isAttribute ? 'italic' : null,
+                }}
               >
                 {props.showLabel === true ? t(props.label) : null}
                 {props.tooltip && (
