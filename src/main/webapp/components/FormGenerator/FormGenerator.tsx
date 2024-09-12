@@ -45,6 +45,7 @@ import {
 import { generateYupSchemaFromFormSchema } from './utils/yupSchema';
 import {
   checkIfComponentHasValue,
+  checkIfSingularComponentHasValue,
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
@@ -89,6 +90,7 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
+
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
@@ -132,11 +134,12 @@ export const FormGenerator = ({
     ) => {
       return (aComponent.attributes ?? []).map((attribute, index) => {
         const hasValue = checkIfComponentHasValue(getValues, attribute.name);
-        return (
+        const attributesToShow = checkIfAttributesToShowIsAValue(component);
+        return attributesToShow === 'all' ? (
           <Grid
             key={attribute.name}
             item
-            xs={6}
+            xs={12}
           >
             <ControlledSelectField
               key={`${attribute.name}_${index}`}
@@ -154,7 +157,7 @@ export const FormGenerator = ({
               hasValue={hasValue}
             />
           </Grid>
-        );
+        ) : null;
       });
     };
 
@@ -230,10 +233,10 @@ export const FormGenerator = ({
             // background: 'lightgray',
             // border: '1px solid black',
             display: 'flex',
-            flexDirection: checkIfPresentationStyleOrIsInline(component)
+            flexDirection: checkIfPresentationStyleIsInline(component)
               ? 'row'
               : 'column',
-            alignItems: checkIfPresentationStyleOrIsInline(component)
+            alignItems: checkIfPresentationStyleIsInline(component)
               ? 'center'
               : undefined,
           }}
@@ -241,9 +244,9 @@ export const FormGenerator = ({
           {component.components &&
             createFormComponents(
               component.components,
-              currentComponentNamePath,
               [],
               component.presentationStyle ?? parentPresentationStyle,
+              currentComponentNamePath,
             )}
         </div>
       </React.Fragment>
@@ -257,7 +260,7 @@ export const FormGenerator = ({
     createFormComponentAttributes: (
       aComponent: FormComponent,
       aPath: string,
-    ) => JSX.Element[],
+    ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
     childWithNameInDataArray: string[],
   ) => {
@@ -310,9 +313,9 @@ export const FormGenerator = ({
             {component.components &&
               createFormComponents(
                 component.components,
-                currentComponentNamePath,
                 childWithNameInDataArray,
                 component.presentationStyle ?? parentPresentationStyle,
+                currentComponentNamePath,
               )}
           </Grid>
         </Box>
@@ -324,9 +327,10 @@ export const FormGenerator = ({
         className='aaaaaaaaa'
         sx={{
           display: 'flex',
-          flexDirection: checkIfPresentationStyleOrIsInline(component)
-            ? 'row'
-            : 'column',
+          flexDirection:
+            checkIfPresentationStyleIsInline(component) || linkedData
+              ? 'row'
+              : 'column',
           flexWrap: 'wrap',
           alignItems: checkIfPresentationStyleOrParentIsInline(
             component,
@@ -342,21 +346,33 @@ export const FormGenerator = ({
             : null,
         }}
       >
-        {component?.showLabel && (
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
-        )}
+        {component?.showLabel &&
+          (!linkedData ? (
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
+          ) : (
+            <span style={{ width: '100%' }}>
+              <Typography
+                text={component?.label ?? ''}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
+            </span>
+          ))}
         {createFormComponentAttributes(component, currentComponentNamePath)}
         {component.components &&
           createFormComponents(
             component.components,
-            currentComponentNamePath,
             childWithNameInDataArray,
             checkIfPresentationStyleIsUndefinedOrEmpty(component)
               ? parentPresentationStyle
               : component.presentationStyle,
+            currentComponentNamePath,
           )}
       </Box>
     );
@@ -369,7 +385,7 @@ export const FormGenerator = ({
     createFormComponentAttributes: (
       aComponent: FormComponent,
       aPath: string,
-    ) => JSX.Element[],
+    ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
   ) => {
     return isFirstLevelGroup(currentComponentNamePath) ? (
@@ -383,9 +399,9 @@ export const FormGenerator = ({
             ...createFormComponentAttributes(component, arrayPath),
             ...createFormComponents(
               component.components ?? [],
-              arrayPath,
               [],
               component.presentationStyle ?? parentPresentationStyle,
+              arrayPath,
             ),
           ];
         }}
@@ -438,9 +454,9 @@ export const FormGenerator = ({
               ...createFormComponentAttributes(component, arrayPath),
               ...createFormComponents(
                 component.components ?? [],
-                arrayPath,
                 [],
                 component.presentationStyle ?? parentPresentationStyle,
+                arrayPath,
               ),
             ];
           }}
@@ -456,12 +472,16 @@ export const FormGenerator = ({
     createFormComponentAttributes: (
       aComponent: FormComponent,
       aPath: string,
-    ) => JSX.Element[],
+    ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
     getValues: UseFormGetValues<FieldValues>,
   ) => {
     const hasValue = checkIfComponentHasValue(getValues, component.name);
-    return (
+    const hasLinkedDataValue = checkIfSingularComponentHasValue(
+      getValues,
+      currentComponentNamePath,
+    );
+    return !hasLinkedDataValue && linkedData ? null : (
       <FieldArrayComponent
         key={reactKey}
         control={control}
@@ -488,10 +508,10 @@ export const FormGenerator = ({
 
   const createFormComponents = (
     components: FormComponent[],
-    path = '',
     childWithNameInDataArray: string[],
     parentPresentationStyle?: string,
-  ): JSX.Element[] => {
+    path = '',
+  ): (JSX.Element | null)[] => {
     return components.map((c, i) => {
       return generateFormComponent(
         c,
@@ -601,6 +621,7 @@ export const renderLeafComponent = (
           component,
           name,
           control,
+          getValues,
         );
       }
       return createRecordLinkWithoutSearchLink(
@@ -643,7 +664,6 @@ const createTextOrNumberVariable = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-
   return (
     <Grid
       key={reactKey}
@@ -686,7 +706,9 @@ const createRecordLinkWithSearchLink = (
   component: FormComponent,
   name: string,
   control: Control<any>,
+  getValues: UseFormGetValues<FieldValues>,
 ) => {
+  const hasValue = checkIfComponentHasValue(getValues, name);
   return (
     <Grid
       key={reactKey}
@@ -694,7 +716,7 @@ const createRecordLinkWithSearchLink = (
       xs={12}
       sm={renderElementGridWrapper ? component.gridColSpan : 12}
     >
-      {component.mode === 'input' ? (
+      {component.mode === 'input' && !hasValue ? (
         <ControlledAutocomplete
           label={component.label ?? ''}
           name={name}
@@ -876,6 +898,19 @@ export const convertChildStyleToString = (
   return childStyle?.[0] === undefined ? '' : childStyle[0].toString();
 };
 
+const checkIfAttributesToShowIsAValue = (component: FormComponent) => {
+  if (
+    component.attributesToShow === 'all' ||
+    component.attributesToShow === undefined
+  ) {
+    return 'all';
+  }
+  if (component.attributesToShow === 'selectable') {
+    return 'selectable';
+  }
+  return 'none';
+};
+
 const checkIfPresentationStyleOrParentIsInline = (
   component: FormComponent,
   parentPresentationStyle: string | undefined,
@@ -895,7 +930,7 @@ const checkIfPresentationStyleIsUndefinedOrEmpty = (
   );
 };
 
-const checkIfPresentationStyleOrIsInline = (component: FormComponent) => {
+const checkIfPresentationStyleIsInline = (component: FormComponent) => {
   return component.presentationStyle === 'inline';
 };
 
@@ -928,7 +963,7 @@ export const getChildArrayWithSameNameInData = (component: FormComponent) => {
     return [];
   }
   const nameArray: any[] = [];
-  (component.components ?? []).forEach((childComponent, index) => {
+  (component.components ?? []).forEach((childComponent) => {
     nameArray.push(childComponent.name);
   });
   return nameArray;

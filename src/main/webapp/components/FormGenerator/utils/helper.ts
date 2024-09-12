@@ -96,7 +96,59 @@ export const checkIfComponentHasValue = (
   getValues: UseFormGetValues<FieldValues>,
   componentValue: string,
 ) => {
-  return getValues(componentValue) !== '';
+  return (
+    getValues(componentValue) !== '' && getValues(componentValue) !== undefined
+  );
+};
+
+export const checkIfSingularComponentHasValue = (
+  getValues: UseFormGetValues<FieldValues>,
+  componentValue: string,
+): boolean => {
+  if (isGVUndefined(getValues, componentValue)) {
+    return false;
+  }
+
+  if (hasGVArrayLength(getValues, componentValue)) {
+    return false;
+  }
+
+  if (isGVValueUndefined(getValues, componentValue)) {
+    return false;
+  }
+
+  return isGVValueEmptyString(getValues, componentValue);
+};
+
+const isGVUndefined = (
+  getValues: UseFormGetValues<FieldValues>,
+  componentValue: string,
+) => {
+  return getValues(componentValue) === undefined;
+};
+
+const hasGVArrayLength = (
+  getValues: UseFormGetValues<FieldValues>,
+  componentValue: string,
+) => {
+  return (
+    getValues(componentValue).length === undefined ||
+    getValues(componentValue).length === 0
+  );
+};
+
+const isGVValueUndefined = (
+  getValues: UseFormGetValues<FieldValues>,
+  componentValue: string,
+) => {
+  return getValues(componentValue)[0].value === undefined;
+};
+
+const isGVValueEmptyString = (
+  getValues: UseFormGetValues<FieldValues>,
+  componentValue: string,
+) => {
+  return getValues(componentValue)[0].value !== '';
 };
 
 export const checkForExistingSiblings = (formValues: any) => {

@@ -78,6 +78,7 @@ export interface FormComponent {
   presentationRecordLinkId?: string;
   search?: string;
   inputFormat?: 'password';
+  attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
 type FormAttributeCollection = Omit<
