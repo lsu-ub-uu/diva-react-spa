@@ -99,6 +99,13 @@ export const checkIfComponentHasValue = (
   return getValues(componentValue) !== '';
 };
 
+export const checkIfSingularComponentHasValue = (
+  getValues: UseFormGetValues<FieldValues>,
+  component: string,
+): boolean => {
+  return getValues(component)[0].value !== '';
+};
+
 export const checkForExistingSiblings = (formValues: any) => {
   if (formValues !== undefined) {
     const valuesWithoutAttribs = Object.keys(formValues)

@@ -20,6 +20,7 @@
 import {
   checkForExistingSiblings,
   checkIfComponentHasValue,
+  checkIfSingularComponentHasValue,
   checkIfValueExists,
   countStringCharOccurrences,
   isComponentContainer,
@@ -1720,6 +1721,29 @@ describe('helper methods', () => {
       // @ts-ignore
       const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
       expect(actual).toStrictEqual(true);
+    });
+    it('Should return false if the value is empty 2', () => {
+      const mockGetValues = vi.fn(() => {
+        return undefined;
+      });
+
+      // @ts-ignore
+      const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
+      expect(actual).toStrictEqual(false);
+    });
+  });
+  describe('checkIfSingularComponentHasValue', () => {
+    it('Should return false if the value is array with empty object', () => {
+      const mockGetValues = vi.fn(() => {
+        return [{ value: '' }];
+      });
+
+      // @ts-ignore
+      const actual = checkIfSingularComponentHasValue(
+        mockGetValues,
+        'domain.value',
+      );
+      expect(actual).toStrictEqual(false);
     });
   });
 });

@@ -45,6 +45,7 @@ import {
 import { generateYupSchemaFromFormSchema } from './utils/yupSchema';
 import {
   checkIfComponentHasValue,
+  checkIfSingularComponentHasValue,
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
@@ -242,9 +243,9 @@ export const FormGenerator = ({
           {component.components &&
             createFormComponents(
               component.components,
-              currentComponentNamePath,
               [],
               component.presentationStyle ?? parentPresentationStyle,
+              currentComponentNamePath,
             )}
         </div>
       </React.Fragment>
@@ -311,9 +312,9 @@ export const FormGenerator = ({
             {component.components &&
               createFormComponents(
                 component.components,
-                currentComponentNamePath,
                 childWithNameInDataArray,
                 component.presentationStyle ?? parentPresentationStyle,
+                currentComponentNamePath,
               )}
           </Grid>
         </Box>
@@ -344,21 +345,33 @@ export const FormGenerator = ({
             : null,
         }}
       >
-        {component?.showLabel && (
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
-        )}
+        {component?.showLabel &&
+          (!linkedData ? (
+            <Typography
+              text={component?.label ?? ''}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
+          ) : (
+            <span style={{ width: '100%' }}>
+              <Typography
+                text={component?.label ?? ''}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
+            </span>
+          ))}
         {createFormComponentAttributes(component, currentComponentNamePath)}
         {component.components &&
           createFormComponents(
             component.components,
-            currentComponentNamePath,
             childWithNameInDataArray,
             checkIfPresentationStyleIsUndefinedOrEmpty(component)
               ? parentPresentationStyle
               : component.presentationStyle,
+            currentComponentNamePath,
           )}
       </Box>
     );
@@ -385,9 +398,9 @@ export const FormGenerator = ({
             ...createFormComponentAttributes(component, arrayPath),
             ...createFormComponents(
               component.components ?? [],
-              arrayPath,
               [],
               component.presentationStyle ?? parentPresentationStyle,
+              arrayPath,
             ),
           ];
         }}
@@ -440,9 +453,9 @@ export const FormGenerator = ({
               ...createFormComponentAttributes(component, arrayPath),
               ...createFormComponents(
                 component.components ?? [],
-                arrayPath,
                 [],
                 component.presentationStyle ?? parentPresentationStyle,
+                arrayPath,
               ),
             ];
           }}
@@ -463,7 +476,11 @@ export const FormGenerator = ({
     getValues: UseFormGetValues<FieldValues>,
   ) => {
     const hasValue = checkIfComponentHasValue(getValues, component.name);
-    return (
+    const hasLinkedDataValue = checkIfSingularComponentHasValue(
+      getValues,
+      currentComponentNamePath,
+    );
+    return !hasLinkedDataValue && linkedData ? null : (
       <FieldArrayComponent
         key={reactKey}
         control={control}
@@ -490,10 +507,10 @@ export const FormGenerator = ({
 
   const createFormComponents = (
     components: FormComponent[],
-    path = '',
     childWithNameInDataArray: string[],
     parentPresentationStyle?: string,
-  ): JSX.Element[] => {
+    path = '',
+  ): (JSX.Element | null)[] => {
     return components.map((c, i) => {
       return generateFormComponent(
         c,
@@ -645,7 +662,6 @@ const createTextOrNumberVariable = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-
   return (
     <Grid
       key={reactKey}
