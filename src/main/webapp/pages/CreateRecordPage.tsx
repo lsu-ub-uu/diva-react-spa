@@ -24,7 +24,7 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useBackdrop,
   FormGenerator,
@@ -48,6 +48,7 @@ export const CreateRecordPage = () => {
     validationType,
     'create',
   );
+  const navigate = useNavigate();
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
@@ -71,6 +72,7 @@ export const CreateRecordPage = () => {
         `Record was successfully created ${response.data.id}`,
         'success',
       );
+      navigate(`/update/record/${response.data.id}`);
     } catch (err: any) {
       setIsSubmitting(false);
       notification(`${err.message}`, 'error');
@@ -107,9 +109,6 @@ export const CreateRecordPage = () => {
               notification(`Form is invalid`, 'error');
             }}
             formSchema={schema as FormSchema}
-            // formSchema={
-            //   formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars as FormSchema
-            // }
           />
         </Stack>
       </div>
