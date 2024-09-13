@@ -135,7 +135,61 @@ export const FormGenerator = ({
       return (aComponent.attributes ?? []).map((attribute, index) => {
         const hasValue = checkIfComponentHasValue(getValues, attribute.name);
         const attributesToShow = checkIfAttributesToShowIsAValue(component);
-        return attributesToShow === 'all' ? (
+        if (attributesToShow === 'all') {
+          return (
+            <Grid
+              key={attribute.name}
+              item
+              xs={6}
+            >
+              <ControlledSelectField
+                key={`${attribute.name}_${index}`}
+                name={`${aPath}._${attribute.name}`}
+                isLoading={false}
+                loadingError={false}
+                label={attribute.label ?? ''}
+                showLabel={component.showLabel}
+                placeholder={attribute.placeholder}
+                tooltip={attribute.tooltip}
+                control={control}
+                options={attribute.options}
+                readOnly={!!attribute.finalValue}
+                displayMode={attribute.mode}
+                hasValue={hasValue}
+              />
+            </Grid>
+          );
+        }
+
+        if (attributesToShow === 'selectable' && !attribute.finalValue) {
+          return (
+            <Grid
+              key={attribute.name}
+              item
+              xs={6}
+            >
+              <ControlledSelectField
+                key={`${attribute.name}_${index}`}
+                name={`${aPath}._${attribute.name}`}
+                isLoading={false}
+                loadingError={false}
+                label={attribute.label ?? ''}
+                showLabel={component.showLabel}
+                placeholder={attribute.placeholder}
+                tooltip={attribute.tooltip}
+                control={control}
+                options={attribute.options}
+                readOnly={!!attribute.finalValue}
+                displayMode={attribute.mode}
+                hasValue={hasValue}
+              />
+            </Grid>
+          );
+        }
+
+        return null;
+        /* return attributesToShow === 'all' ||
+          attributesToShow === 'selectable' ? (
           <Grid
             key={attribute.name}
             item
@@ -157,7 +211,7 @@ export const FormGenerator = ({
               hasValue={hasValue}
             />
           </Grid>
-        ) : null;
+        ) : null; */
       });
     };
 
