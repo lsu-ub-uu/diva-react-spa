@@ -29,21 +29,31 @@ export interface DivaOutput {
   userRights: string[];
 }
 
+export const transformToTable = (data: any) => {
+  return data.map((record: any) => {
+    const { validationType } = record;
+    return {
+      id: record.id,
+      title:
+        validationType === 'divaOutputSwepub'
+          ? record.data.output.titleInfo.title.value
+          : record.data.divaOutput.title.mainTitle.value,
+      validationType: record.validationType,
+      recordType: record.recordType,
+      createdAt: record.createdAt,
+      createdBy: record.createdBy,
+      userRights: record.userRights,
+    };
+  });
+};
+
 export const loadPublicationsAsync =
   (callback?: Function): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(updating());
       const response = await axios.get(`/divaOutputs`);
-      const transformed = response.data.map((record: any) => ({
-        id: record.id,
-        title: record.data.divaOutput.title.mainTitle.value,
-        validationType: record.validationType,
-        recordType: record.recordType,
-        createdAt: record.createdAt,
-        createdBy: record.createdBy,
-        userRights: record.userRights,
-      }));
+      const transformed = transformToTable(response.data);
       dispatch(update(transformed as DivaOutput[]));
     } catch (e) {
       console.log(e);

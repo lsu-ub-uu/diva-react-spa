@@ -61,4 +61,22 @@ describe('<Breadcrumbs />', () => {
     expect(screen.getByText('page1_1')).toBeInTheDocument();
     expect(screen.queryByText('page2')).not.toBeInTheDocument();
   });
+
+  it('Renders last id correctly breadcrumbs', () => {
+    render(
+      <MemoryRouter
+        initialEntries={['/page1/divaOutputSwepub:2087392797647370']}
+      >
+        <Breadcrumbs />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByText('divaClient_breadcrumbStartText'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('page1')).toBeInTheDocument();
+    expect(
+      screen.getByText('divaOutputSwepub:2087392797647370', { exact: true }),
+    ).toBeInTheDocument();
+  });
 });

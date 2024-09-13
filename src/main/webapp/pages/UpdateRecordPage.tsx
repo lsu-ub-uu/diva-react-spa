@@ -40,12 +40,12 @@ import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
 
 export const UpdateRecordPage = () => {
-  const { recordId } = useParams();
+  const { recordType, recordId } = useParams();
   const activeSection = useSectionScroller();
   const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
-  const coraRecord = useCoraRecordByTypeAndId('divaOutput', recordId);
+  const coraRecord = useCoraRecordByTypeAndId(recordType as string, recordId);
   const coraSchema = useCoraFormSchemaByValidationType(
     coraRecord.record?.validationType,
     'update',
