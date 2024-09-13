@@ -18,6 +18,7 @@
  */
 
 import { Request, Response } from 'express';
+import * as console from 'node:console';
 import { dependencies } from '../config/configureServer';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
@@ -52,14 +53,22 @@ export const getDivaOutputs = async (req: Request, res: Response) => {
       ]
     };
 
-    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
+    const responseDivaOutput = await getSearchResultDataListBySearchType<DataListWrapper>(
       'divaOutputSearch',
       searchQuery,
       authToken
     );
 
-    const records = transformRecords(dependencies, response.data);
-    res.status(200).json(records);
+    const responseDivaOutputSwepub = await getSearchResultDataListBySearchType<DataListWrapper>(
+      'divaOutputSwepubSearch',
+      searchQuery,
+      authToken
+    );
+
+    const recordsDivaOutput = transformRecords(dependencies, responseDivaOutput.data);
+    const recordsDivaOutputSwepub = transformRecords(dependencies, responseDivaOutputSwepub.data);
+    console.log(recordsDivaOutputSwepub);
+    res.status(200).json([...recordsDivaOutput, ...recordsDivaOutputSwepub]);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
