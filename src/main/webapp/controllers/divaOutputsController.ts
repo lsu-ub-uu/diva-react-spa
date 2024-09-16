@@ -67,7 +67,6 @@ export const getDivaOutputs = async (req: Request, res: Response) => {
 
     const recordsDivaOutput = transformRecords(dependencies, responseDivaOutput.data);
     const recordsDivaOutputSwepub = transformRecords(dependencies, responseDivaOutputSwepub.data);
-    console.log(recordsDivaOutputSwepub);
     res.status(200).json([...recordsDivaOutput, ...recordsDivaOutputSwepub]);
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
