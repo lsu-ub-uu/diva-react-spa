@@ -40,10 +40,7 @@ import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDa
 import { FormMetaData } from '../formDefinition/formDefinition';
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
-import {
-  addAttributesToName,
-  createFormMetaDataPathLookup
-} from '../utils/structs/metadataPathLookup';
+import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../formDefinition/formMetadata';
 
 /**
@@ -228,17 +225,15 @@ export const traverseDataGroup = (
   formPathLookup?: Record<string, FormMetaData>,
   path?: string
 ) => {
-  // console.log('fpL', formPathLookup);
-
   const validChildren = dataGroup.children.filter((group) => group.name !== 'recordInfo');
   const groupedByName = _.groupBy(validChildren, 'name');
   const groupedEntries = Object.entries(groupedByName);
   path = path === undefined ? dataGroup.name : path;
-
   // handle attributes on the current group
   const groupAttributes = transformObjectAttributes(dataGroup.attributes);
   const object: unknown[] = [];
 
+  console.log('gC', JSON.stringify(formPathLookup));
   groupedEntries.forEach(([name, groupedChildren]) => {
     const currentPath = path ? `${path}.${name}` : name;
     let repeating = false;
@@ -246,32 +241,29 @@ export const traverseDataGroup = (
 
     const thisLevelChildren = groupedChildren.map((child) => {
       const possibleAttributes = addAttributesToArray(child);
-      console.log(
-        'attributes',
-        child.name,
-        hasCoraAttributes(
-          currentPath,
-          possibleAttributes,
-          formPathLookup as Record<string, FormMetaData>
-        ),
-        possibleAttributes
-      );
+
       const correctChild = hasCoraAttributes(
         currentPath,
         possibleAttributes,
         formPathLookup as Record<string, FormMetaData>
       );
-
-      const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
-        ? addAttributesToName(correctChild)
-        : name;
-      console.log(
-        'hasSameNameInDatas',
-        child.name,
-        hasSameNameInDatas(groupedChildren, child.name),
-        isDataGroup(child),
-        !isRepeating(child, currentPath, formPathLookup)
+      console.log('formPathLookup', child, correctChild);
+      const nameInDataArray = getSameNameInDatas(
+        groupedChildren,
+        addAttributesToNameForRecords(child, correctChild)
       );
+      console.log('sarray', nameInDataArray);
+      const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
+        ? addAttributesToNameForRecords(
+            child,
+            correctChild,
+            nameInDataArray,
+            formPathLookup,
+            currentPath
+          )
+        : name;
+
+      // console.log('1', nameInDataArray);
 
       if (isRecordLink(child) && !isRepeating(child, currentPath, formPathLookup)) {
         const childGroup = child as DataGroup;
@@ -303,7 +295,11 @@ export const traverseDataGroup = (
       if (isDataGroup(child) && isRepeating(child, currentPath, formPathLookup)) {
         repeating = true;
         isGroup = true;
-        const childGroup = child as DataGroup;
+
+        const childGroup = updateGroupWithPossibleNewNameWithAttribute(
+          child as DataGroup,
+          possiblyNameWithAttribute
+        );
         return traverseDataGroup(childGroup, formPathLookup, currentPath);
       }
 
@@ -334,16 +330,23 @@ export const traverseDataGroup = (
         return Object.assign({ value }, ...atomicAttributes);
       }
     });
-
     if (repeating && !isGroup) {
       object.push({ [name]: thisLevelChildren });
     } else if (repeating && isGroup) {
-      object.push({ [name]: thisLevelChildren.map((item) => item[name]) });
+      // console.log('2', name);
+      const temp = getNamesFromChildren(thisLevelChildren);
+      temp.map((children) => {
+        object.push({
+          [children]: thisLevelChildren.map((item) => {
+            return item[children];
+          })
+        });
+      });
     } else {
       object.push(Object.assign({}, ...thisLevelChildren));
     }
   });
-  return { [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) };
+  return removeEmpty({ [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) });
 };
 
 export const hasSameNameInDatas = (
@@ -381,4 +384,86 @@ export const addAttributesToArray = (
     nameArray.push(`${key}_${value}`);
   });
   return nameArray;
+};
+
+export const addAttributesToNameForRecords = (
+  metaDataGroup: FormMetaData | DataGroup | DataAtomic | RecordLink,
+  correctChild: any,
+  nameInDataArray?: string[],
+  formPathLookup?: Record<string, FormMetaData>,
+  currentPath?: string
+) => {
+  console.log('nIDA', nameInDataArray, currentPath);
+  const searchPart = currentPath?.split('.') as string[];
+  console.log('sp', searchPart[searchPart.length - 1]);
+  const searchName = nameInDataArray?.[0] as string;
+  console.log(searchPart[searchPart.length - 1] === (nameInDataArray?.[0] as string));
+
+  const lookup = formPathLookup ?? {};
+  const formComponent = lookup[searchName];
+
+  console.log('fC', formComponent);
+  const nameArray: any[] = [];
+  const correctArray: any[] = [];
+
+  if (metaDataGroup.attributes === undefined) {
+    return metaDataGroup.name;
+  }
+
+  if (correctChild === undefined) {
+    console.log('name1', metaDataGroup.name, correctChild);
+    Object.entries(metaDataGroup.attributes).forEach(([key, value]) => {
+      return nameArray.push(`${key}_${value}`);
+    });
+    return `${metaDataGroup.name}_${nameArray.join('_')}`;
+  }
+
+  if (correctChild !== undefined) {
+    console.log('name2', metaDataGroup.name, correctChild);
+    if (correctChild.attributes === undefined) {
+      return metaDataGroup.name;
+    }
+
+    Object.entries(correctChild.attributes).forEach(([key, value]) => {
+      correctArray.push(`${key}_${value}`);
+    });
+
+    return correctArray.length > 0
+      ? `${metaDataGroup.name}_${correctArray.join('_')}`
+      : metaDataGroup.name;
+  }
+
+  return `${metaDataGroup.name}_${nameArray.join('_')}`;
+};
+
+const checkIfNameInDataArrayIsCurrent = (nameInDataArray: string[], name: string) => {
+  return nameInDataArray.includes(name);
+};
+
+export const hasItemSameName = (item: any, name: string) => {
+  return Object.keys(item)[0] === name;
+};
+
+export const getNamesFromChildren = (children: any[]) => {
+  const temp: string[] = [];
+  children.forEach((child) => {
+    Object.keys(child).forEach((obj) => {
+      temp.push(obj);
+    });
+  });
+  return temp;
+};
+
+export const getSameNameInDatas = (
+  children: (DataGroup | DataAtomic | RecordLink)[],
+  newNameInData: string
+) => {
+  const nameArray: string[] = [];
+  children.map((child) => {
+    nameArray.push(child.name);
+  });
+  const newArray = nameArray.filter((item, index) => nameArray.indexOf(item) !== index);
+  newArray.push(newNameInData);
+  console.log('na', newArray);
+  return newArray;
 };

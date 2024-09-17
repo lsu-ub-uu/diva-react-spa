@@ -31,7 +31,11 @@ import {
   transformObjectAttributes,
   transformRecord,
   traverseDataGroup,
-  updateGroupWithPossibleNewNameWithAttribute
+  updateGroupWithPossibleNewNameWithAttribute,
+  addAttributesToNameForRecords,
+  hasItemSameName,
+  getNamesFromChildren,
+  getSameNameInDatas
 } from '../transformRecord';
 import { Attributes, DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
@@ -227,12 +231,13 @@ describe('transformRecord', () => {
           output: {
             titleInfo: [
               {
+                _lang: 'ady',
                 title: {
                   value: 'EN utmärkt titel'
                 }
               }
             ],
-            titleInfo_lang_amh: [
+            titleInfo_type_alternative: [
               {
                 _lang: 'amh',
                 _type: 'alternative',
@@ -796,20 +801,24 @@ describe('transformRecord', () => {
       );
       const expected = {
         output: {
-          titleInfo: {
-            _lang: 'amh',
-            _type: 'alternative',
-            title: {
-              value: 'EN utmärkt alternativ titel'
-            }
-          },
-          titleInfo_lang_eng: {
-            _lang: 'eng',
+          titleInfo: [
+            // _lang: 'amh',
             // _type: 'alternative',
-            title: {
-              value: 'EN utmärkt alternativ titel'
+            {
+              title: {
+                value: 'EN utmärkt titel'
+              }
             }
-          }
+          ],
+          titleInfo_type_alternative: [
+            {
+              _lang: 'amh',
+              _type: 'alternative',
+              title: {
+                value: 'EN utmärkt alternativ titel'
+              }
+            }
+          ]
         }
       };
       expect(transformData).toStrictEqual(expected);
@@ -1205,6 +1214,7 @@ describe('transformRecord', () => {
       });
       expect(actual).toStrictEqual(['language_swe']);
     });
+
     it('addAttributesToArray with two attributes', () => {
       const actual = addAttributesToArray({
         name: 'author',
@@ -1213,6 +1223,7 @@ describe('transformRecord', () => {
       });
       expect(actual).toStrictEqual(['language_swe', 'otherLanguage_eng']);
     });
+
     describe('hasCoraAttributes', () => {
       it('hasCoraAttributes', () => {
         const actual = hasCoraAttributes('output.titleInfo', [], {
@@ -1285,6 +1296,265 @@ describe('transformRecord', () => {
           attributes: { type: 'alternative' },
           repeat: { repeatMin: 1, repeatMax: 1 }
         });
+      });
+    });
+
+    describe('addAttributesToNameForRecords', () => {
+      it('adds no attributes to name when not available, no correctChild, no Array', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            name: 'subject',
+            value: 'Naturvetenskap'
+          },
+          undefined,
+          ['subject']
+        );
+        expect(actual).toStrictEqual('subject');
+      });
+
+      it('adds attributes to name when available, no correctChild, subjectArray', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            name: 'subject',
+            value: 'Naturvetenskap',
+            attributes: {
+              language: 'swe'
+            }
+          },
+          undefined,
+          ['subject']
+        );
+        expect(actual).toStrictEqual('subject_language_swe');
+      });
+
+      it('adds multiple attributes to name when available, no correctChild, subjectArray', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            name: 'subject',
+            value: 'Naturvetenskap',
+            attributes: {
+              language: 'swe',
+              otherLanguage: 'aak'
+            }
+          },
+          undefined,
+          ['subject']
+        );
+        expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
+      });
+
+      it('adds no attributes to name when correctChild has none, titleInfoArray', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            children: [{ name: 'title', value: 'EN utmärkt titel' }],
+            name: 'titleInfo',
+            attributes: { lang: 'ady' }
+          },
+          {
+            name: 'titleInfo',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          ['titleInfo']
+        );
+        expect(actual).toStrictEqual('titleInfo');
+      });
+
+      it('adds multiple attributes to name when with nameInDataArray', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            name: 'titleInfo',
+            value: 'Naturvetenskap',
+            attributes: {
+              language: 'swe',
+              otherLanguage: 'aak'
+            }
+          },
+          {
+            name: 'titleInfo',
+            type: 'group',
+            attributes: { language: 'swe' },
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+          // ['titleInfo']
+        );
+        expect(actual).toStrictEqual('titleInfo_language_swe');
+      });
+      it('adds multiple attributes to name when with nameInDataArray2', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            children: [{ name: 'title', value: 'EN utmärkt titel' }],
+            name: 'titleInfo',
+            attributes: { language: 'ady' }
+          },
+          undefined,
+          ['titleInfo'],
+          {
+            'output.titleInfo': {
+              name: 'titleInfo',
+              type: 'group',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1
+              }
+            }
+          },
+          'output.titleInfo'
+        );
+        expect(actual).toStrictEqual('titleInfo');
+      });
+    });
+    describe('hasItemSameName', () => {
+      it('has the same name', () => {
+        const item = { titleInfo: { title: { value: 'EN utmärkt titel' } } };
+        const name = 'titleInfo';
+        const actual = hasItemSameName(item, name);
+        expect(actual).toBe(true);
+      });
+      it('does not have the same name', () => {
+        const item = {
+          titleInfo_type_alternative: {
+            title: { value: 'EN utmärkt alternativ titel' },
+            _lang: 'amh',
+            _type: 'alternative'
+          }
+        };
+        const name = 'titelInfo';
+        const actual = hasItemSameName(item, name);
+        expect(actual).toBe(false);
+      });
+    });
+    describe('getNameFromChildren', () => {
+      it('1', () => {
+        const actual = getNamesFromChildren([
+          {
+            titleInfo: {
+              title: {
+                value: 'EN utmärkt titel'
+              }
+            }
+          },
+          {
+            titleInfo_type_alternative: {
+              title: {
+                value: 'EN utmärkt alternativ titel'
+              },
+              _lang: 'amh',
+              _type: 'alternative'
+            }
+          }
+        ]);
+        expect(actual).toStrictEqual(['titleInfo', 'titleInfo_type_alternative']);
+      });
+    });
+    describe('getSameNameInDatas', () => {
+      it('getSameNameInDatas 1', () => {
+        const actual = getSameNameInDatas(
+          [
+            {
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'ady'
+              }
+            },
+            {
+              repeatId: '7',
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt alternativ titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'amh',
+                type: 'alternative'
+              }
+            }
+          ],
+          addAttributesToNameForRecords(
+            {
+              repeatId: '7',
+              children: [{ name: 'title', value: 'EN utmärkt alternativ titel' }],
+              name: 'titleInfo',
+              attributes: { lang: 'amh', type: 'alternative' }
+            },
+            {
+              name: 'titleInfo',
+              type: 'group',
+              attributes: { type: 'alternative' },
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            }
+          )
+        );
+        expect(actual).toStrictEqual(['titleInfo', 'titleInfo_type_alternative']);
+      });
+      it('getSameNameInDatas 2', () => {
+        const actual = getSameNameInDatas(
+          [
+            {
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'ady'
+              }
+            },
+            {
+              repeatId: '7',
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt alternativ titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'amh',
+                type: 'alternative'
+              }
+            },
+            {
+              repeatId: '7',
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt alternativ titel'
+                }
+              ],
+              name: 'notTitleInfo',
+              attributes: {
+                lang: 'amh',
+                type: 'alternative'
+              }
+            }
+          ],
+          addAttributesToNameForRecords(
+            {
+              repeatId: '7',
+              children: [{ name: 'title', value: 'EN utmärkt alternativ titel' }],
+              name: 'titleInfo',
+              attributes: { lang: 'amh', type: 'alternative' }
+            },
+            {
+              name: 'titleInfo',
+              type: 'group',
+              attributes: { type: 'alternative' },
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            }
+          )
+        );
+        expect(actual).toStrictEqual(['titleInfo', 'titleInfo_type_alternative']);
       });
     });
   });
