@@ -33,9 +33,9 @@ import {
   traverseDataGroup,
   updateGroupWithPossibleNewNameWithAttribute,
   addAttributesToNameForRecords,
-  hasItemSameName,
   getNamesFromChildren,
-  getSameNameInDatas
+  getSameNameInDatas,
+  findSearchPart
 } from '../transformRecord';
 import { Attributes, DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
@@ -731,7 +731,10 @@ describe('transformRecord', () => {
                 value: 'EN utmärkt titel'
               }
             ],
-            name: 'titleInfo'
+            name: 'titleInfo',
+            attributes: {
+              lang: 'amh'
+            }
           },
           {
             repeatId: '7',
@@ -802,9 +805,8 @@ describe('transformRecord', () => {
       const expected = {
         output: {
           titleInfo: [
-            // _lang: 'amh',
-            // _type: 'alternative',
             {
+              _lang: 'amh',
               title: {
                 value: 'EN utmärkt titel'
               }
@@ -1163,6 +1165,43 @@ describe('transformRecord', () => {
         );
         expect(actual).toBe(false);
       });
+      it('hasSameNameInDatas returns false when single2', () => {
+        const actual = hasSameNameInDatas(
+          [
+            {
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt titel'
+                }
+              ],
+              name: 'titleInfo'
+            },
+            {
+              repeatId: '7',
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt alternativ titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'amh',
+                type: 'alternative'
+              }
+            }
+          ],
+          'titleInfo'
+          // {
+          //   name: 'titleInfo',
+          //   type: 'group',
+          //   attributes: { type: 'alternative' },
+          //   repeat: { repeatMin: 1, repeatMax: 1 }
+          // }
+        );
+        expect(actual).toBe(true);
+      });
     });
 
     describe('updateGroupNameWithAttribute', () => {
@@ -1223,6 +1262,15 @@ describe('transformRecord', () => {
       });
       expect(actual).toStrictEqual(['language_swe', 'otherLanguage_eng']);
     });
+
+    // it('addAttributesToArray with two attributes without correctChild', () => {
+    //   const actual = addAttributesToArray({
+    //     name: 'author',
+    //     children: [{ name: 'name', value: 'value2' }],
+    //     attributes: { language: 'swe', otherLanguage: 'eng' }
+    //   }, undefined);
+    //   expect(actual).toStrictEqual(['language_swe', 'otherLanguage_eng']);
+    // });
 
     describe('hasCoraAttributes', () => {
       it('hasCoraAttributes', () => {
@@ -1306,8 +1354,8 @@ describe('transformRecord', () => {
             name: 'subject',
             value: 'Naturvetenskap'
           },
-          undefined,
-          ['subject']
+          undefined
+          // ['subject']
         );
         expect(actual).toStrictEqual('subject');
       });
@@ -1321,8 +1369,8 @@ describe('transformRecord', () => {
               language: 'swe'
             }
           },
-          undefined,
-          ['subject']
+          undefined
+          // ['subject']
         );
         expect(actual).toStrictEqual('subject_language_swe');
       });
@@ -1337,8 +1385,8 @@ describe('transformRecord', () => {
               otherLanguage: 'aak'
             }
           },
-          undefined,
-          ['subject']
+          undefined
+          // ['subject']
         );
         expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
       });
@@ -1354,8 +1402,8 @@ describe('transformRecord', () => {
             name: 'titleInfo',
             type: 'group',
             repeat: { repeatMin: 1, repeatMax: 1 }
-          },
-          ['titleInfo']
+          }
+          // ['titleInfo']
         );
         expect(actual).toStrictEqual('titleInfo');
       });
@@ -1380,7 +1428,7 @@ describe('transformRecord', () => {
         );
         expect(actual).toStrictEqual('titleInfo_language_swe');
       });
-      it('adds multiple attributes to name when with nameInDataArray2', () => {
+      it('removed attributes to name when with when not Cora attributes', () => {
         const actual = addAttributesToNameForRecords(
           {
             children: [{ name: 'title', value: 'EN utmärkt titel' }],
@@ -1404,26 +1452,7 @@ describe('transformRecord', () => {
         expect(actual).toStrictEqual('titleInfo');
       });
     });
-    describe('hasItemSameName', () => {
-      it('has the same name', () => {
-        const item = { titleInfo: { title: { value: 'EN utmärkt titel' } } };
-        const name = 'titleInfo';
-        const actual = hasItemSameName(item, name);
-        expect(actual).toBe(true);
-      });
-      it('does not have the same name', () => {
-        const item = {
-          titleInfo_type_alternative: {
-            title: { value: 'EN utmärkt alternativ titel' },
-            _lang: 'amh',
-            _type: 'alternative'
-          }
-        };
-        const name = 'titelInfo';
-        const actual = hasItemSameName(item, name);
-        expect(actual).toBe(false);
-      });
-    });
+
     describe('getNameFromChildren', () => {
       it('1', () => {
         const actual = getNamesFromChildren([
@@ -1447,6 +1476,7 @@ describe('transformRecord', () => {
         expect(actual).toStrictEqual(['titleInfo', 'titleInfo_type_alternative']);
       });
     });
+
     describe('getSameNameInDatas', () => {
       it('getSameNameInDatas 1', () => {
         const actual = getSameNameInDatas(
@@ -1555,6 +1585,26 @@ describe('transformRecord', () => {
           )
         );
         expect(actual).toStrictEqual(['titleInfo', 'titleInfo_type_alternative']);
+      });
+    });
+    describe('findSearchPart', () => {
+      it('finds part in path from array', () => {
+        const actual = findSearchPart(['titleInfo'], 'output.titleInfo');
+        expect(actual).toBe('output.titleInfo');
+      });
+      it('finds part in path from array2', () => {
+        const actual = findSearchPart(
+          ['titleInfo', 'titleInfo_type_alternative'],
+          'output.titleInfo'
+        );
+        expect(actual).toBe('output.titleInfo');
+      });
+      it('finds part in path from array3', () => {
+        const actual = findSearchPart(
+          ['titleInfo', 'titleInfo_type_alternative'],
+          'output.titleInfo_type_alternative'
+        );
+        expect(actual).toBe('output.titleInfo_type_alternative');
       });
     });
   });
