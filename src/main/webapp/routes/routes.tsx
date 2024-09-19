@@ -44,7 +44,7 @@ export const routes = [
             element: <CreateRecordPage />,
           },
           {
-            path: '/update/record/:recordId',
+            path: '/update/record/:recordType/:recordId',
             element: <UpdateRecordPage />,
           },
         ],
@@ -54,7 +54,7 @@ export const routes = [
         element: <LoginPage />,
       },
       {
-        path: '/view/record/:recordId',
+        path: '/view/record/:recordType/:recordId',
         element: <ViewRecordPage />,
       },
       { path: '*', element: <div>404 not found</div> },

@@ -37,7 +37,6 @@ export const Breadcrumbs = () => {
   const { t } = useTranslation();
 
   let currentLink = '';
-
   const crumbs = location.pathname
     ?.split('/')
     .filter((crumb: string) => crumb !== '')
@@ -53,7 +52,7 @@ export const Breadcrumbs = () => {
           component={RouterLink}
           to={currentLink}
         >
-          {t(crumb) ?? crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+          {crumb}
         </Link>
       );
     });

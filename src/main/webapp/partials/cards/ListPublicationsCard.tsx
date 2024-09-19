@@ -91,7 +91,7 @@ export const ListPublicationsCard = () => {
                 disabled={!params.row.userRights.includes('update')}
                 aria-label='edit'
                 component={RouterLink}
-                to={`/update/record/${params.id}`}
+                to={`/update/record/${params.row.recordType}/${params.id}`}
               >
                 <EditIcon />
               </IconButton>
@@ -103,7 +103,7 @@ export const ListPublicationsCard = () => {
                 disabled={!params.row.userRights.includes('read')}
                 aria-label='view'
                 component={RouterLink}
-                to={`/view/record/${params.id}`}
+                to={`/view/record/${params.row.recordType}/${params.id}`}
               >
                 <FeedIcon />
               </IconButton>

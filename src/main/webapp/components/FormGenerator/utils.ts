@@ -212,8 +212,12 @@ export const addAttributesToName = (component: FormComponent, name: string) => {
     return component.name;
   }
   (component.attributes ?? []).forEach((attribute, index) => {
+    if (attribute.finalValue === undefined) {
+      return component.name;
+    }
     nameArray.push(`${attribute.name}_${attribute.finalValue}`);
   });
+
   return `${name}_${nameArray.join('_')}`;
 };
 

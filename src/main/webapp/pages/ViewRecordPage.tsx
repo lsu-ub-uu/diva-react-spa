@@ -37,10 +37,10 @@ import {
 import { removeComponentsWithoutValuesFromSchema } from '../components/NavigationPanel/utils';
 
 export const ViewRecordPage = () => {
-  const { recordId } = useParams();
+  const { recordType, recordId } = useParams();
   const activeSection = useSectionScroller();
   const { setBackdrop } = useBackdrop();
-  const coraRecord = useCoraRecordByTypeAndId('divaOutput', recordId);
+  const coraRecord = useCoraRecordByTypeAndId(recordType as string, recordId);
   const coraSchema = useCoraFormSchemaByValidationType(
     coraRecord.record?.validationType,
     'view',
