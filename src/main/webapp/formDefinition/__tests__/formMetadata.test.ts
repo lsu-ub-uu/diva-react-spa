@@ -73,7 +73,23 @@ import {
   someValidationTypeForRepeatingGroupsNameInDataId,
   someValidationTypeForRepeatingRecordLinksNameInDataId,
   titleGroup,
-  typeOutputTypeCollectionVar
+  typeOutputTypeCollectionVar,
+  someValidationTypeForRepeatingTitleInfoId,
+  someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+  someNewMetadataGroupTitleInfoGroup,
+  pSomeNewMetadataGroupTitleInfoPGroup,
+  pSomeNewMetadataGroupTitleInfoAlternativePGroup,
+  someNewMetadataGroupTitleInfoAlternativeGroup,
+  typeCollVariable,
+  typeItemCollection,
+  typeCollectionItemAlternative,
+  someMainTitleTitleInfoATextVariable,
+  pSomeMainTitleTitleInfoTextVariable,
+  newLangCollVariable,
+  newLangItemCollection,
+  newLangItemCollectionItemEng,
+  newLangItemCollectionItemSwe
 } from '../../__mocks__/form/bffMock';
 import { Lookup } from '../../utils/structs/lookup';
 import { Dependencies } from '../formDefinitionsDep';
@@ -98,7 +114,8 @@ describe('formMetadata', () => {
       newNationSubjectCategoryValidationType,
       someValidationTypeForRepeatingCollectionsNameInDataId,
       someValidationTypeForRepeatingGroupsNameInDataId,
-      someValidationTypeForRepeatingRecordLinksNameInDataId
+      someValidationTypeForRepeatingRecordLinksNameInDataId,
+      someValidationTypeForRepeatingTitleInfoId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
       someMetadataTextVariable,
@@ -129,14 +146,29 @@ describe('formMetadata', () => {
       genreOtherCollectionVar,
       someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
       someNewRecordLinkId,
-      someOtherNewRecordLinkId
+      someOtherNewRecordLinkId,
+      someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+      someNewMetadataGroupTitleInfoAlternativeGroup,
+      typeCollVariable,
+      typeItemCollection,
+      typeCollectionItemAlternative,
+      someMainTitleTitleInfoATextVariable,
+      someNewMetadataGroupTitleInfoGroup,
+      newLangCollVariable,
+      newLangItemCollection,
+      newLangItemCollectionItemEng,
+      newLangItemCollectionItemSwe
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
     >([
       pNewNationSubjectCategoryMetadataGroup,
       pNewNationSubjectCategorySweVar,
-      pNewNationSubjectCategoryEngVar
+      pNewNationSubjectCategoryEngVar,
+      pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+      pSomeNewMetadataGroupTitleInfoPGroup,
+      pSomeNewMetadataGroupTitleInfoAlternativePGroup,
+      pSomeMainTitleTitleInfoTextVariable
     ]);
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
@@ -622,6 +654,113 @@ describe('formMetadata', () => {
 
     expect(formMetaData).toStrictEqual(expected);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+  });
+
+  it('should return form meta data for a given validation type with groups with same nameInData and one has attributes', () => {
+    const FORM_MODE_NEW = 'create';
+    const validationTypeId = 'divaOutputSwepub';
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+
+    const expected: FormMetaData = {
+      name: 'output',
+      type: 'group',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1
+      },
+      children: [
+        {
+          name: 'titleInfo',
+          type: 'group',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          children: [
+            {
+              name: 'title',
+              type: 'textVariable',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1
+              }
+            }
+          ]
+        },
+        {
+          name: 'titleInfo',
+          type: 'group',
+          attributes: {
+            type: 'alternative'
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1
+          },
+          children: [
+            {
+              name: 'title',
+              type: 'textVariable',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1
+              }
+            }
+          ]
+        }
+      ]
+    };
+
+    const expectedMetadataLookup = {
+      output: {
+        name: 'output',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'output.titleInfo': {
+        name: 'titleInfo',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'output.titleInfo.title': {
+        name: 'title',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'textVariable'
+      },
+      'output.titleInfo_type_alternative': {
+        attributes: {
+          type: 'alternative'
+        },
+        name: 'titleInfo',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'group'
+      },
+      'output.titleInfo_type_alternative.title': {
+        name: 'title',
+        repeat: {
+          repeatMax: 1,
+          repeatMin: 1
+        },
+        type: 'textVariable'
+      }
+    };
+
+    expect(formMetaData).toStrictEqual(expected);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    console.log('formMetaDataPathLookup', formMetaDataPathLookup);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
 

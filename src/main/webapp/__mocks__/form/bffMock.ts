@@ -1858,3 +1858,201 @@ export const someOtherNewRecordLinkId: BFFMetadataRecordLink = {
     }
   ]
 };
+
+///
+export const someValidationTypeForRepeatingTitleInfoId: BFFValidationType = {
+  id: 'divaOutputSwepub',
+  validatesRecordTypeId: 'divaOutputSwepub',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataGroup',
+  newPresentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  // Update/Edit
+  metadataGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataGroup',
+  presentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupRepeatingTitleInfoNameInDataGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupRepeatingTitleInfoNameInDataGroup',
+  nameInData: 'output',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someNewMetadataGroupTitleInfoGroup',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someNewMetadataGroupTitleInfoAlternativeGroup',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup: BFFPresentationGroup = {
+  id: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  type: 'pGroup',
+  presentationOf: 'someNewMetadataGroupRepeatingTitleInfoNameInDataGroup', // metadata
+  mode: 'input',
+  children: [
+    {
+      childId: 'someNewMetadataGroupTitleInfoGroup',
+      type: 'presentation'
+    },
+    {
+      childId: 'someNewMetadataGroupTitleInfoAlternativeGroup',
+      type: 'presentation'
+    }
+  ]
+};
+
+export const someNewMetadataGroupTitleInfoGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupTitleInfoGroup',
+  nameInData: 'titleInfo',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someMainTitleVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ],
+  attributeReferences: [
+    {
+      refCollectionVarId: 'newLangCollectionVar'
+    }
+  ]
+};
+
+export const pSomeNewMetadataGroupTitleInfoPGroup: BFFPresentationGroup = {
+  id: 'pSomeNewMetadataGroupTitleInfoGroup',
+  type: 'pGroup',
+  presentationOf: 'someNewMetadataGroupTitleInfoGroup', // metadata
+  mode: 'input',
+  children: [
+    {
+      childId: 'someMainTitlePVar',
+      type: 'presentation'
+    }
+  ]
+};
+export const pSomeNewMetadataGroupTitleInfoAlternativePGroup: BFFPresentationGroup = {
+  id: 'pSomeNewMetadataGroupTitleInfoGroup',
+  type: 'pGroup',
+  presentationOf: 'someNewMetadataGroupTitleInfoGroup', // metadata
+  mode: 'input',
+  children: [
+    {
+      childId: 'someMainTitlePVar',
+      type: 'presentation'
+    }
+  ]
+};
+
+export const someNewMetadataGroupTitleInfoAlternativeGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupTitleInfoAlternativeGroup',
+  nameInData: 'titleInfo',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someMainTitleVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ],
+  attributeReferences: [
+    {
+      refCollectionVarId: 'newLangCollectionVar'
+    },
+    {
+      refCollectionVarId: 'typeCollectionVar'
+    }
+  ]
+};
+
+export const typeCollVariable: BFFMetadataCollectionVariable = {
+  id: 'typeCollectionVar',
+  nameInData: 'type',
+  type: 'collectionVariable',
+  textId: 'typeCollectionVarText',
+  defTextId: 'typeCollectionVarDefText',
+  refCollection: 'typeCollection',
+  finalValue: 'alternative'
+};
+
+export const newLangCollVariable: BFFMetadataCollectionVariable = {
+  id: 'newLangCollectionVar',
+  nameInData: 'language',
+  type: 'collectionVariable',
+  textId: 'engCollectionVarText',
+  defTextId: 'engCollectionVarDefText',
+  refCollection: 'newLangCollection'
+};
+
+export const typeItemCollection: BFFMetadataItemCollection = {
+  id: 'typeCollection',
+  nameInData: 'type',
+  type: 'itemCollection',
+  textId: 'typeCollectionText',
+  defTextId: 'typeCollectionDefText',
+  collectionItemReferences: [{ refCollectionItemId: 'alternativeItem' }]
+};
+
+export const newLangItemCollection: BFFMetadataItemCollection = {
+  id: 'newLangCollection',
+  nameInData: 'type',
+  type: 'itemCollection',
+  textId: 'typeCollectionText',
+  defTextId: 'typeCollectionDefText',
+  collectionItemReferences: [{ refCollectionItemId: 'engItem' }, { refCollectionItemId: 'sweItem' }]
+};
+
+export const typeCollectionItemAlternative: BFFMetadata = {
+  id: 'alternativeItem',
+  nameInData: 'alternative',
+  type: 'collectionItem',
+  textId: 'alternativeItemText',
+  defTextId: 'alternativeItemDefText'
+};
+
+export const newLangItemCollectionItemEng: BFFMetadata = {
+  id: 'engItem',
+  nameInData: 'english',
+  type: 'collectionItem',
+  textId: 'alternativeItemText',
+  defTextId: 'alternativeItemDefText'
+};
+
+export const newLangItemCollectionItemSwe: BFFMetadata = {
+  id: 'sweItem',
+  nameInData: 'swedish',
+  type: 'collectionItem',
+  textId: 'alternativeItemText',
+  defTextId: 'alternativeItemDefText'
+};
+
+export const someMainTitleTitleInfoATextVariable: BFFMetadataTextVariable = {
+  id: 'someMainTitleVar',
+  nameInData: 'title',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+export const pSomeMainTitleTitleInfoTextVariable: BFFPresentation = {
+  id: 'someMainTitlePVar',
+  presentationOf: 'someMainTitleVar',
+  mode: 'input',
+  inputType: 'input',
+  type: 'pVar',
+  emptyTextId: 'someEmptyTextId'
+};
