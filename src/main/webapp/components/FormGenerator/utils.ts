@@ -212,9 +212,13 @@ export const addAttributesToName = (component: FormComponent, name: string) => {
     return component.name;
   }
   (component.attributes ?? []).forEach((attribute, index) => {
+    if (attribute.finalValue === undefined) {
+      return component.name;
+    }
     nameArray.push(`${attribute.name}_${attribute.finalValue}`);
   });
-  return `${name}_${nameArray.join('_')}`;
+
+  return nameArray.length > 0 ? `${name}_${nameArray.join('_')}` : name;
 };
 
 export const hasCurrentComponentSameNameInData = (
