@@ -41,7 +41,6 @@ export const Breadcrumbs = () => {
     ?.split('/')
     .filter((crumb: string) => crumb !== '')
     .map((crumb) => {
-      console.log(crumb);
       currentLink += `/${crumb}`;
 
       return (

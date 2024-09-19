@@ -218,7 +218,7 @@ export const addAttributesToName = (component: FormComponent, name: string) => {
     nameArray.push(`${attribute.name}_${attribute.finalValue}`);
   });
 
-  return nameArray.length > 0 ? `${name}_${nameArray.join('_')}` : name;
+  return `${name}_${nameArray.join('_')}`;
 };
 
 export const hasCurrentComponentSameNameInData = (
