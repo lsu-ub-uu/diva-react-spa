@@ -2186,6 +2186,60 @@ describe('FormGenerator Utils', () => {
         );
       });
 
+      it('addAttributesToName does not add attributes to name of variable without finalValue', () => {
+        const actual = addAttributesToName(
+          {
+            name: 'subject',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'subjectEngTextVarText',
+              body: 'subjectEngTextVarDefText',
+            },
+            label: 'subjectEngTextVarText',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          'nationalSubjectCategory.subject.value',
+        );
+        expect(actual).toEqual('nationalSubjectCategory.subject.value');
+      });
+
       it('addAttributesToName adds multiple attributes to name of variable', () => {
         const actual = addAttributesToName(
           {
