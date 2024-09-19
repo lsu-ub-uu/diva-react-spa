@@ -17,6 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import {
   BFFMetadataChildReference,
   BFFMetadataGroup,
@@ -61,11 +62,14 @@ export const createMetaDataFromChildReference = (
   let linkedRecordType;
   let attributes;
   if (metadata.attributeReferences !== undefined) {
-    const temp = getAttributesByAttributeReferences(metadataPool, metadata.attributeReferences);
-    Object.entries(temp).forEach(([key, value]) => {
-      attributes = { [key]: value.toString() };
+    metadata.attributeReferences.map((ref: any) => {
+      const attributeCollectionVar = metadataPool.get(ref.refCollectionVarId);
+      if (attributeCollectionVar.finalValue) {
+        attributes = { [attributeCollectionVar.nameInData]: attributeCollectionVar.finalValue };
+      }
     });
   }
+
   if (metadata.type === 'group') {
     const metadataGroup = metadata as BFFMetadataGroup;
     children = metadataGroup.children.map((childRef) => {

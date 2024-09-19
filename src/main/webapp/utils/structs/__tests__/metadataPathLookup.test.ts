@@ -189,7 +189,7 @@ describe('createFormMetaDataPathLookup', () => {
         });
         expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
       });
-      it('adds only attribute with finalValue to name when available12', () => {
+      it('adds only attribute with finalValue to name when available', () => {
         const actual = addAttributesToName({
           name: 'output',
           type: 'group',

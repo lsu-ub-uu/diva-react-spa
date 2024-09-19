@@ -1922,6 +1922,11 @@ export const someNewMetadataGroupTitleInfoGroup: BFFMetadataGroup = {
       repeatMin: '1',
       repeatMax: '1'
     }
+  ],
+  attributeReferences: [
+    {
+      refCollectionVarId: 'newLangCollectionVar'
+    }
   ]
 };
 
@@ -1965,7 +1970,7 @@ export const someNewMetadataGroupTitleInfoAlternativeGroup: BFFMetadataGroup = {
   ],
   attributeReferences: [
     {
-      refCollectionVarId: 'languageEngCollectionVar'
+      refCollectionVarId: 'newLangCollectionVar'
     },
     {
       refCollectionVarId: 'typeCollectionVar'
@@ -1979,7 +1984,17 @@ export const typeCollVariable: BFFMetadataCollectionVariable = {
   type: 'collectionVariable',
   textId: 'typeCollectionVarText',
   defTextId: 'typeCollectionVarDefText',
-  refCollection: 'typeCollection'
+  refCollection: 'typeCollection',
+  finalValue: 'alternative'
+};
+
+export const newLangCollVariable: BFFMetadataCollectionVariable = {
+  id: 'newLangCollectionVar',
+  nameInData: 'language',
+  type: 'collectionVariable',
+  textId: 'engCollectionVarText',
+  defTextId: 'engCollectionVarDefText',
+  refCollection: 'newLangCollection'
 };
 
 export const typeItemCollection: BFFMetadataItemCollection = {
@@ -1991,6 +2006,15 @@ export const typeItemCollection: BFFMetadataItemCollection = {
   collectionItemReferences: [{ refCollectionItemId: 'alternativeItem' }]
 };
 
+export const newLangItemCollection: BFFMetadataItemCollection = {
+  id: 'newLangCollection',
+  nameInData: 'type',
+  type: 'itemCollection',
+  textId: 'typeCollectionText',
+  defTextId: 'typeCollectionDefText',
+  collectionItemReferences: [{ refCollectionItemId: 'engItem' }, { refCollectionItemId: 'sweItem' }]
+};
+
 export const typeCollectionItemAlternative: BFFMetadata = {
   id: 'alternativeItem',
   nameInData: 'alternative',
@@ -1999,9 +2023,25 @@ export const typeCollectionItemAlternative: BFFMetadata = {
   defTextId: 'alternativeItemDefText'
 };
 
+export const newLangItemCollectionItemEng: BFFMetadata = {
+  id: 'engItem',
+  nameInData: 'english',
+  type: 'collectionItem',
+  textId: 'alternativeItemText',
+  defTextId: 'alternativeItemDefText'
+};
+
+export const newLangItemCollectionItemSwe: BFFMetadata = {
+  id: 'sweItem',
+  nameInData: 'swedish',
+  type: 'collectionItem',
+  textId: 'alternativeItemText',
+  defTextId: 'alternativeItemDefText'
+};
+
 export const someMainTitleTitleInfoATextVariable: BFFMetadataTextVariable = {
   id: 'someMainTitleVar',
-  nameInData: 'mainTitle',
+  nameInData: 'title',
   type: 'textVariable',
   textId: 'someTextId',
   defTextId: 'someDefTextId',

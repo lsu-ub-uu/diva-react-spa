@@ -42,6 +42,8 @@ import { removeEmpty } from '../utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../formDefinition/formMetadata';
 
+const { inspect } = require('node:util');
+
 /**
  * Transforms records
  * @param dependencies
@@ -108,6 +110,7 @@ export const transformRecord = (
   const updated = extractRecordUpdates(recordInfo);
 
   const formMetadata = createFormMetaData(dependencies, validationType, 'update');
+  // console.log(inspect(JSON.stringify(formMetadata, null, 2)));
   const formPathLookup = createFormMetaDataPathLookup(formMetadata);
 
   let userRights: string[] = [];
@@ -171,6 +174,18 @@ export const traverseDataGroup = (
         groupedChildren,
         addAttributesToNameForRecords(child, correctChild)
       );
+
+      // if (name === 'titleInfo') {
+      //   console.log(
+      //     addAttributesToNameForRecords(
+      //       child,
+      //       correctChild,
+      //       nameInDataArray,
+      //       formPathLookup,
+      //       currentPath
+      //     )
+      //   );
+      // }
 
       const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
         ? addAttributesToNameForRecords(
@@ -347,6 +362,8 @@ export const addAttributesToNameForRecords = (
   currentPath?: string
 ) => {
   let formComponent;
+
+  // console.log('1', inspect(formPathLookup));
 
   if (nameInDataArray !== undefined && formPathLookup !== undefined && currentPath !== undefined) {
     const searchPart = findSearchPart(nameInDataArray, currentPath);

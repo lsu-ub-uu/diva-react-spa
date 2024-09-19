@@ -73,7 +73,11 @@ import {
   pSomeMainTitleTitleInfoTextVariable,
   typeCollVariable,
   typeItemCollection,
-  typeCollectionItemAlternative
+  typeCollectionItemAlternative,
+  newLangCollVariable,
+  newLangItemCollection,
+  newLangItemCollectionItemEng,
+  newLangItemCollectionItemSwe
 } from '../../__mocks__/form/bffMock';
 import { FormMetaData } from '../../formDefinition/formDefinition';
 
@@ -104,7 +108,11 @@ describe('transformRecord', () => {
       someMainTitleTitleInfoATextVariable,
       typeCollVariable,
       typeItemCollection,
-      typeCollectionItemAlternative
+      typeCollectionItemAlternative,
+      newLangCollVariable,
+      newLangItemCollection,
+      newLangItemCollectionItemEng,
+      newLangItemCollectionItemSwe
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -201,7 +209,7 @@ describe('transformRecord', () => {
       expect(transformData).toStrictEqual(expected);
     });
 
-    it('should return a record with repeating nameInDatas having one with attributes', () => {
+    it('should return a record with repeating nameInDatas for groups having one with attributes', () => {
       const transformData = transformRecord(
         dependencies,
         recordManuscriptWithSameNameInData as RecordWrapper
@@ -251,6 +259,55 @@ describe('transformRecord', () => {
       };
       expect(transformData).toStrictEqual(expected);
     });
+
+    /* it('should return a record with repeating nameInDatas for textVar having one with attributes', () => {
+      const transformData = transformRecord(
+        dependencies,
+        recordManuscriptWithSameNameInData as RecordWrapper
+      );
+      const expected = {
+        id: 'divaOutputSwepub:2087392797647370',
+        recordType: 'divaOutputSwepub',
+        validationType: 'divaOutputSwepub',
+        createdAt: '2024-09-13T11:49:37.288927Z',
+        createdBy: '161616',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [
+          {
+            updateAt: '2024-09-13T11:49:37.288927Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-13T11:49:54.085586Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-16T08:00:42.892622Z',
+            updatedBy: '161616'
+          }
+        ],
+        data: {
+          output: {
+            titleInfo: [
+              {
+                _lang: 'ady',
+                title: {
+                  value: 'someText'
+                }
+              },
+              {
+                _lang: 'amh',
+                _type: 'alternative',
+                title_type_alternative: {
+                  value: 'someOtherText'
+                }
+              }
+            ]
+          }
+        }
+      };
+      expect(transformData).toStrictEqual(expected);
+    }); */
 
     it('should be able to return a record without created and updated data', () => {
       const transformData = transformRecord(
@@ -1437,6 +1494,30 @@ describe('transformRecord', () => {
           },
           undefined,
           ['titleInfo'],
+          {
+            'output.titleInfo': {
+              name: 'titleInfo',
+              type: 'group',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1
+              }
+            }
+          },
+          'output.titleInfo'
+        );
+        expect(actual).toStrictEqual('titleInfo');
+      });
+
+      it('removed attributes to name when with when not Cora attributes2', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            children: [{ name: 'title', value: 'asdasdasd' }],
+            name: 'titleInfo',
+            attributes: { lang: 'ain' }
+          },
+          undefined,
+          ['titleInfo', 'titleInfo_lang_ain'],
           {
             'output.titleInfo': {
               name: 'titleInfo',
