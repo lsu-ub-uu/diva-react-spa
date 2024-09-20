@@ -32,12 +32,10 @@ export interface DivaOutput {
 export const transformToTable = (data: any) => {
   return data.map((record: any) => {
     const { validationType } = record;
+    const title = getCorrectTitle(validationType, record);
     return {
       id: record.id,
-      title:
-        validationType === 'divaOutputSwepub'
-          ? record.data.output.titleInfo.title.value
-          : record.data.divaOutput.title.mainTitle.value,
+      title: title ?? '',
       validationType: record.validationType,
       recordType: record.recordType,
       createdAt: record.createdAt,
@@ -45,6 +43,12 @@ export const transformToTable = (data: any) => {
       userRights: record.userRights,
     };
   });
+};
+
+export const getCorrectTitle = (validationType: any, record: any) => {
+  return validationType === 'divaOutputSwepub'
+    ? record.data.output.titleInfo.title.value
+    : record.data.divaOutput.title.mainTitle.value;
 };
 
 export const loadPublicationsAsync =
