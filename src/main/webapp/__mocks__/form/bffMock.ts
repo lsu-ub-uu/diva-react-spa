@@ -1887,7 +1887,7 @@ export const someNewMetadataGroupRepeatingTitleInfoNameInDataGroup: BFFMetadataG
     },
     {
       childId: 'someNewMetadataGroupTitleInfoAlternativeGroup',
-      repeatMin: '1',
+      repeatMin: '0',
       repeatMax: '1'
     }
   ]

@@ -18,6 +18,7 @@
  */
 
 import _ from 'lodash';
+import * as console from 'console';
 import {
   Attributes,
   DataAtomic,
@@ -150,13 +151,13 @@ export const traverseDataGroup = (
   formPathLookup?: Record<string, FormMetaData>,
   path?: string
 ) => {
+  console.log('new', JSON.stringify(formPathLookup));
   const validChildren = dataGroup.children.filter((group) => group.name !== 'recordInfo');
   const groupedByName = _.groupBy(validChildren, 'name');
   const groupedEntries = Object.entries(groupedByName);
   path = path === undefined ? dataGroup.name : path;
   const groupAttributes = transformObjectAttributes(dataGroup.attributes);
   const object: unknown[] = [];
-
   groupedEntries.forEach(([name, groupedChildren]) => {
     const currentPath = path ? `${path}.${name}` : name;
     let repeating = false;
@@ -174,18 +175,6 @@ export const traverseDataGroup = (
         groupedChildren,
         addAttributesToNameForRecords(child, correctChild)
       );
-
-      // if (name === 'titleInfo') {
-      //   console.log(
-      //     addAttributesToNameForRecords(
-      //       child,
-      //       correctChild,
-      //       nameInDataArray,
-      //       formPathLookup,
-      //       currentPath
-      //     )
-      //   );
-      // }
 
       const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
         ? addAttributesToNameForRecords(
@@ -221,10 +210,12 @@ export const traverseDataGroup = (
           child as DataGroup,
           possiblyNameWithAttribute
         );
+        console.log('1', child.name, child);
         return traverseDataGroup(childGroup, formPathLookup, currentPath);
       }
 
       if (isDataGroup(child) && isRepeating(child, currentPath, formPathLookup)) {
+        console.log('2', child.name, child);
         repeating = true;
         isGroup = true;
 
@@ -262,23 +253,55 @@ export const traverseDataGroup = (
         return Object.assign({ value }, ...atomicAttributes);
       }
     });
-    if (repeating && !isGroup) {
-      object.push({ [name]: thisLevelChildren });
-    } else if (repeating && isGroup) {
+    // console.log('groupedEntries', JSON.stringify(groupedEntries, null, 2))
+    if (isGroup) {
       const childrenNames = getNamesFromChildren(thisLevelChildren);
-      childrenNames.forEach((children) => {
-        object.push({
-          [children]: thisLevelChildren.map((item) => {
-            return item[children];
-          })
-        });
+
+      console.log('fff2', childrenNames);
+      let isChildSingular;
+      // console.log('children', lookup);
+      childrenNames.forEach((child) => {
+        isChildSingular = getChildSingular(path, child, formPathLookup);
+        console.log('rep', isChildSingular);
+        if (isChildSingular || !repeating) {
+          const temp = thisLevelChildren.map((item) => {
+            console.log('item', item[name])
+            return item;
+          });
+          console.log('temp', temp);
+          object.push({ [name]: Object.assign({}, ...temp) });
+        } else {
+          object.push({
+            [child]: thisLevelChildren.map((item) => {
+              // console.log('2.3.1', item[children]);
+              return item[child];
+            })
+          });
+        }
       });
+    } else if (repeating && !isGroup) {
+      object.push({ [name]: thisLevelChildren });
     } else {
+      // console.log('1.1', name);
       object.push(Object.assign({}, ...thisLevelChildren));
+      // console.log('1.2', object);
     }
   });
+  // console.log('3', object);
   return removeEmpty({ [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) });
 };
+
+function getChildSingular(
+  path: string | undefined,
+  child: string,
+  formPathLookup?: Record<string, FormMetaData>
+) {
+  const lookup = formPathLookup ?? {};
+  return (
+    lookup[`${path}.${child}`]?.repeat.repeatMin === 1 &&
+    lookup[`${path}.${child}`]?.repeat.repeatMax === 1
+  );
+}
 
 /**
  * Transform object attributes with _ prefix to key
