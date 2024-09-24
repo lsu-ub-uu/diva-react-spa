@@ -7172,7 +7172,7 @@ export const formComponentTitleInfoGroup: FormComponent = {
           },
           repeat: {
             minNumberOfRepeatingToShow: 1,
-            repeatMin: 0,
+            repeatMin: 1,
             repeatMax: 1,
           },
           childStyle: [''],
@@ -7195,7 +7195,7 @@ export const formComponentTitleInfoGroup: FormComponent = {
       showLabel: true,
       repeat: {
         minNumberOfRepeatingToShow: 1,
-        repeatMin: 1,
+        repeatMin: 0,
         repeatMax: 1.7976931348623157e308,
       },
       attributes: [
