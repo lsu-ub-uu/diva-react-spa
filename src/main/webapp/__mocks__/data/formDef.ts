@@ -7099,3 +7099,176 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
       gridColSpan: 12,
     },
   };
+
+export const formComponentTitleInfoGroup: FormComponent = {
+  name: 'firstChildGroup',
+  type: 'group',
+  mode: 'input',
+  tooltip: {
+    title: 'exampleFirstChildGroupText',
+    body: 'exampleFirstChildGroupDefText',
+  },
+  label: 'exampleFirstChildGroupText',
+  repeat: {
+    minNumberOfRepeatingToShow: 0,
+    repeatMin: 0,
+    repeatMax: 2,
+  },
+  components: [
+    {
+      name: 'titleInfo',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'titleInfoGroupText',
+        body: 'titleInfoGroupDefText',
+      },
+      label: 'titleInfoGroupText',
+      showLabel: true,
+      repeat: {
+        minNumberOfRepeatingToShow: 1,
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      attributes: [
+        {
+          name: 'lang',
+          type: 'collectionVariable',
+          placeholder: 'initialEmptyValueText',
+          mode: 'input',
+          tooltip: {
+            title: 'languageCollectionVarText',
+            body: 'languageCollectionVarDefText',
+          },
+          label: 'languageCollectionVarText',
+          showLabel: true,
+          options: [
+            {
+              value: 'eng',
+              label: 'engLangItemText',
+            },
+            {
+              value: 'swe',
+              label: 'sweLangItemText',
+            },
+          ],
+        },
+      ],
+      components: [
+        {
+          name: 'title',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'titleTextVarText',
+            body: 'titleTextVarDefText',
+          },
+          label: 'titleTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+    {
+      name: 'titleInfo',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'titleInfoGroupText',
+        body: 'titleInfoGroupDefText',
+      },
+      label: 'titleInfoGroupText',
+      showLabel: true,
+      repeat: {
+        minNumberOfRepeatingToShow: 1,
+        repeatMin: 1,
+        repeatMax: 1.7976931348623157e308,
+      },
+      attributes: [
+        {
+          name: 'lang',
+          type: 'collectionVariable',
+          placeholder: 'initialEmptyValueText',
+          mode: 'input',
+          tooltip: {
+            title: 'languageCollectionVarText',
+            body: 'languageCollectionVarDefText',
+          },
+          label: 'languageCollectionVarText',
+          showLabel: true,
+          options: [
+            {
+              value: 'eng',
+              label: 'engLangItemText',
+            },
+            {
+              value: 'swe',
+              label: 'sweLangItemText',
+            },
+          ],
+        },
+        {
+          name: 'type',
+          type: 'collectionVariable',
+          placeholder: 'initialEmptyValueText',
+          mode: 'input',
+          tooltip: {
+            title: 'titleTypeCollectionVarText',
+            body: 'titleTypeCollectionVarDefText',
+          },
+          label: 'titleTypeCollectionVarText',
+          showLabel: true,
+          options: [
+            {
+              value: 'alternative',
+              label: 'alternativeTitleItemText',
+            },
+          ],
+          finalValue: 'alternative',
+        },
+      ],
+      components: [
+        {
+          name: 'title',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'titleTextVarText',
+            body: 'titleTextVarDefText',
+          },
+          label: 'titleTextVarText',
+          showLabel: true,
+          validation: {
+            type: 'regex',
+            pattern: '.+',
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  ],
+};

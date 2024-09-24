@@ -48,6 +48,7 @@ import {
   formDefWithARepeatingContainer,
   formDefWithOneRepeatingTextVariable,
   formDefRealDemoWithAttributesButWithoutFinalValue,
+  formComponentTitleInfoGroup,
 } from '../../../__mocks__/data/formDef';
 import { FormSchema } from '../types';
 import { removeEmpty } from '../../../utils/removeEmpty';
@@ -202,6 +203,32 @@ describe('FormGenerator Utils', () => {
         const actualDefaultValues = createDefaultValuesFromComponent(
           formComponentGroup,
           true,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should construct a default value object for groups with same nameInData', () => {
+        const expectedDefaultValues = {
+          titleInfo: {
+            title: {
+              value: '',
+            },
+            _lang: '',
+          },
+          titleInfo_type_alternative: [
+            {
+              _lang: '',
+              _type: 'alternative',
+              title: {
+                value: '',
+              },
+            },
+          ],
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          formComponentTitleInfoGroup,
+          true,
+          ['titleInfo'],
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
       });

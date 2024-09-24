@@ -90,7 +90,7 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
-
+  console.log(control);
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
