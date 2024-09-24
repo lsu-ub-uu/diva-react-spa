@@ -83,8 +83,10 @@ export const createYupValidationsFromComponent = (
   )
     ? addAttributesToName(component, component.name)
     : component.name;
+
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
+      // console.log('rep group', component);
       const innerObjectSchema = generateYupSchema(
         component.components,
         isParentGroupOptional(component) || parentComponentRepeating,
@@ -138,6 +140,8 @@ export const createYupValidationsFromComponent = (
           parentGroupRepeating,
         ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      console.log('non group', component, innerSchema, validationRule);
+      // console.log('vR', component.name, validationRule[currentNameInData]);
     } else {
       validationRule[currentNameInData] = yup.object().shape({
         value: createValidationFromComponentType(
