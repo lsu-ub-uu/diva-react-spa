@@ -253,27 +253,19 @@ export const traverseDataGroup = (
         return Object.assign({ value }, ...atomicAttributes);
       }
     });
-    // console.log('groupedEntries', JSON.stringify(groupedEntries, null, 2))
     if (isGroup) {
       const childrenNames = getNamesFromChildren(thisLevelChildren);
-
-      console.log('fff2', childrenNames);
       let isChildSingular;
-      // console.log('children', lookup);
       childrenNames.forEach((child) => {
         isChildSingular = getChildSingular(path, child, formPathLookup);
-        console.log('rep', isChildSingular);
         if (isChildSingular || !repeating) {
-          const temp = thisLevelChildren.map((item) => {
-            console.log('item', item[name])
+          const childArray = thisLevelChildren.map((item) => {
             return item;
           });
-          console.log('temp', temp);
-          object.push({ [name]: Object.assign({}, ...temp) });
+          object.push(...childArray);
         } else {
           object.push({
             [child]: thisLevelChildren.map((item) => {
-              // console.log('2.3.1', item[children]);
               return item[child];
             })
           });
@@ -282,12 +274,9 @@ export const traverseDataGroup = (
     } else if (repeating && !isGroup) {
       object.push({ [name]: thisLevelChildren });
     } else {
-      // console.log('1.1', name);
       object.push(Object.assign({}, ...thisLevelChildren));
-      // console.log('1.2', object);
     }
   });
-  // console.log('3', object);
   return removeEmpty({ [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) });
 };
 
