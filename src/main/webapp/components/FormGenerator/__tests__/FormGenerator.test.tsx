@@ -468,7 +468,7 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(2);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(6);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
