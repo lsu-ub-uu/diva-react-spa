@@ -2056,3 +2056,59 @@ export const pSomeMainTitleTitleInfoTextVariable: BFFPresentation = {
   type: 'pVar',
   emptyTextId: 'someEmptyTextId'
 };
+
+export const someValidationTypeNamePartId: BFFValidationType = {
+  id: 'namePartValidationTypeId',
+  validatesRecordTypeId: 'namePartValidationTypeId',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupNamePartGroup',
+  newPresentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  // Update/Edit
+  metadataGroupId: 'someNewMetadataGroupNamePartGroup',
+  presentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupRepeatingNamePartGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupNamePartGroup',
+  nameInData: 'output',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someNamePartTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someOtherNamePartTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someNamePartTextVariable: BFFMetadataTextVariable = {
+  id: 'someNamePartTextVar',
+  nameInData: 'namePart',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+export const someOtherNamePartTextVariable: BFFMetadataTextVariable = {
+  id: 'someOtherNamePartTextVar',
+  nameInData: 'namePart',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageEngCollectionVar'
+    }
+  ]
+};
