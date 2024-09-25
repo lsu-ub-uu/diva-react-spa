@@ -2072,7 +2072,7 @@ export const someValidationTypeNamePartId: BFFValidationType = {
 
 export const someNewMetadataGroupRepeatingNamePartGroup: BFFMetadataGroup = {
   id: 'someNewMetadataGroupNamePartGroup',
-  nameInData: 'output',
+  nameInData: 'name',
   type: 'group',
   textId: '',
   defTextId: '',

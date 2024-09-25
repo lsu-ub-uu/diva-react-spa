@@ -295,7 +295,7 @@ describe('transformRecord', () => {
           }
         ],
         data: {
-          output: {
+          name: {
             namePart: {
               value: 'value1'
             },
@@ -1569,6 +1569,40 @@ describe('transformRecord', () => {
         );
         expect(actual).toStrictEqual('titleInfo');
       });
+
+      it('add attributes to name when with when not Cora attributes3', () => {
+        const actual = addAttributesToNameForRecords(
+          { name: 'namePart', attributes: { type: 'family' }, value: 'Swenning' },
+          undefined,
+          ['namePart', 'namePart', 'namePart_type_family'],
+          {
+            'output.name_type_personal.namePart_type_family': {
+              name: 'namePart',
+              type: 'textVariable',
+              attributes: { type: 'family' },
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            },
+            'output.name_type_personal.namePart_type_given': {
+              name: 'namePart',
+              type: 'textVariable',
+              attributes: { type: 'given' },
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            },
+            'output.name_type_personal.namePart': {
+              name: 'namePart',
+              type: 'textVariable',
+              repeat: { repeatMin: 0, repeatMax: 1 }
+            },
+            output: {
+              name: 'output',
+              type: 'group',
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            }
+          },
+          'output.name.namePart'
+        );
+        expect(actual).toStrictEqual('namePart_type_family');
+      });
     });
 
     describe('getNameFromChildren', () => {
@@ -1723,6 +1757,10 @@ describe('transformRecord', () => {
           'output.titleInfo_type_alternative'
         );
         expect(actual).toBe('output.titleInfo_type_alternative');
+      });
+      it('finds part in path from array4', () => {
+        const actual = findSearchPart(['namePart', 'namePart_lang_eng'], 'name.namePart');
+        expect(actual).toBe('name.namePart_lang_eng');
       });
     });
   });

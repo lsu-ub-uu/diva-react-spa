@@ -44,6 +44,8 @@ import { removeEmpty } from '../utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../formDefinition/formMetadata';
 
+const { inspect } = require('node:util');
+
 /**
  * Transforms records
  * @param dependencies
@@ -161,6 +163,8 @@ export const traverseDataGroup = (
     let repeating = false;
     let isGroup = false;
 
+    // console.log('currentPath', currentPath);
+
     const thisLevelChildren = groupedChildren.map((child) => {
       const possibleAttributes = addAttributesToArray(child);
       const correctChild = hasCoraAttributes(
@@ -173,8 +177,8 @@ export const traverseDataGroup = (
         groupedChildren,
         addAttributesToNameForRecords(child, correctChild)
       );
-
-      // console.log('fp', formPathLookup, currentPath, correctChild);
+      // console.log('UTILS', inspect(path));
+      // console.log('fp', child.name, hasSameNameInDatas(groupedChildren, child.name));
       const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
         ? addAttributesToNameForRecords(
             child,
@@ -185,7 +189,7 @@ export const traverseDataGroup = (
           )
         : name;
       // console.log('1', child, correctChild, nameInDataArray, formPathLookup, currentPath);
-      console.log('1.2', nameInDataArray);
+      // console.log('1.2', nameInDataArray);
 
       if (isRecordLink(child) && !isRepeating(child, currentPath, formPathLookup)) {
         const childGroup = child as DataGroup;
@@ -371,14 +375,14 @@ export const addAttributesToNameForRecords = (
   currentPath?: string
 ) => {
   let formComponent;
-  console.log('2', metaDataGroup);
+  // console.log('2', metaDataGroup.name, formPathLookup);
 
   if (nameInDataArray !== undefined && formPathLookup !== undefined && currentPath !== undefined) {
-    console.log('if', nameInDataArray, formPathLookup, currentPath);
+    // console.log('if', nameInDataArray, formPathLookup, currentPath);
     const searchPart = findSearchPart(nameInDataArray, currentPath);
     const lookup = formPathLookup ?? {};
     formComponent = lookup[searchPart];
-    console.log('3', formComponent);
+    // console.log('3', formComponent);
   }
 
   const correctArray: any[] = [];
@@ -413,25 +417,24 @@ export const addAttributesToNameForRecords = (
   }
 
   Object.entries(metaDataGroup.attributes).forEach(([key, value]) => {
-    console.log('4', metaDataGroup.attributes);
+    // console.log('4', metaDataGroup.attributes);
     correctArray.push(`${key}_${value}`);
   });
-  console.log('5', correctArray);
-  if (metaDataGroup.attributes === undefined) {
-    return metaDataGroup.name;
-  }
-  console.log(
-    'ret',
-    correctArray.length > 0 ? `${metaDataGroup.name}_${correctArray.join('_')}` : metaDataGroup.name
-  );
+  // console.log('5', correctArray);
+  // console.log(
+  //   'ret',
+  //   correctArray.length > 0 ? `${metaDataGroup.name}_${correctArray.join('_')}` : metaDataGroup.name
+  // );
   return correctArray.length > 0
     ? `${metaDataGroup.name}_${correctArray.join('_')}`
     : metaDataGroup.name;
 };
 
 export const findSearchPart = (nameInDataArray?: string[], currentPath?: string) => {
+  console.log(nameInDataArray, currentPath);
   const path = (currentPath as string).split('.');
   const searchPart = path[path.length - 1];
+  console.log(searchPart);
   const findWithSearchPart = (nameInDataArray as string[]).find(
     (element) => element === searchPart
   );
