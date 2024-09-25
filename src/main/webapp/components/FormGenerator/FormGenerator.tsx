@@ -90,7 +90,7 @@ export const FormGenerator = ({
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
   const { control, handleSubmit, reset, getValues } = methods;
-  console.log(control);
+
   const generateFormComponent = (
     component: FormComponent,
     idx: number,
@@ -105,11 +105,11 @@ export const FormGenerator = ({
     const childrenWithSameNameInData = getChildrenWithSameNameInData(
       getChildArrayWithSameNameInData(component),
     );
+
     const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
       childWithNameInDataArray,
       component.name,
     );
-
     const addAttributesForMatchingNameInDataWithoutPath =
       currentComponentSameNameInData
         ? `${addAttributesToName(component, component.name)}`
@@ -188,30 +188,6 @@ export const FormGenerator = ({
         }
 
         return null;
-        /* return attributesToShow === 'all' ||
-          attributesToShow === 'selectable' ? (
-          <Grid
-            key={attribute.name}
-            item
-            xs={6}
-          >
-            <ControlledSelectField
-              key={`${attribute.name}_${index}`}
-              name={`${aPath}._${attribute.name}`}
-              isLoading={false}
-              loadingError={false}
-              label={attribute.label ?? ''}
-              showLabel={component.showLabel}
-              placeholder={attribute.placeholder}
-              tooltip={attribute.tooltip}
-              control={control}
-              options={attribute.options}
-              readOnly={!!attribute.finalValue}
-              displayMode={attribute.mode}
-              hasValue={hasValue}
-            />
-          </Grid>
-        ) : null; */
       });
     };
 
@@ -242,6 +218,7 @@ export const FormGenerator = ({
         component,
         createFormComponentAttributes,
         parentPresentationStyle,
+        childrenWithSameNameInData,
       );
     }
 
@@ -441,6 +418,7 @@ export const FormGenerator = ({
       aPath: string,
     ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
+    childWithNameInDataArray: string[],
   ) => {
     return isFirstLevelGroup(currentComponentNamePath) ? (
       <FieldArrayComponent
@@ -453,7 +431,7 @@ export const FormGenerator = ({
             ...createFormComponentAttributes(component, arrayPath),
             ...createFormComponents(
               component.components ?? [],
-              [],
+              childWithNameInDataArray,
               component.presentationStyle ?? parentPresentationStyle,
               arrayPath,
             ),
