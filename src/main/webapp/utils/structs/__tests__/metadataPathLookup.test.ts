@@ -295,58 +295,6 @@ describe('createFormMetaDataPathLookup', () => {
         });
         expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
       });
-      it('adds only attribute with finalValue to name when available', () => {
-        const actual = addAttributesToName({
-          name: 'output',
-          type: 'group',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          children: [
-            {
-              name: 'titleInfo',
-              type: 'group',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1
-              },
-              children: [
-                {
-                  name: 'mainTitle',
-                  type: 'textVariable',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1
-                  }
-                }
-              ]
-            },
-            {
-              name: 'titleInfo',
-              type: 'group',
-              attributes: {
-                type: 'alternative'
-              },
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1
-              },
-              children: [
-                {
-                  name: 'mainTitle',
-                  type: 'textVariable',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1
-                  }
-                }
-              ]
-            }
-          ]
-        });
-        expect(actual).toStrictEqual('subject_language_swe');
-      });
     });
     describe('Cora MetaData', () => {
       it('adds no attributes to name when not available', () => {

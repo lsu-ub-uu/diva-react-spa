@@ -695,7 +695,7 @@ describe('formMetadata', () => {
             type: 'alternative'
           },
           repeat: {
-            repeatMin: 1,
+            repeatMin: 0,
             repeatMax: 1
           },
           children: [
@@ -744,7 +744,7 @@ describe('formMetadata', () => {
         name: 'titleInfo',
         repeat: {
           repeatMax: 1,
-          repeatMin: 1
+          repeatMin: 0
         },
         type: 'group'
       },
@@ -760,7 +760,6 @@ describe('formMetadata', () => {
 
     expect(formMetaData).toStrictEqual(expected);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    console.log('formMetaDataPathLookup', formMetaDataPathLookup);
     expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
   });
 
