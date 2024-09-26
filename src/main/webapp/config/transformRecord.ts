@@ -376,6 +376,10 @@ export const addAttributesToNameForRecords = (
 ) => {
   let formComponent;
   // console.log('2', metaDataGroup.name, formPathLookup);
+  const correctArray: any[] = [];
+
+  const tempAttributes = tempFunc(metaDataGroup);
+  // console.log('temp', tempAttributes);
 
   if (nameInDataArray !== undefined && formPathLookup !== undefined && currentPath !== undefined) {
     // console.log('if', nameInDataArray, formPathLookup, currentPath);
@@ -385,7 +389,6 @@ export const addAttributesToNameForRecords = (
     // console.log('3', formComponent);
   }
 
-  const correctArray: any[] = [];
   if (correctChild !== undefined) {
     if (correctChild.attributes === undefined) {
       return metaDataGroup.name;
@@ -430,14 +433,30 @@ export const addAttributesToNameForRecords = (
     : metaDataGroup.name;
 };
 
-export const findSearchPart = (nameInDataArray?: string[], currentPath?: string) => {
-  console.log(nameInDataArray, currentPath);
+const tempFunc = (metaDataGroup: any) => {
+  const tempArray: any[] = [];
+  Object.entries(metaDataGroup.attributes).forEach(([key, value]) => {
+    tempArray.push(`${key}_${value}`);
+  });
+  return tempArray.length > 0 ? `${metaDataGroup.name}_${tempArray.join('_')}` : metaDataGroup.name;
+};
+
+export const findSearchPart = (
+  nameInDataArray?: string[],
+  currentPath?: string,
+  nameWithAttribute?: string
+) => {
+  console.log('findSearchPart', nameInDataArray, nameWithAttribute);
+  console.log('cPath', currentPath);
   const path = (currentPath as string).split('.');
-  const searchPart = path[path.length - 1];
-  console.log(searchPart);
+  console.log('path', path);
+  const searchPart = nameWithAttribute !== undefined ? nameWithAttribute : path[path.length - 1];
+  console.log('sp', searchPart);
   const findWithSearchPart = (nameInDataArray as string[]).find(
     (element) => element === searchPart
   );
+  console.log('find', findWithSearchPart);
+  // path, byt ut sista biten till findWithSearchPart
   return findWithSearchPart ? (currentPath as string) : '';
 };
 

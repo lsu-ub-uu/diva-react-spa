@@ -1759,7 +1759,7 @@ describe('transformRecord', () => {
         expect(actual).toBe('output.titleInfo_type_alternative');
       });
       it('finds part in path from array4', () => {
-        const actual = findSearchPart(['namePart', 'namePart_lang_eng'], 'name.namePart');
+        const actual = findSearchPart(['namePart', 'namePart_lang_eng'], 'name.namePart', 'namePart_lang_eng');
         expect(actual).toBe('name.namePart_lang_eng');
       });
     });
