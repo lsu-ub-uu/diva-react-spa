@@ -2112,3 +2112,64 @@ export const someOtherNamePartTextVariable: BFFMetadataTextVariable = {
     }
   ]
 };
+
+export const someValidationTypeNamePartWithAttributesId: BFFValidationType = {
+  id: 'namePartValidationTypeId',
+  validatesRecordTypeId: 'namePartValidationTypeId',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
+  newPresentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  // Update/Edit
+  metadataGroupId: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
+  presentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupRepeatingNamePartWithAttributesGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
+  nameInData: 'name',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someNamePartTextVar',
+      repeatMin: '0',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someOtherNamePartTextVar',
+      repeatMin: '0',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someNamePartWithAttributesTextVariable: BFFMetadataTextVariable = {
+  id: 'someNamePartWithAttributesTextVariable',
+  nameInData: 'namePart',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageSweCollectionVar'
+    }
+  ]
+};
+
+export const someOtherNamePartWithAttributesTextVariable: BFFMetadataTextVariable = {
+  id: 'someOtherNamePartWithAttributesTextVariable',
+  nameInData: 'namePart',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageEngCollectionVar'
+    }
+  ]
+};

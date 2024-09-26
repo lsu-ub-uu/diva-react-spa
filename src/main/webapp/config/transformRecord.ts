@@ -147,6 +147,7 @@ export const traverseDataGroup = (
   formPathLookup?: Record<string, FormMetaData>,
   path?: string
 ) => {
+  console.log('1', formPathLookup);
   const validChildren = dataGroup.children.filter((group) => group.name !== 'recordInfo');
   const groupedByName = _.groupBy(validChildren, 'name');
   const groupedEntries = Object.entries(groupedByName);
@@ -161,16 +162,23 @@ export const traverseDataGroup = (
 
     const thisLevelChildren = groupedChildren.map((child) => {
       const possibleAttributes = addAttributesToArray(child);
+      console.log('2', possibleAttributes);
       const correctChild = hasCoraAttributes(
         currentPath,
         possibleAttributes,
         formPathLookup as Record<string, FormMetaData>
       );
+      console.log('3', correctChild);
 
       const nameInDataArray = getSameNameInDatas(
         groupedChildren,
         addAttributesToNameForRecords(child, correctChild)
       );
+
+      // Få ut alla barn på nivån, kolla om
+      // console.log('gc', formPathLookup);
+
+      console.log('4', nameInDataArray);
       const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
         ? addAttributesToNameForRecords(
             child,
@@ -180,6 +188,20 @@ export const traverseDataGroup = (
             currentPath
           )
         : name;
+
+      console.log('4.1', hasSameNameInDatas(groupedChildren, child.name), groupedChildren);
+      console.log('5', possiblyNameWithAttribute);
+      console.log(
+        '5.1',
+        addAttributesToNameForRecords(
+          child,
+          correctChild,
+          nameInDataArray,
+          formPathLookup,
+          currentPath
+        )
+      );
+      console.log('5.2', name);
 
       if (isRecordLink(child) && !isRepeating(child, currentPath, formPathLookup)) {
         const childGroup = child as DataGroup;

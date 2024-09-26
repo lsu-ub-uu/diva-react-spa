@@ -21,6 +21,7 @@ import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
 import recordManuscriptWithoutCreatedAndUpdates from '../../__mocks__/coraRecordManuscriptPublicWithoutSensitiveData.json';
 import recordManuscriptWithSameNameInDataGroup from '../../__mocks__/coraRecordManuscriptWithSameNameInData.json';
 import recordManuscriptWithSameNameInDataVar from '../../__mocks__/coraRecordManuscriptWithNamePart.json';
+import recordManuscriptWithSameNameInDataVarWithoutAllVars from '../../__mocks__/coraRecordManuscriptWithNamePartWithoutAllVars.json';
 
 import {
   addAttributesToArray,
@@ -83,7 +84,11 @@ import {
   someValidationTypeNamePartId,
   someNewMetadataGroupRepeatingNamePartGroup,
   someNamePartTextVariable,
-  someOtherNamePartTextVariable
+  someOtherNamePartTextVariable,
+  someValidationTypeNamePartWithAttributesId,
+  someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
+  someNamePartWithAttributesTextVariable,
+  someOtherNamePartWithAttributesTextVariable
 } from '../../__mocks__/form/bffMock';
 import { FormMetaData } from '../../formDefinition/formDefinition';
 
@@ -101,7 +106,8 @@ describe('transformRecord', () => {
       someManuscriptValidationTypeData,
       nationSubjectCategoryValidationTypeData,
       someValidationTypeForRepeatingTitleInfoId,
-      someValidationTypeNamePartId
+      someValidationTypeNamePartId,
+      someValidationTypeNamePartWithAttributesId
     ]);
     metadataPool = listToPool<BFFMetadata>([
       someManuscriptEditMetadataGroup,
@@ -122,7 +128,10 @@ describe('transformRecord', () => {
       newLangItemCollectionItemSwe,
       someNewMetadataGroupRepeatingNamePartGroup,
       someNamePartTextVariable,
-      someOtherNamePartTextVariable
+      someOtherNamePartTextVariable,
+      someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
+      someNamePartWithAttributesTextVariable,
+      someOtherNamePartWithAttributesTextVariable
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -303,6 +312,49 @@ describe('transformRecord', () => {
               value: 'value2',
               _language: 'eng'
             }
+          }
+        }
+      };
+      expect(transformData).toStrictEqual(expected);
+    });
+
+    it('should return a record with repeating nameInDatas for textVar having one with attributes without all vars', () => {
+      const transformData = transformRecord(
+        dependencies,
+        recordManuscriptWithSameNameInDataVarWithoutAllVars as RecordWrapper
+      );
+      const expected = {
+        id: 'divaOutputSwepub:2087392797647370',
+        recordType: 'namePartValidationTypeId',
+        validationType: 'namePartValidationTypeId',
+        createdAt: '2024-09-13T11:49:37.288927Z',
+        createdBy: '161616',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [
+          {
+            updateAt: '2024-09-13T11:49:37.288927Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-13T11:49:54.085586Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-16T08:00:42.892622Z',
+            updatedBy: '161616'
+          }
+        ],
+        data: {
+          name: {
+            // namePart: {
+            //   value: 'value1'
+            // },
+            namePart_language_eng: [
+              {
+                value: 'value2',
+                _language: 'eng'
+              }
+            ]
           }
         }
       };
@@ -1758,14 +1810,6 @@ describe('transformRecord', () => {
         );
         expect(actual).toBe('output.titleInfo_type_alternative');
       });
-      // it('finds part in path from array4', () => {
-      //   const actual = findSearchPart(
-      //     ['namePart', 'namePart_lang_eng'],
-      //     'name.namePart',
-      //     'namePart_lang_eng'
-      //   );
-      //   expect(actual).toBe('name.namePart_lang_eng');
-      // });
     });
   });
 });
