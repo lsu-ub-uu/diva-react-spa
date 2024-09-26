@@ -18,8 +18,6 @@
  */
 
 import _ from 'lodash';
-
-import * as console from 'console';
 import {
   Attributes,
   DataAtomic,
@@ -43,8 +41,6 @@ import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../formDefinition/formMetadata';
-
-const { inspect } = require('node:util');
 
 /**
  * Transforms records
@@ -163,8 +159,6 @@ export const traverseDataGroup = (
     let repeating = false;
     let isGroup = false;
 
-    // console.log('currentPath', currentPath);
-
     const thisLevelChildren = groupedChildren.map((child) => {
       const possibleAttributes = addAttributesToArray(child);
       const correctChild = hasCoraAttributes(
@@ -177,8 +171,6 @@ export const traverseDataGroup = (
         groupedChildren,
         addAttributesToNameForRecords(child, correctChild)
       );
-      // console.log('UTILS', inspect(path));
-      // console.log('fp', child.name, hasSameNameInDatas(groupedChildren, child.name));
       const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
         ? addAttributesToNameForRecords(
             child,
@@ -188,8 +180,6 @@ export const traverseDataGroup = (
             currentPath
           )
         : name;
-      // console.log('1', child, correctChild, nameInDataArray, formPathLookup, currentPath);
-      // console.log('1.2', nameInDataArray);
 
       if (isRecordLink(child) && !isRepeating(child, currentPath, formPathLookup)) {
         const childGroup = child as DataGroup;
@@ -268,14 +258,7 @@ export const traverseDataGroup = (
     } else if (repeating && !isGroup) {
       object.push({ [name]: thisLevelChildren });
     } else {
-      // childrenNames.forEach((child) => {
-      //   isChildSingular = getChildSingular(path, child, formPathLookup);
-      //   if (isChildSingular || !repeating) {
-      //     // console.log('aaaaaaa', isChildSingular, thisLevelChildren);
-      //   }
-      // });
       object.push(Object.assign({}, ...thisLevelChildren));
-      // object.push({ thisLevelChildren });
     }
   });
   return removeEmpty({ [dataGroup.name]: Object.assign({}, ...[...object, ...groupAttributes]) });
@@ -326,7 +309,6 @@ export const hasCoraAttributes = (
   formPathLookup: Record<string, FormMetaData>
 ) => {
   const lookup = formPathLookup ?? {};
-
   if (possibleAttributes?.length === 0) {
     return lookup[currentPath];
   }
@@ -375,18 +357,11 @@ export const addAttributesToNameForRecords = (
   currentPath?: string
 ) => {
   let formComponent;
-  // console.log('2', metaDataGroup.name, formPathLookup);
   const correctArray: any[] = [];
-
-  const tempAttributes = tempFunc(metaDataGroup);
-  // console.log('temp', tempAttributes);
-
   if (nameInDataArray !== undefined && formPathLookup !== undefined && currentPath !== undefined) {
-    // console.log('if', nameInDataArray, formPathLookup, currentPath);
     const searchPart = findSearchPart(nameInDataArray, currentPath);
     const lookup = formPathLookup ?? {};
     formComponent = lookup[searchPart];
-    // console.log('3', formComponent);
   }
 
   if (correctChild !== undefined) {
@@ -420,25 +395,11 @@ export const addAttributesToNameForRecords = (
   }
 
   Object.entries(metaDataGroup.attributes).forEach(([key, value]) => {
-    // console.log('4', metaDataGroup.attributes);
     correctArray.push(`${key}_${value}`);
   });
-  // console.log('5', correctArray);
-  // console.log(
-  //   'ret',
-  //   correctArray.length > 0 ? `${metaDataGroup.name}_${correctArray.join('_')}` : metaDataGroup.name
-  // );
   return correctArray.length > 0
     ? `${metaDataGroup.name}_${correctArray.join('_')}`
     : metaDataGroup.name;
-};
-
-const tempFunc = (metaDataGroup: any) => {
-  const tempArray: any[] = [];
-  Object.entries(metaDataGroup.attributes).forEach(([key, value]) => {
-    tempArray.push(`${key}_${value}`);
-  });
-  return tempArray.length > 0 ? `${metaDataGroup.name}_${tempArray.join('_')}` : metaDataGroup.name;
 };
 
 export const findSearchPart = (
@@ -446,17 +407,13 @@ export const findSearchPart = (
   currentPath?: string,
   nameWithAttribute?: string
 ) => {
-  console.log('findSearchPart', nameInDataArray, nameWithAttribute);
-  console.log('cPath', currentPath);
   const path = (currentPath as string).split('.');
-  console.log('path', path);
+
   const searchPart = nameWithAttribute !== undefined ? nameWithAttribute : path[path.length - 1];
-  console.log('sp', searchPart);
   const findWithSearchPart = (nameInDataArray as string[]).find(
     (element) => element === searchPart
   );
-  console.log('find', findWithSearchPart);
-  // path, byt ut sista biten till findWithSearchPart
+
   return findWithSearchPart ? (currentPath as string) : '';
 };
 
@@ -514,11 +471,11 @@ export const updateGroupWithPossibleNewNameWithAttribute = (
 };
 
 export const getNamesFromChildren = (children: any[]) => {
-  const temp: string[] = [];
+  const nameArray: string[] = [];
   children.forEach((child) => {
     Object.keys(child).forEach((obj) => {
-      temp.push(obj);
+      nameArray.push(obj);
     });
   });
-  return temp;
+  return nameArray;
 };

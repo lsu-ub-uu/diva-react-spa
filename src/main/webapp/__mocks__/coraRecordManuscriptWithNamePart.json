@@ -200,7 +200,7 @@
           "name": "namePart",
           "value": "value2",
           "attributes": {
-            "lang": "eng"
+            "language": "eng"
           }
         }
       ],
