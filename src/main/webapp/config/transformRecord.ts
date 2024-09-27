@@ -17,7 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import _ from 'lodash';
+import _, { compact } from 'lodash';
+import * as console from 'console';
 import {
   Attributes,
   DataAtomic,
@@ -147,7 +148,6 @@ export const traverseDataGroup = (
   formPathLookup?: Record<string, FormMetaData>,
   path?: string
 ) => {
-  console.log('1', formPathLookup);
   const validChildren = dataGroup.children.filter((group) => group.name !== 'recordInfo');
   const groupedByName = _.groupBy(validChildren, 'name');
   const groupedEntries = Object.entries(groupedByName);
@@ -162,24 +162,27 @@ export const traverseDataGroup = (
 
     const thisLevelChildren = groupedChildren.map((child) => {
       const possibleAttributes = addAttributesToArray(child);
-      console.log('2', possibleAttributes);
+
       const correctChild = hasCoraAttributes(
         currentPath,
         possibleAttributes,
         formPathLookup as Record<string, FormMetaData>
       );
-      console.log('3', correctChild);
+      console.log('cc', correctChild);
 
+      const metaDataChildren = getMetadataChildrenWithSiblings(formPathLookup);
       const nameInDataArray = getSameNameInDatas(
         groupedChildren,
         addAttributesToNameForRecords(child, correctChild)
       );
 
-      // Få ut alla barn på nivån, kolla om
-      // console.log('gc', formPathLookup);
+      console.log('3', JSON.stringify(formPathLookup, null, 2));
 
-      console.log('4', nameInDataArray);
-      const possiblyNameWithAttribute = hasSameNameInDatas(groupedChildren, child.name)
+      const possiblyNameWithAttribute = hasSameNameInDatas(
+        groupedChildren,
+        child.name,
+        metaDataChildren
+      )
         ? addAttributesToNameForRecords(
             child,
             correctChild,
@@ -189,19 +192,11 @@ export const traverseDataGroup = (
           )
         : name;
 
-      console.log('4.1', hasSameNameInDatas(groupedChildren, child.name), groupedChildren);
-      console.log('5', possiblyNameWithAttribute);
       console.log(
-        '5.1',
-        addAttributesToNameForRecords(
-          child,
-          correctChild,
-          nameInDataArray,
-          formPathLookup,
-          currentPath
-        )
+        'pos',
+        child.name,
+        hasSameNameInDatas(groupedChildren, child.name, metaDataChildren)
       );
-      console.log('5.2', name);
 
       if (isRecordLink(child) && !isRepeating(child, currentPath, formPathLookup)) {
         const childGroup = child as DataGroup;
@@ -256,6 +251,9 @@ export const traverseDataGroup = (
         const dataAtomic = child as DataAtomic;
         const atomicAttributes = transformObjectAttributes(dataAtomic.attributes);
         const { value } = child as DataAtomic;
+        if (formPathLookup) {
+          name = possiblyNameWithAttribute;
+        }
         return Object.assign({ value }, ...atomicAttributes);
       }
     });
@@ -319,13 +317,14 @@ export const getSameNameInDatas = (
   children.forEach((child) => {
     nameArray.push(child.name);
   });
-  const newArray = nameArray.filter((item, index) => nameArray.indexOf(item) !== index);
-  newArray.push(newNameInData);
-  return newArray;
+  const arrayWithoutDuplicates = nameArray.filter(
+    (item, index) => nameArray.indexOf(item) !== index
+  );
+  arrayWithoutDuplicates.push(newNameInData);
+  return arrayWithoutDuplicates;
 };
 
 export const hasCoraAttributes = (
-  // item: DataGroup | DataAtomic | RecordLink,
   currentPath: string,
   possibleAttributes: string[],
   formPathLookup: Record<string, FormMetaData>
@@ -359,13 +358,17 @@ export const addAttributesToArray = (
 
 export const hasSameNameInDatas = (
   children: (DataGroup | DataAtomic | RecordLink)[],
-  currentName: string
+  currentName: string,
+  metadataChildren?: any[]
 ) => {
   const nameInDatas: string[] = [];
 
   children.forEach((child) => {
     nameInDatas.push(child.name);
   });
+  if (metadataChildren) {
+    nameInDatas.push(...(metadataChildren as string[]));
+  }
 
   const numberOfOccurrences = nameInDatas.reduce((a, v) => (v === currentName ? a + 1 : a), 0);
   return numberOfOccurrences > 1;
@@ -383,7 +386,8 @@ export const addAttributesToNameForRecords = (
   if (nameInDataArray !== undefined && formPathLookup !== undefined && currentPath !== undefined) {
     const searchPart = findSearchPart(nameInDataArray, currentPath);
     const lookup = formPathLookup ?? {};
-    formComponent = lookup[searchPart];
+    formComponent = lookup[searchPart === '' ? currentPath : searchPart];
+    console.log('f', formComponent);
   }
 
   if (correctChild !== undefined) {
@@ -398,7 +402,7 @@ export const addAttributesToNameForRecords = (
       ? `${metaDataGroup.name}_${correctArray.join('_')}`
       : metaDataGroup.name;
   }
-
+  console.log('fc', formComponent, correctArray, correctChild);
   if (formComponent !== undefined) {
     if (formComponent.attributes === undefined) {
       return metaDataGroup.name;
@@ -424,18 +428,15 @@ export const addAttributesToNameForRecords = (
     : metaDataGroup.name;
 };
 
-export const findSearchPart = (
-  nameInDataArray?: string[],
-  currentPath?: string,
-  nameWithAttribute?: string
-) => {
+export const findSearchPart = (nameInDataArray?: string[], currentPath?: string) => {
+  console.log('fsp', nameInDataArray, currentPath);
   const path = (currentPath as string).split('.');
 
-  const searchPart = nameWithAttribute !== undefined ? nameWithAttribute : path[path.length - 1];
+  const searchPart = path[path.length - 1];
   const findWithSearchPart = (nameInDataArray as string[]).find(
     (element) => element === searchPart
   );
-
+  console.log('findWithSearchPart', findWithSearchPart);
   return findWithSearchPart ? (currentPath as string) : '';
 };
 
@@ -500,4 +501,18 @@ export const getNamesFromChildren = (children: any[]) => {
     });
   });
   return nameArray;
+};
+
+export const getMetadataChildrenWithSiblings = (
+  formPathLookup?: Record<string, FormMetaData>
+): any[] => {
+  const nameArray: string[] = [];
+  const lookup = formPathLookup ?? {};
+  let arrayWithoutDuplicates;
+  Object.keys(lookup).forEach((obj) => {
+    const newName = obj.split('.')[obj.split('.').length - 1].split('_')[0];
+    nameArray.push(newName);
+    arrayWithoutDuplicates = nameArray.filter((item, index) => nameArray.indexOf(item) !== index);
+  });
+  return arrayWithoutDuplicates ?? [];
 };

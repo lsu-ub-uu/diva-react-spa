@@ -1859,7 +1859,6 @@ export const someOtherNewRecordLinkId: BFFMetadataRecordLink = {
   ]
 };
 
-///
 export const someValidationTypeForRepeatingTitleInfoId: BFFValidationType = {
   id: 'divaOutputSwepub',
   validatesRecordTypeId: 'divaOutputSwepub',

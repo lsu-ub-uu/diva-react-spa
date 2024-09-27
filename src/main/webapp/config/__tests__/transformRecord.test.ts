@@ -22,6 +22,7 @@ import recordManuscriptWithoutCreatedAndUpdates from '../../__mocks__/coraRecord
 import recordManuscriptWithSameNameInDataGroup from '../../__mocks__/coraRecordManuscriptWithSameNameInData.json';
 import recordManuscriptWithSameNameInDataVar from '../../__mocks__/coraRecordManuscriptWithNamePart.json';
 import recordManuscriptWithSameNameInDataVarWithoutAllVars from '../../__mocks__/coraRecordManuscriptWithNamePartWithoutAllVars.json';
+import coraRecordManuscriptWithSameNameInDataWithOneGroup from '../../__mocks__/coraRecordManuscriptWithSameNameInDataWithOneGroup.json';
 
 import {
   addAttributesToArray,
@@ -38,7 +39,8 @@ import {
   addAttributesToNameForRecords,
   getNamesFromChildren,
   getSameNameInDatas,
-  findSearchPart
+  findSearchPart,
+  getMetadataChildrenWithSiblings
 } from '../transformRecord';
 import { Attributes, DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
@@ -271,6 +273,55 @@ describe('transformRecord', () => {
                 }
               }
             ]
+          }
+        }
+      };
+      expect(transformData).toStrictEqual(expected);
+    });
+
+    it('should return a record with repeating nameInDatas for groups having one with attributes and one data', () => {
+      const transformData = transformRecord(
+        dependencies,
+        coraRecordManuscriptWithSameNameInDataWithOneGroup as RecordWrapper
+      );
+      const expected = {
+        id: 'divaOutputSwepub:2087392797647370',
+        recordType: 'divaOutputSwepub',
+        validationType: 'divaOutputSwepub',
+        createdAt: '2024-09-13T11:49:37.288927Z',
+        createdBy: '161616',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [
+          {
+            updateAt: '2024-09-13T11:49:37.288927Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-13T11:49:54.085586Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-16T08:00:42.892622Z',
+            updatedBy: '161616'
+          }
+        ],
+        data: {
+          output: {
+            titleInfo: {
+              _lang: 'ady',
+              title: {
+                value: 'EN utmärkt titel'
+              }
+            }
+            // titleInfo_type_alternative: [
+            //   {
+            //     _lang: 'amh',
+            //     _type: 'alternative',
+            //     title: {
+            //       value: 'EN utmärkt alternativ titel'
+            //     }
+            //   }
+            // ]
           }
         }
       };
@@ -1326,7 +1377,8 @@ describe('transformRecord', () => {
         );
         expect(actual).toBe(false);
       });
-      it('hasSameNameInDatas returns false when single2', () => {
+
+      it('hasSameNameInDatas returns true with name nameInData with different attribute', () => {
         const actual = hasSameNameInDatas(
           [
             {
@@ -1356,6 +1408,54 @@ describe('transformRecord', () => {
           'titleInfo'
         );
         expect(actual).toBe(true);
+      });
+
+      it('hasSameNameInDatas returns true when post has single but metadata has multiple', () => {
+        const actual = hasSameNameInDatas(
+          [
+            {
+              repeatId: '7',
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt alternativ titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'amh',
+                type: 'alternative'
+              }
+            }
+          ],
+          'titleInfo',
+          ['titleInfo']
+        );
+        expect(actual).toBe(true);
+      });
+
+      it('hasSameNameInDatas returns true when post has single but metadata has multiple 2', () => {
+        const actual = hasSameNameInDatas(
+          [
+            {
+              repeatId: '7',
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt alternativ titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'amh',
+                type: 'alternative'
+              }
+            }
+          ],
+          'titleInfo',
+          []
+        );
+        expect(actual).toBe(false);
       });
     });
 
@@ -1490,6 +1590,38 @@ describe('transformRecord', () => {
           attributes: { type: 'alternative' },
           repeat: { repeatMin: 1, repeatMax: 1 }
         });
+      });
+
+      it('hasCoraAttributes returns without attribute', () => {
+        const actual = hasCoraAttributes('output.titleInfo', ['lang_ady'], {
+          'output.titleInfo.title': {
+            name: 'title',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo': {
+            name: 'titleInfo',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo_type_alternative.title': {
+            name: 'title',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo_type_alternative': {
+            name: 'titleInfo',
+            type: 'group',
+            attributes: { type: 'alternative' },
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          output: {
+            name: 'output',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+        });
+        expect(actual).toStrictEqual(undefined);
       });
     });
 
@@ -1809,6 +1941,89 @@ describe('transformRecord', () => {
           'output.titleInfo_type_alternative'
         );
         expect(actual).toBe('output.titleInfo_type_alternative');
+      });
+      it('finds part in path from array4', () => {
+        const actual = findSearchPart(['titleInfo_lang_ady'], 'output.titleInfo');
+        expect(actual).toBe('');
+      });
+    });
+    describe('getMetadataChildrenWithSiblings', () => {
+      it('1', () => {
+        const formPathLookup = {
+          'name.namePart': {
+            name: 'namePart',
+            type: 'textVariable',
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          'name.namePart_language_eng': {
+            name: 'namePart',
+            type: 'textVariable',
+            attributes: { language: 'eng' },
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          name: {
+            name: 'name',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+        };
+        const actual = getMetadataChildrenWithSiblings(
+          formPathLookup as Record<string, FormMetaData>
+        );
+        expect(actual).toEqual(['namePart']);
+      });
+
+      it('2', () => {
+        const formPathLookup = {
+          'name.namePart': {
+            name: 'namePart',
+            type: 'textVariable',
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          name: {
+            name: 'name',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+        };
+        const actual = getMetadataChildrenWithSiblings(
+          formPathLookup as Record<string, FormMetaData>
+        );
+        expect(actual).toEqual([]);
+      });
+      it('3', () => {
+        const formPathLookup = {
+          'output.titleInfo.title': {
+            name: 'title',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo': {
+            name: 'titleInfo',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo_type_alternative.title': {
+            name: 'title',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo_type_alternative': {
+            name: 'titleInfo',
+            type: 'group',
+            attributes: { type: 'alternative' },
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          output: {
+            name: 'output',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+        };
+        const actual = getMetadataChildrenWithSiblings(
+          formPathLookup as Record<string, FormMetaData>
+        );
+        expect(actual).toEqual(['title', 'titleInfo']);
       });
     });
   });
