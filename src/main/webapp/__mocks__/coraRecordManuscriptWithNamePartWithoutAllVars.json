@@ -16,7 +16,7 @@
                 },
                 {
                   "name": "linkedRecordId",
-                  "value": "namePartValidationTypeId"
+                  "value": "namePartPartWithAttributesValidationTypeId"
                 }
               ],
               "actionLinks": {
@@ -37,7 +37,7 @@
                 },
                 {
                   "name": "linkedRecordId",
-                  "value": "namePartValidationTypeId"
+                  "value": "namePartPartWithAttributesValidationTypeId"
                 }
               ],
               "actionLinks": {

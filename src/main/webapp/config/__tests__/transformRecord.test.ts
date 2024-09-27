@@ -325,8 +325,8 @@ describe('transformRecord', () => {
       );
       const expected = {
         id: 'divaOutputSwepub:2087392797647370',
-        recordType: 'namePartValidationTypeId',
-        validationType: 'namePartValidationTypeId',
+        recordType: 'namePartPartWithAttributesValidationTypeId',
+        validationType: 'namePartPartWithAttributesValidationTypeId',
         createdAt: '2024-09-13T11:49:37.288927Z',
         createdBy: '161616',
         userRights: ['read', 'update', 'index', 'delete'],

@@ -2062,10 +2062,10 @@ export const someValidationTypeNamePartId: BFFValidationType = {
   validatesRecordTypeId: 'namePartValidationTypeId',
   // New
   newMetadataGroupId: 'someNewMetadataGroupNamePartGroup',
-  newPresentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  newPresentationGroupId: 'someNewMetadataGroupNamePartPGroup',
   // Update/Edit
   metadataGroupId: 'someNewMetadataGroupNamePartGroup',
-  presentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  presentationGroupId: 'someNewMetadataGroupNamePartPGroup',
   nameTextId: 'name123',
   defTextId: 'defName456'
 };
@@ -2114,8 +2114,8 @@ export const someOtherNamePartTextVariable: BFFMetadataTextVariable = {
 };
 
 export const someValidationTypeNamePartWithAttributesId: BFFValidationType = {
-  id: 'namePartValidationTypeId',
-  validatesRecordTypeId: 'namePartValidationTypeId',
+  id: 'namePartPartWithAttributesValidationTypeId',
+  validatesRecordTypeId: 'namePartPartWithAttributesValidationTypeId',
   // New
   newMetadataGroupId: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
   newPresentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
