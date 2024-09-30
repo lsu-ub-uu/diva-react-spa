@@ -49,7 +49,6 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
 
     const payload = cleanJson(req.body);
     const { lastUpdate, created, values } = payload;
-
     const { validationTypePool } = dependencies;
     const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
@@ -61,7 +60,9 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+
     const transformData = transformToCoraData(formMetaDataPathLookup, values);
+
     const updateGroup = injectRecordInfoIntoDataGroup(
       transformData[0] as DataGroup,
       validationTypeId,

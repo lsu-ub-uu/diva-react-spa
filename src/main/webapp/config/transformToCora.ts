@@ -156,7 +156,7 @@ export const transformToCoraData = (
             result.push(
               createLeaf(
                 currentMetadataLookup,
-                fieldKey,
+                removeAttributeFromName(fieldKey, attributes),
                 atomic.value,
                 shouldDataHaveRepeatId ? index.toString() : undefined,
                 attributes
@@ -164,10 +164,11 @@ export const transformToCoraData = (
             );
           } else {
             const group = item as DataGroup;
+            const attributes = findChildrenAttributes(group);
             result.push(
               removeEmpty({
-                name: fieldKey,
-                attributes: findChildrenAttributes(group),
+                name: removeAttributeFromName(fieldKey, attributes),
+                attributes,
                 repeatId: shouldDataHaveRepeatId ? index.toString() : undefined,
                 children: transformToCoraData(lookup, group, currentPath, repeatId)
               } as DataGroup)

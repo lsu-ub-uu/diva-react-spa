@@ -2172,3 +2172,82 @@ export const someOtherNamePartWithAttributesTextVariable: BFFMetadataTextVariabl
     }
   ]
 };
+
+export const someValidationTypeForRequiredAndRepeatingId: BFFValidationType = {
+  id: 'someValidationTypeForRequiredAndRepeatingId',
+  validatesRecordTypeId: 'someValidationTypeForRequiredAndRepeatingId',
+  // New
+  newMetadataGroupId: 'someNewMetadataRequiredAndRepeatingRootGroup',
+  newPresentationGroupId: 'someNewMetadataRequiredAndRepeatingPGroup',
+  // Update/Edit
+  metadataGroupId: 'someNewMetadataRequiredAndRepeatingRootGroup',
+  presentationGroupId: 'someNewMetadataRequiredAndRepeatingPGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataRequiredAndRepeatingRootGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataRequiredAndRepeatingRootGroup',
+  nameInData: 'output',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someNewMetadataRequiredAndRepeatingGroup',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someNewMetadataRequiredAndRepeatingGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataRequiredAndRepeatingGroup',
+  nameInData: 'language',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someLanguageTerm',
+      repeatMin: '1',
+      repeatMax: 'X'
+    }
+  ]
+};
+
+export const someLanguageTerm: BFFMetadataTextVariable = {
+  id: 'someLanguageTerm',
+  nameInData: 'languageTerm',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'typeCodeCollectionVar'
+    },
+    {
+      refCollectionVarId: 'authorityLanguageTermCollectionVar'
+    }
+  ]
+};
+
+export const typeCodeCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'typeCodeCollectionVar',
+  nameInData: 'type',
+  type: 'collectionVariable',
+  textId: 'typeCollectionVarText',
+  defTextId: 'typeCollectionVarDefText',
+  refCollection: 'typeCollection',
+  finalValue: 'code'
+};
+export const authorityLanguageTermCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'authorityLanguageTermCollectionVar',
+  nameInData: 'authority',
+  type: 'collectionVariable',
+  textId: 'authorityCollectionVarText',
+  defTextId: 'authorityCollectionVarDefText',
+  refCollection: 'authorityCollection',
+  finalValue: 'iso639-2b'
+};

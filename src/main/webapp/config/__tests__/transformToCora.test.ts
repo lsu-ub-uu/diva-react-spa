@@ -94,7 +94,10 @@ import {
   someValidationTypeForRepeatingRecordLinksNameInDataId,
   someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
   someNewRecordLinkId,
-  someOtherNewRecordLinkId
+  someOtherNewRecordLinkId,
+  someValidationTypeForRequiredAndRepeatingId,
+  someNewMetadataRequiredAndRepeatingRootGroup,
+  someNewMetadataRequiredAndRepeatingGroup, someLanguageTerm, typeCodeCollectionVar, authorityLanguageTermCollectionVar,
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -115,7 +118,8 @@ describe('transformToCora', () => {
       divaOutputValidationType,
       someValidationTypeForRepeatingGroupsNameInDataId,
       someValidationTypeForRepeatingCollectionsNameInDataId,
-      someValidationTypeForRepeatingRecordLinksNameInDataId
+      someValidationTypeForRepeatingRecordLinksNameInDataId,
+      someValidationTypeForRequiredAndRepeatingId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataItemCollection>([
       someMetadataTextVariable,
@@ -153,7 +157,12 @@ describe('transformToCora', () => {
       genreOtherCollectionVar,
       someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
       someNewRecordLinkId,
-      someOtherNewRecordLinkId
+      someOtherNewRecordLinkId,
+      someNewMetadataRequiredAndRepeatingRootGroup,
+      someNewMetadataRequiredAndRepeatingGroup,
+      someLanguageTerm,
+      typeCodeCollectionVar,
+      authorityLanguageTermCollectionVar
     ]);
     presentationPool = listToPool<BFFPresentation | BFFPresentationGroup>([
       pNewNationSubjectCategoryMetadataGroup,
@@ -1470,6 +1479,45 @@ describe('transformToCora', () => {
           },
           domain: {
             value: 'hh'
+          }
+        }
+      });
+      expect(transformData[0]).toStrictEqual(expected);
+    });
+
+    it('should take a form payload with required group with required and repeating group', () => {
+      const expected: DataGroup = {
+        name: 'output',
+        children: [
+          {
+            name: 'language',
+            children: [
+              {
+                name: 'languageTerm',
+                repeatId: '0',
+                value: 'ach',
+                attributes: {
+                  type: 'code',
+                  authority: 'iso639-2b'
+                }
+              }
+            ]
+          }
+        ]
+      };
+      const validationTypeId = 'someValidationTypeForRequiredAndRepeatingId';
+      const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      const transformData = transformToCoraData(formMetaDataPathLookup, {
+        output: {
+          language: {
+            languageTerm: [
+              {
+                value: 'ach',
+                _type: 'code',
+                _authority: 'iso639-2b'
+              }
+            ]
           }
         }
       });
