@@ -40,7 +40,8 @@ import {
   getNamesFromChildren,
   getSameNameInDatas,
   findSearchPart,
-  getMetadataChildrenWithSiblings
+  getMetadataChildrenWithSiblings,
+  hasComponentAttributes
 } from '../transformRecord';
 import { Attributes, DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
@@ -1787,6 +1788,39 @@ describe('transformRecord', () => {
         );
         expect(actual).toStrictEqual('namePart_type_family');
       });
+
+      it('add attributes to name when with when not Cora attributes4', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            repeatId: '0',
+            name: 'languageTerm',
+            attributes: { authority: 'iso639-2b', type: 'code' },
+            value: 'ach'
+          },
+          undefined,
+          ['languageTerm_authority_iso639-2b_type_code'],
+          {
+            'output.language.languageTerm': {
+              name: 'languageTerm',
+              type: 'collectionVariable',
+              attributes: { authority: 'iso639-2b' },
+              repeat: { repeatMin: 1, repeatMax: 1.7976931348623157e308 }
+            },
+            'output.language': {
+              name: 'language',
+              type: 'group',
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            },
+            output: {
+              name: 'output',
+              type: 'group',
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            }
+          },
+          'output.language.languageTerm'
+        );
+        expect(actual).toStrictEqual('languageTerm');
+      });
     });
 
     describe('getNameFromChildren', () => {
@@ -2024,6 +2058,29 @@ describe('transformRecord', () => {
           formPathLookup as Record<string, FormMetaData>
         );
         expect(actual).toEqual(['title', 'titleInfo']);
+      });
+    });
+
+    describe('hasFormComponentAttributes', () => {
+      it('1', () => {
+        const acutal = hasComponentAttributes({
+          name: 'output',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          attributes: {
+            someAttribute: 'blue'
+          }
+        });
+        expect(acutal).toBe(true);
+      });
+
+      it('2', () => {
+        const acutal = hasComponentAttributes({
+          name: 'output',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        });
+        expect(acutal).toBe(false);
       });
     });
   });

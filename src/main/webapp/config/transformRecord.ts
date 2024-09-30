@@ -17,8 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import _, { compact } from 'lodash';
-import * as console from 'console';
+import _ from 'lodash';
 import {
   Attributes,
   DataAtomic,
@@ -168,16 +167,12 @@ export const traverseDataGroup = (
         possibleAttributes,
         formPathLookup as Record<string, FormMetaData>
       );
-      console.log('cc', correctChild);
 
       const metaDataChildren = getMetadataChildrenWithSiblings(formPathLookup);
       const nameInDataArray = getSameNameInDatas(
         groupedChildren,
         addAttributesToNameForRecords(child, correctChild)
       );
-
-      console.log('3', JSON.stringify(formPathLookup, null, 2));
-
       const possiblyNameWithAttribute = hasSameNameInDatas(
         groupedChildren,
         child.name,
@@ -191,12 +186,6 @@ export const traverseDataGroup = (
             currentPath
           )
         : name;
-
-      console.log(
-        'pos',
-        child.name,
-        hasSameNameInDatas(groupedChildren, child.name, metaDataChildren)
-      );
 
       if (isRecordLink(child) && !isRepeating(child, currentPath, formPathLookup)) {
         const childGroup = child as DataGroup;
@@ -257,6 +246,7 @@ export const traverseDataGroup = (
         return Object.assign({ value }, ...atomicAttributes);
       }
     });
+
     const childrenNames = getNamesFromChildren(thisLevelChildren);
     let isChildSingular;
     if (isGroup) {
@@ -362,14 +352,12 @@ export const hasSameNameInDatas = (
   metadataChildren?: any[]
 ) => {
   const nameInDatas: string[] = [];
-
   children.forEach((child) => {
     nameInDatas.push(child.name);
   });
   if (metadataChildren) {
     nameInDatas.push(...(metadataChildren as string[]));
   }
-
   const numberOfOccurrences = nameInDatas.reduce((a, v) => (v === currentName ? a + 1 : a), 0);
   return numberOfOccurrences > 1;
 };
@@ -387,7 +375,6 @@ export const addAttributesToNameForRecords = (
     const searchPart = findSearchPart(nameInDataArray, currentPath);
     const lookup = formPathLookup ?? {};
     formComponent = lookup[searchPart === '' ? currentPath : searchPart];
-    console.log('f', formComponent);
   }
 
   if (correctChild !== undefined) {
@@ -402,13 +389,15 @@ export const addAttributesToNameForRecords = (
       ? `${metaDataGroup.name}_${correctArray.join('_')}`
       : metaDataGroup.name;
   }
-  console.log('fc', formComponent, correctArray, correctChild);
   if (formComponent !== undefined) {
-    if (formComponent.attributes === undefined) {
+    if (isComponentSingle(nameInDataArray)) {
+      return metaDataGroup.name;
+    }
+    if (!hasComponentAttributes(formComponent)) {
       return metaDataGroup.name;
     }
 
-    Object.entries(formComponent.attributes).forEach(([key, value]) => {
+    Object.entries(hasComponentAttributes(formComponent)).forEach(([key, value]) => {
       correctArray.push(`${key}_${value}`);
     });
     return correctArray.length > 0
@@ -429,15 +418,21 @@ export const addAttributesToNameForRecords = (
 };
 
 export const findSearchPart = (nameInDataArray?: string[], currentPath?: string) => {
-  console.log('fsp', nameInDataArray, currentPath);
   const path = (currentPath as string).split('.');
 
   const searchPart = path[path.length - 1];
   const findWithSearchPart = (nameInDataArray as string[]).find(
     (element) => element === searchPart
   );
-  console.log('findWithSearchPart', findWithSearchPart);
   return findWithSearchPart ? (currentPath as string) : '';
+};
+
+const isComponentSingle = (nameInDataArray: string[] | undefined) => {
+  return nameInDataArray !== undefined && nameInDataArray?.length === 1;
+};
+
+export const hasComponentAttributes = (component: any) => {
+  return component.attributes !== undefined;
 };
 
 /**
