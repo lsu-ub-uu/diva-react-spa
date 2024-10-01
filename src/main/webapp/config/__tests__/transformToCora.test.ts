@@ -25,7 +25,12 @@ import {
   generateRecordInfo,
   generateRecordLink,
   injectRecordInfoIntoDataGroup,
+  isNonRepeatingVariable,
+  isNotAttribute,
+  isRepeatingVariable,
+  isVariable,
   removeAttributeFromName,
+  siblingWithSameNameInData,
   transformToCoraData
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '../../__mocks__/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
@@ -97,7 +102,10 @@ import {
   someOtherNewRecordLinkId,
   someValidationTypeForRequiredAndRepeatingId,
   someNewMetadataRequiredAndRepeatingRootGroup,
-  someNewMetadataRequiredAndRepeatingGroup, someLanguageTerm, typeCodeCollectionVar, authorityLanguageTermCollectionVar,
+  someNewMetadataRequiredAndRepeatingGroup,
+  someLanguageTerm,
+  typeCodeCollectionVar,
+  authorityLanguageTermCollectionVar
 } from '../../__mocks__/form/bffMock';
 import { createFormMetaDataPathLookup } from '../../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../../formDefinition/formMetadata';
@@ -1524,6 +1532,7 @@ describe('transformToCora', () => {
       expect(transformData[0]).toStrictEqual(expected);
     });
   });
+
   describe('removeAttributeFromName', () => {
     it('does not remove anything if no attribute', () => {
       const actual = removeAttributeFromName('subject', { language: 'eng' });
@@ -1532,6 +1541,88 @@ describe('transformToCora', () => {
     it('does remove attribute if it exist', () => {
       const actual = removeAttributeFromName('subject_language_eng', { language: 'eng' });
       expect(actual).toStrictEqual('subject');
+    });
+  });
+
+  describe('siblingWithSameNameInData', () => {
+    it('returns false with no matching siblings', () => {
+      const actual = siblingWithSameNameInData({
+        someNameInData: [{ value: 'firstValue' }]
+      });
+      expect(actual).toBe(false);
+    });
+    it('returns true with matching siblings', () => {
+      const actual = siblingWithSameNameInData({
+        someNameInData: [{ value: 'firstValue' }],
+        someNameInData_attribute_hej: [{ value: 'firstValue' }]
+      });
+      expect(actual).toBe(true);
+    });
+    it('returns false with no matching siblings', () => {
+      const actual = siblingWithSameNameInData({
+        someNameInData: [{ value: 'firstValue' }],
+        someOtherNameInData: [{ value: 'firstValue' }]
+      });
+      expect(actual).toBe(false);
+    });
+    it('returns false with no matching siblings containing attribute', () => {
+      const actual = siblingWithSameNameInData({
+        someNameInData: [{ value: 'firstValue' }],
+        someOtherNameInData_attribute_hej: [{ value: 'firstValue' }]
+      });
+      expect(actual).toBe(false);
+    });
+  });
+
+  describe('isNotAttribute', () => {
+    it('returns false with no matching siblings', () => {
+      const actual = isNotAttribute('someNameInData');
+      expect(actual).toBe(true);
+    });
+    it('returns true with matching siblings', () => {
+      const actual = isNotAttribute('_someNameInData');
+      expect(actual).toBe(false);
+    });
+  });
+
+  describe('isRepeatingVariable', () => {
+    it('returns true if repeating', () => {
+      const actual = isRepeatingVariable([{ value: 'firstValue' }]);
+      expect(actual).toBe(true);
+    });
+    it('returns false if not repeating', () => {
+      const actual = isRepeatingVariable({ value: 'firstValue' });
+      expect(actual).toBe(false);
+    });
+  });
+
+  describe('isVariable', () => {
+    it('returns true if variable', () => {
+      const actual = isVariable({ value: 'firstValue', name: 'someVariable' });
+      expect(actual).toBe(true);
+    });
+    it('returns false if group', () => {
+      const actual = isVariable({
+        name: 'someGroup',
+        children: [
+          {
+            name: 'someName',
+            value: 'firstValue'
+          }
+        ]
+      });
+      expect(actual).toBe(false);
+    });
+  });
+
+  describe('isNonRepeatingVariable', () => {
+    it('returns true if non-variable', () => {
+      const actual = isNonRepeatingVariable({ value: 'firstValue', name: 'someVariable' });
+      expect(actual).toBe(true);
+    });
+    it('returns false if repeating variable', () => {
+      const actual = isNonRepeatingVariable([{ value: 'firstValue' }]);
+      expect(actual).toBe(false);
     });
   });
 });
