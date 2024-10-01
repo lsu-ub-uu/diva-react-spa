@@ -395,3 +395,48 @@ Authtoken: 2d9a3476-e980-41f9-96ce-4a3b6af49e92
     }
   }
 }
+
+
+
+###
+POST http://localhost:8080/api/record/divaOutputSwepub/divaOutputSwepub:3631231353216065
+Content-Type: application/json
+Authtoken: 509d0d1a-0da0-4a27-9485-a86b57f39061
+
+{
+  "lastUpdate": {
+    "updateAt": "2024-10-01T08:40:15.844475Z",
+    "updatedBy": "161616"
+  },
+  "created": {
+    "createdAt": "2024-10-01T08:40:15.844475Z",
+    "createdBy": "161616"
+  },
+  "values": {
+    "output": {
+      "titleInfo": {
+        "_lang": "amh",
+        "title": {
+          "value": "dddddd"
+        }
+      },
+      "genre_type_contentType": {
+        "value": "ref",
+        "_type": "contentType"
+      },
+      "language": {
+        "languageTerm": [
+          {
+            "value": "alg",
+            "_type": "code",
+            "_authority": "iso639-2b"
+          }
+        ]
+      },
+      "genre_type_outputType": {
+        "value": "publication_report-chapter",
+        "_type": "outputType"
+      }
+    }
+  }
+}
