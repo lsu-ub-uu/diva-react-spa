@@ -18,7 +18,6 @@
  */
 
 import { Request, Response } from 'express';
-import * as console from 'console';
 import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
 import {
   deleteRecordDataById,
@@ -50,7 +49,6 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
 
     const payload = cleanJson(req.body);
     const { lastUpdate, created, values } = payload;
-    // console.log('v', JSON.stringify(values, null, 2));
     const { validationTypePool } = dependencies;
     const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
@@ -62,9 +60,7 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    // console.log('formMetaDataPathLookup', JSON.stringify(formMetaDataPathLookup, null, 2));
     const transformData = transformToCoraData(formMetaDataPathLookup, values);
-    // console.log('tD', transformData);
 
     const updateGroup = injectRecordInfoIntoDataGroup(
       transformData[0] as DataGroup,
@@ -168,9 +164,9 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
 
     const authToken = req.header('authToken') ?? '';
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
+
     const recordWrapper = response.data;
     const record = transformRecord(dependencies, recordWrapper);
-
     if (presentationRecordLinkId !== undefined) {
       const { presentationGroup, metadataGroup } = getGroupsFromPresentationLinkId(
         dependencies,
