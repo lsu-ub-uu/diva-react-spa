@@ -29,24 +29,19 @@ export const transformToCoraData = (
   hasSiblings?: boolean
 ): (DataGroup | DataAtomic | RecordLink)[] => {
   const result: (DataGroup | DataAtomic)[] = [];
-  // console.log(payload);
   Object.keys(payload).forEach((fieldKey) => {
-    // console.log('fk', fieldKey);
     const value = payload[fieldKey];
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
     const checkIfHasSiblings = siblingWithSameNameInData(value) || hasSiblings;
 
     if (isNotAttribute(fieldKey)) {
       const currentMetadataLookup = lookup[currentPath];
-      console.log(fieldKey, currentMetadataLookup);
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
       if (isRepeatingVariable(value)) {
         value.forEach((item: DataGroup | DataAtomic, index: number) => {
           if (isVariable(item)) {
-            // console.log('iV', item, currentMetadataLookup);
             const atomic = item as DataAtomic;
             const attributes = findChildrenAttributes(atomic);
-            // console.log('iV2', fieldKey, atomic.value);
             result.push(
               createLeaf(
                 currentMetadataLookup,
@@ -80,11 +75,8 @@ export const transformToCoraData = (
             attributes
           )
         );
-        // console.log('resultV', JSON.stringify(result, null, 2));
       } else {
-        // If Group
         const attributes = findChildrenAttributes(value);
-        // console.log('g', fieldKey, value);
         result.push(
           removeEmpty({
             name: removeAttributeFromName(fieldKey, attributes),
@@ -92,11 +84,9 @@ export const transformToCoraData = (
             children: transformToCoraData(lookup, value, currentPath, repeatId, checkIfHasSiblings)
           } as DataGroup)
         );
-        // console.log('resultG', JSON.stringify(result, null, 2));
       }
     }
   });
-  // console.log('r', JSON.stringify(result, null, 2));
   return result;
 };
 
@@ -150,7 +140,6 @@ export const createLeaf = (
       repeatId
     } as DataAtomic);
   }
-  console.log('hello2');
   return generateRecordLink(name, metaData.linkedRecordType ?? '', value, inAttributes, repeatId);
 };
 
