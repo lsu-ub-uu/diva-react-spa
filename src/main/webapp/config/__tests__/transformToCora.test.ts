@@ -20,6 +20,7 @@
 import {
   createLeaf,
   findChildrenAttributes,
+  doesRecordInfoExist,
   generateAtomicValue,
   generateLastUpdateInfo,
   generateRecordInfo,
@@ -358,6 +359,127 @@ describe('transformToCora', () => {
         '2024-05-08T09:40:42.769008Z',
         '171717',
         '2024-06-04T15:13:57.698204Z'
+      );
+
+      expect(updateGroup).toStrictEqual(expected);
+    });
+
+    it('fills recordInfo group with stuff to the data', () => {
+      const expected = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'recordInfo',
+            children: [
+              {
+                name: 'id',
+                value: '1234'
+              },
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'system'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaData'
+                  }
+                ],
+                name: 'dataDivider'
+              },
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'validationType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaOutput'
+                  }
+                ],
+                name: 'validationType'
+              }
+            ]
+          },
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaaaaaaa'
+              }
+            ]
+          },
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'havochvatten'
+          }
+        ]
+      };
+      const transformData = {
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'recordInfo',
+            children: [
+              {
+                name: 'id',
+                value: '1234'
+              }
+            ]
+          },
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaaaaaaa'
+              }
+            ]
+          },
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'havochvatten'
+          }
+        ]
+      };
+      const validationTypeId = 'divaOutput';
+      const dataDivider = 'divaData';
+      // const recordId = 'divaOutput:111111111111111111';
+      // const recordType = 'thesisManuscript';
+
+      const updateGroup = injectRecordInfoIntoDataGroup(
+        transformData as DataGroup,
+        validationTypeId,
+        dataDivider
       );
 
       expect(updateGroup).toStrictEqual(expected);
@@ -3749,6 +3871,86 @@ describe('transformToCora', () => {
 
     it('returns false if repeating variable', () => {
       const actual = isNonRepeatingVariable([{ value: 'firstValue', name: 'someNameInData' }]);
+      expect(actual).toBe(false);
+    });
+  });
+
+  describe('doesRecordInfoExist', () => {
+    it('finds recordInfo', () => {
+      const actual = doesRecordInfoExist({
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'recordInfo',
+            children: [
+              {
+                name: 'id',
+                value: '1234'
+              }
+            ]
+          },
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaaaaaaa'
+              }
+            ]
+          },
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'havochvatten'
+          }
+        ]
+      });
+      expect(actual).toBe(true);
+    });
+    it('does not find recordInfo', () => {
+      const actual = doesRecordInfoExist({
+        name: 'divaOutput',
+        children: [
+          {
+            name: 'title',
+            children: [
+              {
+                name: 'mainTitle',
+                value: 'aaaaaaaaa'
+              }
+            ]
+          },
+          {
+            name: 'contentType',
+            value: 'otherAcademic'
+          },
+          {
+            name: 'outputType',
+            children: [
+              {
+                name: 'outputType',
+                value: 'artisticOutput'
+              }
+            ]
+          },
+          {
+            name: 'domain',
+            value: 'havochvatten'
+          }
+        ]
+      });
       expect(actual).toBe(false);
     });
   });

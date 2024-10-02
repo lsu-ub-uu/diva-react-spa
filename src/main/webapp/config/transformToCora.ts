@@ -17,9 +17,16 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as console from 'console';
 import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-data/CoraData';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
+import { BFFMetadata, BFFMetadataChildReference } from './bffTypes';
+import {
+  containsChildWithNameInData,
+  getFirstDataGroupWithNameInData
+} from '../utils/cora-data/CoraDataUtils';
+import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
 export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
@@ -186,20 +193,40 @@ export const injectRecordInfoIntoDataGroup = (
   createdBy?: string,
   tsCreated?: string
 ): DataGroup => {
-  dataGroup.children = [
-    generateRecordInfo(
-      validationTypeId,
-      dataDivider,
+  if (!doesRecordInfoExist(dataGroup)) {
+    dataGroup.children = [
+      generateRecordInfo(
+        validationTypeId,
+        dataDivider,
+        recordId,
+        recordType,
+        userId,
+        lastUpdate,
+        createdBy,
+        tsCreated
+      ),
+      ...dataGroup.children
+    ];
+  } else {
+    const recordInfo = getFirstDataGroupWithNameInData(dataGroup, 'recordInfo');
+    const children = generateRecordInfoChildren(
       recordId,
+      dataDivider,
+      validationTypeId,
       recordType,
       userId,
       lastUpdate,
-      createdBy,
-      tsCreated
-    ),
-    ...dataGroup.children
-  ];
+      tsCreated,
+      createdBy
+    );
+
+    recordInfo.children.push(...(removeEmpty(children) as (DataGroup | DataAtomic | RecordLink)[]));
+  }
   return dataGroup;
+};
+
+export const doesRecordInfoExist = (dataGroup: DataGroup) => {
+  return containsChildWithNameInData(dataGroup, 'recordInfo');
 };
 
 export const generateRecordInfo = (
@@ -213,7 +240,30 @@ export const generateRecordInfo = (
   tsCreated?: string
 ): DataGroup => {
   const name = 'recordInfo';
-  const children = [
+  const children = generateRecordInfoChildren(
+    recordId,
+    dataDivider,
+    validationType,
+    recordType,
+    userId,
+    lastUpdate,
+    tsCreated,
+    createdBy
+  );
+  return removeEmpty({ name, children }) as DataGroup;
+};
+
+const generateRecordInfoChildren = (
+  recordId: string | undefined,
+  dataDivider: string,
+  validationType: string,
+  recordType: string | undefined,
+  userId: string | undefined,
+  lastUpdate: string | undefined,
+  tsCreated: string | undefined,
+  createdBy: string | undefined
+) => {
+  return [
     recordId ? generateAtomicValue('id', recordId) : undefined,
     generateRecordLink('dataDivider', 'system', dataDivider),
     generateRecordLink('validationType', 'validationType', validationType),
@@ -222,7 +272,6 @@ export const generateRecordInfo = (
     tsCreated ? generateAtomicValue('tsCreated', tsCreated) : undefined,
     createdBy ? generateRecordLink('createdBy', 'user', createdBy) : undefined
   ];
-  return removeEmpty({ name, children }) as DataGroup;
 };
 
 export const generateLastUpdateInfo = (userId: string, updatedAt: string) => {

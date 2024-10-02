@@ -161,7 +161,6 @@ const createFormDefinitionFromValidationTypeUsingKeys = (
 
   const metadataId = validationType[metadataKey];
   const metadataGroup = metadataPool.get(metadataId) as BFFMetadataGroup;
-
   const presentationId = validationType[presentationKey];
   const presentationGroup = presentationPool.get(presentationId) as BFFPresentationGroup;
   return createDefinitionFromMetadataGroupAndPresentationGroup(
@@ -561,6 +560,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   metadataOverrideId?: string
 ) => {
   const { metadataPool, presentationPool } = dependencies;
+
   let validation;
   let options;
   let finalValue;
@@ -581,7 +581,6 @@ const createDetailedPresentationBasedOnPresentationType = (
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
   const presentationChildId = presentationChildReference.childId;
   const presentation: BFFPresentation = presentationPool.get(presentationChildId);
-
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
     metadataId = metadataOverrideId ?? presentation.presentationOf;
@@ -675,13 +674,11 @@ const createDetailedPresentationBasedOnPresentationType = (
     presentationStyle = convertStylesToShortName(presentationGroup.presentationStyle ?? '');
     attributes = checkForAttributes(group, metadataPool, options, presentation);
 
-    if (group.nameInData !== 'recordInfo') {
-      components = createComponentsFromChildReferences(
-        dependencies,
-        group.children,
-        presentationGroup.children
-      );
-    }
+    components = createComponentsFromChildReferences(
+      dependencies,
+      group.children,
+      presentationGroup.children
+    );
   }
 
   return removeEmpty({
