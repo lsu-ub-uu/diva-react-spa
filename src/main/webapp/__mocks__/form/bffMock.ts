@@ -1859,7 +1859,6 @@ export const someOtherNewRecordLinkId: BFFMetadataRecordLink = {
   ]
 };
 
-///
 export const someValidationTypeForRepeatingTitleInfoId: BFFValidationType = {
   id: 'divaOutputSwepub',
   validatesRecordTypeId: 'divaOutputSwepub',
@@ -1887,7 +1886,7 @@ export const someNewMetadataGroupRepeatingTitleInfoNameInDataGroup: BFFMetadataG
     },
     {
       childId: 'someNewMetadataGroupTitleInfoAlternativeGroup',
-      repeatMin: '1',
+      repeatMin: '0',
       repeatMax: '1'
     }
   ]
@@ -2055,4 +2054,200 @@ export const pSomeMainTitleTitleInfoTextVariable: BFFPresentation = {
   inputType: 'input',
   type: 'pVar',
   emptyTextId: 'someEmptyTextId'
+};
+
+export const someValidationTypeNamePartId: BFFValidationType = {
+  id: 'namePartValidationTypeId',
+  validatesRecordTypeId: 'namePartValidationTypeId',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupNamePartGroup',
+  newPresentationGroupId: 'someNewMetadataGroupNamePartPGroup',
+  // Update/Edit
+  metadataGroupId: 'someNewMetadataGroupNamePartGroup',
+  presentationGroupId: 'someNewMetadataGroupNamePartPGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupRepeatingNamePartGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupNamePartGroup',
+  nameInData: 'name',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someNamePartTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someOtherNamePartTextVar',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someNamePartTextVariable: BFFMetadataTextVariable = {
+  id: 'someNamePartTextVar',
+  nameInData: 'namePart',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex'
+};
+
+export const someOtherNamePartTextVariable: BFFMetadataTextVariable = {
+  id: 'someOtherNamePartTextVar',
+  nameInData: 'namePart',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageEngCollectionVar'
+    }
+  ]
+};
+
+export const someValidationTypeNamePartWithAttributesId: BFFValidationType = {
+  id: 'namePartPartWithAttributesValidationTypeId',
+  validatesRecordTypeId: 'namePartPartWithAttributesValidationTypeId',
+  // New
+  newMetadataGroupId: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
+  newPresentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  // Update/Edit
+  metadataGroupId: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
+  presentationGroupId: 'someNewMetadataGroupRepeatingTitleInfoNameInDataPGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataGroupRepeatingNamePartWithAttributesGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataGroupRepeatingNamePartWithAttributesGroup',
+  nameInData: 'name',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someNamePartTextVar',
+      repeatMin: '0',
+      repeatMax: '1'
+    },
+    {
+      childId: 'someOtherNamePartTextVar',
+      repeatMin: '0',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someNamePartWithAttributesTextVariable: BFFMetadataTextVariable = {
+  id: 'someNamePartWithAttributesTextVariable',
+  nameInData: 'namePart',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageSweCollectionVar'
+    }
+  ]
+};
+
+export const someOtherNamePartWithAttributesTextVariable: BFFMetadataTextVariable = {
+  id: 'someOtherNamePartWithAttributesTextVariable',
+  nameInData: 'namePart',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'languageEngCollectionVar'
+    }
+  ]
+};
+
+export const someValidationTypeForRequiredAndRepeatingId: BFFValidationType = {
+  id: 'someValidationTypeForRequiredAndRepeatingId',
+  validatesRecordTypeId: 'someValidationTypeForRequiredAndRepeatingId',
+  // New
+  newMetadataGroupId: 'someNewMetadataRequiredAndRepeatingRootGroup',
+  newPresentationGroupId: 'someNewMetadataRequiredAndRepeatingPGroup',
+  // Update/Edit
+  metadataGroupId: 'someNewMetadataRequiredAndRepeatingRootGroup',
+  presentationGroupId: 'someNewMetadataRequiredAndRepeatingPGroup',
+  nameTextId: 'name123',
+  defTextId: 'defName456'
+};
+
+export const someNewMetadataRequiredAndRepeatingRootGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataRequiredAndRepeatingRootGroup',
+  nameInData: 'output',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someNewMetadataRequiredAndRepeatingGroup',
+      repeatMin: '1',
+      repeatMax: '1'
+    }
+  ]
+};
+
+export const someNewMetadataRequiredAndRepeatingGroup: BFFMetadataGroup = {
+  id: 'someNewMetadataRequiredAndRepeatingGroup',
+  nameInData: 'language',
+  type: 'group',
+  textId: '',
+  defTextId: '',
+  children: [
+    {
+      childId: 'someLanguageTerm',
+      repeatMin: '1',
+      repeatMax: 'X'
+    }
+  ]
+};
+
+export const someLanguageTerm: BFFMetadataTextVariable = {
+  id: 'someLanguageTerm',
+  nameInData: 'languageTerm',
+  type: 'textVariable',
+  textId: 'someTextId',
+  defTextId: 'someDefTextId',
+  regEx: 'someRegex',
+  attributeReferences: [
+    {
+      refCollectionVarId: 'typeCodeCollectionVar'
+    },
+    {
+      refCollectionVarId: 'authorityLanguageTermCollectionVar'
+    }
+  ]
+};
+
+export const typeCodeCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'typeCodeCollectionVar',
+  nameInData: 'type',
+  type: 'collectionVariable',
+  textId: 'typeCollectionVarText',
+  defTextId: 'typeCollectionVarDefText',
+  refCollection: 'typeCollection',
+  finalValue: 'code'
+};
+export const authorityLanguageTermCollectionVar: BFFMetadataCollectionVariable = {
+  id: 'authorityLanguageTermCollectionVar',
+  nameInData: 'authority',
+  type: 'collectionVariable',
+  textId: 'authorityCollectionVarText',
+  defTextId: 'authorityCollectionVarDefText',
+  refCollection: 'authorityCollection',
+  finalValue: 'iso639-2b'
 };

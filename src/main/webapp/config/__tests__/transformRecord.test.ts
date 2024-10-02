@@ -19,7 +19,11 @@
 
 import recordManuscript from '../../__mocks__/coraRecordManuscript.json';
 import recordManuscriptWithoutCreatedAndUpdates from '../../__mocks__/coraRecordManuscriptPublicWithoutSensitiveData.json';
-import recordManuscriptWithSameNameInData from '../../__mocks__/coraRecordManuscriptWithSameNameInData.json';
+import recordManuscriptWithSameNameInDataGroup from '../../__mocks__/coraRecordManuscriptWithSameNameInData.json';
+import recordManuscriptWithSameNameInDataVar from '../../__mocks__/coraRecordManuscriptWithNamePart.json';
+import recordManuscriptWithSameNameInDataVarWithoutAllVars from '../../__mocks__/coraRecordManuscriptWithNamePartWithoutAllVars.json';
+import coraRecordManuscriptWithSameNameInDataWithOneGroup from '../../__mocks__/coraRecordManuscriptWithSameNameInDataWithOneGroup.json';
+
 import {
   addAttributesToArray,
   hasCoraAttributes,
@@ -35,7 +39,9 @@ import {
   addAttributesToNameForRecords,
   getNamesFromChildren,
   getSameNameInDatas,
-  findSearchPart
+  findSearchPart,
+  getMetadataChildrenWithSiblings,
+  hasComponentAttributes
 } from '../transformRecord';
 import { Attributes, DataGroup, RecordWrapper } from '../../utils/cora-data/CoraData';
 import { Lookup } from '../../utils/structs/lookup';
@@ -77,7 +83,15 @@ import {
   newLangCollVariable,
   newLangItemCollection,
   newLangItemCollectionItemEng,
-  newLangItemCollectionItemSwe
+  newLangItemCollectionItemSwe,
+  someValidationTypeNamePartId,
+  someNewMetadataGroupRepeatingNamePartGroup,
+  someNamePartTextVariable,
+  someOtherNamePartTextVariable,
+  someValidationTypeNamePartWithAttributesId,
+  someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
+  someNamePartWithAttributesTextVariable,
+  someOtherNamePartWithAttributesTextVariable
 } from '../../__mocks__/form/bffMock';
 import { FormMetaData } from '../../formDefinition/formDefinition';
 
@@ -94,7 +108,9 @@ describe('transformRecord', () => {
     validationTypePool = listToPool<BFFValidationType>([
       someManuscriptValidationTypeData,
       nationSubjectCategoryValidationTypeData,
-      someValidationTypeForRepeatingTitleInfoId
+      someValidationTypeForRepeatingTitleInfoId,
+      someValidationTypeNamePartId,
+      someValidationTypeNamePartWithAttributesId
     ]);
     metadataPool = listToPool<BFFMetadata>([
       someManuscriptEditMetadataGroup,
@@ -112,7 +128,13 @@ describe('transformRecord', () => {
       newLangCollVariable,
       newLangItemCollection,
       newLangItemCollectionItemEng,
-      newLangItemCollectionItemSwe
+      newLangItemCollectionItemSwe,
+      someNewMetadataGroupRepeatingNamePartGroup,
+      someNamePartTextVariable,
+      someOtherNamePartTextVariable,
+      someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
+      someNamePartWithAttributesTextVariable,
+      someOtherNamePartWithAttributesTextVariable
     ]);
     presentationPool = listToPool<
       BFFPresentation | BFFPresentationGroup | BFFPresentationSurroundingContainer | BFFGuiElement
@@ -212,7 +234,7 @@ describe('transformRecord', () => {
     it('should return a record with repeating nameInDatas for groups having one with attributes', () => {
       const transformData = transformRecord(
         dependencies,
-        recordManuscriptWithSameNameInData as RecordWrapper
+        recordManuscriptWithSameNameInDataGroup as RecordWrapper
       );
       const expected = {
         id: 'divaOutputSwepub:2087392797647370',
@@ -237,14 +259,12 @@ describe('transformRecord', () => {
         ],
         data: {
           output: {
-            titleInfo: [
-              {
-                _lang: 'ady',
-                title: {
-                  value: 'EN utmärkt titel'
-                }
+            titleInfo: {
+              _lang: 'ady',
+              title: {
+                value: 'EN utmärkt titel'
               }
-            ],
+            },
             titleInfo_type_alternative: [
               {
                 _lang: 'amh',
@@ -260,10 +280,10 @@ describe('transformRecord', () => {
       expect(transformData).toStrictEqual(expected);
     });
 
-    /* it('should return a record with repeating nameInDatas for textVar having one with attributes', () => {
+    it('should return a record with repeating nameInDatas for groups having one with attributes and one data', () => {
       const transformData = transformRecord(
         dependencies,
-        recordManuscriptWithSameNameInData as RecordWrapper
+        coraRecordManuscriptWithSameNameInDataWithOneGroup as RecordWrapper
       );
       const expected = {
         id: 'divaOutputSwepub:2087392797647370',
@@ -288,26 +308,110 @@ describe('transformRecord', () => {
         ],
         data: {
           output: {
-            titleInfo: [
+            titleInfo: {
+              _lang: 'ady',
+              title: {
+                value: 'EN utmärkt titel'
+              }
+            }
+            // titleInfo_type_alternative: [
+            //   {
+            //     _lang: 'amh',
+            //     _type: 'alternative',
+            //     title: {
+            //       value: 'EN utmärkt alternativ titel'
+            //     }
+            //   }
+            // ]
+          }
+        }
+      };
+      expect(transformData).toStrictEqual(expected);
+    });
+
+    it('should return a record with repeating nameInDatas for textVar having one with attributes', () => {
+      const transformData = transformRecord(
+        dependencies,
+        recordManuscriptWithSameNameInDataVar as RecordWrapper
+      );
+      const expected = {
+        id: 'divaOutputSwepub:2087392797647370',
+        recordType: 'namePartValidationTypeId',
+        validationType: 'namePartValidationTypeId',
+        createdAt: '2024-09-13T11:49:37.288927Z',
+        createdBy: '161616',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [
+          {
+            updateAt: '2024-09-13T11:49:37.288927Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-13T11:49:54.085586Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-16T08:00:42.892622Z',
+            updatedBy: '161616'
+          }
+        ],
+        data: {
+          name: {
+            namePart: {
+              value: 'value1'
+            },
+            namePart_language_eng: {
+              value: 'value2',
+              _language: 'eng'
+            }
+          }
+        }
+      };
+      expect(transformData).toStrictEqual(expected);
+    });
+
+    it('should return a record with repeating nameInDatas for textVar having one with attributes without all vars', () => {
+      const transformData = transformRecord(
+        dependencies,
+        recordManuscriptWithSameNameInDataVarWithoutAllVars as RecordWrapper
+      );
+      const expected = {
+        id: 'divaOutputSwepub:2087392797647370',
+        recordType: 'namePartPartWithAttributesValidationTypeId',
+        validationType: 'namePartPartWithAttributesValidationTypeId',
+        createdAt: '2024-09-13T11:49:37.288927Z',
+        createdBy: '161616',
+        userRights: ['read', 'update', 'index', 'delete'],
+        updated: [
+          {
+            updateAt: '2024-09-13T11:49:37.288927Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-13T11:49:54.085586Z',
+            updatedBy: '161616'
+          },
+          {
+            updateAt: '2024-09-16T08:00:42.892622Z',
+            updatedBy: '161616'
+          }
+        ],
+        data: {
+          name: {
+            // namePart: {
+            //   value: 'value1'
+            // },
+            namePart_language_eng: [
               {
-                _lang: 'ady',
-                title: {
-                  value: 'someText'
-                }
-              },
-              {
-                _lang: 'amh',
-                _type: 'alternative',
-                title_type_alternative: {
-                  value: 'someOtherText'
-                }
+                value: 'value2',
+                _language: 'eng'
               }
             ]
           }
         }
       };
       expect(transformData).toStrictEqual(expected);
-    }); */
+    });
 
     it('should be able to return a record without created and updated data', () => {
       const transformData = transformRecord(
@@ -778,7 +882,8 @@ describe('transformRecord', () => {
       expect(transformData).toStrictEqual(expected);
     });
 
-    it('should return a root group with multiple variables with same nameInData and one having attributes with formPathLookup', () => {
+    it(`should return a root group with multiple variables with same 
+    nameInData and one having attributes with formPathLookup`, () => {
       const dataRecordGroup = {
         children: [
           {
@@ -790,7 +895,7 @@ describe('transformRecord', () => {
             ],
             name: 'titleInfo',
             attributes: {
-              lang: 'amh'
+              lang: 'ady'
             }
           },
           {
@@ -811,8 +916,8 @@ describe('transformRecord', () => {
         name: 'output'
       };
       const formPathLookup = {
-        'output.titleInfo.mainTitle': {
-          name: 'mainTitle',
+        'output.titleInfo.title': {
+          name: 'title',
           type: 'textVariable',
           repeat: {
             repeatMin: 1,
@@ -827,8 +932,8 @@ describe('transformRecord', () => {
             repeatMax: 1
           }
         },
-        'output.titleInfo_type_alternative.mainTitle': {
-          name: 'mainTitle',
+        'output.titleInfo_type_alternative.title': {
+          name: 'title',
           type: 'textVariable',
           repeat: {
             repeatMin: 1,
@@ -842,7 +947,7 @@ describe('transformRecord', () => {
             type: 'alternative'
           },
           repeat: {
-            repeatMin: 1,
+            repeatMin: 0,
             repeatMax: 1
           }
         },
@@ -861,14 +966,12 @@ describe('transformRecord', () => {
       );
       const expected = {
         output: {
-          titleInfo: [
-            {
-              _lang: 'amh',
-              title: {
-                value: 'EN utmärkt titel'
-              }
+          titleInfo: {
+            _lang: 'ady',
+            title: {
+              value: 'EN utmärkt titel'
             }
-          ],
+          },
           titleInfo_type_alternative: [
             {
               _lang: 'amh',
@@ -1004,7 +1107,55 @@ describe('transformRecord', () => {
           }
         ]
       };
-      const transformData = traverseDataGroup(test);
+      const formPathLookup = {
+        divaOutput: {
+          name: 'divaOutput',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        },
+        'divaOutput.author_language_eng': {
+          attributes: {
+            language: 'eng'
+          },
+          name: 'author',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        },
+        'divaOutput.author_language_eng.name': {
+          name: 'name',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'textVariable'
+        },
+        'divaOutput.author_language_swe': {
+          attributes: {
+            language: 'swe'
+          },
+          name: 'author',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        },
+        'divaOutput.author_language_swe.name': {
+          name: 'name',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'textVariable'
+        }
+      };
+      const transformData = traverseDataGroup(test, formPathLookup as Record<string, FormMetaData>);
       const expected = {
         divaOutput: {
           author_language_eng: {
@@ -1024,46 +1175,51 @@ describe('transformRecord', () => {
       expect(transformData).toStrictEqual(expected);
     });
 
-    it('should return a root group with groups with same nameInData and one having attributes', () => {
+    it('should return a root group with variables with same nameInData and one having attributes', () => {
       const test = {
-        name: 'divaOutput',
+        name: 'output',
         children: [
           {
-            name: 'author',
-            children: [
-              {
-                name: 'name',
-                value: 'value1'
-              }
-            ]
+            name: 'namePart',
+            value: 'value1'
           },
           {
-            name: 'author',
-            children: [
-              {
-                name: 'name',
-                value: 'value2'
-              }
-            ],
+            name: 'namePart',
+            value: 'value1',
             attributes: {
               language: 'swe'
             }
           }
         ]
       };
-      const transformData = traverseDataGroup(test);
+      const formPathLookup = {
+        output: {
+          name: 'output',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        },
+        'output.name_type_personal.namePart': {
+          name: 'namePart',
+          type: 'textVariable',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        },
+        'output.name_type_personal.namePart_language_swe': {
+          name: 'namePart',
+          type: 'textVariable',
+          attributes: { type: 'given' },
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        }
+      };
+
+      const transformData = traverseDataGroup(test, formPathLookup as Record<string, FormMetaData>);
       const expected = {
-        divaOutput: {
-          author: {
-            name: {
-              value: 'value1'
-            }
+        output: {
+          namePart: {
+            value: 'value1'
           },
-          author_language_swe: {
-            _language: 'swe',
-            name: {
-              value: 'value2'
-            }
+          namePart_language_swe: {
+            value: 'value1',
+            _language: 'swe'
           }
         }
       };
@@ -1222,7 +1378,8 @@ describe('transformRecord', () => {
         );
         expect(actual).toBe(false);
       });
-      it('hasSameNameInDatas returns false when single2', () => {
+
+      it('hasSameNameInDatas returns true with name nameInData with different attribute', () => {
         const actual = hasSameNameInDatas(
           [
             {
@@ -1250,14 +1407,56 @@ describe('transformRecord', () => {
             }
           ],
           'titleInfo'
-          // {
-          //   name: 'titleInfo',
-          //   type: 'group',
-          //   attributes: { type: 'alternative' },
-          //   repeat: { repeatMin: 1, repeatMax: 1 }
-          // }
         );
         expect(actual).toBe(true);
+      });
+
+      it('hasSameNameInDatas returns true when post has single but metadata has multiple', () => {
+        const actual = hasSameNameInDatas(
+          [
+            {
+              repeatId: '7',
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt alternativ titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'amh',
+                type: 'alternative'
+              }
+            }
+          ],
+          'titleInfo',
+          ['titleInfo']
+        );
+        expect(actual).toBe(true);
+      });
+
+      it('hasSameNameInDatas returns true when post has single but metadata has multiple 2', () => {
+        const actual = hasSameNameInDatas(
+          [
+            {
+              repeatId: '7',
+              children: [
+                {
+                  name: 'title',
+                  value: 'EN utmärkt alternativ titel'
+                }
+              ],
+              name: 'titleInfo',
+              attributes: {
+                lang: 'amh',
+                type: 'alternative'
+              }
+            }
+          ],
+          'titleInfo',
+          []
+        );
+        expect(actual).toBe(false);
       });
     });
 
@@ -1319,15 +1518,6 @@ describe('transformRecord', () => {
       });
       expect(actual).toStrictEqual(['language_swe', 'otherLanguage_eng']);
     });
-
-    // it('addAttributesToArray with two attributes without correctChild', () => {
-    //   const actual = addAttributesToArray({
-    //     name: 'author',
-    //     children: [{ name: 'name', value: 'value2' }],
-    //     attributes: { language: 'swe', otherLanguage: 'eng' }
-    //   }, undefined);
-    //   expect(actual).toStrictEqual(['language_swe', 'otherLanguage_eng']);
-    // });
 
     describe('hasCoraAttributes', () => {
       it('hasCoraAttributes', () => {
@@ -1401,6 +1591,38 @@ describe('transformRecord', () => {
           attributes: { type: 'alternative' },
           repeat: { repeatMin: 1, repeatMax: 1 }
         });
+      });
+
+      it('hasCoraAttributes returns without attribute', () => {
+        const actual = hasCoraAttributes('output.titleInfo', ['lang_ady'], {
+          'output.titleInfo.title': {
+            name: 'title',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo': {
+            name: 'titleInfo',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo_type_alternative.title': {
+            name: 'title',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo_type_alternative': {
+            name: 'titleInfo',
+            type: 'group',
+            attributes: { type: 'alternative' },
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          output: {
+            name: 'output',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+        });
+        expect(actual).toStrictEqual(undefined);
       });
     });
 
@@ -1531,6 +1753,73 @@ describe('transformRecord', () => {
           'output.titleInfo'
         );
         expect(actual).toStrictEqual('titleInfo');
+      });
+
+      it('add attributes to name when with when not Cora attributes3', () => {
+        const actual = addAttributesToNameForRecords(
+          { name: 'namePart', attributes: { type: 'family' }, value: 'Swenning' },
+          undefined,
+          ['namePart', 'namePart', 'namePart_type_family'],
+          {
+            'output.name_type_personal.namePart_type_family': {
+              name: 'namePart',
+              type: 'textVariable',
+              attributes: { type: 'family' },
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            },
+            'output.name_type_personal.namePart_type_given': {
+              name: 'namePart',
+              type: 'textVariable',
+              attributes: { type: 'given' },
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            },
+            'output.name_type_personal.namePart': {
+              name: 'namePart',
+              type: 'textVariable',
+              repeat: { repeatMin: 0, repeatMax: 1 }
+            },
+            output: {
+              name: 'output',
+              type: 'group',
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            }
+          },
+          'output.name.namePart'
+        );
+        expect(actual).toStrictEqual('namePart_type_family');
+      });
+
+      it('add attributes to name when with when not Cora attributes4', () => {
+        const actual = addAttributesToNameForRecords(
+          {
+            repeatId: '0',
+            name: 'languageTerm',
+            attributes: { authority: 'iso639-2b', type: 'code' },
+            value: 'ach'
+          },
+          undefined,
+          ['languageTerm_authority_iso639-2b_type_code'],
+          {
+            'output.language.languageTerm': {
+              name: 'languageTerm',
+              type: 'collectionVariable',
+              attributes: { authority: 'iso639-2b' },
+              repeat: { repeatMin: 1, repeatMax: 1.7976931348623157e308 }
+            },
+            'output.language': {
+              name: 'language',
+              type: 'group',
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            },
+            output: {
+              name: 'output',
+              type: 'group',
+              repeat: { repeatMin: 1, repeatMax: 1 }
+            }
+          },
+          'output.language.languageTerm'
+        );
+        expect(actual).toStrictEqual('languageTerm');
       });
     });
 
@@ -1686,6 +1975,112 @@ describe('transformRecord', () => {
           'output.titleInfo_type_alternative'
         );
         expect(actual).toBe('output.titleInfo_type_alternative');
+      });
+      it('finds part in path from array4', () => {
+        const actual = findSearchPart(['titleInfo_lang_ady'], 'output.titleInfo');
+        expect(actual).toBe('');
+      });
+    });
+    describe('getMetadataChildrenWithSiblings', () => {
+      it('1', () => {
+        const formPathLookup = {
+          'name.namePart': {
+            name: 'namePart',
+            type: 'textVariable',
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          'name.namePart_language_eng': {
+            name: 'namePart',
+            type: 'textVariable',
+            attributes: { language: 'eng' },
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          name: {
+            name: 'name',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+        };
+        const actual = getMetadataChildrenWithSiblings(
+          formPathLookup as Record<string, FormMetaData>
+        );
+        expect(actual).toEqual(['namePart']);
+      });
+
+      it('2', () => {
+        const formPathLookup = {
+          'name.namePart': {
+            name: 'namePart',
+            type: 'textVariable',
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          name: {
+            name: 'name',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+        };
+        const actual = getMetadataChildrenWithSiblings(
+          formPathLookup as Record<string, FormMetaData>
+        );
+        expect(actual).toEqual([]);
+      });
+      it('3', () => {
+        const formPathLookup = {
+          'output.titleInfo.title': {
+            name: 'title',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo': {
+            name: 'titleInfo',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo_type_alternative.title': {
+            name: 'title',
+            type: 'textVariable',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          },
+          'output.titleInfo_type_alternative': {
+            name: 'titleInfo',
+            type: 'group',
+            attributes: { type: 'alternative' },
+            repeat: { repeatMin: 0, repeatMax: 1 }
+          },
+          output: {
+            name: 'output',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 }
+          }
+        };
+        const actual = getMetadataChildrenWithSiblings(
+          formPathLookup as Record<string, FormMetaData>
+        );
+        expect(actual).toEqual(['title', 'titleInfo']);
+      });
+    });
+
+    describe('hasFormComponentAttributes', () => {
+      it('1', () => {
+        const acutal = hasComponentAttributes({
+          name: 'output',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 },
+          attributes: {
+            someAttribute: 'blue'
+          }
+        });
+        expect(acutal).toBe(true);
+      });
+
+      it('2', () => {
+        const acutal = hasComponentAttributes({
+          name: 'output',
+          type: 'group',
+          repeat: { repeatMin: 1, repeatMax: 1 }
+        });
+        expect(acutal).toBe(false);
       });
     });
   });

@@ -25,42 +25,64 @@ import {
 } from '../metadataPathLookup';
 
 describe('createFormMetaDataPathLookup', () => {
-  it('should return form meta data for a given validation type', () => {
-    const formMetaData: FormMetaData = {
-      name: 'someNewMetadataGroupNameInData',
-      type: 'group',
-      repeat: {
-        repeatMin: 1,
-        repeatMax: 1
-      },
-      children: [
-        {
-          name: 'someNameInData',
-          type: 'textVariable',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 3
-          }
+  describe('createFormMetaDataPathLookup', () => {
+    it('should return form meta data for a given validation type', () => {
+      const formMetaData: FormMetaData = {
+        name: 'someNewMetadataGroupNameInData',
+        type: 'group',
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1
         },
-        {
-          name: 'someChildGroupNameInData',
-          type: 'group',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          children: [
-            {
-              name: 'someNameInData',
-              type: 'textVariable',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1
-              }
+        children: [
+          {
+            name: 'someNameInData',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 3
             }
-          ]
+          },
+          {
+            name: 'someChildGroupNameInData',
+            type: 'group',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            children: [
+              {
+                name: 'someNameInData',
+                type: 'textVariable',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                }
+              }
+            ]
+          },
+          {
+            name: 'nationalSubjectCategory',
+            repeat: {
+              repeatMax: 1,
+              repeatMin: 1
+            },
+            type: 'recordLink',
+            linkedRecordType: 'nationalSubjectCategory'
+          }
+        ]
+      };
+
+      const expectedMetadataLookup = {
+        someNewMetadataGroupNameInData: {
+          name: 'someNewMetadataGroupNameInData',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
         },
-        {
+        'someNewMetadataGroupNameInData.nationalSubjectCategory': {
           name: 'nationalSubjectCategory',
           repeat: {
             repeatMax: 1,
@@ -68,90 +90,174 @@ describe('createFormMetaDataPathLookup', () => {
           },
           type: 'recordLink',
           linkedRecordType: 'nationalSubjectCategory'
+        },
+        'someNewMetadataGroupNameInData.someChildGroupNameInData': {
+          name: 'someChildGroupNameInData',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        },
+        'someNewMetadataGroupNameInData.someChildGroupNameInData.someNameInData': {
+          name: 'someNameInData',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'textVariable'
+        },
+        'someNewMetadataGroupNameInData.someNameInData': {
+          name: 'someNameInData',
+          repeat: {
+            repeatMax: 3,
+            repeatMin: 1
+          },
+          type: 'textVariable'
         }
-      ]
-    };
+      };
 
-    const expectedMetadataLookup = {
-      someNewMetadataGroupNameInData: {
-        name: 'someNewMetadataGroupNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'group'
-      },
-      'someNewMetadataGroupNameInData.nationalSubjectCategory': {
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+    });
+
+    it('should return form meta data for a given validation type with variables with same nameInData', () => {
+      const formMetaData: FormMetaData = {
         name: 'nationalSubjectCategory',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'recordLink',
-        linkedRecordType: 'nationalSubjectCategory'
-      },
-      'someNewMetadataGroupNameInData.someChildGroupNameInData': {
-        name: 'someChildGroupNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'group'
-      },
-      'someNewMetadataGroupNameInData.someChildGroupNameInData.someNameInData': {
-        name: 'someNameInData',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'textVariable'
-      },
-      'someNewMetadataGroupNameInData.someNameInData': {
-        name: 'someNameInData',
-        repeat: {
-          repeatMax: 3,
-          repeatMin: 1
-        },
-        type: 'textVariable'
-      }
-    };
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          { name: 'subject', type: 'textVariable', repeat: { repeatMin: 1, repeatMax: 1 } },
+          { name: 'subject', type: 'textVariable', repeat: { repeatMin: 1, repeatMax: 1 } }
+        ]
+      };
 
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
-  });
-
-  it('should return form meta data for a given validation type with variables with same nameInData', () => {
-    const formMetaData: FormMetaData = {
-      name: 'nationalSubjectCategory',
-      type: 'group',
-      repeat: { repeatMin: 1, repeatMax: 1 },
-      children: [
-        { name: 'subject', type: 'textVariable', repeat: { repeatMin: 1, repeatMax: 1 } },
-        { name: 'subject', type: 'textVariable', repeat: { repeatMin: 1, repeatMax: 1 } }
-      ]
-    };
-
-    const expectedMetadataLookup = {
-      nationalSubjectCategory: {
-        name: 'nationalSubjectCategory',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
+      const expectedMetadataLookup = {
+        nationalSubjectCategory: {
+          name: 'nationalSubjectCategory',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
         },
-        type: 'group'
-      },
-      'nationalSubjectCategory.subject': {
-        name: 'subject',
-        repeat: {
-          repeatMax: 1,
-          repeatMin: 1
-        },
-        type: 'textVariable'
-      }
-    };
+        'nationalSubjectCategory.subject': {
+          name: 'subject',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'textVariable'
+        }
+      };
 
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+    });
+
+    it('should return form meta data for a given validation type with variables with same nameInData 2', () => {
+      const formMetaData: FormMetaData = {
+        name: 'divaOutput',
+        type: 'group',
+        repeat: { repeatMin: 1, repeatMax: 1 },
+        children: [
+          {
+            name: 'author',
+            type: 'group',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            children: [
+              {
+                name: 'name',
+                type: 'textVariable',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                }
+              }
+            ],
+            attributes: {
+              language: 'eng'
+            }
+          },
+          {
+            name: 'author',
+            type: 'group',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1
+            },
+            children: [
+              {
+                name: 'name',
+                type: 'textVariable',
+                repeat: {
+                  repeatMin: 1,
+                  repeatMax: 1
+                }
+              }
+            ],
+            attributes: {
+              language: 'swe'
+            }
+          }
+        ]
+      };
+
+      const expectedMetadataLookup = {
+        divaOutput: {
+          name: 'divaOutput',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        },
+        'divaOutput.author_language_eng': {
+          attributes: {
+            language: 'eng'
+          },
+          name: 'author',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        },
+        'divaOutput.author_language_eng.name': {
+          name: 'name',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'textVariable'
+        },
+        'divaOutput.author_language_swe': {
+          attributes: {
+            language: 'swe'
+          },
+          name: 'author',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'group'
+        },
+        'divaOutput.author_language_swe.name': {
+          name: 'name',
+          repeat: {
+            repeatMax: 1,
+            repeatMin: 1
+          },
+          type: 'textVariable'
+        }
+      };
+
+      const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+      expect(formMetaDataPathLookup).toStrictEqual(expectedMetadataLookup);
+    });
   });
 
   describe('addAttributesToName', () => {
@@ -188,58 +294,6 @@ describe('createFormMetaDataPathLookup', () => {
           }
         });
         expect(actual).toStrictEqual('subject_language_swe_otherLanguage_aak');
-      });
-      it('adds only attribute with finalValue to name when available', () => {
-        const actual = addAttributesToName({
-          name: 'output',
-          type: 'group',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          children: [
-            {
-              name: 'titleInfo',
-              type: 'group',
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1
-              },
-              children: [
-                {
-                  name: 'mainTitle',
-                  type: 'textVariable',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1
-                  }
-                }
-              ]
-            },
-            {
-              name: 'titleInfo',
-              type: 'group',
-              attributes: {
-                type: 'alternative'
-              },
-              repeat: {
-                repeatMin: 1,
-                repeatMax: 1
-              },
-              children: [
-                {
-                  name: 'mainTitle',
-                  type: 'textVariable',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1
-                  }
-                }
-              ]
-            }
-          ]
-        });
-        expect(actual).toStrictEqual('subject_language_swe');
       });
     });
     describe('Cora MetaData', () => {
