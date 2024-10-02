@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { transformToTable } from '../actions';
+import { getCorrectTitle, transformToTable } from '../actions';
 
 describe('transformToTable', () => {
   it('transforms one divaOutput', () => {
@@ -130,6 +130,116 @@ describe('transformToTable', () => {
     ]);
   });
 
+  it('transforms one divaOutput  without title', () => {
+    const actual = transformToTable([
+      {
+        id: 'divaOutput:2079393066054157',
+        recordType: 'divaOutput',
+        validationType: 'preprint',
+        createdAt: '2024-09-13T09:36:17.557332Z',
+        createdBy: 'coraUser:490742519075086',
+        updated: [
+          {
+            updateAt: '2024-09-13T09:36:17.557332Z',
+            updatedBy: 'coraUser:490742519075086',
+          },
+        ],
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          divaOutput: {
+            title: {
+              mainTitle: {
+                otherValue: 'jdjsdhjsd',
+              },
+              _languageTerm: 'ale',
+            },
+            outputType: {
+              genre: {
+                value: 'publication_magazine-article',
+                _type: 'outputType',
+              },
+            },
+            domain: {
+              value: 'hh',
+            },
+          },
+        },
+      },
+    ]);
+    expect(actual).toStrictEqual([
+      {
+        createdAt: '2024-09-13T09:36:17.557332Z',
+        createdBy: 'coraUser:490742519075086',
+        id: 'divaOutput:2079393066054157',
+        recordType: 'divaOutput',
+        title: '',
+        userRights: ['read', 'update', 'index', 'delete'],
+        validationType: 'preprint',
+      },
+    ]);
+  });
+
+  it('transforms one divaOutputSwepub without title', () => {
+    const actual = transformToTable([
+      {
+        id: 'divaOutputSwepub:2087392797647370',
+        recordType: 'divaOutputSwepub',
+        validationType: 'divaOutputSwepub',
+        createdAt: '2024-09-13T11:49:37.288927Z',
+        createdBy: '161616',
+        updated: [
+          {
+            updateAt: '2024-09-13T11:49:37.288927Z',
+            updatedBy: '161616',
+          },
+          {
+            updateAt: '2024-09-13T11:49:54.085586Z',
+            updatedBy: '161616',
+          },
+        ],
+        userRights: ['read', 'update', 'index', 'delete'],
+        data: {
+          output: {
+            genre_type_outputType: {
+              value: 'publication_journal-article',
+              _type: 'outputType',
+            },
+            genre_type_contentType: {
+              value: 'vet',
+              _type: 'contentType',
+            },
+            language: {
+              languageTerm: [
+                {
+                  value: 'ach',
+                  _authority: 'iso639-2b',
+                  _type: 'code',
+                },
+              ],
+            },
+            titleInfo: {
+              title: {
+                otherValue: 'jdjsdhjsd',
+              },
+              _lang: 'ady',
+            },
+          },
+        },
+      },
+    ]);
+    expect(actual).toStrictEqual([
+      {
+        createdAt: '2024-09-13T11:49:37.288927Z',
+        createdBy: '161616',
+        id: 'divaOutputSwepub:2087392797647370',
+        recordType: 'divaOutputSwepub',
+        title: '',
+        userRights: ['read', 'update', 'index', 'delete'],
+        validationType: 'divaOutputSwepub',
+      },
+    ]);
+  });
+
   it('transforms both divaOutput and divaOutputSwepub', () => {
     const actual = transformToTable([
       {
@@ -231,5 +341,71 @@ describe('transformToTable', () => {
         validationType: 'divaOutputSwepub',
       },
     ]);
+  });
+
+  describe('getCorrectTitle', () => {
+    it('getCorrectTitle 1', () => {
+      const data = {
+        data: {
+          divaOutput: {
+            title: {
+              mainTitle: {
+                value: 'En titel',
+              },
+            },
+          },
+        },
+      };
+      const actual = getCorrectTitle('divaOutput', data);
+      expect(actual).toBe('En titel');
+    });
+
+    it('getCorrectTitle 2', () => {
+      const data = {
+        data: {
+          output: {
+            titleInfo: {
+              title: {
+                value: 'EN utmärkt titel',
+              },
+            },
+          },
+        },
+      };
+      const actual = getCorrectTitle('divaOutputSwepub', data);
+      expect(actual).toBe('EN utmärkt titel');
+    });
+
+    it('getCorrectTitle 3', () => {
+      const data = {
+        data: {
+          divaOutput: {
+            title: {
+              mainTitle: {
+                otherValue: 'En titel',
+              },
+            },
+          },
+        },
+      };
+      const actual = getCorrectTitle('divaOutput', data);
+      expect(actual).toBe(undefined);
+    });
+
+    it('getCorrectTitle 4', () => {
+      const data = {
+        data: {
+          output: {
+            titleInfo: {
+              title: {
+                otherValue: 'EN utmärkt titel',
+              },
+            },
+          },
+        },
+      };
+      const actual = getCorrectTitle('divaOutputSwepub', data);
+      expect(actual).toBe(undefined);
+    });
   });
 });

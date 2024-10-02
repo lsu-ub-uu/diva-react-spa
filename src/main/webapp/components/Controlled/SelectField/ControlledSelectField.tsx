@@ -53,7 +53,6 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
   const showLabelAndIsInput =
     props.showLabel === true && displayMode === 'input';
   const isAttribute = props.name.split('_')[1] !== undefined;
-
   const findOptionLabelByValue = (
     array: Option[] | undefined,
     value: string,
@@ -121,9 +120,11 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 labelId={name}
                 onBlur={onBlur}
                 size='small'
-                value={props.options?.length ? value : ''}
+                // defaultValue=''
+                value={
+                  props.options?.length || value === undefined ? value : ''
+                }
                 onChange={onChange}
-                /* ref={ref} */
                 fullWidth
                 loadingError={props.loadingError}
                 error={error !== undefined}

@@ -73,6 +73,7 @@ import {
   formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
   formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
   formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
+  formDefTitleInfoGroup,
 } from '../../../__mocks__/data/formDef';
 import {
   FormGenerator,
@@ -443,6 +444,31 @@ describe('<FormGenerator />', () => {
       await user.click(submitButton);
 
       expect(container.getElementsByClassName('Mui-error').length).toBe(2);
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('renders a form from a given definition with groups with same nameInData and does NOT validate it', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefTitleInfoGroup as FormSchema}
+        />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+      expect(submitButton).toBeInTheDocument();
+
+      const inputElement = screen.getByPlaceholderText('titleInfoVarText1');
+
+      expect(inputElement).toBeInTheDocument();
+
+      const user = userEvent.setup();
+      await user.click(submitButton);
+
+      expect(container.getElementsByClassName('Mui-error').length).toBe(6);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 

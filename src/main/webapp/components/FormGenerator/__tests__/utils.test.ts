@@ -25,6 +25,8 @@ import {
   createDefaultValuesFromComponents,
   createDefaultValuesFromFormSchema,
   generateRepeatingObject,
+  getChildArrayWithSameNameInData,
+  getChildrenWithSameNameInData,
   getMinNumberOfRepeatingToShow,
   hasCurrentComponentSameNameInData,
   mergeArrays,
@@ -48,8 +50,9 @@ import {
   formDefWithARepeatingContainer,
   formDefWithOneRepeatingTextVariable,
   formDefRealDemoWithAttributesButWithoutFinalValue,
+  formComponentTitleInfoGroup,
 } from '../../../__mocks__/data/formDef';
-import { FormSchema } from '../types';
+import { FormComponent, FormSchema } from '../types';
 import { removeEmpty } from '../../../utils/removeEmpty';
 
 describe('FormGenerator Utils', () => {
@@ -201,6 +204,31 @@ describe('FormGenerator Utils', () => {
         };
         const actualDefaultValues = createDefaultValuesFromComponent(
           formComponentGroup,
+          true,
+        );
+        expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
+      });
+
+      it('should construct a default value object for groups with same nameInData', () => {
+        const expectedDefaultValues = {
+          titleInfo: {
+            title: {
+              value: '',
+            },
+            _lang: '',
+          },
+          titleInfo_type_alternative: [
+            {
+              _lang: '',
+              _type: 'alternative',
+              title: {
+                value: '',
+              },
+            },
+          ],
+        };
+        const actualDefaultValues = createDefaultValuesFromComponent(
+          formComponentTitleInfoGroup,
           true,
         );
         expect(actualDefaultValues).toStrictEqual(expectedDefaultValues);
@@ -2377,6 +2405,449 @@ describe('FormGenerator Utils', () => {
         const actual = hasCurrentComponentSameNameInData([], 'subject');
         expect(actual).toBe(false);
       });
+    });
+  });
+  describe('getChildArrayWithSameNameInData', () => {
+    it('same get all variables with the same name', () => {
+      const component: FormComponent = {
+        name: 'secondChildGroup',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+
+      const actual = getChildArrayWithSameNameInData(component);
+      expect(actual).toEqual(['exampleNumberVar', 'exampleNumberVar']);
+    });
+
+    it('same get all groups with the same name', () => {
+      const component: FormComponent = {
+        name: 'firstChildGroup',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'exampleFirstChildGroupText',
+          body: 'exampleFirstChildGroupDefText',
+        },
+        label: 'exampleFirstChildGroupText',
+        repeat: {
+          minNumberOfRepeatingToShow: 0,
+          repeatMin: 0,
+          repeatMax: 2,
+        },
+        components: [
+          {
+            name: 'titleInfo',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'titleInfoGroupText',
+              body: 'titleInfoGroupDefText',
+            },
+            label: 'titleInfoGroupText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'lang',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+              },
+            ],
+            components: [
+              {
+                name: 'title',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'titleTextVarText',
+                  body: 'titleTextVarDefText',
+                },
+                label: 'titleTextVarText',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 0,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'titleInfo',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'titleInfoGroupText',
+              body: 'titleInfoGroupDefText',
+            },
+            label: 'titleInfoGroupText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            attributes: [
+              {
+                name: 'lang',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+              },
+              {
+                name: 'type',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'titleTypeCollectionVarText',
+                  body: 'titleTypeCollectionVarDefText',
+                },
+                label: 'titleTypeCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'alternative',
+                    label: 'alternativeTitleItemText',
+                  },
+                ],
+                finalValue: 'alternative',
+              },
+            ],
+            components: [
+              {
+                name: 'title',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'titleTextVarText',
+                  body: 'titleTextVarDefText',
+                },
+                label: 'titleTextVarText',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '.+',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+      };
+
+      const actual = getChildArrayWithSameNameInData(component);
+      expect(actual).toEqual(['titleInfo', 'titleInfo']);
+    });
+
+    it('same get all variables with the different names', () => {
+      const component: FormComponent = {
+        name: 'secondChildGroup',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'nationalSubjectCategoryRecordTypeNewGroupText',
+          body: 'nationalSubjectCategoryRecordTypeNewGroupDefText',
+        },
+        label: 'nationalSubjectCategoryRecordTypeNewGroupText',
+        showLabel: true,
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'eng',
+              },
+            ],
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          {
+            name: 'exampleNumber2Var',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            attributes: [
+              {
+                name: 'language',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'languageCollectionVarText',
+                  body: 'languageCollectionVarDefText',
+                },
+                label: 'languageCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'eng',
+                    label: 'engLangItemText',
+                  },
+                  {
+                    value: 'swe',
+                    label: 'sweLangItemText',
+                  },
+                ],
+                finalValue: 'swe',
+              },
+            ],
+            finalValue: '12',
+            showLabel: true,
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      };
+
+      const actual = getChildArrayWithSameNameInData(component);
+      expect(actual).toEqual(['exampleNumberVar', 'exampleNumber2Var']);
+    });
+  });
+  describe('getChildrenWithSameNameInData', () => {
+    it('removes duplicates', () => {
+      const actual = getChildrenWithSameNameInData([
+        'exampleNumberVar',
+        'exampleNumberVar',
+      ]);
+      expect(actual).toEqual(['exampleNumberVar']);
+    });
+    it('removes nothing if singles', () => {
+      const actual = getChildrenWithSameNameInData([
+        'exampleNumberVar',
+        'exampleNumber2Var',
+      ]);
+      expect(actual).toEqual([]);
     });
   });
 });

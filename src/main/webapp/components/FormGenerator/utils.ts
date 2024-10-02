@@ -20,7 +20,6 @@
 import { FormAttributeCollection, FormComponent, FormSchema } from './types';
 import {
   isComponentContainer,
-  isComponentGroup,
   isComponentRepeating,
   isComponentValidForDataCarrying,
   isComponentVariable,
@@ -66,6 +65,45 @@ export const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
   component.repeat?.repeatMin ??
   0;
 
+function createDefaultObjectForRepeating(
+  component: FormComponent,
+  currentComponentSameNameInData: boolean,
+  defaultValues: {
+    [p: string]: string | number | ({} | undefined)[] | unknown[] | undefined;
+  },
+  formDefaultObject:
+    | { [p: string]: string; value: string }
+    | { [p: string]: string },
+) {
+  const numberToShowFromStart = getMinNumberOfRepeatingToShow(component);
+
+  if (currentComponentSameNameInData) {
+    defaultValues[addAttributesToName(component, component.name)] =
+      generateRepeatingObject(numberToShowFromStart, formDefaultObject);
+  } else {
+    defaultValues[component.name] = generateRepeatingObject(
+      numberToShowFromStart,
+      formDefaultObject,
+    );
+  }
+}
+
+function createDefaultValueForNonRepeating(
+  currentComponentSameNameInData: boolean,
+  defaultValues: any,
+  component: FormComponent,
+  formDefaultObject:
+    | { [p: string]: string; value: string }
+    | { [p: string]: string },
+) {
+  if (currentComponentSameNameInData) {
+    defaultValues[addAttributesToName(component, component.name)] =
+      formDefaultObject;
+  } else {
+    defaultValues[component.name] = formDefaultObject;
+  }
+}
+
 export const createDefaultValuesFromComponent = (
   component: FormComponent,
   forceDefaultValuesForAppend = false,
@@ -75,62 +113,34 @@ export const createDefaultValuesFromComponent = (
     [x: string]: string | number | ({} | undefined)[] | undefined | unknown[];
   } = {};
 
-  const getChildArrayWithSameNameInData = (component: FormComponent) => {
-    if (!isComponentGroup(component)) {
-      return [];
-    }
-    const nameArray: any[] = [];
-    (component.components ?? []).forEach((childComponent, index) => {
-      nameArray.push(childComponent.name);
-    });
-    return nameArray;
-  };
-
-  const getChildrenWithSameNameInData = (childArray: string[]) => {
-    return childArray.filter(
-      (item, index) => childArray.indexOf(item) !== index,
-    );
-  };
-
   const childrenWithSameNameInData = getChildrenWithSameNameInData(
     getChildArrayWithSameNameInData(component),
   );
-
   const formDefaultObject = isComponentVariable(component)
-    ? {
-        value: createDefaultValueFromFinalValue(component),
-        ...generateComponentAttributes(component),
-      }
-    : {
-        // groups
-        ...createDefaultValuesFromComponents(
-          component.components,
-          childrenWithSameNameInData,
-        ),
-        ...generateComponentAttributes(component),
-      };
+    ? createDefaultValuesForVariable(component)
+    : createDefaultValuesForGroup(component, childrenWithSameNameInData);
 
   if (forceDefaultValuesForAppend) {
     defaultValues = formDefaultObject;
   } else {
-    // eslint-disable-next-line no-lonely-if
+    const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
+      childWithSameNameInData,
+      component.name,
+    );
     if (isComponentRepeating(component)) {
-      const numberToShowFromStart = getMinNumberOfRepeatingToShow(component);
-      defaultValues[component.name] = generateRepeatingObject(
-        numberToShowFromStart,
+      createDefaultObjectForRepeating(
+        component,
+        currentComponentSameNameInData,
+        defaultValues,
         formDefaultObject,
       );
     } else {
-      const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
-        childWithSameNameInData,
-        component.name,
+      createDefaultValueForNonRepeating(
+        currentComponentSameNameInData,
+        defaultValues,
+        component,
+        formDefaultObject,
       );
-      if (currentComponentSameNameInData) {
-        defaultValues[addAttributesToName(component, component.name)] =
-          formDefaultObject;
-      } else {
-        defaultValues[component.name] = formDefaultObject;
-      }
     }
   }
 
@@ -141,6 +151,39 @@ export const createDefaultValuesFromComponent = (
 
   return defaultValues;
 };
+
+export const getChildArrayWithSameNameInData = (component: FormComponent) => {
+  const nameArray: any[] = [];
+  (component.components ?? []).forEach((childComponent, index) => {
+    nameArray.push(childComponent.name);
+  });
+  return nameArray;
+};
+
+export const getChildrenWithSameNameInData = (childArray: string[]) => {
+  return childArray.filter((item, index) => childArray.indexOf(item) !== index);
+};
+
+function createDefaultValuesForVariable(component: FormComponent) {
+  return {
+    value: createDefaultValueFromFinalValue(component),
+    ...generateComponentAttributes(component),
+  };
+}
+
+function createDefaultValuesForGroup(
+  component: FormComponent,
+  childrenWithSameNameInData: string[],
+) {
+  return {
+    // groups
+    ...createDefaultValuesFromComponents(
+      component.components,
+      childrenWithSameNameInData,
+    ),
+    ...generateComponentAttributes(component),
+  };
+}
 
 export const createDefaultValuesFromComponents = (
   components: FormComponent[] | undefined,
@@ -163,6 +206,7 @@ export const createDefaultValuesFromFormSchema = (
   existingRecordData: RecordData | undefined = undefined,
 ) => {
   let defaultValues = createDefaultValuesFromComponent(formSchema.form);
+
   if (existingRecordData !== undefined) {
     defaultValues = mergeObjects(defaultValues, existingRecordData);
   }
@@ -180,18 +224,39 @@ export const mergeObjects = (
         overlay[key] !== null &&
         !Array.isArray(overlay[key])
       ) {
-        // Recursively merge nested objects
-        target[key] = mergeObjects(target[key] || {}, overlay[key]);
+        assignNestedObjectValues(target, key, overlay);
       } else if (Array.isArray(overlay[key])) {
-        // Handle arrays
-        target[key] = mergeArrays(target[key] || [], overlay[key]);
+        assignArrayValues(target, key, overlay);
       } else {
-        // Assign non-object values directly
-        target[key] = overlay[key];
+        assignNonObjectValues(target, key, overlay);
       }
     }
   });
   return target;
+};
+
+const assignArrayValues = (
+  target: RecordData,
+  key: string,
+  overlay: RecordData,
+) => {
+  target[key] = mergeArrays(target[key] || [], overlay[key]);
+};
+
+const assignNestedObjectValues = (
+  target: RecordData,
+  key: string,
+  overlay: RecordData,
+) => {
+  target[key] = mergeObjects(target[key] || {}, overlay[key]);
+};
+
+const assignNonObjectValues = (
+  target: RecordData,
+  key: string,
+  overlay: RecordData,
+) => {
+  target[key] = overlay[key];
 };
 
 export const mergeArrays = (target: any[], overlay: any[]): any[] => {
@@ -211,14 +276,14 @@ export const addAttributesToName = (component: FormComponent, name: string) => {
   if (component.attributes === undefined) {
     return component.name;
   }
-  (component.attributes ?? []).forEach((attribute, index) => {
+  (component.attributes ?? []).forEach((attribute) => {
     if (attribute.finalValue === undefined) {
       return component.name;
     }
     nameArray.push(`${attribute.name}_${attribute.finalValue}`);
   });
 
-  return `${name}_${nameArray.join('_')}`;
+  return nameArray.length > 0 ? `${name}_${nameArray.join('_')}` : name;
 };
 
 export const hasCurrentComponentSameNameInData = (
