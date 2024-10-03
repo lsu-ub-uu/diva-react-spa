@@ -48,7 +48,9 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
+    console.log('payload', payload.values.output.recordInfo.dataDivider.value);
     const { lastUpdate, created, values } = payload;
+
     const { validationTypePool } = dependencies;
     const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
@@ -165,6 +167,7 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
 
     const recordWrapper = response.data;
+    // console.log('re', JSON.stringify(recordWrapper, null, 2));
     const record = transformRecord(dependencies, recordWrapper);
     if (presentationRecordLinkId !== undefined) {
       const { presentationGroup, metadataGroup } = getGroupsFromPresentationLinkId(
