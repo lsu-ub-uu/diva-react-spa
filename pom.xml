@@ -44,7 +44,7 @@
 		<sonar.testExecutionReportPaths>target/generated-resources/xml/xslt/karma-junit.xml</sonar.testExecutionReportPaths>
 		<sonar.javascript.lcov.reportPaths>target/jsReportFromDocker/coverage/firefox/lcov.info,target/jsReportFromDocker/coverage/chrome/lcov.info</sonar.javascript.lcov.reportPaths>-->
 		<sonar.nodejs.executable>${project.build.directory}/nodeJs/node/node</sonar.nodejs.executable>
-		<frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
+		<frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
 
 		<jsClientContainerName>myJsClientContainer3</jsClientContainerName>
 		<basename>/</basename>
