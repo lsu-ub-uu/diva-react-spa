@@ -18,18 +18,14 @@
  */
 
 import { useEffect, useState } from 'react';
-import { FormComponent, FormSchema } from '../FormGenerator/types';
+import { FormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
-import { CoraRecord } from '../../app/hooks';
+import { CoraRecord } from '@/app/hooks';
 import {
   addAttributesToName,
   hasCurrentComponentSameNameInData,
 } from '../FormGenerator/utils';
-import {
-  getChildArrayWithSameNameInData,
-  getChildrenWithSameNameInData,
-  getChildrenWithSameNameInDataFromSchema,
-} from '../FormGenerator/FormGenerator';
+import { getChildrenWithSameNameInDataFromSchema } from '../FormGenerator/FormGenerator';
 
 export const linksFromFormSchema = (
   formSchema: FormSchema,

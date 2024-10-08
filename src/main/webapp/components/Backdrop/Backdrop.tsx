@@ -17,7 +17,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Backdrop as MuiBackdrop, Box } from '@mui/material';
+import { Backdrop as MuiBackdrop, Box, Theme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 
 interface BackdropProps {
@@ -33,7 +33,7 @@ export const Backdrop = (props: BackdropProps) => {
 
   return (
     <MuiBackdrop
-      sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{ color: '#000', zIndex: (theme: Theme) => theme.zIndex.drawer + 1 }}
       open={open}
     >
       <Box

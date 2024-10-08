@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,10 +14,19 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
+export type Environment = 'pre' | 'preview' | 'local';
+export default function getEnvironment(): Environment {
+  const { host } = window.location;
 
-import { RootState } from '@/app/store';
+  if (host.startsWith('cora.epc')) {
+    return 'preview';
+  }
 
-export const authStateSelector = (state: RootState) => {
-  return state.auth;
-};
+  if (host.startsWith('pre')) {
+    return 'pre';
+  }
+
+  return 'local';
+}

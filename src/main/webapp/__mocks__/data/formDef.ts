@@ -1,7 +1,4 @@
-import {
-  FormComponent,
-  FormSchema,
-} from '../../components/FormGenerator/types';
+import { FormComponent, FormSchema } from '@/components/FormGenerator/types';
 
 export const formComponentGroup: FormComponent = {
   name: 'firstChildGroup',

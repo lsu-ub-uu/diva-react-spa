@@ -27,7 +27,7 @@ import {
   toShortString,
   removeComponentsWithoutValuesFromSchema,
 } from '../utils';
-import { formDefWithTwoTextVariableWithModeOutput } from '../../../__mocks__/data/formDef';
+import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/formDef';
 import { FormSchema } from '../../FormGenerator/types';
 import {
   authorAndTitleSchema,

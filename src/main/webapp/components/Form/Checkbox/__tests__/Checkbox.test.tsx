@@ -18,7 +18,7 @@
 
 import { render, screen } from '@testing-library/react';
 import { FormControlLabel } from '@mui/material';
-import { Checkbox } from '../Checkbox';
+import { Checkbox } from '@/components';
 
 /**
  * @vitest-environment jsdom

@@ -20,8 +20,7 @@
 import { render, screen } from '@testing-library/react';
 import { expect } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { NavigationPanel } from '../NavigationPanel';
-import { NavigationPanelLink } from '../../index';
+import { NavigationPanel, NavigationPanelLink } from '@/components';
 
 /**
  * @vitest-environment jsdom

@@ -31,7 +31,7 @@ import {
 import { ReactNode, useState, useEffect } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Tooltip } from '../Tooltip/Tooltip';
+import { Tooltip } from '@/components';
 
 const StyledCardHeader = styled(CardHeader)((props) => ({
   borderTopLeftRadius: 8,
@@ -95,9 +95,9 @@ const InfoButton = (props: InfoButtonProps) => {
   );
 };
 
-interface ExpandMoreProps extends IconButtonProps {
+type ExpandMoreProps = IconButtonProps & {
   expand: boolean;
-}
+};
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
@@ -117,6 +117,7 @@ export const Card = (props: CardProps) => {
     setExpand(props.expanded ?? true);
   }, [props.expanded]);
 
+  // @ts-ignore
   return (
     <MuiCard
       sx={[

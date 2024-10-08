@@ -16,14 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-
 import {
   render,
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Tooltip } from '../Tooltip';
+import { Tooltip } from '@/components';
 
 /**
  * @vitest-environment jsdom

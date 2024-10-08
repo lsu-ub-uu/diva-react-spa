@@ -23,7 +23,7 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import { SelectItem } from '../../index';
+import { SelectItem } from '@/components';
 
 interface MultiAutoCompleteProps {
   loading: boolean;

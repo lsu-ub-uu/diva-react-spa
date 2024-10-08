@@ -32,11 +32,9 @@ import axios from 'axios';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Tooltip } from '../../Tooltip/Tooltip';
-import { FormGenerator } from '../../FormGenerator/FormGenerator';
+import { Tooltip, FormGenerator, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
-import { CoraRecord } from '../../../app/hooks';
-import { LinkedRecord } from '../../LinkedRecord/LinkedRecord';
+import { CoraRecord } from '@/app/hooks';
 
 interface AutoCompleteProps {
   name: string;

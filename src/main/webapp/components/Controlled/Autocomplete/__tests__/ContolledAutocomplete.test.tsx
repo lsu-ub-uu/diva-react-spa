@@ -24,8 +24,8 @@ import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'vitest';
-import { ControlledAutocomplete } from '../ControlledAutocomplete';
-import { CoraRecord } from '../../../../app/hooks';
+import { ControlledAutocomplete } from '@/components';
+import { CoraRecord } from '@/app/hooks';
 
 /**
  * @vitest-environment jsdom
