@@ -20,15 +20,18 @@
 import axios, { AxiosResponse } from 'axios';
 import { DataGroup } from '../utils/cora-data/CoraData';
 
+const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
+const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
 export async function getRecordDataListByType<T>(
   type: string,
   authToken: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}`;
   const headers = {
-    Authtoken: `${authToken}`
+    Authtoken: `${authToken}`,
+    'Content-Type': RECORD_LIST_CONTENT_TYPE,
+    Accept: RECORD_LIST_CONTENT_TYPE
   };
-
   const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
   return response;
 }
@@ -44,7 +47,8 @@ export async function getSearchResultDataListBySearchType<T>(
   const finalUrl = encodeURI(`${apiUrl}?searchData=${searchDataString}`);
 
   const headers = {
-    Authtoken: `${authToken}`
+    Authtoken: `${authToken}`,
+    Accept: RECORD_LIST_CONTENT_TYPE
   };
 
   const response: AxiosResponse<T> = await axios.get(finalUrl, { headers });
@@ -58,8 +62,8 @@ export async function getRecordDataById<T>(
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${id}`;
   const headers = {
-    Accept: 'application/vnd.uub.record+json',
-    'Content-Type': 'application/vnd.uub.record+json',
+    Accept: RECORD_CONTENT_TYPE,
+    'Content-Type': RECORD_CONTENT_TYPE,
     Authtoken: `${authToken}`
   };
   const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
@@ -73,8 +77,8 @@ export async function postRecordData<T>(
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}`;
   const headers = {
-    Accept: 'application/vnd.uub.record+json',
-    'Content-Type': 'application/vnd.uub.record+json',
+    Accept: RECORD_CONTENT_TYPE,
+    'Content-Type': RECORD_CONTENT_TYPE,
     Authtoken: `${authToken}`
   };
   const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
@@ -89,8 +93,8 @@ export async function updateRecordDataById<T>(
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${recordId}`;
   const headers = {
-    Accept: 'application/vnd.uub.record+json',
-    'Content-Type': 'application/vnd.uub.record+json',
+    Accept: RECORD_CONTENT_TYPE,
+    'Content-Type': RECORD_CONTENT_TYPE,
     Authtoken: `${authToken}`
   };
   const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
@@ -104,8 +108,8 @@ export async function deleteRecordDataById<T>(
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${recordId}`;
   const headers = {
-    Accept: 'application/vnd.uub.record+json',
-    'Content-Type': 'application/vnd.uub.record+json',
+    Accept: RECORD_CONTENT_TYPE,
+    'Content-Type': RECORD_CONTENT_TYPE,
     Authtoken: `${authToken}`
   };
 
