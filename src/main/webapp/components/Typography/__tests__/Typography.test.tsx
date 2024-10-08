@@ -19,7 +19,7 @@
 
 import { expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Typography } from '../Typography';
+import { Typography } from '@/components';
 
 /**
  * @vitest-environment jsdom

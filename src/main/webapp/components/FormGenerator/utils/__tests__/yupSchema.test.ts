@@ -36,9 +36,9 @@ import {
   formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
   formDefWithSurroundingContainerAroundTextVariable,
   formDefWithTwoRepeatingVarsAndCollectionVar,
-} from '../../../../__mocks__/data/formDef';
-import { FormComponent, FormSchema } from '../../types';
-import { removeEmpty } from '../../../../utils/removeEmpty';
+} from '@/__mocks__/data/formDef';
+import { FormComponent, FormSchema } from '@/components/FormGenerator/types';
+import { removeEmpty } from '@/utils/removeEmpty';
 
 const numberValidationTests = (
   min: number,

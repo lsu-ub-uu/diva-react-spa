@@ -23,12 +23,12 @@ import { Grid, MenuItem, SelectChangeEvent } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Card, Select } from '../../components';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { Card, Select } from '@/components';
 import {
   loadPublicationTypesAsync,
   publicationTypeSelector,
-} from '../../features/publicationTypes';
+} from '@/features/publicationTypes';
 
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();

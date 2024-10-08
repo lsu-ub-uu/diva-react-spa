@@ -21,9 +21,8 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { CreatePublicationCard } from '../CreatePublicationCard';
-import { reduxRender } from '../../../utils/testUtils';
-import { ListPublicationsCard } from '../ListPublicationsCard';
+import { CreatePublicationCard, ListPublicationsCard } from '@/partials';
+import { reduxRender } from '@/utils/testUtils';
 
 /**
  * @vitest-environment jsdom

@@ -18,7 +18,7 @@
 
 import { useEffect, useState } from 'react';
 import { render, screen } from '@testing-library/react';
-import { AsidePortal } from '../AsidePortal';
+import { AsidePortal } from '@/components';
 
 /**
  * @vitest-environment jsdom

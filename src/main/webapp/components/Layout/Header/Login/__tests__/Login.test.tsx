@@ -23,15 +23,15 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
 import { Login } from '../Login';
-import { reduxRender } from '../../../../../utils/testUtils';
-import getEnvironment from '../../../../../utils/getEnvironment';
+import { reduxRender } from '@/utils/testUtils';
+import getEnvironment from '@/utils/getEnvironment';
 
 /**
  * @vitest-environment jsdom
  */
 
 vi.spyOn(Storage.prototype, 'setItem');
-vi.mock('../../../../../utils/getEnvironment');
+vi.mock('@/utils/getEnvironment');
 
 const loginUnits = [
   {

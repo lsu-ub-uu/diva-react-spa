@@ -18,7 +18,7 @@
 
 import { render, screen } from '@testing-library/react';
 import { Step, StepLabel } from '@mui/material';
-import { HorizontalStepper, StepIcon } from '../HorizontalStepper';
+import { HorizontalStepper, StepIcon } from '@/components';
 
 /**
  * @vitest-environment jsdom

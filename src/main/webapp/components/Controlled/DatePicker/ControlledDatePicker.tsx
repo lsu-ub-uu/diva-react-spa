@@ -18,7 +18,7 @@
 
 import { FormControl, FormLabel } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
-import { DatePicker } from '../../index';
+import { DatePicker } from '@/components';
 
 interface ControlledDatePickerProps {
   name: string;

@@ -51,9 +51,9 @@ import {
   formDefWithOneRepeatingTextVariable,
   formDefRealDemoWithAttributesButWithoutFinalValue,
   formComponentTitleInfoGroup,
-} from '../../../__mocks__/data/formDef';
+} from '@/__mocks__/data/formDef';
 import { FormComponent, FormSchema } from '../types';
-import { removeEmpty } from '../../../utils/removeEmpty';
+import { removeEmpty } from '@/utils/removeEmpty';
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {

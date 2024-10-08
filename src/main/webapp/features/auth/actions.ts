@@ -18,7 +18,7 @@
 
 import axios from 'axios';
 import { FieldValues } from 'react-hook-form';
-import { AppThunk } from '../../app/store';
+import { AppThunk } from '@/app/store';
 import {
   authenticated,
   authenticating,
@@ -26,11 +26,11 @@ import {
   logout,
   UserSession,
 } from './authSlice';
-import { Account } from '../../components/Layout/Header/Login/devAccounts';
+import { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { loadPublicationTypesAsync } from '../publicationTypes';
 import { loadPublicationsAsync } from '../publications';
 import { deleteFromCora, isValidJSON } from './utils/utils';
-import { renameObjectKey } from '../../utils';
+import { renameObjectKey } from '@/utils';
 
 const { VITE_BFF_API_URL } = import.meta.env;
 const LOCAL_STORAGE_NAME = 'diva_session';

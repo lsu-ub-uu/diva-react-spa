@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { UserSession } from '../../../../../features/auth/authSlice';
+import { UserSession } from '@/features/auth/authSlice';
 
 export const messageIsFromWindowOpenedFromHere = (
   originUrl: string,
@@ -36,7 +36,6 @@ export const splitSlashFromUrl = (url: string) => {
 
 export const splitBasenameFromUrl = (url: string, basename: string) => {
   return url.split(`${basename}`)[0];
-
 };
 
 export const convertWebRedirectToUserSession = (coraUser: any): UserSession => {

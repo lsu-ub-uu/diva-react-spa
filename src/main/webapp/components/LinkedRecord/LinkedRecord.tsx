@@ -20,7 +20,7 @@
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { FormGenerator } from '../FormGenerator/FormGenerator';
+import { FormGenerator } from '@/components';
 import { FormSchema } from '../FormGenerator/types';
 
 interface LinkedRecordProps {

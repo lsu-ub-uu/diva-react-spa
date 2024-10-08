@@ -21,19 +21,16 @@ import { Button, Menu, MenuItem, Stack, Box, IconButton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { devAccounts, Account, getDevAccounts } from './devAccounts';
+import { Account, getDevAccounts } from './devAccounts';
 import {
   loginAsync,
   loginWebRedirectAsync,
   logoutAsync,
-} from '../../../../features/auth/actions';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
-import { useBackdrop } from '../../../Backdrop/BackdropContext';
-import { authStateSelector } from '../../../../features/auth/selectors';
-import {
-  loadLoginUnitsAsync,
-  loginUnitsSelector,
-} from '../../../../features/loginUnits';
+} from '@/features/auth/actions';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useBackdrop } from '@/components';
+import { authStateSelector } from '@/features/auth/selectors';
+import { loadLoginUnitsAsync, loginUnitsSelector } from '@/features/loginUnits';
 import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
@@ -41,8 +38,7 @@ import {
   splitBasenameFromUrl,
   splitSlashFromUrl,
 } from './utils/utils';
-import { hasError } from '../../../../features/auth/authSlice';
-import getEnvironment from '../../../../utils/getEnvironment';
+import { hasError } from '@/features/auth/authSlice';
 
 export const Login = (): JSX.Element => {
   const { MODE } = import.meta.env;
@@ -167,7 +163,9 @@ export const Login = (): JSX.Element => {
             {getDevAccounts().map((devAccount, index) => (
               <MenuItem
                 key={`${index}_${devAccount.id}`}
-                onClick={(event) => handleDevSelection(event, devAccount)}
+                onClick={(event: MouseEvent<HTMLButtonElement>) =>
+                  handleDevSelection(event, devAccount)
+                }
               >
                 {devAccount.lastName}
                 {devAccount.firstName}
@@ -177,7 +175,7 @@ export const Login = (): JSX.Element => {
               loginUnit.type === 'webRedirect' ? (
                 <MenuItem
                   key={`${index}_${loginUnit.loginDescription}`}
-                  onClick={(event) =>
+                  onClick={(event: MouseEvent<HTMLButtonElement>) =>
                     handleWebRedirectSelection(event, loginUnit.url)
                   }
                 >

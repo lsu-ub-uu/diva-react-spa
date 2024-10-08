@@ -23,12 +23,12 @@ import { Provider as StateProvider } from 'react-redux';
 import { configureStore, PreloadedState } from '@reduxjs/toolkit';
 import { PropsWithChildren } from 'react';
 import type { RenderOptions } from '@testing-library/react';
-import { AppStore, RootState } from '../app/store';
+import { AppStore, RootState } from '@/app/store';
 
-import publicationTypeReducer from '../features/publicationTypes/publicationTypeSlice';
-import authReducer from '../features/auth/authSlice';
-import publicationsReducer from '../features/publications/publicationsSlice';
-import loginUnitsReducer from '../features/loginUnits/loginUnitsSlice';
+import publicationTypeReducer from '@/features/publicationTypes/publicationTypeSlice';
+import authReducer from '@/features/auth/authSlice';
+import publicationsReducer from '@/features/publications/publicationsSlice';
+import loginUnitsReducer from '@/features/loginUnits/loginUnitsSlice';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;

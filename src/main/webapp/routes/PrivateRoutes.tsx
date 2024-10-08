@@ -19,8 +19,8 @@
 import React from 'react';
 import { Alert, AlertTitle, Button, Stack } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import { useAppSelector } from '../app/hooks';
-import { authStateSelector } from '../features/auth/selectors';
+import { useAppSelector } from '@/app/hooks';
+import { authStateSelector } from '@/features/auth/selectors';
 
 const PrivateRoutes = () => {
   const authState = useAppSelector(authStateSelector);

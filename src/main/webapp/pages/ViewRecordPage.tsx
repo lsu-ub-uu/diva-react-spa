@@ -25,7 +25,7 @@ import {
   CoraRecord,
   useCoraFormSchemaByValidationType,
   useCoraRecordByTypeAndId,
-} from '../app/hooks';
+} from '@/app/hooks';
 import {
   AsidePortal,
   FormGenerator,
@@ -33,8 +33,8 @@ import {
   useBackdrop,
   linksFromFormSchema,
   useSectionScroller,
-} from '../components';
-import { removeComponentsWithoutValuesFromSchema } from '../components/NavigationPanel/utils';
+} from '@/components';
+import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
 
 export const ViewRecordPage = () => {
   const { recordType, recordId } = useParams();

@@ -22,7 +22,7 @@ import axios from 'axios';
 import CachedIcon from '@mui/icons-material/Cached';
 import { Link as RouterLink } from 'react-router-dom';
 import { Login } from './Login/Login';
-import divaLogo from '../../../assets/divaLogo.svg';
+import divaLogo from '@/assets/divaLogo.svg';
 
 export const Header = () => {
   const { i18n } = useTranslation();

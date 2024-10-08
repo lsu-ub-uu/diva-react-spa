@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Option } from '../index';
+import { Option } from '@/index';
 
 export interface FormSchema {
   validationTypeId: string;

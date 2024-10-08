@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import getEnvironment from '../../../../utils/getEnvironment';
+import getEnvironment from '@/utils/getEnvironment';
 
 export interface Account {
   appToken: string;

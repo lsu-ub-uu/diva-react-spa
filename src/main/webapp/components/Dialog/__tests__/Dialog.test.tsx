@@ -17,7 +17,7 @@
  */
 
 import { render, screen } from '@testing-library/react';
-import { Dialog } from '../Dialog';
+import { Dialog } from '@/components';
 
 /**
  * @vitest-environment jsdom

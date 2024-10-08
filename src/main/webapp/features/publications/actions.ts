@@ -17,7 +17,7 @@
  */
 
 import axios from 'axios';
-import { AppThunk } from '../../app/store';
+import { AppThunk } from '@/app/store';
 import { hasError, update, updating } from './publicationsSlice';
 
 export interface DivaOutput {

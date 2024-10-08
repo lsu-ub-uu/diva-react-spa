@@ -24,7 +24,7 @@ import {
   FormLabel,
   RadioGroup,
 } from '@mui/material';
-import { Option, Radio } from '../../index';
+import { Option, Radio } from '@/components';
 
 interface ControlledRadioButtonsProps {
   name: string;

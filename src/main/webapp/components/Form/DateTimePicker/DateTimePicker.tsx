@@ -25,7 +25,7 @@ import {
 import 'dayjs/locale/sv';
 import 'dayjs/locale/en-gb';
 import { svSE } from '@mui/x-date-pickers/locales';
-import { TextField } from '@mui/material';
+import { TextField, TextFieldProps } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import React from 'react';
 import { FieldError } from 'react-hook-form';
@@ -57,7 +57,7 @@ export const DateTimePicker = React.forwardRef(
               '& .MuiPaper-root': { border: '2px solid #000000' },
             },
           }}
-          renderInput={(params) => (
+          renderInput={(params: TextFieldProps) => (
             <TextField
               size='small'
               {...params}

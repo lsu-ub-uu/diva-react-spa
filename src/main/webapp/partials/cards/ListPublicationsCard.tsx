@@ -28,13 +28,13 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Card } from '../../components';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { Card } from '@/components';
 import {
   loadPublicationsAsync,
   publicationsSelector,
-} from '../../features/publications';
-import { DivaOutput } from '../../features/publications/actions';
+} from '@/features/publications';
+import { DivaOutput } from '@/features/publications/actions';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();

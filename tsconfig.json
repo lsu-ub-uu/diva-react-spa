@@ -18,7 +18,10 @@
     "baseUrl": "./src",
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "paths": {
+      "@/*": ["main/webapp/*"]
+    }
   },
   "include": [
     "src",
