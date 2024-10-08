@@ -42,7 +42,9 @@ import {
 } from '../../config/bffTypes';
 import { createTextDefinition } from '../../textDefinition/textDefinition';
 import { extractIdFromRecordInfo } from '../../utils/cora-data/CoraDataTransforms';
-import { createFormDefinition } from '../../formDefinition/formDefinition';
+
+const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
+const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
 
 describe('record', () => {
   let mockAxios: MockAdapter;
@@ -67,8 +69,15 @@ describe('record', () => {
         status: 200
       };
       const apiUrl: string = `/record/${type}`;
-      mockAxios.onGet(apiUrl).reply(200, expectedResponse);
-      const response = await getRecordDataListByType(type, 'someValidToken');
+      const guestAuthtoken = '';
+      mockAxios
+        .onGet(apiUrl, undefined, {
+          Authtoken: guestAuthtoken,
+          'Content-Type': RECORD_LIST_CONTENT_TYPE,
+          Accept: RECORD_LIST_CONTENT_TYPE
+        })
+        .reply(200, expectedResponse);
+      const response = await getRecordDataListByType(type, guestAuthtoken);
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
     });
 
@@ -76,7 +85,7 @@ describe('record', () => {
     it('should handle an error response with status 404', async () => {
       const type = 'invalidType';
       const apiUrl: string = `/record/${type}`;
-      mockAxios.onGet(apiUrl).reply(404);
+      mockAxios.onGet(apiUrl, undefined, { Accept: RECORD_LIST_CONTENT_TYPE }).reply(404);
 
       try {
         await getRecordDataListByType(type, 'validToken');
@@ -99,7 +108,13 @@ describe('record', () => {
         status: 200
       };
       const apiUrl: string = `/record/${type}/${id}`;
-      mockAxios.onGet(apiUrl).reply(200, expectedResponse);
+      mockAxios
+        .onGet(apiUrl, undefined, {
+          Accept: RECORD_CONTENT_TYPE,
+          'Content-Type': RECORD_CONTENT_TYPE,
+          Authtoken: `${authToken}`
+        })
+        .reply(200, expectedResponse);
       const response = await getRecordDataById(type, id, authToken);
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
     });
@@ -175,7 +190,13 @@ describe('record', () => {
         status: 200
       };
       const apiUrl: string = `/record/${type}`;
-      mockAxios.onPost(apiUrl).reply(200, expectedResponse);
+      mockAxios
+        .onPost(apiUrl, actual, {
+          Accept: RECORD_CONTENT_TYPE,
+          'Content-Type': RECORD_CONTENT_TYPE,
+          Authtoken: `${authToken}`
+        })
+        .reply(200, expectedResponse);
       const response = await postRecordData(actual, type, authToken);
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
     });
@@ -248,7 +269,13 @@ describe('record', () => {
         status: 400
       };
       const apiUrl: string = `/record/${type}`;
-      mockAxios.onPost(apiUrl).reply(400, expectedResponse);
+      mockAxios
+        .onPost(apiUrl, actual, {
+          Accept: RECORD_CONTENT_TYPE,
+          'Content-Type': RECORD_CONTENT_TYPE,
+          Authtoken: `${authToken}`
+        })
+        .reply(400, expectedResponse);
 
       try {
         await postRecordData(actual, type, authToken);
@@ -333,7 +360,13 @@ describe('record', () => {
         status: 200
       };
       const apiUrl: string = `/record/${type}/${recordId}`;
-      mockAxios.onPost(apiUrl).reply(200, expectedResponse);
+      mockAxios
+        .onPost(apiUrl, actual, {
+          Accept: RECORD_CONTENT_TYPE,
+          'Content-Type': RECORD_CONTENT_TYPE,
+          Authtoken: `${authToken}`
+        })
+        .reply(200, expectedResponse);
       const response = await updateRecordDataById(recordId, actual, type, authToken);
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
     });
@@ -348,7 +381,13 @@ describe('record', () => {
         status: 200
       };
       const apiUrl: string = `/record/${type}/${recordId}`;
-      mockAxios.onDelete(apiUrl).reply(200, expectedResponse);
+      mockAxios
+        .onDelete(apiUrl, undefined, {
+          Accept: RECORD_CONTENT_TYPE,
+          'Content-Type': RECORD_CONTENT_TYPE,
+          Authtoken: `${authToken}`
+        })
+        .reply(200, expectedResponse);
       const response = await deleteRecordDataById(recordId, type, authToken);
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
     });
