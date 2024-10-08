@@ -163,9 +163,7 @@ export const Login = (): JSX.Element => {
             {getDevAccounts().map((devAccount, index) => (
               <MenuItem
                 key={`${index}_${devAccount.id}`}
-                onClick={(event: MouseEvent<HTMLButtonElement>) =>
-                  handleDevSelection(event, devAccount)
-                }
+                onClick={(event: any) => handleDevSelection(event, devAccount)}
               >
                 {devAccount.lastName}
                 {devAccount.firstName}
@@ -175,7 +173,7 @@ export const Login = (): JSX.Element => {
               loginUnit.type === 'webRedirect' ? (
                 <MenuItem
                   key={`${index}_${loginUnit.loginDescription}`}
-                  onClick={(event: MouseEvent<HTMLButtonElement>) =>
+                  onClick={(event: any) =>
                     handleWebRedirectSelection(event, loginUnit.url)
                   }
                 >
