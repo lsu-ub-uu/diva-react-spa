@@ -634,16 +634,16 @@ describe('generate yupSchema', () => {
               fields: {
                 _gradeAttribute: {
                   ...validationTestsExtras(
-                    false,
+                    true,
                     'string',
                     [
                       {
-                        name: 'required',
+                        name: 'checkIfStringVariableHasSiblingsWithValues',
                         params: undefined,
                       },
                     ],
                     undefined,
-                    false,
+                    true,
                   ),
                 },
                 value: {

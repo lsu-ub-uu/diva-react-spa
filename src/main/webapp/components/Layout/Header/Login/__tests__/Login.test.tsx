@@ -24,12 +24,14 @@ import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
 import { Login } from '../Login';
 import { reduxRender } from '../../../../../utils/testUtils';
+import getEnvironment from '../../../../../utils/getEnvironment';
 
 /**
  * @vitest-environment jsdom
  */
 
 vi.spyOn(Storage.prototype, 'setItem');
+vi.mock('../../../../../utils/getEnvironment');
 
 const loginUnits = [
   {
@@ -90,13 +92,52 @@ describe('<Login/>', () => {
       await waitFor(() => {
         const userNameList = screen.queryAllByRole('menuitem');
         const listItems = userNameList.map((item) => item.textContent);
-        expect(listItems).toHaveLength(8);
         expect(listItems).toEqual([
           'DiVAUser',
           'DiVAEverything',
           'AdminSystem',
           'UUdomainAdmin',
           'KTHdomainAdmin',
+          'rkhTestDiVALoginUnitText',
+          'skhTestDiVALoginUnitText',
+          'ltuDiVALoginUnitText',
+        ]);
+      });
+    });
+
+    it('returns only DiVAUser when environment is pre', async () => {
+      vi.mocked(getEnvironment).mockReturnValue('pre');
+
+      const unitUrl: string = `/auth/loginUnits`;
+      mockAxios.onGet(unitUrl).reply(200, loginUnits);
+      const user = userEvent.setup();
+
+      reduxRender(
+        <MemoryRouter initialEntries={['/']}>
+          <Login />
+        </MemoryRouter>,
+        {
+          preloadedState: {
+            loginUnits: {
+              loginUnits,
+              isLoading: false,
+              isError: false,
+              message: '',
+            },
+          },
+        },
+      );
+
+      const loginButton = screen.getByRole('button', {
+        name: 'divaClient_LoginText',
+      });
+      await user.click(loginButton);
+
+      await waitFor(() => {
+        const userNameList = screen.queryAllByRole('menuitem');
+        const listItems = userNameList.map((item) => item.textContent);
+        expect(listItems).toEqual([
+          'DiVAUser',
           'rkhTestDiVALoginUnitText',
           'skhTestDiVALoginUnitText',
           'ltuDiVALoginUnitText',

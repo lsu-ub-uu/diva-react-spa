@@ -21,7 +21,7 @@ import { Button, Menu, MenuItem, Stack, Box, IconButton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { devAccounts, Account } from './devAccounts';
+import { devAccounts, Account, getDevAccounts } from './devAccounts';
 import {
   loginAsync,
   loginWebRedirectAsync,
@@ -42,6 +42,7 @@ import {
   splitSlashFromUrl,
 } from './utils/utils';
 import { hasError } from '../../../../features/auth/authSlice';
+import getEnvironment from '../../../../utils/getEnvironment';
 
 export const Login = (): JSX.Element => {
   const { MODE } = import.meta.env;
@@ -163,7 +164,7 @@ export const Login = (): JSX.Element => {
               'aria-labelledby': 'basic-button',
             }}
           >
-            {devAccounts.map((devAccount, index) => (
+            {getDevAccounts().map((devAccount, index) => (
               <MenuItem
                 key={`${index}_${devAccount.id}`}
                 onClick={(event) => handleDevSelection(event, devAccount)}
