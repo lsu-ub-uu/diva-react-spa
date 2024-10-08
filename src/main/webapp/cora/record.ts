@@ -32,7 +32,6 @@ export async function getRecordDataListByType<T>(
     'Content-Type': RECORD_LIST_CONTENT_TYPE,
     Accept: RECORD_LIST_CONTENT_TYPE
   };
-  console.log({ headers });
   const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
   return response;
 }
