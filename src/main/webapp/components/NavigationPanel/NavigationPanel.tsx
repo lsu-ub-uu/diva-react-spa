@@ -22,7 +22,7 @@ import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Stepper from '@mui/material/Stepper';
 import { useTranslation } from 'react-i18next';
-import { NavigationPanelLink } from '../index';
+import { NavigationPanelLink } from '@/components';
 
 export interface NavigationPanelProps {
   links: NavigationPanelLink[];

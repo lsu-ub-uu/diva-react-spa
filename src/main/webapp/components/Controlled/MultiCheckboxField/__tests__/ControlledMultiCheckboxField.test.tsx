@@ -16,11 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import { useForm } from 'react-hook-form';
-import { ControlledMultiCheckboxField } from '../ControlledMultiCheckboxField';
+import { ControlledMultiCheckboxField } from '@/components/Controlled';
 
 /**
  * @vitest-environment jsdom

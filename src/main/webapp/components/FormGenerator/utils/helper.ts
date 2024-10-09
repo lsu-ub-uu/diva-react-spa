@@ -19,7 +19,7 @@
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormComponent } from '../types';
-import { removeEmpty } from '../../../utils/removeEmpty';
+import { removeEmpty } from '@/utils/removeEmpty';
 
 export const countStringCharOccurrences = (
   inputString: string,

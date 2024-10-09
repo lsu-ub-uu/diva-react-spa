@@ -31,8 +31,7 @@ import {
   isComponentSingularAndOptional,
   isFirstLevelGroup,
 } from './utils/helper';
-import { Typography } from '../Typography/Typography';
-import { Tooltip } from '../Tooltip/Tooltip';
+import { Typography, Tooltip } from '@/components';
 import { headlineLevelToTypographyVariant } from './FormGenerator';
 
 interface FieldArrayComponentProps {

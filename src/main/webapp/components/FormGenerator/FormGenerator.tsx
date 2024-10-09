@@ -60,11 +60,11 @@ import {
   LinkButton,
   ControlledAutocomplete,
   Tooltip,
-} from '../index';
+} from '@/components';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
-import { CoraRecord } from '../../app/hooks';
+import { CoraRecord } from '@/app/hooks';
 
 interface FormGeneratorProps {
   record?: CoraRecord;

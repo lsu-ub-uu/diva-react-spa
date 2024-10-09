@@ -19,7 +19,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
-import { ControlledRadioButtons } from '../ControlledRadioButtons';
+import { ControlledRadioButtons } from '@/components/Controlled';
 
 /**
  * @vitest-environment jsdom

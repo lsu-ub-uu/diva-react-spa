@@ -37,7 +37,7 @@ import {
   isRootLevel,
   isSiblingComponentRequired,
 } from '../helper';
-import { FormComponent } from '../../types';
+import { FormComponent } from '@/components/FormGenerator/types';
 
 describe('helper methods', () => {
   describe('countStringCharOccurrences', () => {

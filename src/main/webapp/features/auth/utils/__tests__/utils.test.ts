@@ -19,8 +19,6 @@
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { deleteFromCora, isValidJSON } from '../utils';
-import { isComponentSingularAndOptional } from '../../../../components/FormGenerator/utils/helper';
-import { FormComponent } from '../../../../components/FormGenerator/types';
 
 describe('actions', () => {
   let mockAxios: MockAdapter;

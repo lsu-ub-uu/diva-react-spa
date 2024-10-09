@@ -18,7 +18,7 @@
 
 import { render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
-import { ControlledDateTimePicker } from '../ControlledDateTimePicker';
+import { ControlledDateTimePicker } from '@/components/Controlled';
 
 /**
  * @vitest-environment jsdom

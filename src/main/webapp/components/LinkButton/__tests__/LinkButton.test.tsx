@@ -19,7 +19,7 @@
 
 import { expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { LinkButton } from '../LinkButton';
+import { LinkButton } from '@/components';
 
 /**
  * @vitest-environment jsdom

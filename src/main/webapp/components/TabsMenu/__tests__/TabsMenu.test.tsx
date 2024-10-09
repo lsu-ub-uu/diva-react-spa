@@ -21,8 +21,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { TabsMenu } from '../TabsMenu';
-import { reduxRender } from '../../../utils/testUtils';
+import { TabsMenu } from '@/components';
+import { reduxRender } from '@/utils/testUtils';
 
 /**
  * @vitest-environment jsdom

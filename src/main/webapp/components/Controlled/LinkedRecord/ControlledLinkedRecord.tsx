@@ -17,8 +17,8 @@
  */
 
 import { Control, Controller } from 'react-hook-form';
-import { LinkedRecord } from '../../LinkedRecord/LinkedPresentationRecord';
-import { LinkedPresentation } from '../../FormGenerator/types';
+import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
+import { LinkedPresentation } from '@/components/FormGenerator/types';
 
 interface ControlledLinkedRecordProps {
   recordType: string;

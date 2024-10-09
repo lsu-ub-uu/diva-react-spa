@@ -21,10 +21,10 @@ import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { Provider as StateProvider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
-import App from '../App';
-import store from '../app/store';
-import { divaTheme } from '../themes/diva';
-import { BackdropProvider, SnackbarProvider } from '../components';
+import App from '@/App';
+import store from '@/app/store';
+import { divaTheme } from '@/themes/diva';
+import { BackdropProvider, SnackbarProvider } from '@/components';
 
 /**
  * @vitest-environment jsdom

@@ -20,7 +20,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import type { RootState, AppDispatch } from './store';
-import { FormSchema } from '../components/FormGenerator/types';
+import { FormSchema } from '@/components/FormGenerator/types';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

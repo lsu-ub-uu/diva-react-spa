@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,10 +14,20 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
+import getEnvironment from '../getEnvironment';
 
-import { RootState } from '@/app/store';
+describe('getEnvironment', () => {
+  it.each([
+    ['pre', 'pre.diva-portal.org'],
+    ['preview', 'cora.epc.ub.uu.se'],
+    ['local', 'localhost:5173'],
+  ])('returns %s when host is %s', (expected, host) => {
+    vi.stubGlobal('location', { host });
 
-export const authStateSelector = (state: RootState) => {
-  return state.auth;
-};
+    const environment = getEnvironment();
+
+    expect(environment).toBe(expected);
+  });
+});

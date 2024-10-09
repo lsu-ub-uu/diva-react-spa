@@ -20,7 +20,7 @@ import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { DatePicker } from '../DatePicker';
+import { DatePicker } from '@/components';
 
 /**
  * @vitest-environment jsdom

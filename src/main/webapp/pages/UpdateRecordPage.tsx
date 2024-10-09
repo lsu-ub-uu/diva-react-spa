@@ -27,7 +27,7 @@ import { FieldValues } from 'react-hook-form';
 import {
   useCoraFormSchemaByValidationType,
   useCoraRecordByTypeAndId,
-} from '../app/hooks';
+} from '@/app/hooks';
 import {
   AsidePortal,
   FormGenerator,
@@ -35,9 +35,9 @@ import {
   useBackdrop,
   linksFromFormSchema,
   useSectionScroller,
-} from '../components';
-import { FormSchema } from '../components/FormGenerator/types';
-import { removeEmpty } from '../utils/removeEmpty';
+} from '@/components';
+import { FormSchema } from '@/components/FormGenerator/types';
+import { removeEmpty } from '@/utils/removeEmpty';
 
 export const UpdateRecordPage = () => {
   const { recordType, recordId } = useParams();

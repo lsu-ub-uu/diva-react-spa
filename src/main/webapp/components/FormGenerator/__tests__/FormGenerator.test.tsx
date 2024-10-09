@@ -74,7 +74,7 @@ import {
   formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
   formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
   formDefTitleInfoGroup,
-} from '../../../__mocks__/data/formDef';
+} from '@/__mocks__/data/formDef';
 import {
   FormGenerator,
   getChildArrayWithSameNameInData,

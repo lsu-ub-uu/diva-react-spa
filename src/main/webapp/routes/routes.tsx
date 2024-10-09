@@ -17,14 +17,14 @@
  */
 
 import { useRoutes } from 'react-router-dom';
-import { Layout } from '../components';
+import { Layout } from '@/components';
 import {
   HomePage,
   CreateRecordPage,
   UpdateRecordPage,
   ViewRecordPage,
   LoginPage,
-} from '../pages';
+} from '@/pages';
 import PrivateRoutes from './PrivateRoutes';
 
 export const routes = [

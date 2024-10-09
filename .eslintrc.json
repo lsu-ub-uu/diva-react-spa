@@ -29,7 +29,8 @@
     "react/require-default-props": "off",
     "react/no-array-index-key": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "import/extensions": "off"
   },
   "ignorePatterns": ["setupTest.js", "vitest.config.ts", "vite.config.ts"]
 }

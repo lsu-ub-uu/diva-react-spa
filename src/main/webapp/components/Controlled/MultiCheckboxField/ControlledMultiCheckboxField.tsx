@@ -23,7 +23,8 @@ import {
   FormLabel,
 } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
-import { Checkbox, Option } from '../../index';
+import { ChangeEvent } from 'react';
+import { Checkbox, Option } from '@/components';
 
 interface ControlledMultiCheckboxFieldProps {
   name: string;
@@ -53,7 +54,7 @@ export const ControlledMultiCheckboxField = (
               key={`${option.label}_${idx}`}
               control={
                 <Checkbox
-                  onChange={(e) => {
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     const newValue = e.target.checked
                       ? [...value, option.value]
                       : value.filter((item: any) => item !== option.value);
