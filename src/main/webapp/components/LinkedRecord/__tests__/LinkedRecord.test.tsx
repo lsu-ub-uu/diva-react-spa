@@ -27,7 +27,7 @@ import { expect } from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { act } from 'react-dom/test-utils';
-import { LinkedRecord } from '../LinkedRecord';
+import { LinkedRecord } from '../LinkedPresentationRecord';
 
 /**
  * @vitest-environment jsdom

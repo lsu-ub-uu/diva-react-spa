@@ -646,8 +646,14 @@ export const renderLeafComponent = (
       );
     }
     case 'recordLink': {
-      if (checkIfComponentContainsSearchId(component)) {
-        return createRecordLinkWithSearchLink(
+      const hasValue = checkIfComponentHasValue(getValues, name);
+
+      if (
+        checkIfComponentContainsSearchId(component) &&
+        component.mode === 'input' &&
+        !hasValue
+      ) {
+        return createRecordLinkWithSearch(
           reactKey,
           renderElementGridWrapper,
           component,
@@ -656,12 +662,25 @@ export const renderLeafComponent = (
           getValues,
         );
       }
-      return createRecordLinkWithoutSearchLink(
+
+      if (component.linkedRecordPresentation !== undefined) {
+        return createRecordLinkWithLinkedPresentation(
+          reactKey,
+          renderElementGridWrapper,
+          component,
+          name,
+          control,
+          getValues,
+        );
+      }
+
+      return createTextOrNumberVariable(
         reactKey,
         renderElementGridWrapper,
         component,
         name,
         control,
+        parentPresentationStyle,
         getValues,
       );
     }
@@ -732,7 +751,7 @@ const createTextOrNumberVariable = (
   );
 };
 
-const createRecordLinkWithSearchLink = (
+const createRecordLinkWithSearch = (
   reactKey: string,
   renderElementGridWrapper: boolean,
   component: FormComponent,
@@ -740,7 +759,6 @@ const createRecordLinkWithSearchLink = (
   control: Control<any>,
   getValues: UseFormGetValues<FieldValues>,
 ) => {
-  const hasValue = checkIfComponentHasValue(getValues, name);
   return (
     <Grid
       key={reactKey}
@@ -748,33 +766,24 @@ const createRecordLinkWithSearchLink = (
       xs={12}
       sm={renderElementGridWrapper ? component.gridColSpan : 12}
     >
-      {component.mode === 'input' && !hasValue ? (
-        <ControlledAutocomplete
-          label={component.label ?? ''}
-          name={name}
-          showLabel={component.showLabel}
-          placeholder={component.placeholder}
-          tooltip={component.tooltip}
-          control={control}
-          readOnly={!!component.finalValue}
-          displayMode={component.mode}
-          searchLink={component.search}
-          presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-          recordType={component.recordLinkType ?? ''}
-        />
-      ) : (
-        <ControlledLinkedRecord
-          control={control}
-          name={name}
-          recordType={component.recordLinkType ?? ''}
-          presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
-        />
-      )}
+      <ControlledAutocomplete
+        label={component.label ?? ''}
+        name={name}
+        showLabel={component.showLabel}
+        placeholder={component.placeholder}
+        tooltip={component.tooltip}
+        control={control}
+        readOnly={!!component.finalValue}
+        displayMode={component.mode}
+        searchLink={component.search}
+        presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
+        recordType={component.recordLinkType ?? ''}
+      />
     </Grid>
   );
 };
 
-const createRecordLinkWithoutSearchLink = (
+const createRecordLinkWithLinkedPresentation = (
   reactKey: string,
   renderElementGridWrapper: boolean,
   component: FormComponent,
@@ -783,7 +792,6 @@ const createRecordLinkWithoutSearchLink = (
   getValues: UseFormGetValues<FieldValues>,
 ) => {
   const hasValue = checkIfComponentHasValue(getValues, name);
-
   return (
     <React.Fragment key={`${reactKey}_${name}`}>
       {hasValue ? (

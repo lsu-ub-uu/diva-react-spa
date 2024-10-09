@@ -36,7 +36,7 @@ import { Tooltip } from '../../Tooltip/Tooltip';
 import { FormGenerator } from '../../FormGenerator/FormGenerator';
 import { FormSchema } from '../../FormGenerator/types';
 import { CoraRecord } from '../../../app/hooks';
-import { LinkedRecord } from '../../LinkedRecord/LinkedRecord';
+import { LinkedRecord } from '../../LinkedRecord/LinkedPresentationRecord';
 
 interface AutoCompleteProps {
   name: string;
