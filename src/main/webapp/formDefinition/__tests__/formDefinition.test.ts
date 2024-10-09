@@ -112,7 +112,6 @@ import {
   someMetadataCollectionVariable2,
   someNewRecordLink,
   pSomeNewRecordLink,
-  mSomeNewMetadataGroupTitleInfoGroup,
   someValidationTypeForRepeatingTitleInfoId,
   someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
   pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup

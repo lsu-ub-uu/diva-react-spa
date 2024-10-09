@@ -318,7 +318,6 @@ export const findMetadataChildReferenceByNameInDataAndAttributes = (
 ): BFFMetadataChildReference | undefined => {
   return metadataChildReferences.find((metadataChildReferenceCandidate) => {
     const metadataCandidate = metadataPool.get(metadataChildReferenceCandidate.childId);
-
     if (differentNameInData(metadataCandidate, metadataFromCurrentPresentation)) {
       return false;
     }
@@ -576,6 +575,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   let recordLinkType;
   let presentationRecordLinkId;
   let search;
+  let linkedRecordPresentation;
   let inputFormat;
   const childStyle = convertChildStylesToShortName(presentationChildReference.childStyle);
   const gridColSpan = convertChildStylesToGridColSpan(presentationChildReference.childStyle ?? []);
@@ -585,12 +585,12 @@ const createDetailedPresentationBasedOnPresentationType = (
   if (presentation.type !== 'container') {
     metadataId = metadataOverrideId ?? presentation.presentationOf;
     const metadataFormPresentation = metadataPool.get(presentation.presentationOf);
-
     metaDataChildRef = findMetadataChildReferenceByNameInDataAndAttributes(
       metadataPool,
       metadataChildReferences,
       metadataFormPresentation
-    ) as BFFMetadataChildReference;
+    );
+   if (!metaDataChildRef) return;
     metadata = metadataPool.get(metaDataChildRef.childId);
 
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
@@ -625,6 +625,9 @@ const createDetailedPresentationBasedOnPresentationType = (
     const presentationRecordLink = presentation as BFFPresentationRecordLink;
     if (presentationRecordLink.search !== undefined) {
       search = presentationRecordLink.search;
+    }
+    if (presentationRecordLink.linkedRecordPresentations !== undefined) {
+      linkedRecordPresentation = presentationRecordLink.linkedRecordPresentations[0];
     }
     presentationRecordLinkId = presentation.id;
 
@@ -696,6 +699,7 @@ const createDetailedPresentationBasedOnPresentationType = (
     recordLinkType,
     presentationRecordLinkId,
     search,
+    linkedRecordPresentation,
     inputFormat
   });
 };

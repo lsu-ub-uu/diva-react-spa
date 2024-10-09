@@ -124,7 +124,7 @@ export interface BFFPresentation extends BFFBase {
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentation {
-  linkedRecordPresentations: BFFLinkedRecordPresentation[];
+  linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
 }
 
