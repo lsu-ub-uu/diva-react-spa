@@ -1,29 +1,13 @@
-export class Auth {
-  id: string;
+import { ActionLinks } from '../utils/cora-data/CoraData';
 
-  validForNoSeconds: string;
-
-  idInUserStorage: string;
-
-  idFromLogin: string;
-
-  lastName: string;
-
-  firstName: string;
-
-  constructor(
-    id: string,
-    validForNoSeconds: string,
-    idInUserStorage: string,
-    idFromLogin: string,
-    firstName: string,
-    lastName: string
-  ) {
-    this.id = id;
-    this.validForNoSeconds = validForNoSeconds;
-    this.idInUserStorage = idInUserStorage;
-    this.idFromLogin = idFromLogin;
-    this.firstName = firstName;
-    this.lastName = lastName;
-  }
+export interface Auth {
+  data: {
+    token: string;
+    validForNoSeconds: string;
+    idInUserStorage: string;
+    loginId: string;
+    lastName: string;
+    firstName: string;
+  };
+  actionLinks?: ActionLinks;
 }

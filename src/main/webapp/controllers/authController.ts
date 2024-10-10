@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import * as console from 'console';
 import { deleteAuthTokenFromCora, requestAuthTokenOnLogin } from '../cora/auth';
 import { errorHandler } from '../server';
 import { createLoginDefinition } from '../loginDefinition/loginDefinition';
@@ -7,15 +6,14 @@ import { dependencies } from '../config/configureServer';
 
 /**
  * @desc Post appToken to get authToken
- * @route POST /api/auth/:user
+ * @route POST /api/auth/
  * @access Public
  */
 export const postAppTokenToGetAuthToken = async (req: Request, res: Response) => {
-  const { user } = req.params;
-  const appToken = req.body.token;
+  const { appToken, user } = req.body;
   try {
-    const authToken = await requestAuthTokenOnLogin(user, appToken, 'apptoken');
-    res.status(201).json({ authToken });
+    const auth = await requestAuthTokenOnLogin(user, appToken, 'apptoken');
+    res.status(201).json({ auth });
   } catch (error: unknown) {
     console.log(error);
     const errorResponse = errorHandler(error);
@@ -25,14 +23,14 @@ export const postAppTokenToGetAuthToken = async (req: Request, res: Response) =>
 
 /**
  * @desc Delete appToken to get authToken
- * @route DELETE /api/auth/:user
+ * @route DELETE /api/auth/
  * @access Private
  */
 export const deleteAuthTokenOnLogout = async (req: Request, res: Response) => {
-  const { user } = req.params;
-  const authToken = req.header('authToken') ?? '';
+  const { actionLinks } = req.body;
+  const authToken = req.header('authToken');
   try {
-    const response = await deleteAuthTokenFromCora(user, authToken);
+    const response = await deleteAuthTokenFromCora(actionLinks, authToken);
     res.status(response.status).json(response.status);
   } catch (error: unknown) {
     console.log(error);
@@ -58,12 +56,11 @@ export const getAllLoginUnits = async (req: Request, res: Response) => {
 
 /**
  * @desc Post userName and password to get authToken
- * @route POST /api/auth/password/:user
+ * @route POST /api/auth/password
  * @access Public
  */
 export const postUserNameAndPasswordToGetAuthToken = async (req: Request, res: Response) => {
-  const { user } = req.params;
-  const { password } = req.body;
+  const { user, password } = req.body;
   try {
     const authToken = await requestAuthTokenOnLogin(user, password, 'password');
     res.status(201).json({ authToken });
