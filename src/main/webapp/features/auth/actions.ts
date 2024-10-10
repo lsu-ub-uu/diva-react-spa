@@ -24,13 +24,14 @@ import {
   authenticating,
   hasError,
   logout,
-  UserSession,
+  Auth,
 } from './authSlice';
 import { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { loadPublicationTypesAsync } from '../publicationTypes';
 import { loadPublicationsAsync } from '../publications';
 import { deleteFromCora, isValidJSON } from './utils/utils';
 import { renameObjectKey } from '@/utils';
+import assertExists from '@/utils/assertExists';
 
 const { VITE_BFF_API_URL } = import.meta.env;
 const LOCAL_STORAGE_NAME = 'diva_session';
@@ -83,7 +84,7 @@ export const loginPasswordAsync =
   };
 
 export const loginWebRedirectAsync =
-  (account: UserSession, callback?: Function): AppThunk =>
+  (account: Auth, callback?: Function): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(authenticating());
@@ -109,13 +110,14 @@ export const logoutAsync = (): AppThunk => async (dispatch) => {
   }
 
   if (isValidJSON(storage) && JSON.parse(storage as string) !== null) {
-    const parsed = JSON.parse(storage as string) as UserSession;
-    const url = `${VITE_BFF_API_URL}/auth/${parsed.idFromLogin}`;
+    const { actionLinks } = JSON.parse(storage as string) as Auth;
+    const url = `${VITE_BFF_API_URL}/auth`;
 
     try {
       dispatch(authenticating());
+      assertExists(actionLinks);
 
-      const response = await deleteFromCora(url, parsed.id);
+      await deleteFromCora(url, actionLinks);
       dispatch(logout());
       dispatch(loadPublicationTypesAsync());
       dispatch(loadPublicationsAsync());

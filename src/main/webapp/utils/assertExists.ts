@@ -16,23 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import axios from 'axios';
-import { ActionLinks } from '@/features/auth/authSlice';
-
-export const deleteFromCora = async (url: string, actionLinks: ActionLinks) => {
-  const headers = {
-    'Content-Type': 'text/plain;charset=UTF-8',
-  };
-
-  return axios.delete(url, { headers, data: { actionLinks } });
-};
-
-export const isValidJSON = (str: string | {} | null) => {
-  try {
-    JSON.parse(str as string);
-    return true;
-  } catch (e) {
-    return false;
+export default function assertExists<T>(
+  value: T | undefined | null,
+): asserts value is NonNullable<T> {
+  if (value === undefined || value === null) {
+    throw new Error(`Expected value to exist but was ${value}`);
   }
-};
+}

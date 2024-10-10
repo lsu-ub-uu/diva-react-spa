@@ -21,10 +21,9 @@ import {
   writeState,
   deleteState,
   createInitialState,
-  UserSession,
+  Auth,
   checkIfDataShouldBeSaved,
 } from '../authSlice';
-
 
 const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 
@@ -33,13 +32,22 @@ afterEach(() => {
 });
 describe('authSlice', () => {
   it('writeState writes to localStorage for authToken', () => {
-    const userSession: UserSession = {
-      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      validForNoSeconds: '600',
-      idInUserStorage: 'coraUser:111111111111111',
-      idFromLogin: 'coraUser:111111111111111',
-      firstName: 'Everything',
-      lastName: 'DiVA',
+    const userSession: Auth = {
+      data: {
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        loginId: 'user@domain.x',
+        lastName: 'DiVA',
+        firstName: 'Everything',
+      },
+      actionLinks: {
+        delete: {
+          rel: 'delete',
+          requestMethod: 'DELETE',
+          url: 'http://localhost:38180/login/rest/authToken/b01dab5e-50eb-492a-b40d-f416500f5e6f',
+        },
+      },
     };
 
     expect.assertions(2);
@@ -54,10 +62,15 @@ describe('authSlice', () => {
   });
 
   it('writeState writes to localStorage for webRedirect', () => {
-    const userSession: UserSession = {
-      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      validForNoSeconds: '600',
-      idFromLogin: 'johdo290@user.uu.se',
+    const userSession: Auth = {
+      data: {
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        loginId: 'coraUser:111111111111111',
+        firstName: 'Everything',
+        lastName: 'DiVA',
+      },
     };
     expect.assertions(2);
 
@@ -72,21 +85,21 @@ describe('authSlice', () => {
 
   it('writeState does not write to localStorage with broken JSON', () => {
     const userSession = {};
-
-    // @ts-ignore
-    writeState(userSession);
+    writeState(userSession as Auth);
     const getLocalStorage = localStorage.getItem('diva_session');
     expect(getLocalStorage).toEqual(null);
   });
 
   it('deleteState deletes to localStorage', () => {
-    const userSession: UserSession = {
-      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      validForNoSeconds: '600',
-      idInUserStorage: 'coraUser:111111111111111',
-      idFromLogin: 'coraUser:111111111111111',
-      firstName: 'Everything',
-      lastName: 'DiVA',
+    const userSession: Auth = {
+      data: {
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        loginId: 'coraUser:111111111111111',
+        firstName: 'Everything',
+        lastName: 'DiVA',
+      },
     };
 
     localStorage.setItem('diva_session', JSON.stringify(userSession));
@@ -96,13 +109,15 @@ describe('authSlice', () => {
   });
 
   it('createInitialState creates state with name from localStorage for authToken', () => {
-    const userSession: UserSession = {
-      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      validForNoSeconds: '600',
-      idInUserStorage: 'coraUser:111111111111111',
-      idFromLogin: 'coraUser:111111111111111',
-      firstName: 'Everything',
-      lastName: 'DiVA',
+    const userSession: Auth = {
+      data: {
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        loginId: 'coraUser:111111111111111',
+        firstName: 'Everything',
+        lastName: 'DiVA',
+      },
     };
 
     localStorage.setItem('diva_session', JSON.stringify(userSession));
@@ -111,10 +126,15 @@ describe('authSlice', () => {
   });
 
   it('createInitialState creates state with name from localStorage for webRedirect', () => {
-    const userSession: UserSession = {
-      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      validForNoSeconds: '600',
-      idFromLogin: 'coraUser:111111111111111',
+    const userSession: Auth = {
+      data: {
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        validForNoSeconds: '600',
+        idInUserStorage: 'coraUser:111111111111111',
+        loginId: 'coraUser:111111111111111',
+        firstName: 'Everything',
+        lastName: 'DiVA',
+      },
     };
 
     localStorage.setItem('diva_session', JSON.stringify(userSession));
@@ -143,20 +163,24 @@ describe('authSlice', () => {
   it.each([
     [
       {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
-        idFromLogin: 'coraUser:111111111111111',
-        firstName: 'Everything',
-        lastName: 'DiVA',
+        data: {
+          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          validForNoSeconds: '600',
+          idInUserStorage: 'coraUser:111111111111111',
+          loginId: 'coraUser:111111111111111',
+          firstName: 'Everything',
+          lastName: 'DiVA',
+        },
       },
       true,
     ],
     [
       {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idFromLogin: 'johdo290@user.uu.se',
+        data: {
+          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          validForNoSeconds: '600',
+          loginId: 'johdo290@user.uu.se',
+        },
       },
       true,
     ],
