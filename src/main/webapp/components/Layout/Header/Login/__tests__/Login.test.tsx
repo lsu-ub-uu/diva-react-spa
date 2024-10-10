@@ -26,10 +26,6 @@ import { Login } from '../Login';
 import { reduxRender } from '@/utils/testUtils';
 import getEnvironment from '@/utils/getEnvironment';
 
-/**
- * @vitest-environment jsdom
- */
-
 vi.spyOn(Storage.prototype, 'setItem');
 vi.mock('@/utils/getEnvironment');
 

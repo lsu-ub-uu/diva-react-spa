@@ -22,10 +22,6 @@ import { expect } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { NavigationPanel, NavigationPanelLink } from '@/components';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('NavigationPanel', () => {
   const links: NavigationPanelLink[] = [
     { name: 'anchor1', label: 'Anchor 1' },

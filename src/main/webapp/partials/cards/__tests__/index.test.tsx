@@ -24,10 +24,6 @@ import axios from 'axios';
 import { CreatePublicationCard, ListPublicationsCard } from '@/partials';
 import { reduxRender } from '@/utils/testUtils';
 
-/**
- * @vitest-environment jsdom
- */
-
 const divaOutputs = [
   {
     id: 'divaOutput:2063456157227510',

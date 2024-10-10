@@ -12,8 +12,15 @@ export default defineConfig({
   envDir: '../../../',
   plugins: [react()],
   test: {
+    environment: "jsdom",
     globals: true,
-    environment: 'jsdom',
+    include: ['**/*.{test,spec}.{ts,mts,cts,tsx}'],
+    exclude: [
+      '**/node_modules/**',
+      '**/target/**',
+      '**/*.{test,spec}.{js,mjs,cjs,jsx}'
+    ],
+    setupFiles: '../../../setupTest.js',
   },
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src/main/webapp') }],

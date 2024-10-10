@@ -22,10 +22,6 @@ import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 import { DatePicker } from '@/components';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('<DatePicker />', () => {
   it('Renders', () => {
     render(

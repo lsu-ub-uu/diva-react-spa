@@ -24,10 +24,6 @@ import {
 import userEvent from '@testing-library/user-event';
 import { Tooltip } from '@/components';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('<Tooltip />', () => {
   it('Renders tooltip when child button is clicked and can be closed', async () => {
     const user = userEvent.setup();

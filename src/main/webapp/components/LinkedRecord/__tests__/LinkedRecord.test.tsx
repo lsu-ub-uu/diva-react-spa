@@ -28,10 +28,6 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { LinkedRecord } from '@/components';
 
-/**
- * @vitest-environment jsdom
- */
-
 const nationalSubjectCategory = {
   id: 'nationalSubjectCategory:6325370460697648',
   recordType: 'nationalSubjectCategory',

@@ -23,9 +23,7 @@ import axios from 'axios';
 import { useCoraFormSchemaByValidationType } from '../hooks';
 import { FormSchema } from '@/components/FormGenerator/types';
 
-/**
- * @vitest-environment jsdom
- */
+
 
 describe('useCoraFormSchemaByValidationType', () => {
   let mockAxios: MockAdapter;

@@ -20,10 +20,6 @@ import { render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import { ControlledDatePicker } from '../ControlledDatePicker';
 
-/**
- * @vitest-environment jsdom
- */
-
 export const DummyForm = (): JSX.Element => {
   const methods = useForm({ defaultValues: { dateField: '2023-08-25' } });
 

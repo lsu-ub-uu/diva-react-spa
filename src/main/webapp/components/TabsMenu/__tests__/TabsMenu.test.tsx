@@ -24,9 +24,6 @@ import axios from 'axios';
 import { TabsMenu } from '@/components';
 import { reduxRender } from '@/utils/testUtils';
 
-/**
- * @vitest-environment jsdom
- */
 describe('TabsMenu', () => {
   let mockAxios: MockAdapter;
 

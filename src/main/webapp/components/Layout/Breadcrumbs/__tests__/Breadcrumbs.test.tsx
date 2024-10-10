@@ -20,10 +20,6 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Breadcrumbs } from '../Breadcrumbs';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('<Breadcrumbs />', () => {
   it('Renders', () => {
     render(

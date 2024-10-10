@@ -21,10 +21,6 @@ import { useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { ControlledEditor } from '../ControlledEditor';
 
-/**
- * @vitest-environment jsdom
- */
-
 export const DummyForm = (): JSX.Element => {
   const methods = useForm({ defaultValues: { title: 'test' } });
 

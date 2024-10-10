@@ -27,10 +27,6 @@ import { expect } from 'vitest';
 import { ControlledAutocomplete } from '@/components';
 import { CoraRecord } from '@/app/hooks';
 
-/**
- * @vitest-environment jsdom
- */
-
 const mockOptions: CoraRecord[] = [
   {
     id: 'nationalSubjectCategory:6325356888554468',

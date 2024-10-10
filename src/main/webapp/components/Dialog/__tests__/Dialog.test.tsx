@@ -19,10 +19,6 @@
 import { render, screen } from '@testing-library/react';
 import { Dialog } from '@/components';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('<Dialog />', () => {
   it('Renders with title and body content', () => {
     render(

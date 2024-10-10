@@ -20,10 +20,6 @@ import { render } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import { ControlledSelectField } from '@/components/Controlled';
 
-/**
- * @vitest-environment jsdom
- */
-
 const options = [
   { label: 'Option 1', value: 'option1' },
   { label: 'Option 2', value: 'option2' },

@@ -21,10 +21,6 @@ import { FormControlLabel } from '@mui/material';
 import userEvent from '@testing-library/user-event';
 import { Radio } from '@/components';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('<Radio />', () => {
   it('Renders', () => {
     render(

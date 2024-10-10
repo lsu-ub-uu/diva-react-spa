@@ -25,9 +25,7 @@ import {
   checkIfDataShouldBeSaved,
 } from '../authSlice';
 
-/**
- * @vitest-environment jsdom
- */
+
 const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 
 afterEach(() => {
