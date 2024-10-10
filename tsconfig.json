@@ -3,7 +3,6 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",
-    "isolatedModules": true,
     "lib": [
       "es2022"
     ],
