@@ -21,10 +21,6 @@ import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
 import { ControlledMultiCheckboxField } from '@/components/Controlled';
 
-/**
- * @vitest-environment jsdom
- */
-
 const options = [
   { label: 'Option 1', value: 'option1' },
   { label: 'Option 2', value: 'option2' },

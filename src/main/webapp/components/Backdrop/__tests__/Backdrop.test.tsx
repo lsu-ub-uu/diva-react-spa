@@ -19,10 +19,6 @@
 import { render } from '@testing-library/react';
 import { Backdrop } from '../Backdrop';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('<Backdrop />', () => {
   it('Renders', () => {
     const { container } = render(<Backdrop open />);

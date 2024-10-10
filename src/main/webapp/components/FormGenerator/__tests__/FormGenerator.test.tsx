@@ -84,10 +84,6 @@ import {
 } from '../FormGenerator';
 import { FormComponent, FormSchema } from '../types';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('<FormGenerator />', () => {
   vi.mock('react-i18next', () => ({
     useTranslation: () => {

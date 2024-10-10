@@ -17,10 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @vitest-environment jsdom
- */
-
 import { isComponentGroupAndSingularForStyling } from '../ActionButtonGroup';
 
 describe('ActionButtonGroup', () => {

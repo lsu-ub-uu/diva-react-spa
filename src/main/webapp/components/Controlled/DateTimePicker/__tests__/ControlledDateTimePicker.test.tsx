@@ -20,10 +20,6 @@ import { render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import { ControlledDateTimePicker } from '@/components/Controlled';
 
-/**
- * @vitest-environment jsdom
- */
-
 export const DummyForm = (): JSX.Element => {
   const methods = useForm({
     defaultValues: { dateTimeField: new Date('1995-12-17T03:24:00') },

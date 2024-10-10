@@ -24,10 +24,6 @@ import {
 } from 'react-i18next';
 import i18n from 'i18next';
 
-/**
- * @vitest-environment jsdom
- */
-
 const setupI18nEnvironment = async () => {
   await i18n.use(initReactI18next).init({
     resources: {

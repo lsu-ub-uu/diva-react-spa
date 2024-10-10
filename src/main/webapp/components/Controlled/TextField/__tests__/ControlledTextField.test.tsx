@@ -21,10 +21,6 @@ import { useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { ControlledTextField } from '../ControlledTextField';
 
-/**
- * @vitest-environment jsdom
- */
-
 describe('<ControlledTextField />', () => {
   it('renders component without label', async () => {
     const DummyFormWithoutLabel = (): JSX.Element => {

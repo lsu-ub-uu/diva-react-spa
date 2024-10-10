@@ -26,9 +26,6 @@ import store from '@/app/store';
 import { divaTheme } from '@/themes/diva';
 import { BackdropProvider, SnackbarProvider } from '@/components';
 
-/**
- * @vitest-environment jsdom
- */
 describe('<App />', () => {
   it('App Renders', async () => {
     render(

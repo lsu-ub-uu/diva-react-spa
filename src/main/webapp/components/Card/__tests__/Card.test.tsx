@@ -19,10 +19,6 @@
 import { render, screen } from '@testing-library/react';
 import { Card } from '../Card';
 
-/**
- * @vitest-environment jsdom
- */
-
 export const TestableCard = () => {
   return (
     <Card
