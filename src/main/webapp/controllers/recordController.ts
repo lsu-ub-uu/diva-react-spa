@@ -48,8 +48,7 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
-    console.log('payload', payload.values.output.recordInfo.dataDivider.value);
-    const { lastUpdate, created, values } = payload;
+    const { values } = payload;
 
     const { validationTypePool } = dependencies;
     const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
@@ -58,27 +57,14 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     }
 
     const FORM_MODE_UPDATE = 'update';
-    const dataDivider = 'divaData';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, values);
 
-    const updateGroup = injectRecordInfoIntoDataGroup(
-      transformData[0] as DataGroup,
-      validationTypeId,
-      dataDivider,
-      recordId,
-      recordType,
-      lastUpdate.updatedBy,
-      lastUpdate.updateAt,
-      created.createdBy,
-      created.createdAt
-    );
-
     const response = await updateRecordDataById<RecordWrapper>(
       recordId,
-      updateGroup,
+      transformData[0] as DataGroup,
       recordType,
       authToken
     );
@@ -176,14 +162,14 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
         dependencies,
         presentationRecordLinkId as string
       );
-             record.presentation = createLinkedRecordDefinition(
-          dependencies,
-          metadataGroup,
-          presentationGroup
-        );
-        const listPresentationGroup = dependencies.presentationPool.get(
-          dependencies.recordTypePool.get(recordType).listPresentationViewId
-        );
+      record.presentation = createLinkedRecordDefinition(
+        dependencies,
+        metadataGroup,
+        presentationGroup
+      );
+      const listPresentationGroup = dependencies.presentationPool.get(
+        dependencies.recordTypePool.get(recordType).listPresentationViewId
+      );
       record.listPresentation = createLinkedRecordDefinition(
         dependencies,
         metadataGroup,
@@ -206,7 +192,10 @@ export const getGroupsFromPresentationLinkId = (
   const presentationLink = dependencies.presentationPool.get(
     presentationLinkId
   ) as TYPES.BFFPresentationRecordLink;
-  const presentationId = presentationLink.linkedRecordPresentations !== undefined ? presentationLink.linkedRecordPresentations[0].presentationId : presentationLink.id;
+  const presentationId =
+    presentationLink.linkedRecordPresentations !== undefined
+      ? presentationLink.linkedRecordPresentations[0].presentationId
+      : presentationLink.id;
   const presentationGroup = dependencies.presentationPool.get(presentationId);
   const metadataGroup = dependencies.metadataPool.get(
     presentationGroup.presentationOf

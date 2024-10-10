@@ -950,6 +950,10 @@ describe('formDefinition', () => {
               type: 'recordLink',
               name: 'nationalSubjectCategory',
               label: 'nationalSubjectCategoryLinkText',
+              linkedRecordPresentation: {
+                presentationId: 'someSubjectCategoryPresentation',
+                presentedRecordType: 'nationalSubjectCategory'
+              },
               showLabel: true,
               gridColSpan: 12,
               childStyle: [''],
@@ -969,6 +973,10 @@ describe('formDefinition', () => {
               type: 'recordLink',
               name: 'someNewRecordLink',
               label: 'someNewRecordLinkText',
+              linkedRecordPresentation: {
+                presentationId: 'someNewRecordLink',
+                presentedRecordType: 'someNewRecordLink'
+              },
               showLabel: true,
               gridColSpan: 12,
               childStyle: [''],
@@ -1596,6 +1604,10 @@ describe('formDefinition', () => {
               type: 'recordLink',
               name: 'nationalSubjectCategory',
               label: 'nationalSubjectCategoryLinkText',
+              linkedRecordPresentation: {
+                presentationId: 'someSubjectCategoryPresentation',
+                presentedRecordType: 'nationalSubjectCategory'
+              },
               showLabel: true,
               gridColSpan: 12,
               childStyle: [''],
@@ -1830,120 +1842,6 @@ describe('formDefinition', () => {
                 { value: 'yellow', label: 'exampleYellowItemText' }
               ],
               mode: 'input'
-            }
-          ],
-          mode: 'input'
-        }
-      });
-    });
-
-    it('aaaaaaa', () => {
-      const validationTypeId = 'divaOutputSwepub';
-      /* const validationType = createValidationType(validationTypeId);
-      console.log('vali!!', validationType);
-      const recordType = createRecordType(validationType.validatesRecordTypeId);
-
-      const metaDataGroup = createGroup(recordType.metadataId, 'validationTypeIdOutputGroup', [
-        'someNewMetadataGroupTitleInfoGroup'
-      ]);
-
-      const presentationChild = {
-        childId: 'someNewMetadataGroupTitleInfoGroup',
-        type: 'presentation'
-      } as BFFPresentationChildReference;
-      createPresentationGroup(recordType.presentationViewId, metaDataGroup.nameInData, [
-        presentationChild
-      ]); */
-
-      console.log('hellooo1', dependencies);
-      console.log('hellooo2', validationTypeId);
-      console.log('hellooo3', FORM_MODE_NEW);
-
-      const formDefinition = createFormDefinition(dependencies, validationTypeId, FORM_MODE_NEW);
-      expect(formDefinition.form.components).toHaveLength(1);
-      expect(formDefinition).toStrictEqual({
-        validationTypeId,
-        form: {
-          type: 'group',
-          gridColSpan: 12,
-          childStyle: [''],
-          presentationStyle: 'card',
-          name: 'divaOutput',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1
-          },
-          tooltip: {
-            title: '',
-            body: ''
-          },
-          label: '',
-          showLabel: true,
-          components: [
-            {
-              name: 'alternativeTitle',
-              type: 'group',
-              mode: 'input',
-              tooltip: {
-                title: 'alternativeTitleGroupText',
-                body: 'alternativeTitleGroupDefText'
-              },
-              label: 'alternativeTitleGroupText',
-              showLabel: true,
-              repeat: {
-                minNumberOfRepeatingToShow: 1,
-                repeatMin: 0,
-                repeatMax: 1.7976931348623157e308
-              },
-              attributesToShow: 'selectable',
-              attributes: [
-                {
-                  type: 'collectionVariable',
-                  name: 'colour',
-                  finalValue: 'pink',
-                  label: 'exampleCollectionVarText',
-                  showLabel: true,
-                  placeholder: 'initialEmptyValueText',
-                  tooltip: {
-                    title: 'exampleCollectionVarText',
-                    body: 'exampleCollectionVarDefText'
-                  },
-                  options: [
-                    { value: 'blue', label: 'exampleBlueItemText' },
-                    { value: 'pink', label: 'examplePinkItemText' },
-                    { value: 'yellow', label: 'exampleYellowItemText' }
-                  ],
-                  mode: 'input'
-                }
-              ],
-              components: [
-                {
-                  type: 'textVariable',
-                  name: 'someNameInData',
-                  label: 'someTextId',
-                  showLabel: true,
-                  gridColSpan: 3,
-                  childStyle: ['threeChildStyle'],
-                  placeholder: 'someEmptyTextId',
-                  repeat: {
-                    repeatMin: 1,
-                    repeatMax: 1
-                  },
-                  tooltip: {
-                    title: 'someTextId',
-                    body: 'someDefTextId'
-                  },
-                  validation: {
-                    type: 'regex',
-                    pattern: 'someRegex'
-                  },
-                  mode: 'input',
-                  inputType: 'input'
-                }
-              ],
-              presentationStyle: '',
-              childStyle: [''],
-              gridColSpan: 12
             }
           ],
           mode: 'input'
