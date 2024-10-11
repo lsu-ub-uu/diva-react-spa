@@ -17,8 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import request from 'supertest';
-import app from '../../server';
 
 describe('API endpoint routes', () => {
   it('should', () => {});
