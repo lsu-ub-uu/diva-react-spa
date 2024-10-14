@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { UserSession } from '@/features/auth/authSlice';
+import { Auth } from '@/features/auth/authSlice';
 
 export const messageIsFromWindowOpenedFromHere = (
   originUrl: string,
@@ -38,26 +38,25 @@ export const splitBasenameFromUrl = (url: string, basename: string) => {
   return url.split(`${basename}`)[0];
 };
 
-export const convertWebRedirectToUserSession = (coraUser: any): UserSession => {
-  const id = coraUser.token;
-  const { validForNoSeconds, idFromLogin } = coraUser;
+export const convertWebRedirectToUserSession = (coraUser: any): Auth => {
+  const { actionLinks, ...rest } = coraUser;
 
-  return { id, validForNoSeconds, idFromLogin };
+  return { data: rest, actionLinks };
 };
 
 export const convertUserIdToShortForm = (userId: string) => {
   return userId.split('@')[0];
 };
 
-export const checkTypeOfUser = (user: UserSession) => {
-  if (user.firstName) {
+export const checkTypeOfUser = (user: Auth) => {
+  if (user.data.firstName) {
     return 'appToken';
   }
   return 'webRedirect';
 };
 
-export const printUserNameOnPage = (user: UserSession) => {
+export const printUserNameOnPage = (user: Auth) => {
   return checkTypeOfUser(user) === 'appToken'
-    ? `${user.firstName} ${user.lastName}`
-    : convertUserIdToShortForm(user.idFromLogin);
+    ? `${user.data.firstName} ${user.data.lastName}`
+    : convertUserIdToShortForm(user.data.loginId);
 };

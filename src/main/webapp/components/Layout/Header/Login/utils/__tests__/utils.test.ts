@@ -27,6 +27,7 @@ import {
   splitBasenameFromUrl,
   splitSlashFromUrl,
 } from '../utils';
+import { Auth } from '@/features/auth/authSlice';
 
 describe('Login utils', () => {
   it('messageIsFromWindowOpenedFromHere return false on different event url', () => {
@@ -91,11 +92,27 @@ describe('Login utils', () => {
   });
 
   it('convertWebRedirectToUserSession converts to UserSession', () => {
+    const expected: Auth = {
+      data: {
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', // this is the authToken
+        validForNoSeconds: '600',
+        loginId: 'johdo290@user.uu.se',
+        idInUserStorage: 'coraUser:111111111111111',
+      },
+      actionLinks: {
+        delete: {
+          requestMethod: 'DELETE',
+          rel: 'delete',
+          url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+        },
+      },
+    };
+
     const actual = convertWebRedirectToUserSession({
-      userId: 'johdo290@user.uu.se',
       token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      idFromLogin: 'johdo290@user.uu.se',
       validForNoSeconds: '600',
+      idInUserStorage: 'coraUser:111111111111111',
+      loginId: 'johdo290@user.uu.se',
       actionLinks: {
         delete: {
           requestMethod: 'DELETE',
@@ -104,11 +121,7 @@ describe('Login utils', () => {
         },
       },
     });
-    expect(actual).toStrictEqual({
-      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', // this is the authToken
-      validForNoSeconds: '600',
-      idFromLogin: 'johdo290@user.uu.se',
-    });
+    expect(actual).toStrictEqual(expected);
   });
 
   it.each([
@@ -123,20 +136,24 @@ describe('Login utils', () => {
   it.each([
     [
       {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idFromLogin: 'johdo290@user.uu.se',
+        data: {
+          id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          validForNoSeconds: '600',
+          loginId: 'johdo290@user.uu.se',
+        },
       },
       'webRedirect',
     ],
     [
       {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
-        idFromLogin: 'coraUser:111111111111111',
-        firstName: 'Everything',
-        lastName: 'DiVA',
+        data: {
+          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          validForNoSeconds: '600',
+          idInUserStorage: 'coraUser:111111111111111',
+          loginId: 'coraUser:111111111111111',
+          firstName: 'Everything',
+          lastName: 'DiVA',
+        },
       },
       'appToken',
     ],
@@ -148,53 +165,24 @@ describe('Login utils', () => {
   it.each([
     [
       {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
-        idFromLogin: 'coraUser:111111111111111',
-        firstName: 'Everything',
-        lastName: 'DiVA',
+        data: {
+          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          validForNoSeconds: '600',
+          idInUserStorage: 'coraUser:111111111111111',
+          loginId: 'coraUser:111111111111111',
+          firstName: 'Everything',
+          lastName: 'DiVA',
+        },
       },
       'Everything DiVA',
     ],
     [
       {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
-        idFromLogin: 'coraUser:111111111111111',
-        lastName: 'Admin',
-        firstName: 'System',
-      },
-      'System Admin',
-    ],
-    [
-      {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
-        idFromLogin: 'coraUser:111111111111111',
-        lastName: 'UU',
-        firstName: 'domainAdmin',
-      },
-      'domainAdmin UU',
-    ],
-    [
-      {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
-        idFromLogin: 'coraUser:111111111111111',
-        lastName: 'KTH',
-        firstName: 'domainAdmin',
-      },
-      'domainAdmin KTH',
-    ],
-    [
-      {
-        id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        validForNoSeconds: '600',
-        idFromLogin: 'johdo290@user.uu.se',
+        data: {
+          id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          validForNoSeconds: '600',
+          loginId: 'johdo290@user.uu.se',
+        },
       },
       'johdo290',
     ],
