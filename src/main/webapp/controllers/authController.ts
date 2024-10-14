@@ -29,6 +29,7 @@ export const postAppTokenToGetAuthToken = async (req: Request, res: Response) =>
 export const deleteAuthTokenOnLogout = async (req: Request, res: Response) => {
   const { actionLinks } = req.body;
   const authToken = req.header('authToken');
+  console.log('aaaa', actionLinks, authToken)
   try {
     const response = await deleteAuthTokenFromCora(actionLinks, authToken);
     res.status(response.status).json(response.status);
