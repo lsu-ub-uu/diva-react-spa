@@ -31,12 +31,19 @@ Authtoken:
 {"token":"2e57eb36-55b9-4820-8c44-8271baab4e8e"}
 
 ###
-DELETE http://localhost:8080/api/auth/coraUser:490742519075086
+DELETE http://localhost:8080/api/auth/
 Content-Type: text/plain;charset=UTF-8
-Authtoken: a1003a97-9165-4ec4-98e4-a9f3e60536b1
+Authtoken: fdfe6de8-9d30-47a1-83d5-a5f2de3e640b
 
-###
-GET http://localhost:8080
+{
+  "actionLinks": {
+    "delete": {
+      "requestMethod": "DELETE",
+      "rel": "delete",
+      "url": "https://cora.epc.ub.uu.se/diva/login/rest/authToken/ada615d0-c0b1-4a60-9e5b-4641183e5bde"
+    }
+  }
+}
 
 ###
 GET http://localhost:8080/api/search/nationalSubjectCategorySearch?searchTermValue=*
