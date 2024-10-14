@@ -26,12 +26,12 @@ import {
   logout,
   Auth,
 } from './authSlice';
-import { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { loadPublicationTypesAsync } from '../publicationTypes';
 import { loadPublicationsAsync } from '../publications';
 import { deleteFromCora, isValidJSON } from './utils/utils';
 import { renameObjectKey } from '@/utils';
 import assertExists from '@/utils/assertExists';
+import { Account } from '@/components/Layout/Header/Login/devAccounts';
 
 const { VITE_BFF_API_URL } = import.meta.env;
 const LOCAL_STORAGE_NAME = 'diva_session';
@@ -49,7 +49,7 @@ export const loginAsync =
         { user: account.idFromLogin, appToken: account.appToken },
         options,
       );
-      dispatch(authenticated(response.data));
+      dispatch(authenticated(response.data.auth));
       dispatch(loadPublicationTypesAsync());
       dispatch(loadPublicationsAsync());
     } catch (e) {

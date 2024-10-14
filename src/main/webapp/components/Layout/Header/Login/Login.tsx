@@ -102,12 +102,7 @@ export const Login = (): JSX.Element => {
           splitSlashFromUrl(event.origin as string),
         )
       ) {
-        dispatch(
-          loginWebRedirectAsync(
-            convertWebRedirectToUserSession(event.data),
-            () => setBackdrop(false),
-          ),
-        );
+        dispatch(loginWebRedirectAsync(event.data, () => setBackdrop(false)));
       }
     }
   };

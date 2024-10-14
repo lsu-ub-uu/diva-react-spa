@@ -39,10 +39,10 @@ export const splitBasenameFromUrl = (url: string, basename: string) => {
 };
 
 export const convertWebRedirectToUserSession = (coraUser: any): Auth => {
-  const id = coraUser.token;
-  const { validForNoSeconds, idFromLogin } = coraUser;
+  // const id = coraUser.token;
+  const { token, validForNoSeconds, loginId } = coraUser.data;
 
-  return { id, validForNoSeconds, idFromLogin };
+  return { token, validForNoSeconds, loginId };
 };
 
 export const convertUserIdToShortForm = (userId: string) => {
@@ -50,7 +50,8 @@ export const convertUserIdToShortForm = (userId: string) => {
 };
 
 export const checkTypeOfUser = (user: Auth) => {
-  if (user.firstName) {
+  console.log({ user });
+  if (user.data.firstName) {
     return 'appToken';
   }
   return 'webRedirect';
@@ -58,6 +59,6 @@ export const checkTypeOfUser = (user: Auth) => {
 
 export const printUserNameOnPage = (user: Auth) => {
   return checkTypeOfUser(user) === 'appToken'
-    ? `${user.firstName} ${user.lastName}`
-    : convertUserIdToShortForm(user.idFromLogin);
+    ? `${user.data.firstName} ${user.data.lastName}`
+    : convertUserIdToShortForm(user.data.loginId);
 };
