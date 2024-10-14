@@ -49,7 +49,6 @@ export const convertUserIdToShortForm = (userId: string) => {
 };
 
 export const checkTypeOfUser = (user: Auth) => {
-  console.log({ user });
   if (user.data.firstName) {
     return 'appToken';
   }
