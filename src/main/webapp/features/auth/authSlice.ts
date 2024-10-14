@@ -23,25 +23,41 @@ import { isValidJSON } from './utils/utils';
 const LOCAL_STORAGE_NAME = 'diva_session';
 
 // a temporary user session object
-export interface UserSession {
-  id: string; // this is the authToken
-  validForNoSeconds: string;
-  idInUserStorage?: string;
-  idFromLogin: string;
-  lastName?: string;
-  firstName?: string;
+export interface Auth {
+  data: {
+    token: string;
+    validForNoSeconds: string;
+    idInUserStorage?: string;
+    loginId: string;
+    lastName?: string;
+    firstName?: string;
+  };
+  actionLinks?: ActionLinks;
 }
+export interface ActionLinks {
+  read?: ActionLink;
+  update?: ActionLink;
+  index?: ActionLink;
+  delete?: ActionLink;
+}
+export interface ActionLink {
+  requestMethod: string;
+  rel: string;
+  url: string;
+  accept?: string;
+  contentType?: string;
+  body?: any;
+}
+
 export interface AuthState {
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   hasError: boolean;
   error?: string;
-  userSession: UserSession | null;
+  userSession: Auth | null;
 }
 
-export const checkIfDataShouldBeSaved = (
-  userSession: UserSession | {} | null,
-) => {
+export const checkIfDataShouldBeSaved = (userSession: Auth | {} | null) => {
   if (
     JSON.stringify(userSession) === '{}' ||
     JSON.stringify(userSession) === 'null'
@@ -51,7 +67,7 @@ export const checkIfDataShouldBeSaved = (
   return isValidJSON(JSON.stringify(userSession));
 };
 
-export const writeState = (userSession: UserSession) => {
+export const writeState = (userSession: Auth) => {
   if (checkIfDataShouldBeSaved(userSession)) {
     localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(userSession));
   }
@@ -61,7 +77,7 @@ export const deleteState = (): void => {
   localStorage.removeItem(LOCAL_STORAGE_NAME);
 };
 
-export const createInitialState = (): UserSession | null => {
+export const createInitialState = (): Auth | null => {
   const storage = localStorage.getItem(LOCAL_STORAGE_NAME);
 
   if (!isValidJSON(storage)) {
@@ -86,7 +102,7 @@ export const createInitialState = (): UserSession | null => {
   axios.defaults.headers.common = {
     Authtoken: session.id,
   };
-  return session as UserSession;
+  return session as Auth;
 };
 
 const initialState = {
@@ -109,16 +125,16 @@ export const authSlice = createSlice({
       state.error = `${action.payload}`;
       state.isAuthenticating = false;
     },
-    authenticated: (state, action: PayloadAction<UserSession>) => {
+    authenticated: (state, action: PayloadAction<Auth>) => {
       state.isAuthenticating = false;
       state.isAuthenticated = true;
       state.hasError = false;
       state.error = '';
       state.userSession = action.payload;
-      writeState(action.payload as UserSession);
+      writeState(action.payload);
       // setting the auth header for axios client
       axios.defaults.headers.common = {
-        Authtoken: action.payload.id,
+        Authtoken: action.payload.data.token,
       };
     },
     logout: (state) => {
