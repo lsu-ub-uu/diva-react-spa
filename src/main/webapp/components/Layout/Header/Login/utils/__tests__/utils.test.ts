@@ -27,6 +27,7 @@ import {
   splitBasenameFromUrl,
   splitSlashFromUrl,
 } from '../utils';
+import { Auth } from '@/features/auth/authSlice';
 
 describe('Login utils', () => {
   it('messageIsFromWindowOpenedFromHere return false on different event url', () => {
@@ -91,14 +92,12 @@ describe('Login utils', () => {
   });
 
   it('convertWebRedirectToUserSession converts to UserSession', () => {
-    const actual = convertWebRedirectToUserSession({
+    const expected: Auth = {
       data: {
-        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', // this is the authToken
         validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
         loginId: 'johdo290@user.uu.se',
-        firstName: 'Everything',
-        lastName: 'DiVA',
+        idInUserStorage: 'coraUser:111111111111111',
       },
       actionLinks: {
         delete: {
@@ -107,12 +106,22 @@ describe('Login utils', () => {
           url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
         },
       },
-    });
-    expect(actual).toStrictEqual({
-      token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', // this is the authToken
+    };
+
+    const actual = convertWebRedirectToUserSession({
+      token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
+      idInUserStorage: 'coraUser:111111111111111',
       loginId: 'johdo290@user.uu.se',
+      actionLinks: {
+        delete: {
+          requestMethod: 'DELETE',
+          rel: 'delete',
+          url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+        },
+      },
     });
+    expect(actual).toStrictEqual(expected);
   });
 
   it.each([

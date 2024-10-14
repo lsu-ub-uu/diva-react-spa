@@ -27,10 +27,10 @@ export interface Auth {
   data: {
     token: string;
     validForNoSeconds: string;
-    idInUserStorage: string;
+    idInUserStorage?: string;
     loginId: string;
-    lastName: string;
-    firstName: string;
+    lastName?: string;
+    firstName?: string;
   };
   actionLinks?: ActionLinks;
 }

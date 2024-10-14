@@ -39,10 +39,9 @@ export const splitBasenameFromUrl = (url: string, basename: string) => {
 };
 
 export const convertWebRedirectToUserSession = (coraUser: any): Auth => {
-  // const id = coraUser.token;
-  const { token, validForNoSeconds, loginId } = coraUser.data;
+  const { actionLinks, ...rest } = coraUser;
 
-  return { token, validForNoSeconds, loginId };
+  return { data: rest, actionLinks };
 };
 
 export const convertUserIdToShortForm = (userId: string) => {
