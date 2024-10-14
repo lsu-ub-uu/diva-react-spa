@@ -45,11 +45,11 @@ export const loginAsync =
         headers: { 'Content-Type': 'application/json' },
       };
       const response = await axios.post(
-        `/auth/${account.idFromLogin}`,
-        { token: account.appToken },
+        '/auth/appToken',
+        { user: account.idFromLogin, appToken: account.appToken },
         options,
       );
-      dispatch(authenticated(response.data.authToken));
+      dispatch(authenticated(response.data));
       dispatch(loadPublicationTypesAsync());
       dispatch(loadPublicationsAsync());
     } catch (e) {
