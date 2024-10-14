@@ -8,9 +8,9 @@ import {
 
 const authRoute = express.Router();
 
-authRoute.route('/:user').post(postAppTokenToGetAuthToken);
-authRoute.route('/:user').delete(deleteAuthTokenOnLogout);
+authRoute.route('/appToken').post(postAppTokenToGetAuthToken);
+authRoute.route('/').delete(deleteAuthTokenOnLogout);
 authRoute.route('/loginUnits').get(getAllLoginUnits);
-authRoute.route('/password/:user').post(postUserNameAndPasswordToGetAuthToken);
+authRoute.route('/password').post(postUserNameAndPasswordToGetAuthToken);
 
 export { authRoute };

@@ -2,17 +2,27 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "commonjs",
-    "lib": ["es2022"],
-    "allowJs": true,
+    "moduleResolution": "node",
+    "lib": [
+      "es2022"
+    ],
     "outDir": "dist",
     "rootDir": "src",
     "baseUrl": "./src",
     "strict": true,
     "esModuleInterop": true,
-    "types": ["node", "jest"],
+    "types": [
+      "node",
+      "jest"
+    ],
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "src/**/*.test.ts"],
-  "exclude": ["jest.config.js"]
+  "include": [
+    "src/**/*",
+    "src/**/*.test.ts"
+  ],
+  "exclude": [
+    "jest.config.js"
+  ]
 }
