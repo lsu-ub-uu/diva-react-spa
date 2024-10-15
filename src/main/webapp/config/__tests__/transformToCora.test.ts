@@ -25,7 +25,6 @@ import {
   generateLastUpdateInfo,
   generateRecordInfo,
   generateRecordLink,
-  injectRecordInfoIntoDataGroup,
   isNonRepeatingVariable,
   isNotAttribute,
   isRepeatingVariable,
