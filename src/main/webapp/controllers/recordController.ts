@@ -34,8 +34,8 @@ import { injectRecordInfoIntoDataGroup, transformToCoraData } from '../config/tr
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { transformRecord } from '../config/transformRecord';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
-import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import * as TYPES from '../config/bffTypes';
+import { BFFMetadataGroup } from '../config/bffTypes';
 
 /**
  * @desc Post an update to a record to Cora
@@ -121,18 +121,16 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     }
 
     const FORM_MODE_NEW = 'create';
-    const dataDivider = 'divaData';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
-    const newGroup = injectRecordInfoIntoDataGroup(
-      transformData[0] as DataGroup,
-      validationTypeId,
-      dataDivider
-    );
 
-    const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
+    const response = await postRecordData<RecordWrapper>(
+      transformData[0] as DataGroup,
+      recordType,
+      authToken
+    );
     const id = extractIdFromRecordInfo(response.data.record.data);
     res.status(response.status).json({ id }); // return id for now
   } catch (error: unknown) {
@@ -159,7 +157,6 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
     const record = transformRecord(dependencies, recordWrapper);
     if (presentationRecordLinkId !== undefined) {
       const { presentationGroup, metadataGroup } = getGroupsFromPresentationLinkId(
-        dependencies,
         presentationRecordLinkId as string
       );
       record.presentation = createLinkedRecordDefinition(
@@ -187,22 +184,26 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
 
 /**
  * @desc Get record data for new record
- * @route GET /api/record/:recordType
+ * @route GET /api/record/:validationType
  * @access Private
  */
-export const getRecordByRecordType = async (req: Request, res: Response) => {
+export const getRecordByValidationTypeId = async (req: Request, res: Response) => {
   try {
-    const { recordType } = req.params;
+    const { validationTypeId } = req.params;
 
     // const authToken = req.header('authToken') ?? '';
-    const rtGroup = dependencies.recordTypePool.get(recordType);
-    const metadataGroup = dependencies.metadataPool.get(rtGroup.metadataId)
-    const recordInfoChildGroup = dependencies.metadataPool.get(metadataGroup.children[0].childId);
+    const validationType = dependencies.validationTypePool.get(validationTypeId);
+    const recordTypeGroup = dependencies.recordTypePool.get(validationType.validatesRecordTypeId);
+    const metadataGroup: BFFMetadataGroup = dependencies.metadataPool.get(
+      recordTypeGroup.metadataId
+    );
+    const recordInfoChildGroup: BFFMetadataGroup = dependencies.metadataPool.get(
+      metadataGroup.children[0].childId
+    );
 
-    const recordInfo =
-      recordInfoChildGroup.children
-      .filter(child => parseInt(child.repeatMin) > 0)
-      .map(child => dependencies.metadataPool.get(child.childId))
+    const recordInfo = recordInfoChildGroup.children
+      .filter((child) => parseInt(child.repeatMin) > 0)
+      .map((child) => dependencies.metadataPool.get(child.childId))
       .reduce((acc, curr) => {
         if (curr.finalValue !== undefined) {
           acc[curr.nameInData] = { value: curr.finalValue };
@@ -210,7 +211,9 @@ export const getRecordByRecordType = async (req: Request, res: Response) => {
         return acc;
       }, {});
 
-    const record = {[metadataGroup.nameInData]: { [recordInfoChildGroup.nameInData]: recordInfo }}
+    const record = {
+      data: { [metadataGroup.nameInData]: { [recordInfoChildGroup.nameInData]: recordInfo } }
+    };
 
     res.status(200).json(record);
   } catch (error: unknown) {
@@ -220,10 +223,7 @@ export const getRecordByRecordType = async (req: Request, res: Response) => {
   }
 };
 
-export const getGroupsFromPresentationLinkId = (
-  dependencies: Dependencies,
-  presentationLinkId: string
-) => {
+export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
   const presentationLink = dependencies.presentationPool.get(
     presentationLinkId
   ) as TYPES.BFFPresentationRecordLink;
