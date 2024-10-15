@@ -131,8 +131,8 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
       recordType,
       authToken
     );
-    const id = extractIdFromRecordInfo(response.data.record.data);
-    res.status(response.status).json({ id }); // return id for now
+    const record = transformRecord(dependencies, response.data);
+    res.status(response.status).json(record); // return id for now
   } catch (error: unknown) {
     console.error(error);
     const errorResponse = errorHandler(error);
