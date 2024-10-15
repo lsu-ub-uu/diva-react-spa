@@ -33,7 +33,11 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '@/components';
-import { useCoraFormSchemaByValidationType } from '@/app/hooks';
+import {
+  useCoraFormSchemaByValidationType,
+  useCoraRecordByType,
+  useCoraRecordByTypeAndId,
+} from '@/app/hooks';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { removeEmpty } from '@/utils/removeEmpty';
 
@@ -44,6 +48,8 @@ export const CreateRecordPage = () => {
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
+  const coraRecord = useCoraRecordByType(validationType);
+
   const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
     validationType,
     'create',
@@ -104,6 +110,7 @@ export const CreateRecordPage = () => {
       <div>
         <Stack spacing={2}>
           <FormGenerator
+            record={coraRecord.record}
             onSubmit={handleSubmit}
             onInvalid={() => {
               notification(`Form is invalid`, 'error');
