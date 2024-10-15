@@ -185,6 +185,41 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
   }
 };
 
+/**
+ * @desc Get record data for new record
+ * @route GET /api/record/:recordType
+ * @access Private
+ */
+export const getRecordByRecordType = async (req: Request, res: Response) => {
+  try {
+    const { recordType } = req.params;
+
+    // const authToken = req.header('authToken') ?? '';
+    const rtGroup = dependencies.recordTypePool.get(recordType);
+    const metadataGroup = dependencies.metadataPool.get(rtGroup.metadataId)
+    const recordInfoChildGroup = dependencies.metadataPool.get(metadataGroup.children[0].childId);
+
+    const recordInfo =
+      recordInfoChildGroup.children
+      .filter(child => parseInt(child.repeatMin) > 0)
+      .map(child => dependencies.metadataPool.get(child.childId))
+      .reduce((acc, curr) => {
+        if (curr.finalValue !== undefined) {
+          acc[curr.nameInData] = { value: curr.finalValue };
+        }
+        return acc;
+      }, {});
+
+    const record = {[metadataGroup.nameInData]: { [recordInfoChildGroup.nameInData]: recordInfo }}
+
+    res.status(200).json(record);
+  } catch (error: unknown) {
+    console.error(error);
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
 export const getGroupsFromPresentationLinkId = (
   dependencies: Dependencies,
   presentationLinkId: string

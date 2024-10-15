@@ -28,7 +28,6 @@ import {
 } from '../utils/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 
-const { inspect } = require('node:util');
 
 export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
@@ -37,7 +36,6 @@ export const transformToCoraData = (
   repeatId?: string,
   hasSiblings?: boolean
 ): (DataGroup | DataAtomic | RecordLink)[] => {
-  console.log(inspect(lookup));
   const result: (DataGroup | DataAtomic)[] = [];
   Object.keys(payload).forEach((fieldKey) => {
     const value = payload[fieldKey];
