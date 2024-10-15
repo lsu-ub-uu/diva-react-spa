@@ -846,7 +846,6 @@ const checkIfSpecifiedHeadlineLevelExist = (presentation: BFFPresentationGroup) 
 };
 
 const checkIfShowHeadlineExist = (presentation: BFFPresentationGroup) => {
-  // eslint-disable-next-line no-prototype-builtins
   return Object.hasOwn(presentation, 'showHeadline');
 };
 

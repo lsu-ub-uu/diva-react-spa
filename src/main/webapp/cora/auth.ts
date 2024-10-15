@@ -18,9 +18,8 @@
  */
 
 import axios from 'axios';
-import * as console from 'console';
 import { Auth } from '../types/Auth';
-import { ActionLinks, CoraRecord, DataGroup } from '../utils/cora-data/CoraData';
+import { ActionLinks, CoraRecord } from '../utils/cora-data/CoraData';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import assertExists from '../utils/assertExists';
 

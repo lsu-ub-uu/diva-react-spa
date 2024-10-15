@@ -36,7 +36,7 @@ export interface BFFRecordType extends BFFBase {
   listPresentationViewId: string;
 }
 
-export abstract interface BFFMetadata extends BFFBase {
+export interface BFFMetadata extends BFFBase {
   nameInData: string;
   type:
     | 'group'
@@ -209,6 +209,6 @@ export interface BFFLoginWebRedirect extends BFFLogin {
 }
 export interface BFFLoginPassword extends BFFLogin {
   viewDefinition: string;
-  viewPresentation: unknown;
+  viewPresentation: string;
   description: string;
 }
