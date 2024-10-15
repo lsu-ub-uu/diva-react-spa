@@ -137,7 +137,7 @@ describe('Login utils', () => {
     [
       {
         data: {
-          id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
           loginId: 'johdo290@user.uu.se',
         },
@@ -158,8 +158,8 @@ describe('Login utils', () => {
       'appToken',
     ],
   ])('checkTypeOfUser returns correct type of user', (userSession, type) => {
-    const acutal = checkTypeOfUser(userSession);
-    expect(acutal).toBe(type);
+    const actual = checkTypeOfUser(userSession);
+    expect(actual).toBe(type);
   });
 
   it.each([
@@ -179,7 +179,7 @@ describe('Login utils', () => {
     [
       {
         data: {
-          id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
           loginId: 'johdo290@user.uu.se',
         },

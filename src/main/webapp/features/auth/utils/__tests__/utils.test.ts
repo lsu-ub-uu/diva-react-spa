@@ -19,6 +19,7 @@
 import axios, { AxiosError } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { deleteFromCora, isValidJSON } from '../utils';
+import { Auth } from '@/features/auth/authSlice';
 
 describe('actions', () => {
   let mockAxios: MockAdapter;
@@ -32,13 +33,23 @@ describe('actions', () => {
   });
 
   it('utils sends request to DELETE authtoken from Cora', async () => {
-    const userSession = {
-      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+    const userSession: Auth = {
+      data: {
+
+      token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
       idInUserStorage: 'coraUser:111111111111111',
-      idFromLogin: 'coraUser:111111111111111',
+      loginId: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',
+      },
+      actionLinks: {
+        delete: {
+          requestMethod: 'DELETE',
+          rel: 'delete',
+          url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+        },
+      },
     };
     const expectedResponse = {
       data: {},
@@ -47,29 +58,39 @@ describe('actions', () => {
       status: 200,
     };
 
-    const logoutURL = `http://localhost:8080/api/auth/${userSession.idFromLogin}`;
+    const logoutURL = `http://localhost:8080/api/auth`;
 
     mockAxios.onDelete(logoutURL).reply(200);
-    const response = await deleteFromCora(logoutURL, userSession.id);
+    const response = await deleteFromCora(logoutURL, userSession.actionLinks!);
     expect(response.status).toEqual(expectedResponse.status);
   });
 
   it('utils returns 500 on failed DELETE authtoken from Cora', async () => {
-    const userSession = {
-      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+    const userSession: Auth = {
+      data: {
+
+      token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
       idInUserStorage: 'coraUser:111111111111111',
-      idFromLogin: 'coraUser:111111111111111',
+      loginId: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',
+      },
+      actionLinks: {
+        delete: {
+          requestMethod: 'DELETE',
+          rel: 'delete',
+          url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+        },
+      },
     };
 
-    const logoutURL = `http://localhost:8080/api/auth/${userSession.idFromLogin}`;
+    const logoutURL = `http://localhost:8080/api/auth`;
 
     mockAxios.onDelete(logoutURL).reply(500);
 
     try {
-      await deleteFromCora(logoutURL, userSession.id);
+      await deleteFromCora(logoutURL, userSession.actionLinks!);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const castError: AxiosError = <AxiosError>error;
