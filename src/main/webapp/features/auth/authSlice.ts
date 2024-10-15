@@ -22,6 +22,7 @@ import { isValidJSON } from './utils/utils';
 
 const LOCAL_STORAGE_NAME = 'diva_session';
 
+<<<<<<< Updated upstream
 // a temporary user session object
 export interface UserSession {
   id: string; // this is the authToken
@@ -30,6 +31,18 @@ export interface UserSession {
   idFromLogin: string;
   lastName?: string;
   firstName?: string;
+=======
+export interface Auth {
+  data: {
+    token: string;
+    validForNoSeconds: string;
+    idInUserStorage?: string;
+    loginId: string;
+    lastName?: string;
+    firstName?: string;
+  };
+  actionLinks?: ActionLinks;
+>>>>>>> Stashed changes
 }
 export interface AuthState {
   isAuthenticated: boolean;

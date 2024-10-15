@@ -123,9 +123,17 @@ describe('Login utils', () => {
   it.each([
     [
       {
+<<<<<<< Updated upstream
         id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
         idFromLogin: 'johdo290@user.uu.se',
+=======
+        data: {
+          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          validForNoSeconds: '600',
+          loginId: 'johdo290@user.uu.se',
+        },
+>>>>>>> Stashed changes
       },
       'webRedirect',
     ],
@@ -141,8 +149,8 @@ describe('Login utils', () => {
       'appToken',
     ],
   ])('checkTypeOfUser returns correct type of user', (userSession, type) => {
-    const acutal = checkTypeOfUser(userSession);
-    expect(acutal).toBe(type);
+    const actual = checkTypeOfUser(userSession);
+    expect(actual).toBe(type);
   });
 
   it.each([
@@ -159,6 +167,7 @@ describe('Login utils', () => {
     ],
     [
       {
+<<<<<<< Updated upstream
         id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
         idInUserStorage: 'coraUser:111111111111111',
@@ -195,6 +204,13 @@ describe('Login utils', () => {
         id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
         idFromLogin: 'johdo290@user.uu.se',
+=======
+        data: {
+          token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+          validForNoSeconds: '600',
+          loginId: 'johdo290@user.uu.se',
+        },
+>>>>>>> Stashed changes
       },
       'johdo290',
     ],
