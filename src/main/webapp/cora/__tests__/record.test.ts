@@ -83,7 +83,6 @@ describe('record', () => {
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
     });
 
-    // @ts-ignore
     it('should handle an error response with status 404', async () => {
       const type = 'invalidType';
       const apiUrl: string = `/record/${type}`;
@@ -408,7 +407,6 @@ describe('record', () => {
 
 describe.skip('real', () => {
   describe('real getRecordDataListByType', () => {
-    // @ts-ignore
     it.skip('should make a real API call without authToken', async () => {
       const { CORA_API_URL } = process.env;
       axios.defaults.baseURL = CORA_API_URL;
@@ -433,7 +431,6 @@ describe.skip('real', () => {
   });
 
   describe('real createRecord', () => {
-    // @ts-ignore
     it('should make a real post API call to create a record with authToken', async () => {
       const { CORA_API_URL } = process.env;
       axios.defaults.baseURL = CORA_API_URL;
@@ -528,7 +525,6 @@ describe.skip('real', () => {
   });
 
   describe('real getRecord', () => {
-    // @ts-ignore
     it('should make a real API call to get fetch record with authToken', async () => {
       const { CORA_API_URL } = process.env;
       axios.defaults.baseURL = CORA_API_URL;

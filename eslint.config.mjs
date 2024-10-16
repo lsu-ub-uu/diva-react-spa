@@ -9,5 +9,5 @@ export default [
   pluginJs.configs.recommended,
   ...typescriptEslint.configs.recommended,
   eslintConfigPrettier,
-  { rules: { '@typescript-eslint/no-explicit-any': 0, '@typescript-eslint/ban-ts-comment': 0 } }
+  { rules: { '@typescript-eslint/no-explicit-any': 0 } }
 ];
