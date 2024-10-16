@@ -49,9 +49,7 @@ describe('Snackbars', () => {
       const button = screen.getByRole('button', {
         name: 'Test Button',
       });
-      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < snacks; i++) {
-        // eslint-disable-next-line no-await-in-loop
         await user.click(button);
       }
       const snackbar = screen.queryAllByText('Subject was successfully added');

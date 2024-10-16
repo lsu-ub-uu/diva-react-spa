@@ -29,10 +29,9 @@ export interface RecordData {
   [key: string]: any;
 }
 
-export const removeRootObject = (obj: object) => {
+export const removeRootObject = (obj: Record<string, any>) => {
   const childKeys = Object.keys(obj);
   if (childKeys.length === 1) {
-    // @ts-ignore
     return obj[childKeys[0]];
   }
 };
@@ -69,7 +68,12 @@ function createDefaultObjectForRepeating(
   component: FormComponent,
   currentComponentSameNameInData: boolean,
   defaultValues: {
-    [p: string]: string | number | ({} | undefined)[] | unknown[] | undefined;
+    [p: string]:
+      | string
+      | number
+      | (Record<string, never> | undefined)[]
+      | unknown[]
+      | undefined;
   },
   formDefaultObject:
     | { [p: string]: string; value: string }
@@ -110,7 +114,12 @@ export const createDefaultValuesFromComponent = (
   childWithSameNameInData: string[] = [],
 ) => {
   let defaultValues: {
-    [x: string]: string | number | ({} | undefined)[] | undefined | unknown[];
+    [x: string]:
+      | string
+      | number
+      | (Record<string, never> | undefined)[]
+      | undefined
+      | unknown[];
   } = {};
 
   const childrenWithSameNameInData = getChildrenWithSameNameInData(
@@ -154,7 +163,7 @@ export const createDefaultValuesFromComponent = (
 
 export const getChildArrayWithSameNameInData = (component: FormComponent) => {
   const nameArray: any[] = [];
-  (component.components ?? []).forEach((childComponent, index) => {
+  (component.components ?? []).forEach((childComponent) => {
     nameArray.push(childComponent.name);
   });
   return nameArray;

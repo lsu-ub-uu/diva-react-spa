@@ -143,20 +143,18 @@ describe('authSlice', () => {
   });
   describe('createInitialState', () => {
     it('createInitialState returns null from localStorage from undefined', () => {
-      // @ts-ignore
-      localStorage.setItem('diva_session', undefined);
+      localStorage.setItem('diva_session', 'undefined');
+
       expect(createInitialState()).toStrictEqual(null);
     });
 
     it('createInitialState returns null from localStorage from null', () => {
-      // @ts-ignore
-      localStorage.setItem('diva_session', null);
+      localStorage.setItem('diva_session', 'null');
       expect(createInitialState()).toStrictEqual(null);
     });
 
     it('createInitialState returns null from localStorage from {}', () => {
-      // @ts-ignore
-      localStorage.setItem('diva_session', {});
+      localStorage.setItem('diva_session', {} as string);
       expect(createInitialState()).toStrictEqual(null);
     });
   });

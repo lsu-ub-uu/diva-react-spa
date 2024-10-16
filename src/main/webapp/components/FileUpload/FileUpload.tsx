@@ -26,7 +26,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import axios from 'axios';
 
@@ -112,7 +112,7 @@ export const FileUpload = (props: FileUploadProps) => {
       });
       setProgress(100);
       setUploadStatus(UploadStatus.SUCCESS);
-    } catch (error: any) {
+    } catch {
       setUploadStatus(UploadStatus.FAILED);
     }
   };
@@ -133,20 +133,22 @@ export const FileUpload = (props: FileUploadProps) => {
           multiple={false}
           style={{ display: 'none' }}
         />
-        <Button
-          disabled={progress > 0 && progress < 100}
-          disableRipple
-          color='primary'
-          variant='contained'
-          endIcon={<AddCircleOutlineIcon />}
-          onClick={() => {
-            setUploadStatus(UploadStatus.PENDING);
-            setProgress(0);
-            inputRef.current?.click();
-          }}
-        >
-          Choose file to upload
-        </Button>
+        <>
+          <Button
+            disabled={progress > 0 && progress < 100}
+            disableRipple
+            color='primary'
+            variant='contained'
+            endIcon={<AddCircleOutlineIcon />}
+            onClick={() => {
+              setUploadStatus(UploadStatus.PENDING);
+              setProgress(0);
+              inputRef.current?.click();
+            }}
+          >
+            Choose file to upload
+          </Button>
+        </>
         {uploadStatus === UploadStatus.FAILED && (
           <Alert severity='error'>
             File <i>{filename}</i> failed to upload

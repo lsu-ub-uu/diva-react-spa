@@ -76,7 +76,7 @@ const validationTestsExtras = (
   optional: boolean,
   type: 'string' | 'array' | 'object',
   tests: unknown[],
-  defaultParam: Object | undefined,
+  defaultParam: object | undefined,
   nullable: boolean,
 ) => {
   return {
@@ -127,11 +127,9 @@ const validationExclusiveExtras = (
     exclusiveTests: {},
   };
   if (_excludedEdges) {
-    // eslint-disable-next-line no-underscore-dangle
     obj._excludedEdges = [];
   }
   if (_sortErrors) {
-    // eslint-disable-next-line no-underscore-dangle
     obj._sortErrors = function anonymous() {};
   }
 

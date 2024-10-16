@@ -38,38 +38,39 @@ interface ExtendedDatePickerProps
 const swedenLocale =
   svSE.components.MuiLocalizationProvider.defaultProps.localeText;
 
-export const DatePicker = React.forwardRef(
-  (props: ExtendedDatePickerProps, ref: React.ForwardedRef<HTMLDivElement>) => {
-    return (
-      <LocalizationProvider
-        dateAdapter={AdapterDayjs}
-        adapterLocale='sv'
-        localeText={swedenLocale}
-      >
-        <MuiDatePicker
-          {...props}
-          ref={ref}
-          PopperProps={{
-            sx: {
-              '& .MuiPaper-root': { border: '2px solid #000000' },
-            },
-          }}
-          renderInput={(params: TextFieldProps) => (
-            <TextField
-              size='small'
-              {...params}
-              onChange={params.onChange}
-              helperText={props.error !== undefined ? props.error.message : ' '}
-              error={props.error !== undefined}
-            />
-          )}
-          componentsProps={{
-            actionBar: {
-              actions: ['today', 'clear'],
-            },
-          }}
-        />
-      </LocalizationProvider>
-    );
-  },
-);
+export const DatePicker = React.forwardRef(function DatePicker(
+  props: ExtendedDatePickerProps,
+  ref: React.ForwardedRef<HTMLDivElement>,
+) {
+  return (
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      adapterLocale='sv'
+      localeText={swedenLocale}
+    >
+      <MuiDatePicker
+        {...props}
+        ref={ref}
+        PopperProps={{
+          sx: {
+            '& .MuiPaper-root': { border: '2px solid #000000' },
+          },
+        }}
+        renderInput={(params: TextFieldProps) => (
+          <TextField
+            size='small'
+            {...params}
+            onChange={params.onChange}
+            helperText={props.error !== undefined ? props.error.message : ' '}
+            error={props.error !== undefined}
+          />
+        )}
+        componentsProps={{
+          actionBar: {
+            actions: ['today', 'clear'],
+          },
+        }}
+      />
+    </LocalizationProvider>
+  );
+});

@@ -25,7 +25,7 @@
   },
   "include": [
     "src",
-    ".eslintrc.json",
+    "oldeslintrc.json",
     "node_modules/vitest/globals.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]

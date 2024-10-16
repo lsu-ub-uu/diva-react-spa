@@ -41,7 +41,6 @@ export const ActionButtonGroup = (
   const { t } = useTranslation();
 
   const marginTopValue =
-    // eslint-disable-next-line no-nested-ternary
     props.entityName === 'Polygon'
       ? '30px'
       : isComponentGroupAndSingularForStyling(

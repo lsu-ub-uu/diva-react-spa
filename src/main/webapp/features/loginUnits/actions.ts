@@ -21,13 +21,13 @@ import { AppThunk } from '@/app/store';
 import { hasError, LoginUnitsArray, update, updating } from './loginUnitsSlice';
 
 export const loadLoginUnitsAsync =
-  (callback?: Function): AppThunk =>
+  (callback?: () => void): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(updating());
       const response = await axios.get(`/auth/loginUnits`);
       dispatch(update(response.data as LoginUnitsArray[]));
-    } catch (e) {
+    } catch {
       dispatch(hasError('Error occurred loading login units'));
     } finally {
       if (callback) callback();

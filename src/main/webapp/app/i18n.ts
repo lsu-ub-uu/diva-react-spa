@@ -47,7 +47,7 @@ const useI18n = () => {
           });
 
         setLoading(false);
-      } catch (error) {
+      } catch {
         setLoading(false);
       }
     };

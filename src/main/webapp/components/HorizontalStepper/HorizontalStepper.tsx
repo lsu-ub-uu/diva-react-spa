@@ -77,7 +77,6 @@ interface HorizontalStepperProps {
 
 export const StepIcon = (props: StepIconProps) => {
   const { active, completed, className } = props;
-  // eslint-disable-next-line no-nested-ternary
   const state = active ? 'active' : completed ? 'completed' : 'disabled';
 
   return (

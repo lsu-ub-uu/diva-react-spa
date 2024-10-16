@@ -37,7 +37,7 @@ const { VITE_BFF_API_URL } = import.meta.env;
 const LOCAL_STORAGE_NAME = 'diva_session';
 
 export const loginAsync =
-  (account: Account, callback?: Function): AppThunk =>
+  (account: Account, callback?: () => void): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(authenticating());
@@ -52,7 +52,7 @@ export const loginAsync =
       dispatch(authenticated(response.data.auth));
       dispatch(loadPublicationTypesAsync());
       dispatch(loadPublicationsAsync());
-    } catch (e) {
+    } catch {
       dispatch(hasError('login error'));
     } finally {
       if (callback) callback();
@@ -60,7 +60,7 @@ export const loginAsync =
   };
 
 export const loginPasswordAsync =
-  (values: FieldValues, callback?: Function): AppThunk =>
+  (values: FieldValues, callback?: () => void): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(authenticating());
@@ -76,7 +76,7 @@ export const loginPasswordAsync =
       dispatch(authenticated(response.data.authToken));
       dispatch(loadPublicationTypesAsync());
       dispatch(loadPublicationsAsync());
-    } catch (e) {
+    } catch {
       dispatch(hasError('login error'));
     } finally {
       if (callback) callback();
@@ -84,14 +84,14 @@ export const loginPasswordAsync =
   };
 
 export const loginWebRedirectAsync =
-  (account: Auth, callback?: Function): AppThunk =>
+  (account: Auth, callback?: () => void): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(authenticating());
       dispatch(authenticated(account));
       dispatch(loadPublicationTypesAsync());
       dispatch(loadPublicationsAsync());
-    } catch (e) {
+    } catch {
       dispatch(hasError('login error'));
     } finally {
       if (callback) callback();

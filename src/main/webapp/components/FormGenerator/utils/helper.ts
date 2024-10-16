@@ -155,8 +155,7 @@ export const checkForExistingSiblings = (formValues: any) => {
   if (formValues !== undefined) {
     const valuesWithoutAttribs = Object.keys(formValues)
       .filter((objKey) => !objKey.startsWith('_'))
-      .reduce((newObj, key) => {
-        // @ts-ignore
+      .reduce<Record<string, any>>((newObj, key) => {
         newObj[key] = formValues[key];
         return newObj;
       }, {});

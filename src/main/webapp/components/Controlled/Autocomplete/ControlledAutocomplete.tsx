@@ -66,7 +66,6 @@ export const ControlledAutocomplete = (
   useEffect(() => {
     let isMounted = true;
 
-    // eslint-disable-next-line consistent-return
     const fetchData = async () => {
       try {
         if (inputValue === '') {
@@ -155,7 +154,6 @@ export const ControlledAutocomplete = (
               getOptionLabel={(option) => option.id}
               clearOnBlur={false}
               renderInput={(params) => (
-                // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
                   {presentationValue !== null ? (
                     <LinkedRecord

@@ -16,13 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import React, {
-  ReactNode,
-  useMemo,
-  createContext,
-  useState,
-  useContext,
-} from 'react';
+import { ReactNode, useMemo, createContext, useState, useContext } from 'react';
 import { Backdrop } from './Backdrop';
 
 type BackdropContextType = {

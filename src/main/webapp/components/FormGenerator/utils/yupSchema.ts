@@ -76,7 +76,6 @@ export const createYupValidationsFromComponent = (
     validationRule = Object.assign({}, ...validationsRules);
     return validationRule;
   }
-  // eslint-disable-next-line no-lonely-if
   const currentNameInData = hasCurrentComponentSameNameInData(
     childWithSameNameInData,
     component.name,
@@ -120,7 +119,6 @@ export const createYupValidationsFromComponent = (
     }
   } else {
     // non-repeating group
-    // eslint-disable-next-line no-lonely-if
     if (isComponentGroup(component)) {
       const childrenWithSameNameInData = getChildrenWithSameNameInData(
         getChildArrayWithSameNameInData(component),
@@ -210,7 +208,12 @@ export const createValidationForAttributesFromComponent = (
 
 export const createYupArrayFromSchema = (
   schema:
-    | ObjectSchema<{ [x: string]: unknown }, AnyObject, {}, 'd'>
+    | ObjectSchema<
+        { [x: string]: unknown },
+        AnyObject,
+        Record<string, never>,
+        'd'
+      >
     | ObjectSchema<{ [x: string]: unknown }, AnyObject>,
   repeat: FormComponentRepeat | undefined,
 ) => {

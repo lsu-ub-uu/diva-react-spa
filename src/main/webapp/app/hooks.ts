@@ -41,7 +41,6 @@ export const useCoraFormSchemaByValidationType = (
 
   useEffect(() => {
     let isMounted = true;
-
     const fetchFormSchema = async () => {
       try {
         const response = await axios.get(`/form/${validationType}/${mode}`);
@@ -132,11 +131,10 @@ export const useCoraRecordByTypeAndId = (
     };
 
     if (recordId !== undefined) fetchRecord().then();
-
     return () => {
       isMounted = false;
     };
-  }, [recordType, recordId]);
+  }, [presentationRecordLinkId, recordType, recordId]);
 
   return { isLoading, error, record };
 };
