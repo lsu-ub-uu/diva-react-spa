@@ -133,22 +133,20 @@ export const FileUpload = (props: FileUploadProps) => {
           multiple={false}
           style={{ display: 'none' }}
         />
-        <>
-          <Button
-            disabled={progress > 0 && progress < 100}
-            disableRipple
-            color='primary'
-            variant='contained'
-            endIcon={<AddCircleOutlineIcon />}
-            onClick={() => {
-              setUploadStatus(UploadStatus.PENDING);
-              setProgress(0);
-              inputRef.current?.click();
-            }}
-          >
-            Choose file to upload
-          </Button>
-        </>
+        <Button
+          disabled={progress > 0 && progress < 100}
+          disableRipple
+          color='primary'
+          variant='contained'
+          endIcon={<AddCircleOutlineIcon />}
+          onClick={() => {
+            setUploadStatus(UploadStatus.PENDING);
+            setProgress(0);
+            inputRef.current?.click();
+          }}
+        >
+          Choose file to upload
+        </Button>
         {uploadStatus === UploadStatus.FAILED && (
           <Alert severity='error'>
             File <i>{filename}</i> failed to upload
