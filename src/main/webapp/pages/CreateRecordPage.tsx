@@ -24,7 +24,7 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useBackdrop,
   FormGenerator,
@@ -40,6 +40,7 @@ import {
 } from '@/app/hooks';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { removeEmpty } from '@/utils/removeEmpty';
+import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
@@ -54,7 +55,7 @@ export const CreateRecordPage = () => {
     validationType,
     'create',
   );
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
@@ -78,7 +79,11 @@ export const CreateRecordPage = () => {
         `Record was successfully created ${response.data.id}`,
         'success',
       );
-      // navigate(`/update/record/${response.data.id}`);
+      const recordInfo = getRecordInfo(response.data)
+      const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;
+      const recordType = getValueFromRecordInfo(recordInfo, 'type')[0].value;
+      console.log(recordType)
+      navigate(`/update/record/${recordType}/${id}`);
     } catch (err: any) {
       setIsSubmitting(false);
       notification(`${err.message}`, 'error');

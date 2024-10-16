@@ -91,8 +91,34 @@ export interface CoraRecord {
   createdBy?: string;
   updated?: CoraUpdate[];
   userRights?: string[];
-  data: unknown;
+  data: {
+    [key: string]: Metadata;
+  };
   presentation?: unknown;
+}
+export interface Metadata {
+  recordInfo: RecordInfo;
+  [key: string]: any;
+}
+export interface RecordInfo {
+  [key: string]: any;
+  createdBy?: Value[];
+  dataDivider: Value;
+  id?: Value[];
+  tsCreated?: Value[];
+  type?: Value[];
+  updated?: UpdatedGroup[];
+  validationType?: Value;
+}
+
+interface UpdatedGroup {
+  tsUpdated: Value;
+  updatedBy: Value;
+}
+
+interface Value {
+  value: string;
+  [key: string]: any;
 }
 
 export const useCoraRecordByTypeAndId = (
