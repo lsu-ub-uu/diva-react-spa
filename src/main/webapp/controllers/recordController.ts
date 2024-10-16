@@ -31,7 +31,6 @@ import { dependencies } from '../config/configureServer';
 import { createFormMetaData } from '../formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { transformToCoraData } from '../config/transformToCora';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { transformRecord } from '../config/transformRecord';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 import * as TYPES from '../config/bffTypes';

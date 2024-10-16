@@ -17,17 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import { Attributes, DataAtomic, DataGroup, RecordLink } from '../utils/cora-data/CoraData';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { FormMetaData } from '../formDefinition/formDefinition';
-import { BFFMetadata, BFFMetadataChildReference } from './bffTypes';
 import {
   containsChildWithNameInData,
   getFirstDataGroupWithNameInData
 } from '../utils/cora-data/CoraDataUtils';
-import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-
 
 export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
