@@ -27,6 +27,44 @@ export const coraRecord = {
   updated: [],
   data: {
     someRootNameInData: {
+      recordInfo: {
+        id: [
+          {
+            value: '12345',
+          },
+        ],
+        validationType: {
+          value: 'record',
+        },
+        dataDivider: {
+          value: 'divaData',
+        },
+        type: [
+          {
+            value: 'record',
+          },
+        ],
+        createdBy: [
+          {
+            value: '161616',
+          },
+        ],
+        tsCreated: [
+          {
+            value: '2024-10-16T12:36:04.249992Z',
+          },
+        ],
+        updated: [
+          {
+            tsUpdated: {
+              value: '2024-10-16T12:36:04.249992Z',
+            },
+            updatedBy: {
+              value: '161616',
+            },
+          },
+        ],
+      },
       someTextVar: {
         value: 'someTestText',
       },
@@ -227,6 +265,44 @@ export const authorRecord = {
   userRights: ['read', 'update', 'index', 'delete'],
   data: {
     divaOutput: {
+      recordInfo: {
+        id: [
+          {
+            value: '12345',
+          },
+        ],
+        validationType: {
+          value: 'author',
+        },
+        dataDivider: {
+          value: 'divaData',
+        },
+        type: [
+          {
+            value: 'author',
+          },
+        ],
+        createdBy: [
+          {
+            value: '161616',
+          },
+        ],
+        tsCreated: [
+          {
+            value: '2024-10-16T12:36:04.249992Z',
+          },
+        ],
+        updated: [
+          {
+            tsUpdated: {
+              value: '2024-10-16T12:36:04.249992Z',
+            },
+            updatedBy: {
+              value: '161616',
+            },
+          },
+        ],
+      },
       author: [
         {
           givenName: {

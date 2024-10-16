@@ -38,7 +38,7 @@ describe('actions', () => {
 
       token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
-      idInUserStorage: 'coraUser:111111111111111',
+      userId: 'coraUser:111111111111111',
       loginId: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',
@@ -71,7 +71,7 @@ describe('actions', () => {
 
       token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
-      idInUserStorage: 'coraUser:111111111111111',
+      userId: 'coraUser:111111111111111',
       loginId: 'coraUser:111111111111111',
       firstName: 'Everything',
       lastName: 'DiVA',

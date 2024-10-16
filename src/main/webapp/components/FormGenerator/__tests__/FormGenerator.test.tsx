@@ -135,6 +135,44 @@ describe('<FormGenerator />', () => {
             userRights: ['read', 'update', 'index', 'delete'],
             data: {
               nationalSubjectCategory: {
+                recordInfo: {
+                  id: [
+                    {
+                      value: '12345',
+                    },
+                  ],
+                  validationType: {
+                    value: 'record',
+                  },
+                  dataDivider: {
+                    value: 'divaData',
+                  },
+                  type: [
+                    {
+                      value: 'record',
+                    },
+                  ],
+                  createdBy: [
+                    {
+                      value: '161616',
+                    },
+                  ],
+                  tsCreated: [
+                    {
+                      value: '2024-10-16T12:36:04.249992Z',
+                    },
+                  ],
+                  updated: [
+                    {
+                      tsUpdated: {
+                        value: '2024-10-16T12:36:04.249992Z',
+                      },
+                      updatedBy: {
+                        value: '161616',
+                      },
+                    },
+                  ],
+                },
                 subject_language_swe: {
                   value: 'Svensk Nationell ämneskategori',
                   _language: 'swe',
@@ -367,6 +405,44 @@ describe('<FormGenerator />', () => {
             userRights: ['read', 'update', 'index', 'delete'],
             data: {
               nationalSubjectCategory: {
+                recordInfo: {
+                  id: [
+                    {
+                      value: '12345',
+                    },
+                  ],
+                  validationType: {
+                    value: 'record',
+                  },
+                  dataDivider: {
+                    value: 'divaData',
+                  },
+                  type: [
+                    {
+                      value: 'record',
+                    },
+                  ],
+                  createdBy: [
+                    {
+                      value: '161616',
+                    },
+                  ],
+                  tsCreated: [
+                    {
+                      value: '2024-10-16T12:36:04.249992Z',
+                    },
+                  ],
+                  updated: [
+                    {
+                      tsUpdated: {
+                        value: '2024-10-16T12:36:04.249992Z',
+                      },
+                      updatedBy: {
+                        value: '161616',
+                      },
+                    },
+                  ],
+                },
                 genre_type_code: {
                   value: 'artistic-work_original-creative-work',
                   _type: 'code',
@@ -553,6 +629,44 @@ describe('<FormGenerator />', () => {
             userRights: ['read', 'update', 'index', 'delete'],
             data: {
               someRootNameInData: {
+                recordInfo: {
+                  id: [
+                    {
+                      value: '12345',
+                    },
+                  ],
+                  validationType: {
+                    value: 'record',
+                  },
+                  dataDivider: {
+                    value: 'divaData',
+                  },
+                  type: [
+                    {
+                      value: 'record',
+                    },
+                  ],
+                  createdBy: [
+                    {
+                      value: '161616',
+                    },
+                  ],
+                  tsCreated: [
+                    {
+                      value: '2024-10-16T12:36:04.249992Z',
+                    },
+                  ],
+                  updated: [
+                    {
+                      tsUpdated: {
+                        value: '2024-10-16T12:36:04.249992Z',
+                      },
+                      updatedBy: {
+                        value: '161616',
+                      },
+                    },
+                  ],
+                },
                 author_language_uwu: {
                   givenName: {
                     value: 'Egil',
@@ -943,6 +1057,44 @@ describe('<FormGenerator />', () => {
         updated: [],
         data: {
           someRootNameInData: {
+            recordInfo: {
+              id: [
+                {
+                  value: '12345',
+                },
+              ],
+              validationType: {
+                value: 'record',
+              },
+              dataDivider: {
+                value: 'divaData',
+              },
+              type: [
+                {
+                  value: 'record',
+                },
+              ],
+              createdBy: [
+                {
+                  value: '161616',
+                },
+              ],
+              tsCreated: [
+                {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+              ],
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+                  updatedBy: {
+                    value: '161616',
+                  },
+                },
+              ],
+            },
             exampleTextVar: {
               value: 'someTestText',
             },
@@ -974,6 +1126,44 @@ describe('<FormGenerator />', () => {
         updated: [],
         data: {
           someRootNameInData: {
+            recordInfo: {
+              id: [
+                {
+                  value: '12345',
+                },
+              ],
+              validationType: {
+                value: 'record',
+              },
+              dataDivider: {
+                value: 'divaData',
+              },
+              type: [
+                {
+                  value: 'record',
+                },
+              ],
+              createdBy: [
+                {
+                  value: '161616',
+                },
+              ],
+              tsCreated: [
+                {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+              ],
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+                  updatedBy: {
+                    value: '161616',
+                  },
+                },
+              ],
+            },
             exampleWrongTextVar: {
               value: 'someTestText',
             },
@@ -1122,6 +1312,44 @@ describe('<FormGenerator />', () => {
         updated: [],
         data: {
           someRootNameInData: {
+            recordInfo: {
+              id: [
+                {
+                  value: '12345',
+                },
+              ],
+              validationType: {
+                value: 'record',
+              },
+              dataDivider: {
+                value: 'divaData',
+              },
+              type: [
+                {
+                  value: 'record',
+                },
+              ],
+              createdBy: [
+                {
+                  value: '161616',
+                },
+              ],
+              tsCreated: [
+                {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+              ],
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+                  updatedBy: {
+                    value: '161616',
+                  },
+                },
+              ],
+            },
             someNumberVariableNameInData: {
               value: '2',
             },
@@ -1151,6 +1379,44 @@ describe('<FormGenerator />', () => {
         updated: [],
         data: {
           someRootNameInData: {
+            recordInfo: {
+              id: [
+                {
+                  value: '12345',
+                },
+              ],
+              validationType: {
+                value: 'record',
+              },
+              dataDivider: {
+                value: 'divaData',
+              },
+              type: [
+                {
+                  value: 'record',
+                },
+              ],
+              createdBy: [
+                {
+                  value: '161616',
+                },
+              ],
+              tsCreated: [
+                {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+              ],
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+                  updatedBy: {
+                    value: '161616',
+                  },
+                },
+              ],
+            },
             someOtherNumberVariableNameInData: {
               value: 'someTestText',
             },
@@ -1524,6 +1790,44 @@ describe('<FormGenerator />', () => {
         updated: [],
         data: {
           someRootNameInData: {
+            recordInfo: {
+              id: [
+                {
+                  value: '12345',
+                },
+              ],
+              validationType: {
+                value: 'record',
+              },
+              dataDivider: {
+                value: 'divaData',
+              },
+              type: [
+                {
+                  value: 'record',
+                },
+              ],
+              createdBy: [
+                {
+                  value: '161616',
+                },
+              ],
+              tsCreated: [
+                {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+              ],
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+                  updatedBy: {
+                    value: '161616',
+                  },
+                },
+              ],
+            },
             colour: {
               value: 'blue',
             },
@@ -1555,6 +1859,44 @@ describe('<FormGenerator />', () => {
         updated: [],
         data: {
           someRootNameInData: {
+            recordInfo: {
+              id: [
+                {
+                  value: '12345',
+                },
+              ],
+              validationType: {
+                value: 'record',
+              },
+              dataDivider: {
+                value: 'divaData',
+              },
+              type: [
+                {
+                  value: 'record',
+                },
+              ],
+              createdBy: [
+                {
+                  value: '161616',
+                },
+              ],
+              tsCreated: [
+                {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+              ],
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+                  updatedBy: {
+                    value: '161616',
+                  },
+                },
+              ],
+            },
             colour: {
               value: 'blue',
             },
@@ -2559,6 +2901,44 @@ describe('<FormGenerator />', () => {
         userRights: ['read', 'update', 'index', 'delete'],
         data: {
           divaOutput: {
+            recordInfo: {
+              id: [
+                {
+                  value: '12345',
+                },
+              ],
+              validationType: {
+                value: 'record',
+              },
+              dataDivider: {
+                value: 'divaData',
+              },
+              type: [
+                {
+                  value: 'record',
+                },
+              ],
+              createdBy: [
+                {
+                  value: '161616',
+                },
+              ],
+              tsCreated: [
+                {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+              ],
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-10-16T12:36:04.249992Z',
+                  },
+                  updatedBy: {
+                    value: '161616',
+                  },
+                },
+              ],
+            },
             author: [
               {
                 givenName: {
@@ -2620,6 +3000,44 @@ describe('checkIfComponentHasValue', () => {
       updated: [],
       data: {
         someRootNameInData: {
+          recordInfo: {
+            id: [
+              {
+                value: '12345',
+              },
+            ],
+            validationType: {
+              value: 'record',
+            },
+            dataDivider: {
+              value: 'divaData',
+            },
+            type: [
+              {
+                value: 'record',
+              },
+            ],
+            createdBy: [
+              {
+                value: '161616',
+              },
+            ],
+            tsCreated: [
+              {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+            ],
+            updated: [
+              {
+                tsUpdated: {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+                updatedBy: {
+                  value: '161616',
+                },
+              },
+            ],
+          },
           someTextVar: {
             value: 'aaaaa',
           },
@@ -2649,6 +3067,44 @@ describe('checkIfComponentHasValue', () => {
       updated: [],
       data: {
         someRootNameInData: {
+          recordInfo: {
+            id: [
+              {
+                value: '12345',
+              },
+            ],
+            validationType: {
+              value: 'record',
+            },
+            dataDivider: {
+              value: 'divaData',
+            },
+            type: [
+              {
+                value: 'record',
+              },
+            ],
+            createdBy: [
+              {
+                value: '161616',
+              },
+            ],
+            tsCreated: [
+              {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+            ],
+            updated: [
+              {
+                tsUpdated: {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+                updatedBy: {
+                  value: '161616',
+                },
+              },
+            ],
+          },
           someTextVar: { value: 'bbb' },
         },
       },
@@ -2680,6 +3136,44 @@ describe('checkIfComponentHasValue', () => {
       updated: [],
       data: {
         someRootNameInData: {
+          recordInfo: {
+            id: [
+              {
+                value: '12345',
+              },
+            ],
+            validationType: {
+              value: 'record',
+            },
+            dataDivider: {
+              value: 'divaData',
+            },
+            type: [
+              {
+                value: 'record',
+              },
+            ],
+            createdBy: [
+              {
+                value: '161616',
+              },
+            ],
+            tsCreated: [
+              {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+            ],
+            updated: [
+              {
+                tsUpdated: {
+                  value: '2024-10-16T12:36:04.249992Z',
+                },
+                updatedBy: {
+                  value: '161616',
+                },
+              },
+            ],
+          },
           someTextVar: { value: 'bbb' },
         },
       },
