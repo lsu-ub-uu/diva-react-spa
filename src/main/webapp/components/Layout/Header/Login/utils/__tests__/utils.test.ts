@@ -97,13 +97,13 @@ describe('Login utils', () => {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', // this is the authToken
         validForNoSeconds: '600',
         loginId: 'johdo290@user.uu.se',
-        idInUserStorage: 'coraUser:111111111111111',
+        userId: 'coraUser:111111111111111',
       },
       actionLinks: {
         delete: {
           requestMethod: 'DELETE',
           rel: 'delete',
-          url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+          url: 'https://pre.diva-portal.org/login/rest/authToken/17c2a9a8-9851-47fc-b502-8e41a314eb83',
         },
       },
     };
@@ -111,13 +111,13 @@ describe('Login utils', () => {
     const actual = convertWebRedirectToUserSession({
       token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
-      idInUserStorage: 'coraUser:111111111111111',
+      userId: 'coraUser:111111111111111',
       loginId: 'johdo290@user.uu.se',
       actionLinks: {
         delete: {
           requestMethod: 'DELETE',
           rel: 'delete',
-          url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+          url: 'https://pre.diva-portal.org/login/rest/authToken/17c2a9a8-9851-47fc-b502-8e41a314eb83',
         },
       },
     });
@@ -149,7 +149,7 @@ describe('Login utils', () => {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
-          idInUserStorage: 'coraUser:111111111111111',
+          userId: 'coraUser:111111111111111',
           loginId: 'coraUser:111111111111111',
           firstName: 'Everything',
           lastName: 'DiVA',
@@ -168,7 +168,7 @@ describe('Login utils', () => {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
-          idInUserStorage: 'coraUser:111111111111111',
+          userId: 'coraUser:111111111111111',
           loginId: 'coraUser:111111111111111',
           firstName: 'Everything',
           lastName: 'DiVA',

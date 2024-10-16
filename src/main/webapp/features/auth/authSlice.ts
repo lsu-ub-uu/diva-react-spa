@@ -27,7 +27,7 @@ export interface Auth {
   data: {
     token: string;
     validForNoSeconds: string;
-    idInUserStorage?: string;
+    userId?: string;
     loginId: string;
     lastName?: string;
     firstName?: string;
@@ -81,7 +81,6 @@ export const deleteState = (): void => {
 
 export const createInitialState = (): Auth | null => {
   const storage = localStorage.getItem(LOCAL_STORAGE_NAME);
-
   if (!isValidJSON(storage)) {
     axios.defaults.headers.common = {
       Authtoken: '',
@@ -103,7 +102,7 @@ export const createInitialState = (): Auth | null => {
   const session = JSON.parse(storage as string);
 
   axios.defaults.headers.common = {
-    Authtoken: session.id,
+    Authtoken: session.data.token,
   };
   return session as Auth;
 };

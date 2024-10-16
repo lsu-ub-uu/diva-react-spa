@@ -151,7 +151,7 @@ export const ControlledAutocomplete = (
               filterOptions={(x) => x}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               options={options}
-              getOptionLabel={(option) => option.id}
+              getOptionLabel={(option) => option.id as string}
               clearOnBlur={false}
               renderInput={(params) => (
                 <>
