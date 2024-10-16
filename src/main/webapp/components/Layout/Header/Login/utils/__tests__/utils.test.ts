@@ -97,7 +97,7 @@ describe('Login utils', () => {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', // this is the authToken
         validForNoSeconds: '600',
         loginId: 'johdo290@user.uu.se',
-        idInUserStorage: 'coraUser:111111111111111',
+        userId: 'coraUser:111111111111111',
       },
       actionLinks: {
         delete: {
@@ -111,7 +111,7 @@ describe('Login utils', () => {
     const actual = convertWebRedirectToUserSession({
       token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       validForNoSeconds: '600',
-      idInUserStorage: 'coraUser:111111111111111',
+      userId: 'coraUser:111111111111111',
       loginId: 'johdo290@user.uu.se',
       actionLinks: {
         delete: {
@@ -149,7 +149,7 @@ describe('Login utils', () => {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
-          idInUserStorage: 'coraUser:111111111111111',
+          userId: 'coraUser:111111111111111',
           loginId: 'coraUser:111111111111111',
           firstName: 'Everything',
           lastName: 'DiVA',
@@ -168,7 +168,7 @@ describe('Login utils', () => {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
-          idInUserStorage: 'coraUser:111111111111111',
+          userId: 'coraUser:111111111111111',
           loginId: 'coraUser:111111111111111',
           firstName: 'Everything',
           lastName: 'DiVA',

@@ -27,7 +27,7 @@ export interface Auth {
   data: {
     token: string;
     validForNoSeconds: string;
-    idInUserStorage?: string;
+    userId?: string;
     loginId: string;
     lastName?: string;
     firstName?: string;
