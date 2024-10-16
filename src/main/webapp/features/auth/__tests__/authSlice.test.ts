@@ -36,7 +36,7 @@ describe('authSlice', () => {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
+        userId: 'coraUser:111111111111111',
         loginId: 'user@domain.x',
         lastName: 'DiVA',
         firstName: 'Everything',
@@ -66,7 +66,7 @@ describe('authSlice', () => {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
+        userId: 'coraUser:111111111111111',
         loginId: 'coraUser:111111111111111',
         firstName: 'Everything',
         lastName: 'DiVA',
@@ -95,7 +95,7 @@ describe('authSlice', () => {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
+        userId: 'coraUser:111111111111111',
         loginId: 'coraUser:111111111111111',
         firstName: 'Everything',
         lastName: 'DiVA',
@@ -113,7 +113,7 @@ describe('authSlice', () => {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
+        userId: 'coraUser:111111111111111',
         loginId: 'coraUser:111111111111111',
         firstName: 'Everything',
         lastName: 'DiVA',
@@ -130,7 +130,7 @@ describe('authSlice', () => {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
+        userId: 'coraUser:111111111111111',
         loginId: 'coraUser:111111111111111',
         firstName: 'Everything',
         lastName: 'DiVA',
@@ -166,7 +166,7 @@ describe('authSlice', () => {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
-          idInUserStorage: 'coraUser:111111111111111',
+          userId: 'coraUser:111111111111111',
           loginId: 'coraUser:111111111111111',
           firstName: 'Everything',
           lastName: 'DiVA',

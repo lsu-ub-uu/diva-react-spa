@@ -47,6 +47,44 @@ const mockOptions: CoraRecord[] = [
     userRights: ['read', 'read_incoming_links', 'update', 'index'],
     data: {
       nationalSubjectCategory: {
+        recordInfo: {
+          id: [
+            {
+              value: '12345',
+            },
+          ],
+          validationType: {
+            value: 'nationalSubjectCategory',
+          },
+          dataDivider: {
+            value: 'divaData',
+          },
+          type: [
+            {
+              value: 'nationalSubjectCategory',
+            },
+          ],
+          createdBy: [
+            {
+              value: '161616',
+            },
+          ],
+          tsCreated: [
+            {
+              value: '2024-10-16T12:36:04.249992Z',
+            },
+          ],
+          updated: [
+            {
+              tsUpdated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+              updatedBy: {
+                value: '161616',
+              },
+            },
+          ],
+        },
         name: {
           language: {
             value: 'sv',
@@ -331,6 +369,44 @@ const mockOptions: CoraRecord[] = [
     userRights: ['read', 'update', 'index', 'delete'],
     data: {
       nationalSubjectCategory: {
+        recordInfo: {
+          id: [
+            {
+              value: '12345',
+            },
+          ],
+          validationType: {
+            value: 'nationalSubjectCategory',
+          },
+          dataDivider: {
+            value: 'divaData',
+          },
+          type: [
+            {
+              value: 'nationalSubjectCategory',
+            },
+          ],
+          createdBy: [
+            {
+              value: '161616',
+            },
+          ],
+          tsCreated: [
+            {
+              value: '2024-10-16T12:36:04.249992Z',
+            },
+          ],
+          updated: [
+            {
+              tsUpdated: {
+                value: '2024-10-16T12:36:04.249992Z',
+              },
+              updatedBy: {
+                value: '161616',
+              },
+            },
+          ],
+        },
         name: {
           language: {
             value: 'sv',

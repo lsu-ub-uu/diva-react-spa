@@ -25,7 +25,6 @@ interface ControlledLinkedRecordProps {
   name: string;
   presentationRecordLinkId: string;
   control?: Control<any>;
-  linkedPresentation?: LinkedPresentation;
 }
 
 export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
@@ -41,7 +40,6 @@ export const ControlledLinkedRecord = (props: ControlledLinkedRecordProps) => {
                 recordType={props.recordType}
                 id={field.value}
                 presentationRecordLinkId={props.presentationRecordLinkId}
-                linkedPresentation={props.linkedPresentation}
               />
             )}
           </span>
