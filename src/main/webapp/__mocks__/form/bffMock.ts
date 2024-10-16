@@ -1942,10 +1942,11 @@ export const pSomeNewMetadataGroupTitleInfoPGroup: BFFPresentationGroup = {
   ]
 };
 export const pSomeNewMetadataGroupTitleInfoAlternativePGroup: BFFPresentationGroup = {
-  id: 'pSomeNewMetadataGroupTitleInfoGroup',
+  id: 'pSomeNewMetadataGroupTitleInfoAlternativeGroup',
   type: 'pGroup',
-  presentationOf: 'someNewMetadataGroupTitleInfoGroup', // metadata
+  presentationOf: 'someNewMetadataGroupTitleInfoAlternativeGroup', // metadata
   mode: 'input',
+  attributesToShow: 'selectable',
   children: [
     {
       childId: 'someMainTitlePVar',

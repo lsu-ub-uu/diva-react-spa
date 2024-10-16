@@ -16,7 +16,7 @@
                 },
                 {
                   "name": "linkedRecordId",
-                  "value": "divaOutput"
+                  "value": "namePartPartWithAttributesValidationTypeId"
                 }
               ],
               "actionLinks": {
@@ -163,7 +163,7 @@
                 },
                 {
                   "name": "linkedRecordId",
-                  "value": "divaOutput"
+                  "value": "namePartPartWithAttributesValidationTypeId"
                 }
               ],
               "name": "recordType"

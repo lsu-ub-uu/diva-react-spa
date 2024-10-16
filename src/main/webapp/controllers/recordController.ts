@@ -30,12 +30,12 @@ import { cleanJson } from '../utils/structs/removeEmpty';
 import { dependencies } from '../config/configureServer';
 import { createFormMetaData } from '../formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
-import { injectRecordInfoIntoDataGroup, transformToCoraData } from '../config/transformToCora';
+import { transformToCoraData } from '../config/transformToCora';
 import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { transformRecord } from '../config/transformRecord';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
-import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import * as TYPES from '../config/bffTypes';
+import { BFFMetadataGroup } from '../config/bffTypes';
 
 /**
  * @desc Post an update to a record to Cora
@@ -48,7 +48,8 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const authToken = req.header('authToken') ?? '';
 
     const payload = cleanJson(req.body);
-    const { lastUpdate, created, values } = payload;
+    const { values } = payload;
+
     const { validationTypePool } = dependencies;
     const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
@@ -56,32 +57,20 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     }
 
     const FORM_MODE_UPDATE = 'update';
-    const dataDivider = 'divaData';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, values);
 
-    const updateGroup = injectRecordInfoIntoDataGroup(
-      transformData[0] as DataGroup,
-      validationTypeId,
-      dataDivider,
-      recordId,
-      recordType,
-      lastUpdate.updatedBy,
-      lastUpdate.updateAt,
-      created.createdBy,
-      created.createdAt
-    );
-
     const response = await updateRecordDataById<RecordWrapper>(
       recordId,
-      updateGroup,
+      transformData[0] as DataGroup,
       recordType,
       authToken
     );
     res.status(response.status).json({});
   } catch (error: unknown) {
+    console.error(error);
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }
@@ -107,6 +96,7 @@ export const deleteRecordByValidationTypeAndId = async (req: Request, res: Respo
 
     res.status(response.status).json({ message: 'de' });
   } catch (error: unknown) {
+    console.error(error);
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }
@@ -131,22 +121,20 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     }
 
     const FORM_MODE_NEW = 'create';
-    const dataDivider = 'divaData';
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
 
-    const newGroup = injectRecordInfoIntoDataGroup(
+    const response = await postRecordData<RecordWrapper>(
       transformData[0] as DataGroup,
-      validationTypeId,
-      dataDivider
+      recordType,
+      authToken
     );
-
-    const response = await postRecordData<RecordWrapper>(newGroup, recordType, authToken);
-    const id = extractIdFromRecordInfo(response.data.record.data);
-    res.status(response.status).json({ id }); // return id for now
+    const record = transformRecord(dependencies, response.data);
+    res.status(response.status).json(record); // return id for now
   } catch (error: unknown) {
+    console.error(error);
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }
@@ -169,16 +157,15 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
     const record = transformRecord(dependencies, recordWrapper);
     if (presentationRecordLinkId !== undefined) {
       const { presentationGroup, metadataGroup } = getGroupsFromPresentationLinkId(
-        dependencies,
         presentationRecordLinkId as string
-      );
-      const listPresentationGroup = dependencies.presentationPool.get(
-        dependencies.recordTypePool.get(recordType).listPresentationViewId
       );
       record.presentation = createLinkedRecordDefinition(
         dependencies,
         metadataGroup,
         presentationGroup
+      );
+      const listPresentationGroup = dependencies.presentationPool.get(
+        dependencies.recordTypePool.get(recordType).listPresentationViewId
       );
       record.listPresentation = createLinkedRecordDefinition(
         dependencies,
@@ -189,19 +176,61 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
 
     res.status(response.status).json(record);
   } catch (error: unknown) {
+    console.error(error);
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }
 };
 
-export const getGroupsFromPresentationLinkId = (
-  dependencies: Dependencies,
-  presentationLinkId: string
-) => {
+/**
+ * @desc Get record data for new record
+ * @route GET /api/record/:validationType
+ * @access Private
+ */
+export const getRecordByValidationTypeId = async (req: Request, res: Response) => {
+  try {
+    const { validationTypeId } = req.params;
+
+    // const authToken = req.header('authToken') ?? '';
+    const validationType = dependencies.validationTypePool.get(validationTypeId);
+    const recordTypeGroup = dependencies.recordTypePool.get(validationType.validatesRecordTypeId);
+    const metadataGroup: BFFMetadataGroup = dependencies.metadataPool.get(
+      recordTypeGroup.metadataId
+    );
+    const recordInfoChildGroup: BFFMetadataGroup = dependencies.metadataPool.get(
+      metadataGroup.children[0].childId
+    );
+
+    const recordInfo = recordInfoChildGroup.children
+      .filter((child) => parseInt(child.repeatMin) > 0)
+      .map((child) => dependencies.metadataPool.get(child.childId))
+      .reduce((acc, curr) => {
+        if (curr.finalValue !== undefined) {
+          acc[curr.nameInData] = { value: curr.finalValue };
+        }
+        return acc;
+      }, {});
+
+    const record = {
+      data: { [metadataGroup.nameInData]: { [recordInfoChildGroup.nameInData]: recordInfo } }
+    };
+
+    res.status(200).json(record);
+  } catch (error: unknown) {
+    console.error(error);
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
+export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
   const presentationLink = dependencies.presentationPool.get(
     presentationLinkId
   ) as TYPES.BFFPresentationRecordLink;
-  const { presentationId } = presentationLink.linkedRecordPresentations[0];
+  const presentationId =
+    presentationLink.linkedRecordPresentations !== undefined
+      ? presentationLink.linkedRecordPresentations[0].presentationId
+      : presentationLink.id;
   const presentationGroup = dependencies.presentationPool.get(presentationId);
   const metadataGroup = dependencies.metadataPool.get(
     presentationGroup.presentationOf

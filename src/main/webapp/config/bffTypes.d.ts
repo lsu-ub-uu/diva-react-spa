@@ -124,7 +124,7 @@ export interface BFFPresentation extends BFFBase {
 }
 
 export interface BFFPresentationRecordLink extends BFFPresentation {
-  linkedRecordPresentations: BFFLinkedRecordPresentation[];
+  linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
 }
 
@@ -172,7 +172,7 @@ export interface BFFSearch extends BFFBase {
   metadataId: string;
   presentationId: string;
   recordTypeToSearchIn: string[];
-  searchGroup: autocomplete | publicSearch;
+  searchGroup: 'autocomplete' | 'publicSearch';
   searchDefText: string;
   searchText: string;
 }

@@ -13,7 +13,7 @@ const authUser = {
         value: '600'
       },
       {
-        name: 'idInUserStorage',
+        name: 'userId', // idInUserStorage
         value: 'coraUser:111111111111111'
       },
       {
@@ -56,7 +56,7 @@ describe('requestAuthTokenOnLogin', () => {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         validForNoSeconds: '600',
-        idInUserStorage: 'coraUser:111111111111111',
+        userId: 'coraUser:111111111111111',
         loginId: 'user@domain.x',
         lastName: 'DiVA',
         firstName: 'Everything'
@@ -113,7 +113,7 @@ describe('requestAuthTokenOnLogin', () => {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
-          idInUserStorage: 'coraUser:111111111111111',
+          userId: 'coraUser:111111111111111',
           loginId: 'user@domain.x',
           firstName: 'Everything',
           lastName: 'DiVA'
