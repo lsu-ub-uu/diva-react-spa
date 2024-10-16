@@ -103,7 +103,7 @@ describe('Login utils', () => {
         delete: {
           requestMethod: 'DELETE',
           rel: 'delete',
-          url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+          url: 'https://pre.diva-portal.org/login/rest/authToken/17c2a9a8-9851-47fc-b502-8e41a314eb83',
         },
       },
     };
@@ -117,7 +117,7 @@ describe('Login utils', () => {
         delete: {
           requestMethod: 'DELETE',
           rel: 'delete',
-          url: 'https://pre.diva-portal.org/login/rest/authToken/user:11111111111111111',
+          url: 'https://pre.diva-portal.org/login/rest/authToken/17c2a9a8-9851-47fc-b502-8e41a314eb83',
         },
       },
     });
