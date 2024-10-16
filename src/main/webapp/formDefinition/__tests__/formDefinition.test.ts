@@ -111,7 +111,10 @@ import {
   someMetadataCollectionWithOtherIdVariable,
   someMetadataCollectionVariable2,
   someNewRecordLink,
-  pSomeNewRecordLink
+  pSomeNewRecordLink,
+  someValidationTypeForRepeatingTitleInfoId,
+  someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup
 } from '../../__mocks__/form/bffMock';
 import {
   createFormDefinition,
@@ -146,7 +149,8 @@ describe('formDefinition', () => {
       someValidationTypeData,
       someValidationTypeDataFaultyChildReference,
       someSimpleValidationTypeData,
-      someValidationTypeForMissingChildIdTypeData
+      someValidationTypeForMissingChildIdTypeData,
+      someValidationTypeForRepeatingTitleInfoId
     ]);
     metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
       someMetadataTextVariable,
@@ -217,7 +221,8 @@ describe('formDefinition', () => {
       pSomeScopusIdTextVar,
       pSomeNewMetadataGroupForMissingChildId,
       pSomeOtherMetadataCollectionVariableWithMissingChildId,
-      pSomeNewRecordLink
+      pSomeNewRecordLink,
+      pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup
     ]);
     recordTypePool = listToPool<BFFRecordType>([]);
     textPool = listToPool<BFFText>([]);
@@ -945,6 +950,10 @@ describe('formDefinition', () => {
               type: 'recordLink',
               name: 'nationalSubjectCategory',
               label: 'nationalSubjectCategoryLinkText',
+              linkedRecordPresentation: {
+                presentationId: 'someSubjectCategoryPresentation',
+                presentedRecordType: 'nationalSubjectCategory'
+              },
               showLabel: true,
               gridColSpan: 12,
               childStyle: [''],
@@ -964,6 +973,10 @@ describe('formDefinition', () => {
               type: 'recordLink',
               name: 'someNewRecordLink',
               label: 'someNewRecordLinkText',
+              linkedRecordPresentation: {
+                presentationId: 'someNewRecordLink',
+                presentedRecordType: 'someNewRecordLink'
+              },
               showLabel: true,
               gridColSpan: 12,
               childStyle: [''],
@@ -1591,6 +1604,10 @@ describe('formDefinition', () => {
               type: 'recordLink',
               name: 'nationalSubjectCategory',
               label: 'nationalSubjectCategoryLinkText',
+              linkedRecordPresentation: {
+                presentationId: 'someSubjectCategoryPresentation',
+                presentedRecordType: 'nationalSubjectCategory'
+              },
               showLabel: true,
               gridColSpan: 12,
               childStyle: [''],

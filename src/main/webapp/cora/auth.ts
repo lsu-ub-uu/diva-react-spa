@@ -18,9 +18,8 @@
  */
 
 import axios from 'axios';
-import * as console from 'console';
 import { Auth } from '../types/Auth';
-import { ActionLinks, CoraRecord, DataGroup } from '../utils/cora-data/CoraData';
+import { ActionLinks, CoraRecord } from '../utils/cora-data/CoraData';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import assertExists from '../utils/assertExists';
 
@@ -44,7 +43,7 @@ export const extractDataFromResult = (record: CoraRecord): Auth => {
   const dataGroup = record.data;
   const token = getFirstDataAtomicValueWithNameInData(dataGroup, 'token');
   const validForNoSeconds = getFirstDataAtomicValueWithNameInData(dataGroup, 'validForNoSeconds');
-  const idInUserStorage = getFirstDataAtomicValueWithNameInData(dataGroup, 'idInUserStorage');
+  const userId = getFirstDataAtomicValueWithNameInData(dataGroup, 'userId');
   const loginId = getFirstDataAtomicValueWithNameInData(dataGroup, 'loginId');
   const firstName = getFirstDataAtomicValueWithNameInData(dataGroup, 'firstName');
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
@@ -55,7 +54,7 @@ export const extractDataFromResult = (record: CoraRecord): Auth => {
     data: {
       token,
       validForNoSeconds,
-      idInUserStorage,
+      userId,
       loginId,
       firstName,
       lastName

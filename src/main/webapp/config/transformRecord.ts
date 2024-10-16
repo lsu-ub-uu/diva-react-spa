@@ -107,13 +107,13 @@ export const transformRecord = (
   }
   const updated = extractRecordUpdates(recordInfo);
 
-  const formMetadata = createFormMetaData(dependencies, validationType, 'update');
-  const formPathLookup = createFormMetaDataPathLookup(formMetadata);
-
   let userRights: string[] = [];
   if (coraRecord.actionLinks !== undefined) {
     userRights = Object.keys(coraRecord.actionLinks);
   }
+
+  const formMetadata = createFormMetaData(dependencies, validationType, 'update');
+  const formPathLookup = createFormMetaDataPathLookup(formMetadata);
 
   const data = traverseDataGroup(dataRecordGroup, formPathLookup);
   return removeEmpty({
@@ -147,7 +147,7 @@ export const traverseDataGroup = (
   formPathLookup?: Record<string, FormMetaData>,
   path?: string
 ) => {
-  const validChildren = dataGroup.children.filter((group) => group.name !== 'recordInfo');
+  const validChildren = dataGroup.children;
   const groupedByName = _.groupBy(validChildren, 'name');
   const groupedEntries = Object.entries(groupedByName);
   path = path === undefined ? dataGroup.name : path;

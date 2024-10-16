@@ -194,6 +194,76 @@ describe('transformRecord', () => {
         ],
         data: {
           divaOutput: {
+            recordInfo: {
+              createdBy: {
+                value: 'coraUser:490742519075086'
+              },
+              dataDivider: {
+                value: 'diva'
+              },
+              id: {
+                value: 'divaOutput:519333261463755'
+              },
+              tsCreated: {
+                value: '2023-10-11T09:24:30.511487Z'
+              },
+              type: {
+                value: 'divaOutput'
+              },
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2023-10-11T09:24:30.511487Z'
+                  },
+                  updatedBy: {
+                    value: 'coraUser:490742519075086'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2023-10-18T09:09:13.554736Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2023-10-26T12:33:22.260532Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2023-10-26T12:35:28.748398Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2023-10-26T12:35:40.545698Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2023-10-26T12:35:52.293623Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                }
+              ],
+              validationType: {
+                value: 'manuscript'
+              }
+            },
             title: {
               mainTitle: {
                 value: 'aaaaaa'
@@ -259,6 +329,52 @@ describe('transformRecord', () => {
         ],
         data: {
           output: {
+            recordInfo: {
+              createdBy: {
+                value: '161616'
+              },
+              dataDivider: {
+                value: 'divaData'
+              },
+              id: {
+                value: 'divaOutputSwepub:2087392797647370'
+              },
+              tsCreated: {
+                value: '2024-09-13T11:49:37.288927Z'
+              },
+              type: {
+                value: 'divaOutputSwepub'
+              },
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-09-13T11:49:37.288927Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2024-09-13T11:49:54.085586Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2024-09-16T08:00:42.892622Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                }
+              ],
+              validationType: {
+                value: 'divaOutputSwepub'
+              }
+            },
             titleInfo: {
               _lang: 'ady',
               title: {
@@ -308,21 +424,58 @@ describe('transformRecord', () => {
         ],
         data: {
           output: {
+            recordInfo: {
+              createdBy: {
+                value: '161616'
+              },
+              dataDivider: {
+                value: 'divaData'
+              },
+              id: {
+                value: 'divaOutputSwepub:2087392797647370'
+              },
+              tsCreated: {
+                value: '2024-09-13T11:49:37.288927Z'
+              },
+              type: {
+                value: 'divaOutputSwepub'
+              },
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-09-13T11:49:37.288927Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2024-09-13T11:49:54.085586Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2024-09-16T08:00:42.892622Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                }
+              ],
+              validationType: {
+                value: 'divaOutputSwepub'
+              }
+            },
             titleInfo: {
               _lang: 'ady',
               title: {
                 value: 'EN utmärkt titel'
               }
             }
-            // titleInfo_type_alternative: [
-            //   {
-            //     _lang: 'amh',
-            //     _type: 'alternative',
-            //     title: {
-            //       value: 'EN utmärkt alternativ titel'
-            //     }
-            //   }
-            // ]
           }
         }
       };
@@ -357,6 +510,52 @@ describe('transformRecord', () => {
         ],
         data: {
           name: {
+            recordInfo: {
+              createdBy: {
+                value: '161616'
+              },
+              dataDivider: {
+                value: 'divaData'
+              },
+              id: {
+                value: 'divaOutputSwepub:2087392797647370'
+              },
+              tsCreated: {
+                value: '2024-09-13T11:49:37.288927Z'
+              },
+              type: {
+                value: 'namePartValidationTypeId'
+              },
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-09-13T11:49:37.288927Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2024-09-13T11:49:54.085586Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2024-09-16T08:00:42.892622Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                }
+              ],
+              validationType: {
+                value: 'namePartValidationTypeId'
+              }
+            },
             namePart: {
               value: 'value1'
             },
@@ -398,9 +597,52 @@ describe('transformRecord', () => {
         ],
         data: {
           name: {
-            // namePart: {
-            //   value: 'value1'
-            // },
+            recordInfo: {
+              createdBy: {
+                value: '161616'
+              },
+              dataDivider: {
+                value: 'divaData'
+              },
+              id: {
+                value: 'divaOutputSwepub:2087392797647370'
+              },
+              tsCreated: {
+                value: '2024-09-13T11:49:37.288927Z'
+              },
+              type: {
+                value: 'namePartPartWithAttributesValidationTypeId'
+              },
+              updated: [
+                {
+                  tsUpdated: {
+                    value: '2024-09-13T11:49:37.288927Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2024-09-13T11:49:54.085586Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                },
+                {
+                  tsUpdated: {
+                    value: '2024-09-16T08:00:42.892622Z'
+                  },
+                  updatedBy: {
+                    value: '161616'
+                  }
+                }
+              ],
+              validationType: {
+                value: 'namePartPartWithAttributesValidationTypeId'
+              }
+            },
             namePart_language_eng: [
               {
                 value: 'value2',
@@ -420,12 +662,27 @@ describe('transformRecord', () => {
       );
       const expected = {
         id: 'divaOutput:519333261463755',
-        recordType: 'divaOutput',
+        recordType: 'namePartPartWithAttributesValidationTypeId',
         validationType: 'manuscript',
         userRights: ['read', 'update', 'index', 'delete'],
         updated: [],
         data: {
           divaOutput: {
+            recordInfo: {
+              dataDivider: {
+                value: 'diva'
+              },
+              id: {
+                value: 'divaOutput:519333261463755'
+              },
+
+              type: {
+                value: 'namePartPartWithAttributesValidationTypeId'
+              },
+              validationType: {
+                value: 'manuscript'
+              }
+            },
             title: {
               mainTitle: {
                 value: 'aaaaaa'
@@ -1219,6 +1476,159 @@ describe('transformRecord', () => {
           },
           namePart_language_swe: {
             value: 'value1',
+            _language: 'swe'
+          }
+        }
+      };
+      expect(transformData).toStrictEqual(expected);
+    });
+    it('aaaaaaa recordInfo', () => {
+      const test = {
+        name: 'divaOutput',
+        children: [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'system'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaData'
+                  }
+                ],
+                name: 'dataDivider'
+              },
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'validationType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaOutputSwepub'
+                  }
+                ],
+                name: 'validationType'
+              },
+              {
+                name: 'id',
+                value: 'divaOutputSwepub:3727881616799576'
+              },
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'recordType'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'divaOutputSwepub'
+                  }
+                ],
+                name: 'type'
+              },
+              {
+                children: [
+                  {
+                    name: 'linkedRecordType',
+                    value: 'user'
+                  },
+                  {
+                    name: 'linkedRecordId',
+                    value: 'coraUser:490742519075086'
+                  }
+                ],
+                name: 'createdBy'
+              },
+              {
+                name: 'tsCreated',
+                value: '2024-10-02T11:31:06.108115Z'
+              },
+              {
+                repeatId: '0',
+                children: [
+                  {
+                    name: 'tsUpdated',
+                    value: '2024-10-02T11:31:06.108115Z'
+                  },
+                  {
+                    children: [
+                      {
+                        name: 'linkedRecordType',
+                        value: 'user'
+                      },
+                      {
+                        name: 'linkedRecordId',
+                        value: 'coraUser:490742519075086'
+                      }
+                    ],
+                    name: 'updatedBy'
+                  }
+                ],
+                name: 'updated'
+              }
+            ],
+            name: 'recordInfo'
+          },
+          {
+            attributes: {
+              language: 'eng'
+            },
+            name: 'domain',
+            value: 'hb'
+          },
+          {
+            attributes: {
+              language: 'swe'
+            },
+            name: 'domain',
+            value: 'uu'
+          }
+        ]
+      };
+      const transformData = traverseDataGroup(test);
+      const expected = {
+        divaOutput: {
+          recordInfo: {
+            createdBy: {
+              value: 'coraUser:490742519075086'
+            },
+            dataDivider: {
+              value: 'divaData'
+            },
+            id: {
+              value: 'divaOutputSwepub:3727881616799576'
+            },
+            tsCreated: {
+              value: '2024-10-02T11:31:06.108115Z'
+            },
+            type: {
+              value: 'divaOutputSwepub'
+            },
+            updated: [
+              {
+                tsUpdated: {
+                  value: '2024-10-02T11:31:06.108115Z'
+                },
+                updatedBy: {
+                  value: 'coraUser:490742519075086'
+                }
+              }
+            ],
+            validationType: {
+              value: 'divaOutputSwepub'
+            }
+          },
+          domain_language_eng: {
+            value: 'hb',
+            _language: 'eng'
+          },
+          domain_language_swe: {
+            value: 'uu',
             _language: 'swe'
           }
         }
