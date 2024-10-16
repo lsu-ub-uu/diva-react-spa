@@ -659,7 +659,6 @@ export const renderLeafComponent = (
           component,
           name,
           control,
-          getValues,
         );
       }
 
@@ -757,7 +756,6 @@ const createRecordLinkWithSearch = (
   component: FormComponent,
   name: string,
   control: Control<any>,
-  getValues: UseFormGetValues<FieldValues>,
 ) => {
   return (
     <Grid
