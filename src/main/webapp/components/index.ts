@@ -41,7 +41,7 @@ export { FormGenerator } from './FormGenerator/FormGenerator';
 export { Typography } from './Typography/Typography';
 export { LinkButton } from './LinkButton/LinkButton';
 export { NavigationPanel } from './NavigationPanel/NavigationPanel';
-export { LinkedRecord } from './LinkedRecord/LinkedRecord';
+export { LinkedRecord } from './LinkedRecord/LinkedPresentationRecord';
 
 export {
   useSectionScroller,

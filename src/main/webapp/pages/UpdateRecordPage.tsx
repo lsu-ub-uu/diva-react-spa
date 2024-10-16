@@ -79,14 +79,7 @@ export const UpdateRecordPage = () => {
   const handleSubmit = async (values: FieldValues) => {
     try {
       setIsSubmitting(true);
-      const { record } = coraRecord;
-      const coraUpdates = record ? record.updated : [];
-      const lastUpdate = coraUpdates[coraUpdates.length - 1];
-      const createdAt = record ? record.createdAt : null;
-      const createdBy = record ? record.createdBy : null;
-      const created = { createdAt, createdBy };
-
-      const payload = { lastUpdate, created, values };
+      const payload = { values };
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.post(
         `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,

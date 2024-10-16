@@ -84,15 +84,41 @@ interface CoraUpdate {
 }
 
 export interface CoraRecord {
-  id: string;
-  recordType: string;
-  validationType: string;
-  createdAt: string;
-  createdBy: string;
-  updated: CoraUpdate[];
-  userRights: string[];
-  data: unknown;
+  id?: string;
+  recordType?: string;
+  validationType?: string;
+  createdAt?: string;
+  createdBy?: string;
+  updated?: CoraUpdate[];
+  userRights?: string[];
+  data: {
+    [key: string]: Metadata;
+  };
   presentation?: unknown;
+}
+export interface Metadata {
+  recordInfo: RecordInfo;
+  [key: string]: any;
+}
+export interface RecordInfo {
+  [key: string]: any;
+  createdBy?: Value[];
+  dataDivider: Value;
+  id?: Value[];
+  tsCreated?: Value[];
+  type?: Value[];
+  updated?: UpdatedGroup[];
+  validationType?: Value;
+}
+
+interface UpdatedGroup {
+  tsUpdated: Value;
+  updatedBy: Value;
+}
+
+interface Value {
+  value: string;
+  [key: string]: any;
 }
 
 export const useCoraRecordByTypeAndId = (
@@ -136,7 +162,48 @@ export const useCoraRecordByTypeAndId = (
     return () => {
       isMounted = false;
     };
-  }, [recordType, recordId]);
+  }, [presentationRecordLinkId, recordType, recordId]);
+
+  return { isLoading, error, record };
+};
+
+export const useCoraRecordByType = (
+  recordType: string | undefined,
+): UseCoraRecordByTypeAndId => {
+  const [record, setRecord] = useState<CoraRecord>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const url = `/record/${recordType}`;
+    const fetchRecord = async () => {
+      try {
+        const response = await axios.get<CoraRecord>(url);
+        if (isMounted) {
+          setError(null);
+          setRecord(response.data as CoraRecord);
+          setIsLoading(false);
+        }
+      } catch (err: unknown) {
+        setRecord(undefined);
+        if (isMounted) {
+          if (axios.isAxiosError(err)) {
+            setError(err.message);
+          } else {
+            setError('Unexpected error occurred');
+          }
+          setIsLoading(false);
+        }
+      }
+    };
+
+    if (recordType !== undefined) fetchRecord().then();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [recordType]);
 
   return { isLoading, error, record };
 };

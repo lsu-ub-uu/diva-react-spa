@@ -73,7 +73,7 @@ export const Login = (): JSX.Element => {
   };
 
   const handleWebRedirectSelection = (
-    event: MouseEvent<HTMLElement>,
+    event: any,
     url: string,
   ) => {
     try {

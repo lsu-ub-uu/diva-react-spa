@@ -24,7 +24,7 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useBackdrop,
   FormGenerator,
@@ -33,9 +33,14 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '@/components';
-import { useCoraFormSchemaByValidationType } from '@/app/hooks';
+import {
+  useCoraFormSchemaByValidationType,
+  useCoraRecordByType,
+  useCoraRecordByTypeAndId,
+} from '@/app/hooks';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { removeEmpty } from '@/utils/removeEmpty';
+import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
@@ -44,11 +49,13 @@ export const CreateRecordPage = () => {
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
+  const coraRecord = useCoraRecordByType(validationType);
+
   const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
     validationType,
     'create',
   );
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
@@ -72,7 +79,11 @@ export const CreateRecordPage = () => {
         `Record was successfully created ${response.data.id}`,
         'success',
       );
-      // navigate(`/update/record/${response.data.id}`);
+      const recordInfo = getRecordInfo(response.data)
+      const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;
+      const recordType = getValueFromRecordInfo(recordInfo, 'type')[0].value;
+      console.log(recordType)
+      navigate(`/update/record/${recordType}/${id}`);
     } catch (err: any) {
       setIsSubmitting(false);
       notification(`${err.message}`, 'error');
@@ -104,6 +115,7 @@ export const CreateRecordPage = () => {
       <div>
         <Stack spacing={2}>
           <FormGenerator
+            record={coraRecord.record}
             onSubmit={handleSubmit}
             onInvalid={() => {
               notification(`Form is invalid`, 'error');

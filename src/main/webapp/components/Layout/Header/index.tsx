@@ -58,7 +58,7 @@ export const Header = () => {
           <Grid item>
             <Button
               onClick={() => {
-                axios.get('/refreshDefinitions').then((response) => {
+                axios.get('/refreshDefinitions').then(() => {
                   // console.log(response);
                   // eslint-disable-next-line no-restricted-globals
                   location.reload();

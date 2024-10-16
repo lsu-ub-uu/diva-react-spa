@@ -35,6 +35,11 @@ export interface FormComponentTooltip {
   body: string;
 }
 
+export interface LinkedPresentation {
+  presentationId: string;
+  presentedRecordType: string;
+}
+
 export interface FormComponent {
   type:
     | 'recordLink'
@@ -76,7 +81,9 @@ export interface FormComponent {
   headlineLevel?: string;
   recordLinkType?: string;
   presentationRecordLinkId?: string;
+  linkedRecordPresentation?: LinkedPresentation;
   search?: string;
+  
   inputFormat?: 'password';
   attributesToShow?: 'all' | 'selectable' | 'none';
 }
