@@ -36,7 +36,7 @@ export interface BFFRecordType extends BFFBase {
   listPresentationViewId: string;
 }
 
-export abstract interface BFFMetadata extends BFFBase {
+export interface BFFMetadata extends BFFBase {
   nameInData: string;
   type:
     | 'group'
@@ -172,7 +172,7 @@ export interface BFFSearch extends BFFBase {
   metadataId: string;
   presentationId: string;
   recordTypeToSearchIn: string[];
-  searchGroup: autocomplete | publicSearch;
+  searchGroup: 'autocomplete' | 'publicSearch';
   searchDefText: string;
   searchText: string;
 }
