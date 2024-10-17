@@ -33,15 +33,15 @@ const divaUser = {
   appToken: '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
   userId: '161616',
   idFromLogin: 'divaAdmin@cora.epc.ub.uu.se',
-  lastName: 'DiVA',
-  firstName: 'User',
+  lastName: 'AppToken for DiVA',
+  firstName: 'Admin',
 };
 
 const divaEverything = {
   appToken: '77edfec1-e1f1-45d4-a452-411668eba0f0',
   userId: 'coraUser:490742519075086',
   idFromLogin: 'divaEverything@diva.cora.uu.se',
-  lastName: 'DiVA',
+  lastName: 'AppToken for DiVA',
   firstName: 'Everything',
 };
 
@@ -49,7 +49,7 @@ const systemAdmin = {
   appToken: 'b5ec82bb-9492-4d9f-9069-c2fac3b49493',
   userId: 'coraUser:491055276494310',
   idFromLogin: 'systemAdmin@diva.cora.uu.se',
-  lastName: 'Admin',
+  lastName: 'AppToken for Admin',
   firstName: 'System',
 };
 
@@ -57,7 +57,7 @@ const uuDomainAdmin = {
   appToken: '4808c689-48f1-4fe9-81e1-1888795933cf',
   userId: 'coraUser:491144693381458',
   idFromLogin: 'dominAdminUU@diva.cora.uu.se',
-  lastName: 'UU',
+  lastName: 'AppToken for UU',
   firstName: 'domainAdmin',
 };
 
@@ -65,7 +65,7 @@ const kthDomainAdmin = {
   appToken: 'cee52dba-56f8-4064-a379-05bd5ceab540',
   userId: 'coraUser:491201365536105',
   idFromLogin: 'domainAdminKTH@diva.cora.uu.se',
-  lastName: 'KTH',
+  lastName: 'AppToken for KTH',
   firstName: 'domainAdmin',
 };
 
