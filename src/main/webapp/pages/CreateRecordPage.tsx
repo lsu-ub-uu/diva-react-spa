@@ -36,7 +36,6 @@ import {
 import {
   useCoraFormSchemaByValidationType,
   useCoraRecordByType,
-  useCoraRecordByTypeAndId,
 } from '@/app/hooks';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { removeEmpty } from '@/utils/removeEmpty';
@@ -79,10 +78,10 @@ export const CreateRecordPage = () => {
         `Record was successfully created ${response.data.id}`,
         'success',
       );
-      const recordInfo = getRecordInfo(response.data)
+      const recordInfo = getRecordInfo(response.data);
       const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;
       const recordType = getValueFromRecordInfo(recordInfo, 'type')[0].value;
-      console.log(recordType)
+      console.log(recordType);
       navigate(`/update/record/${recordType}/${id}`);
     } catch (err: any) {
       setIsSubmitting(false);

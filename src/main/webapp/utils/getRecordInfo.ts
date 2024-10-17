@@ -20,12 +20,15 @@
 import { CoraRecord, RecordInfo } from '@/app/hooks';
 
 export const getRecordInfo = (response: CoraRecord): RecordInfo => {
-  const temp = Object.entries(response.data).map(([key, value]) => {
-      return value['recordInfo']
-  })
-  return temp[0]
-}
+  const temp = Object.entries(response.data).map(([, value]) => {
+    return value['recordInfo'];
+  });
+  return temp[0];
+};
 
-export const getValueFromRecordInfo = (recordInfo: RecordInfo, name: string) => {
+export const getValueFromRecordInfo = (
+  recordInfo: RecordInfo,
+  name: string,
+) => {
   return recordInfo[name];
-}
+};

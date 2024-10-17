@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
@@ -116,7 +116,7 @@ export const ListPublicationsCard = () => {
                 aria-label='delete'
                 onClick={async () => {
                   try {
-                    const response = await axios.delete(
+                    await axios.delete(
                       `/record/${params.row.recordType}/${params.row.id}`,
                     );
                     dispatch(loadPublicationsAsync());

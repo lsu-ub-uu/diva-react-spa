@@ -52,7 +52,7 @@ export const getCorrectTitle = (validationType: any, record: any) => {
 };
 
 export const loadPublicationsAsync =
-  (callback?: Function): AppThunk =>
+  (callback?: () => void): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(updating());

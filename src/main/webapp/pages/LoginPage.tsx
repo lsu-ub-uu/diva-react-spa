@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbar, VariantType } from 'notistack';
@@ -36,21 +36,24 @@ export const LoginPage = () => {
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [presentationParam, setPresentationParam] = useSearchParams();
+  const [isLoading] = useState(false);
+  const [error] = useState<string | null>(null);
+  const [presentationParam] = useSearchParams();
   const [schema, setSchema] = useState<null | FormSchema>(null);
   const [formIsDiry, setFormIsDirty] = useState(false);
   const authState = useAppSelector(authStateSelector);
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
-  };
+  const notification = useCallback(
+    (message: string, variant: VariantType) => {
+      enqueueSnackbar(message, {
+        variant,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      });
+    },
+    [enqueueSnackbar],
+  );
 
   useEffect(() => {
     setBackdrop(isLoading || isSubmitting);
@@ -64,7 +67,7 @@ export const LoginPage = () => {
       notification(`Loggin success`, 'success');
       navigate(-1);
     }
-  }, [authState]);
+  }, [formIsDiry, navigate, notification, authState]);
 
   useEffect(() => {
     const parsedPresentation = JSON.parse(
@@ -72,7 +75,7 @@ export const LoginPage = () => {
     );
     setSchema(parsedPresentation);
     // setPresentationParam({});
-  }, []);
+  }, [presentationParam]);
 
   const handlePasswordSelection = async (values: FieldValues) => {
     setFormIsDirty(true);
@@ -83,7 +86,7 @@ export const LoginPage = () => {
           setBackdrop(false);
         }),
       );
-    } catch (err: any) {
+    } catch {
       setIsSubmitting(false);
       // navigate('');
     } finally {

@@ -19,7 +19,6 @@
 
 import { render, screen, waitFor } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
-import React from 'react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';

@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-/* eslint-disable import/no-extraneous-dependencies */
 import { render } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
 import { Provider as StateProvider } from 'react-redux';
@@ -54,7 +53,7 @@ const renderWithReduxProvider = (
     ...renderOptions
   }: ExtendedRenderOptions = {},
 ) => {
-  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+  function Wrapper({ children }: PropsWithChildren): JSX.Element {
     return <StateProvider store={store}>{children}</StateProvider>;
   }
 

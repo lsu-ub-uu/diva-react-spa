@@ -27,11 +27,11 @@ export const deleteFromCora = async (url: string, actionLinks: ActionLinks) => {
   return axios.delete(url, { headers, data: { actionLinks } });
 };
 
-export const isValidJSON = (str: string | {} | null) => {
+export const isValidJSON = (str: string | Record<string, never> | null) => {
   try {
     JSON.parse(str as string);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };

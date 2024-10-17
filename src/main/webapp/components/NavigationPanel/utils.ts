@@ -100,16 +100,12 @@ export const useSectionScroller = () => {
   const [activeSection, setActiveSection] = useState<string>('');
 
   useEffect(() => {
-    const debounce = (func: () => void, wait: number) => {
-      // @ts-ignore
-      let timeoutId;
+    const debounce = (func: (...args: any[]) => void, wait: number) => {
+      let timeoutId: NodeJS.Timeout;
 
-      // eslint-disable-next-line func-names
-      return function (this: any, ...args: unknown[]) {
-        // @ts-ignore
+      return function (this: any, ...args: any[]) {
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
-          // @ts-ignore
           func.apply(this, args);
         }, wait);
       };

@@ -32,7 +32,10 @@ interface ExtendedSelectProps extends SelectProps {
   loadingError?: boolean;
 }
 
-export const Select = React.forwardRef((props: ExtendedSelectProps, ref) => {
+export const Select = React.forwardRef(function Select(
+  props: ExtendedSelectProps,
+  ref,
+) {
   const { t } = useTranslation();
   const { loading, role, loadingError, ...remainingProps } = props;
 

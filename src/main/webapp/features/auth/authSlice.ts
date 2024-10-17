@@ -57,7 +57,9 @@ export interface AuthState {
   userSession: Auth | null;
 }
 
-export const checkIfDataShouldBeSaved = (userSession: Auth | {} | null) => {
+export const checkIfDataShouldBeSaved = (
+  userSession: Auth | Record<string, never> | null,
+) => {
   if (
     JSON.stringify(userSession) === '{}' ||
     JSON.stringify(userSession) === 'null'
@@ -98,6 +100,7 @@ export const createInitialState = (): Auth | null => {
   }
 
   const session = JSON.parse(storage as string);
+
   axios.defaults.headers.common = {
     Authtoken: session.data.token,
   };

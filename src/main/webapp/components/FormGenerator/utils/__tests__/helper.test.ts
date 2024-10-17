@@ -38,6 +38,7 @@ import {
   isSiblingComponentRequired,
 } from '../helper';
 import { FormComponent } from '@/components/FormGenerator/types';
+import { FieldValues, UseFormGetValues } from 'react-hook-form';
 
 describe('helper methods', () => {
   describe('countStringCharOccurrences', () => {
@@ -1698,9 +1699,8 @@ describe('helper methods', () => {
     it('Should return false if the value is empty', () => {
       const mockGetValues = vi.fn(() => {
         return '';
-      });
+      }) as unknown as UseFormGetValues<FieldValues>;
 
-      // @ts-ignore
       const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
       expect(actual).toStrictEqual(false);
     });
@@ -1716,18 +1716,16 @@ describe('helper methods', () => {
 
       const mockGetValues = vi.fn(() => {
         return values.divaOutput.domain.value;
-      });
+      }) as unknown as UseFormGetValues<FieldValues>;
 
-      // @ts-ignore
       const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
       expect(actual).toStrictEqual(true);
     });
     it('Should return false if the value is undefined', () => {
       const mockGetValues = vi.fn(() => {
         return undefined;
-      });
+      }) as unknown as UseFormGetValues<FieldValues>;
 
-      // @ts-ignore
       const actual = checkIfComponentHasValue(mockGetValues, 'domain.value');
       expect(actual).toStrictEqual(false);
     });
@@ -1736,9 +1734,8 @@ describe('helper methods', () => {
     it('Should return false if the value is array with empty object', () => {
       const mockGetValues = vi.fn(() => {
         return [{ value: '' }];
-      });
+      }) as unknown as UseFormGetValues<FieldValues>;
 
-      // @ts-ignore
       const actual = checkIfSingularComponentHasValue(
         mockGetValues,
         'domain.value',
@@ -1749,9 +1746,8 @@ describe('helper methods', () => {
     it('Should return false if the value is undefined', () => {
       const mockGetValues = vi.fn(() => {
         return undefined;
-      });
+      }) as unknown as UseFormGetValues<FieldValues>;
 
-      // @ts-ignore
       const actual = checkIfSingularComponentHasValue(
         mockGetValues as any,
         'domain.value',

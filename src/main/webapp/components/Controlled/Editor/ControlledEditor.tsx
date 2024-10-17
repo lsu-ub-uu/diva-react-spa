@@ -19,7 +19,6 @@
 import { FormControl, FormHelperText, FormLabel } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
-import React from 'react';
 
 interface ControlledEditorProps {
   name: string;

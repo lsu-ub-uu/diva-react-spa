@@ -59,16 +59,17 @@ const StyledCheckedIcon = styled(StyledCheckIcon)({
     backgroundColor: '#106ba3',
   },
 });
-export const Checkbox = React.forwardRef(
-  (props: CheckboxProps, ref: React.ForwardedRef<HTMLButtonElement>) => {
-    return (
-      <MuiCheckbox
-        ref={ref}
-        {...props}
-        icon={<StyledCheckIcon />}
-        checkedIcon={<StyledCheckedIcon />}
-        disableRipple
-      />
-    );
-  },
-);
+export const Checkbox = React.forwardRef(function Checkbox(
+  props: CheckboxProps,
+  ref: React.ForwardedRef<HTMLButtonElement>,
+) {
+  return (
+    <MuiCheckbox
+      ref={ref}
+      {...props}
+      icon={<StyledCheckIcon />}
+      checkedIcon={<StyledCheckedIcon />}
+      disableRipple
+    />
+  );
+});

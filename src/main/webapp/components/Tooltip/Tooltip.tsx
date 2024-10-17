@@ -27,7 +27,7 @@ import {
   TooltipProps as MuiTooltipProps,
   Typography,
 } from '@mui/material';
-import React, { ReactElement, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
