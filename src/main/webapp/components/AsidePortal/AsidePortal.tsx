@@ -28,7 +28,7 @@ interface StyledAsidePortalProps {
   fixed?: boolean;
 }
 
-const StyledAsidePortal = styled('div')((props: StyledAsidePortalProps) => ({
+const StyledAsidePortal = styled.div<StyledAsidePortalProps>((props) => ({
   width: '270px',
   position: props.fixed === true ? 'fixed' : 'relative',
   transition: 'position 0.5s ease',
