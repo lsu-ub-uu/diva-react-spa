@@ -19,6 +19,7 @@
 
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
+import { BFFLoginPassword, BFFLoginWebRedirect, BFFMetadataGroup } from '../config/bffTypes';
 
 interface LoginDefinition {
   loginDescription: string;
@@ -39,19 +40,19 @@ export const createLoginDefinition = (dependencies: Dependencies): LoginDefiniti
     item = { loginDescription: login[1].loginDescription, type };
 
     if (item.type === 'webRedirect') {
-      const { url } = temp;
+      const { url } = temp as BFFLoginWebRedirect;
       item = {
         ...item,
         url
       };
     }
     if (item.type === 'password') {
-      const { viewDefinition, viewPresentation } = temp;
+      const { viewDefinition, viewPresentation } = temp as BFFLoginPassword;
       item = {
         ...item,
         presentation: createLinkedRecordDefinition(
           dependencies,
-          dependencies.metadataPool.get(viewDefinition),
+          dependencies.metadataPool.get(viewDefinition) as BFFMetadataGroup,
           dependencies.presentationPool.get(viewPresentation)
         )
       };

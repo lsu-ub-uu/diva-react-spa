@@ -18,7 +18,6 @@
  */
 
 import { Request, Response } from 'express';
-import * as console from 'node:console';
 import { dependencies } from '../config/configureServer';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';

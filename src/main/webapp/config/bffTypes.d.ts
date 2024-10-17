@@ -209,6 +209,6 @@ export interface BFFLoginWebRedirect extends BFFLogin {
 }
 export interface BFFLoginPassword extends BFFLogin {
   viewDefinition: string;
-  viewPresentation: unknown;
+  viewPresentation: string;
   description: string;
 }

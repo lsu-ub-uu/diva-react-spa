@@ -13,7 +13,9 @@ export class Lookup<K, V> implements KeyValueStorage<K, V> {
   }
 
   get(key: K): V {
-    if (!this.internalMap.has(key)) throw new LookupError(`[${key}] does not exist in Lookup pool`);
+    if (!this.internalMap.has(key)) {
+      throw new LookupError(`[${key}] does not exist in Lookup pool`);
+    }
     return this.internalMap.get(key) as V;
   }
 

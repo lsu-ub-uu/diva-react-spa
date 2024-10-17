@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as console from 'console';
 import {
   BFFMetadataChildReference,
   BFFMetadataGroup,
@@ -26,11 +25,7 @@ import {
 } from '../config/bffTypes';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
-import {
-  determineRepeatMax,
-  FormMetaData,
-  getAttributesByAttributeReferences
-} from './formDefinition';
+import { determineRepeatMax, FormMetaData } from './formDefinition';
 
 export const createFormMetaData = (
   dependencies: Dependencies,

@@ -31,11 +31,10 @@ import { dependencies } from '../config/configureServer';
 import { createFormMetaData } from '../formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { transformToCoraData } from '../config/transformToCora';
-import { extractIdFromRecordInfo } from '../utils/cora-data/CoraDataTransforms';
 import { transformRecord } from '../config/transformRecord';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 import * as TYPES from '../config/bffTypes';
-import { BFFMetadataGroup } from '../config/bffTypes';
+import { BFFMetadataGroup, BFFMetadataRecordLink } from '../config/bffTypes';
 
 /**
  * @desc Post an update to a record to Cora
@@ -194,17 +193,17 @@ export const getRecordByValidationTypeId = async (req: Request, res: Response) =
     // const authToken = req.header('authToken') ?? '';
     const validationType = dependencies.validationTypePool.get(validationTypeId);
     const recordTypeGroup = dependencies.recordTypePool.get(validationType.validatesRecordTypeId);
-    const metadataGroup: BFFMetadataGroup = dependencies.metadataPool.get(
+    const metadataGroup = dependencies.metadataPool.get(
       recordTypeGroup.metadataId
-    );
-    const recordInfoChildGroup: BFFMetadataGroup = dependencies.metadataPool.get(
+    ) as BFFMetadataGroup;
+    const recordInfoChildGroup = dependencies.metadataPool.get(
       metadataGroup.children[0].childId
-    );
+    ) as BFFMetadataGroup;
 
     const recordInfo = recordInfoChildGroup.children
       .filter((child) => parseInt(child.repeatMin) > 0)
-      .map((child) => dependencies.metadataPool.get(child.childId))
-      .reduce((acc, curr) => {
+      .map((child) => dependencies.metadataPool.get(child.childId) as BFFMetadataRecordLink)
+      .reduce<Record<string, any>>((acc, curr) => {
         if (curr.finalValue !== undefined) {
           acc[curr.nameInData] = { value: curr.finalValue };
         }

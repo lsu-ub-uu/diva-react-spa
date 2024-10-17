@@ -180,7 +180,6 @@ describe('transformMetadata', () => {
 
   describe('itemCollection', () => {
     it('Returns one BFFMetadata for itemCollection', () => {
-      // @ts-ignore
       const metadataList = transformMetadata(testItemCollection as DataListWrapper);
       expect(metadataList).toHaveLength(1);
       expect(metadataList[0]).toStrictEqual({

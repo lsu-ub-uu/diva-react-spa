@@ -1,6 +1,4 @@
 import { DataGroup, DataListWrapper, RecordWrapper } from '../utils/cora-data/CoraData';
-import { getFirstDataGroupWithNameInData } from '../utils/cora-data/CoraDataUtils';
-import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink

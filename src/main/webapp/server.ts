@@ -41,9 +41,16 @@ const app: Application = express();
 
 configureServer(app);
 
+interface ErrorWithMessage {
+  message: string;
+}
+
+function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+  return (error as ErrorWithMessage).message !== undefined;
+}
+
 export const errorHandler = (error: unknown) => {
-  // @ts-ignore
-  const message: string = (error.message ?? 'Unknown error') as string;
+  const message: string = isErrorWithMessage(error) ? error.message : 'Unknown error';
   const status = axios.isAxiosError(error) ? error.response?.status : 500;
   return {
     message,

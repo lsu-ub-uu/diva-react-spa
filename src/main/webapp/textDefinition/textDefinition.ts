@@ -18,6 +18,7 @@
  */
 
 import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import { BFFText } from '../config/bffTypes';
 
 export const createTextDefinition = (dependencies: Dependencies, lang: string) => {
   const { textPool } = dependencies;
@@ -25,11 +26,10 @@ export const createTextDefinition = (dependencies: Dependencies, lang: string) =
 
   const entries = Array.from(textPool.entries());
 
-  // @ts-ignore
   entries.forEach(([key, text]) => {
-    const value = text[lang];
-    const obj = { [key]: value };
+    const value = text[lang as keyof BFFText];
     if (value !== undefined) {
+      const obj = { [key]: value };
       textItemDefinitions.push(obj);
     }
   });

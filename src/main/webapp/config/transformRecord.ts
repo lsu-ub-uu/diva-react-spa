@@ -291,7 +291,9 @@ function getChildSingular(
  * @param attributes
  */
 export const transformObjectAttributes = (attributes: Attributes | undefined) => {
-  if (attributes === undefined) return [];
+  if (attributes === undefined) {
+    return [];
+  }
 
   return Object.keys(attributes).map((key) => {
     const value = attributes[key];
@@ -440,7 +442,9 @@ export const hasComponentAttributes = (component: any) => {
  * @param item
  */
 export const isRecordLink = (item: DataGroup | DataAtomic | RecordLink) => {
-  if (!isDataGroup(item)) return false;
+  if (!isDataGroup(item)) {
+    return false;
+  }
   const group = item as DataGroup;
   const recordLinkChildren = group.children.filter((child: DataGroup | DataAtomic | RecordLink) => {
     return child.name === 'linkedRecordType' || child.name === 'linkedRecordId';

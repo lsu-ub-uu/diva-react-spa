@@ -31,6 +31,7 @@ export const getTranslations = async (req: Request, res: Response) => {
     const textDefinitions = createTextDefinition(dependencies, req.params.lang);
     res.status(200).json(textDefinitions);
   } catch (error: unknown) {
+    console.error(error);
     res.status(500).json('Internal server error');
   }
 };

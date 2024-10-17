@@ -113,7 +113,6 @@ import {
   someNewRecordLink,
   pSomeNewRecordLink,
   someValidationTypeForRepeatingTitleInfoId,
-  someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
   pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup
 } from '../../__mocks__/form/bffMock';
 import {

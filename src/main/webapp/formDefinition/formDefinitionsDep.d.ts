@@ -1,4 +1,4 @@
-import { Lookup } from 'utils/structs/lookup';
+import { Lookup } from '../utils/structs/lookup';
 import {
   BFFMetadata,
   BFFValidationType,

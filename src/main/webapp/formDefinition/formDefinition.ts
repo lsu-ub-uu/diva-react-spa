@@ -590,7 +590,9 @@ const createDetailedPresentationBasedOnPresentationType = (
       metadataChildReferences,
       metadataFormPresentation
     );
-   if (!metaDataChildRef) return;
+    if (!metaDataChildRef) {
+      return;
+    }
     metadata = metadataPool.get(metaDataChildRef.childId);
 
     repeat = createRepeat(presentationChildReference, metaDataChildRef);
@@ -847,7 +849,6 @@ const checkIfSpecifiedHeadlineLevelExist = (presentation: BFFPresentationGroup) 
 };
 
 const checkIfShowHeadlineExist = (presentation: BFFPresentationGroup) => {
-  // eslint-disable-next-line no-prototype-builtins
   return Object.hasOwn(presentation, 'showHeadline');
 };
 
