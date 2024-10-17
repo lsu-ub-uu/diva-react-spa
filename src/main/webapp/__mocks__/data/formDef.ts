@@ -7451,3 +7451,52 @@ export const formDefTitleInfoGroup = {
     gridColSpan: 12,
   },
 };
+
+export const formDefSearchGroup = {
+  validationTypeId: 'search',
+  form: {
+    name: 'divaOutputSearch',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'preprintNewGroupText',
+      body: 'preprintNewGroupDefText',
+    },
+    label: 'preprintNewGroupText',
+    headlineLevel: 'h1',
+    showLabel: false,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+          {
+            name: 'title',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'titleTextVarText',
+              body: 'titleTextVarDefText',
+            },
+            label: 'titleTextVarText',
+            placeholder: 'titleInfoVarText1',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};

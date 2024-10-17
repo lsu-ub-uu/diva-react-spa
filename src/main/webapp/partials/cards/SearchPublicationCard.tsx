@@ -24,11 +24,13 @@ import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { Card, Select } from '@/components';
+import { Card, FormGenerator, Select } from "@/components";
 import {
   loadPublicationTypesAsync,
   publicationTypeSelector,
 } from '@/features/publicationTypes';
+import { FormSchema } from "@/components/FormGenerator/types";
+import { formDefSearchGroup } from "@/__mocks__/data/formDef";
 
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
@@ -67,48 +69,19 @@ export const SearchPublicationCard = () => {
           xs={12}
           sm={6}
         >
-          <Select
-            value={publicationType || ''}
-            onChange={handleChange}
-            sx={{
-              '& .MuiSelect-select .notranslate::after': {
-                content: `"${t('Enter keywords')}"`,
-                opacity: 0.42,
-              },
+          <FormGenerator
+            // record={coraRecord.record}
+            onSubmit={() => {}}
+            onInvalid={() => {
             }}
-            name='publication-type-select'
-            size='small'
-            loading={publicationTypeState.isLoading}
-            fullWidth
-          >
-            {publicationTypeState.publicationTypes.map(
-              (publicationTypeOption) => (
-                <MenuItem
-                  key={publicationTypeOption.value}
-                  value={publicationTypeOption.value}
-                  disableRipple
-                >
-                  {t(publicationTypeOption.label)}
-                </MenuItem>
-              ),
-            )}
-          </Select>
+            formSchema={formDefSearchGroup as FormSchema}
+          />
         </Grid>
         <Grid
           item
           xs={12}
           sm={6}
         >
-          <Button
-            disabled={!publicationType}
-            disableRipple
-            variant='contained'
-            component={RouterLink}
-            to={`/create/record/${publicationType}`}
-            endIcon={<SearchIcon />}
-          >
-            {t('Search')}
-          </Button>
         </Grid>
       </Grid>
     </Card>
