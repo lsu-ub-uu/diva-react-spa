@@ -590,7 +590,9 @@ const createDetailedPresentationBasedOnPresentationType = (
       metadataChildReferences,
       metadataFormPresentation
     );
-   if (!metaDataChildRef) return;
+    if (!metaDataChildRef) {
+      return;
+    }
     metadata = metadataPool.get(metaDataChildRef.childId);
 
     repeat = createRepeat(presentationChildReference, metaDataChildRef);

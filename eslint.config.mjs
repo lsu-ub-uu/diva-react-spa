@@ -9,5 +9,12 @@ export default [
   pluginJs.configs.recommended,
   ...typescriptEslint.configs.recommended,
   eslintConfigPrettier,
-  { rules: { '@typescript-eslint/no-explicit-any': 0 } }
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      curly: 'error',
+      radix: ['error', 'as-needed'],
+      'no-restricted-imports': ['error', 'console']
+    }
+  }
 ];

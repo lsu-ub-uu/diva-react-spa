@@ -125,7 +125,9 @@ export const findChildrenAttributes = (obj: any) => {
       attributesArray.push({ [key.substring(1)]: value });
     }
   });
-  if (!attributesArray.length) return undefined;
+  if (!attributesArray.length) {
+    return undefined;
+  }
   return Object.assign({}, ...attributesArray);
 };
 
