@@ -14,7 +14,6 @@ const hooksPluginFlatConfig = {
 
 export default [
   { files: ['**/*.{ts,jsx,tsx}'] },
-  { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...typescriptEslint.configs.recommended,
   pluginReact.configs.flat.recommended,
@@ -22,6 +21,14 @@ export default [
   hooksPluginFlatConfig,
   jsxA11y.flatConfigs.recommended,
   {
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+    languageOptions: {
+      globals: globals.browser,
+    },
     rules: {
       '@typescript-eslint/no-explicit-any': 0,
     },
