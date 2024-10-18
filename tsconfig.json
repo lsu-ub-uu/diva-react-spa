@@ -21,12 +21,14 @@
     "strictNullChecks": true,
     "paths": {
       "@/*": ["main/webapp/*"]
-    }
+    },
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": [
     "src",
     "oldeslintrc.json",
-    "node_modules/vitest/globals.d.ts"
+    "node_modules/vitest/globals.d.ts",
+    "./vitest.setup.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

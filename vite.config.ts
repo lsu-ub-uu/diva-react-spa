@@ -12,20 +12,22 @@ export default defineConfig({
   envDir: '../../../',
   plugins: [react()],
   test: {
-    environment: "jsdom",
+    environment: 'jsdom',
     globals: true,
     include: ['**/*.{test,spec}.{ts,mts,cts,tsx}'],
     exclude: [
       '**/node_modules/**',
       '**/target/**',
-      '**/*.{test,spec}.{js,mjs,cjs,jsx}'
+      '**/*.{test,spec}.{js,mjs,cjs,jsx}',
     ],
-    setupFiles: '../../../setupTest.js',
+    setupFiles: '../../../setupTest.ts',
   },
   resolve: {
-    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src/main/webapp') }],
+    alias: [
+      { find: '@', replacement: path.resolve(__dirname, 'src/main/webapp') },
+    ],
   },
   build: {
     outDir: '../../../dist',
-  }
+  },
 });
