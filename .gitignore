@@ -33,3 +33,6 @@ coverage
 
 # Maven
 target
+
+# Vite
+vite.config.ts.timestamp-*
