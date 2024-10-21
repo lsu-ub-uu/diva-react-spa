@@ -64,7 +64,8 @@ import {
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
-import { CoraRecord } from '@/app/hooks';
+import { CoraRecord } from '@/features/record/types';
+
 
 interface FormGeneratorProps {
   record?: CoraRecord;
