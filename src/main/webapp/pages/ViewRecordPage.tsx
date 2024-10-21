@@ -22,10 +22,11 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import {
-  CoraRecord,
   useCoraFormSchemaByValidationType,
+} from '@/features/record/useCoraFormSchemaByValidationType'
+import {
   useCoraRecordByTypeAndId,
-} from '@/app/hooks';
+} from '@/features/record/useCoraRecordByTypeAndId'
 import {
   AsidePortal,
   FormGenerator,
@@ -35,6 +36,7 @@ import {
   useSectionScroller,
 } from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
+import { CoraRecord } from '@/features/record/types';
 
 export const ViewRecordPage = () => {
   const { recordType, recordId } = useParams();

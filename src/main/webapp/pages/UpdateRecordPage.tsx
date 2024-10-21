@@ -26,8 +26,10 @@ import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
 import {
   useCoraFormSchemaByValidationType,
+} from '@/features/record/useCoraFormSchemaByValidationType'
+import {
   useCoraRecordByTypeAndId,
-} from '@/app/hooks';
+} from '@/features/record/useCoraRecordByTypeAndId'
 import {
   AsidePortal,
   FormGenerator,
