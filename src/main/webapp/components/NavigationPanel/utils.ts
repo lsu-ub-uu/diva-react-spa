@@ -101,7 +101,7 @@ export const useSectionScroller = () => {
 
   useEffect(() => {
     const debounce = (func: (...args: any[]) => void, wait: number) => {
-      let timeoutId: NodeJS.Timeout;
+      let timeoutId: number;
 
       return function (this: any, ...args: any[]) {
         clearTimeout(timeoutId);

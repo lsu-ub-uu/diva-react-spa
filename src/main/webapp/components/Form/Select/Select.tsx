@@ -16,25 +16,25 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import React from 'react';
+import React, { ForwardedRef } from 'react';
 import {
   Alert,
+  BaseSelectProps,
   OutlinedInput,
   Select as MuiSelect,
-  SelectProps,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
 
-interface ExtendedSelectProps extends SelectProps {
+interface ExtendedSelectProps extends BaseSelectProps {
   loading: boolean;
   loadingError?: boolean;
 }
 
 export const Select = React.forwardRef(function Select(
   props: ExtendedSelectProps,
-  ref,
+  ref: ForwardedRef<HTMLDivElement>,
 ) {
   const { t } = useTranslation();
   const { loading, role, loadingError, ...remainingProps } = props;
