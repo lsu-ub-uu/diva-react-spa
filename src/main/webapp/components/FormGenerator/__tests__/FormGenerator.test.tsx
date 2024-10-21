@@ -540,7 +540,8 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(6);
+      screen.logTestingPlaygroundURL();
+      expect(container.getElementsByClassName('Mui-error').length).toBe(7);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
@@ -588,7 +589,7 @@ describe('<FormGenerator />', () => {
       });
       expect(submitButton).toBeInTheDocument();
 
-      const collections = screen.getAllByRole('button', { expanded: false });
+      const collections = screen.getAllByRole('combobox', { expanded: false });
       expect(collections).toHaveLength(4);
       const firstCollection = collections[3];
       await user.click(firstCollection);
@@ -1745,7 +1746,7 @@ describe('<FormGenerator />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const expandButton = screen.getByRole('button', { expanded: false });
+      const expandButton = screen.getByRole('combobox', { expanded: false });
       expect(expandButton).toBeInTheDocument();
 
       const user = userEvent.setup();
@@ -1932,7 +1933,7 @@ describe('<FormGenerator />', () => {
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
 
-      const expandButton = screen.getByRole('button', { expanded: false });
+      const expandButton = screen.getByRole('combobox', { expanded: false });
       expect(expandButton).toBeInTheDocument();
 
       const user = userEvent.setup();
@@ -1968,7 +1969,7 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
         />,
       );
-      // const expandButton = screen.getByRole('button', { expanded: false });
+      // const expandButton = screen.getByRole('combobox', { expanded: false });
       const attribute = screen.getByText('languageCollectionVarText');
       const attributeStyle = getComputedStyle(attribute);
       const input = screen.getByPlaceholderText(
@@ -1995,7 +1996,7 @@ describe('<FormGenerator />', () => {
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
 
-      const attributeButton = screen.getByRole('button', { expanded: false });
+      const attributeButton = screen.getByRole('combobox', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
@@ -2033,7 +2034,7 @@ describe('<FormGenerator />', () => {
         'someNumberVar2IdPlaceholder',
       );
       expect(numberInput).toBeInTheDocument();
-      const attributeButton = screen.getByRole('button', { expanded: false });
+      const attributeButton = screen.getByRole('combobox', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
@@ -2069,7 +2070,7 @@ describe('<FormGenerator />', () => {
         'someNumberVar2IdPlaceholder',
       );
       expect(numberInput).toBeInTheDocument();
-      const attributeButton = screen.getByRole('button', { expanded: false });
+      const attributeButton = screen.getByRole('combobox', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
@@ -2106,7 +2107,7 @@ describe('<FormGenerator />', () => {
       );
       expect(numberInput).toBeInTheDocument();
 
-      const attributeButton = screen.getByRole('button', { expanded: false });
+      const attributeButton = screen.getByRole('combobox', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
@@ -2141,7 +2142,7 @@ describe('<FormGenerator />', () => {
         'someNumberVar2IdPlaceholder',
       );
       expect(numberInput2).toBeInTheDocument();
-      const attributeButton = screen.getByRole('button', { expanded: false });
+      const attributeButton = screen.getByRole('combobox', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
@@ -2172,7 +2173,7 @@ describe('<FormGenerator />', () => {
         'mainTitleTextVarPlaceholderText',
       );
       expect(textInput).toBeInTheDocument();
-      const attributeButton = screen.getByRole('button', { expanded: false });
+      const attributeButton = screen.getByRole('combobox', { expanded: false });
       expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
@@ -2202,11 +2203,11 @@ describe('<FormGenerator />', () => {
         'mainTitleTextVarPlaceholderText',
       );
       expect(textInput).toBeInTheDocument();
-      // const attributeButton = screen.getByRole('button', { expanded: false });
+      // const attributeButton = screen.getByRole('combobox', { expanded: false });
       // expect(attributeButton).toBeInTheDocument();
 
       const user = userEvent.setup();
-      const expandButton = screen.getAllByRole('button', { expanded: false });
+      const expandButton = screen.getAllByRole('combobox', { expanded: false });
 
       await user.click(expandButton[0]);
       const items = screen.getByRole('listbox');
@@ -2291,7 +2292,7 @@ describe('<FormGenerator />', () => {
       await user.type(mainTitleElement, '1.25');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(4);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
@@ -2305,7 +2306,7 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
         />,
       );
-      const attributeButtons = screen.getAllByRole('button', {
+      const attributeButtons = screen.getAllByRole('combobox', {
         expanded: false,
       });
       expect(attributeButtons).toHaveLength(2);
@@ -2337,7 +2338,7 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
         />,
       );
-      const attributeButtons = screen.getAllByRole('button', {
+      const attributeButtons = screen.getAllByRole('combobox', {
         expanded: false,
       });
       expect(attributeButtons).toHaveLength(2);
@@ -2345,10 +2346,10 @@ describe('<FormGenerator />', () => {
       const textInput = screen.getByPlaceholderText('givenNameTextVarText');
       expect(textInput).toBeInTheDocument();
 
-      const titleTypeAttribute = screen.getByRole('button', {
+      const titleTypeAttribute = screen.getByRole('combobox', {
         name: 'titleTypeCollectionVarText',
       });
-      const languageAttribute = screen.getByRole('button', {
+      const languageAttribute = screen.getByRole('combobox', {
         name: 'languageCollectionVarText',
       });
       expect(languageAttribute).toBeInTheDocument();
@@ -2392,7 +2393,7 @@ describe('<FormGenerator />', () => {
           onSubmit={mockSubmit}
         />,
       );
-      const attributeButtons = screen.getAllByRole('button', {
+      const attributeButtons = screen.getAllByRole('combobox', {
         expanded: false,
       });
       expect(attributeButtons).toHaveLength(2);
@@ -2402,10 +2403,10 @@ describe('<FormGenerator />', () => {
       );
       expect(textInput).toBeInTheDocument();
 
-      const titleTypeAttribute = screen.getByRole('button', {
+      const titleTypeAttribute = screen.getByRole('combobox', {
         name: 'titleTypeCollectionVarText',
       });
-      const languageAttribute = screen.getByRole('button', {
+      const languageAttribute = screen.getByRole('combobox', {
         name: 'languageCollectionVarText',
       });
       expect(languageAttribute).toBeInTheDocument();
@@ -2710,7 +2711,7 @@ describe('<FormGenerator />', () => {
 
       const user = userEvent.setup();
 
-      const expandButton = screen.getAllByRole('button', { expanded: false });
+      const expandButton = screen.getAllByRole('combobox', { expanded: false });
       // expect(expandButton).toBeInTheDocument();
 
       await user.click(expandButton[0]);
@@ -2721,7 +2722,7 @@ describe('<FormGenerator />', () => {
       await user.selectOptions(items, 'bthItemText');
       await user.click(submitButton);
 
-      expect(container.getElementsByClassName('Mui-error').length).toBe(3);
+      expect(container.getElementsByClassName('Mui-error').length).toBe(4);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
 
