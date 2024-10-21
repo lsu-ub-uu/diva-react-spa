@@ -105,7 +105,7 @@ export const useSectionScroller = () => {
 
       return function (this: any, ...args: any[]) {
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
+        timeoutId = window.setTimeout(() => {
           func.apply(this, args);
         }, wait);
       };

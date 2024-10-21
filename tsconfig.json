@@ -24,11 +24,6 @@
     },
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": [
-    "src",
-    "oldeslintrc.json",
-    "node_modules/vitest/globals.d.ts",
-    "./vitest.setup.ts"
-  ],
+  "include": ["src", "./setupTest.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

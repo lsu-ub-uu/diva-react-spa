@@ -25,9 +25,11 @@ import App from '@/App';
 import store from '@/app/store';
 import { divaTheme } from '@/themes/diva';
 import { BackdropProvider, SnackbarProvider } from '@/components';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
 describe('<App />', () => {
-  it('App Renders', async () => {
+  it('App Renders', () => {
     render(
       <BackdropProvider>
         <StateProvider store={store}>
@@ -43,9 +45,8 @@ describe('<App />', () => {
       </BackdropProvider>,
     );
 
-    await waitFor(() => {
-      const logoImage = screen.getByAltText('logo');
-      expect(logoImage).toBeInTheDocument();
-    });
+    const logoImage = screen.getByAltText('logo');
+    screen.debug();
+    expect(logoImage).toBeInTheDocument();
   });
 });
