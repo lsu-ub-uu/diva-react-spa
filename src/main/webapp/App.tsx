@@ -21,16 +21,14 @@ import { Helmet } from 'react-helmet-async';
 import favicon from './assets/favicon.svg';
 import dev_favicon from './assets/dev_favicon.svg';
 import Router from './routes/routes';
-import useI18n from './app/i18n';
+import { Suspense } from 'react';
+import './app/i18n';
 
 const App = () => {
-  const { loading } = useI18n();
   const { MODE } = import.meta.env;
 
-  if (loading) return <h3>Waiting for DiVA 3 GUI to load...</h3>;
-
   return (
-    <>
+    <Suspense fallback={<h3>Waiting for DiVA 3 GUI to load...</h3>}>
       <Helmet>
         <link
           rel='icon'
@@ -41,7 +39,7 @@ const App = () => {
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Router />
       </BrowserRouter>
-    </>
+    </Suspense>
   );
 };
 

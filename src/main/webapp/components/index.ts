@@ -33,8 +33,6 @@ export { Select } from './Form/Select/Select';
 export { Checkbox } from './Form/Checkbox/Checkbox';
 export { Radio } from './Form/Radio/Radio';
 export { ControlledAutocomplete } from './Controlled/Autocomplete/ControlledAutocomplete';
-export { DatePicker } from './Form/DatePicker/DatePicker';
-export { DateTimePicker } from './Form/DateTimePicker/DateTimePicker';
 export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';
 export { SnackbarProvider } from './Snackbar/SnackbarProvider';
 export { FormGenerator } from './FormGenerator/FormGenerator';

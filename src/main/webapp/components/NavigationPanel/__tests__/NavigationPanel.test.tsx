@@ -91,7 +91,6 @@ describe('NavigationPanel', () => {
     await user.tab();
     const anchorText = screen.getByRole('link', {
       name: 'Anchor 2',
-      exact: false,
     });
     // const anchorText = screen.getByText('Anchor 2');
     expect(anchorText).toHaveFocus();
