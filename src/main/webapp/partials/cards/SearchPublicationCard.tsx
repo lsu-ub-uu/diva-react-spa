@@ -17,35 +17,24 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, MenuItem, SelectChangeEvent } from '@mui/material';
-import Button from '@mui/material/Button';
-import { Link as RouterLink } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { Card, FormGenerator, Select } from "@/components";
-import {
-  loadPublicationTypesAsync,
-  publicationTypeSelector,
-} from '@/features/publicationTypes';
-import { FormSchema } from "@/components/FormGenerator/types";
-import { formDefSearchGroup } from "@/__mocks__/data/formDef";
+import { Grid, Skeleton } from '@mui/material';
+import { Card, FormGenerator } from '@/components';
+import { FormSchema } from '@/components/FormGenerator/types';
+import { useCoraSearchForm } from '@/features/search/useCoraSearch';
 
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
-  const [publicationType, setPublicationType] = useState('');
-  const dispatch = useAppDispatch();
-  const publicationTypeState = useAppSelector(publicationTypeSelector);
+  const { searchForm, error } = useCoraSearchForm("divaOutputSwepubSearch");
 
-  useEffect(() => {
-    dispatch(loadPublicationTypesAsync());
-  }, [dispatch]);
 
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
-    event.preventDefault();
-    setPublicationType(event.target.value as string);
-  };
+  if (searchForm === null) {
+    return <Skeleton height={80} width={160} />;
+  }
+
+  if (error) {
+    return "Hoppsan! Nåt gick fel!"
+  }
 
   return (
     <Card
@@ -70,11 +59,9 @@ export const SearchPublicationCard = () => {
           sm={6}
         >
           <FormGenerator
-            // record={coraRecord.record}
             onSubmit={() => {}}
-            onInvalid={() => {
-            }}
-            formSchema={formDefSearchGroup as FormSchema}
+            onInvalid={() => {}}
+            formSchema={searchForm as FormSchema}
           />
         </Grid>
         <Grid

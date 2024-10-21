@@ -37,7 +37,6 @@ import {
   useCoraFormSchemaByValidationType,
   useCoraRecordByType,
 } from '@/app/hooks';
-import { FormSchema } from '@/components/FormGenerator/types';
 import { removeEmpty } from '@/utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 
@@ -119,7 +118,7 @@ export const CreateRecordPage = () => {
             onInvalid={() => {
               notification(`Form is invalid`, 'error');
             }}
-            formSchema={schema as FormSchema}
+            formSchema={schema!}
           />
         </Stack>
       </div>
