@@ -89,11 +89,11 @@ describe('<Login/>', () => {
         const userNameList = screen.queryAllByRole('menuitem');
         const listItems = userNameList.map((item) => item.textContent);
         expect(listItems).toEqual([
-          'DiVAUser',
-          'DiVAEverything',
-          'AdminSystem',
-          'UUdomainAdmin',
-          'KTHdomainAdmin',
+          'AppToken for DiVAAdmin',
+          'AppToken for DiVAEverything',
+          'AppToken for AdminSystem',
+          'AppToken for UUdomainAdmin',
+          'AppToken for KTHdomainAdmin',
           'rkhTestDiVALoginUnitText',
           'skhTestDiVALoginUnitText',
           'ltuDiVALoginUnitText',
@@ -101,7 +101,7 @@ describe('<Login/>', () => {
       });
     });
 
-    it('returns only DiVAUser when environment is pre', async () => {
+    it('returns only DiVAAdmin when environment is pre', async () => {
       vi.mocked(getEnvironment).mockReturnValue('pre');
 
       const unitUrl: string = `/auth/loginUnits`;
@@ -133,7 +133,7 @@ describe('<Login/>', () => {
         const userNameList = screen.queryAllByRole('menuitem');
         const listItems = userNameList.map((item) => item.textContent);
         expect(listItems).toEqual([
-          'DiVAUser',
+          'AppToken for DiVAAdmin',
           'rkhTestDiVALoginUnitText',
           'skhTestDiVALoginUnitText',
           'ltuDiVALoginUnitText',
@@ -220,9 +220,9 @@ describe('<Login/>', () => {
       await user.click(loginButton);
 
       await waitFor(async () => {
-        const shibbolethUrl = (await screen.queryByText(
+        const shibbolethUrl = screen.queryByText(
           'rkhTestDiVALoginUnitText',
-        )) as HTMLElement;
+        ) as HTMLElement;
 
         user.click(shibbolethUrl);
         expect(mockAxios.history.get.length).toBe(1);
@@ -232,6 +232,28 @@ describe('<Login/>', () => {
     it('should should show name of chosen devUser', async () => {
       const unitUrl: string = `/auth/loginUnits`;
       mockAxios.onGet(unitUrl).reply(200, loginUnits);
+
+      const loginUrl = '/auth/appToken';
+      mockAxios.onPost(loginUrl).reply(201, {
+        auth: {
+          data: {
+            token: '2fcaa0a5-a45a-49d7-ab80-b274bb3430d2',
+            validForNoSeconds: '600',
+            userId: '161616',
+            loginId: 'divaAdmin@cora.epc.ub.uu.se',
+            firstName: 'DiVA',
+            lastName: 'Admin',
+          },
+          actionLinks: {
+            delete: {
+              requestMethod: 'DELETE',
+              rel: 'delete',
+              url: 'https://cora.epc.ub.uu.se/diva/login/rest/authToken/48b1b315-05c1-449c-ba82-97a741e03662',
+            },
+          },
+        },
+      });
+
       const user = userEvent.setup();
       reduxRender(
         <MemoryRouter initialEntries={['/']}>
@@ -253,12 +275,12 @@ describe('<Login/>', () => {
         name: 'divaClient_LoginText',
       });
       await user.click(loginButton);
-      const divaUser = screen.getByText('DiVAUser');
-      await user.click(divaUser);
+      const divaAdmin = screen.getByText('AppToken for DiVAAdmin');
+      await user.click(divaAdmin);
 
-      waitFor(async () => {
-        const logedInUser = await screen.findByText('DiVA User');
-        expect(logedInUser).toBeInTheDocument();
+      await waitFor(async () => {
+        const loggedInUser = await screen.findByText('DiVA Admin');
+        expect(loggedInUser).toBeInTheDocument();
       });
     });
 

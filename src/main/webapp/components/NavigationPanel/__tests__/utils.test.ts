@@ -17,8 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 import {
   flattenObject,
   getLastKeyFromString,
@@ -253,6 +251,16 @@ describe('flattenObj', () => {
     const actual = flattenObject(coraRecord.data);
 
     expect(actual).toStrictEqual({
+      'someRootNameInData.recordInfo.createdBy.0.value': '161616',
+      'someRootNameInData.recordInfo.dataDivider.value': 'divaData',
+      'someRootNameInData.recordInfo.id.0.value': '12345',
+      'someRootNameInData.recordInfo.tsCreated.0.value':
+        '2024-10-16T12:36:04.249992Z',
+      'someRootNameInData.recordInfo.type.0.value': 'record',
+      'someRootNameInData.recordInfo.updated.0.tsUpdated.value':
+        '2024-10-16T12:36:04.249992Z',
+      'someRootNameInData.recordInfo.updated.0.updatedBy.value': '161616',
+      'someRootNameInData.recordInfo.validationType.value': 'record',
       'someRootNameInData.someTextVar.value': 'someTestText',
     });
   });
