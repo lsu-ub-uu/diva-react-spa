@@ -69,19 +69,19 @@ export const getSearchForm = async (req: Request, res: Response) => {
       return;
     }
 
-    const search = dependencies.searchPool.get(searchId);
-    const searchMetadataGroup = dependencies.metadataPool.get(search.metadataId) as BFFMetadataGroup;
+    const searchFromPool = dependencies.searchPool.get(searchId);
+    const searchMetadataGroup = dependencies.metadataPool.get(searchFromPool.metadataId) as BFFMetadataGroup;
     const searchPresentationGroup = dependencies.presentationPool.get(
-      search.presentationId
+      searchFromPool.presentationId
     );
 
-    const formDef = createLinkedRecordDefinition(
+    const { form } = createLinkedRecordDefinition(
       dependencies,
       searchMetadataGroup,
       searchPresentationGroup,
     );
 
-    res.status(200).json(formDef);
+    res.status(200).json({ form, recordTypeToSearchIn: searchFromPool.recordTypeToSearchIn });
   } catch (error: unknown) {
     console.log(error);
     const errorResponse = errorHandler(error);
