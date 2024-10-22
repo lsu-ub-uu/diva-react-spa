@@ -540,7 +540,6 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      screen.logTestingPlaygroundURL();
       expect(container.getElementsByClassName('Mui-error').length).toBe(7);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });

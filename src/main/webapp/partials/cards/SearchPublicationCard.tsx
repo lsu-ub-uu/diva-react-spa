@@ -26,7 +26,7 @@ import Alert from '@mui/material/Alert';
 
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
-  const { searchForm, error } = useCoraSearchForm('divaOutputSwepubSearch');
+  const { searchForm, error } = useCoraSearchForm('diva-outputSimpleSearch');
 
   if (error) {
     return (

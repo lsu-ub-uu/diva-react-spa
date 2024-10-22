@@ -16,8 +16,5 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { RootState } from '@/app/store';
-
-export const publicationTypeSelector = (state: RootState) => {
-  return state.publicationType;
-};
+export { loadValidationTypesAsync } from './actions';
+export { validationTypeSelector } from './selectors';

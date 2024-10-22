@@ -24,7 +24,7 @@ import { PropsWithChildren } from 'react';
 import type { RenderOptions } from '@testing-library/react';
 import { AppStore, RootState } from '@/app/store';
 
-import publicationTypeReducer from '@/features/publicationTypes/publicationTypeSlice';
+import validationTypeReducer from '@/features/validationTypes/validationTypeSlice';
 import authReducer from '@/features/auth/authSlice';
 import publicationsReducer from '@/features/publications/publicationsSlice';
 import loginUnitsReducer from '@/features/loginUnits/loginUnitsSlice';
@@ -44,7 +44,7 @@ const renderWithReduxProvider = (
     store = configureStore({
       reducer: {
         auth: authReducer,
-        publicationType: publicationTypeReducer,
+        validationType: validationTypeReducer,
         publications: publicationsReducer,
         loginUnits: loginUnitsReducer,
       },

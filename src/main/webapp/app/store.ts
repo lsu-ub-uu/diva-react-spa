@@ -23,14 +23,14 @@ import {
   combineReducers,
 } from '@reduxjs/toolkit';
 
-import publicationTypeReducer from '@/features/publicationTypes/publicationTypeSlice';
+import validationTypeReducer from '@/features/validationTypes/validationTypeSlice';
 import publicationsReducer from '@/features/publications/publicationsSlice';
 import authReducer from '@/features/auth/authSlice';
 import loginUnitsReducer from '@/features/loginUnits/loginUnitsSlice';
 
 const combinedReducer = combineReducers({
   auth: authReducer,
-  publicationType: publicationTypeReducer,
+  validationType: validationTypeReducer,
   publications: publicationsReducer,
   loginUnits: loginUnitsReducer,
 });
