@@ -18,22 +18,32 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Grid, Skeleton } from '@mui/material';
+import { AlertTitle, Grid, Skeleton } from '@mui/material';
 import { Card, FormGenerator } from '@/components';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { useCoraSearchForm } from '@/features/search/useCoraSearch';
+import Alert from '@mui/material/Alert';
 
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
-  const { searchForm, error } = useCoraSearchForm("divaOutputSwepubSearch");
-
-
-  if (searchForm === null) {
-    return <Skeleton height={80} width={160} />;
-  }
+  const { searchForm, error } = useCoraSearchForm('divaOutputSwepubSearch');
 
   if (error) {
-    return "Hoppsan! Nåt gick fel!"
+    return (
+      <Alert severity='error'>
+        <AlertTitle>Hoppsan!</AlertTitle>Fel vid hämtning av sökformuläret.
+        Försök igen lite senare.
+      </Alert>
+    );
+  }
+
+  if (searchForm === null) {
+    return (
+      <Skeleton
+        height={300}
+        width='100%'
+      />
+    );
   }
 
   return (
@@ -68,8 +78,7 @@ export const SearchPublicationCard = () => {
           item
           xs={12}
           sm={6}
-        >
-        </Grid>
+        ></Grid>
       </Grid>
     </Card>
   );
