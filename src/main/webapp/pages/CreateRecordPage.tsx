@@ -33,12 +33,11 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '@/components';
-import {
-  useCoraFormSchemaByValidationType,
-  useCoraRecordByType,
-} from '@/app/hooks';
+
 import { removeEmpty } from '@/utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
+import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
+import { useCoraRecordByType } from '@/features/record/useCoraRecordByType';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
