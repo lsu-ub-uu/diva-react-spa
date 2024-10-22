@@ -21,12 +21,8 @@ import { useEffect } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import {
-  useCoraFormSchemaByValidationType,
-} from '@/features/record/useCoraFormSchemaByValidationType'
-import {
-  useCoraRecordByTypeAndId,
-} from '@/features/record/useCoraRecordByTypeAndId'
+import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
+import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
 import {
   AsidePortal,
   FormGenerator,
@@ -37,6 +33,7 @@ import {
 } from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
 import { CoraRecord } from '@/features/record/types';
+import { RecordForm } from '@/components/RecordForm/RecordForm';
 
 export const ViewRecordPage = () => {
   const { recordType, recordId } = useParams();
@@ -97,7 +94,7 @@ export const ViewRecordPage = () => {
       <div>
         <Stack spacing={2}>
           {coraSchema.schema && coraRecord.record && (
-            <FormGenerator
+            <RecordForm
               record={coraRecord.record}
               onSubmit={() => {}}
               onInvalid={() => {}}

@@ -18,31 +18,24 @@
  */
 
 import React from 'react';
-import { Box, Container, Grid, IconButton, Toolbar } from '@mui/material';
+import { Box, Grid, IconButton } from '@mui/material';
 import {
   Control,
   FieldErrors,
   FieldValues,
-  useForm,
   UseFormGetValues,
 } from 'react-hook-form';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
 import InfoIcon from '@mui/icons-material/Info';
 import {
-  ControlledTextField,
-  ControlledSelectField,
   ControlledLinkedRecord,
+  ControlledSelectField,
+  ControlledTextField,
 } from '../Controlled';
 import {
   addAttributesToName,
-  createDefaultValuesFromFormSchema,
   hasCurrentComponentSameNameInData,
-  RecordData,
 } from './utils';
-import { generateYupSchemaFromFormSchema } from './utils/yupSchema';
 import {
   checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
@@ -56,16 +49,15 @@ import {
   isFirstLevelVariable,
 } from './utils/helper';
 import {
-  Typography,
-  LinkButton,
   ControlledAutocomplete,
+  LinkButton,
   Tooltip,
+  Typography,
 } from '@/components';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
 import { CoraRecord } from '@/features/record/types';
-
 
 interface FormGeneratorProps {
   record?: CoraRecord;
@@ -73,24 +65,17 @@ interface FormGeneratorProps {
   onSubmit: (formValues: FieldValues) => void;
   onInvalid?: (fieldErrors: FieldErrors) => void;
   linkedData?: boolean;
+  control: Control<FieldValues, any>;
+  getValues: UseFormGetValues<any>;
 }
 
 export const FormGenerator = ({
   linkedData = false,
+  control,
+  getValues,
   ...props
 }: FormGeneratorProps) => {
   const { t } = useTranslation();
-  const methods = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(
-      props.formSchema,
-      props.record?.data as RecordData,
-    ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
-  });
-  const { control, handleSubmit, reset, getValues } = methods;
 
   const generateFormComponent = (
     component: FormComponent,
@@ -300,7 +285,9 @@ export const FormGenerator = ({
       currentComponentNamePath,
       linkedData,
     ) ? (
-      <span
+      <Grid
+        item
+        xs={12}
         key={reactKey}
         className='anchorLink'
         id={`anchor_${component.name}`}
@@ -351,12 +338,14 @@ export const FormGenerator = ({
               )}
           </Grid>
         </Box>
-      </span>
+      </Grid>
     ) : (
-      <Box
+      <Grid
+        item
         key={reactKey}
         id={component.name}
         className='aaaaaaaaa'
+        xs={12}
         sx={{
           display: 'flex',
           flexDirection:
@@ -406,7 +395,7 @@ export const FormGenerator = ({
               : component.presentationStyle,
             currentComponentNamePath,
           )}
-      </Box>
+      </Grid>
     );
   };
 
@@ -556,72 +545,7 @@ export const FormGenerator = ({
     });
   };
 
-  return linkedData !== true ? (
-    <Box
-      component='form'
-      sx={{ width: '100%' }}
-      onSubmit={handleSubmit(
-        (values) => props.onSubmit(values),
-        (errors) => props.onInvalid && props.onInvalid(errors),
-      )}
-    >
-      {generateFormComponent(props.formSchema.form, 0, '')}
-
-      <AppBar
-        position='fixed'
-        style={{
-          backgroundColor: '#eee',
-          top: 'auto',
-          bottom: 0,
-          display: 'block',
-        }}
-      >
-        <Container maxWidth='lg'>
-          <Grid container>
-            <Grid
-              item
-              xs={3}
-            />
-            <Grid
-              item
-              xs={9}
-            >
-              <Toolbar>
-                <Box
-                  component='div'
-                  sx={{ mt: 1, mb: 1, width: '100%' }}
-                  display='flex'
-                  justifyContent='space-between'
-                  alignItems='center'
-                >
-                  <Button
-                    disableRipple
-                    variant='contained'
-                    color='secondary'
-                    sx={{ height: 40 }}
-                    onClick={() => reset()}
-                  >
-                    {t('divaClient_ResetButtonText')}
-                  </Button>
-                  <Button
-                    type='submit'
-                    disableRipple
-                    variant='contained'
-                    color='primary'
-                    sx={{ height: 40 }}
-                  >
-                    {t('divaClient_SubmitButtonText')}
-                  </Button>
-                </Box>
-              </Toolbar>
-            </Grid>
-          </Grid>
-        </Container>
-      </AppBar>
-    </Box>
-  ) : (
-    generateFormComponent(props.formSchema.form, 0, '')
-  );
+  return generateFormComponent(props.formSchema.form, 0, '');
 };
 
 export const renderLeafComponent = (

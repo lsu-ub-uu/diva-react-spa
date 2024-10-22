@@ -23,6 +23,7 @@ import { Card, FormGenerator } from '@/components';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { useCoraSearchForm } from '@/features/search/useCoraSearch';
 import Alert from '@mui/material/Alert';
+import { SearchForm } from '@/components/RecordForm/SearchForm';
 
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
@@ -57,29 +58,11 @@ export const SearchPublicationCard = () => {
         t('divaClient_createPublicationTypeTooltipBodyText') as string
       }
     >
-      <Grid
-        container
-        spacing={2}
-        justifyContent='space-between'
-        alignItems='flex-start'
-      >
-        <Grid
-          item
-          xs={12}
-          sm={6}
-        >
-          <FormGenerator
-            onSubmit={() => {}}
-            onInvalid={() => {}}
-            formSchema={searchForm as FormSchema}
-          />
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-        ></Grid>
-      </Grid>
+      <SearchForm
+        onSubmit={() => {}}
+        onInvalid={() => {}}
+        formSchema={searchForm as FormSchema}
+      />
     </Card>
   );
 };

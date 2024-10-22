@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CoraRecord } from '@/app/hooks';
+import { CoraRecord } from '@/features/record/types';
 
 interface UseCoraRecordByTypeAndId {
   record?: CoraRecord;
@@ -43,12 +43,16 @@ export interface CoraRecord {
   };
   presentation?: unknown;
 }
+
 export interface Metadata {
   recordInfo: RecordInfo;
+
   [key: string]: any;
 }
+
 export interface RecordInfo {
   [key: string]: any;
+
   createdBy?: Value[];
   dataDivider: Value;
   id?: Value[];
@@ -65,5 +69,6 @@ interface UpdatedGroup {
 
 interface Value {
   value: string;
+
   [key: string]: any;
 }

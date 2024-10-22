@@ -24,12 +24,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import {
-  useCoraFormSchemaByValidationType,
-} from '@/features/record/useCoraFormSchemaByValidationType'
-import {
-  useCoraRecordByTypeAndId,
-} from '@/features/record/useCoraRecordByTypeAndId'
+import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
+import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
 import {
   AsidePortal,
   FormGenerator,
@@ -39,6 +35,7 @@ import {
   useSectionScroller,
 } from '@/components';
 import { removeEmpty } from '@/utils/removeEmpty';
+import { RecordForm } from '@/components/RecordForm/RecordForm';
 
 export const UpdateRecordPage = () => {
   const { recordType, recordId } = useParams();
@@ -120,7 +117,7 @@ export const UpdateRecordPage = () => {
       <div>
         <Stack spacing={2}>
           {coraSchema.schema && coraRecord.record && (
-            <FormGenerator
+            <RecordForm
               record={coraRecord.record}
               onSubmit={handleSubmit}
               onInvalid={() => notification(`Update Form is invalid`, 'error')}

@@ -38,6 +38,7 @@ import { removeEmpty } from '@/utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
 import { useCoraRecordByType } from '@/features/record/useCoraRecordByType';
+import { RecordForm } from '@/components/RecordForm/RecordForm';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
@@ -111,7 +112,7 @@ export const CreateRecordPage = () => {
       </AsidePortal>
       <div>
         <Stack spacing={2}>
-          <FormGenerator
+          <RecordForm
             record={coraRecord.record}
             onSubmit={handleSubmit}
             onInvalid={() => {

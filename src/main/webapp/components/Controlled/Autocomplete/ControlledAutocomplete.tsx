@@ -34,7 +34,8 @@ import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip, FormGenerator, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
-import { CoraRecord } from '@/app/hooks';
+import { CoraRecord } from '@/features/record/types';
+import { AutocompleteForm } from '@/components/RecordForm/AutocompleteForm';
 
 interface AutoCompleteProps {
   name: string;
@@ -184,12 +185,9 @@ export const ControlledAutocomplete = (
                     {...renderProps}
                     key={option.id}
                   >
-                    <FormGenerator
+                    <AutocompleteForm
                       record={option}
-                      onSubmit={() => {}}
-                      onInvalid={() => {}}
                       formSchema={option.presentation as FormSchema}
-                      linkedData
                     />
                   </li>
                 );
