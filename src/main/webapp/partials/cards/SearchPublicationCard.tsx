@@ -18,17 +18,30 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { AlertTitle, Grid, Skeleton } from '@mui/material';
-import { Card, FormGenerator } from '@/components';
+import { AlertTitle, Skeleton } from '@mui/material';
+import { Card } from '@/components';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { useCoraSearchForm } from '@/features/search/useCoraSearch';
 import Alert from '@mui/material/Alert';
 import { SearchForm } from '@/components/RecordForm/SearchForm';
+import { FieldValues } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
+const searchType = 'diva-outputSimpleSearch';
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
-  const { searchForm, error } = useCoraSearchForm('diva-outputSimpleSearch');
+  const navigate = useNavigate();
+  const { searchForm, error } = useCoraSearchForm(searchType);
+  const handleSearch = async (values: FieldValues) => {
+    console.log(
+      'values',
+      `search/${searchType}?query=${window.encodeURIComponent(JSON.stringify(values))}`,
+    );
 
+    navigate(
+      `/search/${searchType}?query=${window.encodeURIComponent(JSON.stringify(values))}`,
+    );
+  };
   if (error) {
     return (
       <Alert severity='error'>
@@ -59,7 +72,7 @@ export const SearchPublicationCard = () => {
       }
     >
       <SearchForm
-        onSubmit={() => {}}
+        onSubmit={handleSearch}
         onInvalid={() => {}}
         formSchema={searchForm as FormSchema}
       />

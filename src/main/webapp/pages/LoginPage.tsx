@@ -24,12 +24,13 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useBackdrop, FormGenerator, AsidePortal } from '@/components';
+import { AsidePortal, useBackdrop } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { loginPasswordAsync } from '@/features/auth/actions';
 import { AppDispatch } from '@/app/store';
 import { authStateSelector } from '@/features/auth/selectors';
+import { RecordForm } from '@/components/RecordForm/RecordForm';
 
 export const LoginPage = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -113,7 +114,7 @@ export const LoginPage = () => {
       <div>
         <Stack spacing={2}>
           {schema !== null ? (
-            <FormGenerator
+            <RecordForm
               onSubmit={handlePasswordSelection}
               onInvalid={() => {
                 notification(`Form is invalid`, 'error');

@@ -17,11 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Container, Grid, Toolbar } from '@mui/material';
+import { Box } from '@mui/material';
 import { FieldErrors, FieldValues, useForm } from 'react-hook-form';
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   createDefaultValuesFromFormSchema,
@@ -40,8 +38,6 @@ interface SearchFormProps {
 }
 
 export const SearchForm = ({ ...props }: SearchFormProps) => {
-  const { t } = useTranslation();
-
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -52,7 +48,7 @@ export const SearchForm = ({ ...props }: SearchFormProps) => {
     ),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
-  const { control, handleSubmit, reset, getValues } = methods;
+  const { control, handleSubmit, getValues } = methods;
 
   return (
     <Box
@@ -71,11 +67,11 @@ export const SearchForm = ({ ...props }: SearchFormProps) => {
         getValues={getValues}
       />
       <Button
+        type='submit'
         disableRipple
         variant='contained'
         color='secondary'
         sx={{ height: 40 }}
-        onClick={() => reset()}
       >
         Sök
       </Button>

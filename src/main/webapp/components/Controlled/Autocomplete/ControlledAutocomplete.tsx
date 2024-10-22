@@ -32,7 +32,7 @@ import axios from 'axios';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Tooltip, FormGenerator, LinkedRecord } from '@/components';
+import { Tooltip, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
 import { AutocompleteForm } from '@/components/RecordForm/AutocompleteForm';

@@ -24,6 +24,7 @@ import {
   UpdateRecordPage,
   ViewRecordPage,
   LoginPage,
+  SearchPage,
 } from '@/pages';
 import PrivateRoutes from './PrivateRoutes';
 
@@ -57,6 +58,8 @@ export const routes = [
         path: '/view/record/:recordType/:recordId',
         element: <ViewRecordPage />,
       },
+
+      { path: '/search/:searchType', element: <SearchPage /> },
       { path: '*', element: <div>404 not found</div> },
     ],
   },
