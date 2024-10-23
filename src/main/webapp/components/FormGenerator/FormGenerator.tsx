@@ -301,25 +301,27 @@ export const FormGenerator = ({
             }}
           >
             {component.showLabel === true ? (
-              <Typography
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
+              <>
+                <Typography
+                  text={component?.label ?? ''}
+                  variant={headlineLevelToTypographyVariant(
+                    component.headlineLevel,
+                  )}
+                />
+                <Tooltip
+                  title={t(component.tooltip?.title as string)}
+                  body={t(component.tooltip?.body as string)}
+                >
+                  <IconButton
+                    disableRipple
+                    color='info'
+                    aria-label='info'
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
             ) : null}
-            <Tooltip
-              title={t(component.tooltip?.title as string)}
-              body={t(component.tooltip?.body as string)}
-            >
-              <IconButton
-                disableRipple
-                color='info'
-                aria-label='info'
-              >
-                <InfoIcon />
-              </IconButton>
-            </Tooltip>
           </Box>
           <Grid
             container
