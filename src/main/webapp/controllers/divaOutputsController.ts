@@ -22,12 +22,12 @@ import { dependencies } from '../config/configureServer';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
 import { transformRecords } from '../config/transformRecord';
-import { errorHandler } from '../server';
+import { errorHandler } from '../app';
 
 /**
  * @desc Get created divaOutputs
  * @route GET /api/divaOutputs
- * @access	Public
+ * @access  Public
  */
 export const getDivaOutputs = async (req: Request, res: Response) => {
   try {

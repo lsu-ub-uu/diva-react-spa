@@ -14,9 +14,18 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { start } from './app';
+import { CORA_DATA_LOADED_EVENT, eventEmitter, start } from '../../../app';
+import { Server } from 'http';
 
-start();
+export const startServer = async (): Promise<Server> => {
+  const coraDataLoaded = new Promise((resolve) => {
+    eventEmitter.once(CORA_DATA_LOADED_EVENT, resolve);
+  });
+
+  const server = start();
+
+  await coraDataLoaded;
+  return server;
+};

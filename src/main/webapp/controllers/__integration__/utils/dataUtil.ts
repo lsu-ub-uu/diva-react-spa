@@ -1,0 +1,38 @@
+/*
+ * Copyright 2023 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
+
+import { deleteRecordDataById, postRecordData } from '../../../cora/record';
+import { DataGroup, RecordWrapper } from '../../../utils/cora-data/CoraData';
+import {
+  getFirstChildWithNameInData,
+  getFirstDataAtomicWithNameInData
+} from '../../../utils/cora-data/CoraDataUtils';
+
+export const createDivaOutput = async (payload: DataGroup, authToken: string) => {
+  const response = await postRecordData(payload, 'diva-output', authToken);
+  const record = response.data as RecordWrapper;
+  const recordInfo = getFirstChildWithNameInData(record.record.data, 'recordInfo') as DataGroup;
+  const id = getFirstDataAtomicWithNameInData(recordInfo, 'id');
+  const tsCreated = getFirstDataAtomicWithNameInData(recordInfo, 'tsCreated');
+  const updated = getFirstChildWithNameInData(recordInfo, 'updated');
+  return { id: id.value, tsCreated: tsCreated.value, updated };
+};
+
+export const deleteDivaOutput = (recordId: string, authToken: string) => {
+  return deleteRecordDataById(recordId, 'diva-output', authToken);
+};

@@ -21,7 +21,7 @@ import { Request, Response } from 'express';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
 import { transformCoraValidationTypes } from '../config/transformValidationTypes';
-import { errorHandler } from '../server';
+import { errorHandler } from '../app';
 
 /**
  * @desc Get list of existing validationTypes

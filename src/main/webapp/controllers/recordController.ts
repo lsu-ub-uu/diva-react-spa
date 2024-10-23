@@ -25,7 +25,7 @@ import {
   postRecordData,
   updateRecordDataById
 } from '../cora/record';
-import { errorHandler } from '../server';
+import { errorHandler } from '../app';
 import { cleanJson } from '../utils/structs/removeEmpty';
 import { dependencies } from '../config/configureServer';
 import { createFormMetaData } from '../formDefinition/formMetadata';
@@ -35,6 +35,44 @@ import { transformRecord } from '../config/transformRecord';
 import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
 import * as TYPES from '../config/bffTypes';
 import { BFFMetadataGroup, BFFMetadataRecordLink } from '../config/bffTypes';
+
+/**
+ * @desc Create a new record to Cora
+ * @route POST /api/record/:validationTypeId/
+ * @access Private
+ */
+export const postRecordByValidationType = async (req: Request, res: Response) => {
+  try {
+    const { validationTypeId } = req.params;
+    const authToken = req.header('authToken') ?? '';
+
+    const payload = cleanJson(req.body);
+
+    const { validationTypePool } = dependencies;
+    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
+    if (!validationTypePool.has(validationTypeId)) {
+      throw new Error(`Validation type [${validationTypeId}] does not exist`);
+    }
+
+    const FORM_MODE_NEW = 'create';
+
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+    const transformData = transformToCoraData(formMetaDataPathLookup, payload);
+
+    const response = await postRecordData<RecordWrapper>(
+      transformData[0] as DataGroup,
+      recordType,
+      authToken
+    );
+    const record = transformRecord(dependencies, response.data);
+    res.status(response.status).json(record); // return id for now
+  } catch (error: unknown) {
+    console.error(error);
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
 
 /**
  * @desc Post an update to a record to Cora
@@ -94,44 +132,6 @@ export const deleteRecordByValidationTypeAndId = async (req: Request, res: Respo
     const response = await deleteRecordDataById(recordId, recordType, authToken);
 
     res.status(response.status).json({ message: 'de' });
-  } catch (error: unknown) {
-    console.error(error);
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-};
-
-/**
- * @desc Create a new record to Cora
- * @route POST /api/record/:validationTypeId/
- * @access Private
- */
-export const postRecordByValidationType = async (req: Request, res: Response) => {
-  try {
-    const { validationTypeId } = req.params;
-    const authToken = req.header('authToken') ?? '';
-
-    const payload = cleanJson(req.body);
-
-    const { validationTypePool } = dependencies;
-    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
-    if (!validationTypePool.has(validationTypeId)) {
-      throw new Error(`Validation type [${validationTypeId}] does not exist`);
-    }
-
-    const FORM_MODE_NEW = 'create';
-
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(formMetaDataPathLookup, payload);
-
-    const response = await postRecordData<RecordWrapper>(
-      transformData[0] as DataGroup,
-      recordType,
-      authToken
-    );
-    const record = transformRecord(dependencies, response.data);
-    res.status(response.status).json(record); // return id for now
   } catch (error: unknown) {
     console.error(error);
     const errorResponse = errorHandler(error);
