@@ -74,7 +74,7 @@ const dependencies: Dependencies = {
 };
 
 const loadStuffOnServerStart = async () => {
-  const response = await getRecordDataListByType<DataListWrapper>('text', '');
+  const response = await getRecordDataListByType<DataListWrapper>('text');
   const texts = transformCoraTexts(response.data);
 
   const types = [

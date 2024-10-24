@@ -23,13 +23,22 @@ import {
   getFirstDataAtomicWithNameInData
 } from '../../../utils/cora-data/CoraDataUtils';
 
-export const createDivaOutput = async (payload: DataGroup, authToken: string) => {
+export interface CreatedRecord {
+  id: string;
+  tsCreated: string;
+  updated: DataGroup;
+}
+
+export const createDivaOutput = async (
+  payload: DataGroup,
+  authToken: string
+): Promise<CreatedRecord> => {
   const response = await postRecordData(payload, 'diva-output', authToken);
   const record = response.data as RecordWrapper;
   const recordInfo = getFirstChildWithNameInData(record.record.data, 'recordInfo') as DataGroup;
   const id = getFirstDataAtomicWithNameInData(recordInfo, 'id');
   const tsCreated = getFirstDataAtomicWithNameInData(recordInfo, 'tsCreated');
-  const updated = getFirstChildWithNameInData(recordInfo, 'updated');
+  const updated = getFirstChildWithNameInData(recordInfo, 'updated') as DataGroup;
   return { id: id.value, tsCreated: tsCreated.value, updated };
 };
 

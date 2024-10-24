@@ -4,7 +4,11 @@ import { loginAsDivaAdmin } from './utils/loginUtil';
 import { Server } from 'http';
 import supertest from 'supertest';
 import { createDivaOutput, deleteDivaOutput } from './utils/dataUtil';
-import { createBFFDivaOutput, createExampleDivaOuput } from './utils/testData';
+import {
+  createBFFDivaOutput,
+  createBFFUpdatedDivaOutput,
+  createExampleDivaOuput
+} from './utils/testData';
 
 describe('RecordController', () => {
   let server: Server;
@@ -15,7 +19,7 @@ describe('RecordController', () => {
     server.close(done);
   });
 
-  describe('/api/record/:validationTypeId', () => {
+  describe('POST /api/record/:validationTypeId', () => {
     it('creates a diva-output', async () => {
       // Arrange
       const testAgent = supertest.agent(server);
@@ -59,90 +63,209 @@ describe('RecordController', () => {
       const response = await testAgent.post('/api/record/diva-output').send(createBFFDivaOutput);
 
       // Assert
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(401);
     });
   });
 
-  describe('/api/record/:validationTypeId/:recordId', () => {
+  describe('POST /api/record/:validationTypeId/:recordId', () => {
     it('updates a diva-output', async () => {
       // Arrange
       const testAgent = supertest.agent(server);
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'Egil';
-      const { id, updated, tsCreated } = await createDivaOutput(
-        createExampleDivaOuput(title),
-        authToken
-      );
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
 
       // Act
       const response = await testAgent
-        .post(`/api/record/diva-output/${id}`)
+        .post(`/api/record/diva-output/${createdRecord.id}`)
         .set('Authtoken', authToken)
-        .send({
-          values: {
-            output: {
-              titleInfo: { _lang: 'alg', title: { value: 'ggggggg' } },
-              genre_type_contentType: { value: 'vet', _type: 'contentType' },
-              language: {
-                languageTerm: [{ value: 'ale', _authority: 'iso639-2b', _type: 'code' }]
-              },
-              'artistic-work': [{ value: 'artistic-work', _type: 'outputType' }],
-              genre_type_outputType: {
-                value: 'publication_newspaper-article',
-                _type: 'outputType'
-              },
-              recordInfo: {
-                recordContentSource: [{ value: 'hv' }],
-                validationType: { value: 'diva-output' },
-                dataDivider: { value: 'divaData' },
-                id: [{ value: id }],
-                type: [{ value: 'diva-output' }],
-                createdBy: [{ value: '161616' }],
-                tsCreated: [{ value: tsCreated }],
-                updated: [
-                  {
-                    tsUpdated: { value: new Date().toISOString() },
-                    updatedBy: { value: '161616' }
-                  }
-                ]
-              }
-            }
-          }
-        });
+        .send(createBFFUpdatedDivaOutput(createdRecord));
 
       // Assert
-      expect(response.status).toBe(201);
+      expect(response.status).toBe(200);
 
       // Cleanup
       await deleteDivaOutput(response.body.id, authToken);
     });
 
-    /* it('fails to create a diva-output when body is invalid', async () => {
-       // Arrange
-       const testAgent = supertest.agent(server);
-       const auth: Auth = await loginAsDivaAdmin(testAgent);
-       const authToken = auth.data.token;
+    it('fails to update a diva-output when body is invalid', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'Egil';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
 
-       // Act
-       const response = await testAgent
-         .post('/api/record/diva-output')
-         .set('Authtoken', authToken)
-         .send({});
+      // Act
+      const response = await testAgent
+        .post(`/api/record/diva-output/${createdRecord.id}`)
+        .set('Authtoken', authToken)
+        .send({});
 
-       // Assert
-       expect(response.status).toBe(400);
-     });
+      // Assert
+      expect(response.status).toBe(500);
+    });
 
-     it('fails to create a diva-output when not authenticated', async () => {
-       // Arrange
-       const testAgent = supertest.agent(server);
+    it('fails to update a diva-output when not authenticated', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'Egil';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
 
-       // Act
-       const response = await testAgent.post('/api/record/diva-output').send(createBFFDivaOutput);
+      // Act
+      const response = await testAgent
+        .post(`/api/record/diva-output/${createdRecord.id}`)
+        .send(createBFFUpdatedDivaOutput(createdRecord));
 
-       // Assert
-       expect(response.status).toBe(403);
-     });*/
+      // Assert
+      expect(response.status).toBe(401);
+
+      // Cleanup
+      await deleteDivaOutput(createdRecord.id, authToken);
+    });
+  });
+  describe('DELETE /api/record/:validationTypeId/:recordId', () => {
+    it('deletes a diva-output', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'Egil';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+
+      // Act
+      const response = await testAgent
+        .delete(`/api/record/diva-output/${createdRecord.id}`)
+        .set('Authtoken', authToken);
+
+      // Assert
+      expect(response.status).toBe(200);
+    });
+
+    it('fails to delete a diva-output when validationType is not found', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'Egil';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+
+      // Act
+      const response = await testAgent
+        .delete(`/api/record/someValidationType/${createdRecord.id}`)
+        .set('Authtoken', authToken);
+
+      // Assert
+      expect(response.status).toBe(404);
+
+      // Cleanup
+      await deleteDivaOutput(createdRecord.id, authToken);
+    });
+
+    it('fails to delete a diva-output when not authenticated', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'Egil';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+
+      // Act
+      const response = await testAgent.delete(`/api/record/diva-output/${createdRecord.id}`);
+
+      // Assert
+      expect(response.status).toBe(401);
+
+      // Cleanup
+      await deleteDivaOutput(createdRecord.id, authToken);
+    });
+  });
+  describe('GET /api/record/:validationTypeId/:recordId', () => {
+    it('gets a specific diva-output', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'Egil';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+
+      // Act
+      const response = await testAgent
+        .get(`/api/record/diva-output/${createdRecord.id}`)
+        .set('Authtoken', authToken);
+
+      // Assert
+      expect(response.status).toBe(200);
+      // expect(response.body)
+
+      // Cleanup
+      await deleteDivaOutput(response.body.id, authToken);
+    });
+  });
+
+  describe('GET /api/record/:recordType/:recordId', () => {
+    it('gets a specific diva-output', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'someUniqueTitle';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+
+      // Act
+      const response = await testAgent
+        .get(`/api/record/diva-output/${createdRecord.id}`)
+        .set('Authtoken', authToken);
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.data.output.titleInfo.title.value).toEqual(title);
+
+      // Cleanup
+      await deleteDivaOutput(response.body.id, authToken);
+    });
+
+    it('fails to get a specific diva-output', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'someUniqueTitle';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+
+      // Act
+      const response = await testAgent
+        .get(`/api/record/diva-output/someWrongId?presentationRecordLinkId=`)
+        .set('Authtoken', authToken);
+
+      // Assert
+      expect(response.status).toBe(404);
+
+      // Cleanup
+      await deleteDivaOutput(createdRecord.id, authToken);
+    });
+
+    it('gets a specific diva-output that has a linked presentation', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'someUniqueTitle';
+      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+
+      // Act
+      const response = await testAgent
+        .get(`/api/record/diva-output/someWrongId`)
+        .set('Authtoken', authToken);
+
+      // Assert
+      expect(response.status).toBe(404);
+
+      // Cleanup
+      await deleteDivaOutput(createdRecord.id, authToken);
+    });
   });
 });

@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { DataGroup } from '../../../utils/cora-data/CoraData';
+import { DataAtomic, DataGroup } from '../../../utils/cora-data/CoraData';
+import { CreatedRecord } from './dataUtil';
 
 export const createExampleDivaOuput = (title: string): DataGroup => ({
   name: 'output',
@@ -130,3 +131,37 @@ export const createBFFDivaOutput = {
     }
   }
 };
+
+export const createBFFUpdatedDivaOutput = ({ id, tsCreated, updated }: CreatedRecord) => ({
+  values: {
+    output: {
+      titleInfo: { _lang: 'alg', title: { value: 'ggggggg' } },
+      genre_type_contentType: { value: 'vet', _type: 'contentType' },
+      language: {
+        languageTerm: [{ value: 'ale', _authority: 'iso639-2b', _type: 'code' }]
+      },
+      'artistic-work': [{ value: 'artistic-work', _type: 'outputType' }],
+      genre_type_outputType: {
+        value: 'publication_newspaper-article',
+        _type: 'outputType'
+      },
+      recordInfo: {
+        recordContentSource: [{ value: 'hv' }],
+        validationType: { value: 'diva-output' },
+        dataDivider: { value: 'divaData' },
+        id: [{ value: id }],
+        type: [{ value: 'diva-output' }],
+        createdBy: [{ value: '161616' }],
+        tsCreated: [{ value: tsCreated }],
+        updated: [
+          {
+            tsUpdated: { value: (updated.children[0] as DataAtomic).value },
+            updatedBy: {
+              value: ((updated.children[1] as DataGroup).children[1] as DataAtomic).value
+            }
+          }
+        ]
+      }
+    }
+  }
+});

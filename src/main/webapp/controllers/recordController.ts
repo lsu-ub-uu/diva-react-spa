@@ -44,7 +44,7 @@ import { BFFMetadataGroup, BFFMetadataRecordLink } from '../config/bffTypes';
 export const postRecordByValidationType = async (req: Request, res: Response) => {
   try {
     const { validationTypeId } = req.params;
-    const authToken = req.header('authToken') ?? '';
+    const authToken = req.header('authToken');
 
     const payload = cleanJson(req.body);
 
@@ -82,7 +82,7 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
 export const postRecordByValidationTypeAndId = async (req: Request, res: Response) => {
   try {
     const { validationTypeId, recordId } = req.params;
-    const authToken = req.header('authToken') ?? '';
+    const authToken = req.header('authToken');
 
     const payload = cleanJson(req.body);
     const { values } = payload;
@@ -97,6 +97,7 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
 
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+
     const transformData = transformToCoraData(formMetaDataPathLookup, values);
 
     const response = await updateRecordDataById<RecordWrapper>(
@@ -105,7 +106,9 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
       recordType,
       authToken
     );
-    res.status(response.status).json({});
+
+    const record = transformRecord(dependencies, response.data);
+    res.status(response.status).json(record);
   } catch (error: unknown) {
     console.error(error);
     const errorResponse = errorHandler(error);
@@ -121,12 +124,14 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
 export const deleteRecordByValidationTypeAndId = async (req: Request, res: Response) => {
   try {
     const { recordType, recordId } = req.params;
-    const authToken = req.header('authToken') ?? '';
+    const authToken = req.header('authToken');
 
     const { recordTypePool } = dependencies;
 
     if (!recordTypePool.has(recordType)) {
-      throw new Error(`Validation type [${recordType}] does not exist`);
+      console.error(`Validation type [${recordType}] does not exist`);
+      res.status(404).send();
+      return;
     }
 
     const response = await deleteRecordDataById(recordId, recordType, authToken);
@@ -149,7 +154,7 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
     const { presentationRecordLinkId } = req.query;
     const { recordType, recordId } = req.params;
 
-    const authToken = req.header('authToken') ?? '';
+    const authToken = req.header('authToken');
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
 
     const recordWrapper = response.data;
@@ -190,7 +195,6 @@ export const getRecordByValidationTypeId = async (req: Request, res: Response) =
   try {
     const { validationTypeId } = req.params;
 
-    // const authToken = req.header('authToken') ?? '';
     const validationType = dependencies.validationTypePool.get(validationTypeId);
     const recordTypeGroup = dependencies.recordTypePool.get(validationType.validatesRecordTypeId);
     const metadataGroup = dependencies.metadataPool.get(
