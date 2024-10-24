@@ -82,10 +82,9 @@ export const createYupValidationsFromComponent = (
   )
     ? addAttributesToName(component, component.name)
     : component.name;
-  // console.log('current', currentNameInData);
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
-      // console.log('rep group', component);
+      console.log('group', component.name, isComponentRepeating(component));
       const innerObjectSchema = generateYupSchema(
         component.components,
         isParentGroupOptional(component) || parentComponentRepeating,
@@ -101,6 +100,7 @@ export const createYupValidationsFromComponent = (
         component.repeat,
       );
     } else {
+      console.log('var', component.name);
       // repeating variables
       const extendedSchema = yup.object().shape({
         value: createValidationFromComponentType(component),
@@ -119,6 +119,7 @@ export const createYupValidationsFromComponent = (
     }
   } else {
     // non-repeating group
+    console.log('group', component.name, isComponentRepeating(component));
     if (isComponentGroup(component)) {
       const childrenWithSameNameInData = getChildrenWithSameNameInData(
         getChildArrayWithSameNameInData(component),
@@ -138,8 +139,6 @@ export const createYupValidationsFromComponent = (
           parentGroupRepeating,
         ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      // console.log('non group', component, innerSchema, validationRule);
-      // console.log('vR', component.name, validationRule[currentNameInData]);
     } else {
       validationRule[currentNameInData] = yup.object().shape({
         value: createValidationFromComponentType(
@@ -473,6 +472,11 @@ const createYupStringSchema = (
         ? yup.string().nullable().test(testAttributeHasVariableWithValue)
         : yup.string().required();
     });
+  }
+
+  if (isComponentRequired(component)) {
+    console.log('isParentComponentOptional', component.name);
+    return yup.string().required();
   }
 
   if (isComponentRepeating(component) || isParentComponentOptional) {
