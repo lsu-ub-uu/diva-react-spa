@@ -475,7 +475,6 @@ const createYupStringSchema = (
   }
 
   if (isComponentRequired(component)) {
-    console.log('isParentComponentOptional', component.name);
     return yup.string().required();
   }
 
