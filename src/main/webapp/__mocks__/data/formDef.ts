@@ -7451,3 +7451,78 @@ export const formDefTitleInfoGroup = {
     gridColSpan: 12,
   },
 };
+
+export const formDefRequiredRepeatingCollectionVar = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'language',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'languageGroupText',
+          body: 'languageGroupDefText',
+        },
+        label: 'languageGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'languageTerm',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            attributesToShow: 'selectable',
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
