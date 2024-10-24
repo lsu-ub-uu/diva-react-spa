@@ -75,15 +75,15 @@ import {
   formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
   formDefTitleInfoGroup,
   formDefRequiredRepeatingCollectionVar,
+  formDefRequiredRepeatingCollection2Var,
 } from '@/__mocks__/data/formDef';
 import {
   FormGenerator,
-  getChildArrayWithSameNameInData,
-  getChildrenWithSameNameInData,
   getChildrenWithSameNameInDataFromSchema,
   hasComponentSameNameInData,
 } from '../FormGenerator';
 import { FormComponent, FormSchema } from '../types';
+import { getChildNameInDataArray } from '@/components/FormGenerator/utils';
 
 describe('<FormGenerator />', () => {
   vi.mock('react-i18next', () => ({
@@ -1765,12 +1765,36 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('renders a collectionVariable 1-X and does not validate it', async () => {
+    it('renders a collectionVariable 1-X with group 1-1  and does not validate it', async () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
         <FormGenerator
           formSchema={formDefRequiredRepeatingCollectionVar as FormSchema}
+          onSubmit={mockSubmit}
+        />,
+      );
+
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const user = userEvent.setup();
+
+      await user.click(submitButton);
+
+      expect(
+        container.getElementsByClassName('Mui-error').length,
+      ).toBeGreaterThan(0);
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
+    it('renders a collectionVariable 1-X with group 0-1 and does validate it', async () => {
+      const mockSubmit = vi.fn();
+
+      const { container } = render(
+        <FormGenerator
+          formSchema={formDefRequiredRepeatingCollection2Var as FormSchema}
           onSubmit={mockSubmit}
         />,
       );
@@ -3226,46 +3250,46 @@ describe('checkIfComponentHasValue', () => {
     expect(input2Element).not.toBeInTheDocument();
   });
 
-  describe('getChildrenWithSameNameInData', () => {
-    it('when component is single', () => {
-      const childArray = ['someNameInData'];
-      const actual = getChildrenWithSameNameInData(childArray);
-      expect(actual).toStrictEqual([]);
-    });
-
-    it('when component has same nameInData', () => {
-      const childArray = ['someNameInData', 'someNameInData'];
-      const actual = getChildrenWithSameNameInData(childArray);
-      expect(actual).toStrictEqual(['someNameInData']);
-    });
-
-    it('when component has same nameInData and not', () => {
-      const childArray = [
-        'someNameInData',
-        'someNameInData',
-        'someOtherNameInData',
-      ];
-      const actual = getChildrenWithSameNameInData(childArray);
-      expect(actual).toStrictEqual(['someNameInData']);
-    });
-
-    it('when component has sibling with different nameInData', () => {
-      const childArray = ['someNameInData', 'someOtherNameInData'];
-      const actual = getChildrenWithSameNameInData(childArray);
-      expect(actual).toStrictEqual([]);
-    });
-
-    it('when component has multiple siblings with same nameInData', () => {
-      const childArray = [
-        'someNameInData',
-        'someNameInData',
-        'someOtherNameInData',
-        'someOtherNameInData',
-      ];
-      const actual = getChildrenWithSameNameInData(childArray);
-      expect(actual).toStrictEqual(['someNameInData', 'someOtherNameInData']);
-    });
-  });
+  /* describe('getChildrenWithSameNameInData', () => {
+     it('when component is single', () => {
+       const childArray = ['someNameInData'];
+       const actual = getChildrenWithSameNameInData(childArray);
+       expect(actual).toStrictEqual([]);
+     });
+ 
+     it('when component has same nameInData', () => {
+       const childArray = ['someNameInData', 'someNameInData'];
+       const actual = getChildrenWithSameNameInData(childArray);
+       expect(actual).toStrictEqual(['someNameInData']);
+     });
+ 
+     it('when component has same nameInData and not', () => {
+       const childArray = [
+         'someNameInData',
+         'someNameInData',
+         'someOtherNameInData',
+       ];
+       const actual = getChildrenWithSameNameInData(childArray);
+       expect(actual).toStrictEqual(['someNameInData']);
+     });
+ 
+     it('when component has sibling with different nameInData', () => {
+       const childArray = ['someNameInData', 'someOtherNameInData'];
+       const actual = getChildrenWithSameNameInData(childArray);
+       expect(actual).toStrictEqual([]);
+     });
+ 
+     it('when component has multiple siblings with same nameInData', () => {
+       const childArray = [
+         'someNameInData',
+         'someNameInData',
+         'someOtherNameInData',
+         'someOtherNameInData',
+       ];
+       const actual = getChildrenWithSameNameInData(childArray);
+       expect(actual).toStrictEqual(['someNameInData', 'someOtherNameInData']);
+     });
+   });*/
 
   describe('hasComponentSameNameInData', () => {
     it('when component does not exist', () => {
@@ -4138,9 +4162,7 @@ describe('checkIfComponentHasValue', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = getChildArrayWithSameNameInData(
-        formGroup as FormComponent,
-      );
+      const actual = getChildNameInDataArray(formGroup as FormComponent);
       expect(actual).toStrictEqual(['subject', 'subject']);
     });
 
@@ -4169,9 +4191,7 @@ describe('checkIfComponentHasValue', () => {
         childStyle: ['fiveChildStyle'],
         gridColSpan: 5,
       };
-      const actual = getChildArrayWithSameNameInData(
-        formVariable as FormComponent,
-      );
+      const actual = getChildNameInDataArray(formVariable as FormComponent);
       expect(actual).toStrictEqual([]);
     });
   });

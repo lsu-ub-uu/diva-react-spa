@@ -33,7 +33,7 @@ import {
   isComponentVariable,
   isFirstLevelGroup,
   isFirstLevelVariable,
-  isParentGroupOptional,
+  isComponentGroupAndOptional,
   isRootLevel,
   isSiblingComponentRequired,
 } from '../helper';
@@ -1466,7 +1466,7 @@ describe('helper methods', () => {
   });
   describe('isParentGroupOptional', () => {
     it('isParentGroupOptional return false for group & repeatMin === 1', () => {
-      const actual = isParentGroupOptional({
+      const actual = isComponentGroupAndOptional({
         type: 'group',
         label: 'someRootFormGroupText',
         name: 'someRootNameInData',
@@ -1490,7 +1490,7 @@ describe('helper methods', () => {
     });
 
     it('isParentGroupOptional return true for group & repeatMin === 0', () => {
-      const actual = isParentGroupOptional({
+      const actual = isComponentGroupAndOptional({
         type: 'group',
         label: 'someRootFormGroupText',
         name: 'someRootNameInData',
@@ -1514,7 +1514,7 @@ describe('helper methods', () => {
     });
 
     it('isParentGroupOptional return false for non group variable & repeatMin === 0', () => {
-      const actual = isParentGroupOptional({
+      const actual = isComponentGroupAndOptional({
         type: 'textVariable',
         name: 'someInnerNameInData',
         label: 'someTextId',
@@ -1539,7 +1539,7 @@ describe('helper methods', () => {
     });
 
     it('isParentGroupOptional return false for non group variable & repeatMin === 1', () => {
-      const actual = isParentGroupOptional({
+      const actual = isComponentGroupAndOptional({
         type: 'textVariable',
         name: 'someInnerNameInData',
         label: 'someTextId',
