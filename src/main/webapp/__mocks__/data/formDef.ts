@@ -7452,6 +7452,144 @@ export const formDefTitleInfoGroup = {
   },
 };
 
+export const formDefRequiredRepeatingTextVar = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'language',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'languageGroupText',
+          body: 'languageGroupDefText',
+        },
+        label: 'languageGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'title',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'titleTextVarText',
+              body: 'titleTextVarDefText',
+            },
+            label: 'titleTextVarText',
+            placeholder: 'titleInfoVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefRequiredRepeatingText2Var = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'language',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'languageGroupText',
+          body: 'languageGroupDefText',
+        },
+        label: 'languageGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'title',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'titleTextVarText',
+              body: 'titleTextVarDefText',
+            },
+            label: 'titleTextVarText',
+            placeholder: 'titleInfoVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
 export const formDefRequiredRepeatingCollectionVar = {
   validationTypeId: 'diva-output',
   form: {
