@@ -42,7 +42,6 @@ import {
   isComponentSingularAndOptional,
   isComponentValidForDataCarrying,
   isComponentGroupAndOptional,
-  isSiblingComponentRequired,
 } from './helper';
 
 import {
@@ -104,12 +103,12 @@ export const createYupValidationsFromComponent = (
       const attributesValidationRules = createValidationForAttributesFromComponent(
           component,
           false,
-          isSiblingComponentRequired(component),
+          isComponentRequired(component),
           isComponentGroupAndOptional(component), // FEL Borde vara NOT Optional?
       );
 
       const extendedSchema = yup.object().shape({
-        value: createValidationFromComponentType(component, false, parentGroupOptional),
+        value: createValidationFromComponentType(component, parentGroupOptional),
         ...attributesValidationRules,
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
 
@@ -142,17 +141,11 @@ export const createYupValidationsFromComponent = (
     } else {
       // non-repeating variables
       validationRule[currentNameInData] = yup.object().shape({
-        value: createValidationFromComponentType(
-          component,
-          false,
-          parentGroupOptional,
-          undefined,
-          isSiblingComponentRequired(component),
-        ),
+        value: createValidationFromComponentType(component, parentGroupOptional, isComponentRequired(component)),
         ...createValidationForAttributesFromComponent(
           component,
           isComponentRepeating(component),
-          isSiblingComponentRequired(component),
+          isComponentRequired(component),
         ),
       }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     }
@@ -183,18 +176,17 @@ export const generateYupSchema = (
 };
 
 export const createValidationForAttributesFromComponent = (
-  parent: FormComponent,
+  component: FormComponent,
   siblingRepeat?: boolean,
   siblingRequired?: boolean,
   parentGroupRequired?: boolean,
 ) => {
   const attributeValidation =
-    parent.attributes?.map(
+    component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
-        [`_${attributeCollection.name}`]: createValidationFromComponentType(
+        [`_${attributeCollection.name}`]: createYupAttributeSchema(
           attributeCollection,
-          true,
-          isComponentRequired(parent),
+          isComponentRequired(component),
           siblingRepeat,
           siblingRequired,
           parentGroupRequired,
@@ -225,12 +217,9 @@ export const createYupArrayFromSchema = (
 };
 
 export const createValidationFromComponentType = (
-  component: FormComponent | FormAttributeCollection,
-  isAttribute?: boolean,
-  parentGroupOptional?: boolean,
-  siblingRepeat?: boolean,
-  siblingRequired?: boolean,
-  grandParentGroupRequired?: boolean, // Hur skiljer sig denna från isParentRequired?
+    component: FormComponent | FormAttributeCollection,
+    parentGroupOptional?: boolean,
+    siblingRequired?: boolean, // Hur skiljer sig denna från isParentRequired?
 ) => {
   switch (component.type) {
     case 'textVariable':
@@ -246,14 +235,7 @@ export const createValidationFromComponentType = (
         siblingRequired,
       );
     default: // collectionVariable, recordLink
-      return createYupStringSchema(
-        component as FormComponent,
-        isAttribute,
-        parentGroupOptional,
-        siblingRepeat,
-        siblingRequired,
-        grandParentGroupRequired,
-      );
+      return createYupStringSchema(component as FormComponent, parentGroupOptional, siblingRequired);
   }
 };
 
@@ -430,23 +412,14 @@ export const createYupNumberSchema = (
  */
 const createYupStringSchema = (
     component: FormComponent,
-    isAttribute: boolean = false,
     isParentGroupOptional: boolean = false,
-    variableForAttributeRepeat: boolean = false,
     siblingComponentRequired: boolean = false,
-    grandParentGroupRequired: boolean = false,
 ) => {
   console.log(component.name, {
     isComponentRepeating: isComponentRepeating(component),
     isParentComponentOptional: isParentGroupOptional,
     isComponentRequired: isComponentRequired(component),
   });
-  if (isAttribute && grandParentGroupRequired) {
-    return yup
-      .string()
-      .nullable()
-      .test(testOptionalParentAndRequiredSiblingWithValue);
-  }
 
   if (
     isParentGroupOptional &&
@@ -458,8 +431,52 @@ const createYupStringSchema = (
       .nullable()
       .test(testOptionalParentAndRequiredSiblingWithValue);
   }
+  // Case SDG REPEATING, REQUIRED, PARENT OPTIONAL
+  // Case languageTerm REPEATING, REQUIRED, PARENT REQUIRED
 
-  if (isParentGroupOptional && isAttribute && siblingComponentRequired) {
+  // här?
+  if(!isParentGroupOptional && isComponentRequired(component)) {
+    return yup.string().required();
+  }
+
+  if (isComponentRepeating(component) || isParentGroupOptional) {
+    return generateYupSchemaForCollections();
+  }
+
+  return yup.string().required();
+};
+
+const createYupAttributeSchema = (
+    component: FormComponent,
+    isParentGroupOptional: boolean = false,
+    variableForAttributeRepeat: boolean = false,
+    siblingComponentRequired: boolean = false,
+    grandParentGroupRequired: boolean = false,
+) => {
+  console.log(component.name, {
+    isComponentRepeating: isComponentRepeating(component),
+    isParentComponentOptional: isParentGroupOptional,
+    isComponentRequired: isComponentRequired(component),
+  });
+  if (grandParentGroupRequired) {
+    return yup
+        .string()
+        .nullable()
+        .test(testOptionalParentAndRequiredSiblingWithValue);
+  }
+
+  if (
+      isParentGroupOptional &&
+      siblingComponentRequired &&
+      isComponentRequired(component)
+  ) {
+    return yup
+        .string()
+        .nullable()
+        .test(testOptionalParentAndRequiredSiblingWithValue);
+  }
+
+  if (isParentGroupOptional && siblingComponentRequired) {
     return yup.string().when('value', ([value]) => {
       if (value === null || value === '') {
         return yup.string().nullable();
@@ -468,15 +485,15 @@ const createYupStringSchema = (
     });
   }
 
-  if (isParentGroupOptional && isAttribute && !variableForAttributeRepeat) {
+  if (isParentGroupOptional && !variableForAttributeRepeat) {
     return yup.string().required();
   }
 
-  if (isAttribute && !isParentGroupOptional) {
+  if (!isParentGroupOptional) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
-        ? yup.string().nullable().test(testAttributeHasVariableWithValue)
-        : yup.string().required();
+          ? yup.string().nullable().test(testAttributeHasVariableWithValue)
+          : yup.string().required();
     });
   }
 
