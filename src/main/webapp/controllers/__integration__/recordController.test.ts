@@ -19,6 +19,7 @@ describe('RecordController', () => {
     server.close(done);
   });
 
+  /* Create Record */
   describe('POST /api/record/:validationTypeId', () => {
     it('creates a diva-output', async () => {
       // Arrange
@@ -67,6 +68,7 @@ describe('RecordController', () => {
     });
   });
 
+  /* Update Record */
   describe('POST /api/record/:validationTypeId/:recordId', () => {
     it('updates a diva-output', async () => {
       // Arrange
@@ -127,6 +129,8 @@ describe('RecordController', () => {
       await deleteDivaOutput(createdRecord.id, authToken);
     });
   });
+
+  /* Delete Record */
   describe('DELETE /api/record/:validationTypeId/:recordId', () => {
     it('deletes a diva-output', async () => {
       // Arrange
@@ -183,29 +187,8 @@ describe('RecordController', () => {
       await deleteDivaOutput(createdRecord.id, authToken);
     });
   });
-  describe('GET /api/record/:validationTypeId/:recordId', () => {
-    it('gets a specific diva-output', async () => {
-      // Arrange
-      const testAgent = supertest.agent(server);
-      const auth: Auth = await loginAsDivaAdmin(testAgent);
-      const authToken = auth.data.token;
-      const title = 'Egil';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
 
-      // Act
-      const response = await testAgent
-        .get(`/api/record/diva-output/${createdRecord.id}`)
-        .set('Authtoken', authToken);
-
-      // Assert
-      expect(response.status).toBe(200);
-      // expect(response.body)
-
-      // Cleanup
-      await deleteDivaOutput(response.body.id, authToken);
-    });
-  });
-
+  /* Get Record */
   describe('GET /api/record/:recordType/:recordId', () => {
     it('gets a specific diva-output', async () => {
       // Arrange
@@ -266,6 +249,24 @@ describe('RecordController', () => {
 
       // Cleanup
       await deleteDivaOutput(createdRecord.id, authToken);
+    });
+  });
+
+  /* Get initial record for validation type */
+  describe('GET /api/record/:validationType', () => {
+    it('gets an empty record with record info', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+
+      // Act
+      const response = await testAgent.get('/api/record/diva-output/').set('Authtoken', authToken);
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.data.output.recordInfo.validationType.value).toEqual('diva-output');
+      expect(response.body.data.output.recordInfo.dataDivider.value).toEqual('divaData');
     });
   });
 });

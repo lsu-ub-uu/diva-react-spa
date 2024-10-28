@@ -186,6 +186,21 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
   }
 };
 
+export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
+  const presentationLink = dependencies.presentationPool.get(
+    presentationLinkId
+  ) as TYPES.BFFPresentationRecordLink;
+  const presentationId =
+    presentationLink.linkedRecordPresentations !== undefined
+      ? presentationLink.linkedRecordPresentations[0].presentationId
+      : presentationLink.id;
+  const presentationGroup = dependencies.presentationPool.get(presentationId);
+  const metadataGroup = dependencies.metadataPool.get(
+    presentationGroup.presentationOf
+  ) as TYPES.BFFMetadataGroup;
+  return { presentationGroup, metadataGroup };
+};
+
 /**
  * @desc Get record data for new record
  * @route GET /api/record/:validationType
@@ -224,19 +239,4 @@ export const getRecordByValidationTypeId = async (req: Request, res: Response) =
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }
-};
-
-export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
-  const presentationLink = dependencies.presentationPool.get(
-    presentationLinkId
-  ) as TYPES.BFFPresentationRecordLink;
-  const presentationId =
-    presentationLink.linkedRecordPresentations !== undefined
-      ? presentationLink.linkedRecordPresentations[0].presentationId
-      : presentationLink.id;
-  const presentationGroup = dependencies.presentationPool.get(presentationId);
-  const metadataGroup = dependencies.metadataPool.get(
-    presentationGroup.presentationOf
-  ) as TYPES.BFFMetadataGroup;
-  return { presentationGroup, metadataGroup };
 };
