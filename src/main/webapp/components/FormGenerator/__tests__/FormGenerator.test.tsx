@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {describe, expect, vi} from 'vitest';
+import { describe, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -79,8 +79,8 @@ import {
   formDefRequiredRepeatingCollectionVar,
   formDefRequiredRepeatingCollection2Var,
   formDefWithWithOptionalGroupWithRequiredVar,
-  formDefRequiredRepeatingNumber2Var, formDefRequiredRepeatingNumberVar,
-
+  formDefRequiredRepeatingNumber2Var,
+  formDefRequiredRepeatingNumberVar,
 } from '@/__mocks__/data/formDef';
 import {
   FormGenerator,
@@ -548,7 +548,6 @@ describe('<FormGenerator />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      screen.logTestingPlaygroundURL();
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
@@ -2578,13 +2577,11 @@ describe('<FormGenerator />', () => {
     it('renders a group 0-1 and namePart being 1-1 and shows a validation error', async () => {
       const mockSubmit = vi.fn();
 
-      const {container } = render(
-          <FormGenerator
-              onSubmit={mockSubmit}
-              formSchema={
-                formDefWithWithOptionalGroupWithRequiredVar as FormSchema
-              }
-          />,
+      const { container } = render(
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefWithWithOptionalGroupWithRequiredVar as FormSchema}
+        />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -2593,12 +2590,12 @@ describe('<FormGenerator />', () => {
       const givenName = screen.getByPlaceholderText('namePartGivenTextVarText');
 
       const user = userEvent.setup();
-      await user.type(givenName, 'someGivenName')
+      await user.type(givenName, 'someGivenName');
 
       await user.click(submitButton);
 
       expect(
-          container.getElementsByClassName('Mui-error').length,
+        container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
       expect(mockSubmit).toHaveBeenCalledTimes(0);
     });
@@ -3037,10 +3034,10 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         const { container } = render(
-            <FormGenerator
-                formSchema={formDefRequiredRepeatingTextVar as FormSchema}
-                onSubmit={mockSubmit}
-            />,
+          <FormGenerator
+            formSchema={formDefRequiredRepeatingTextVar as FormSchema}
+            onSubmit={mockSubmit}
+          />,
         );
 
         const submitButton = screen.getByRole('button', {
@@ -3052,7 +3049,7 @@ describe('<FormGenerator />', () => {
         await user.click(submitButton);
 
         expect(
-            container.getElementsByClassName('Mui-error').length,
+          container.getElementsByClassName('Mui-error').length,
         ).toBeGreaterThan(0);
         expect(mockSubmit).toHaveBeenCalledTimes(0);
       });
@@ -3061,10 +3058,10 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         render(
-            <FormGenerator
-                formSchema={formDefRequiredRepeatingText2Var as FormSchema}
-                onSubmit={mockSubmit}
-            />,
+          <FormGenerator
+            formSchema={formDefRequiredRepeatingText2Var as FormSchema}
+            onSubmit={mockSubmit}
+          />,
         );
 
         const submitButton = screen.getByRole('button', {
@@ -3077,17 +3074,17 @@ describe('<FormGenerator />', () => {
 
         expect(mockSubmit).toHaveBeenCalledTimes(1);
       });
-    })
+    });
 
     describe('numberVar', () => {
       it('renders a numberVar 1-X with group 1-1 and does not validate it', async () => {
         const mockSubmit = vi.fn();
 
         const { container } = render(
-            <FormGenerator
-                formSchema={formDefRequiredRepeatingNumberVar as FormSchema}
-                onSubmit={mockSubmit}
-            />,
+          <FormGenerator
+            formSchema={formDefRequiredRepeatingNumberVar as FormSchema}
+            onSubmit={mockSubmit}
+          />,
         );
 
         const submitButton = screen.getByRole('button', {
@@ -3099,7 +3096,7 @@ describe('<FormGenerator />', () => {
         await user.click(submitButton);
 
         expect(
-            container.getElementsByClassName('Mui-error').length,
+          container.getElementsByClassName('Mui-error').length,
         ).toBeGreaterThan(0);
         expect(mockSubmit).toHaveBeenCalledTimes(0);
       });
@@ -3108,10 +3105,10 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         render(
-            <FormGenerator
-                formSchema={formDefRequiredRepeatingNumber2Var as FormSchema}
-                onSubmit={mockSubmit}
-            />,
+          <FormGenerator
+            formSchema={formDefRequiredRepeatingNumber2Var as FormSchema}
+            onSubmit={mockSubmit}
+          />,
         );
 
         const submitButton = screen.getByRole('button', {
@@ -3124,18 +3121,17 @@ describe('<FormGenerator />', () => {
 
         expect(mockSubmit).toHaveBeenCalledTimes(1);
       });
-    })
-
+    });
 
     describe('collection', () => {
       it('renders a collectionVariable 1-X with group 1-1 and does not validate it', async () => {
         const mockSubmit = vi.fn();
 
         const { container } = render(
-            <FormGenerator
-                formSchema={formDefRequiredRepeatingCollectionVar as FormSchema}
-                onSubmit={mockSubmit}
-            />,
+          <FormGenerator
+            formSchema={formDefRequiredRepeatingCollectionVar as FormSchema}
+            onSubmit={mockSubmit}
+          />,
         );
 
         const submitButton = screen.getByRole('button', {
@@ -3147,7 +3143,7 @@ describe('<FormGenerator />', () => {
         await user.click(submitButton);
 
         expect(
-            container.getElementsByClassName('Mui-error').length,
+          container.getElementsByClassName('Mui-error').length,
         ).toBeGreaterThan(0);
         expect(mockSubmit).toHaveBeenCalledTimes(0);
       });
@@ -3156,10 +3152,10 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         render(
-            <FormGenerator
-                formSchema={formDefRequiredRepeatingCollection2Var as FormSchema}
-                onSubmit={mockSubmit}
-            />,
+          <FormGenerator
+            formSchema={formDefRequiredRepeatingCollection2Var as FormSchema}
+            onSubmit={mockSubmit}
+          />,
         );
 
         const submitButton = screen.getByRole('button', {
@@ -3172,8 +3168,8 @@ describe('<FormGenerator />', () => {
 
         expect(mockSubmit).toHaveBeenCalledTimes(1);
       });
-    })
-  })
+    });
+  });
 
   describe('checkIfComponentHasValue', () => {
     it('checkIfComponentHasValue does not hides variable in output with value', () => {
@@ -3233,11 +3229,11 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-          <FormGenerator
-              onSubmit={mockSubmit}
-              formSchema={formDefForCheckTextValue as FormSchema}
-              record={coraRecord}
-          />,
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefForCheckTextValue as FormSchema}
+          record={coraRecord}
+        />,
       );
       const inputElement = screen.getByLabelText('someMetadataTextVarText');
       expect(inputElement).toBeInTheDocument();
@@ -3298,15 +3294,15 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-          <FormGenerator
-              onSubmit={mockSubmit}
-              formSchema={formDefForCheckTextValue as FormSchema}
-              record={coraRecord}
-          />,
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefForCheckTextValue as FormSchema}
+          record={coraRecord}
+        />,
       );
       const input1Element = screen.queryByLabelText('someMetadataTextVarText');
       const input2Element = screen.queryByLabelText(
-          'someOtherMetadataTextVarText',
+        'someOtherMetadataTextVarText',
       );
       expect(input1Element).toBeInTheDocument();
       expect(input2Element).not.toBeInTheDocument();
@@ -3367,14 +3363,16 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-          <FormGenerator
-              onSubmit={mockSubmit}
-              formSchema={formDefForCheckNumberValue as FormSchema}
-              record={coraRecord}
-          />,
+        <FormGenerator
+          onSubmit={mockSubmit}
+          formSchema={formDefForCheckNumberValue as FormSchema}
+          record={coraRecord}
+        />,
       );
       const input1Element = screen.queryByLabelText('someMetadataTextVarText');
-      const input2Element = screen.queryByLabelText('someMetadataNumberVarText');
+      const input2Element = screen.queryByLabelText(
+        'someMetadataNumberVarText',
+      );
       expect(input1Element).toBeInTheDocument();
       expect(input2Element).not.toBeInTheDocument();
     });
@@ -4168,7 +4166,9 @@ describe('<FormGenerator />', () => {
           childStyle: ['fiveChildStyle'],
           gridColSpan: 5,
         };
-        const actual = hasComponentSameNameInData(formVariable as FormComponent);
+        const actual = hasComponentSameNameInData(
+          formVariable as FormComponent,
+        );
         expect(actual).toBeFalsy();
       });
     });
@@ -4327,12 +4327,10 @@ describe('<FormGenerator />', () => {
     describe('getChildrenWithSameNameInDataFromSchema', () => {
       it('returns array without duplicates from schema', () => {
         const actual = getChildrenWithSameNameInDataFromSchema(
-            formDefTextVarsWithSameNameInData as FormSchema,
+          formDefTextVarsWithSameNameInData as FormSchema,
         );
         expect(actual).toStrictEqual(['subject']);
       });
     });
   });
 });
-
-

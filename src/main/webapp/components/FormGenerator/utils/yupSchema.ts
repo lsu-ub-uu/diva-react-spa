@@ -116,13 +116,13 @@ function createSchemaForRepeatingGroup(
   parentGroupOptional: boolean,
 ) {
   const childrenWithSameNameInData = getChildrenWithSameNameInData(
-      getChildNameInDataArray(component),
+    getChildNameInDataArray(component),
   );
   const innerObjectSchema = generateYupSchema(
     component.components,
     isComponentGroupAndOptional(component) || parentGroupOptional,
     isComponentRepeating(component),
-    childrenWithSameNameInData
+    childrenWithSameNameInData,
   );
 
   // Create a new schema by merging the existing schema and attribute fields
@@ -465,12 +465,6 @@ const createYupStringSchema = (
   isParentGroupOptional: boolean = false,
   siblingComponentRequired: boolean = false,
 ) => {
-  console.log(component.name, {
-    isComponentRepeating: isComponentRepeating(component),
-    isParentComponentOptional: isParentGroupOptional,
-    isComponentRequired: isComponentRequired(component),
-  });
-
   if (
     isParentGroupOptional &&
     siblingComponentRequired &&
@@ -493,30 +487,13 @@ const createYupStringSchema = (
   return yup.string().required();
 };
 
-/**
- *  <name type="first">
- *
- *  If my sibling is optional, I am optional
- *  If my sibling is requied, I am required
- *  I am always required
- *
- *
- *  return sibling.required
- */
-
 const createYupAttributeSchema = (
   component: FormComponent,
-  siblingRequired: boolean = false, // -> siblingOptional
+  siblingRequired: boolean = false,
   siblingRepeat: boolean = false,
   siblingComponentRequired: boolean = false,
-  parentGroupOptional: boolean = false, // -> parentGroupOptional
+  parentGroupOptional: boolean = false,
 ) => {
-  console.log(component.name, {
-    isComponentRepeating: isComponentRepeating(component),
-    isParentComponentOptional: siblingRequired,
-    isComponentRequired: isComponentRequired(component),
-  });
-
   if (parentGroupOptional) {
     // egentlingen optional?
     return yup
@@ -557,7 +534,6 @@ const createYupAttributeSchema = (
     });
   }
 
-  // här?
   if (!siblingRequired && isComponentRequired(component)) {
     return yup.string().required();
   }
