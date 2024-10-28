@@ -42,13 +42,12 @@ import {
   isComponentSingularAndOptional,
   isComponentValidForDataCarrying,
   isComponentGroupAndOptional,
+  getNameInData,
 } from './helper';
 
 import {
-  addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
-  hasCurrentComponentSameNameInData,
 } from '../utils';
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
@@ -66,93 +65,132 @@ export const createYupValidationsFromComponent = (
   let validationRule: {
     [x: string]: any;
   } = {};
-  // remove surrounding container in yup validation structure
   if (isComponentContainer(component)) {
-    const validationsRules = (component.components ?? [])
-      .filter(isComponentValidForDataCarrying)
-      .map((formComponent) => createYupValidationsFromComponent(formComponent));
-    validationRule = Object.assign({}, ...validationsRules);
-    return validationRule;
+    validationRule = removeSurroundingContainer(component, validationRule);
   }
-  const currentNameInData = hasCurrentComponentSameNameInData(
-    childWithSameNameInData,
-    component.name,
-  )
-    ? addAttributesToName(component, component.name)
-    : component.name;
+  const currentNameInData = getNameInData(childWithSameNameInData, component);
+
   if (isComponentRepeating(component)) {
     if (isComponentGroup(component)) {
-      const innerObjectSchema = generateYupSchema(
-        component.components,
-        isComponentGroupAndOptional(component) || parentGroupOptional,
-        isComponentRepeating(component),
-      );
-
-      // Create a new schema by merging the existing schema and attribute fields
-      const extendedSchema = yup.object().shape({
-        ...innerObjectSchema.fields,
-        ...createValidationForAttributesFromComponent(component),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-      validationRule[currentNameInData] = createYupArrayFromSchema(
-        extendedSchema,
-        component.repeat,
+      validationRule[currentNameInData] = createSchemaForRepeatingGroup(
+        component,
+        parentGroupOptional,
       );
     } else {
-      // repeating variables
-
-      const attributesValidationRules = createValidationForAttributesFromComponent(
-          component,
-          false,
-          isComponentRequired(component),
-          isComponentGroupAndOptional(component), // FEL Borde vara NOT Optional?
-      );
-
-      const extendedSchema = yup.object().shape({
-        value: createValidationFromComponentType(component, parentGroupOptional),
-        ...attributesValidationRules,
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
-
-      validationRule[component.name] = createYupArrayFromSchema(
-        extendedSchema,
-        component.repeat,
+      validationRule[currentNameInData] = createSchemaForRepeatingVariable(
+        component,
+        parentGroupOptional,
       );
     }
   } else {
-    // non-repeating group
     if (isComponentGroup(component)) {
-      const childrenWithSameNameInData = getChildrenWithSameNameInData(
-        getChildNameInDataArray(component),
-      );
-      const innerSchema = generateYupSchema(
-        component.components,
+      validationRule[currentNameInData] = createSchemaForNonRepeatingGroup(
+        component,
         parentGroupOptional,
-        false,
-        childrenWithSameNameInData,
+        parentGroupRepeating,
       );
-      validationRule[currentNameInData] = yup.object().shape({
-        ...innerSchema.fields,
-        ...createValidationForAttributesFromComponent(
-          component,
-          parentGroupOptional,
-          false,
-          parentGroupRepeating,
-        ),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
     } else {
-      // non-repeating variables
-      validationRule[currentNameInData] = yup.object().shape({
-        value: createValidationFromComponentType(component, parentGroupOptional, isComponentRequired(component)),
-        ...createValidationForAttributesFromComponent(
-          component,
-          isComponentRepeating(component),
-          isComponentRequired(component),
-        ),
-      }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+      validationRule[currentNameInData] = createSchemaForNonRepeatingVariable(
+        component,
+        parentGroupOptional,
+      );
     }
   }
 
   return validationRule;
 };
+
+function removeSurroundingContainer(
+  component: FormComponent,
+  validationRule: { [p: string]: any },
+) {
+  const validationsRules = (component.components ?? [])
+    .filter(isComponentValidForDataCarrying)
+    .map((formComponent) => createYupValidationsFromComponent(formComponent));
+  validationRule = Object.assign({}, ...validationsRules);
+  return validationRule;
+}
+
+function createSchemaForRepeatingGroup(
+  component: FormComponent,
+  parentGroupOptional: boolean,
+) {
+  const innerObjectSchema = generateYupSchema(
+    component.components,
+    isComponentGroupAndOptional(component) || parentGroupOptional,
+    isComponentRepeating(component),
+  );
+
+  // Create a new schema by merging the existing schema and attribute fields
+  const extendedSchema = yup.object().shape({
+    ...innerObjectSchema.fields,
+    ...createValidationForAttributesFromComponent(component),
+  }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+
+  return createYupArrayFromSchema(extendedSchema, component.repeat);
+}
+
+function createSchemaForRepeatingVariable(
+  component: FormComponent,
+  parentGroupOptional: boolean,
+) {
+  const attributesValidationRules = createValidationForAttributesFromComponent(
+    component,
+    false,
+    isComponentRequired(component),
+    isComponentGroupAndOptional(component), // FEL Borde vara NOT Optional?
+  );
+
+  const extendedSchema = yup.object().shape({
+    value: createValidationFromComponentType(component, parentGroupOptional),
+    ...attributesValidationRules,
+  }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+
+  return createYupArrayFromSchema(extendedSchema, component.repeat);
+}
+
+function createSchemaForNonRepeatingGroup(
+  component: FormComponent,
+  parentGroupOptional: boolean,
+  parentGroupRepeating: boolean,
+) {
+  const childrenWithSameNameInData = getChildrenWithSameNameInData(
+    getChildNameInDataArray(component),
+  );
+  const innerSchema = generateYupSchema(
+    component.components,
+    parentGroupOptional,
+    false,
+    childrenWithSameNameInData,
+  );
+  return yup.object().shape({
+    ...innerSchema.fields,
+    ...createValidationForAttributesFromComponent(
+      component,
+      parentGroupOptional,
+      false,
+      parentGroupRepeating,
+    ),
+  }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+}
+
+function createSchemaForNonRepeatingVariable(
+  component: FormComponent,
+  parentGroupOptional: boolean,
+) {
+  return yup.object().shape({
+    value: createValidationFromComponentType(
+      component,
+      parentGroupOptional,
+      isComponentRequired(component),
+    ),
+    ...createValidationForAttributesFromComponent(
+      component,
+      isComponentRepeating(component),
+      isComponentRequired(component),
+    ),
+  }) as ObjectSchema<{ [x: string]: unknown }, AnyObject>;
+}
 
 export const generateYupSchema = (
   components: FormComponent[] | undefined,
@@ -217,9 +255,9 @@ export const createYupArrayFromSchema = (
 };
 
 export const createValidationFromComponentType = (
-    component: FormComponent | FormAttributeCollection,
-    parentGroupOptional?: boolean,
-    siblingRequired?: boolean, // Hur skiljer sig denna från isParentRequired?
+  component: FormComponent | FormAttributeCollection,
+  parentGroupOptional?: boolean,
+  siblingRequired?: boolean,
 ) => {
   switch (component.type) {
     case 'textVariable':
@@ -235,7 +273,11 @@ export const createValidationFromComponentType = (
         siblingRequired,
       );
     default: // collectionVariable, recordLink
-      return createYupStringSchema(component as FormComponent, parentGroupOptional, siblingRequired);
+      return createYupStringSchema(
+        component as FormComponent,
+        parentGroupOptional,
+        siblingRequired,
+      );
   }
 };
 
@@ -411,9 +453,9 @@ export const createYupNumberSchema = (
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 const createYupStringSchema = (
-    component: FormComponent,
-    isParentGroupOptional: boolean = false,
-    siblingComponentRequired: boolean = false,
+  component: FormComponent,
+  isParentGroupOptional: boolean = false,
+  siblingComponentRequired: boolean = false,
 ) => {
   console.log(component.name, {
     isComponentRepeating: isComponentRepeating(component),
@@ -435,7 +477,7 @@ const createYupStringSchema = (
   // Case languageTerm REPEATING, REQUIRED, PARENT REQUIRED
 
   // här?
-  if(!isParentGroupOptional && isComponentRequired(component)) {
+  if (!isParentGroupOptional && isComponentRequired(component)) {
     return yup.string().required();
   }
 
@@ -446,37 +488,50 @@ const createYupStringSchema = (
   return yup.string().required();
 };
 
+/**
+ *  <name type="first">
+ *
+ *  If my sibling is optional, I am optional
+ *  If my sibling is requied, I am required
+ *  I am always required
+ *
+ *
+ *  return sibling.required
+ */
+
 const createYupAttributeSchema = (
-    component: FormComponent,
-    isParentGroupOptional: boolean = false,
-    variableForAttributeRepeat: boolean = false,
-    siblingComponentRequired: boolean = false,
-    grandParentGroupRequired: boolean = false,
+  component: FormComponent,
+  siblingRequired: boolean = false, // -> siblingOptional
+  siblingRepeat: boolean = false,
+  siblingComponentRequired: boolean = false,
+  parentGroupOptional: boolean = false, // -> parentGroupOptional
 ) => {
   console.log(component.name, {
     isComponentRepeating: isComponentRepeating(component),
-    isParentComponentOptional: isParentGroupOptional,
+    isParentComponentOptional: siblingRequired,
     isComponentRequired: isComponentRequired(component),
   });
-  if (grandParentGroupRequired) {
+
+  if (parentGroupOptional) {
+    // egentlingen optional?
     return yup
-        .string()
-        .nullable()
-        .test(testOptionalParentAndRequiredSiblingWithValue);
+      .string()
+      .nullable()
+      .test(testOptionalParentAndRequiredSiblingWithValue);
   }
 
   if (
-      isParentGroupOptional &&
-      siblingComponentRequired &&
-      isComponentRequired(component)
+    siblingRequired &&
+    siblingComponentRequired &&
+    isComponentRequired(component)
   ) {
     return yup
-        .string()
-        .nullable()
-        .test(testOptionalParentAndRequiredSiblingWithValue);
+      .string()
+      .nullable()
+      .test(testOptionalParentAndRequiredSiblingWithValue);
   }
 
-  if (isParentGroupOptional && siblingComponentRequired) {
+  if (siblingRequired && siblingComponentRequired) {
     return yup.string().when('value', ([value]) => {
       if (value === null || value === '') {
         return yup.string().nullable();
@@ -485,27 +540,24 @@ const createYupAttributeSchema = (
     });
   }
 
-  if (isParentGroupOptional && !variableForAttributeRepeat) {
+  if (siblingRequired && !siblingRepeat) {
     return yup.string().required();
   }
 
-  if (!isParentGroupOptional) {
+  if (!siblingRequired) {
     return yup.string().when('value', ([value]) => {
       return value !== null || value !== ''
-          ? yup.string().nullable().test(testAttributeHasVariableWithValue)
-          : yup.string().required();
+        ? yup.string().nullable().test(testAttributeHasVariableWithValue)
+        : yup.string().required();
     });
   }
 
-  // Case SDG REPEATING, REQUIRED, PARENT OPTIONAL
-  // Case languageTerm REPEATING, REQUIRED, PARENT REQUIRED
-
   // här?
-  if(!isParentGroupOptional && isComponentRequired(component)) {
+  if (!siblingRequired && isComponentRequired(component)) {
     return yup.string().required();
   }
 
-  if (isComponentRepeating(component) || isParentGroupOptional) {
+  if (isComponentRepeating(component) || siblingRequired) {
     return generateYupSchemaForCollections();
   }
 

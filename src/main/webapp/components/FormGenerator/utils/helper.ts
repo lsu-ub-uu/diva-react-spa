@@ -20,6 +20,10 @@
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormComponent } from '../types';
 import { removeEmpty } from '@/utils/removeEmpty';
+import {
+  addAttributesToName,
+  hasCurrentComponentSameNameInData,
+} from '@/components/FormGenerator/utils';
 
 export const countStringCharOccurrences = (
   inputString: string,
@@ -166,7 +170,18 @@ export const checkForExistingSiblings = (formValues: any) => {
   return false;
 };
 
-
 export const checkIfValueExists = (value: unknown) => {
   return !(value === null || value === '' || value === undefined);
 };
+
+export function getNameInData(
+  childWithSameNameInData: string[],
+  component: FormComponent,
+) {
+  return hasCurrentComponentSameNameInData(
+    childWithSameNameInData,
+    component.name,
+  )
+    ? addAttributesToName(component, component.name)
+    : component.name;
+}
