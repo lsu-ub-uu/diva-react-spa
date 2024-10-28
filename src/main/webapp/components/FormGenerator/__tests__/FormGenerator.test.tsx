@@ -78,6 +78,8 @@ import {
   formDefRequiredRepeatingText2Var,
   formDefRequiredRepeatingCollectionVar,
   formDefRequiredRepeatingCollection2Var,
+  formDefWithWithOptionalGroupWithRequiredVar,
+  formDefRequiredRepeatingNumber2Var, formDefRequiredRepeatingNumberVar,
 
 } from '@/__mocks__/data/formDef';
 import {
@@ -2573,6 +2575,34 @@ describe('<FormGenerator />', () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
+    it('renders a group 0-1 and namePart being 1-1 and shows a validation error', async () => {
+      const mockSubmit = vi.fn();
+
+      const {container } = render(
+          <FormGenerator
+              onSubmit={mockSubmit}
+              formSchema={
+                formDefWithWithOptionalGroupWithRequiredVar as FormSchema
+              }
+          />,
+      );
+      const submitButton = screen.getByRole('button', {
+        name: 'divaClient_SubmitButtonText',
+      });
+
+      const givenName = screen.getByPlaceholderText('namePartGivenTextVarText');
+
+      const user = userEvent.setup();
+      await user.type(givenName, 'someGivenName')
+
+      await user.click(submitButton);
+
+      expect(
+          container.getElementsByClassName('Mui-error').length,
+      ).toBeGreaterThan(0);
+      expect(mockSubmit).toHaveBeenCalledTimes(0);
+    });
+
     it('render a group 0-1 with a child group 1-X and textVar being 1-1 and validates it', async () => {
       const mockSubmit = vi.fn();
 
@@ -3048,6 +3078,54 @@ describe('<FormGenerator />', () => {
         expect(mockSubmit).toHaveBeenCalledTimes(1);
       });
     })
+
+    describe('numberVar', () => {
+      it('renders a numberVar 1-X with group 1-1 and does not validate it', async () => {
+        const mockSubmit = vi.fn();
+
+        const { container } = render(
+            <FormGenerator
+                formSchema={formDefRequiredRepeatingNumberVar as FormSchema}
+                onSubmit={mockSubmit}
+            />,
+        );
+
+        const submitButton = screen.getByRole('button', {
+          name: 'divaClient_SubmitButtonText',
+        });
+
+        const user = userEvent.setup();
+
+        await user.click(submitButton);
+
+        expect(
+            container.getElementsByClassName('Mui-error').length,
+        ).toBeGreaterThan(0);
+        expect(mockSubmit).toHaveBeenCalledTimes(0);
+      });
+
+      it('renders a numberVar 1-X with group 0-1 and does validate it', async () => {
+        const mockSubmit = vi.fn();
+
+        render(
+            <FormGenerator
+                formSchema={formDefRequiredRepeatingNumber2Var as FormSchema}
+                onSubmit={mockSubmit}
+            />,
+        );
+
+        const submitButton = screen.getByRole('button', {
+          name: 'divaClient_SubmitButtonText',
+        });
+
+        const user = userEvent.setup();
+
+        await user.click(submitButton);
+
+        expect(mockSubmit).toHaveBeenCalledTimes(1);
+      });
+    })
+
 
     describe('collection', () => {
       it('renders a collectionVariable 1-X with group 1-1 and does not validate it', async () => {

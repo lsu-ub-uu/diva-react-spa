@@ -115,10 +115,14 @@ function createSchemaForRepeatingGroup(
   component: FormComponent,
   parentGroupOptional: boolean,
 ) {
+  const childrenWithSameNameInData = getChildrenWithSameNameInData(
+      getChildNameInDataArray(component),
+  );
   const innerObjectSchema = generateYupSchema(
     component.components,
     isComponentGroupAndOptional(component) || parentGroupOptional,
     isComponentRepeating(component),
+    childrenWithSameNameInData
   );
 
   // Create a new schema by merging the existing schema and attribute fields
@@ -194,9 +198,9 @@ function createSchemaForNonRepeatingVariable(
 
 export const generateYupSchema = (
   components: FormComponent[] | undefined,
-  parentGroupOptional: boolean = false,
-  parentGroupRepeating: boolean = false,
-  childrenWithSameNameInData: string[] = [],
+  parentGroupOptional: boolean,
+  parentGroupRepeating: boolean,
+  childrenWithSameNameInData: string[],
 ) => {
   const validationsRules = (components ?? [])
     .filter(isComponentValidForDataCarrying)
@@ -307,6 +311,10 @@ const createYupStringRegexpSchema = (
         'Invalid input format',
       )
       .test(testOptionalParentAndRequiredSiblingWithValue);
+  }
+
+  if (!isParentGroupOptional && isComponentRequired(component)) {
+    return yup.string().required();
   }
 
   if (isParentGroupOptional) {
@@ -473,9 +481,6 @@ const createYupStringSchema = (
       .nullable()
       .test(testOptionalParentAndRequiredSiblingWithValue);
   }
-  // Case SDG REPEATING, REQUIRED, PARENT OPTIONAL
-  // Case languageTerm REPEATING, REQUIRED, PARENT REQUIRED
-
   // här?
   if (!isParentGroupOptional && isComponentRequired(component)) {
     return yup.string().required();
