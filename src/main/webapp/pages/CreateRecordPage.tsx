@@ -38,7 +38,7 @@ import { removeEmpty } from '@/utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
 import { useCoraRecordByType } from '@/features/record/useCoraRecordByType';
-import { RecordForm } from '@/components/RecordForm/RecordForm';
+import { RecordForm } from '@/components/Form/RecordForm';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();

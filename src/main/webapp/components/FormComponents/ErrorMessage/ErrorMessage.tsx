@@ -32,7 +32,7 @@ export const ErrorMessage = (props: ErrorMessageProp): JSX.Element | null => {
       severity='error'
       sx={{ mb: 2 }}
     >
-      <span>{props.title ?? 'Form validation error(s):'}</span>
+      <span>{props.title ?? 'FormComponents validation error(s):'}</span>
       <ul>
         {props.errors &&
           Object.entries(props.errors).map(([field, err]) => (

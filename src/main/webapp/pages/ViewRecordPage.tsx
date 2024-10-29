@@ -33,7 +33,7 @@ import {
 } from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
 import { CoraRecord } from '@/features/record/types';
-import { RecordForm } from '@/components/RecordForm/RecordForm';
+import { RecordForm } from '@/components/Form/RecordForm';
 
 export const ViewRecordPage = () => {
   const { recordType, recordId } = useParams();

@@ -30,7 +30,7 @@ import { FormSchema } from '@/components/FormGenerator/types';
 import { loginPasswordAsync } from '@/features/auth/actions';
 import { AppDispatch } from '@/app/store';
 import { authStateSelector } from '@/features/auth/selectors';
-import { RecordForm } from '@/components/RecordForm/RecordForm';
+import { RecordForm } from '@/components/Form/RecordForm';
 
 export const LoginPage = () => {
   const { enqueueSnackbar } = useSnackbar();

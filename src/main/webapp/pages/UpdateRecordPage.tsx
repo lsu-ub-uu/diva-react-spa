@@ -35,7 +35,7 @@ import {
   useSectionScroller,
 } from '@/components';
 import { removeEmpty } from '@/utils/removeEmpty';
-import { RecordForm } from '@/components/RecordForm/RecordForm';
+import { RecordForm } from '@/components/Form/RecordForm';
 
 export const UpdateRecordPage = () => {
   const { recordType, recordId } = useParams();

@@ -29,12 +29,12 @@ import {
 } from '../FormGenerator/utils';
 import { generateYupSchemaFromFormSchema } from '../FormGenerator/utils/yupSchema';
 import { FormGenerator } from '@/components';
-import { FormSchema } from '../FormGenerator/types';
+import { RecordFormSchema } from '../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
 
 interface RecordFormProps {
   record?: CoraRecord;
-  formSchema: FormSchema;
+  formSchema: RecordFormSchema;
   onSubmit: (formValues: FieldValues) => void;
   onInvalid?: (fieldErrors: FieldErrors) => void;
   linkedData?: boolean;

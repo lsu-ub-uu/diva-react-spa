@@ -83,14 +83,14 @@ import {
   formDefRequiredRepeatingNumberVar,
 } from '@/__mocks__/data/formDef';
 import {
-  FormGenerator,
   getChildrenWithSameNameInDataFromSchema,
   hasComponentSameNameInData,
-} from '../FormGenerator';
-import { FormComponent, FormSchema } from '../types';
+} from '../../FormGenerator/FormGenerator';
+import { FormComponent } from '../../FormGenerator/types';
 import { getChildNameInDataArray } from '@/components/FormGenerator/utils';
+import { RecordForm } from '@/components/Form/RecordForm';
 
-describe('<FormGenerator />', () => {
+describe('<Form />', () => {
   vi.mock('react-i18next', () => ({
     useTranslation: () => {
       return {
@@ -103,8 +103,8 @@ describe('<FormGenerator />', () => {
     it('renders a form from a given definition', () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={formDefWithTextVar as FormSchema}
+        <RecordForm
+          formSchema={formDefWithTextVar}
           onSubmit={mockSubmit}
         />,
       );
@@ -125,7 +125,7 @@ describe('<FormGenerator />', () => {
     it('renders a form from a given definition for a update definition with variables with same nameInData', () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -395,7 +395,7 @@ describe('<FormGenerator />', () => {
     it('renders a form from a given definition for a update definition with colVar with same nameInData', () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -461,7 +461,7 @@ describe('<FormGenerator />', () => {
             },
           }}
           onSubmit={mockSubmit}
-          formSchema={formDefCollVarsWithSameNameInData as FormSchema}
+          formSchema={formDefCollVarsWithSameNameInData}
         />,
       );
       const thesisElement = screen.getByDisplayValue(
@@ -479,9 +479,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariable as FormSchema}
+          formSchema={formDefWithOneTextVariable}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -504,9 +504,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariable as FormSchema}
+          formSchema={formDefWithOneTextVariable}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -531,9 +531,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefTitleInfoGroup as FormSchema}
+          formSchema={formDefTitleInfoGroup}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -558,9 +558,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefTextVarsWithSameNameInData as FormSchema}
+          formSchema={formDefTextVarsWithSameNameInData}
         />,
       );
       const user = userEvent.setup();
@@ -586,9 +586,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefCollVarsWithSameNameInData as FormSchema}
+          formSchema={formDefCollVarsWithSameNameInData}
         />,
       );
       const user = userEvent.setup();
@@ -623,7 +623,7 @@ describe('<FormGenerator />', () => {
     it('renders a form from a given definition for a update definition with group with same nameInData', () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -944,39 +944,14 @@ describe('<FormGenerator />', () => {
     });
   });
 
-  describe('form with linked data', () => {
-    it('renders a form with linked data from a given definition', () => {
-      const mockSubmit = vi.fn();
-      render(
-        <FormGenerator
-          formSchema={formDefWithTextVar as FormSchema}
-          onSubmit={mockSubmit}
-          linkedData
-        />,
-      );
-      const inputElement = screen.getByPlaceholderText('someEmptyTextId');
-      expect(inputElement).toBeInTheDocument();
-
-      const inputNumberElement = screen.getByPlaceholderText(
-        'someNumberPlaceholderTextId',
-      );
-      expect(inputNumberElement).toBeInTheDocument();
-
-      const submitButton = screen.queryByRole('button', {
-        name: 'divaClient_SubmitButtonText',
-      });
-      expect(submitButton).not.toBeInTheDocument();
-    });
-  });
-
   describe('recordLink', () => {
     it('renders a recordLink 0-1 and minNumberToShow 1 and validates it', async () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneRecordLinkBeingOptional as FormSchema}
+          formSchema={formDefWithOneRecordLinkBeingOptional}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -992,9 +967,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneRecordLinkBeingRequired as FormSchema}
+          formSchema={formDefWithOneRecordLinkBeingRequired}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1013,9 +988,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithTextVar as FormSchema}
+          formSchema={formDefWithTextVar}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1034,9 +1009,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithTwoTextVariableHavingFinalValue as FormSchema}
+          formSchema={formDefWithTwoTextVariableHavingFinalValue}
         />,
       );
       const inputElement = screen.getByPlaceholderText('someEmptyTextId1');
@@ -1112,11 +1087,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOneRepeatingTextVariableWithModeOutput as FormSchema
-          }
+          formSchema={formDefWithOneRepeatingTextVariableWithModeOutput}
           record={coraRecord}
         />,
       );
@@ -1181,11 +1154,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOneRepeatingTextVariableWithModeOutput as FormSchema
-          }
+          formSchema={formDefWithOneRepeatingTextVariableWithModeOutput}
           record={coraRecord}
         />,
       );
@@ -1199,9 +1170,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+          formSchema={formDefWithOneTextVariableBeingOptional}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1218,9 +1189,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariableBeingRepeating as FormSchema}
+          formSchema={formDefWithOneTextVariableBeingRepeating}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1237,9 +1208,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariableBeingOptional as FormSchema}
+          formSchema={formDefWithOneTextVariableBeingOptional}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1261,9 +1232,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariableBeingPassword as FormSchema}
+          formSchema={formDefWithOneTextVariableBeingPassword}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1290,9 +1261,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariable as FormSchema}
+          formSchema={formDefWithOneNumberVariable}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1367,9 +1338,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariableModeOutput as FormSchema}
+          formSchema={formDefWithOneNumberVariableModeOutput}
           record={coraRecord}
         />,
       );
@@ -1434,11 +1405,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOneNumberVariableBeingOptionalOutput as FormSchema
-          }
+          formSchema={formDefWithOneNumberVariableBeingOptionalOutput}
           record={coraRecord}
         />,
       );
@@ -1454,9 +1423,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariable as FormSchema}
+          formSchema={formDefWithOneNumberVariable}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1478,9 +1447,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariable as FormSchema}
+          formSchema={formDefWithOneNumberVariable}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1502,9 +1471,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+          formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1531,9 +1500,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariableHavingDecimals as FormSchema}
+          formSchema={formDefWithOneNumberVariableHavingDecimals}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1555,9 +1524,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariableHavingDecimals as FormSchema}
+          formSchema={formDefWithOneNumberVariableHavingDecimals}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1579,9 +1548,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+          formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1598,9 +1567,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariableBeingOptional as FormSchema}
+          formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -1625,11 +1594,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOneTextVariableWithMinNumberOfRepeatingToShow as FormSchema
-          }
+          formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
         />,
       );
 
@@ -1642,10 +1609,8 @@ describe('<FormGenerator />', () => {
     it('should NOT render add button when repeatMax is reached', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneTextVariableWithMinNumberOfRepeatingToShow as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
           onSubmit={mockSubmit}
         />,
       );
@@ -1669,9 +1634,9 @@ describe('<FormGenerator />', () => {
     it('should NOT render move buttons when repeatMax is less or equal to one', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero as FormSchema
+            formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero
           }
           onSubmit={mockSubmit}
         />,
@@ -1692,10 +1657,8 @@ describe('<FormGenerator />', () => {
     it('Remove buttons should be disabled when repeatMin is reached', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneTextVariableWithMinNumberOfRepeatingToShow as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
           onSubmit={mockSubmit}
         />,
       );
@@ -1710,9 +1673,9 @@ describe('<FormGenerator />', () => {
     it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero as FormSchema
+            formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero
           }
           onSubmit={mockSubmit}
         />,
@@ -1729,8 +1692,8 @@ describe('<FormGenerator />', () => {
     it('renders a collectionVariable 1-1 and its options', async () => {
       const mockSubmit = vi.fn();
       const { container } = render(
-        <FormGenerator
-          formSchema={formDefWithOneCollectionVariable as FormSchema}
+        <RecordForm
+          formSchema={formDefWithOneCollectionVariable}
           onSubmit={mockSubmit}
         />,
       );
@@ -1745,8 +1708,8 @@ describe('<FormGenerator />', () => {
     it('renders a collectionVariable 1-1 and does validate it', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={formDefWithOneCollectionVariable as FormSchema}
+        <RecordForm
+          formSchema={formDefWithOneCollectionVariable}
           onSubmit={mockSubmit}
         />,
       );
@@ -1772,8 +1735,8 @@ describe('<FormGenerator />', () => {
     it('renders a collectionVariable 1-1 and does NOT validate it', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={formDefWithOneCollectionVariable as FormSchema}
+        <RecordForm
+          formSchema={formDefWithOneCollectionVariable}
           onSubmit={mockSubmit}
         />,
       );
@@ -1845,11 +1808,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOneCollectionVariableWithModeOutput as FormSchema
-          }
+          formSchema={formDefWithOneCollectionVariableWithModeOutput}
           record={coraRecord}
         />,
       );
@@ -1914,11 +1875,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOneCollectionVariableWithModeOutput as FormSchema
-          }
+          formSchema={formDefWithOneCollectionVariableWithModeOutput}
           record={coraRecord}
         />,
       );
@@ -1931,10 +1890,8 @@ describe('<FormGenerator />', () => {
     it('renders a numberVariable 1-1 with attribute and does NOT validate it when skipped', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneNumberVariableWithAttributeCollection as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneNumberVariableWithAttributeCollection}
           onSubmit={mockSubmit}
         />,
       );
@@ -1971,10 +1928,8 @@ describe('<FormGenerator />', () => {
     it('renders a numberVariable 1-1 with attribute has styling for attribute', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneOptionalGroupWithAttributeCollection as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneOptionalGroupWithAttributeCollection}
           onSubmit={mockSubmit}
         />,
       );
@@ -1994,10 +1949,8 @@ describe('<FormGenerator />', () => {
     it('renders a numberVariable 1-1 with attribute and validates it when filled', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneNumberVariableWithAttributeCollection as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneNumberVariableWithAttributeCollection}
           onSubmit={mockSubmit}
         />,
       );
@@ -2031,9 +1984,9 @@ describe('<FormGenerator />', () => {
     it('renders a numberVariable 0-1 with attribute and validates it when skipped', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneOptionalNumberVariableWithAttributeCollection as FormSchema
+            formDefWithOneOptionalNumberVariableWithAttributeCollection
           }
           onSubmit={mockSubmit}
         />,
@@ -2067,9 +2020,9 @@ describe('<FormGenerator />', () => {
     it('renders a numberVariable 1-1 and attribute and does NOT validate it when only attribute is picked', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneRequiredNumberVariableWithAttributeCollection as FormSchema
+            formDefWithOneRequiredNumberVariableWithAttributeCollection
           }
           onSubmit={mockSubmit}
         />,
@@ -2103,9 +2056,9 @@ describe('<FormGenerator />', () => {
     it('renders a numberVariable 0-1 and attribute and does NOT validates it when variable is written in', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneOptionalNumberVariableWithAttributeCollection as FormSchema
+            formDefWithOneOptionalNumberVariableWithAttributeCollection
           }
           onSubmit={mockSubmit}
         />,
@@ -2136,9 +2089,9 @@ describe('<FormGenerator />', () => {
     it('renders a numberVariable 1-1 and a numberVariable 0-1 with attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection as FormSchema
+            formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection
           }
           onSubmit={mockSubmit}
         />,
@@ -2171,10 +2124,8 @@ describe('<FormGenerator />', () => {
     it('renders a group 0-1 with attribute and textVariable 1-1 and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneOptionalGroupWithAttributeCollection as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneOptionalGroupWithAttributeCollection}
           onSubmit={mockSubmit}
         />,
       );
@@ -2201,10 +2152,8 @@ describe('<FormGenerator />', () => {
     it('renders a group 1-1 with a textVariable 1-1 and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneRequiredGroupWithAttributeCollection as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneRequiredGroupWithAttributeCollection}
           onSubmit={mockSubmit}
         />,
       );
@@ -2242,11 +2191,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOptionalGroupWithRequiredGroupWithRequiredVars as FormSchema
-          }
+          formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2273,11 +2220,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOptionalGroupWithRequiredGroupWithRequiredVars as FormSchema
-          }
+          formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2307,9 +2252,9 @@ describe('<FormGenerator />', () => {
     it('renders a group 0-1 with attribute and with a textVariable 0-1 and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute as FormSchema
+            formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute
           }
           onSubmit={mockSubmit}
         />,
@@ -2339,9 +2284,9 @@ describe('<FormGenerator />', () => {
     it('renders a optional group with multiple attributes and with a required textVariable and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection as FormSchema
+            formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection
           }
           onSubmit={mockSubmit}
         />,
@@ -2394,9 +2339,9 @@ describe('<FormGenerator />', () => {
     it('renders a optional group with attribute with a optional group and with a required textVariable and attribute and validates it', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
+        <RecordForm
           formSchema={
-            formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection as FormSchema
+            formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection
           }
           onSubmit={mockSubmit}
         />,
@@ -2453,10 +2398,8 @@ describe('<FormGenerator />', () => {
     it('renders a group 1-1 with textVariable 1-1 child', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneGroupHavingTextVariableAsChild as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneGroupHavingTextVariableAsChild}
           onSubmit={mockSubmit}
         />,
       );
@@ -2468,8 +2411,8 @@ describe('<FormGenerator />', () => {
     it('renders a group 1-10 and headlineLevel 1', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema}
+        <RecordForm
+          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel}
           onSubmit={mockSubmit}
         />,
       );
@@ -2484,8 +2427,8 @@ describe('<FormGenerator />', () => {
     it('renders a group 1-10 and headlineLevel 3', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel as FormSchema}
+        <RecordForm
+          formSchema={formDefWithGroupWithSpecifiedHeadlineLevel}
           onSubmit={mockSubmit}
         />,
       );
@@ -2500,8 +2443,8 @@ describe('<FormGenerator />', () => {
     it('renders a group 1-10 and headlineLevel default', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={formDefWithGroupWithDefaultHeadlineLevel as FormSchema}
+        <RecordForm
+          formSchema={formDefWithGroupWithDefaultHeadlineLevel}
           onSubmit={mockSubmit}
         />,
       );
@@ -2517,9 +2460,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithOptionalGroupWithRequiredTextVar as FormSchema}
+          formSchema={formDefWithOptionalGroupWithRequiredTextVar}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2536,11 +2479,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOptionalGroupWithRequiredNumberVar as FormSchema
-          }
+          formSchema={formDefWithOptionalGroupWithRequiredNumberVar}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2557,11 +2498,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOptionalGroupWithRequiredRecordLink as FormSchema
-          }
+          formSchema={formDefWithOptionalGroupWithRequiredRecordLink}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2578,9 +2517,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefWithWithOptionalGroupWithRequiredVar as FormSchema}
+          formSchema={formDefWithWithOptionalGroupWithRequiredVar}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2604,10 +2543,10 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
           formSchema={
-            formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar as FormSchema
+            formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar
           }
         />,
       );
@@ -2625,11 +2564,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefContributorGroupWithAuthorGroupAuthor as FormSchema
-          }
+          formSchema={formDefContributorGroupWithAuthorGroupAuthor}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2646,10 +2583,10 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
           formSchema={
-            formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars as FormSchema
+            formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars
           }
         />,
       );
@@ -2674,11 +2611,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars as FormSchema
-          }
+          formSchema={formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2705,10 +2640,10 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
           formSchema={
-            formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars as FormSchema
+            formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars
           }
         />,
       );
@@ -2736,11 +2671,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithOptionalGroupWithTwoCollectionVars as FormSchema
-          }
+          formSchema={formDefWithOptionalGroupWithTwoCollectionVars}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2770,11 +2703,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       const { container } = render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefWithTextVarAndNestedGroupsWithOneTextVar as FormSchema
-          }
+          formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2801,11 +2732,9 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={
-            formDefTwoOptionalGroupsWithRequiredTextVars as FormSchema
-          }
+          formSchema={formDefTwoOptionalGroupsWithRequiredTextVars}
         />,
       );
       const submitButton = screen.getByRole('button', {
@@ -2830,10 +2759,10 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
           formSchema={
-            formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars as FormSchema
+            formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars
           }
         />,
       );
@@ -2865,10 +2794,10 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
           formSchema={
-            formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes as FormSchema
+            formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes
           }
         />,
       );
@@ -2886,10 +2815,10 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
           formSchema={
-            formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes as FormSchema
+            formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes
           }
         />,
       );
@@ -2907,10 +2836,10 @@ describe('<FormGenerator />', () => {
       const mockSubmit = vi.fn();
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
           formSchema={
-            formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes as FormSchema
+            formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes
           }
         />,
       );
@@ -2995,9 +2924,9 @@ describe('<FormGenerator />', () => {
       };
 
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefPreprintWithOnlyAuthorName as FormSchema}
+          formSchema={formDefPreprintWithOnlyAuthorName}
           record={givenAndFamilyName}
         />,
       );
@@ -3014,10 +2943,8 @@ describe('<FormGenerator />', () => {
     it('renders a numberVariable 1-1 and guiElementLink', async () => {
       const mockSubmit = vi.fn();
       render(
-        <FormGenerator
-          formSchema={
-            formDefWithOneNumberVariableAndGuiElementLink as FormSchema
-          }
+        <RecordForm
+          formSchema={formDefWithOneNumberVariableAndGuiElementLink}
           onSubmit={mockSubmit}
         />,
       );
@@ -3034,8 +2961,8 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         const { container } = render(
-          <FormGenerator
-            formSchema={formDefRequiredRepeatingTextVar as FormSchema}
+          <RecordForm
+            formSchema={formDefRequiredRepeatingTextVar}
             onSubmit={mockSubmit}
           />,
         );
@@ -3058,8 +2985,8 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         render(
-          <FormGenerator
-            formSchema={formDefRequiredRepeatingText2Var as FormSchema}
+          <RecordForm
+            formSchema={formDefRequiredRepeatingText2Var}
             onSubmit={mockSubmit}
           />,
         );
@@ -3081,8 +3008,8 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         const { container } = render(
-          <FormGenerator
-            formSchema={formDefRequiredRepeatingNumberVar as FormSchema}
+          <RecordForm
+            formSchema={formDefRequiredRepeatingNumberVar}
             onSubmit={mockSubmit}
           />,
         );
@@ -3105,8 +3032,8 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         render(
-          <FormGenerator
-            formSchema={formDefRequiredRepeatingNumber2Var as FormSchema}
+          <RecordForm
+            formSchema={formDefRequiredRepeatingNumber2Var}
             onSubmit={mockSubmit}
           />,
         );
@@ -3128,8 +3055,8 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         const { container } = render(
-          <FormGenerator
-            formSchema={formDefRequiredRepeatingCollectionVar as FormSchema}
+          <RecordForm
+            formSchema={formDefRequiredRepeatingCollectionVar}
             onSubmit={mockSubmit}
           />,
         );
@@ -3152,8 +3079,8 @@ describe('<FormGenerator />', () => {
         const mockSubmit = vi.fn();
 
         render(
-          <FormGenerator
-            formSchema={formDefRequiredRepeatingCollection2Var as FormSchema}
+          <RecordForm
+            formSchema={formDefRequiredRepeatingCollection2Var}
             onSubmit={mockSubmit}
           />,
         );
@@ -3229,9 +3156,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefForCheckTextValue as FormSchema}
+          formSchema={formDefForCheckTextValue}
           record={coraRecord}
         />,
       );
@@ -3294,9 +3221,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefForCheckTextValue as FormSchema}
+          formSchema={formDefForCheckTextValue}
           record={coraRecord}
         />,
       );
@@ -3363,9 +3290,9 @@ describe('<FormGenerator />', () => {
         },
       };
       render(
-        <FormGenerator
+        <RecordForm
           onSubmit={mockSubmit}
-          formSchema={formDefForCheckNumberValue as FormSchema}
+          formSchema={formDefForCheckNumberValue}
           record={coraRecord}
         />,
       );
@@ -4327,7 +4254,7 @@ describe('<FormGenerator />', () => {
     describe('getChildrenWithSameNameInDataFromSchema', () => {
       it('returns array without duplicates from schema', () => {
         const actual = getChildrenWithSameNameInDataFromSchema(
-          formDefTextVarsWithSameNameInData as FormSchema,
+          formDefTextVarsWithSameNameInData,
         );
         expect(actual).toStrictEqual(['subject']);
       });

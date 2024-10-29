@@ -35,7 +35,7 @@ import { useTranslation } from 'react-i18next';
 import { Tooltip, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
-import { AutocompleteForm } from '@/components/RecordForm/AutocompleteForm';
+import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 
 interface AutoCompleteProps {
   name: string;

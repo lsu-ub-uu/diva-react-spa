@@ -27,10 +27,9 @@ export interface RecordFormSchema extends FormSchema {
   validationTypeId: string;
 }
 
-export interface SearchFormSchema extends FormSchema{
+export interface SearchFormSchema extends FormSchema {
   recordTypeToSearchIn: string[];
 }
-
 
 export interface FormComponentRepeat {
   repeatMin: number;
@@ -91,7 +90,7 @@ export interface FormComponent {
   presentationRecordLinkId?: string;
   linkedRecordPresentation?: LinkedPresentation;
   search?: string;
-  
+
   inputFormat?: 'password';
   attributesToShow?: 'all' | 'selectable' | 'none';
 }

@@ -1,4 +1,7 @@
-import { FormComponent, FormSchema } from '@/components/FormGenerator/types';
+import {
+  FormComponent,
+  RecordFormSchema,
+} from '@/components/FormGenerator/types';
 
 export const formComponentGroup: FormComponent = {
   name: 'firstChildGroup',
@@ -375,58 +378,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
   ],
 };
 
-export const formComponentTextVariableWithModeOutput: FormComponent = {
-  name: 'exampleTextVar',
-  type: 'textVariable',
-  mode: 'output',
-  inputType: 'input',
-  tooltip: {
-    title: 'exampleMetadataTextVarText',
-    body: 'exampleMetadataTextVarDefText',
-  },
-  label: 'exampleMetadataTextVarText',
-  validation: {
-    type: 'regex',
-    pattern: '.*',
-  },
-  repeat: {
-    repeatMin: 0,
-    repeatMax: 1,
-  },
-};
-
-export const formComponentCollectionVariableWithModeOutput: FormComponent = {
-  name: 'someCollectionVariableModeOutput',
-  type: 'collectionVariable',
-  mode: 'output',
-  tooltip: {
-    title: 'someCollectionVariableModeOutputText',
-    body: 'someCollectionVariableModeOutputDefText',
-  },
-  label: 'someCollectionVariableModeOutputText',
-
-  placeholder: 'initialEmptyValueText',
-  repeat: {
-    repeatMin: 1,
-    repeatMax: 1,
-  },
-  options: [
-    {
-      value: 'blue',
-      label: 'exampleBlueItemText',
-    },
-    {
-      value: 'pink',
-      label: 'examplePinkItemText',
-    },
-    {
-      value: 'yellow',
-      label: 'exampleYellowItemText',
-    },
-  ],
-};
-
-export const formDefWithTextVar = {
+export const formDefWithTextVar: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -489,7 +441,7 @@ export const formDefWithTextVar = {
   },
 };
 
-export const formDefWithOneTextVariable = {
+export const formDefWithOneTextVariable: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -565,46 +517,47 @@ export const formDefWithOneRepeatingTextVariable = {
     mode: 'input',
   },
 };
-export const formDefWithOneRepeatingTextVariableWithModeOutput = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        name: 'exampleTextVar',
-        type: 'textVariable',
-        mode: 'output',
-        inputType: 'input',
-        tooltip: {
-          title: 'exampleMetadataTextVarText',
-          body: 'exampleMetadataTextVarDefText',
-        },
-        label: 'exampleMetadataTextVarText',
-        validation: {
-          type: 'regex',
-          pattern: '.*',
-        },
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
+export const formDefWithOneRepeatingTextVariableWithModeOutput: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-    mode: 'input',
-  },
-};
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          name: 'exampleTextVar',
+          type: 'textVariable',
+          mode: 'output',
+          inputType: 'input',
+          tooltip: {
+            title: 'exampleMetadataTextVarText',
+            body: 'exampleMetadataTextVarDefText',
+          },
+          label: 'exampleMetadataTextVarText',
+          validation: {
+            type: 'regex',
+            pattern: '.*',
+          },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        },
+      ],
+      mode: 'input',
+    },
+  };
 
-export const formDefWithTwoTextVariableWithModeOutput = {
+export const formDefWithTwoTextVariableWithModeOutput: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -661,7 +614,7 @@ export const formDefWithTwoTextVariableWithModeOutput = {
     mode: 'output',
   },
 };
-export const formDefForCheckTextValue = {
+export const formDefForCheckTextValue: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -719,7 +672,7 @@ export const formDefForCheckTextValue = {
   },
 };
 
-export const formDefForCheckNumberValue = {
+export const formDefForCheckNumberValue: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -781,42 +734,7 @@ export const formDefForCheckNumberValue = {
   },
 };
 
-export const formDefWithOneTextVariableHavingFinalValue = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        type: 'textVariable',
-        name: 'someNameInData',
-        label: 'label',
-        finalValue: 'someFinalValue',
-        placeholder: 'someEmptyTextId',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        validation: {
-          type: 'regex',
-          pattern: '.*',
-        },
-        inputType: 'input',
-      },
-    ],
-    mode: 'input',
-  },
-};
-export const formDefWithTwoTextVariableHavingFinalValue = {
+export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -868,52 +786,53 @@ export const formDefWithTwoTextVariableHavingFinalValue = {
   },
 };
 
-export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        type: 'text',
-        name: 'presentationTypeTextCollectionVarDefText',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
+export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-      {
-        type: 'textVariable',
-        mode: 'input',
-        name: 'someNameInData',
-        label: 'someNameInDataLabel',
-        placeholder: 'someEmptyTextId',
-        repeat: {
-          repeatMin: 2,
-          repeatMax: 3,
-          minNumberOfRepeatingToShow: 2,
-        },
-        validation: {
-          type: 'regex',
-          pattern: '^[a-zA-Z]$',
-        },
-        inputType: 'input',
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
       },
-    ],
-    mode: 'input',
-  },
-};
+      components: [
+        {
+          type: 'text',
+          name: 'presentationTypeTextCollectionVarDefText',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+        },
+        {
+          type: 'textVariable',
+          mode: 'input',
+          name: 'someNameInData',
+          label: 'someNameInDataLabel',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 2,
+            repeatMax: 3,
+            minNumberOfRepeatingToShow: 2,
+          },
+          validation: {
+            type: 'regex',
+            pattern: '^[a-zA-Z]$',
+          },
+          inputType: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
 
-export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero =
+export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero: RecordFormSchema =
   {
     validationTypeId: 'someValidationTypeId',
     form: {
@@ -955,7 +874,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMi
     },
   };
 
-export const formDefWithOneNumberVariable = {
+export const formDefWithOneNumberVariable: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -992,7 +911,7 @@ export const formDefWithOneNumberVariable = {
   },
 };
 
-export const formDefWithOneNumberVariableModeOutput = {
+export const formDefWithOneNumberVariableModeOutput: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -1030,7 +949,7 @@ export const formDefWithOneNumberVariableModeOutput = {
   },
 };
 
-export const formDefWithOneNumberVariableAndGuiElementLink = {
+export const formDefWithOneNumberVariableAndGuiElementLink: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -1074,7 +993,7 @@ export const formDefWithOneNumberVariableAndGuiElementLink = {
   },
 };
 
-export const formDefWithOneNumberVariableHavingDecimals = {
+export const formDefWithOneNumberVariableHavingDecimals: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -1111,7 +1030,7 @@ export const formDefWithOneNumberVariableHavingDecimals = {
   },
 };
 
-export const formDefWithOneCollectionVariable = {
+export const formDefWithOneCollectionVariable: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -1159,117 +1078,119 @@ export const formDefWithOneCollectionVariable = {
     mode: 'input',
   },
 };
-export const formDefWithOneCollectionVariableWithModeOutput = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        name: 'colour',
-        type: 'collectionVariable',
-        label: 'Colour',
-        placeholder: 'initialEmptyValueText',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        mode: 'output',
-        tooltip: {
-          title: 'exampleCollectionVarText',
-          body: 'exampleCollectionVarDefText',
-        },
-        options: [
-          {
-            value: 'blue',
-            label: 'exampleBlueItemText',
-          },
-          {
-            value: 'pink',
-            label: 'examplePinkItemText',
-          },
-          {
-            value: 'yellow',
-            label: 'exampleYellowItemText',
-          },
-        ],
+export const formDefWithOneCollectionVariableWithModeOutput: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-    mode: 'input',
-  },
-};
-
-export const formDefWithOneNumberVariableWithAttributeCollection = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        type: 'numberVariable',
-        name: 'someNameInDataNumberWithAttributeVar',
-        label: 'test',
-        placeholder: 'someEmptyTextId',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someNumberVarTextId',
-          body: 'someNumberVarDefTextId',
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'colour',
-            label: 'attribute colour',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          name: 'colour',
+          type: 'collectionVariable',
+          label: 'Colour',
+          placeholder: 'initialEmptyValueText',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          mode: 'output',
+          tooltip: {
+            title: 'exampleCollectionVarText',
+            body: 'exampleCollectionVarDefText',
+          },
+          options: [
+            {
+              value: 'blue',
+              label: 'exampleBlueItemText',
             },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
-          },
-        ],
-        validation: {
-          type: 'number',
-          min: 0,
-          max: 20,
-          warningMin: 2,
-          warningMax: 10,
-          numberOfDecimals: 0,
+            {
+              value: 'pink',
+              label: 'examplePinkItemText',
+            },
+            {
+              value: 'yellow',
+              label: 'exampleYellowItemText',
+            },
+          ],
         },
-        mode: 'input',
-      },
-    ],
-    mode: 'input',
-  },
-};
+      ],
+      mode: 'input',
+    },
+  };
 
-export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection =
+export const formDefWithOneNumberVariableWithAttributeCollection: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'numberVariable',
+          name: 'someNameInDataNumberWithAttributeVar',
+          label: 'test',
+          placeholder: 'someEmptyTextId',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someNumberVarTextId',
+            body: 'someNumberVarDefTextId',
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              label: 'attribute colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0,
+          },
+          mode: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
+
+export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection: RecordFormSchema =
   {
     validationTypeId: 'thesisManuscript',
     form: {
@@ -1379,7 +1300,7 @@ export const formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection =
     },
   };
 
-export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection =
+export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection: RecordFormSchema =
   {
     validationTypeId: 'thesisManuscript',
     form: {
@@ -1517,7 +1438,7 @@ export const formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndA
     },
   };
 
-export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection =
+export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection: RecordFormSchema =
   {
     validationTypeId: 'someValidationTypeId',
     form: {
@@ -1603,334 +1524,338 @@ export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeC
     },
   };
 
-export const formDefWithOneOptionalNumberVariableWithAttributeCollection = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        type: 'numberVariable',
-        name: 'numberVar2',
-        label: 'someNumberVar2IdLabel',
-        placeholder: 'someNumberVar2IdPlaceholder',
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someNumberVarTextId',
-          body: 'someNumberVarDefTextId',
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'colour',
-            label: 'someNumberVar2AttributeLabel',
-            placeholder: 'someNumberVar2AttributeId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
-          },
-        ],
-        validation: {
-          type: 'number',
-          min: 0,
-          max: 20,
-          warningMin: 2,
-          warningMax: 10,
-          numberOfDecimals: 0,
-        },
-        mode: 'input',
+export const formDefWithOneOptionalNumberVariableWithAttributeCollection: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-    mode: 'input',
-  },
-};
-
-export const formDefWithOneRequiredNumberVariableWithAttributeCollection = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        type: 'numberVariable',
-        name: 'abstract',
-        label: 'someNumberVar2IdLabel',
-        placeholder: 'someNumberVar2IdPlaceholder',
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someNumberVarTextId',
-          body: 'someNumberVarDefTextId',
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'colour',
-            label: 'someNumberVar2AttributeLabel',
-            placeholder: 'someNumberVar2AttributeId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
-          },
-        ],
-        validation: {
-          type: 'number',
-          min: 0,
-          max: 20,
-          warningMin: 2,
-          warningMax: 10,
-          numberOfDecimals: 0,
-        },
-        mode: 'input',
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
       },
-    ],
-    mode: 'input',
-  },
-};
-
-export const formDefWithOneOptionalGroupWithAttributeCollection = {
-  validationTypeId: 'thesisManuscript',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'thesisManuscriptNewGroupText',
-      body: 'thesisManuscriptNewGroupDefText',
-    },
-    label: 'thesisManuscriptNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'alternativeTitle',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'alternativeTitleGroupText',
-          body: 'alternativeTitleGroupDefText',
-        },
-        label: 'alternativeTitleGroupText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        attributes: [
-          {
-            name: 'language',
-            type: 'collectionVariable',
-            placeholder: 'initialEmptyValueText',
-            mode: 'input',
-            tooltip: {
-              title: 'languageCollectionVarText',
-              body: 'languageCollectionVarDefText',
-            },
-            label: 'languageCollectionVarText',
-            showLabel: true,
-            options: [
-              {
-                value: 'aar',
-                label: 'aarLangItemText',
+      components: [
+        {
+          type: 'numberVariable',
+          name: 'numberVar2',
+          label: 'someNumberVar2IdLabel',
+          placeholder: 'someNumberVar2IdPlaceholder',
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someNumberVarTextId',
+            body: 'someNumberVarDefTextId',
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              label: 'someNumberVar2AttributeLabel',
+              placeholder: 'someNumberVar2AttributeId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
               },
-            ],
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0,
           },
-        ],
-        components: [
-          {
-            name: 'mainTitle',
-            type: 'textVariable',
-            mode: 'input',
-            placeholder: 'mainTitleTextVarPlaceholderText',
-            inputType: 'input',
-            tooltip: {
-              title: 'mainTitleTextVarText',
-              body: 'mainTitleTextVarDefText',
-            },
-            label: 'mainTitleTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
-      },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
+          mode: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
 
-export const formDefWithOneRequiredGroupWithAttributeCollection = {
-  validationTypeId: 'divaOutput',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'divaOutputGroupText',
-      body: 'divaOutputGroupDefText',
-    },
-    label: 'divaOutputGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'title',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'titleGroupText',
-          body: 'titleGroupDefText',
-        },
-        label: 'titleGroupText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        attributes: [
-          {
-            name: 'language',
-            type: 'collectionVariable',
-            placeholder: 'initialEmptyValueText',
-            mode: 'input',
-            tooltip: {
-              title: 'languageCollectionVarText',
-              body: 'languageCollectionVarDefText',
-            },
-            label: 'languageCollectionVarText',
-            showLabel: true,
-            options: [
-              {
-                value: 'aar',
-                label: 'aarLangItemText',
+export const formDefWithOneRequiredNumberVariableWithAttributeCollection: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'numberVariable',
+          name: 'abstract',
+          label: 'someNumberVar2IdLabel',
+          placeholder: 'someNumberVar2IdPlaceholder',
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someNumberVarTextId',
+            body: 'someNumberVarDefTextId',
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              label: 'someNumberVar2AttributeLabel',
+              placeholder: 'someNumberVar2AttributeId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
               },
-            ],
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0,
           },
-        ],
-        components: [
-          {
-            name: 'mainTitle',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'mainTitleTextVarText',
-              body: 'mainTitleTextVarDefText',
-            },
-            label: 'mainTitleTextVarText',
-            placeholder: 'mainTitleTextVarPlaceholderText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-          {
-            name: 'subtitle',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'subtitleTextVarText',
-              body: 'subtitleTextVarPlaceholderText',
-            },
-            label: 'subtitleTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
-      },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
+          mode: 'input',
+        },
+      ],
+      mode: 'input',
+    },
+  };
 
-export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute =
+export const formDefWithOneOptionalGroupWithAttributeCollection: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'alternativeTitle',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'alternativeTitleGroupText',
+            body: 'alternativeTitleGroupDefText',
+          },
+          label: 'alternativeTitleGroupText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'aar',
+                  label: 'aarLangItemText',
+                },
+              ],
+            },
+          ],
+          components: [
+            {
+              name: 'mainTitle',
+              type: 'textVariable',
+              mode: 'input',
+              placeholder: 'mainTitleTextVarPlaceholderText',
+              inputType: 'input',
+              tooltip: {
+                title: 'mainTitleTextVarText',
+                body: 'mainTitleTextVarDefText',
+              },
+              label: 'mainTitleTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
+
+export const formDefWithOneRequiredGroupWithAttributeCollection: RecordFormSchema =
+  {
+    validationTypeId: 'divaOutput',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'divaOutputGroupText',
+        body: 'divaOutputGroupDefText',
+      },
+      label: 'divaOutputGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'title',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'titleGroupText',
+            body: 'titleGroupDefText',
+          },
+          label: 'titleGroupText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'aar',
+                  label: 'aarLangItemText',
+                },
+              ],
+            },
+          ],
+          components: [
+            {
+              name: 'mainTitle',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'mainTitleTextVarText',
+                body: 'mainTitleTextVarDefText',
+              },
+              label: 'mainTitleTextVarText',
+              placeholder: 'mainTitleTextVarPlaceholderText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+            {
+              name: 'subtitle',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'subtitleTextVarText',
+                body: 'subtitleTextVarPlaceholderText',
+              },
+              label: 'subtitleTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 0,
+                repeatMax: 1,
+              },
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
+
+export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute: RecordFormSchema =
   {
     validationTypeId: 'thesisManuscript',
     form: {
@@ -2039,7 +1964,7 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
     },
   };
 
-export const formDefWithOneGroupHavingTextVariableAsChild = {
+export const formDefWithOneGroupHavingTextVariableAsChild: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -2095,7 +2020,7 @@ export const formDefWithOneGroupHavingTextVariableAsChild = {
   },
 };
 
-export const formDefRealDemo = {
+export const formDefRealDemo: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
@@ -2228,7 +2153,7 @@ export const formDefRealDemo = {
   },
 };
 
-export const formDefRealDemoWithFinalValues = {
+export const formDefRealDemoWithFinalValues: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
@@ -2365,239 +2290,240 @@ export const formDefRealDemoWithFinalValues = {
   },
 };
 
-export const formDefRealDemoWithAttributesButWithoutFinalValue = {
-  validationTypeId: 'demo',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    mode: 'input',
+export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema =
+  {
+    validationTypeId: 'demo',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      mode: 'input',
 
-    components: [
-      {
-        name: 'recordInfo',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'recordInfoText',
-          body: 'recordInfoDefText',
-        },
-        label: 'recordInfoText',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-      },
-      {
-        name: 'bookTitle',
-        type: 'textVariable',
-        mode: 'input',
-        inputType: 'input',
-        tooltip: {
-          title: 'bookTitletextVarText',
-          body: 'bookTitletextVarDefText',
-        },
-        label: 'bookTitletextVarText',
-        validation: {
-          type: 'regex',
-          pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{2,50}$)',
-        },
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'colour',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
+      components: [
+        {
+          name: 'recordInfo',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'recordInfoText',
+            body: 'recordInfoDefText',
           },
-        ],
-      },
-      {
-        name: 'keeptHis',
-        type: 'numberVariable',
-        mode: 'input',
-        tooltip: {
-          title: 'keepThisNumberVarText',
-          body: 'keepThisNumberVarDefText',
-        },
-        label: 'keepThisNumberVarText',
-        validation: {
-          type: 'number',
-          min: 0,
-          max: 20,
-          warningMin: 2,
-          warningMax: 10,
-          numberOfDecimals: 0,
-        },
-        repeat: {
-          minNumberOfRepeatingToShow: 2,
-          repeatMin: 0,
-          repeatMax: 2,
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'colour',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
+          label: 'recordInfoText',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
           },
-        ],
-      },
-      {
-        name: 'firstChildGroup',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'exampleFirstChildGroupText',
-          body: 'exampleFirstChildGroupDefText',
         },
-        label: 'exampleFirstChildGroupText',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'groupColour',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
+        {
+          name: 'bookTitle',
+          type: 'textVariable',
+          mode: 'input',
+          inputType: 'input',
+          tooltip: {
+            title: 'bookTitletextVarText',
+            body: 'bookTitletextVarDefText',
           },
-          {
-            type: 'collectionVariable',
-            name: 'groupColourAgain',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
+          label: 'bookTitletextVarText',
+          validation: {
+            type: 'regex',
+            pattern: '(^[0-9A-ZÅÄÖ a-zåäö:-_]{2,50}$)',
           },
-        ],
-        components: [
-          {
-            name: 'exampleNumberVar',
-            type: 'numberVariable',
-            mode: 'input',
-            tooltip: {
-              title: 'exampleMetadataNumberVarText',
-              body: 'exampleMetadataNumberVarDefText',
-            },
-            label: 'exampleMetadataNumberVarText',
-            validation: {
-              type: 'number',
-              min: 0,
-              max: 100,
-              warningMin: 10,
-              warningMax: 90,
-              numberOfDecimals: 2,
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
           },
-          {
-            name: 'exampleTextVar',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'exampleMetadataTextVarText',
-              body: 'exampleMetadataTextVarDefText',
-            },
-            label: 'exampleMetadataTextVarText',
-            validation: {
-              type: 'regex',
-              pattern: '.*',
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            attributes: [
-              {
-                type: 'collectionVariable',
-                name: 'colour',
-                placeholder: 'emptyTextId',
-                tooltip: {
-                  title: 'exampleCollectionVarText',
-                  body: 'exampleCollectionVarDefText',
-                },
-                options: [
-                  { value: 'blue', label: 'exampleBlueItemText' },
-                  { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
-                ],
-                mode: 'input',
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
               },
-              {
-                type: 'collectionVariable',
-                name: 'colourAgain',
-                placeholder: 'emptyTextId',
-                tooltip: {
-                  title: 'exampleCollectionVarText',
-                  body: 'exampleCollectionVarDefText',
-                },
-                options: [
-                  { value: 'blue', label: 'exampleBlueItemText' },
-                  { value: 'pink', label: 'examplePinkItemText' },
-                  { value: 'yellow', label: 'exampleYellowItemText' },
-                ],
-                mode: 'input',
-              },
-            ],
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+        },
+        {
+          name: 'keeptHis',
+          type: 'numberVariable',
+          mode: 'input',
+          tooltip: {
+            title: 'keepThisNumberVarText',
+            body: 'keepThisNumberVarDefText',
           },
-        ],
-      },
-    ],
-  },
-};
+          label: 'keepThisNumberVarText',
+          validation: {
+            type: 'number',
+            min: 0,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0,
+          },
+          repeat: {
+            minNumberOfRepeatingToShow: 2,
+            repeatMin: 0,
+            repeatMax: 2,
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+        },
+        {
+          name: 'firstChildGroup',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'exampleFirstChildGroupText',
+            body: 'exampleFirstChildGroupDefText',
+          },
+          label: 'exampleFirstChildGroupText',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'groupColour',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+            {
+              type: 'collectionVariable',
+              name: 'groupColourAgain',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          components: [
+            {
+              name: 'exampleNumberVar',
+              type: 'numberVariable',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleMetadataNumberVarText',
+                body: 'exampleMetadataNumberVarDefText',
+              },
+              label: 'exampleMetadataNumberVarText',
+              validation: {
+                type: 'number',
+                min: 0,
+                max: 100,
+                warningMin: 10,
+                warningMax: 90,
+                numberOfDecimals: 2,
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+            },
+            {
+              name: 'exampleTextVar',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'exampleMetadataTextVarText',
+                body: 'exampleMetadataTextVarDefText',
+              },
+              label: 'exampleMetadataTextVarText',
+              validation: {
+                type: 'regex',
+                pattern: '.*',
+              },
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              attributes: [
+                {
+                  type: 'collectionVariable',
+                  name: 'colour',
+                  placeholder: 'emptyTextId',
+                  tooltip: {
+                    title: 'exampleCollectionVarText',
+                    body: 'exampleCollectionVarDefText',
+                  },
+                  options: [
+                    { value: 'blue', label: 'exampleBlueItemText' },
+                    { value: 'pink', label: 'examplePinkItemText' },
+                    { value: 'yellow', label: 'exampleYellowItemText' },
+                  ],
+                  mode: 'input',
+                },
+                {
+                  type: 'collectionVariable',
+                  name: 'colourAgain',
+                  placeholder: 'emptyTextId',
+                  tooltip: {
+                    title: 'exampleCollectionVarText',
+                    body: 'exampleCollectionVarDefText',
+                  },
+                  options: [
+                    { value: 'blue', label: 'exampleBlueItemText' },
+                    { value: 'pink', label: 'examplePinkItemText' },
+                    { value: 'yellow', label: 'exampleYellowItemText' },
+                  ],
+                  mode: 'input',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  };
 
-export const formDefRealDemoWithAttributes = {
+export const formDefRealDemoWithAttributes: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
@@ -2832,7 +2758,7 @@ export const formDefRealDemoWithAttributes = {
   },
 };
 
-export const formDefRealDemoWithRepeatingVars = {
+export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
@@ -3002,7 +2928,7 @@ export const formDefRealDemoWithRepeatingVars = {
   },
 };
 
-export const formDefRealDemoWithRepeatingGroups = {
+export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
@@ -3137,7 +3063,7 @@ export const formDefRealDemoWithRepeatingGroups = {
   },
 };
 
-export const formDefWithTwoRepeatingVarsAndCollectionVar = {
+export const formDefWithTwoRepeatingVarsAndCollectionVar: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -3212,7 +3138,7 @@ export const formDefWithTwoRepeatingVarsAndCollectionVar = {
   },
 };
 
-export const formDefWithRepeatingCollectionVar = {
+export const formDefWithRepeatingCollectionVar: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -3256,7 +3182,7 @@ export const formDefWithRepeatingCollectionVar = {
   },
 };
 
-export const formDefWithRepeatingGroup = {
+export const formDefWithRepeatingGroup: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -3320,489 +3246,332 @@ export const formDefWithRepeatingGroup = {
   },
 };
 
-export const formDefWithRepeatingGroupWithRepeatingChildGroup = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    mode: 'input',
-    components: [
-      {
-        name: 'author',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'authorGroupText',
-          body: 'authorGroupDefText',
-        },
-        label: 'authorGroupText',
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 10,
-        },
-        components: [
-          {
-            name: 'name',
-            type: 'group',
-            mode: 'input',
-            tooltip: {
-              title: 'exampleFirstChildGroupText',
-              body: 'exampleFirstChildGroupDefText',
-            },
-            label: 'exampleFirstChildGroupText',
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 100,
-            },
-            components: [
-              {
-                name: 'shouldBeSkippedComponent',
-                type: 'text',
-              },
-              {
-                name: 'firstName',
-                type: 'textVariable',
-                mode: 'input',
-                tooltip: {
-                  title: 'exampleMetadataVarText',
-                  body: 'exampleMetadataVarDefText',
-                },
-                label: 'firstName',
-                validation: {
-                  type: 'regex',
-                  pattern: '^[a-zA-Z]$',
-                },
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-              },
-              {
-                name: 'lastName',
-                type: 'textVariable',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'exampleMetadataTextVarText',
-                  body: 'exampleMetadataTextVarDefText',
-                },
-                label: 'exampleMetadataTextVarText',
-                validation: {
-                  type: 'regex',
-                  pattern: '^[a-zA-Z]$',
-                },
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-              },
-              {
-                type: 'numberVariable',
-                name: 'age',
-                placeholder: 'someNumberPlaceholderTextId',
-                validation: {
-                  type: 'number',
-                  min: 0,
-                  max: 125,
-                  warningMin: 50,
-                  warningMax: 100,
-                  numberOfDecimals: 0,
-                },
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-              },
-            ],
-          },
-        ],
+export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-  },
-};
-
-export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    mode: 'input',
-    components: [
-      {
-        name: 'author',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'authorGroupText',
-          body: 'authorGroupDefText',
-        },
-        label: 'authorGroupText',
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 10,
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'colourAttribute',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      mode: 'input',
+      components: [
+        {
+          name: 'author',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'authorGroupText',
+            body: 'authorGroupDefText',
           },
-        ],
-        components: [
-          {
-            name: 'name',
-            type: 'group',
-            mode: 'input',
-            tooltip: {
-              title: 'exampleFirstChildGroupText2',
-              body: 'exampleFirstChildGroupDefText2',
-            },
-            label: 'exampleFirstChildGroupText',
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 100,
-            },
-            components: [
-              {
-                name: 'shouldBeSkippedComponent12',
-                type: 'text',
+          label: 'authorGroupText',
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 10,
+          },
+          components: [
+            {
+              name: 'name',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleFirstChildGroupText',
+                body: 'exampleFirstChildGroupDefText',
               },
-              {
-                name: 'firstName',
-                type: 'textVariable',
-                mode: 'input',
-                tooltip: {
-                  title: 'exampleMetadataVarText',
-                  body: 'exampleMetadataVarDefText',
+              label: 'exampleFirstChildGroupText',
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 100,
+              },
+              components: [
+                {
+                  name: 'shouldBeSkippedComponent',
+                  type: 'text',
                 },
-                label: 'firstName',
-                validation: {
-                  type: 'regex',
-                  pattern: '^[a-zA-Z]$',
-                },
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-                attributes: [
-                  {
-                    type: 'collectionVariable',
-                    name: 'colourAttribute',
-                    placeholder: 'emptyTextId',
-                    tooltip: {
-                      title: 'exampleCollectionVarText',
-                      body: 'exampleCollectionVarDefText',
-                    },
-                    options: [
-                      { value: 'blue', label: 'exampleBlueItemText' },
-                      { value: 'pink', label: 'examplePinkItemText' },
-                      { value: 'yellow', label: 'exampleYellowItemText' },
-                    ],
-                    mode: 'input',
+                {
+                  name: 'firstName',
+                  type: 'textVariable',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'exampleMetadataVarText',
+                    body: 'exampleMetadataVarDefText',
                   },
-                ],
-              },
-              {
-                name: 'lastName',
-                type: 'textVariable',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'exampleMetadataTextVarText',
-                  body: 'exampleMetadataTextVarDefText',
+                  label: 'firstName',
+                  validation: {
+                    type: 'regex',
+                    pattern: '^[a-zA-Z]$',
+                  },
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
                 },
-                label: 'exampleMetadataTextVarText',
-                validation: {
-                  type: 'regex',
-                  pattern: '^[a-zA-Z]$',
+                {
+                  name: 'lastName',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'exampleMetadataTextVarText',
+                    body: 'exampleMetadataTextVarDefText',
+                  },
+                  label: 'exampleMetadataTextVarText',
+                  validation: {
+                    type: 'regex',
+                    pattern: '^[a-zA-Z]$',
+                  },
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
                 },
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
+                {
+                  type: 'numberVariable',
+                  name: 'age',
+                  placeholder: 'someNumberPlaceholderTextId',
+                  validation: {
+                    type: 'number',
+                    min: 0,
+                    max: 125,
+                    warningMin: 50,
+                    warningMax: 100,
+                    numberOfDecimals: 0,
+                  },
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
                 },
-              },
-              {
-                type: 'numberVariable',
-                name: 'age',
-                placeholder: 'someNumberPlaceholderTextId',
-                validation: {
-                  type: 'number',
-                  min: 0,
-                  max: 125,
-                  warningMin: 50,
-                  warningMax: 100,
-                  numberOfDecimals: 0,
-                },
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: 'group',
-        label: 'someChildGroupTextId',
-        name: 'nonRepeatingGroup',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someChildGroupTextId',
-          body: 'someChildGroupDefTextId',
-        },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'groupAttribute',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
+              ],
             },
-            options: [
-              { value: 'blue', label: 'exampleBlueItemText' },
-              { value: 'pink', label: 'examplePinkItemText' },
-              { value: 'yellow', label: 'exampleYellowItemText' },
-            ],
-            mode: 'input',
-          },
-        ],
-        components: [],
-        mode: 'input',
-      },
-      {
-        type: 'numberVariable',
-        name: 'grade',
-        placeholder: 'yourGrades',
-        validation: {
-          type: 'number',
-          min: 1,
-          max: 5,
-          warningMin: 2,
-          warningMax: 4,
-          numberOfDecimals: 0,
+          ],
         },
-        attributes: [
-          {
-            type: 'collectionVariable',
-            name: 'gradeAttribute',
-            placeholder: 'emptyTextId',
-            tooltip: {
-              title: 'exampleCollectionVarText',
-              body: 'exampleCollectionVarDefText',
-            },
-            options: [
-              { value: 'strong', label: 'someStrongLabelText' },
-              { value: 'weak', label: 'someWeakLabelText' },
-            ],
-            mode: 'input',
-          },
-        ],
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 12,
-        },
-      },
-    ],
-  },
-};
+      ],
+    },
+  };
 
-export const formDefWithGroupWithChildGroupWithTextVar = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    mode: 'input',
-    components: [
-      {
-        name: 'author',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'authorGroupText',
-          body: 'authorGroupDefText',
-        },
-        label: 'authorGroupText',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        components: [
-          {
-            type: 'numberVariable',
-            name: 'age',
-            placeholder: 'someNumberPlaceholderTextId',
-            validation: {
-              type: 'number',
-              min: 0,
-              max: 125,
-              warningMin: 50,
-              warningMax: 100,
-              numberOfDecimals: 0,
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-          },
-          {
-            name: 'name',
-            type: 'group',
-            mode: 'input',
-            tooltip: {
-              title: 'exampleFirstChildGroupText',
-              body: 'exampleFirstChildGroupDefText',
-            },
-            label: 'exampleFirstChildGroupText',
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            components: [
-              {
-                name: 'firstName',
-                type: 'textVariable',
-                mode: 'input',
-                tooltip: {
-                  title: 'exampleMetadataVarText',
-                  body: 'exampleMetadataVarDefText',
-                },
-                label: 'firstName',
-                validation: {
-                  type: 'regex',
-                  pattern: '^[a-zA-Z]$',
-                },
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-              },
-              {
-                name: 'lastName',
-                type: 'textVariable',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'exampleMetadataTextVarText',
-                  body: 'exampleMetadataTextVarDefText',
-                },
-                label: 'exampleMetadataTextVarText',
-                validation: {
-                  type: 'regex',
-                  pattern: '^[a-zA-Z]$',
-                },
-                repeat: {
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-              },
-            ],
-          },
-        ],
+export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-  },
-};
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      mode: 'input',
+      components: [
+        {
+          name: 'author',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'authorGroupText',
+            body: 'authorGroupDefText',
+          },
+          label: 'authorGroupText',
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 10,
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'colourAttribute',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          components: [
+            {
+              name: 'name',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'exampleFirstChildGroupText2',
+                body: 'exampleFirstChildGroupDefText2',
+              },
+              label: 'exampleFirstChildGroupText',
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 100,
+              },
+              components: [
+                {
+                  name: 'shouldBeSkippedComponent12',
+                  type: 'text',
+                },
+                {
+                  name: 'firstName',
+                  type: 'textVariable',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'exampleMetadataVarText',
+                    body: 'exampleMetadataVarDefText',
+                  },
+                  label: 'firstName',
+                  validation: {
+                    type: 'regex',
+                    pattern: '^[a-zA-Z]$',
+                  },
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  attributes: [
+                    {
+                      type: 'collectionVariable',
+                      name: 'colourAttribute',
+                      placeholder: 'emptyTextId',
+                      tooltip: {
+                        title: 'exampleCollectionVarText',
+                        body: 'exampleCollectionVarDefText',
+                      },
+                      options: [
+                        { value: 'blue', label: 'exampleBlueItemText' },
+                        { value: 'pink', label: 'examplePinkItemText' },
+                        { value: 'yellow', label: 'exampleYellowItemText' },
+                      ],
+                      mode: 'input',
+                    },
+                  ],
+                },
+                {
+                  name: 'lastName',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'exampleMetadataTextVarText',
+                    body: 'exampleMetadataTextVarDefText',
+                  },
+                  label: 'exampleMetadataTextVarText',
+                  validation: {
+                    type: 'regex',
+                    pattern: '^[a-zA-Z]$',
+                  },
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                },
+                {
+                  type: 'numberVariable',
+                  name: 'age',
+                  placeholder: 'someNumberPlaceholderTextId',
+                  validation: {
+                    type: 'number',
+                    min: 0,
+                    max: 125,
+                    warningMin: 50,
+                    warningMax: 100,
+                    numberOfDecimals: 0,
+                  },
+                  repeat: {
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'group',
+          label: 'someChildGroupTextId',
+          name: 'nonRepeatingGroup',
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          tooltip: {
+            title: 'someChildGroupTextId',
+            body: 'someChildGroupDefTextId',
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'groupAttribute',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'blue', label: 'exampleBlueItemText' },
+                { value: 'pink', label: 'examplePinkItemText' },
+                { value: 'yellow', label: 'exampleYellowItemText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          components: [],
+          mode: 'input',
+        },
+        {
+          type: 'numberVariable',
+          name: 'grade',
+          placeholder: 'yourGrades',
+          validation: {
+            type: 'number',
+            min: 1,
+            max: 5,
+            warningMin: 2,
+            warningMax: 4,
+            numberOfDecimals: 0,
+          },
+          attributes: [
+            {
+              type: 'collectionVariable',
+              name: 'gradeAttribute',
+              placeholder: 'emptyTextId',
+              tooltip: {
+                title: 'exampleCollectionVarText',
+                body: 'exampleCollectionVarDefText',
+              },
+              options: [
+                { value: 'strong', label: 'someStrongLabelText' },
+                { value: 'weak', label: 'someWeakLabelText' },
+              ],
+              mode: 'input',
+            },
+          ],
+          repeat: {
+            repeatMin: 1,
+            repeatMax: 12,
+          },
+        },
+      ],
+    },
+  };
 
-export const formDefWithRepeatingAuthorGroupWithNameTextVar = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    mode: 'input',
-    components: [
-      {
-        name: 'author',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'authorGroupText',
-          body: 'authorGroupDefText',
-        },
-        label: 'authorGroupText',
-        repeat: {
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        components: [
-          {
-            name: 'name',
-            type: 'textVariable',
-            mode: 'input',
-            tooltip: {
-              title: 'exampleMetadataVarText',
-              body: 'exampleMetadataVarDefText',
-            },
-            label: 'name',
-            validation: {
-              type: 'regex',
-              pattern: '^[a-zA-Z]$',
-            },
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-          },
-        ],
-      },
-    ],
-  },
-};
-export const formDefWithOptionalGroupWithRequiredTextVar = {
+export const formDefWithOptionalGroupWithRequiredTextVar: RecordFormSchema = {
   validationTypeId: 'thesisManuscript',
   form: {
     name: 'divaOutput',
@@ -3871,7 +3640,7 @@ export const formDefWithOptionalGroupWithRequiredTextVar = {
   },
 };
 
-export const formDefWithOptionalGroupWithRequiredNumberVar = {
+export const formDefWithOptionalGroupWithRequiredNumberVar: RecordFormSchema = {
   validationTypeId: 'thesisManuscript',
   form: {
     name: 'divaOutput',
@@ -3944,462 +3713,467 @@ export const formDefWithOptionalGroupWithRequiredNumberVar = {
   },
 };
 
-export const formDefWithOptionalGroupWithRequiredRecordLink = {
-  validationTypeId: 'thesisManuscript',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'thesisManuscriptNewGroupText',
-      body: 'thesisManuscriptNewGroupDefText',
-    },
-    label: 'thesisManuscriptNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'alternativeTitle',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'alternativeTitleGroupText',
-          body: 'alternativeTitleGroupDefText',
-        },
-        label: 'alternativeTitleGroupText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        components: [
-          {
-            name: 'funder',
-            type: 'recordLink',
-            mode: 'input',
-            tooltip: {
-              title: 'funderLinkText',
-              body: 'funderLinkDefText',
-            },
-            label: 'funderLinkText',
-            showLabel: true,
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: [''],
-            gridColSpan: 12,
-            recordLinkType: 'funder',
-            presentationRecordLinkId: 'funderPLink',
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
+export const formDefWithOptionalGroupWithRequiredRecordLink: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
       },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
-
-export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar = {
-  validationTypeId: 'thesisManuscript',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'thesisManuscriptNewGroupText',
-      body: 'thesisManuscriptNewGroupDefText',
-    },
-    label: 'thesisManuscriptNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'polygon',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'polygonGroupText',
-          body: 'polygonGroupDefText',
-        },
-        label: 'polygonGroupText',
-        showLabel: false,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        components: [
-          {
-            name: 'point',
-            type: 'group',
-            mode: 'input',
-            tooltip: {
-              title: 'pointGroupText',
-              body: 'pointGroupDefText',
-            },
-            label: 'pointGroupText',
-            headlineLevel: 'h3',
-            showLabel: true,
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1.7976931348623157e308,
-            },
-            components: [
-              {
-                name: 'longitude',
-                type: 'textVariable',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'longitudeTextVarText',
-                  body: 'longitudeTextVarDefText',
-                },
-                label: 'longitudeTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern:
-                    '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-                childStyle: ['sixChildStyle'],
-                gridColSpan: 6,
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'alternativeTitle',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'alternativeTitleGroupText',
+            body: 'alternativeTitleGroupDefText',
+          },
+          label: 'alternativeTitleGroupText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'funder',
+              type: 'recordLink',
+              mode: 'input',
+              tooltip: {
+                title: 'funderLinkText',
+                body: 'funderLinkDefText',
               },
-            ],
-            presentationStyle: '',
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
-      },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
+              label: 'funderLinkText',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: [''],
+              gridColSpan: 12,
+              recordLinkType: 'funder',
+              presentationRecordLinkId: 'funderPLink',
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
 
-export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars = {
-  validationTypeId: 'thesisManuscript',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'thesisManuscriptNewGroupText',
-      body: 'thesisManuscriptNewGroupDefText',
-    },
-    label: 'thesisManuscriptNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'point',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'pointGroupText',
-          body: 'pointGroupDefText',
-        },
-        label: 'pointGroupText',
-        headlineLevel: 'h3',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 1.7976931348623157e308,
-        },
-        components: [
-          {
-            name: 'longitude',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'longitudeTextVarText',
-              body: 'longitudeTextVarDefText',
-            },
-            label: 'longitudeTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern:
-                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0,
-              repeatMax: 1,
-            },
-            placeholder: 'someLongitudeTextId',
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-          {
-            name: 'latitude',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'longitudeTextVarText',
-              body: 'longitudeTextVarDefText',
-            },
-            label: 'longitudeTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern:
-                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            placeholder: 'someLatitudeTextId',
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
+export const formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
       },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
-
-export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars = {
-  validationTypeId: 'thesisManuscript',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'thesisManuscriptNewGroupText',
-      body: 'thesisManuscriptNewGroupDefText',
-    },
-    label: 'thesisManuscriptNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'point',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'pointGroupText',
-          body: 'pointGroupDefText',
-        },
-        label: 'pointGroupText',
-        headlineLevel: 'h3',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0, // For the test
-          repeatMax: 1.7976931348623157e308,
-        },
-        components: [
-          {
-            name: 'longitude',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'longitudeTextVarText',
-              body: 'longitudeTextVarDefText',
-            },
-            label: 'longitudeTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern:
-                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            placeholder: 'someLongitudeTextId',
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-          {
-            name: 'latitude',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'latitudeTextVarText',
-              body: 'latitudeTextVarDefText',
-            },
-            label: 'latitudeTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern:
-                '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            placeholder: 'someLatitudeTextId',
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
+      components: [
+        {
+          name: 'polygon',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'polygonGroupText',
+            body: 'polygonGroupDefText',
+          },
+          label: 'polygonGroupText',
+          showLabel: false,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'point',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'pointGroupText',
+                body: 'pointGroupDefText',
+              },
+              label: 'pointGroupText',
+              headlineLevel: 'h3',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1.7976931348623157e308,
+              },
+              components: [
+                {
+                  name: 'longitude',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'longitudeTextVarText',
+                    body: 'longitudeTextVarDefText',
+                  },
+                  label: 'longitudeTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern:
+                      '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
 
-export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars = {
-  validationTypeId: 'thesisManuscript',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'thesisManuscriptNewGroupText',
-      body: 'thesisManuscriptNewGroupDefText',
-    },
-    label: 'thesisManuscriptNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'point',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'pointGroupText',
-          body: 'pointGroupDefText',
-        },
-        label: 'pointGroupText',
-        headlineLevel: 'h3',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0, // For the test
-          repeatMax: 1.7976931348623157e308,
-        },
-        components: [
-          {
-            name: 'longitude',
-            type: 'numberVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'longitudeTextVarText',
-              body: 'longitudeTextVarDefText',
-            },
-            label: 'longitudeTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'number',
-              min: 1,
-              max: 20,
-              warningMin: 2,
-              warningMax: 10,
-              numberOfDecimals: 0,
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            placeholder: 'someLongitudeTextId',
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-          {
-            name: 'latitude',
-            type: 'numberVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'latitudeTextVarText',
-              body: 'latitudeTextVarDefText',
-            },
-            label: 'latitudeTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'number',
-              min: 1,
-              max: 20,
-              warningMin: 2,
-              warningMax: 10,
-              numberOfDecimals: 0,
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            placeholder: 'someLatitudeTextId',
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
+export const formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
       },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'point',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'pointGroupText',
+            body: 'pointGroupDefText',
+          },
+          label: 'pointGroupText',
+          headlineLevel: 'h3',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1.7976931348623157e308,
+          },
+          components: [
+            {
+              name: 'longitude',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'longitudeTextVarText',
+                body: 'longitudeTextVarDefText',
+              },
+              label: 'longitudeTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern:
+                  '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 0,
+                repeatMax: 1,
+              },
+              placeholder: 'someLongitudeTextId',
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+            {
+              name: 'latitude',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'longitudeTextVarText',
+                body: 'longitudeTextVarDefText',
+              },
+              label: 'longitudeTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern:
+                  '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              placeholder: 'someLatitudeTextId',
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
 
-export const formDefWithOptionalGroupWithTwoCollectionVars = {
+export const formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'point',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'pointGroupText',
+            body: 'pointGroupDefText',
+          },
+          label: 'pointGroupText',
+          headlineLevel: 'h3',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0, // For the test
+            repeatMax: 1.7976931348623157e308,
+          },
+          components: [
+            {
+              name: 'longitude',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'longitudeTextVarText',
+                body: 'longitudeTextVarDefText',
+              },
+              label: 'longitudeTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern:
+                  '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              placeholder: 'someLongitudeTextId',
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+            {
+              name: 'latitude',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'latitudeTextVarText',
+                body: 'latitudeTextVarDefText',
+              },
+              label: 'latitudeTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern:
+                  '(^[-]{0,1}([0-9]|[1-9][0-9]|1[0-7][0-9]|180)\\.[0-9]{1,20}$)',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              placeholder: 'someLatitudeTextId',
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
+
+export const formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'point',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'pointGroupText',
+            body: 'pointGroupDefText',
+          },
+          label: 'pointGroupText',
+          headlineLevel: 'h3',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0, // For the test
+            repeatMax: 1.7976931348623157e308,
+          },
+          components: [
+            {
+              name: 'longitude',
+              type: 'numberVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'longitudeTextVarText',
+                body: 'longitudeTextVarDefText',
+              },
+              label: 'longitudeTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'number',
+                min: 1,
+                max: 20,
+                warningMin: 2,
+                warningMax: 10,
+                numberOfDecimals: 0,
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              placeholder: 'someLongitudeTextId',
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+            {
+              name: 'latitude',
+              type: 'numberVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'latitudeTextVarText',
+                body: 'latitudeTextVarDefText',
+              },
+              label: 'latitudeTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'number',
+                min: 1,
+                max: 20,
+                warningMin: 2,
+                warningMax: 10,
+                numberOfDecimals: 0,
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              placeholder: 'someLatitudeTextId',
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
+
+export const formDefWithOptionalGroupWithTwoCollectionVars: RecordFormSchema = {
   validationTypeId: 'thesisManuscript',
   form: {
     name: 'divaOutput',
@@ -4496,253 +4270,255 @@ export const formDefWithOptionalGroupWithTwoCollectionVars = {
   },
 };
 
-export const formDefWithTextVarAndNestedGroupsWithOneTextVar = {
-  validationTypeId: 'thesisManuscript',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'thesisManuscriptNewGroupText',
-      body: 'thesisManuscriptNewGroupDefText',
-    },
-    label: 'thesisManuscriptNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'point',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'pointGroupText',
-          body: 'pointGroupDefText',
-        },
-        label: 'pointGroupText',
-        headlineLevel: 'h3',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1, // For the test
-          repeatMax: 1,
-        },
-        components: [
-          {
-            name: 'point',
-            type: 'group',
-            mode: 'input',
-            tooltip: {
-              title: 'pointGroupText',
-              body: 'pointGroupDefText',
-            },
-            label: 'pointGroupText',
-            headlineLevel: 'h3',
-            showLabel: false,
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 0, // For the test
-              repeatMax: 1,
-            },
-            components: [
-              {
-                name: 'longitude',
-                type: 'numberVariable',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'longitudeTextVarText',
-                  body: 'longitudeTextVarDefText',
-                },
-                label: 'longitudeTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'number',
-                  min: 1,
-                  max: 20,
-                  warningMin: 2,
-                  warningMax: 10,
-                  numberOfDecimals: 0,
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-                placeholder: 'someLongitudeTextId',
-                childStyle: ['sixChildStyle'],
-                gridColSpan: 6,
+export const formDefWithTextVarAndNestedGroupsWithOneTextVar: RecordFormSchema =
+  {
+    validationTypeId: 'thesisManuscript',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'thesisManuscriptNewGroupText',
+        body: 'thesisManuscriptNewGroupDefText',
+      },
+      label: 'thesisManuscriptNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'point',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'pointGroupText',
+            body: 'pointGroupDefText',
+          },
+          label: 'pointGroupText',
+          headlineLevel: 'h3',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1, // For the test
+            repeatMax: 1,
+          },
+          components: [
+            {
+              name: 'point',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'pointGroupText',
+                body: 'pointGroupDefText',
               },
-              {
-                name: 'point2',
-                type: 'group',
-                mode: 'input',
-                tooltip: {
-                  title: 'pointGroupText',
-                  body: 'pointGroupDefText',
-                },
-                label: 'pointGroupText',
-                headlineLevel: 'h3',
-                showLabel: false,
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 1, // For the test
-                  repeatMax: 1,
-                },
-                components: [
-                  {
-                    name: 'point3',
-                    type: 'group',
-                    mode: 'input',
-                    tooltip: {
-                      title: 'pointGroupText',
-                      body: 'pointGroupDefText',
-                    },
-                    label: 'pointGroupText',
-                    headlineLevel: 'h3',
-                    showLabel: false,
-                    repeat: {
-                      minNumberOfRepeatingToShow: 1,
-                      repeatMin: 1, // For the test
-                      repeatMax: 1,
-                    },
-                    components: [
-                      {
-                        name: 'point',
-                        type: 'group',
-                        mode: 'input',
-                        tooltip: {
-                          title: 'pointGroupText',
-                          body: 'pointGroupDefText',
-                        },
-                        label: 'pointGroupText',
-                        headlineLevel: 'h3',
-                        showLabel: false,
-                        repeat: {
-                          minNumberOfRepeatingToShow: 1,
-                          repeatMin: 1, // For the test
-                          repeatMax: 1,
-                        },
-                        components: [
-                          {
-                            name: 'latitude',
-                            type: 'numberVariable',
-                            mode: 'input',
-                            inputType: 'input',
-                            tooltip: {
-                              title: 'latitudeTextVarText',
-                              body: 'latitudeTextVarDefText',
-                            },
-                            label: 'latitudeTextVarText',
-                            showLabel: true,
-                            validation: {
-                              type: 'number',
-                              min: 1,
-                              max: 20,
-                              warningMin: 2,
-                              warningMax: 10,
-                              numberOfDecimals: 0,
-                            },
-                            repeat: {
-                              minNumberOfRepeatingToShow: 1,
-                              repeatMin: 1,
-                              repeatMax: 1,
-                            },
-                            placeholder: 'someLatitudeTextId',
-                            childStyle: ['sixChildStyle'],
-                            gridColSpan: 6,
-                          },
-                        ],
-                        presentationStyle: '',
-                        childStyle: [''],
-                        gridColSpan: 12,
-                      },
-                    ],
-                    presentationStyle: '',
-                    childStyle: [''],
-                    gridColSpan: 12,
+              label: 'pointGroupText',
+              headlineLevel: 'h3',
+              showLabel: false,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 0, // For the test
+                repeatMax: 1,
+              },
+              components: [
+                {
+                  name: 'longitude',
+                  type: 'numberVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'longitudeTextVarText',
+                    body: 'longitudeTextVarDefText',
                   },
-                ],
-                presentationStyle: '',
-                childStyle: [''],
-                gridColSpan: 12,
+                  label: 'longitudeTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'number',
+                    min: 1,
+                    max: 20,
+                    warningMin: 2,
+                    warningMax: 10,
+                    numberOfDecimals: 0,
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  placeholder: 'someLongitudeTextId',
+                  childStyle: ['sixChildStyle'],
+                  gridColSpan: 6,
+                },
+                {
+                  name: 'point2',
+                  type: 'group',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'pointGroupText',
+                    body: 'pointGroupDefText',
+                  },
+                  label: 'pointGroupText',
+                  headlineLevel: 'h3',
+                  showLabel: false,
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1, // For the test
+                    repeatMax: 1,
+                  },
+                  components: [
+                    {
+                      name: 'point3',
+                      type: 'group',
+                      mode: 'input',
+                      tooltip: {
+                        title: 'pointGroupText',
+                        body: 'pointGroupDefText',
+                      },
+                      label: 'pointGroupText',
+                      headlineLevel: 'h3',
+                      showLabel: false,
+                      repeat: {
+                        minNumberOfRepeatingToShow: 1,
+                        repeatMin: 1, // For the test
+                        repeatMax: 1,
+                      },
+                      components: [
+                        {
+                          name: 'point',
+                          type: 'group',
+                          mode: 'input',
+                          tooltip: {
+                            title: 'pointGroupText',
+                            body: 'pointGroupDefText',
+                          },
+                          label: 'pointGroupText',
+                          headlineLevel: 'h3',
+                          showLabel: false,
+                          repeat: {
+                            minNumberOfRepeatingToShow: 1,
+                            repeatMin: 1, // For the test
+                            repeatMax: 1,
+                          },
+                          components: [
+                            {
+                              name: 'latitude',
+                              type: 'numberVariable',
+                              mode: 'input',
+                              inputType: 'input',
+                              tooltip: {
+                                title: 'latitudeTextVarText',
+                                body: 'latitudeTextVarDefText',
+                              },
+                              label: 'latitudeTextVarText',
+                              showLabel: true,
+                              validation: {
+                                type: 'number',
+                                min: 1,
+                                max: 20,
+                                warningMin: 2,
+                                warningMax: 10,
+                                numberOfDecimals: 0,
+                              },
+                              repeat: {
+                                minNumberOfRepeatingToShow: 1,
+                                repeatMin: 1,
+                                repeatMax: 1,
+                              },
+                              placeholder: 'someLatitudeTextId',
+                              childStyle: ['sixChildStyle'],
+                              gridColSpan: 6,
+                            },
+                          ],
+                          presentationStyle: '',
+                          childStyle: [''],
+                          gridColSpan: 12,
+                        },
+                      ],
+                      presentationStyle: '',
+                      childStyle: [''],
+                      gridColSpan: 12,
+                    },
+                  ],
+                  presentationStyle: '',
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
+
+export const formDefWithSurroundingContainerAroundTextVariable: RecordFormSchema =
+  {
+    validationTypeId: 'book',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      mode: 'input',
+      components: [
+        {
+          type: 'text',
+          name: 'someHeaderText',
+        },
+        {
+          type: 'container',
+          containerType: 'surrounding',
+          name: 'someSurroundingContainerName',
+          presentationStyle: 'frame', // frame can in the first step be a div with a background yellow and a black border
+          childStyle: [],
+          components: [
+            {
+              type: 'textVariable',
+              name: 'someNameInData',
+              label: 'someTextId',
+              childStyle: [],
+              placeholder: 'text variable',
+              repeat: {
+                repeatMin: 1,
+                repeatMax: 1,
               },
-            ],
-            presentationStyle: '',
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
-      },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
-
-export const formDefWithSurroundingContainerAroundTextVariable: FormSchema = {
-  validationTypeId: 'book',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
+              tooltip: {
+                title: 'someTextId',
+                body: 'someDefTextId',
+              },
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              mode: 'input',
+              inputType: 'input',
+            },
+          ],
+          mode: 'input',
+        },
+      ],
     },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    mode: 'input',
-    components: [
-      {
-        type: 'text',
-        name: 'someHeaderText',
-      },
-      {
-        type: 'container',
-        containerType: 'surrounding',
-        name: 'someSurroundingContainerName',
-        presentationStyle: 'frame', // frame can in the first step be a div with a background yellow and a black border
-        childStyle: [],
-        components: [
-          {
-            type: 'textVariable',
-            name: 'someNameInData',
-            label: 'someTextId',
-            childStyle: [],
-            placeholder: 'text variable',
-            repeat: {
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            tooltip: {
-              title: 'someTextId',
-              body: 'someDefTextId',
-            },
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            mode: 'input',
-            inputType: 'input',
-          },
-        ],
-        mode: 'input',
-      },
-    ],
-  },
-};
+  };
 
-export const formDefWithNestedSurroundingContainers: FormSchema = {
+export const formDefWithNestedSurroundingContainers: RecordFormSchema = {
   validationTypeId: 'book',
   form: {
     type: 'group',
@@ -4827,7 +4603,7 @@ export const formDefWithNestedSurroundingContainers: FormSchema = {
     ],
   },
 };
-export const formDefWithARepeatingContainer: FormSchema = {
+export const formDefWithARepeatingContainer: RecordFormSchema = {
   validationTypeId: 'book',
   form: {
     type: 'group',
@@ -4879,7 +4655,7 @@ export const formDefWithARepeatingContainer: FormSchema = {
   },
 };
 
-export const formDefWithGroupWithSpecifiedHeadlineLevel = {
+export const formDefWithGroupWithSpecifiedHeadlineLevel: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -4957,7 +4733,7 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel = {
   },
 };
 
-export const formDefWithGroupWithDefaultHeadlineLevel = {
+export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -5033,7 +4809,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel = {
   },
 };
 
-export const formDefWithOneNumberVariableBeingOptional = {
+export const formDefWithOneNumberVariableBeingOptional: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -5073,47 +4849,48 @@ export const formDefWithOneNumberVariableBeingOptional = {
   },
 };
 
-export const formDefWithOneNumberVariableBeingOptionalOutput = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        type: 'numberVariable',
-        name: 'someNumberVariableNameInData',
-        placeholder: 'someNumberPlaceholderTextId',
-        validation: {
-          type: 'number',
-          min: 1,
-          max: 20,
-          warningMin: 2,
-          warningMax: 10,
-          numberOfDecimals: 0,
-        },
-        repeat: {
-          repeatMin: 0,
-          repeatMax: 1,
-          minNumberOfRepeatingToShow: 1,
-        },
-        showLabel: true,
-        mode: 'output',
+export const formDefWithOneNumberVariableBeingOptionalOutput: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-    mode: 'input',
-  },
-};
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
+      },
+      components: [
+        {
+          type: 'numberVariable',
+          name: 'someNumberVariableNameInData',
+          placeholder: 'someNumberPlaceholderTextId',
+          validation: {
+            type: 'number',
+            min: 1,
+            max: 20,
+            warningMin: 2,
+            warningMax: 10,
+            numberOfDecimals: 0,
+          },
+          repeat: {
+            repeatMin: 0,
+            repeatMax: 1,
+            minNumberOfRepeatingToShow: 1,
+          },
+          showLabel: true,
+          mode: 'output',
+        },
+      ],
+      mode: 'input',
+    },
+  };
 
-export const formDefWithOneTextVariableBeingOptional = {
+export const formDefWithOneTextVariableBeingOptional: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -5149,7 +4926,7 @@ export const formDefWithOneTextVariableBeingOptional = {
     mode: 'input',
   },
 };
-export const formDefWithOneTextVariableBeingPassword = {
+export const formDefWithOneTextVariableBeingPassword: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -5185,7 +4962,7 @@ export const formDefWithOneTextVariableBeingPassword = {
   },
 };
 
-export const formDefWithOneRecordLinkBeingOptional = {
+export const formDefWithOneRecordLinkBeingOptional: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -5215,7 +4992,7 @@ export const formDefWithOneRecordLinkBeingOptional = {
   },
 };
 
-export const formDefWithOneRecordLinkBeingRequired = {
+export const formDefWithOneRecordLinkBeingRequired: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -5244,7 +5021,7 @@ export const formDefWithOneRecordLinkBeingRequired = {
   },
 };
 
-export const formDefWithOneTextVariableBeingRepeating = {
+export const formDefWithOneTextVariableBeingRepeating: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
@@ -5279,7 +5056,7 @@ export const formDefWithOneTextVariableBeingRepeating = {
   },
 };
 
-export const formDefContributorGroupWithAuthorGroupAuthor = {
+export const formDefContributorGroupWithAuthorGroupAuthor: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     name: 'contributor',
@@ -5646,76 +5423,7 @@ export const formDefContributorGroupWithAuthorGroupAuthor = {
   },
 };
 
-export const formDefAbstractAndNationalSubject = {
-  validationTypeId: 'thesisManuscript',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'thesisManuscriptNewGroupText',
-      body: 'thesisManuscriptNewGroupDefText',
-    },
-    label: 'thesisManuscriptNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'abstract',
-        type: 'textVariable',
-        mode: 'input',
-        inputType: 'input',
-        tooltip: {
-          title: 'abstractTextVarText',
-          body: 'abstractTextVarDefText',
-        },
-        label: 'abstractTextVarText',
-        showLabel: true,
-        validation: {
-          type: 'regex',
-          pattern: '.+',
-        },
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        childStyle: [''],
-        gridColSpan: 12,
-      },
-      {
-        name: 'nationalSubjectCategory',
-        type: 'recordLink',
-        mode: 'input',
-        tooltip: {
-          title: 'nationalSubjectCategoryLinkText',
-          body: 'nationalSubjectCategoryLinkDefText',
-        },
-        label: 'nationalSubjectCategoryLinkText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        childStyle: [''],
-        gridColSpan: 12,
-        recordLinkType: 'nationalSubjectCategory',
-        presentationRecordLinkId: 'nationalSubjectCategoryPLink',
-        search: 'nationalSubjectCategorySearch',
-      },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
-
-export const formDefTwoOptionalGroupsWithRequiredTextVars = {
+export const formDefTwoOptionalGroupsWithRequiredTextVars: RecordFormSchema = {
   validationTypeId: 'thesisManuscript',
   form: {
     name: 'divaOutput',
@@ -5944,215 +5652,216 @@ export const formDefTwoOptionalGroupsWithRequiredTextVars = {
   },
 };
 
-export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars = {
-  validationTypeId: 'someValidationTypeId',
-  form: {
-    type: 'group',
-    label: 'someRootFormGroupText',
-    name: 'someRootNameInData',
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    tooltip: {
-      title: 'textId345',
-      body: 'defTextId678',
-    },
-    components: [
-      {
-        name: 'author',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'authorGroupText',
-          body: 'authorGroupDefText',
-        },
-        label: 'authorGroupText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        attributes: [
-          {
-            name: 'language',
-            type: 'collectionVariable',
-            placeholder: 'initialEmptyValueText',
-            mode: 'input',
-            tooltip: {
-              title: 'languageCollectionVarText',
-              body: 'languageCollectionVarDefText',
-            },
-            label: 'languageCollectionVarText',
-            showLabel: true,
-            options: [
-              {
-                value: 'nau',
-                label: 'nauLangItemText',
-              },
-              {
-                value: 'uwu',
-                label: 'uwuLangItemText',
-              },
-            ],
-            finalValue: 'uwu',
-          },
-        ],
-        components: [
-          {
-            name: 'givenName',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'givenNameTextVarText',
-              body: 'givenNameTextVarDefText',
-            },
-            label: 'givenNameTextVarText',
-            placeholder: 'givenNameTextVarText1',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-          {
-            name: 'familyName',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'familyNameTextVarText',
-              body: 'familyNameTextVarDefText',
-            },
-            label: 'familyNameTextVarText',
-            placeholder: 'familyNameTextVarText1',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
+export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordFormSchema =
+  {
+    validationTypeId: 'someValidationTypeId',
+    form: {
+      type: 'group',
+      label: 'someRootFormGroupText',
+      name: 'someRootNameInData',
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-      {
-        name: 'author',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'authorGroupText',
-          body: 'authorGroupDefText',
-        },
-        label: 'authorGroupText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        attributes: [
-          {
-            name: 'language',
-            type: 'collectionVariable',
-            placeholder: 'initialEmptyValueText',
-            mode: 'input',
-            tooltip: {
-              title: 'languageCollectionVarText',
-              body: 'languageCollectionVarDefText',
-            },
-            label: 'languageCollectionVarText',
-            showLabel: true,
-            options: [
-              {
-                value: 'nau',
-                label: 'nauLangItemText',
-              },
-              {
-                value: 'uwu',
-                label: 'uwuLangItemText',
-              },
-            ],
-            finalValue: 'nau',
-          },
-        ],
-        components: [
-          {
-            name: 'givenName',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'givenNameTextVarText',
-              body: 'givenNameTextVarDefText',
-            },
-            label: 'givenNameTextVarText',
-            placeholder: 'givenNameTextVarText2',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-          {
-            name: 'familyName',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'familyNameTextVarText',
-              body: 'familyNameTextVarDefText',
-            },
-            label: 'familyNameTextVarText',
-            placeholder: 'familyNameTextVarText2',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: ['sixChildStyle'],
-            gridColSpan: 6,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
+      tooltip: {
+        title: 'textId345',
+        body: 'defTextId678',
       },
-    ],
-    mode: 'input',
-  },
-};
+      components: [
+        {
+          name: 'author',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'authorGroupText',
+            body: 'authorGroupDefText',
+          },
+          label: 'authorGroupText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'nau',
+                  label: 'nauLangItemText',
+                },
+                {
+                  value: 'uwu',
+                  label: 'uwuLangItemText',
+                },
+              ],
+              finalValue: 'uwu',
+            },
+          ],
+          components: [
+            {
+              name: 'givenName',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'givenNameTextVarText',
+                body: 'givenNameTextVarDefText',
+              },
+              label: 'givenNameTextVarText',
+              placeholder: 'givenNameTextVarText1',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+            {
+              name: 'familyName',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'familyNameTextVarText',
+                body: 'familyNameTextVarDefText',
+              },
+              label: 'familyNameTextVarText',
+              placeholder: 'familyNameTextVarText1',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+        {
+          name: 'author',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'authorGroupText',
+            body: 'authorGroupDefText',
+          },
+          label: 'authorGroupText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1,
+          },
+          attributes: [
+            {
+              name: 'language',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'nau',
+                  label: 'nauLangItemText',
+                },
+                {
+                  value: 'uwu',
+                  label: 'uwuLangItemText',
+                },
+              ],
+              finalValue: 'nau',
+            },
+          ],
+          components: [
+            {
+              name: 'givenName',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'givenNameTextVarText',
+                body: 'givenNameTextVarDefText',
+              },
+              label: 'givenNameTextVarText',
+              placeholder: 'givenNameTextVarText2',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+            {
+              name: 'familyName',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'familyNameTextVarText',
+                body: 'familyNameTextVarDefText',
+              },
+              label: 'familyNameTextVarText',
+              placeholder: 'familyNameTextVarText2',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              childStyle: ['sixChildStyle'],
+              gridColSpan: 6,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      mode: 'input',
+    },
+  };
 
-export const formDefPreprintWithOnlyAuthorName = {
+export const formDefPreprintWithOnlyAuthorName: RecordFormSchema = {
   validationTypeId: 'preprint',
   form: {
     name: 'divaOutput',
@@ -6244,216 +5953,143 @@ export const formDefPreprintWithOnlyAuthorName = {
   },
 };
 
-export const formDefWithOptionalGroupWithRequiredGroupWithRequiredVars = {
-  validationTypeId: 'divaOutput',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'divaOutputGroupText',
-      body: 'divaOutputGroupDefText',
-    },
-    label: 'divaOutputGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'hostOutput',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'hostOutputGroupText',
-          body: 'hostOutputGroupDefText',
-        },
-        label: 'hostOutputGroupText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        components: [
-          {
-            name: 'hostTitle',
-            type: 'group',
-            mode: 'input',
-            tooltip: {
-              title: 'hostTitleGroupText',
-              body: 'hostTitleGroupDefText',
-            },
-            label: 'hostTitleGroupText',
-            showLabel: true,
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            attributes: [
-              {
-                name: 'language',
-                type: 'collectionVariable',
-                placeholder: 'initialEmptyValueText',
-                mode: 'input',
-                tooltip: {
-                  title: 'languageCollectionVarText',
-                  body: 'languageCollectionVarDefText',
-                },
-                label: 'languageCollectionVarText',
-                showLabel: true,
-                options: [
-                  {
-                    value: 'nau',
-                    label: 'nauLangItemText',
-                  },
-                ],
-              },
-            ],
-            components: [
-              {
-                name: 'mainTitle',
-                type: 'textVariable',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'mainTitleTextVarText',
-                  body: 'mainTitleTextVarDefText',
-                },
-                label: 'mainTitleTextVarText',
-                placeholder: 'mainTitleTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern: '.+',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 1,
-                  repeatMax: 1,
-                },
-                childStyle: [''],
-                gridColSpan: 12,
-              },
-              {
-                name: 'subtitle',
-                type: 'textVariable',
-                mode: 'input',
-                inputType: 'input',
-                tooltip: {
-                  title: 'subtitleTextVarText',
-                  body: 'subtitleTextVarDefText',
-                },
-                label: 'subtitleTextVarText',
-                placeholder: 'subtitleTextVarText',
-                showLabel: true,
-                validation: {
-                  type: 'regex',
-                  pattern: '.+',
-                },
-                repeat: {
-                  minNumberOfRepeatingToShow: 1,
-                  repeatMin: 0,
-                  repeatMax: 1,
-                },
-                childStyle: [''],
-                gridColSpan: 12,
-              },
-            ],
-            presentationStyle: '',
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
-      },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
-
-export const loginUnitformDefForLoginUnitWithPassword = {
-  loginDescription: 'uuSystemOnePasswordLoginUnitText',
-  type: 'loginPassword',
-  presentation: {
-    validationTypeId: 'loginUnit',
+export const formDefWithOptionalGroupWithRequiredGroupWithRequiredVars: RecordFormSchema =
+  {
+    validationTypeId: 'divaOutput',
     form: {
+      name: 'divaOutput',
       type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'divaOutputGroupText',
+        body: 'divaOutputGroupDefText',
+      },
+      label: 'divaOutputGroupText',
+      headlineLevel: 'h1',
       showLabel: true,
-      label: 'aaaaaaaa',
-      name: 'password',
       repeat: {
         repeatMin: 1,
         repeatMax: 1,
       },
-      tooltip: {
-        title: 'viewDefinitionPasswordGroupText',
-        body: 'viewDefinitionPasswordGroupDefText',
-      },
       components: [
         {
-          name: 'loginId',
-          type: 'textVariable',
+          name: 'hostOutput',
+          type: 'group',
           mode: 'input',
-          inputType: 'input',
           tooltip: {
-            title: 'loginIdTextVarText',
-            body: 'loginIdTextVarDefText',
+            title: 'hostOutputGroupText',
+            body: 'hostOutputGroupDefText',
           },
-          label: 'loginIdTextVarText',
-          placeholder: 'loginIdTextVarText',
+          label: 'hostOutputGroupText',
           showLabel: true,
-          validation: {
-            type: 'regex',
-            pattern: '^[0-9A-Za-z:\\-_]{2,50}@[0-9A-Za-z:\\-_.]{2,300}$',
-          },
           repeat: {
             minNumberOfRepeatingToShow: 1,
-            repeatMin: 1,
+            repeatMin: 0,
             repeatMax: 1,
           },
-          childStyle: [''],
-          gridColSpan: 12,
-        },
-        {
-          name: 'password',
-          type: 'textVariable',
-          mode: 'input',
-          inputType: 'input',
-          inputFormat: 'password',
-          tooltip: {
-            title: 'loginPasswordTextVarText',
-            body: 'loginPasswordTextVarDefText',
-          },
-          label: 'loginPasswordTextVarText',
-          placeholder: 'loginPasswordTextVarText',
-          showLabel: true,
-          validation: {
-            type: 'regex',
-            pattern: '(^[0-9A-Za-z:-_]{2,50}$)',
-          },
-          repeat: {
-            minNumberOfRepeatingToShow: 1,
-            repeatMin: 1,
-            repeatMax: 1,
-          },
+          components: [
+            {
+              name: 'hostTitle',
+              type: 'group',
+              mode: 'input',
+              tooltip: {
+                title: 'hostTitleGroupText',
+                body: 'hostTitleGroupDefText',
+              },
+              label: 'hostTitleGroupText',
+              showLabel: true,
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1,
+              },
+              attributes: [
+                {
+                  name: 'language',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'nau',
+                      label: 'nauLangItemText',
+                    },
+                  ],
+                },
+              ],
+              components: [
+                {
+                  name: 'mainTitle',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'mainTitleTextVarText',
+                    body: 'mainTitleTextVarDefText',
+                  },
+                  label: 'mainTitleTextVarText',
+                  placeholder: 'mainTitleTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 1,
+                    repeatMax: 1,
+                  },
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+                {
+                  name: 'subtitle',
+                  type: 'textVariable',
+                  mode: 'input',
+                  inputType: 'input',
+                  tooltip: {
+                    title: 'subtitleTextVarText',
+                    body: 'subtitleTextVarDefText',
+                  },
+                  label: 'subtitleTextVarText',
+                  placeholder: 'subtitleTextVarText',
+                  showLabel: true,
+                  validation: {
+                    type: 'regex',
+                    pattern: '.+',
+                  },
+                  repeat: {
+                    minNumberOfRepeatingToShow: 1,
+                    repeatMin: 0,
+                    repeatMax: 1,
+                  },
+                  childStyle: [''],
+                  gridColSpan: 12,
+                },
+              ],
+              presentationStyle: '',
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
           childStyle: [''],
           gridColSpan: 12,
         },
       ],
-      mode: 'input',
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
     },
-  },
-};
+  };
 
-export const formDefTextVarsWithSameNameInData = {
+export const formDefTextVarsWithSameNameInData: RecordFormSchema = {
   validationTypeId: 'nationalSubjectCategory',
   form: {
     name: 'nationalSubjectCategory',
@@ -6594,7 +6230,7 @@ export const formDefTextVarsWithSameNameInData = {
   },
 };
 
-export const formDefCollVarsWithSameNameInData = {
+export const formDefCollVarsWithSameNameInData: RecordFormSchema = {
   validationTypeId: 'nationalSubjectCategory',
   form: {
     name: 'nationalSubjectCategory',
@@ -6745,241 +6381,243 @@ export const formDefCollVarsWithSameNameInData = {
   },
 };
 
-export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes = {
-  validationTypeId: 'preprint',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'preprintNewGroupText',
-      body: 'preprintNewGroupDefText',
-    },
-    label: 'preprintNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'subject',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'keywordsGroupText',
-          body: 'keywordsGroupDefText',
-        },
-        label: 'keywordsGroupText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 0,
-          repeatMax: 1.7976931348623157e308,
-        },
-        attributes: [
-          {
-            name: 'lang',
-            type: 'collectionVariable',
-            placeholder: 'initialEmptyValueText',
-            mode: 'input',
-            tooltip: {
-              title: 'languageCollectionVarText',
-              body: 'languageCollectionVarDefText',
-            },
-            label: 'languageCollectionVarText',
-            showLabel: true,
-            options: [
-              {
-                value: 'eng',
-                label: 'engLangItemText',
-              },
-              {
-                value: 'swe',
-                label: 'sweLangItemText',
-              },
-            ],
-          },
-        ],
-        components: [
-          {
-            name: 'topic',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'keywordsTextVarText',
-              body: 'keywordsTextVarDefText',
-            },
-            label: 'keywordsTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1.7976931348623157e308,
-            },
-            attributes: [
-              {
-                name: 'lang',
-                type: 'collectionVariable',
-                placeholder: 'initialEmptyValueText',
-                mode: 'input',
-                tooltip: {
-                  title: 'languageCollectionVarText',
-                  body: 'languageCollectionVarDefText',
-                },
-                label: 'languageCollectionVarText',
-                showLabel: true,
-                options: [
-                  {
-                    value: 'eng',
-                    label: 'engLangItemText',
-                  },
-                  {
-                    value: 'swe',
-                    label: 'sweLangItemText',
-                  },
-                ],
-              },
-            ],
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
+export const formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes: RecordFormSchema =
+  {
+    validationTypeId: 'preprint',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'preprintNewGroupText',
+        body: 'preprintNewGroupDefText',
       },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
-
-export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes = {
-  validationTypeId: 'preprint',
-  form: {
-    name: 'divaOutput',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'preprintNewGroupText',
-      body: 'preprintNewGroupDefText',
-    },
-    label: 'preprintNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: true,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-      {
-        name: 'subject',
-        type: 'group',
-        mode: 'input',
-        tooltip: {
-          title: 'keywordsGroupText',
-          body: 'keywordsGroupDefText',
-        },
-        label: 'keywordsGroupText',
-        showLabel: true,
-        repeat: {
-          minNumberOfRepeatingToShow: 1,
-          repeatMin: 1,
-          repeatMax: 1.7976931348623157e308,
-        },
-        attributes: [
-          {
-            name: 'lang',
-            type: 'collectionVariable',
-            placeholder: 'initialEmptyValueText',
-            mode: 'input',
-            tooltip: {
-              title: 'languageCollectionVarText',
-              body: 'languageCollectionVarDefText',
-            },
-            label: 'languageCollectionVarText',
-            showLabel: true,
-            options: [
-              {
-                value: 'eng',
-                label: 'engLangItemText',
-              },
-              {
-                value: 'swe',
-                label: 'sweLangItemText',
-              },
-            ],
-          },
-        ],
-        components: [
-          {
-            name: 'topic',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'keywordsTextVarText',
-              body: 'keywordsTextVarDefText',
-            },
-            label: 'keywordsTextVarText',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1.7976931348623157e308,
-            },
-            attributes: [
-              {
-                name: 'lang',
-                type: 'collectionVariable',
-                placeholder: 'initialEmptyValueText',
-                mode: 'input',
-                tooltip: {
-                  title: 'languageCollectionVarText',
-                  body: 'languageCollectionVarDefText',
-                },
-                label: 'languageCollectionVarText',
-                showLabel: true,
-                options: [
-                  {
-                    value: 'eng',
-                    label: 'engLangItemText',
-                  },
-                  {
-                    value: 'swe',
-                    label: 'sweLangItemText',
-                  },
-                ],
-              },
-            ],
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-        ],
-        presentationStyle: '',
-        childStyle: [''],
-        gridColSpan: 12,
+      label: 'preprintNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
       },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
+      components: [
+        {
+          name: 'subject',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'keywordsGroupText',
+            body: 'keywordsGroupDefText',
+          },
+          label: 'keywordsGroupText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 0,
+            repeatMax: 1.7976931348623157e308,
+          },
+          attributes: [
+            {
+              name: 'lang',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'eng',
+                  label: 'engLangItemText',
+                },
+                {
+                  value: 'swe',
+                  label: 'sweLangItemText',
+                },
+              ],
+            },
+          ],
+          components: [
+            {
+              name: 'topic',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'keywordsTextVarText',
+                body: 'keywordsTextVarDefText',
+              },
+              label: 'keywordsTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1.7976931348623157e308,
+              },
+              attributes: [
+                {
+                  name: 'lang',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'eng',
+                      label: 'engLangItemText',
+                    },
+                    {
+                      value: 'swe',
+                      label: 'sweLangItemText',
+                    },
+                  ],
+                },
+              ],
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
 
-export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes =
+export const formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes: RecordFormSchema =
+  {
+    validationTypeId: 'preprint',
+    form: {
+      name: 'divaOutput',
+      type: 'group',
+      mode: 'input',
+      tooltip: {
+        title: 'preprintNewGroupText',
+        body: 'preprintNewGroupDefText',
+      },
+      label: 'preprintNewGroupText',
+      headlineLevel: 'h1',
+      showLabel: true,
+      repeat: {
+        repeatMin: 1,
+        repeatMax: 1,
+      },
+      components: [
+        {
+          name: 'subject',
+          type: 'group',
+          mode: 'input',
+          tooltip: {
+            title: 'keywordsGroupText',
+            body: 'keywordsGroupDefText',
+          },
+          label: 'keywordsGroupText',
+          showLabel: true,
+          repeat: {
+            minNumberOfRepeatingToShow: 1,
+            repeatMin: 1,
+            repeatMax: 1.7976931348623157e308,
+          },
+          attributes: [
+            {
+              name: 'lang',
+              type: 'collectionVariable',
+              placeholder: 'initialEmptyValueText',
+              mode: 'input',
+              tooltip: {
+                title: 'languageCollectionVarText',
+                body: 'languageCollectionVarDefText',
+              },
+              label: 'languageCollectionVarText',
+              showLabel: true,
+              options: [
+                {
+                  value: 'eng',
+                  label: 'engLangItemText',
+                },
+                {
+                  value: 'swe',
+                  label: 'sweLangItemText',
+                },
+              ],
+            },
+          ],
+          components: [
+            {
+              name: 'topic',
+              type: 'textVariable',
+              mode: 'input',
+              inputType: 'input',
+              tooltip: {
+                title: 'keywordsTextVarText',
+                body: 'keywordsTextVarDefText',
+              },
+              label: 'keywordsTextVarText',
+              showLabel: true,
+              validation: {
+                type: 'regex',
+                pattern: '.+',
+              },
+              repeat: {
+                minNumberOfRepeatingToShow: 1,
+                repeatMin: 1,
+                repeatMax: 1.7976931348623157e308,
+              },
+              attributes: [
+                {
+                  name: 'lang',
+                  type: 'collectionVariable',
+                  placeholder: 'initialEmptyValueText',
+                  mode: 'input',
+                  tooltip: {
+                    title: 'languageCollectionVarText',
+                    body: 'languageCollectionVarDefText',
+                  },
+                  label: 'languageCollectionVarText',
+                  showLabel: true,
+                  options: [
+                    {
+                      value: 'eng',
+                      label: 'engLangItemText',
+                    },
+                    {
+                      value: 'swe',
+                      label: 'sweLangItemText',
+                    },
+                  ],
+                },
+              ],
+              childStyle: [''],
+              gridColSpan: 12,
+            },
+          ],
+          presentationStyle: '',
+          childStyle: [''],
+          gridColSpan: 12,
+        },
+      ],
+      presentationStyle: '',
+      childStyle: [''],
+      gridColSpan: 12,
+    },
+  };
+
+export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes: RecordFormSchema =
   {
     validationTypeId: 'preprint',
     form: {
@@ -7270,7 +6908,7 @@ export const formComponentTitleInfoGroup: FormComponent = {
   ],
 };
 
-export const formDefTitleInfoGroup = {
+export const formDefTitleInfoGroup: RecordFormSchema = {
   validationTypeId: 'preprint',
   form: {
     name: 'divaOutput',
@@ -7452,56 +7090,7 @@ export const formDefTitleInfoGroup = {
   },
 };
 
-export const formDefSearchGroup = {
-  validationTypeId: 'search',
-  form: {
-    name: 'divaOutputSearch',
-    type: 'group',
-    mode: 'input',
-    tooltip: {
-      title: 'preprintNewGroupText',
-      body: 'preprintNewGroupDefText',
-    },
-    label: 'preprintNewGroupText',
-    headlineLevel: 'h1',
-    showLabel: false,
-    repeat: {
-      repeatMin: 1,
-      repeatMax: 1,
-    },
-    components: [
-          {
-            name: 'title',
-            type: 'textVariable',
-            mode: 'input',
-            inputType: 'input',
-            tooltip: {
-              title: 'titleTextVarText',
-              body: 'titleTextVarDefText',
-            },
-            label: 'titleTextVarText',
-            placeholder: 'titleInfoVarText1',
-            showLabel: true,
-            validation: {
-              type: 'regex',
-              pattern: '.+',
-            },
-            repeat: {
-              minNumberOfRepeatingToShow: 1,
-              repeatMin: 1,
-              repeatMax: 1,
-            },
-            childStyle: [''],
-            gridColSpan: 12,
-          },
-    ],
-    presentationStyle: '',
-    childStyle: [''],
-    gridColSpan: 12,
-  },
-};
-
-export const formDefRequiredRepeatingTextVar = {
+export const formDefRequiredRepeatingTextVar: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
@@ -7570,7 +7159,7 @@ export const formDefRequiredRepeatingTextVar = {
   },
 };
 
-export const formDefRequiredRepeatingText2Var = {
+export const formDefRequiredRepeatingText2Var: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
@@ -7639,7 +7228,7 @@ export const formDefRequiredRepeatingText2Var = {
   },
 };
 
-export const formDefRequiredRepeatingNumberVar = {
+export const formDefRequiredRepeatingNumberVar: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
@@ -7706,7 +7295,7 @@ export const formDefRequiredRepeatingNumberVar = {
   },
 };
 
-export const formDefRequiredRepeatingNumber2Var = {
+export const formDefRequiredRepeatingNumber2Var: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
@@ -7773,7 +7362,7 @@ export const formDefRequiredRepeatingNumber2Var = {
   },
 };
 
-export const formDefRequiredRepeatingCollectionVar = {
+export const formDefRequiredRepeatingCollectionVar: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
@@ -7848,7 +7437,7 @@ export const formDefRequiredRepeatingCollectionVar = {
   },
 };
 
-export const formDefRequiredRepeatingCollection2Var = {
+export const formDefRequiredRepeatingCollection2Var: RecordFormSchema = {
   validationTypeId: 'diva-output',
   form: {
     name: 'output',
@@ -7923,528 +7512,519 @@ export const formDefRequiredRepeatingCollection2Var = {
   },
 };
 
-export const formDefWithWithOptionalGroupWithRequiredVar = {
-  "validationTypeId": "diva-output",
-  "form": {
-    "name": "output",
-    "type": "group",
-    "mode": "input",
-    "tooltip": {
-      "title": "outputNewGroupText",
-      "body": "outputNewGroupDefText"
+export const formDefWithWithOptionalGroupWithRequiredVar: RecordFormSchema = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
     },
-    "label": "outputNewGroupText",
-    "showLabel": true,
-    "repeat": {
-      "repeatMin": 1,
-      "repeatMax": 1
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
     },
-    "components": [
+    components: [
       {
-        "name": "name",
-        "type": "group",
-        "mode": "input",
-        "tooltip": {
-          "title": "namePersonalGroupText",
-          "body": "namePersonalGroupDefText"
+        name: 'name',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'namePersonalGroupText',
+          body: 'namePersonalGroupDefText',
         },
-        "label": "namePersonalGroupText",
-        "showLabel": true,
-        "repeat": {
-          "minNumberOfRepeatingToShow": 1,
-          "repeatMin": 0,
-          "repeatMax": 1.7976931348623157e+308
+        label: 'namePersonalGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1.7976931348623157e308,
         },
-        "attributes": [
+        attributes: [
           {
-            "name": "type",
-            "type": "collectionVariable",
-            "placeholder": "initialEmptyValueText",
-            "mode": "input",
-            "tooltip": {
-              "title": "typeCollectionVarText",
-              "body": "typeCollectionVarDefText"
+            name: 'type',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'typeCollectionVarText',
+              body: 'typeCollectionVarDefText',
             },
-            "label": "typeCollectionVarText",
-            "showLabel": true,
-            "options": [
+            label: 'typeCollectionVarText',
+            showLabel: true,
+            options: [
               {
-                "value": "code",
-                "label": "codeItemText"
+                value: 'code',
+                label: 'codeItemText',
               },
               {
-                "value": "contentType",
-                "label": "contentTypeItemText"
+                value: 'contentType',
+                label: 'contentTypeItemText',
               },
               {
-                "value": "creatorCount",
-                "label": "creatorCountItemText"
+                value: 'creatorCount',
+                label: 'creatorCountItemText',
               },
               {
-                "value": "restrictionOnAccess",
-                "label": "restrictionOnAccessItemText"
+                value: 'restrictionOnAccess',
+                label: 'restrictionOnAccessItemText',
               },
               {
-                "value": "publicationStatus",
-                "label": "publicationStatusItemText"
+                value: 'publicationStatus',
+                label: 'publicationStatusItemText',
               },
               {
-                "value": "corporate",
-                "label": "corporateItemText"
+                value: 'corporate',
+                label: 'corporateItemText',
               },
               {
-                "value": "personal",
-                "label": "personalItemText"
+                value: 'personal',
+                label: 'personalItemText',
               },
               {
-                "value": "given",
-                "label": "givenItemText"
+                value: 'given',
+                label: 'givenItemText',
               },
               {
-                "value": "family",
-                "label": "familyItemText"
+                value: 'family',
+                label: 'familyItemText',
               },
               {
-                "value": "termsOfAddress",
-                "label": "termsOfAddressItemText"
+                value: 'termsOfAddress',
+                label: 'termsOfAddressItemText',
               },
               {
-                "value": "series",
-                "label": "seriesItemText"
+                value: 'series',
+                label: 'seriesItemText',
               },
               {
-                "value": "conference-publication",
-                "label": "conferencePublicationItemText"
+                value: 'conference-publication',
+                label: 'conferencePublicationItemText',
               },
               {
-                "value": "statement_of_responsibility",
-                "label": "statementOfResponsibilityItemText"
+                value: 'statement_of_responsibility',
+                label: 'statementOfResponsibilityItemText',
               },
               {
-                "value": "book",
-                "label": "bookItemText"
+                value: 'book',
+                label: 'bookItemText',
               },
               {
-                "value": "journal",
-                "label": "journalItemText"
+                value: 'journal',
+                label: 'journalItemText',
               },
               {
-                "value": "artNo",
-                "label": "artNoItemText"
+                value: 'artNo',
+                label: 'artNoItemText',
               },
               {
-                "value": "issue",
-                "label": "issueItemText"
+                value: 'issue',
+                label: 'issueItemText',
               },
               {
-                "value": "volume",
-                "label": "volumeItemText"
+                value: 'volume',
+                label: 'volumeItemText',
               },
               {
-                "value": "conference",
-                "label": "conferenceItemText"
+                value: 'conference',
+                label: 'conferenceItemText',
               },
               {
-                "value": "initiative",
-                "label": "initiativeItemText"
+                value: 'initiative',
+                label: 'initiativeItemText',
               },
               {
-                "value": "funder",
-                "label": "funderItemText"
+                value: 'funder',
+                label: 'funderItemText',
               },
               {
-                "value": "project",
-                "label": "projectItemText"
+                value: 'project',
+                label: 'projectItemText',
               },
               {
-                "value": "constituent",
-                "label": "constituentItemText"
+                value: 'constituent',
+                label: 'constituentItemText',
               },
               {
-                "value": "thesis",
-                "label": "thesisItemText"
+                value: 'thesis',
+                label: 'thesisItemText',
               },
               {
-                "value": "defence",
-                "label": "defenceItemText"
+                value: 'defence',
+                label: 'defenceItemText',
               },
               {
-                "value": "researchData",
-                "label": "researchDataItemText"
+                value: 'researchData',
+                label: 'researchDataItemText',
               },
               {
-                "value": "outputType",
-                "label": "outputTypeItemText"
+                value: 'outputType',
+                label: 'outputTypeItemText',
               },
               {
-                "value": "internal",
-                "label": "internalItemText"
+                value: 'internal',
+                label: 'internalItemText',
               },
               {
-                "value": "online",
-                "label": "onlineItemText"
+                value: 'online',
+                label: 'onlineItemText',
               },
               {
-                "value": "biographical",
-                "label": "biographicalItemText"
+                value: 'biographical',
+                label: 'biographicalItemText',
               },
               {
-                "value": "patent",
-                "label": "patentItemText"
-              }
+                value: 'patent',
+                label: 'patentItemText',
+              },
             ],
-            "finalValue": "personal"
-          }
-        ],
-        "components": [
-          {
-            "name": "namePart",
-            "type": "textVariable",
-            "mode": "input",
-            "inputType": "input",
-            "tooltip": {
-              "title": "namePartGivenTextVarText",
-              "body": "namePartGivenTextVarDefText"
-            },
-            "label": "namePartGivenTextVarText",
-            "placeholder": "namePartGivenTextVarText",
-            "showLabel": true,
-            "attributesToShow": "selectable",
-            "validation": {
-              "type": "regex",
-              "pattern": ".+"
-            },
-            "repeat": {
-              "minNumberOfRepeatingToShow": 1,
-              "repeatMin": 1,
-              "repeatMax": 1
-            },
-            "attributes": [
-              {
-                "name": "type",
-                "type": "collectionVariable",
-                "placeholder": "initialEmptyValueText",
-                "mode": "input",
-                "tooltip": {
-                  "title": "typeCollectionVarText",
-                  "body": "typeCollectionVarDefText"
-                },
-                "label": "typeCollectionVarText",
-                "showLabel": true,
-                "options": [
-                  {
-                    "value": "code",
-                    "label": "codeItemText"
-                  },
-                  {
-                    "value": "contentType",
-                    "label": "contentTypeItemText"
-                  },
-                  {
-                    "value": "creatorCount",
-                    "label": "creatorCountItemText"
-                  },
-                  {
-                    "value": "restrictionOnAccess",
-                    "label": "restrictionOnAccessItemText"
-                  },
-                  {
-                    "value": "publicationStatus",
-                    "label": "publicationStatusItemText"
-                  },
-                  {
-                    "value": "corporate",
-                    "label": "corporateItemText"
-                  },
-                  {
-                    "value": "personal",
-                    "label": "personalItemText"
-                  },
-                  {
-                    "value": "given",
-                    "label": "givenItemText"
-                  },
-                  {
-                    "value": "family",
-                    "label": "familyItemText"
-                  },
-                  {
-                    "value": "termsOfAddress",
-                    "label": "termsOfAddressItemText"
-                  },
-                  {
-                    "value": "series",
-                    "label": "seriesItemText"
-                  },
-                  {
-                    "value": "conference-publication",
-                    "label": "conferencePublicationItemText"
-                  },
-                  {
-                    "value": "statement_of_responsibility",
-                    "label": "statementOfResponsibilityItemText"
-                  },
-                  {
-                    "value": "book",
-                    "label": "bookItemText"
-                  },
-                  {
-                    "value": "journal",
-                    "label": "journalItemText"
-                  },
-                  {
-                    "value": "artNo",
-                    "label": "artNoItemText"
-                  },
-                  {
-                    "value": "issue",
-                    "label": "issueItemText"
-                  },
-                  {
-                    "value": "volume",
-                    "label": "volumeItemText"
-                  },
-                  {
-                    "value": "conference",
-                    "label": "conferenceItemText"
-                  },
-                  {
-                    "value": "initiative",
-                    "label": "initiativeItemText"
-                  },
-                  {
-                    "value": "funder",
-                    "label": "funderItemText"
-                  },
-                  {
-                    "value": "project",
-                    "label": "projectItemText"
-                  },
-                  {
-                    "value": "constituent",
-                    "label": "constituentItemText"
-                  },
-                  {
-                    "value": "thesis",
-                    "label": "thesisItemText"
-                  },
-                  {
-                    "value": "defence",
-                    "label": "defenceItemText"
-                  },
-                  {
-                    "value": "researchData",
-                    "label": "researchDataItemText"
-                  },
-                  {
-                    "value": "outputType",
-                    "label": "outputTypeItemText"
-                  },
-                  {
-                    "value": "internal",
-                    "label": "internalItemText"
-                  },
-                  {
-                    "value": "online",
-                    "label": "onlineItemText"
-                  },
-                  {
-                    "value": "biographical",
-                    "label": "biographicalItemText"
-                  },
-                  {
-                    "value": "patent",
-                    "label": "patentItemText"
-                  }
-                ],
-                "finalValue": "given"
-              }
-            ],
-            "childStyle": [
-              ""
-            ],
-            "gridColSpan": 12
-          },
-          {
-            "name": "namePart",
-            "type": "textVariable",
-            "mode": "input",
-            "inputType": "input",
-            "tooltip": {
-              "title": "namePartFamilyTextVarText",
-              "body": "namePartFamilyTextVarDefText"
-            },
-            "label": "namePartFamilyTextVarText",
-            "showLabel": true,
-            "attributesToShow": "selectable",
-            "validation": {
-              "type": "regex",
-              "pattern": ".+"
-            },
-            "repeat": {
-              "minNumberOfRepeatingToShow": 1,
-              "repeatMin": 1,
-              "repeatMax": 1
-            },
-            "attributes": [
-              {
-                "name": "type",
-                "type": "collectionVariable",
-                "placeholder": "initialEmptyValueText",
-                "mode": "input",
-                "tooltip": {
-                  "title": "typeCollectionVarText",
-                  "body": "typeCollectionVarDefText"
-                },
-                "label": "typeCollectionVarText",
-                "showLabel": true,
-                "options": [
-                  {
-                    "value": "code",
-                    "label": "codeItemText"
-                  },
-                  {
-                    "value": "contentType",
-                    "label": "contentTypeItemText"
-                  },
-                  {
-                    "value": "creatorCount",
-                    "label": "creatorCountItemText"
-                  },
-                  {
-                    "value": "restrictionOnAccess",
-                    "label": "restrictionOnAccessItemText"
-                  },
-                  {
-                    "value": "publicationStatus",
-                    "label": "publicationStatusItemText"
-                  },
-                  {
-                    "value": "corporate",
-                    "label": "corporateItemText"
-                  },
-                  {
-                    "value": "personal",
-                    "label": "personalItemText"
-                  },
-                  {
-                    "value": "given",
-                    "label": "givenItemText"
-                  },
-                  {
-                    "value": "family",
-                    "label": "familyItemText"
-                  },
-                  {
-                    "value": "termsOfAddress",
-                    "label": "termsOfAddressItemText"
-                  },
-                  {
-                    "value": "series",
-                    "label": "seriesItemText"
-                  },
-                  {
-                    "value": "conference-publication",
-                    "label": "conferencePublicationItemText"
-                  },
-                  {
-                    "value": "statement_of_responsibility",
-                    "label": "statementOfResponsibilityItemText"
-                  },
-                  {
-                    "value": "book",
-                    "label": "bookItemText"
-                  },
-                  {
-                    "value": "journal",
-                    "label": "journalItemText"
-                  },
-                  {
-                    "value": "artNo",
-                    "label": "artNoItemText"
-                  },
-                  {
-                    "value": "issue",
-                    "label": "issueItemText"
-                  },
-                  {
-                    "value": "volume",
-                    "label": "volumeItemText"
-                  },
-                  {
-                    "value": "conference",
-                    "label": "conferenceItemText"
-                  },
-                  {
-                    "value": "initiative",
-                    "label": "initiativeItemText"
-                  },
-                  {
-                    "value": "funder",
-                    "label": "funderItemText"
-                  },
-                  {
-                    "value": "project",
-                    "label": "projectItemText"
-                  },
-                  {
-                    "value": "constituent",
-                    "label": "constituentItemText"
-                  },
-                  {
-                    "value": "thesis",
-                    "label": "thesisItemText"
-                  },
-                  {
-                    "value": "defence",
-                    "label": "defenceItemText"
-                  },
-                  {
-                    "value": "researchData",
-                    "label": "researchDataItemText"
-                  },
-                  {
-                    "value": "outputType",
-                    "label": "outputTypeItemText"
-                  },
-                  {
-                    "value": "internal",
-                    "label": "internalItemText"
-                  },
-                  {
-                    "value": "online",
-                    "label": "onlineItemText"
-                  },
-                  {
-                    "value": "biographical",
-                    "label": "biographicalItemText"
-                  },
-                  {
-                    "value": "patent",
-                    "label": "patentItemText"
-                  }
-                ],
-                "finalValue": "family"
-              }
-            ],
-            "childStyle": [
-              ""
-            ],
-            "gridColSpan": 12
+            finalValue: 'personal',
           },
         ],
-        "presentationStyle": "",
-        "childStyle": [
-          ""
+        components: [
+          {
+            name: 'namePart',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'namePartGivenTextVarText',
+              body: 'namePartGivenTextVarDefText',
+            },
+            label: 'namePartGivenTextVarText',
+            placeholder: 'namePartGivenTextVarText',
+            showLabel: true,
+            attributesToShow: 'selectable',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'type',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'typeCollectionVarText',
+                  body: 'typeCollectionVarDefText',
+                },
+                label: 'typeCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'code',
+                    label: 'codeItemText',
+                  },
+                  {
+                    value: 'contentType',
+                    label: 'contentTypeItemText',
+                  },
+                  {
+                    value: 'creatorCount',
+                    label: 'creatorCountItemText',
+                  },
+                  {
+                    value: 'restrictionOnAccess',
+                    label: 'restrictionOnAccessItemText',
+                  },
+                  {
+                    value: 'publicationStatus',
+                    label: 'publicationStatusItemText',
+                  },
+                  {
+                    value: 'corporate',
+                    label: 'corporateItemText',
+                  },
+                  {
+                    value: 'personal',
+                    label: 'personalItemText',
+                  },
+                  {
+                    value: 'given',
+                    label: 'givenItemText',
+                  },
+                  {
+                    value: 'family',
+                    label: 'familyItemText',
+                  },
+                  {
+                    value: 'termsOfAddress',
+                    label: 'termsOfAddressItemText',
+                  },
+                  {
+                    value: 'series',
+                    label: 'seriesItemText',
+                  },
+                  {
+                    value: 'conference-publication',
+                    label: 'conferencePublicationItemText',
+                  },
+                  {
+                    value: 'statement_of_responsibility',
+                    label: 'statementOfResponsibilityItemText',
+                  },
+                  {
+                    value: 'book',
+                    label: 'bookItemText',
+                  },
+                  {
+                    value: 'journal',
+                    label: 'journalItemText',
+                  },
+                  {
+                    value: 'artNo',
+                    label: 'artNoItemText',
+                  },
+                  {
+                    value: 'issue',
+                    label: 'issueItemText',
+                  },
+                  {
+                    value: 'volume',
+                    label: 'volumeItemText',
+                  },
+                  {
+                    value: 'conference',
+                    label: 'conferenceItemText',
+                  },
+                  {
+                    value: 'initiative',
+                    label: 'initiativeItemText',
+                  },
+                  {
+                    value: 'funder',
+                    label: 'funderItemText',
+                  },
+                  {
+                    value: 'project',
+                    label: 'projectItemText',
+                  },
+                  {
+                    value: 'constituent',
+                    label: 'constituentItemText',
+                  },
+                  {
+                    value: 'thesis',
+                    label: 'thesisItemText',
+                  },
+                  {
+                    value: 'defence',
+                    label: 'defenceItemText',
+                  },
+                  {
+                    value: 'researchData',
+                    label: 'researchDataItemText',
+                  },
+                  {
+                    value: 'outputType',
+                    label: 'outputTypeItemText',
+                  },
+                  {
+                    value: 'internal',
+                    label: 'internalItemText',
+                  },
+                  {
+                    value: 'online',
+                    label: 'onlineItemText',
+                  },
+                  {
+                    value: 'biographical',
+                    label: 'biographicalItemText',
+                  },
+                  {
+                    value: 'patent',
+                    label: 'patentItemText',
+                  },
+                ],
+                finalValue: 'given',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'namePart',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'namePartFamilyTextVarText',
+              body: 'namePartFamilyTextVarDefText',
+            },
+            label: 'namePartFamilyTextVarText',
+            showLabel: true,
+            attributesToShow: 'selectable',
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            attributes: [
+              {
+                name: 'type',
+                type: 'collectionVariable',
+                placeholder: 'initialEmptyValueText',
+                mode: 'input',
+                tooltip: {
+                  title: 'typeCollectionVarText',
+                  body: 'typeCollectionVarDefText',
+                },
+                label: 'typeCollectionVarText',
+                showLabel: true,
+                options: [
+                  {
+                    value: 'code',
+                    label: 'codeItemText',
+                  },
+                  {
+                    value: 'contentType',
+                    label: 'contentTypeItemText',
+                  },
+                  {
+                    value: 'creatorCount',
+                    label: 'creatorCountItemText',
+                  },
+                  {
+                    value: 'restrictionOnAccess',
+                    label: 'restrictionOnAccessItemText',
+                  },
+                  {
+                    value: 'publicationStatus',
+                    label: 'publicationStatusItemText',
+                  },
+                  {
+                    value: 'corporate',
+                    label: 'corporateItemText',
+                  },
+                  {
+                    value: 'personal',
+                    label: 'personalItemText',
+                  },
+                  {
+                    value: 'given',
+                    label: 'givenItemText',
+                  },
+                  {
+                    value: 'family',
+                    label: 'familyItemText',
+                  },
+                  {
+                    value: 'termsOfAddress',
+                    label: 'termsOfAddressItemText',
+                  },
+                  {
+                    value: 'series',
+                    label: 'seriesItemText',
+                  },
+                  {
+                    value: 'conference-publication',
+                    label: 'conferencePublicationItemText',
+                  },
+                  {
+                    value: 'statement_of_responsibility',
+                    label: 'statementOfResponsibilityItemText',
+                  },
+                  {
+                    value: 'book',
+                    label: 'bookItemText',
+                  },
+                  {
+                    value: 'journal',
+                    label: 'journalItemText',
+                  },
+                  {
+                    value: 'artNo',
+                    label: 'artNoItemText',
+                  },
+                  {
+                    value: 'issue',
+                    label: 'issueItemText',
+                  },
+                  {
+                    value: 'volume',
+                    label: 'volumeItemText',
+                  },
+                  {
+                    value: 'conference',
+                    label: 'conferenceItemText',
+                  },
+                  {
+                    value: 'initiative',
+                    label: 'initiativeItemText',
+                  },
+                  {
+                    value: 'funder',
+                    label: 'funderItemText',
+                  },
+                  {
+                    value: 'project',
+                    label: 'projectItemText',
+                  },
+                  {
+                    value: 'constituent',
+                    label: 'constituentItemText',
+                  },
+                  {
+                    value: 'thesis',
+                    label: 'thesisItemText',
+                  },
+                  {
+                    value: 'defence',
+                    label: 'defenceItemText',
+                  },
+                  {
+                    value: 'researchData',
+                    label: 'researchDataItemText',
+                  },
+                  {
+                    value: 'outputType',
+                    label: 'outputTypeItemText',
+                  },
+                  {
+                    value: 'internal',
+                    label: 'internalItemText',
+                  },
+                  {
+                    value: 'online',
+                    label: 'onlineItemText',
+                  },
+                  {
+                    value: 'biographical',
+                    label: 'biographicalItemText',
+                  },
+                  {
+                    value: 'patent',
+                    label: 'patentItemText',
+                  },
+                ],
+                finalValue: 'family',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
         ],
-        "gridColSpan": 12
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
       },
-
     ],
-    "presentationStyle": "",
-    "childStyle": [
-      ""
-    ],
-    "gridColSpan": 12
-  }
-}
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};

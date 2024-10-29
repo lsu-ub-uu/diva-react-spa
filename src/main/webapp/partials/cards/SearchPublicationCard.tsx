@@ -23,7 +23,7 @@ import { Card } from '@/components';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { useCoraSearchForm } from '@/features/search/useCoraSearch';
 import Alert from '@mui/material/Alert';
-import { SearchForm } from '@/components/RecordForm/SearchForm';
+import { SearchForm } from '@/components/Form/SearchForm';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 

@@ -20,8 +20,8 @@
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { FormGenerator } from '@/components';
-import { FormSchema } from '../FormGenerator/types';
+import { CoraRecord } from '@/features/record/types';
+import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
 
 interface LinkedRecordProps {
   recordType: string;
@@ -32,7 +32,7 @@ interface LinkedRecordProps {
 export const LinkedRecord: FC<LinkedRecordProps> = (
   props: LinkedRecordProps,
 ) => {
-  const [record, setRecord] = useState<any>(null);
+  const [record, setRecord] = useState<CoraRecord | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,17 +78,5 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
     return <div>{error}</div>;
   }
 
-  return (
-    <>
-      {record?.presentation?.form && (
-        <FormGenerator
-          record={record}
-          onSubmit={() => {}}
-          onInvalid={() => {}}
-          formSchema={record.presentation as FormSchema}
-          linkedData
-        />
-      )}
-    </>
-  );
+  return <>{record && <LinkedRecordForm record={record} />}</>;
 };
