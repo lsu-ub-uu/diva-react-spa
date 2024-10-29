@@ -25,7 +25,7 @@ import {
   createDefaultValuesFromComponents,
   createDefaultValuesFromFormSchema,
   generateRepeatingObject,
-  getChildArrayWithSameNameInData,
+  getChildNameInDataArray,
   getChildrenWithSameNameInData,
   getMinNumberOfRepeatingToShow,
   hasCurrentComponentSameNameInData,
@@ -2528,7 +2528,7 @@ describe('FormGenerator Utils', () => {
         gridColSpan: 12,
       };
 
-      const actual = getChildArrayWithSameNameInData(component);
+      const actual = getChildNameInDataArray(component);
       expect(actual).toEqual(['exampleNumberVar', 'exampleNumberVar']);
     });
 
@@ -2706,7 +2706,7 @@ describe('FormGenerator Utils', () => {
         ],
       };
 
-      const actual = getChildArrayWithSameNameInData(component);
+      const actual = getChildNameInDataArray(component);
       expect(actual).toEqual(['titleInfo', 'titleInfo']);
     });
 
@@ -2830,7 +2830,7 @@ describe('FormGenerator Utils', () => {
         gridColSpan: 12,
       };
 
-      const actual = getChildArrayWithSameNameInData(component);
+      const actual = getChildNameInDataArray(component);
       expect(actual).toEqual(['exampleNumberVar', 'exampleNumber2Var']);
     });
   });
@@ -2842,12 +2842,28 @@ describe('FormGenerator Utils', () => {
       ]);
       expect(actual).toEqual(['exampleNumberVar']);
     });
+
     it('removes nothing if singles', () => {
       const actual = getChildrenWithSameNameInData([
         'exampleNumberVar',
         'exampleNumber2Var',
       ]);
       expect(actual).toEqual([]);
+    });
+
+    it('removes singles and keeps one of each duplicate name', () => {
+      const actual = getChildrenWithSameNameInData([
+        'ho',
+        'ho',
+        'hej',
+        'hej',
+        'hej',
+        'hopp',
+        'hej',
+        'hej',
+        'tjo',
+      ]);
+      expect(actual).toEqual(['ho', 'hej']);
     });
   });
 });

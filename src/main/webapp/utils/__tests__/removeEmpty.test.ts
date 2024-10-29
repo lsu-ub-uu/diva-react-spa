@@ -49,7 +49,7 @@ describe('removeEmpty', () => {
     };
     const actual = removeEmpty(testObject);
     const expected = {};
-    expect(expected).toStrictEqual(actual);
+    expect(actual).toStrictEqual(expected);
   });
   it("don't clear objects that has values", () => {
     const testObject = {
@@ -112,9 +112,9 @@ describe('removeEmpty', () => {
         },
       },
     };
-    expect(expected).toStrictEqual(actual);
+    expect(actual).toStrictEqual(expected);
   });
-  it('clear mixed objects', () => {
+  it('clears mixed objects', () => {
     const testObject = {
       divaOutput: {
         abstract: [],
@@ -317,9 +317,9 @@ describe('removeEmpty', () => {
         },
       },
     };
-    expect(expected).toStrictEqual(actual);
+    expect(actual).toStrictEqual(expected);
   });
-  it('clear other 3 mixed objects', () => {
+  it('clears other 3 mixed objects', () => {
     const testObject = {
       latitude: { value: '' },
       longitude: { value: '' },
@@ -327,5 +327,75 @@ describe('removeEmpty', () => {
     const actual = removeEmpty(testObject);
 
     expect(actual).toEqual({});
+  });
+
+  it('clears empty attributes', () => {
+    const testObject = [
+      {
+        _type: 'personal',
+        namePart_type_family: {
+          _type: 'family',
+          value: null,
+        },
+        namePart_type_given: {
+          _type: 'given',
+          value: null,
+        },
+      },
+    ];
+
+    expect(removeEmpty(testObject)).toEqual({});
+  });
+
+  it('does not clear attribute when values exist', () => {
+    const testObject = {
+      _type: 'personal',
+      namePart_type_family: {
+        _type: 'family',
+        value: null,
+      },
+      namePart_type_given: {
+        _type: 'given',
+        value: 'Leo',
+      },
+    };
+
+    expect(removeEmpty(testObject)).toEqual({
+      _type: 'personal',
+      namePart_type_given: {
+        _type: 'given',
+        value: 'Leo',
+      },
+    });
+  });
+
+  it('clears attributes without value', () => {
+    const testObject = {
+      output: {
+        identifier_type_openAlex: [
+          {
+            value: null,
+            _type: 'openAlex',
+          },
+        ],
+      },
+    };
+
+    expect(removeEmpty(testObject)).toStrictEqual({});
+  });
+
+  it('clears object with attribute and empty array', () => {
+    const testObject = {
+      output: {
+        name_type_corporate: [
+          {
+            _type: 'corporate',
+            organisation: [],
+          },
+        ],
+      },
+    };
+
+    expect(removeEmpty(testObject)).toEqual({});
   });
 });

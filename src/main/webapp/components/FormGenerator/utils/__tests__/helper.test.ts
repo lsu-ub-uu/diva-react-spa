@@ -33,9 +33,8 @@ import {
   isComponentVariable,
   isFirstLevelGroup,
   isFirstLevelVariable,
-  isParentGroupOptional,
+  isComponentGroupAndOptional,
   isRootLevel,
-  isSiblingComponentRequired,
 } from '../helper';
 import { FormComponent } from '@/components/FormGenerator/types';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
@@ -1466,7 +1465,7 @@ describe('helper methods', () => {
   });
   describe('isParentGroupOptional', () => {
     it('isParentGroupOptional return false for group & repeatMin === 1', () => {
-      const actual = isParentGroupOptional({
+      const actual = isComponentGroupAndOptional({
         type: 'group',
         label: 'someRootFormGroupText',
         name: 'someRootNameInData',
@@ -1490,7 +1489,7 @@ describe('helper methods', () => {
     });
 
     it('isParentGroupOptional return true for group & repeatMin === 0', () => {
-      const actual = isParentGroupOptional({
+      const actual = isComponentGroupAndOptional({
         type: 'group',
         label: 'someRootFormGroupText',
         name: 'someRootNameInData',
@@ -1514,7 +1513,7 @@ describe('helper methods', () => {
     });
 
     it('isParentGroupOptional return false for non group variable & repeatMin === 0', () => {
-      const actual = isParentGroupOptional({
+      const actual = isComponentGroupAndOptional({
         type: 'textVariable',
         name: 'someInnerNameInData',
         label: 'someTextId',
@@ -1539,7 +1538,7 @@ describe('helper methods', () => {
     });
 
     it('isParentGroupOptional return false for non group variable & repeatMin === 1', () => {
-      const actual = isParentGroupOptional({
+      const actual = isComponentGroupAndOptional({
         type: 'textVariable',
         name: 'someInnerNameInData',
         label: 'someTextId',
@@ -1623,56 +1622,6 @@ describe('helper methods', () => {
         },
       });
       expect(actual).toBe(true);
-    });
-  });
-  describe('isSiblingComponentRepeating', () => {
-    it('isSiblingComponentRepeating return true', () => {
-      const actual = isSiblingComponentRequired({
-        type: 'textVariable',
-        name: 'someInnerNameInData',
-        label: 'someTextId',
-        childStyle: [],
-        placeholder: 'someEmptyTextId',
-        repeat: {
-          repeatMin: 1,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someTextId',
-          body: 'someDefTextId',
-        },
-        validation: {
-          type: 'regex',
-          pattern: 'someRegex',
-        },
-        mode: 'input',
-        inputType: 'input',
-      });
-      expect(actual).toBe(true);
-    });
-    it('isSiblingComponentRepeating return false', () => {
-      const actual = isSiblingComponentRequired({
-        type: 'textVariable',
-        name: 'someInnerNameInData',
-        label: 'someTextId',
-        childStyle: [],
-        placeholder: 'someEmptyTextId',
-        repeat: {
-          repeatMin: 0,
-          repeatMax: 1,
-        },
-        tooltip: {
-          title: 'someTextId',
-          body: 'someDefTextId',
-        },
-        validation: {
-          type: 'regex',
-          pattern: 'someRegex',
-        },
-        mode: 'input',
-        inputType: 'input',
-      });
-      expect(actual).toBe(false);
     });
   });
 
