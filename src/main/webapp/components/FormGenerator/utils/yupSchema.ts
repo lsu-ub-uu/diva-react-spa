@@ -10,7 +10,6 @@
  *
  *     DiVA Client is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
@@ -142,7 +141,7 @@ function createSchemaForRepeatingVariable(
     component,
     false,
     isComponentRequired(component),
-    isComponentGroupAndOptional(component), // FEL Borde vara NOT Optional?
+    isComponentGroupAndOptional(component),
   );
 
   const extendedSchema = yup.object().shape({
@@ -276,7 +275,7 @@ export const createValidationFromComponentType = (
         parentGroupOptional,
         siblingRequired,
       );
-    default: // collectionVariable, recordLink
+    default:
       return createYupStringSchema(
         component as FormComponent,
         parentGroupOptional,
@@ -475,7 +474,7 @@ const createYupStringSchema = (
       .nullable()
       .test(testOptionalParentAndRequiredSiblingWithValue);
   }
-  // här?
+
   if (!isParentGroupOptional && isComponentRequired(component)) {
     return yup.string().required();
   }
@@ -495,7 +494,6 @@ const createYupAttributeSchema = (
   parentGroupOptional: boolean = false,
 ) => {
   if (parentGroupOptional) {
-    // egentlingen optional?
     return yup
       .string()
       .nullable()
