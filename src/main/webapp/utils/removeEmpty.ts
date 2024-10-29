@@ -1,84 +1,41 @@
-export const removeEmpty = (obj: any) => {
-  const keys = Object.keys(obj);
-  keys.forEach((key) => {
-    possiblyRemoveEmptyArray(obj, key);
-    possiblyRemoveEmptyObject(obj, key);
-    possiblyRemovePartOfObjectWithKeys(obj, key);
-    possiblyRemoveAttributeForEmptyValues(obj, key);
-  });
-  return obj;
-};
+import { isEmpty } from 'lodash';
 
-const possiblyRemoveEmptyArray = (obj: any, key: string) => {
-  if (Array.isArray(obj[key])) {
-    const arr = obj[key]
-      .map(removeEmpty)
-      .filter((o: any) => Object.keys(o).length > 0);
-    if (isArrayLengthZero(arr)) {
-      delete obj[key];
-    } else {
-      obj[key] = arr;
+export const removeEmpty = (obj: any): any => {
+  return Object.keys(obj).reduce((acc: any, key: string) => {
+    const value = obj[key];
+
+    if (isAttributeForEmptyValue(key, obj)) {
+      return acc;
     }
-  }
-};
 
-const possiblyRemoveEmptyObject = (obj: any, key: string) => {
-  if (isObjectEmpty(obj, key)) {
-    delete obj[key];
-  }
-};
-
-const possiblyRemovePartOfObjectWithKeys = (obj: any, key: string) => {
-  if (isObjectAndHasLength(obj, key)) {
-    const newObj = removeEmpty(obj[key]);
-    if (Object.keys(newObj).length > 0) {
-      obj[key] = newObj;
+    if (Array.isArray(value)) {
+      const newArray = value
+        .map(removeEmpty)
+        .filter((o: any) => Object.keys(o).length > 0);
+      if (!isEmpty(newArray)) {
+        acc[key] = newArray;
+      }
+    } else if (isObjectAndHasLength(value)) {
+      const newObj = removeEmpty(value);
+      if (!isEmpty(newObj)) {
+        acc[key] = newObj;
+      }
     } else {
-      delete obj[key];
+      if (!isEmpty(value)) {
+        acc[key] = value;
+      }
     }
-  }
+
+    return acc;
+  }, {});
 };
 
-const possiblyRemoveAttributeForEmptyValues = (obj: any, key: string) => {
-  if (
-    isObjectAttribute(obj, key) &&
-    hasObjectValue(obj) &&
-    !hasObjectChildren(obj)
-  ) {
-    delete obj[key];
-  }
+const isAttributeForEmptyValue = (key: string, obj: any) => {
+  const isAttribute = key.startsWith('_');
+  const hasEmptyValue = 'value' in obj && isEmpty(obj.value);
+  return isAttribute && hasEmptyValue;
 };
 
-const isObjectAttribute = (obj: any, key: string) => {
-  return key.charAt(0).startsWith('_');
-};
-const hasObjectValue = (obj: any) => {
-  return obj.value === undefined;
-};
-
-const numberOfAttributes = (obj: any) => {
-  return Object.keys(obj).filter((item) => item.startsWith('_')).length;
-};
-const numberOfValues = (obj: any) => {
-  return Object.keys(obj).filter((item) => item.startsWith('value')).length;
-};
-
-const hasObjectChildren = (obj: any) => {
-  const entries = Object.keys(obj).length;
-  return entries - numberOfAttributes(obj) - numberOfValues(obj) > 0;
-};
-
-const isArrayLengthZero = (arr: any[]) => {
-  return arr.length === 0;
-};
-const isObjectEmpty = (obj: any, key: string) => {
-  return (
-    obj[key] === undefined ||
-    obj[key] === null ||
-    obj[key] === '' ||
-    Object.keys(obj[key]).length === 0
-  );
-};
-const isObjectAndHasLength = (obj: any, key: string) => {
-  return typeof obj[key] === 'object' && Object.keys(obj[key]).length > 0;
+const isObjectAndHasLength = (value: any): boolean => {
+  return typeof value === 'object' && !isEmpty(value);
 };

@@ -7452,6 +7452,278 @@ export const formDefTitleInfoGroup = {
   },
 };
 
+export const formDefRequiredRepeatingTextVar = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'language',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'languageGroupText',
+          body: 'languageGroupDefText',
+        },
+        label: 'languageGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'title',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'titleTextVarText',
+              body: 'titleTextVarDefText',
+            },
+            label: 'titleTextVarText',
+            placeholder: 'titleInfoVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefRequiredRepeatingText2Var = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'language',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'languageGroupText',
+          body: 'languageGroupDefText',
+        },
+        label: 'languageGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'title',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'titleTextVarText',
+              body: 'titleTextVarDefText',
+            },
+            label: 'titleTextVarText',
+            placeholder: 'titleInfoVarText2',
+            showLabel: true,
+            validation: {
+              type: 'regex',
+              pattern: '.+',
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefRequiredRepeatingNumberVar = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'language',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'languageGroupText',
+          body: 'languageGroupDefText',
+        },
+        label: 'languageGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1.7976931348623157e308,
+        },
+        components: [
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefRequiredRepeatingNumber2Var = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'language',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'languageGroupText',
+          body: 'languageGroupDefText',
+        },
+        label: 'languageGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
 export const formDefRequiredRepeatingCollectionVar = {
   validationTypeId: 'diva-output',
   form: {
@@ -7526,3 +7798,604 @@ export const formDefRequiredRepeatingCollectionVar = {
     gridColSpan: 12,
   },
 };
+
+export const formDefRequiredRepeatingCollection2Var = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'language',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'languageGroupText',
+          body: 'languageGroupDefText',
+        },
+        label: 'languageGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'languageTerm',
+            type: 'collectionVariable',
+            placeholder: 'initialEmptyValueText',
+            mode: 'input',
+            tooltip: {
+              title: 'languageCollectionVarText',
+              body: 'languageCollectionVarDefText',
+            },
+            label: 'languageCollectionVarText',
+            showLabel: true,
+            attributesToShow: 'selectable',
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1.7976931348623157e308,
+            },
+            options: [
+              {
+                value: 'eng',
+                label: 'engLangItemText',
+              },
+              {
+                value: 'swe',
+                label: 'sweLangItemText',
+              },
+            ],
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};
+
+export const formDefWithWithOptionalGroupWithRequiredVar = {
+  "validationTypeId": "diva-output",
+  "form": {
+    "name": "output",
+    "type": "group",
+    "mode": "input",
+    "tooltip": {
+      "title": "outputNewGroupText",
+      "body": "outputNewGroupDefText"
+    },
+    "label": "outputNewGroupText",
+    "showLabel": true,
+    "repeat": {
+      "repeatMin": 1,
+      "repeatMax": 1
+    },
+    "components": [
+      {
+        "name": "name",
+        "type": "group",
+        "mode": "input",
+        "tooltip": {
+          "title": "namePersonalGroupText",
+          "body": "namePersonalGroupDefText"
+        },
+        "label": "namePersonalGroupText",
+        "showLabel": true,
+        "repeat": {
+          "minNumberOfRepeatingToShow": 1,
+          "repeatMin": 0,
+          "repeatMax": 1.7976931348623157e+308
+        },
+        "attributes": [
+          {
+            "name": "type",
+            "type": "collectionVariable",
+            "placeholder": "initialEmptyValueText",
+            "mode": "input",
+            "tooltip": {
+              "title": "typeCollectionVarText",
+              "body": "typeCollectionVarDefText"
+            },
+            "label": "typeCollectionVarText",
+            "showLabel": true,
+            "options": [
+              {
+                "value": "code",
+                "label": "codeItemText"
+              },
+              {
+                "value": "contentType",
+                "label": "contentTypeItemText"
+              },
+              {
+                "value": "creatorCount",
+                "label": "creatorCountItemText"
+              },
+              {
+                "value": "restrictionOnAccess",
+                "label": "restrictionOnAccessItemText"
+              },
+              {
+                "value": "publicationStatus",
+                "label": "publicationStatusItemText"
+              },
+              {
+                "value": "corporate",
+                "label": "corporateItemText"
+              },
+              {
+                "value": "personal",
+                "label": "personalItemText"
+              },
+              {
+                "value": "given",
+                "label": "givenItemText"
+              },
+              {
+                "value": "family",
+                "label": "familyItemText"
+              },
+              {
+                "value": "termsOfAddress",
+                "label": "termsOfAddressItemText"
+              },
+              {
+                "value": "series",
+                "label": "seriesItemText"
+              },
+              {
+                "value": "conference-publication",
+                "label": "conferencePublicationItemText"
+              },
+              {
+                "value": "statement_of_responsibility",
+                "label": "statementOfResponsibilityItemText"
+              },
+              {
+                "value": "book",
+                "label": "bookItemText"
+              },
+              {
+                "value": "journal",
+                "label": "journalItemText"
+              },
+              {
+                "value": "artNo",
+                "label": "artNoItemText"
+              },
+              {
+                "value": "issue",
+                "label": "issueItemText"
+              },
+              {
+                "value": "volume",
+                "label": "volumeItemText"
+              },
+              {
+                "value": "conference",
+                "label": "conferenceItemText"
+              },
+              {
+                "value": "initiative",
+                "label": "initiativeItemText"
+              },
+              {
+                "value": "funder",
+                "label": "funderItemText"
+              },
+              {
+                "value": "project",
+                "label": "projectItemText"
+              },
+              {
+                "value": "constituent",
+                "label": "constituentItemText"
+              },
+              {
+                "value": "thesis",
+                "label": "thesisItemText"
+              },
+              {
+                "value": "defence",
+                "label": "defenceItemText"
+              },
+              {
+                "value": "researchData",
+                "label": "researchDataItemText"
+              },
+              {
+                "value": "outputType",
+                "label": "outputTypeItemText"
+              },
+              {
+                "value": "internal",
+                "label": "internalItemText"
+              },
+              {
+                "value": "online",
+                "label": "onlineItemText"
+              },
+              {
+                "value": "biographical",
+                "label": "biographicalItemText"
+              },
+              {
+                "value": "patent",
+                "label": "patentItemText"
+              }
+            ],
+            "finalValue": "personal"
+          }
+        ],
+        "components": [
+          {
+            "name": "namePart",
+            "type": "textVariable",
+            "mode": "input",
+            "inputType": "input",
+            "tooltip": {
+              "title": "namePartGivenTextVarText",
+              "body": "namePartGivenTextVarDefText"
+            },
+            "label": "namePartGivenTextVarText",
+            "placeholder": "namePartGivenTextVarText",
+            "showLabel": true,
+            "attributesToShow": "selectable",
+            "validation": {
+              "type": "regex",
+              "pattern": ".+"
+            },
+            "repeat": {
+              "minNumberOfRepeatingToShow": 1,
+              "repeatMin": 1,
+              "repeatMax": 1
+            },
+            "attributes": [
+              {
+                "name": "type",
+                "type": "collectionVariable",
+                "placeholder": "initialEmptyValueText",
+                "mode": "input",
+                "tooltip": {
+                  "title": "typeCollectionVarText",
+                  "body": "typeCollectionVarDefText"
+                },
+                "label": "typeCollectionVarText",
+                "showLabel": true,
+                "options": [
+                  {
+                    "value": "code",
+                    "label": "codeItemText"
+                  },
+                  {
+                    "value": "contentType",
+                    "label": "contentTypeItemText"
+                  },
+                  {
+                    "value": "creatorCount",
+                    "label": "creatorCountItemText"
+                  },
+                  {
+                    "value": "restrictionOnAccess",
+                    "label": "restrictionOnAccessItemText"
+                  },
+                  {
+                    "value": "publicationStatus",
+                    "label": "publicationStatusItemText"
+                  },
+                  {
+                    "value": "corporate",
+                    "label": "corporateItemText"
+                  },
+                  {
+                    "value": "personal",
+                    "label": "personalItemText"
+                  },
+                  {
+                    "value": "given",
+                    "label": "givenItemText"
+                  },
+                  {
+                    "value": "family",
+                    "label": "familyItemText"
+                  },
+                  {
+                    "value": "termsOfAddress",
+                    "label": "termsOfAddressItemText"
+                  },
+                  {
+                    "value": "series",
+                    "label": "seriesItemText"
+                  },
+                  {
+                    "value": "conference-publication",
+                    "label": "conferencePublicationItemText"
+                  },
+                  {
+                    "value": "statement_of_responsibility",
+                    "label": "statementOfResponsibilityItemText"
+                  },
+                  {
+                    "value": "book",
+                    "label": "bookItemText"
+                  },
+                  {
+                    "value": "journal",
+                    "label": "journalItemText"
+                  },
+                  {
+                    "value": "artNo",
+                    "label": "artNoItemText"
+                  },
+                  {
+                    "value": "issue",
+                    "label": "issueItemText"
+                  },
+                  {
+                    "value": "volume",
+                    "label": "volumeItemText"
+                  },
+                  {
+                    "value": "conference",
+                    "label": "conferenceItemText"
+                  },
+                  {
+                    "value": "initiative",
+                    "label": "initiativeItemText"
+                  },
+                  {
+                    "value": "funder",
+                    "label": "funderItemText"
+                  },
+                  {
+                    "value": "project",
+                    "label": "projectItemText"
+                  },
+                  {
+                    "value": "constituent",
+                    "label": "constituentItemText"
+                  },
+                  {
+                    "value": "thesis",
+                    "label": "thesisItemText"
+                  },
+                  {
+                    "value": "defence",
+                    "label": "defenceItemText"
+                  },
+                  {
+                    "value": "researchData",
+                    "label": "researchDataItemText"
+                  },
+                  {
+                    "value": "outputType",
+                    "label": "outputTypeItemText"
+                  },
+                  {
+                    "value": "internal",
+                    "label": "internalItemText"
+                  },
+                  {
+                    "value": "online",
+                    "label": "onlineItemText"
+                  },
+                  {
+                    "value": "biographical",
+                    "label": "biographicalItemText"
+                  },
+                  {
+                    "value": "patent",
+                    "label": "patentItemText"
+                  }
+                ],
+                "finalValue": "given"
+              }
+            ],
+            "childStyle": [
+              ""
+            ],
+            "gridColSpan": 12
+          },
+          {
+            "name": "namePart",
+            "type": "textVariable",
+            "mode": "input",
+            "inputType": "input",
+            "tooltip": {
+              "title": "namePartFamilyTextVarText",
+              "body": "namePartFamilyTextVarDefText"
+            },
+            "label": "namePartFamilyTextVarText",
+            "showLabel": true,
+            "attributesToShow": "selectable",
+            "validation": {
+              "type": "regex",
+              "pattern": ".+"
+            },
+            "repeat": {
+              "minNumberOfRepeatingToShow": 1,
+              "repeatMin": 1,
+              "repeatMax": 1
+            },
+            "attributes": [
+              {
+                "name": "type",
+                "type": "collectionVariable",
+                "placeholder": "initialEmptyValueText",
+                "mode": "input",
+                "tooltip": {
+                  "title": "typeCollectionVarText",
+                  "body": "typeCollectionVarDefText"
+                },
+                "label": "typeCollectionVarText",
+                "showLabel": true,
+                "options": [
+                  {
+                    "value": "code",
+                    "label": "codeItemText"
+                  },
+                  {
+                    "value": "contentType",
+                    "label": "contentTypeItemText"
+                  },
+                  {
+                    "value": "creatorCount",
+                    "label": "creatorCountItemText"
+                  },
+                  {
+                    "value": "restrictionOnAccess",
+                    "label": "restrictionOnAccessItemText"
+                  },
+                  {
+                    "value": "publicationStatus",
+                    "label": "publicationStatusItemText"
+                  },
+                  {
+                    "value": "corporate",
+                    "label": "corporateItemText"
+                  },
+                  {
+                    "value": "personal",
+                    "label": "personalItemText"
+                  },
+                  {
+                    "value": "given",
+                    "label": "givenItemText"
+                  },
+                  {
+                    "value": "family",
+                    "label": "familyItemText"
+                  },
+                  {
+                    "value": "termsOfAddress",
+                    "label": "termsOfAddressItemText"
+                  },
+                  {
+                    "value": "series",
+                    "label": "seriesItemText"
+                  },
+                  {
+                    "value": "conference-publication",
+                    "label": "conferencePublicationItemText"
+                  },
+                  {
+                    "value": "statement_of_responsibility",
+                    "label": "statementOfResponsibilityItemText"
+                  },
+                  {
+                    "value": "book",
+                    "label": "bookItemText"
+                  },
+                  {
+                    "value": "journal",
+                    "label": "journalItemText"
+                  },
+                  {
+                    "value": "artNo",
+                    "label": "artNoItemText"
+                  },
+                  {
+                    "value": "issue",
+                    "label": "issueItemText"
+                  },
+                  {
+                    "value": "volume",
+                    "label": "volumeItemText"
+                  },
+                  {
+                    "value": "conference",
+                    "label": "conferenceItemText"
+                  },
+                  {
+                    "value": "initiative",
+                    "label": "initiativeItemText"
+                  },
+                  {
+                    "value": "funder",
+                    "label": "funderItemText"
+                  },
+                  {
+                    "value": "project",
+                    "label": "projectItemText"
+                  },
+                  {
+                    "value": "constituent",
+                    "label": "constituentItemText"
+                  },
+                  {
+                    "value": "thesis",
+                    "label": "thesisItemText"
+                  },
+                  {
+                    "value": "defence",
+                    "label": "defenceItemText"
+                  },
+                  {
+                    "value": "researchData",
+                    "label": "researchDataItemText"
+                  },
+                  {
+                    "value": "outputType",
+                    "label": "outputTypeItemText"
+                  },
+                  {
+                    "value": "internal",
+                    "label": "internalItemText"
+                  },
+                  {
+                    "value": "online",
+                    "label": "onlineItemText"
+                  },
+                  {
+                    "value": "biographical",
+                    "label": "biographicalItemText"
+                  },
+                  {
+                    "value": "patent",
+                    "label": "patentItemText"
+                  }
+                ],
+                "finalValue": "family"
+              }
+            ],
+            "childStyle": [
+              ""
+            ],
+            "gridColSpan": 12
+          },
+        ],
+        "presentationStyle": "",
+        "childStyle": [
+          ""
+        ],
+        "gridColSpan": 12
+      },
+
+    ],
+    "presentationStyle": "",
+    "childStyle": [
+      ""
+    ],
+    "gridColSpan": 12
+  }
+}

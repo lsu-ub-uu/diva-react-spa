@@ -20,6 +20,10 @@
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormComponent } from '../types';
 import { removeEmpty } from '@/utils/removeEmpty';
+import {
+  addAttributesToName,
+  hasCurrentComponentSameNameInData,
+} from '@/components/FormGenerator/utils';
 
 export const countStringCharOccurrences = (
   inputString: string,
@@ -86,7 +90,7 @@ export const isComponentSingularAndOptional = (component: FormComponent) => {
   return rMax === 1 && rMin === 0;
 };
 
-export const isParentGroupOptional = (component: FormComponent) => {
+export const isComponentGroupAndOptional = (component: FormComponent) => {
   const componentGroup = component.type === 'group';
   const rMin = component.repeat?.repeatMin ?? 0;
   return componentGroup && rMin === 0;
@@ -166,10 +170,18 @@ export const checkForExistingSiblings = (formValues: any) => {
   return false;
 };
 
-export const isSiblingComponentRequired = (component: FormComponent) => {
-  return isComponentRequired(component);
-};
-
 export const checkIfValueExists = (value: unknown) => {
   return !(value === null || value === '' || value === undefined);
 };
+
+export function getNameInData(
+  childWithSameNameInData: string[],
+  component: FormComponent,
+) {
+  return hasCurrentComponentSameNameInData(
+    childWithSameNameInData,
+    component.name,
+  )
+    ? addAttributesToName(component, component.name)
+    : component.name;
+}

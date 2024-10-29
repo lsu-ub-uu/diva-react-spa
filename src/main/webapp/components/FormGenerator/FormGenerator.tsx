@@ -39,6 +39,8 @@ import {
 import {
   addAttributesToName,
   createDefaultValuesFromFormSchema,
+  getChildNameInDataArray,
+  getChildrenWithSameNameInData,
   hasCurrentComponentSameNameInData,
   RecordData,
 } from './utils';
@@ -103,7 +105,7 @@ export const FormGenerator = ({
     let currentComponentNamePath;
 
     const childrenWithSameNameInData = getChildrenWithSameNameInData(
-      getChildArrayWithSameNameInData(component),
+      getChildNameInDataArray(component),
     );
 
     const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
@@ -988,28 +990,14 @@ export const hasComponentSameNameInData = (component: FormComponent) => {
   if (!isComponentGroup(component)) {
     return false;
   }
-  const nameArray = getChildArrayWithSameNameInData(component);
+  const nameArray = getChildNameInDataArray(component);
   return getChildrenWithSameNameInData(nameArray).length >= 1;
 };
 
-export const getChildrenWithSameNameInData = (childArray: string[]) => {
-  return childArray.filter((item, index) => childArray.indexOf(item) !== index);
-};
-
-export const getChildArrayWithSameNameInData = (component: FormComponent) => {
-  if (!isComponentGroup(component)) {
-    return [];
-  }
-  const nameArray: any[] = [];
-  (component.components ?? []).forEach((childComponent) => {
-    nameArray.push(childComponent.name);
-  });
-  return nameArray;
-};
 export const getChildrenWithSameNameInDataFromSchema = (
   formSchema: FormSchema,
 ) => {
   return getChildrenWithSameNameInData(
-    getChildArrayWithSameNameInData(formSchema?.form),
+    getChildNameInDataArray(formSchema?.form),
   );
 };

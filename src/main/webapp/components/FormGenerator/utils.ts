@@ -24,6 +24,7 @@ import {
   isComponentValidForDataCarrying,
   isComponentVariable,
 } from './utils/helper';
+import { uniq } from 'lodash';
 
 export interface RecordData {
   [key: string]: any;
@@ -123,7 +124,7 @@ export const createDefaultValuesFromComponent = (
   } = {};
 
   const childrenWithSameNameInData = getChildrenWithSameNameInData(
-    getChildArrayWithSameNameInData(component),
+    getChildNameInDataArray(component),
   );
   const formDefaultObject = isComponentVariable(component)
     ? createDefaultValuesForVariable(component)
@@ -161,7 +162,7 @@ export const createDefaultValuesFromComponent = (
   return defaultValues;
 };
 
-export const getChildArrayWithSameNameInData = (component: FormComponent) => {
+export const getChildNameInDataArray = (component: FormComponent) => {
   const nameArray: any[] = [];
   (component.components ?? []).forEach((childComponent) => {
     nameArray.push(childComponent.name);
@@ -170,7 +171,11 @@ export const getChildArrayWithSameNameInData = (component: FormComponent) => {
 };
 
 export const getChildrenWithSameNameInData = (childArray: string[]) => {
-  return childArray.filter((item, index) => childArray.indexOf(item) !== index);
+  const withoutSingles = childArray.filter(
+    (item, index) => childArray.lastIndexOf(item) !== index,
+  );
+
+  return uniq(withoutSingles);
 };
 
 function createDefaultValuesForVariable(component: FormComponent) {
