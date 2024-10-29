@@ -152,7 +152,10 @@ describe('generate yupSchema', () => {
             fields: {
               value: {
                 type: 'string',
-                tests: stringValidationTests(/^[a-zA-Z]$/),
+                tests: [
+                  ...requiredValidationTests,
+                  ...stringValidationTests(/^[a-zA-Z]$/),
+                ],
               },
             },
           },
@@ -731,9 +734,10 @@ describe('generate yupSchema', () => {
                         fields: {
                           value: {
                             ...validationTestsExtras(
-                              true,
+                              false,
                               'string',
                               [
+                                ...requiredValidationTests,
                                 {
                                   name: 'matches',
                                   params: {
@@ -766,9 +770,10 @@ describe('generate yupSchema', () => {
                         fields: {
                           value: {
                             ...validationTestsExtras(
-                              true,
+                              false,
                               'string',
                               [
+                                ...requiredValidationTests,
                                 {
                                   name: 'matches',
                                   params: {

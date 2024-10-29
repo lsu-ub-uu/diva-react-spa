@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { Provider as StateProvider } from 'react-redux';
@@ -25,8 +25,6 @@ import App from '@/App';
 import store from '@/app/store';
 import { divaTheme } from '@/themes/diva';
 import { BackdropProvider, SnackbarProvider } from '@/components';
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
 
 describe('<App />', () => {
   it('App Renders', () => {

@@ -1,27 +1,24 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, omitBy } from 'lodash';
 
 export const removeEmpty = (obj: any): any => {
   return Object.keys(obj).reduce((acc: any, key: string) => {
     const value = obj[key];
 
-    if (isAttributeForEmptyValue(key, obj)) {
-      return acc;
-    }
-
     if (Array.isArray(value)) {
       const newArray = value
         .map(removeEmpty)
+        .filter((o) => !hasOnlyAttributes(o))
         .filter((o: any) => Object.keys(o).length > 0);
       if (!isEmpty(newArray)) {
         acc[key] = newArray;
       }
     } else if (isObjectAndHasLength(value)) {
       const newObj = removeEmpty(value);
-      if (!isEmpty(newObj)) {
+      if (!hasOnlyAttributes(newObj)) {
         acc[key] = newObj;
       }
     } else {
-      if (!isEmpty(value)) {
+      if (!hasOnlyAttributes(value)) {
         acc[key] = value;
       }
     }
@@ -29,11 +26,12 @@ export const removeEmpty = (obj: any): any => {
     return acc;
   }, {});
 };
+const hasOnlyAttributes = (obj: any) => {
+  return isEmpty(omitBy(obj, (_, key) => isAttribute(key)));
+};
 
-const isAttributeForEmptyValue = (key: string, obj: any) => {
-  const isAttribute = key.startsWith('_');
-  const hasEmptyValue = 'value' in obj && isEmpty(obj.value);
-  return isAttribute && hasEmptyValue;
+const isAttribute = (key: string) => {
+  return key.startsWith('_');
 };
 
 const isObjectAndHasLength = (value: any): boolean => {
