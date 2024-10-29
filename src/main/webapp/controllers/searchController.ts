@@ -41,12 +41,11 @@ import { transformToCoraData } from '../config/transformToCora';
 export const getPublicSearchResult = async (req: Request, res: Response) => {
   try {
     const { searchTermValue } = req.query;
-    const searchLink = req.path.split('/')[2];
+    const { searchType } = req.params;
 
-    const searchTermName = getSearchTermNameFromSearchLink(dependencies, searchLink);
+    const searchTermName = getSearchTermNameFromSearchLink(dependencies, searchType);
 
     const authToken = req.header('authToken') ?? '';
-    const { searchType } = req.params;
 
     const searchQuery: DataGroup = {
       name: 'search',
@@ -68,11 +67,13 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
       ]
     };
 
+
     const response = await getSearchResultDataListBySearchType<DataListWrapper>(
       searchType,
       searchQuery,
       authToken
     );
+
 
     const transformedRecords = transformRecords(dependencies, response.data);
 
