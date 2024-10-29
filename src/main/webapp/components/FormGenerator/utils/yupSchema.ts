@@ -313,7 +313,14 @@ const createYupStringRegexpSchema = (
   }
 
   if (!isParentGroupOptional && isComponentRequired(component)) {
-    return yup.string().required();
+    return yup
+      .string()
+      .required()
+      .transform((value) => (value === '' ? null : value))
+      .matches(
+        new RegExp(regexpValidation.pattern ?? '.+'),
+        'Invalid input format',
+      );
   }
 
   if (isParentGroupOptional) {
