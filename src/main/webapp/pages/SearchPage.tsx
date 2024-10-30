@@ -19,12 +19,34 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
+import { CoraRecord, CoraSearchResult } from '@/features/record/types';
+import { FormSchema } from '@/components/FormGenerator/types';
+import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
+import * as React from 'react';
+import { Card, Grid, styled } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import { SearchPublicationCard } from '@/partials';
+
+const SearchResultList = styled('ol')`
+  list-style: none;
+  padding: 0;
+`;
+
+const SearchResultListItem = styled('li')(({ theme }) => ({
+  display: 'block',
+  borderRadius: 8,
+  backgroundColor: theme.palette.grey['200'],
+  boxShadow: theme.shadows[1],
+  marginBottom: theme.spacing(2),
+}));
 
 export const SearchPage = () => {
   const { searchType } = useParams();
   const [searchParams] = useSearchParams();
   const queryString = searchParams.get('query');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<CoraSearchResult | null>(
+    null,
+  );
 
   const query = useMemo(
     () => (queryString !== null ? JSON.parse(queryString) : null),
@@ -43,8 +65,24 @@ export const SearchPage = () => {
 
   return (
     <div>
-      You searched for {searchType} with the query {searchParams.get('query')}
-      RESULTS: {JSON.stringify(searchResults)}
+      <h1>Sök</h1>
+      <SearchPublicationCard />
+
+      {searchResults && (
+        <>
+          <h2>Sökresultat - {searchResults?.totalNo} träffar</h2>
+          <SearchResultList>
+            {searchResults.data.map((record) => (
+              <SearchResultListItem key={record.id}>
+                <AutocompleteForm
+                  record={record}
+                  formSchema={record.presentation as FormSchema}
+                />
+              </SearchResultListItem>
+            ))}
+          </SearchResultList>
+        </>
+      )}
     </div>
   );
 };

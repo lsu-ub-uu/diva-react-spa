@@ -44,6 +44,14 @@ export interface CoraRecord {
   presentation?: unknown;
 }
 
+export interface CoraSearchResult {
+  data: CoraRecord[];
+  fromNo: number;
+  toNo: number;
+  totalNo: number;
+  containDataOfType: string;
+}
+
 export interface Metadata {
   recordInfo: RecordInfo;
 
