@@ -30,7 +30,6 @@ coverage
 
 # environment
 .env
-.env.test
 
 # Maven
 target
