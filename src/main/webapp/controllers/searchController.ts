@@ -21,7 +21,7 @@ import { Request, Response } from 'express';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
 import { errorHandler } from '../app';
-import { transformRecords } from '../config/transformRecord';
+import { transformRecord, transformRecords } from '../config/transformRecord';
 import { dependencies } from '../config/configureServer';
 import { createLinkedRecordDefinition, FormMetaData } from '../formDefinition/formDefinition';
 import { BFFMetadataGroup } from '../config/bffTypes';
@@ -67,13 +67,11 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
       ]
     };
 
-
     const response = await getSearchResultDataListBySearchType<DataListWrapper>(
       searchType,
       searchQuery,
       authToken
     );
-
 
     const transformedRecords = transformRecords(dependencies, response.data);
 
@@ -139,6 +137,8 @@ export const getAdvancedPublicSearchResult = async (req: Request, res: Response)
 
     const transformedRecords = transformRecords(dependencies, response.data);
 
+    const { fromNo, toNo, totalNo, containDataOfType } = response.data.dataList;
+
     transformedRecords.forEach((transformedRecord) => {
       const recordType = dependencies.recordTypePool.get(transformedRecord.recordType);
       const { listPresentationViewId } = recordType;
@@ -153,7 +153,9 @@ export const getAdvancedPublicSearchResult = async (req: Request, res: Response)
         presentationGroup
       );
     });
-    res.status(response.status).json(transformedRecords);
+    res
+      .status(response.status)
+      .json({ fromNo, toNo, totalNo, containDataOfType, data: transformedRecords });
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();

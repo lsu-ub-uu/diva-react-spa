@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosHeaders, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { DataGroup } from '../utils/cora-data/CoraData';
 
 const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
