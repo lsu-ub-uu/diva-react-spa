@@ -19,24 +19,15 @@
 
 import React from 'react';
 import { Box, Grid, IconButton } from '@mui/material';
-import {
-  Control,
-  FieldErrors,
-  FieldValues,
-  UseFormGetValues,
-} from 'react-hook-form';
+import { Control, FieldErrors, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
-import {
-  ControlledLinkedRecord,
-  ControlledSelectField,
-  ControlledTextField,
-} from '../Controlled';
+import { ControlledLinkedRecord, ControlledSelectField, ControlledTextField } from '../Controlled';
 import {
   addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
-  hasCurrentComponentSameNameInData,
+  hasCurrentComponentSameNameInData
 } from './utils';
 import {
   checkIfComponentHasValue,
@@ -47,14 +38,9 @@ import {
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
-  isFirstLevelGroup,
+  isFirstLevelGroup
 } from './utils/helper';
-import {
-  ControlledAutocomplete,
-  LinkButton,
-  Tooltip,
-  Typography,
-} from '@/components';
+import { ControlledAutocomplete, LinkButton, Tooltip, Typography } from '@/components';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
@@ -292,7 +278,7 @@ export const FormGenerator = ({
         item
         xs={12}
         key={reactKey}
-        className='anchorLink'
+        className='anchorLink isComponentFirstLevelAndNOTLinkedData'
         id={`anchor_${addAttributesToName(component, component.name)}`}
       >
         <Box sx={{ mb: 2 }}>
@@ -331,6 +317,7 @@ export const FormGenerator = ({
             spacing={2}
             justifyContent='space-between'
             alignItems='flex-start'
+            className={'NOTisComponentFirstLevelAndNOTLinkedData'}
             id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             {createFormComponentAttributes(component, currentComponentNamePath)}

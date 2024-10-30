@@ -25,6 +25,7 @@ import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';
 import { SearchPublicationCard } from '@/partials';
 import { RecordActionButtons } from '@/components';
+import { useTranslation } from 'react-i18next';
 
 const SearchResultList = styled('ol')`
   list-style: none;
@@ -35,9 +36,11 @@ const SearchResultListItem = styled('li')(({ theme }) => ({
   position: 'relative',
   display: 'block',
   borderRadius: 8,
-  backgroundColor: theme.palette.grey['200'],
+  border: '2px solid #eedcdb',
+  backgroundColor: '#fcf8f8',
   boxShadow: theme.shadows[1],
   marginBottom: theme.spacing(2),
+  paddingLeft: theme.spacing(2),
 }));
 
 export const SearchPage = () => {
@@ -47,6 +50,7 @@ export const SearchPage = () => {
   const [searchResults, setSearchResults] = useState<CoraSearchResult | null>(
     null,
   );
+  const { t } = useTranslation();
 
   const query = useMemo(
     () => (queryString !== null ? JSON.parse(queryString) : null),
@@ -65,12 +69,16 @@ export const SearchPage = () => {
 
   return (
     <div>
-      <h1>Sök</h1>
+      <h1>{t('divaClient_searchPageHeaderText')}</h1>
       <SearchPublicationCard />
 
       {searchResults && (
         <>
-          <h2>Sökresultat - {searchResults?.totalNo} träffar</h2>
+          <h2>
+            {t('divaClient_searchPageResultText', {
+              numberOfResults: searchResults?.totalNo,
+            })}
+          </h2>
           <SearchResultList>
             {searchResults.data.map((record) => (
               <SearchResultListItem key={record.id}>

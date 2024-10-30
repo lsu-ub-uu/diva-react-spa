@@ -62,13 +62,13 @@ export const SearchPublicationCard = () => {
 
   return (
     <Card
-      title={t('Search publication / Change / Delete') as string}
+      title={t('divaClient_searchPublicationText') as string}
       variant='variant2'
       tooltipTitle={
-        t('divaClient_createPublicationTypeTooltipTitleText') as string
+        t('divaClient_searchPublicationTypeTooltipTitleText') as string
       }
       tooltipBody={
-        t('divaClient_createPublicationTypeTooltipBodyText') as string
+        t('divaClient_searchPublicationTypeTooltipBodyText') as string
       }
     >
       <SearchForm
