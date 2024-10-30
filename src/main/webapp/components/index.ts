@@ -40,6 +40,7 @@ export { Typography } from './Typography/Typography';
 export { LinkButton } from './LinkButton/LinkButton';
 export { NavigationPanel } from './NavigationPanel/NavigationPanel';
 export { LinkedRecord } from './LinkedRecord/LinkedPresentationRecord';
+export { RecordActionButtons } from './RecordActionButtons/RecordActionButtons';
 
 export {
   useSectionScroller,

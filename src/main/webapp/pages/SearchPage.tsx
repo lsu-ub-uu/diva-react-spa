@@ -19,13 +19,12 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { CoraRecord, CoraSearchResult } from '@/features/record/types';
+import { CoraSearchResult } from '@/features/record/types';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
-import * as React from 'react';
-import { Card, Grid, styled } from '@mui/material';
-import CardContent from '@mui/material/CardContent';
+import { Box, styled } from '@mui/material';
 import { SearchPublicationCard } from '@/partials';
+import { RecordActionButtons } from '@/components';
 
 const SearchResultList = styled('ol')`
   list-style: none;
@@ -33,6 +32,7 @@ const SearchResultList = styled('ol')`
 `;
 
 const SearchResultListItem = styled('li')(({ theme }) => ({
+  position: 'relative',
   display: 'block',
   borderRadius: 8,
   backgroundColor: theme.palette.grey['200'],
@@ -78,6 +78,16 @@ export const SearchPage = () => {
                   record={record}
                   formSchema={record.presentation as FormSchema}
                 />
+                <Box
+                  sx={(theme) => ({
+                    position: 'absolute',
+                    display: 'flex',
+                    top: theme.spacing(1),
+                    right: theme.spacing(1),
+                  })}
+                >
+                  <RecordActionButtons record={record} />
+                </Box>
               </SearchResultListItem>
             ))}
           </SearchResultList>
