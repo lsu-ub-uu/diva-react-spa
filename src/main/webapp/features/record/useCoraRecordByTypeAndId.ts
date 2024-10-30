@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -17,41 +17,35 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useTranslation } from 'react-i18next';
-import { CoraRecord } from '@/features/record/types';
-import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
+import { CoraRecord, UseCoraRecordByTypeAndId } from '@/features/record/types';
 
-interface LinkedRecordProps {
-  recordType: string;
-  id: string;
-  presentationRecordLinkId: string;
-}
-
-export const LinkedRecord: FC<LinkedRecordProps> = (
-  props: LinkedRecordProps,
-) => {
-  const [record, setRecord] = useState<CoraRecord | null>(null);
+export const useCoraRecordByTypeAndId = (
+  recordType: string,
+  recordId: string | undefined,
+  presentationRecordLinkId?: string | undefined,
+): UseCoraRecordByTypeAndId => {
+  const [record, setRecord] = useState<CoraRecord>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { t } = useTranslation();
-
   useEffect(() => {
     let isMounted = true;
-
-    const fetchData = async () => {
+    const url =
+      presentationRecordLinkId === undefined
+        ? `/record/${recordType}/${recordId}`
+        : `/record/${recordType}/${recordId}?presentationRecordLinkId=${presentationRecordLinkId}`;
+    const fetchRecord = async () => {
       try {
-        const response = await axios.get(
-          `/record/${props.recordType}/${props.id}?presentationRecordLinkId=${props.presentationRecordLinkId}`,
-        );
+        const response = await axios.get<CoraRecord>(url);
         if (isMounted) {
           setError(null);
-          setRecord(response.data);
+          setRecord(response.data as CoraRecord);
           setIsLoading(false);
         }
       } catch (err: unknown) {
+        setRecord(undefined);
         if (isMounted) {
           if (axios.isAxiosError(err)) {
             setError(err.message);
@@ -63,20 +57,12 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
       }
     };
 
-    fetchData().then();
+    if (recordId !== undefined) fetchRecord().then();
 
     return () => {
       isMounted = false;
     };
-  }, [props.id, props.recordType, props.presentationRecordLinkId]);
+  }, [presentationRecordLinkId, recordType, recordId]);
 
-  if (isLoading) {
-    return <div>{t('divaClient_loadingText')}</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  return <>{record && <LinkedRecordForm record={record} />}</>;
+  return { isLoading, error, record };
 };

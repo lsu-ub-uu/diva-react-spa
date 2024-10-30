@@ -26,20 +26,18 @@ import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  useBackdrop,
-  FormGenerator,
   AsidePortal,
-  NavigationPanel,
   linksFromFormSchema,
+  NavigationPanel,
+  useBackdrop,
   useSectionScroller,
 } from '@/components';
-import {
-  useCoraFormSchemaByValidationType,
-  useCoraRecordByType,
-} from '@/app/hooks';
-import { FormSchema } from '@/components/FormGenerator/types';
+
 import { removeEmpty } from '@/utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
+import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
+import { useCoraRecordByType } from '@/features/record/useCoraRecordByType';
+import { RecordForm } from '@/components/Form/RecordForm';
 
 export const CreateRecordPage = () => {
   const { validationType } = useParams();
@@ -113,13 +111,13 @@ export const CreateRecordPage = () => {
       </AsidePortal>
       <div>
         <Stack spacing={2}>
-          <FormGenerator
+          <RecordForm
             record={coraRecord.record}
             onSubmit={handleSubmit}
             onInvalid={() => {
               notification(`Form is invalid`, 'error');
             }}
-            formSchema={schema as FormSchema}
+            formSchema={schema!}
           />
         </Stack>
       </div>

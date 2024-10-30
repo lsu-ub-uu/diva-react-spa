@@ -24,7 +24,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'vitest';
 import { ControlledAutocomplete } from '@/components';
-import { CoraRecord } from '@/app/hooks';
+import { CoraRecord } from '@/features/record/types';
 
 const mockOptions: CoraRecord[] = [
   {

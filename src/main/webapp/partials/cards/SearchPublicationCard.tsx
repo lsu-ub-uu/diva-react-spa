@@ -17,33 +17,48 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, MenuItem, SelectChangeEvent } from '@mui/material';
-import Button from '@mui/material/Button';
-import { Link as RouterLink } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { Card, Select } from '@/components';
-import {
-  loadPublicationTypesAsync,
-  publicationTypeSelector,
-} from '@/features/publicationTypes';
+import { AlertTitle, Skeleton } from '@mui/material';
+import { Card } from '@/components';
+import { FormSchema } from '@/components/FormGenerator/types';
+import { useCoraSearchForm } from '@/features/search/useCoraSearch';
+import Alert from '@mui/material/Alert';
+import { SearchForm } from '@/components/Form/SearchForm';
+import { FieldValues } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
+const searchType = 'diva-outputSimpleSearch';
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
-  const [publicationType, setPublicationType] = useState('');
-  const dispatch = useAppDispatch();
-  const publicationTypeState = useAppSelector(publicationTypeSelector);
+  const navigate = useNavigate();
+  const { searchForm, error } = useCoraSearchForm(searchType);
+  const handleSearch = async (values: FieldValues) => {
+    console.log(
+      'values',
+      `search/${searchType}?query=${window.encodeURIComponent(JSON.stringify(values))}`,
+    );
 
-  useEffect(() => {
-    dispatch(loadPublicationTypesAsync());
-  }, [dispatch]);
-
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
-    event.preventDefault();
-    setPublicationType(event.target.value as string);
+    navigate(
+      `/search/${searchType}?query=${window.encodeURIComponent(JSON.stringify(values))}`,
+    );
   };
+  if (error) {
+    return (
+      <Alert severity='error'>
+        <AlertTitle>Hoppsan!</AlertTitle>Fel vid hämtning av sökformuläret.
+        Försök igen lite senare.
+      </Alert>
+    );
+  }
+
+  if (searchForm === null) {
+    return (
+      <Skeleton
+        height={300}
+        width='100%'
+      />
+    );
+  }
 
   return (
     <Card
@@ -56,61 +71,11 @@ export const SearchPublicationCard = () => {
         t('divaClient_createPublicationTypeTooltipBodyText') as string
       }
     >
-      <Grid
-        container
-        spacing={2}
-        justifyContent='space-between'
-        alignItems='flex-start'
-      >
-        <Grid
-          item
-          xs={12}
-          sm={6}
-        >
-          <Select
-            value={publicationType || ''}
-            onChange={handleChange}
-            sx={{
-              '& .MuiSelect-select .notranslate::after': {
-                content: `"${t('Enter keywords')}"`,
-                opacity: 0.42,
-              },
-            }}
-            name='publication-type-select'
-            size='small'
-            loading={publicationTypeState.isLoading}
-            fullWidth
-          >
-            {publicationTypeState.publicationTypes.map(
-              (publicationTypeOption) => (
-                <MenuItem
-                  key={publicationTypeOption.value}
-                  value={publicationTypeOption.value}
-                  disableRipple
-                >
-                  {t(publicationTypeOption.label)}
-                </MenuItem>
-              ),
-            )}
-          </Select>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-        >
-          <Button
-            disabled={!publicationType}
-            disableRipple
-            variant='contained'
-            component={RouterLink}
-            to={`/create/record/${publicationType}`}
-            endIcon={<SearchIcon />}
-          >
-            {t('Search')}
-          </Button>
-        </Grid>
-      </Grid>
+      <SearchForm
+        onSubmit={handleSearch}
+        onInvalid={() => {}}
+        formSchema={searchForm as FormSchema}
+      />
     </Card>
   );
 };

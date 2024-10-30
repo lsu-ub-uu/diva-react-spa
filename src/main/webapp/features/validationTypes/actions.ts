@@ -18,10 +18,10 @@
 
 import axios from 'axios';
 import { AppThunk } from '@/app/store';
-import { hasError, update, updating } from './publicationTypeSlice';
+import { hasError, update, updating } from './validationTypeSlice';
 import { Option } from '@/components';
 
-export const loadPublicationTypesAsync =
+export const loadValidationTypesAsync =
   (callback?: () => void): AppThunk =>
   async (dispatch) => {
     try {

@@ -29,17 +29,18 @@ export {
   StepIcon,
 } from './HorizontalStepper/HorizontalStepper';
 export { TabsMenu } from './TabsMenu/TabsMenu';
-export { Select } from './Form/Select/Select';
-export { Checkbox } from './Form/Checkbox/Checkbox';
-export { Radio } from './Form/Radio/Radio';
+export { Select } from '@/components/FormComponents/Select/Select';
+export { Checkbox } from '@/components/FormComponents/Checkbox/Checkbox';
+export { Radio } from '@/components/FormComponents/Radio/Radio';
 export { ControlledAutocomplete } from './Controlled/Autocomplete/ControlledAutocomplete';
-export { ErrorSummary } from './Form/ErrorSummary/ErrorSummary';
+export { ErrorSummary } from '@/components/FormComponents/ErrorSummary/ErrorSummary';
 export { SnackbarProvider } from './Snackbar/SnackbarProvider';
 export { FormGenerator } from './FormGenerator/FormGenerator';
 export { Typography } from './Typography/Typography';
 export { LinkButton } from './LinkButton/LinkButton';
 export { NavigationPanel } from './NavigationPanel/NavigationPanel';
 export { LinkedRecord } from './LinkedRecord/LinkedPresentationRecord';
+export { RecordActionButtons } from './RecordActionButtons/RecordActionButtons';
 
 export {
   useSectionScroller,

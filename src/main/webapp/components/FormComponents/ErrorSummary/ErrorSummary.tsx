@@ -35,7 +35,7 @@ export const ErrorSummary = (props: ErrorSummaryProps) => {
       severity='error'
       sx={{ mb: 2 }}
     >
-      <span>{props.title ?? 'Form validation error(s):'}</span>
+      <span>{props.title ?? 'FormComponents validation error(s):'}</span>
       <ul>
         {Object.entries(props.errors).map(([fieldName, errors]) => {
           if (errors instanceof Array) {

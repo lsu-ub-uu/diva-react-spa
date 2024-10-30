@@ -24,20 +24,17 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import {
-  useCoraFormSchemaByValidationType,
-  useCoraRecordByTypeAndId,
-} from '@/app/hooks';
+import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
+import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
 import {
   AsidePortal,
-  FormGenerator,
+  linksFromFormSchema,
   NavigationPanel,
   useBackdrop,
-  linksFromFormSchema,
   useSectionScroller,
 } from '@/components';
-import { FormSchema } from '@/components/FormGenerator/types';
 import { removeEmpty } from '@/utils/removeEmpty';
+import { RecordForm } from '@/components/Form/RecordForm';
 
 export const UpdateRecordPage = () => {
   const { recordType, recordId } = useParams();
@@ -80,8 +77,7 @@ export const UpdateRecordPage = () => {
     try {
       setIsSubmitting(true);
       const payload = { values };
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await axios.post(
+      await axios.post(
         `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,
         removeEmpty(payload),
       );
@@ -120,11 +116,11 @@ export const UpdateRecordPage = () => {
       <div>
         <Stack spacing={2}>
           {coraSchema.schema && coraRecord.record && (
-            <FormGenerator
+            <RecordForm
               record={coraRecord.record}
               onSubmit={handleSubmit}
               onInvalid={() => notification(`Update Form is invalid`, 'error')}
-              formSchema={coraSchema.schema as FormSchema}
+              formSchema={coraSchema.schema!}
             />
           )}
         </Stack>

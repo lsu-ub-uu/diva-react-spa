@@ -25,23 +25,23 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { Card, Select } from '@/components';
 import {
-  loadPublicationTypesAsync,
-  publicationTypeSelector,
-} from '@/features/publicationTypes';
+  loadValidationTypesAsync,
+  validationTypeSelector,
+} from '@/features/validationTypes';
 
 export const ImportPublicationCard = () => {
   const { t } = useTranslation();
-  const [publicationType, setPublicationType] = useState('');
+  const [validationType, setValidationType] = useState('');
   const dispatch = useAppDispatch();
-  const publicationTypeState = useAppSelector(publicationTypeSelector);
+  const validationTypeState = useAppSelector(validationTypeSelector);
 
   useEffect(() => {
-    dispatch(loadPublicationTypesAsync());
+    dispatch(loadValidationTypesAsync());
   }, [dispatch]);
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     event.preventDefault();
-    setPublicationType(event.target.value as string);
+    setValidationType(event.target.value as string);
   };
 
   return (
@@ -67,7 +67,7 @@ export const ImportPublicationCard = () => {
           sm={6}
         >
           <Select
-            value={publicationType || ''}
+            value={validationType || ''}
             onChange={handleChange}
             sx={{
               '& .MuiSelect-select .notranslate::after': {
@@ -77,20 +77,18 @@ export const ImportPublicationCard = () => {
             }}
             name='publication-type-select'
             size='small'
-            loading={publicationTypeState.isLoading}
+            loading={validationTypeState.isLoading}
             fullWidth
           >
-            {publicationTypeState.publicationTypes.map(
-              (publicationTypeOption) => (
-                <MenuItem
-                  key={publicationTypeOption.value}
-                  value={publicationTypeOption.value}
-                  disableRipple
-                >
-                  {t(publicationTypeOption.label)}
-                </MenuItem>
-              ),
-            )}
+            {validationTypeState.validationTypes.map((validationTypeOption) => (
+              <MenuItem
+                key={validationTypeOption.value}
+                value={validationTypeOption.value}
+                disableRipple
+              >
+                {t(validationTypeOption.label)}
+              </MenuItem>
+            ))}
           </Select>
         </Grid>
         <Grid
@@ -99,11 +97,11 @@ export const ImportPublicationCard = () => {
           sm={6}
         >
           <Button
-            disabled={!publicationType}
+            disabled={!validationType}
             disableRipple
             variant='contained'
             component={RouterLink}
-            to={`/create/record/${publicationType}`}
+            to={`/create/record/${validationType}`}
           >
             {t('Import')}
           </Button>
