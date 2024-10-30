@@ -53,7 +53,21 @@ export const loadPublicationsAsync =
   async (dispatch) => {
     try {
       dispatch(updating());
-      const response = await axios.get(`search/divaOutput`);
+      const query = JSON.stringify({
+        search: {
+          include: {
+            includePart: {
+              genericSearchTerm: [
+                {
+                  value: "**"
+                }
+              ]
+            }
+          }
+        }
+      })
+
+      const response = await axios.get(`search/advanced/diva-outputSearch?query=${query}`);
       const transformed = transformToTable(response.data.data);
       dispatch(update(transformed as DivaOutput[]));
     } catch (e) {
