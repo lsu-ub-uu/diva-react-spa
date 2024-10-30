@@ -21,71 +21,68 @@ import { describe, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
-  formDefWithTextVar,
-  formDefWithOneNumberVariable,
-  formDefWithOneNumberVariableHavingDecimals,
-  formDefWithOneTextVariable,
-  formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
-  formDefWithOneCollectionVariable,
-  formDefWithOneNumberVariableWithAttributeCollection,
-  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
-  formDefWithOneGroupHavingTextVariableAsChild,
-  formDefWithOneNumberVariableAndGuiElementLink,
-  formDefWithGroupWithSpecifiedHeadlineLevel,
-  formDefWithGroupWithDefaultHeadlineLevel,
-  formDefWithOneRepeatingTextVariableWithModeOutput,
-  formDefWithOneCollectionVariableWithModeOutput,
-  formDefWithOneNumberVariableBeingOptional,
-  formDefWithOneTextVariableBeingOptional,
-  formDefWithOneRecordLinkBeingOptional,
-  formDefWithOneRecordLinkBeingRequired,
-  formDefWithOneTextVariableBeingRepeating,
-  formDefContributorGroupWithAuthorGroupAuthor,
-  formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
-  formDefWithOneOptionalNumberVariableWithAttributeCollection,
-  formDefWithTwoTextVariableHavingFinalValue,
-  formDefWithOptionalGroupWithRequiredTextVar,
-  formDefWithOptionalGroupWithRequiredNumberVar,
-  formDefWithOptionalGroupWithRequiredRecordLink,
-  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
-  formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars,
-  formDefWithOneRequiredNumberVariableWithAttributeCollection,
-  formDefWithOneOptionalGroupWithAttributeCollection,
-  formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
-  formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
-  formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
-  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
-  formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
-  formDefWithOptionalGroupWithTwoCollectionVars,
-  formDefWithTextVarAndNestedGroupsWithOneTextVar,
-  formDefTwoOptionalGroupsWithRequiredTextVars,
-  formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
-  formDefWithOneRequiredGroupWithAttributeCollection,
-  formDefWithOneNumberVariableModeOutput,
-  formDefForCheckTextValue,
-  formDefForCheckNumberValue,
-  formDefWithOneNumberVariableBeingOptionalOutput,
-  formDefPreprintWithOnlyAuthorName,
-  formDefWithOneTextVariableBeingPassword,
-  formDefTextVarsWithSameNameInData,
-  formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
   formDefCollVarsWithSameNameInData,
-  formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
+  formDefContributorGroupWithAuthorGroupAuthor,
+  formDefForCheckNumberValue,
+  formDefForCheckTextValue,
   formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes,
-  formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
-  formDefTitleInfoGroup,
-  formDefRequiredRepeatingTextVar,
-  formDefRequiredRepeatingText2Var,
-  formDefRequiredRepeatingCollectionVar,
+  formDefPreprintWithOnlyAuthorName,
   formDefRequiredRepeatingCollection2Var,
-  formDefWithWithOptionalGroupWithRequiredVar,
+  formDefRequiredRepeatingCollectionVar,
   formDefRequiredRepeatingNumber2Var,
   formDefRequiredRepeatingNumberVar,
+  formDefRequiredRepeatingText2Var,
+  formDefRequiredRepeatingTextVar,
+  formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes,
+  formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes,
+  formDefTextVarsWithSameNameInData,
+  formDefTitleInfoGroup,
+  formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars,
+  formDefTwoOptionalGroupsWithRequiredTextVars,
+  formDefWithGroupWithDefaultHeadlineLevel,
+  formDefWithGroupWithSpecifiedHeadlineLevel,
+  formDefWithOneCollectionVariable,
+  formDefWithOneCollectionVariableWithModeOutput,
+  formDefWithOneGroupHavingTextVariableAsChild,
+  formDefWithOneNumberVariable,
+  formDefWithOneNumberVariableAndGuiElementLink,
+  formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection,
+  formDefWithOneNumberVariableBeingOptional,
+  formDefWithOneNumberVariableBeingOptionalOutput,
+  formDefWithOneNumberVariableHavingDecimals,
+  formDefWithOneNumberVariableModeOutput,
+  formDefWithOneNumberVariableWithAttributeCollection,
+  formDefWithOneOptionalGroupWithAttributeCollection,
+  formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute,
+  formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection,
+  formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection,
+  formDefWithOneOptionalNumberVariableWithAttributeCollection,
+  formDefWithOneRecordLinkBeingOptional,
+  formDefWithOneRecordLinkBeingRequired,
+  formDefWithOneRepeatingTextVariableWithModeOutput,
+  formDefWithOneRequiredGroupWithAttributeCollection,
+  formDefWithOneRequiredNumberVariableWithAttributeCollection,
+  formDefWithOneTextVariable,
+  formDefWithOneTextVariableBeingOptional,
+  formDefWithOneTextVariableBeingPassword,
+  formDefWithOneTextVariableBeingRepeating,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShow,
+  formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero,
+  formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars,
+  formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars,
+  formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars,
+  formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar,
+  formDefWithOptionalGroupWithRequiredGroupWithRequiredVars,
+  formDefWithOptionalGroupWithRequiredNumberVar,
+  formDefWithOptionalGroupWithRequiredRecordLink,
+  formDefWithOptionalGroupWithRequiredTextVar,
+  formDefWithOptionalGroupWithTwoCollectionVars,
+  formDefWithTextVar,
+  formDefWithTextVarAndNestedGroupsWithOneTextVar,
+  formDefWithTwoTextVariableHavingFinalValue,
+  formDefWithWithOptionalGroupWithRequiredVar
 } from '@/__mocks__/data/formDef';
-import {
-  getChildrenWithSameNameInDataFromSchema,
-  hasComponentSameNameInData,
-} from '../../FormGenerator/FormGenerator';
+import { getChildrenWithSameNameInDataFromSchema, hasComponentSameNameInData } from '../../FormGenerator/FormGenerator';
 import { FormComponent } from '../../FormGenerator/types';
 import { getChildNameInDataArray } from '@/components/FormGenerator/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
@@ -2318,7 +2315,7 @@ describe('<Form />', () => {
         const languageElement = await screen.findByRole('listbox');
         await user.selectOptions(languageElement, 'aarLangItemText');
       });
-      // screen.debug(languageAttribute);
+
       await user.click(titleTypeAttribute);
 
       await waitFor(async () => {
@@ -2375,7 +2372,7 @@ describe('<Form />', () => {
         const languageElement = await screen.findByRole('listbox');
         await user.selectOptions(languageElement, 'aarLangItemText');
       });
-      // screen.debug(languageAttribute);
+
       await user.click(titleTypeAttribute);
 
       await waitFor(async () => {
@@ -2778,7 +2775,6 @@ describe('<Form />', () => {
       expect(familyName2).toBeInTheDocument();
       const givenName2 = screen.getByPlaceholderText('givenNameTextVarText2');
       expect(givenName2).toBeInTheDocument();
-      // screen.debug(familyName1);
 
       const user = userEvent.setup();
       await user.type(familyName1, 'Swenning');
