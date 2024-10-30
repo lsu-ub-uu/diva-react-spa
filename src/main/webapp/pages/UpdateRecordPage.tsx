@@ -28,10 +28,9 @@ import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraForm
 import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
 import {
   AsidePortal,
-  FormGenerator,
+  linksFromFormSchema,
   NavigationPanel,
   useBackdrop,
-  linksFromFormSchema,
   useSectionScroller,
 } from '@/components';
 import { removeEmpty } from '@/utils/removeEmpty';

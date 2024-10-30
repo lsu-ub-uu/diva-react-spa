@@ -48,7 +48,6 @@ import {
   isComponentSurroundingContainer,
   isComponentVariable,
   isFirstLevelGroup,
-  isFirstLevelVariable,
 } from './utils/helper';
 import {
   ControlledAutocomplete,

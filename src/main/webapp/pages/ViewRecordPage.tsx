@@ -23,14 +23,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
 import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
-import {
-  AsidePortal,
-  FormGenerator,
-  NavigationPanel,
-  useBackdrop,
-  linksFromFormSchema,
-  useSectionScroller,
-} from '@/components';
+import { AsidePortal, linksFromFormSchema, NavigationPanel, useBackdrop, useSectionScroller } from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
 import { CoraRecord } from '@/features/record/types';
 import { RecordForm } from '@/components/Form/RecordForm';

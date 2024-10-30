@@ -26,11 +26,10 @@ import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  useBackdrop,
-  FormGenerator,
   AsidePortal,
-  NavigationPanel,
   linksFromFormSchema,
+  NavigationPanel,
+  useBackdrop,
   useSectionScroller,
 } from '@/components';
 
