@@ -19,13 +19,13 @@
 
 import { Request, Response } from 'express';
 import { loadStuffOnServerStart } from '../config/configureServer';
-import { errorHandler } from '../server';
+import { errorHandler } from '../app';
 
 /**
  * @desc Get refreshed definitions
  * @route GET /api/refreshDefinitions
- * @access	Public
- * @description	Refresh the definitions collected from Cora in the pools.
+ * @access  Public
+ * @description  Refresh the definitions collected from Cora in the pools.
  */
 export const refreshDefinitions = async (req: Request, res: Response) => {
   try {

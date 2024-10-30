@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { deleteAuthTokenFromCora, requestAuthTokenOnLogin } from '../cora/auth';
-import { errorHandler } from '../server';
+import { errorHandler } from '../app';
 import { createLoginDefinition } from '../loginDefinition/loginDefinition';
 import { dependencies } from '../config/configureServer';
 
 /**
  * @desc Post appToken to get authToken
- * @route POST /api/auth/
+ * @route POST /api/auth/appToken
  * @access Public
  */
 export const postAppTokenToGetAuthToken = async (req: Request, res: Response) => {
@@ -29,7 +29,6 @@ export const postAppTokenToGetAuthToken = async (req: Request, res: Response) =>
 export const deleteAuthTokenOnLogout = async (req: Request, res: Response) => {
   const { actionLinks } = req.body;
   const authToken = req.header('authToken');
-  console.log('aaaa', actionLinks, authToken)
   try {
     const response = await deleteAuthTokenFromCora(actionLinks, authToken);
     res.status(response.status).json(response.status);

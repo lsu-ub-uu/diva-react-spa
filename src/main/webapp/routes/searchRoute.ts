@@ -18,10 +18,14 @@
  */
 
 import express from 'express';
-import { getPublicSearchResult } from '../controllers/searchController';
+import {
+  getAdvancedPublicSearchResult,
+  getPublicSearchResult
+} from '../controllers/searchController';
 
 const searchRoute = express.Router();
 
+searchRoute.route('/advanced/:searchType').get(getAdvancedPublicSearchResult);
 searchRoute.route('/:searchType').get(getPublicSearchResult);
 
 export { searchRoute };

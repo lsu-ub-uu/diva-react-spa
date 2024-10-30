@@ -18,10 +18,11 @@
  */
 
 import express from 'express';
-import { getForm } from '../controllers/formController';
+import { getForm, getSearchForm } from '../controllers/formController';
 
 const formRoute = express.Router();
 
+formRoute.route('/search/:searchId').get(getSearchForm);
 formRoute.route('/:validationTypeId/:mode').get(getForm);
 
 export { formRoute };

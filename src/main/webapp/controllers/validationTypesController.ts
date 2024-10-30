@@ -21,7 +21,7 @@ import { Request, Response } from 'express';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
 import { transformCoraValidationTypes } from '../config/transformValidationTypes';
-import { errorHandler } from '../server';
+import { errorHandler } from '../app';
 
 /**
  * @desc Get list of existing validationTypes
@@ -42,7 +42,7 @@ export const getSearchedValidationTypes = async (req: Request, res: Response) =>
               children: [
                 {
                   name: 'validatesRecordTypeSearchTerm',
-                  value: 'recordType_divaOutput*'
+                  value: 'recordType_diva-output'
                 }
               ]
             }

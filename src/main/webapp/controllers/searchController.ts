@@ -20,12 +20,18 @@
 import { Request, Response } from 'express';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
-import { errorHandler } from '../server';
+import { errorHandler } from '../app';
 import { transformRecords } from '../config/transformRecord';
 import { dependencies } from '../config/configureServer';
-import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
+import { createLinkedRecordDefinition, FormMetaData } from '../formDefinition/formDefinition';
 import { BFFMetadataGroup } from '../config/bffTypes';
 import { getSearchTermNameFromSearchLink } from '../cora/search';
+import {
+  createBFFMetadataReference,
+  createMetaDataFromChildReference
+} from '../formDefinition/formMetadata';
+import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
+import { transformToCoraData } from '../config/transformToCora';
 
 /**
  * @desc Get result of a public search results
@@ -35,12 +41,11 @@ import { getSearchTermNameFromSearchLink } from '../cora/search';
 export const getPublicSearchResult = async (req: Request, res: Response) => {
   try {
     const { searchTermValue } = req.query;
-    const searchLink = req.path.split('/')[1];
+    const { searchType } = req.params;
 
-    const searchTermName = getSearchTermNameFromSearchLink(dependencies, searchLink);
+    const searchTermName = getSearchTermNameFromSearchLink(dependencies, searchType);
 
     const authToken = req.header('authToken') ?? '';
-    const { searchType } = req.params;
 
     const searchQuery: DataGroup = {
       name: 'search',
@@ -85,6 +90,72 @@ export const getPublicSearchResult = async (req: Request, res: Response) => {
       );
     });
     res.status(200).json(transformedRecords);
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
+const createSearchMetaData = (id: string): FormMetaData => {
+  const { metadataPool } = dependencies;
+  const metadata = metadataPool.get(id);
+
+  const metadataGroup: BFFMetadataGroup = metadataPool.get(metadata.id) as BFFMetadataGroup;
+
+  const formRootReference = createBFFMetadataReference(metadataGroup.id);
+  return createMetaDataFromChildReference(formRootReference, metadataPool);
+};
+
+/**
+ * @desc Get result of a public search results
+ * @route GET /api/advanced/search
+ * @access Public
+ */
+export const getAdvancedPublicSearchResult = async (req: Request, res: Response) => {
+  try {
+    const { query } = req.query;
+    const queryObject = JSON.parse(query as string);
+
+    const authToken = req.header('authToken') ?? '';
+    const { searchType } = req.params;
+    const searchLink = req.path.split('/')[req.path.split('/').length - 1];
+    const searchName = dependencies.searchPool.get(searchLink);
+
+    if (!dependencies.searchPool.has(searchLink)) {
+      throw new Error(`Search [${searchLink}] does not exist`);
+    }
+
+    const searchMetadata = createSearchMetaData(searchName.metadataId);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(searchMetadata);
+    const transformData = transformToCoraData(formMetaDataPathLookup, queryObject);
+
+    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
+      searchType,
+      transformData[0] as DataGroup,
+      authToken
+    );
+
+    const transformedRecords = transformRecords(dependencies, response.data);
+
+    const { fromNo, toNo, totalNo, containDataOfType } = response.data.dataList;
+
+    transformedRecords.forEach((transformedRecord) => {
+      const recordType = dependencies.recordTypePool.get(transformedRecord.recordType);
+      const { listPresentationViewId } = recordType;
+
+      const presentationGroup = dependencies.presentationPool.get(listPresentationViewId);
+      const metadataGroup = dependencies.metadataPool.get(
+        presentationGroup.presentationOf
+      ) as BFFMetadataGroup;
+      transformedRecord.presentation = createLinkedRecordDefinition(
+        dependencies,
+        metadataGroup,
+        presentationGroup
+      );
+    });
+    res
+      .status(response.status)
+      .json({ fromNo, toNo, totalNo, containDataOfType, data: transformedRecords });
   } catch (error: unknown) {
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();

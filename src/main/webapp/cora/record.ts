@@ -22,18 +22,27 @@ import { DataGroup } from '../utils/cora-data/CoraData';
 
 const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
 const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
+
+const createHeaders = (
+  init: Record<string, string>,
+  authToken?: string
+): Record<string, string> => {
+  const headers = init;
+
+  if (authToken) {
+    headers.Authtoken = authToken;
+  }
+
+  return headers;
+};
+
 export async function getRecordDataListByType<T>(
   type: string,
-  authToken: string
+  authToken?: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}`;
-  const headers = {
-    Authtoken: `${authToken}`,
-    'Content-Type': RECORD_LIST_CONTENT_TYPE,
-    Accept: RECORD_LIST_CONTENT_TYPE
-  };
-  const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
-  return response;
+  const headers = createHeaders({ Accept: RECORD_LIST_CONTENT_TYPE }, authToken);
+  return axios.get(apiUrl, { headers });
 }
 
 export async function getSearchResultDataListBySearchType<T>(
@@ -46,73 +55,58 @@ export async function getSearchResultDataListBySearchType<T>(
   const searchDataString = JSON.stringify(searchData);
   const finalUrl = encodeURI(`${apiUrl}?searchData=${searchDataString}`);
 
-  const headers = {
-    Authtoken: `${authToken}`,
-    Accept: RECORD_LIST_CONTENT_TYPE
-  };
+  const headers = createHeaders({ Accept: RECORD_LIST_CONTENT_TYPE }, authToken);
 
-  const response: AxiosResponse<T> = await axios.get(finalUrl, { headers });
-  return response;
+  return axios.get(finalUrl, { headers });
 }
 
 export async function getRecordDataById<T>(
   type: string,
   id: string,
-  authToken: string
+  authToken?: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${id}`;
-  const headers = {
-    Accept: RECORD_CONTENT_TYPE,
-    'Content-Type': RECORD_CONTENT_TYPE,
-    Authtoken: `${authToken}`
-  };
-  const response: AxiosResponse<T> = await axios.get(apiUrl, { headers });
-  return response;
+  const headers = createHeaders({ Accept: RECORD_CONTENT_TYPE }, authToken);
+
+  return axios.get(apiUrl, { headers });
 }
 
 export async function postRecordData<T>(
   payload: DataGroup,
   type: string,
-  authToken: string
+  authToken?: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}`;
-  const headers = {
-    Accept: RECORD_CONTENT_TYPE,
-    'Content-Type': RECORD_CONTENT_TYPE,
-    Authtoken: `${authToken}`
-  };
-  const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
-  return response;
+
+  const headers = createHeaders(
+    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
+    authToken
+  );
+
+  return axios.post(apiUrl, payload, { headers });
 }
 
 export async function updateRecordDataById<T>(
   recordId: string,
   payload: DataGroup,
   type: string,
-  authToken: string
+  authToken?: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${recordId}`;
-  const headers = {
-    Accept: RECORD_CONTENT_TYPE,
-    'Content-Type': RECORD_CONTENT_TYPE,
-    Authtoken: `${authToken}`
-  };
-  const response: AxiosResponse<T> = await axios.post(apiUrl, payload, { headers });
-  return response;
+  const headers = createHeaders(
+    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
+    authToken
+  );
+  return axios.post(apiUrl, payload, { headers });
 }
 
 export async function deleteRecordDataById<T>(
   recordId: string,
   type: string,
-  authToken: string
+  authToken?: string
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${recordId}`;
-  const headers = {
-    Accept: RECORD_CONTENT_TYPE,
-    'Content-Type': RECORD_CONTENT_TYPE,
-    Authtoken: `${authToken}`
-  };
+  const headers = createHeaders({}, authToken);
 
-  const response: AxiosResponse<T> = await axios.delete(apiUrl, { headers });
-  return response;
+  return axios.delete(apiUrl, { headers });
 }

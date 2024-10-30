@@ -19,13 +19,17 @@
 
 import { Request, Response } from 'express';
 import { dependencies } from '../config/configureServer';
-import { errorHandler } from '../server';
-import { createFormDefinition } from '../formDefinition/formDefinition';
+import { errorHandler } from '../app';
+import {
+  createFormDefinition,
+  createLinkedRecordDefinition
+} from '../formDefinition/formDefinition';
+import { BFFMetadataGroup } from '../config/bffTypes';
 
 /**
  * @desc Get requested form
  * @route GET /api/form
- * @access	Private
+ * @access  Private
  */
 export const getForm = async (req: Request, res: Response) => {
   try {
@@ -46,6 +50,45 @@ export const getForm = async (req: Request, res: Response) => {
     );
 
     res.status(200).json(formDef);
+  } catch (error: unknown) {
+    console.log(error);
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
+/**
+ * @desc Get requested form
+ * @route GET /api/form/search
+ * @access  Private
+ */
+export const getSearchForm = async (req: Request, res: Response) => {
+  try {
+    const { searchId } = req.params;
+
+    if (!dependencies.searchPool.has(searchId)) {
+      res
+        .status(404)
+        .json({ message: `SearchId [${searchId}] does not exist` })
+        .send();
+      return;
+    }
+
+    const searchFromPool = dependencies.searchPool.get(searchId);
+    const searchMetadataGroup = dependencies.metadataPool.get(
+      searchFromPool.metadataId
+    ) as BFFMetadataGroup;
+    const searchPresentationGroup = dependencies.presentationPool.get(
+      searchFromPool.presentationId
+    );
+
+    const { form } = createLinkedRecordDefinition(
+      dependencies,
+      searchMetadataGroup,
+      searchPresentationGroup
+    );
+
+    res.status(200).json({ form, recordTypeToSearchIn: searchFromPool.recordTypeToSearchIn });
   } catch (error: unknown) {
     console.log(error);
     const errorResponse = errorHandler(error);

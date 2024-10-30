@@ -25,7 +25,7 @@ import {
   postRecordData,
   updateRecordDataById
 } from '../cora/record';
-import { errorHandler } from '../server';
+import { errorHandler } from '../app';
 import { cleanJson } from '../utils/structs/removeEmpty';
 import { dependencies } from '../config/configureServer';
 import { createFormMetaData } from '../formDefinition/formMetadata';
@@ -37,71 +37,6 @@ import * as TYPES from '../config/bffTypes';
 import { BFFMetadataGroup, BFFMetadataRecordLink } from '../config/bffTypes';
 
 /**
- * @desc Post an update to a record to Cora
- * @route POST /api/record/:validationTypeId/:recordId
- * @access Private
- */
-export const postRecordByValidationTypeAndId = async (req: Request, res: Response) => {
-  try {
-    const { validationTypeId, recordId } = req.params;
-    const authToken = req.header('authToken') ?? '';
-
-    const payload = cleanJson(req.body);
-    const { values } = payload;
-
-    const { validationTypePool } = dependencies;
-    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
-    if (!validationTypePool.has(validationTypeId)) {
-      throw new Error(`Validation type [${validationTypeId}] does not exist`);
-    }
-
-    const FORM_MODE_UPDATE = 'update';
-
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
-    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-    const transformData = transformToCoraData(formMetaDataPathLookup, values);
-
-    const response = await updateRecordDataById<RecordWrapper>(
-      recordId,
-      transformData[0] as DataGroup,
-      recordType,
-      authToken
-    );
-    res.status(response.status).json({});
-  } catch (error: unknown) {
-    console.error(error);
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-};
-
-/**
- * @desc Delete a record from Cora
- * @route DELETE /api/record/:validationTypeId/:recordId
- * @access Private
- */
-export const deleteRecordByValidationTypeAndId = async (req: Request, res: Response) => {
-  try {
-    const { recordType, recordId } = req.params;
-    const authToken = req.header('authToken') ?? '';
-
-    const { recordTypePool } = dependencies;
-
-    if (!recordTypePool.has(recordType)) {
-      throw new Error(`Validation type [${recordType}] does not exist`);
-    }
-
-    const response = await deleteRecordDataById(recordId, recordType, authToken);
-
-    res.status(response.status).json({ message: 'de' });
-  } catch (error: unknown) {
-    console.error(error);
-    const errorResponse = errorHandler(error);
-    res.status(errorResponse.status).json(errorResponse).send();
-  }
-};
-
-/**
  * @desc Create a new record to Cora
  * @route POST /api/record/:validationTypeId/
  * @access Private
@@ -109,7 +44,7 @@ export const deleteRecordByValidationTypeAndId = async (req: Request, res: Respo
 export const postRecordByValidationType = async (req: Request, res: Response) => {
   try {
     const { validationTypeId } = req.params;
-    const authToken = req.header('authToken') ?? '';
+    const authToken = req.header('authToken');
 
     const payload = cleanJson(req.body);
 
@@ -140,6 +75,76 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
 };
 
 /**
+ * @desc Post an update to a record to Cora
+ * @route POST /api/record/:validationTypeId/:recordId
+ * @access Private
+ */
+export const postRecordByValidationTypeAndId = async (req: Request, res: Response) => {
+  try {
+    const { validationTypeId, recordId } = req.params;
+    const authToken = req.header('authToken');
+
+    const payload = cleanJson(req.body);
+    const { values } = payload;
+
+    const { validationTypePool } = dependencies;
+    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
+    if (!validationTypePool.has(validationTypeId)) {
+      throw new Error(`Validation type [${validationTypeId}] does not exist`);
+    }
+
+    const FORM_MODE_UPDATE = 'update';
+
+    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
+    const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+
+    const transformData = transformToCoraData(formMetaDataPathLookup, values);
+
+    const response = await updateRecordDataById<RecordWrapper>(
+      recordId,
+      transformData[0] as DataGroup,
+      recordType,
+      authToken
+    );
+
+    const record = transformRecord(dependencies, response.data);
+    res.status(response.status).json(record);
+  } catch (error: unknown) {
+    console.error(error);
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
+/**
+ * @desc Delete a record from Cora
+ * @route DELETE /api/record/:validationTypeId/:recordId
+ * @access Private
+ */
+export const deleteRecordByValidationTypeAndId = async (req: Request, res: Response) => {
+  try {
+    const { recordType, recordId } = req.params;
+    const authToken = req.header('authToken');
+
+    const { recordTypePool } = dependencies;
+
+    if (!recordTypePool.has(recordType)) {
+      console.error(`Validation type [${recordType}] does not exist`);
+      res.status(404).send();
+      return;
+    }
+
+    const response = await deleteRecordDataById(recordId, recordType, authToken);
+
+    res.status(response.status).json({ message: 'de' });
+  } catch (error: unknown) {
+    console.error(error);
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};
+
+/**
  * @desc Get record data for existing records
  * @route GET /api/record/:recordType/:recordId
  * @access Private
@@ -149,7 +154,7 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
     const { presentationRecordLinkId } = req.query;
     const { recordType, recordId } = req.params;
 
-    const authToken = req.header('authToken') ?? '';
+    const authToken = req.header('authToken');
     const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
 
     const recordWrapper = response.data;
@@ -181,6 +186,21 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
   }
 };
 
+export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
+  const presentationLink = dependencies.presentationPool.get(
+    presentationLinkId
+  ) as TYPES.BFFPresentationRecordLink;
+  const presentationId =
+    presentationLink.linkedRecordPresentations !== undefined
+      ? presentationLink.linkedRecordPresentations[0].presentationId
+      : presentationLink.id;
+  const presentationGroup = dependencies.presentationPool.get(presentationId);
+  const metadataGroup = dependencies.metadataPool.get(
+    presentationGroup.presentationOf
+  ) as TYPES.BFFMetadataGroup;
+  return { presentationGroup, metadataGroup };
+};
+
 /**
  * @desc Get record data for new record
  * @route GET /api/record/:validationType
@@ -190,7 +210,6 @@ export const getRecordByValidationTypeId = async (req: Request, res: Response) =
   try {
     const { validationTypeId } = req.params;
 
-    // const authToken = req.header('authToken') ?? '';
     const validationType = dependencies.validationTypePool.get(validationTypeId);
     const recordTypeGroup = dependencies.recordTypePool.get(validationType.validatesRecordTypeId);
     const metadataGroup = dependencies.metadataPool.get(
@@ -220,19 +239,4 @@ export const getRecordByValidationTypeId = async (req: Request, res: Response) =
     const errorResponse = errorHandler(error);
     res.status(errorResponse.status).json(errorResponse).send();
   }
-};
-
-export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
-  const presentationLink = dependencies.presentationPool.get(
-    presentationLinkId
-  ) as TYPES.BFFPresentationRecordLink;
-  const presentationId =
-    presentationLink.linkedRecordPresentations !== undefined
-      ? presentationLink.linkedRecordPresentations[0].presentationId
-      : presentationLink.id;
-  const presentationGroup = dependencies.presentationPool.get(presentationId);
-  const metadataGroup = dependencies.metadataPool.get(
-    presentationGroup.presentationOf
-  ) as TYPES.BFFMetadataGroup;
-  return { presentationGroup, metadataGroup };
 };
