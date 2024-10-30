@@ -54,7 +54,8 @@ describe('SearchController', () => {
 
       // Assert
       expect(response.status).toBe(200);
-      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      expect(response.body.data.length).toBeGreaterThanOrEqual(1);
+      expect(parseInt(response.body.totalNo)).toBeGreaterThanOrEqual(1);
 
       // Cleanup
       await deleteDivaOutput(id, authToken);

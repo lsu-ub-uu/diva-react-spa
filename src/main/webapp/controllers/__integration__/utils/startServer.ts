@@ -19,12 +19,14 @@
 import { CORA_DATA_LOADED_EVENT, eventEmitter, start } from '../../../app';
 import { Server } from 'http';
 
+const getRandomPort = () => Math.floor(Math.random() * (65535 - 1024) + 1024);
+
 export const startServer = async (): Promise<Server> => {
   const coraDataLoaded = new Promise((resolve) => {
     eventEmitter.once(CORA_DATA_LOADED_EVENT, resolve);
   });
 
-  const server = start();
+  const server = start(getRandomPort());
 
   await coraDataLoaded;
   return server;

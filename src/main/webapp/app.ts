@@ -73,8 +73,8 @@ app.use('/api/record', recordRoute);
 app.use('/api/form', formRoute);
 app.use('/api/refreshDefinitions', refreshDefinitionsRoute);
 
-export const start = () => {
-  return app.listen(PORT, (): void => {
+export const start = (port?: number) => {
+  return app.listen(port ?? PORT, (): void => {
     console.log(`Server running at ${PORT}`);
     console.log(`Cora API-url ${CORA_API_URL}`);
     console.log(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);

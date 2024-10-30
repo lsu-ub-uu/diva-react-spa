@@ -21,7 +21,7 @@ import { Request, Response } from 'express';
 import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
 import { errorHandler } from '../app';
-import { transformRecord, transformRecords } from '../config/transformRecord';
+import { transformRecords } from '../config/transformRecord';
 import { dependencies } from '../config/configureServer';
 import { createLinkedRecordDefinition, FormMetaData } from '../formDefinition/formDefinition';
 import { BFFMetadataGroup } from '../config/bffTypes';

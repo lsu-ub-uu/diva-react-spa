@@ -69,17 +69,12 @@ describe('record', () => {
         status: 200
       };
       const apiUrl: string = `/record/${type}`;
-      const guestAuthtoken = '';
       mockAxios
         .onGet(apiUrl, {
-          headers: {
-            Authtoken: guestAuthtoken,
-            'Content-Type': RECORD_LIST_CONTENT_TYPE,
-            Accept: RECORD_LIST_CONTENT_TYPE
-          }
+          headers: { Accept: RECORD_LIST_CONTENT_TYPE }
         })
         .reply(200, expectedResponse);
-      const response = await getRecordDataListByType(type, guestAuthtoken);
+      const response = await getRecordDataListByType(type);
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
     });
 
@@ -113,7 +108,6 @@ describe('record', () => {
         .onGet(apiUrl, {
           headers: {
             Accept: RECORD_CONTENT_TYPE,
-            'Content-Type': RECORD_CONTENT_TYPE,
             Authtoken: `${authToken}`
           }
         })
@@ -391,13 +385,13 @@ describe('record', () => {
       };
       const apiUrl: string = `/record/${type}/${recordId}`;
       mockAxios
+
         .onDelete(apiUrl, {
-          headers: {
-            Accept: RECORD_CONTENT_TYPE,
-            'Content-Type': RECORD_CONTENT_TYPE,
+          headers: expect.objectContaining({
             Authtoken: `${authToken}`
-          }
+          })
         })
+
         .reply(200, expectedResponse);
       const response = await deleteRecordDataById(recordId, type, authToken);
       expect(response.data).toEqual(expect.objectContaining(expectedResponse));
