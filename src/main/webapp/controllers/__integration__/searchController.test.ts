@@ -61,4 +61,28 @@ describe('SearchController', () => {
       await deleteDivaOutput(id, authToken);
     });
   });
+
+  describe('/api/search/divaOutput', () => {
+    it('makes a simple search', async () => {
+      // Arrange
+      const testAgent = supertest.agent(server);
+      const auth: Auth = await loginAsDivaAdmin(testAgent);
+      const authToken = auth.data.token;
+      const title = 'sqip';
+
+      const { id } = await createDivaOutput(createExampleDivaOuput(title), authToken);
+
+      // Act
+      const response = await testAgent
+        .get('/api/search/divaOutput')
+        .set('Authtoken', authToken)
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.data.length).toBeGreaterThanOrEqual(1);
+
+      // Cleanup
+      await deleteDivaOutput(id, authToken);
+    });
+  });
 });

@@ -161,3 +161,46 @@ export const getAdvancedPublicSearchResult = async (req: Request, res: Response)
     res.status(errorResponse.status).json(errorResponse).send();
   }
 };
+
+/**
+ * @desc Get created divaOutputs
+ * @route GET /api/divaOutputs
+ * @access  Public
+ */
+export const getDivaOutputs = async (req: Request, res: Response) => {
+  try {
+    const authToken = req.header('authToken') ?? '';
+    const searchQuery: DataGroup = {
+      name: 'search',
+      children: [
+        {
+          name: 'include',
+          children: [
+            {
+              name: 'includePart',
+              children: [
+                {
+                  name: 'genericSearchTerm',
+                  value: '*'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const response = await getSearchResultDataListBySearchType<DataListWrapper>(
+      'diva-outputSearch',
+      searchQuery,
+      authToken
+    );
+
+    const transformedRecords = transformRecords(dependencies, response.data);
+    const { fromNo, toNo, totalNo, containDataOfType } = response.data.dataList;
+    res.status(200).json({ fromNo, toNo, totalNo, containDataOfType, data: transformedRecords });
+  } catch (error: unknown) {
+    const errorResponse = errorHandler(error);
+    res.status(errorResponse.status).json(errorResponse).send();
+  }
+};

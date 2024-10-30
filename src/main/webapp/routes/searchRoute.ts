@@ -20,12 +20,14 @@
 import express from 'express';
 import {
   getAdvancedPublicSearchResult,
-  getPublicSearchResult
+  getPublicSearchResult,
+  getDivaOutputs
 } from '../controllers/searchController';
 
 const searchRoute = express.Router();
 
 searchRoute.route('/advanced/:searchType').get(getAdvancedPublicSearchResult);
+searchRoute.route('/divaOutput').get(getDivaOutputs);
 searchRoute.route('/:searchType').get(getPublicSearchResult);
 
 export { searchRoute };

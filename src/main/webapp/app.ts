@@ -22,7 +22,6 @@ import { configureServer, loadStuffOnServerStart } from './config/configureServe
 import {
   authRoute,
   translationRoute,
-  divaOutputsRoute,
   validationTypesRoute,
   recordRoute,
   formRoute,
@@ -66,7 +65,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/auth', authRoute);
 app.use('/api/translations/', translationRoute);
-app.use('/api/divaOutputs', divaOutputsRoute);
+
 app.use('/api/validationTypes', validationTypesRoute);
 app.use('/api/search', searchRoute);
 app.use('/api/record', recordRoute);
