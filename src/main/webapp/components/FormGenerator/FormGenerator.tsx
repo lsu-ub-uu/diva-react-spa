@@ -129,6 +129,7 @@ export const FormGenerator = ({
               key={attribute.name}
               item
               xs={6}
+              id={`anchor_${addAttributesToName(component, component.name)}`}
             >
               <ControlledSelectField
                 key={`${attribute.name}_${index}`}
@@ -155,6 +156,7 @@ export const FormGenerator = ({
               key={attribute.name}
               item
               xs={6}
+              id={`anchor_${addAttributesToName(component, component.name)}`}
             >
               <ControlledSelectField
                 key={`${attribute.name}_${index}`}
@@ -246,7 +248,7 @@ export const FormGenerator = ({
     return (
       <React.Fragment key={reactKey}>
         <div
-          id='surrounding-container'
+          id={`anchor_${addAttributesToName(component, component.name)}`}
           key={reactKey}
           style={{
             // background: 'lightgray',
@@ -292,7 +294,7 @@ export const FormGenerator = ({
         xs={12}
         key={reactKey}
         className='anchorLink'
-        id={`anchor_${component.name}`}
+        id={`anchor_${addAttributesToName(component, component.name)}`}
       >
         <Box sx={{ mb: 2 }}>
           <Box
@@ -330,6 +332,7 @@ export const FormGenerator = ({
             spacing={2}
             justifyContent='space-between'
             alignItems='flex-start'
+            id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             {createFormComponentAttributes(component, currentComponentNamePath)}
 
@@ -347,8 +350,7 @@ export const FormGenerator = ({
       <Grid
         item
         key={reactKey}
-        id={component.name}
-        className='aaaaaaaaa'
+        id={`anchor_${addAttributesToName(component, component.name)}`}
         xs={12}
         sx={{
           display: 'flex',
@@ -438,6 +440,7 @@ export const FormGenerator = ({
         xs={12}
         key={reactKey}
         sx={{ position: 'relative' }}
+        id={`anchor_${addAttributesToName(component, component.name)}`}
       >
         {component?.showLabel && (
           <Box
@@ -655,11 +658,7 @@ const createTextOrNumberVariable = (
             ? 'auto'
             : '100%',
       }}
-      id={
-        isFirstLevelVariable(name)
-          ? `anchor_${addAttributesToName(component, component.name)}`
-          : ''
-      }
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <ControlledTextField
         multiline={component.inputType === 'textarea'}
@@ -691,6 +690,7 @@ const createRecordLinkWithSearch = (
       key={reactKey}
       item
       xs={12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
       sm={renderElementGridWrapper ? component.gridColSpan : 12}
     >
       <ControlledAutocomplete
@@ -756,6 +756,7 @@ const createCollectionVariable = (
       item
       xs={12}
       sm={renderElementGridWrapper ? component.gridColSpan : 12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <ControlledSelectField
         name={name}
@@ -792,6 +793,7 @@ const createText = (
             ? 'auto'
             : '2em',
       }}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <Typography
         variant={component.textStyle ?? 'bodyTextStyle'}
