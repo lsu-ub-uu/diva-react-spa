@@ -19,10 +19,7 @@
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  createDefaultValuesFromFormSchema,
-  RecordData,
-} from '../FormGenerator/utils';
+import { createDefaultValuesFromFormSchema, RecordData } from '../FormGenerator/utils';
 import { generateYupSchemaFromFormSchema } from '../FormGenerator/utils/yupSchema';
 import { FormGenerator } from '@/components';
 import { FormSchema } from '../FormGenerator/types';
@@ -53,6 +50,7 @@ export const AutocompleteForm = ({ ...props }: AutocompleteFormProps) => {
       onInvalid={() => {}}
       control={control}
       getValues={getValues}
+      linkedData
     />
   );
 };
