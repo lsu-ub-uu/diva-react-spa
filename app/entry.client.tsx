@@ -18,6 +18,10 @@ import ClientStyleContext from '@/ClientStyleContext';
 import { CacheProvider, ThemeProvider } from '@emotion/react';
 import { divaTheme } from '@/theme';
 import { CssBaseline } from '@mui/material';
+import axios from 'axios';
+
+const { VITE_BFF_API_URL } = import.meta.env;
+axios.defaults.baseURL = VITE_BFF_API_URL;
 
 interface ClientCacheProviderProps {
   children: ReactNode;

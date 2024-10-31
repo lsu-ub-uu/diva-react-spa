@@ -18,9 +18,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import Step from '@mui/material/Step';
-import StepButton from '@mui/material/StepButton';
-import Stepper from '@mui/material/Stepper';
+import { Step, StepButton, Stepper } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { NavigationPanelLink } from '../index';
 

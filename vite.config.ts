@@ -36,6 +36,9 @@ export default defineConfig({
     outDir: '../../../dist',
   },
   ssr: {
+    optimizeDeps: {
+      include: ['lodash'],
+    },
     noExternal: ['@mui/icons-material', 'lodash'],
   },
 });

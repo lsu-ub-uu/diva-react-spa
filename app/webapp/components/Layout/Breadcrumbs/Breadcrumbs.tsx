@@ -21,8 +21,9 @@ import {
   createSvgIcon,
   Link,
 } from '@mui/material';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+import { useLocation, Link as RouterLink } from '@remix-run/react';
 
 const HomeIcon = createSvgIcon(
   <path
@@ -64,7 +65,7 @@ export const Breadcrumbs = () => {
         color='inherit'
         sx={{ display: 'flex', alignItems: 'center' }}
         component={RouterLink}
-        to='/diva-react-spa/src/main/public'
+        to='/'
       >
         <HomeIcon
           sx={{ mr: 0.5 }}

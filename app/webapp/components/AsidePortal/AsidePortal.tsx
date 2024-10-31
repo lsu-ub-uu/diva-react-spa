@@ -24,6 +24,7 @@ interface AsidePortalProps {
   element?: Element;
   children: React.ReactNode;
 }
+
 interface StyledAsidePortalProps {
   fixed?: boolean;
 }
@@ -40,14 +41,16 @@ const StyledAsidePortal = styled.div<StyledAsidePortalProps>((props) => ({
 export const AsidePortal = (props: AsidePortalProps) => {
   const [fixed, setFixed] = useState(false);
 
-  const setFixedSidebar = () => {
-    if (window.scrollY >= 140) {
-      setFixed(true);
-    } else {
-      setFixed(false);
-    }
-  };
-  window.addEventListener('scroll', setFixedSidebar);
+  useEffect(() => {
+    const setFixedSidebar = () => {
+      if (window.scrollY >= 140) {
+        setFixed(true);
+      } else {
+        setFixed(false);
+      }
+    };
+    window.addEventListener('scroll', setFixedSidebar);
+  }, []);
 
   const [element, setElement] = useState<Element | null>(null);
 

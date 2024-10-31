@@ -17,7 +17,7 @@
  */
 
 import { screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from '@remix-run/react';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { CreatePublicationCard, ListPublicationsCard } from '../../index';

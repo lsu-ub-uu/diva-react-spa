@@ -25,7 +25,7 @@ import { IconButton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@remix-run/react';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';

@@ -19,18 +19,21 @@
 
 import { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@remix-run/react';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useCoraFormSchemaByValidationType, useCoraRecordByTypeAndId } from '../app/hooks';
+import {
+  useCoraFormSchemaByValidationType,
+  useCoraRecordByTypeAndId,
+} from '../app/hooks';
 import {
   AsidePortal,
   FormGenerator,
   linksFromFormSchema,
   NavigationPanel,
   useBackdrop,
-  useSectionScroller
+  useSectionScroller,
 } from '../components';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';

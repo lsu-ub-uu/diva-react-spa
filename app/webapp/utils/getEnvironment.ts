@@ -18,6 +18,9 @@
  */
 export type Environment = 'pre' | 'preview' | 'local';
 export default function getEnvironment(): Environment {
+  if (typeof window === 'undefined') {
+    return 'local'; // TODO fix this for SSR
+  }
   const { host } = window.location;
 
   if (host.startsWith('cora.epc')) {

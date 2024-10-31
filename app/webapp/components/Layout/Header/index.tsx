@@ -20,7 +20,7 @@ import { Box, Button, Container, Grid, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@remix-run/react';
 import { Login } from './Login/Login';
 import divaLogo from '../../../assets/divaLogo.svg';
 
@@ -41,7 +41,7 @@ export const Header = () => {
           <Grid item>
             <Link
               component={RouterLink}
-              to='/diva-react-spa/src/main/public'
+              to='/'
             >
               <img
                 src={divaLogo}

@@ -28,24 +28,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Provider as StateProvider } from 'react-redux';
 
 const App = () => {
-  return (
-    <BackdropProvider>
-      <StateProvider store={store}>
-        <ThemeProvider theme={divaTheme}>
-          <CssBaseline />
-          <SnackbarProvider maxSnack={5}>
-            <ErrorBoundary
-              fallback={<h1>Something went wrong. Try again later</h1>}
-            >
-              <Suspense fallback={<h3>Waiting for DiVA 3 GUI to load...</h3>}>
-                <Router />
-              </Suspense>
-            </ErrorBoundary>
-          </SnackbarProvider>
-        </ThemeProvider>
-      </StateProvider>
-    </BackdropProvider>
-  );
+  return <Router />;
 };
 
 export default App;

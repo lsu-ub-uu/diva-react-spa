@@ -15,8 +15,12 @@ import createEmotionCache from './createEmotionCache';
 import { CacheProvider, ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/theme';
+import axios from 'axios';
 
 const ABORT_DELAY = 5_000;
+
+const { VITE_BFF_API_URL } = import.meta.env;
+axios.defaults.baseURL = VITE_BFF_API_URL;
 
 export default function handleRequest(
   request: Request,

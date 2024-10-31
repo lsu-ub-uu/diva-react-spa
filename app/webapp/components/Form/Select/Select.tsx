@@ -18,13 +18,14 @@
 
 import React, { ForwardedRef } from 'react';
 import {
+  CircularProgress,
   Alert,
   BaseSelectProps,
   OutlinedInput,
   Select as MuiSelect,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CircularProgress from '@mui/material/CircularProgress';
+
 import { useTranslation } from 'react-i18next';
 
 interface ExtendedSelectProps extends BaseSelectProps {

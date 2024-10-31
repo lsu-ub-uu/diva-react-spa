@@ -19,15 +19,19 @@
 
 import { useEffect } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import { CoraRecord, useCoraFormSchemaByValidationType, useCoraRecordByTypeAndId } from '../app/hooks';
+import { useParams } from '@remix-run/react';
+import {
+  CoraRecord,
+  useCoraFormSchemaByValidationType,
+  useCoraRecordByTypeAndId,
+} from '../app/hooks';
 import {
   AsidePortal,
   FormGenerator,
   linksFromFormSchema,
   NavigationPanel,
   useBackdrop,
-  useSectionScroller
+  useSectionScroller,
 } from '../components';
 import { removeComponentsWithoutValuesFromSchema } from '../components/NavigationPanel/utils';
 

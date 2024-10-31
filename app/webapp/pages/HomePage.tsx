@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Stack } from '@mui/material';
+import { Alert, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import Alert from '@mui/material/Alert';
+
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 import { AsidePortal, TabsMenu } from '../components';
@@ -28,6 +28,7 @@ export const HomePage = () => {
 
   return (
     <>
+      {' '}
       {/*<Helmet>
         <title>{t('start')} | DiVA</title>
       </Helmet>*/}

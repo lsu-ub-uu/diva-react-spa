@@ -20,20 +20,20 @@ import { useState, MouseEvent, useEffect } from 'react';
 import { Button, Menu, MenuItem, Stack, Box, IconButton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link } from '@remix-run/react';
 import { Account, getDevAccounts } from './devAccounts';
 import {
   loginAsync,
   loginWebRedirectAsync,
   logoutAsync,
-} from '../../../../features/auth/actions';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+} from '@/webapp/features/auth/actions';
+import { useAppDispatch, useAppSelector } from '@/webapp/app/hooks';
 import { useBackdrop } from '../../../index';
-import { authStateSelector } from '../../../../features/auth/selectors';
+import { authStateSelector } from '@/webapp/features/auth/selectors';
 import {
   loadLoginUnitsAsync,
   loginUnitsSelector,
-} from '../../../../features/loginUnits';
+} from '@/webapp/features/loginUnits';
 import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
@@ -41,7 +41,7 @@ import {
   splitBasenameFromUrl,
   splitSlashFromUrl,
 } from './utils/utils';
-import { hasError } from '../../../../features/auth/authSlice';
+import { hasError } from '@/webapp/features/auth/authSlice';
 
 export const Login = (): JSX.Element => {
   const { MODE } = import.meta.env;

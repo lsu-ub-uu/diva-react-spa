@@ -19,9 +19,8 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, MenuItem, SelectChangeEvent } from '@mui/material';
-import Button from '@mui/material/Button';
-import { Link as RouterLink } from 'react-router-dom';
+import { Grid, MenuItem, SelectChangeEvent, Button } from '@mui/material';
+import { Link as RouterLink } from '@remix-run/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Card, Select } from '../../components';
@@ -32,7 +31,7 @@ import {
 
 export const CreatePublicationCard = () => {
   const { t } = useTranslation();
-  const [publicationType, setPublicationType] = useState('');
+  const [validationType, setValidationType] = useState('');
   const dispatch = useAppDispatch();
   const publicationTypeState = useAppSelector(publicationTypeSelector);
 
@@ -42,7 +41,7 @@ export const CreatePublicationCard = () => {
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     event.preventDefault();
-    setPublicationType(event.target.value as string);
+    setValidationType(event.target.value as string);
   };
 
   return (
@@ -68,7 +67,7 @@ export const CreatePublicationCard = () => {
           sm={6}
         >
           <Select
-            value={publicationType || ''}
+            value={validationType || ''}
             onChange={handleChange}
             sx={{
               '& .MuiSelect-select .notranslate::after': {
@@ -100,11 +99,11 @@ export const CreatePublicationCard = () => {
           sm={6}
         >
           <Button
-            disabled={!publicationType}
+            disabled={!validationType}
             disableRipple
             variant='contained'
             component={RouterLink}
-            to={`/create/record/${publicationType}`}
+            to={`/create/${validationType}`}
             endIcon={<ArrowForwardIcon />}
           >
             {t('divaClient_continueText')}

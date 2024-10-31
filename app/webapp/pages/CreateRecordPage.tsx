@@ -17,39 +17,35 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
-import { Alert, Skeleton, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from '@remix-run/react';
 import {
   AsidePortal,
   FormGenerator,
   linksFromFormSchema,
   NavigationPanel,
-  useBackdrop,
-  useSectionScroller
+  useSectionScroller,
 } from '../components';
-import { useCoraFormSchemaByValidationType, useCoraRecordByType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '../utils/getRecordInfo';
+import { CoraRecord } from '@/webapp/app/hooks';
 
-export const CreateRecordPage = () => {
-  const { validationType } = useParams();
+interface CreateRecordPageProps {
+  record: CoraRecord;
+  formDefinition: FormSchema;
+}
+
+export default function CreateRecordPage({
+  record,
+  formDefinition,
+}: CreateRecordPageProps) {
   const activeSection = useSectionScroller();
   const { enqueueSnackbar } = useSnackbar();
-  const { t } = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { setBackdrop } = useBackdrop();
-  const coraRecord = useCoraRecordByType(validationType);
 
-  const { error, isLoading, schema } = useCoraFormSchemaByValidationType(
-    validationType,
-    'create',
-  );
   const navigate = useNavigate();
 
   const notification = (message: string, variant: VariantType) => {
@@ -59,15 +55,10 @@ export const CreateRecordPage = () => {
     });
   };
 
-  useEffect(() => {
-    setBackdrop(isLoading || isSubmitting);
-  }, [isLoading, setBackdrop, isSubmitting]);
-
   const handleSubmit = async (values: FieldValues) => {
     try {
-      setIsSubmitting(true);
       const response = await axios.post(
-        `/record/${schema?.validationTypeId}`,
+        `/record/${formDefinition?.validationTypeId}`,
         removeEmpty(values),
       );
       notification(
@@ -80,21 +71,9 @@ export const CreateRecordPage = () => {
       console.log(recordType);
       navigate(`/update/record/${recordType}/${id}`);
     } catch (err: any) {
-      setIsSubmitting(false);
       notification(`${err.message}`, 'error');
-    } finally {
-      setIsSubmitting(false);
     }
   };
-
-  if (error) return <Alert severity='error'>{error}</Alert>;
-  if (isLoading)
-    return (
-      <Skeleton
-        variant='rectangular'
-        height={800}
-      />
-    );
 
   return (
     <>
@@ -103,22 +82,24 @@ export const CreateRecordPage = () => {
       </Helmet>*/}
       <AsidePortal>
         <NavigationPanel
-          links={schema ? linksFromFormSchema(schema) || [] : []}
+          links={
+            formDefinition ? linksFromFormSchema(formDefinition) || [] : []
+          }
           activeLinkName={activeSection}
         />
       </AsidePortal>
       <div>
         <Stack spacing={2}>
           <FormGenerator
-            record={coraRecord.record}
+            record={record}
             onSubmit={handleSubmit}
             onInvalid={() => {
               notification(`Form is invalid`, 'error');
             }}
-            formSchema={schema as FormSchema}
+            formSchema={formDefinition}
           />
         </Stack>
       </div>
     </>
   );
-};
+}

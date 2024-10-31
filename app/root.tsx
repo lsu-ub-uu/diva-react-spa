@@ -16,32 +16,25 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from '@remix-run/react';
+import { Links, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/utils';
-import { withEmotionCache } from '@emotion/react';
-import { ReactNode, useContext } from 'react';
+import { ThemeProvider, withEmotionCache } from '@emotion/react';
+import { ReactNode, Suspense, useContext } from 'react';
 import ClientStyleContext from '@/ClientStyleContext';
-import { divaTheme } from '@/theme';
+import {
+  BackdropProvider,
+  Layout as RootLayout,
+  SnackbarProvider,
+} from '@/webapp/components';
+import store from '@/webapp/app/store';
+import { CssBaseline } from '@mui/material';
+import '@/webapp/app/i18n';
+import { divaTheme } from '@/webapp/themes/diva';
+import { ErrorBoundary } from 'react-error-boundary';
+import { Provider as StateProvider } from 'react-redux';
 
-export const links: LinksFunction = () => [
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-  },
-];
+export const links: LinksFunction = () => [];
 
 interface DocumentProps {
   children: ReactNode;
@@ -101,5 +94,22 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <BackdropProvider>
+      <StateProvider store={store}>
+        <ThemeProvider theme={divaTheme}>
+          <CssBaseline />
+          <SnackbarProvider maxSnack={5}>
+            <ErrorBoundary
+              fallback={<h1>Something went wrong. Try again later</h1>}
+            >
+              <Suspense fallback={<h3>Waiting for DiVA 3 GUI to load...</h3>}>
+                <RootLayout />
+              </Suspense>
+            </ErrorBoundary>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </StateProvider>
+    </BackdropProvider>
+  );
 }

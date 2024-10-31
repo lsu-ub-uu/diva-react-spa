@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 import LaunchIcon from '@mui/icons-material/Launch';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 
 interface LinkButtonProps {
   text: string;

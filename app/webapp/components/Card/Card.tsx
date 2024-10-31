@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import CardContent from '@mui/material/CardContent';
 import {
+  CardContent,
   Card as MuiCard,
   Collapse,
   CardHeader,

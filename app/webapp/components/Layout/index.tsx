@@ -16,9 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, AppBar } from '@mui/material';
 import { Outlet } from '@remix-run/react';
-import AppBar from '@mui/material/AppBar';
 import { MemberBar } from '@/webapp/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/webapp/components/Layout/Header';
 import { Breadcrumbs } from '@/webapp/components/Layout/Breadcrumbs/Breadcrumbs';

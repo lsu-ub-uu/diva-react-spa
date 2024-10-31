@@ -16,11 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Layout } from '../components';
-import { useRoutes } from '@remix-run/react';
+import { Outlet, useRoutes } from '@remix-run/react';
 import PrivateRoutes from '@/webapp/routes/PrivateRoutes';
 import {
-  CreateRecordPage,
   HomePage,
   LoginPage,
   UpdateRecordPage,
@@ -30,7 +28,7 @@ import {
 export const routes = [
   {
     path: '/',
-    element: <Layout />,
+    element: <Outlet />,
     children: [
       {
         index: true,
@@ -39,10 +37,10 @@ export const routes = [
       {
         element: <PrivateRoutes />,
         children: [
-          {
-            path: '/create/record/:validationType',
-            element: <CreateRecordPage />,
-          },
+          // {
+          //   path: '/create/record/:validationType',
+          //   element: <CreateRecordPage />,
+          // },
           {
             path: '/update/record/:recordType/:recordId',
             element: <UpdateRecordPage />,

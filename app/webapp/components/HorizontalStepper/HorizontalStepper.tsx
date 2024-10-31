@@ -22,8 +22,8 @@ import {
   StepConnector,
   stepConnectorClasses,
   Typography,
+  StepIconProps,
 } from '@mui/material';
-import { StepIconProps } from '@mui/material/StepIcon';
 import { ReactNode, useState, useEffect } from 'react';
 import Check from '@mui/icons-material/Check';
 
