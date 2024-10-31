@@ -22,7 +22,6 @@ import axios from 'axios';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { Provider as StateProvider } from 'react-redux';
-import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from 'react-error-boundary';
 import store from './app/store';
 import { divaTheme } from './themes/diva';
@@ -41,13 +40,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <ThemeProvider theme={divaTheme}>
           <CssBaseline />
           <SnackbarProvider maxSnack={5}>
-            <HelmetProvider>
-              <ErrorBoundary
-                fallback={<h1>Something went wrong. Try again later</h1>}
-              >
-                <App />
-              </ErrorBoundary>
-            </HelmetProvider>
+            <ErrorBoundary
+              fallback={<h1>Something went wrong. Try again later</h1>}
+            >
+              <App />
+            </ErrorBoundary>
           </SnackbarProvider>
         </ThemeProvider>
       </StateProvider>

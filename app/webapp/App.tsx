@@ -19,12 +19,32 @@
 import Router from './routes/routes';
 import { Suspense } from 'react';
 import './app/i18n';
+import store from '@/webapp/app/store';
+import { divaTheme } from '@/webapp/themes/diva';
+import { CssBaseline } from '@mui/material';
+import { BackdropProvider, SnackbarProvider } from '@/webapp/components';
+import { ThemeProvider } from '@emotion/react';
+import { ErrorBoundary } from 'react-error-boundary';
+import { Provider as StateProvider } from 'react-redux';
 
 const App = () => {
   return (
-    <Suspense fallback={<h3>Waiting for DiVA 3 GUI to load...</h3>}>
-      <Router />
-    </Suspense>
+    <BackdropProvider>
+      <StateProvider store={store}>
+        <ThemeProvider theme={divaTheme}>
+          <CssBaseline />
+          <SnackbarProvider maxSnack={5}>
+            <ErrorBoundary
+              fallback={<h1>Something went wrong. Try again later</h1>}
+            >
+              <Suspense fallback={<h3>Waiting for DiVA 3 GUI to load...</h3>}>
+                <Router />
+              </Suspense>
+            </ErrorBoundary>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </StateProvider>
+    </BackdropProvider>
   );
 };
 

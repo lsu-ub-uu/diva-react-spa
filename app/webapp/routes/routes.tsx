@@ -16,16 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useRoutes } from 'react-router-dom';
 import { Layout } from '../components';
+import { useRoutes } from '@remix-run/react';
+import PrivateRoutes from '@/webapp/routes/PrivateRoutes';
 import {
-  HomePage,
   CreateRecordPage,
+  HomePage,
+  LoginPage,
   UpdateRecordPage,
   ViewRecordPage,
-  LoginPage,
-} from '../pages';
-import PrivateRoutes from './PrivateRoutes';
+} from '@/webapp/pages';
 
 export const routes = [
   {

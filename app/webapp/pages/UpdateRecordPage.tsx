@@ -19,22 +19,18 @@
 
 import { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import {
-  useCoraFormSchemaByValidationType,
-  useCoraRecordByTypeAndId,
-} from '../app/hooks';
+import { useCoraFormSchemaByValidationType, useCoraRecordByTypeAndId } from '../app/hooks';
 import {
   AsidePortal,
   FormGenerator,
+  linksFromFormSchema,
   NavigationPanel,
   useBackdrop,
-  linksFromFormSchema,
-  useSectionScroller,
+  useSectionScroller
 } from '../components';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
@@ -104,9 +100,9 @@ export const UpdateRecordPage = () => {
 
   return (
     <>
-      <Helmet>
+      {/*<Helmet>
         <title>{coraRecord.record?.id ?? 'not found'} | DiVA</title>
-      </Helmet>
+      </Helmet>*/}
       <AsidePortal>
         <NavigationPanel
           links={

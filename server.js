@@ -34,7 +34,6 @@ if (viteDevServer) {
     '/assets',
     express.static('build/client/assets', { immutable: true, maxAge: '1y' }),
   );
-  c;
 }
 
 // Everything else (like favicon.ico) is cached for an hour. You may want to be

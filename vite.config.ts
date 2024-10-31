@@ -2,7 +2,6 @@
 
 import { defineConfig } from 'vite';
 import { vitePlugin as remix } from '@remix-run/dev';
-import { resolve } from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
@@ -35,5 +34,8 @@ export default defineConfig({
   },
   build: {
     outDir: '../../../dist',
+  },
+  ssr: {
+    noExternal: ['@mui/icons-material', 'lodash'],
   },
 });

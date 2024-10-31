@@ -18,7 +18,7 @@
 
 import { useEffect, useState } from 'react';
 import { Backdrop as MuiBackdrop, Box, Theme } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress } from '@mui/material';
 
 interface BackdropProps {
   open: boolean;

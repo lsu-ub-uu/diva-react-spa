@@ -18,7 +18,6 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import axios from 'axios';
@@ -26,17 +25,14 @@ import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  useBackdrop,
-  FormGenerator,
   AsidePortal,
-  NavigationPanel,
+  FormGenerator,
   linksFromFormSchema,
-  useSectionScroller,
+  NavigationPanel,
+  useBackdrop,
+  useSectionScroller
 } from '../components';
-import {
-  useCoraFormSchemaByValidationType,
-  useCoraRecordByType,
-} from '../app/hooks';
+import { useCoraFormSchemaByValidationType, useCoraRecordByType } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '../utils/getRecordInfo';
@@ -102,9 +98,9 @@ export const CreateRecordPage = () => {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>{t(schema?.form.label as string)} | DiVA</title>
-      </Helmet>
+      </Helmet>*/}
       <AsidePortal>
         <NavigationPanel
           links={schema ? linksFromFormSchema(schema) || [] : []}

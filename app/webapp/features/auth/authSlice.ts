@@ -34,12 +34,14 @@ export interface Auth {
   };
   actionLinks?: ActionLinks;
 }
+
 export interface ActionLinks {
   read?: ActionLink;
   update?: ActionLink;
   index?: ActionLink;
   delete?: ActionLink;
 }
+
 export interface ActionLink {
   requestMethod: string;
   rel: string;
@@ -80,6 +82,9 @@ export const deleteState = (): void => {
 };
 
 export const createInitialState = (): Auth | null => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
   const storage = localStorage.getItem(LOCAL_STORAGE_NAME);
   if (!isValidJSON(storage)) {
     axios.defaults.headers.common = {

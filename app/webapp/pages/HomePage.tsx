@@ -18,7 +18,6 @@
 
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
 import Alert from '@mui/material/Alert';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
@@ -29,9 +28,9 @@ export const HomePage = () => {
 
   return (
     <>
-      <Helmet>
+      {/*<Helmet>
         <title>{t('start')} | DiVA</title>
-      </Helmet>
+      </Helmet>*/}
       <div>
         <AsidePortal>
           <p>

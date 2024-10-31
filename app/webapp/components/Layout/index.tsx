@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Outlet } from 'react-router-dom';
 import { Container, Grid } from '@mui/material';
+import { Outlet } from '@remix-run/react';
 import AppBar from '@mui/material/AppBar';
-import { Header } from './Header';
-import { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
-import { MemberBar } from './MemberBar/MemberBar';
+import { MemberBar } from '@/webapp/components/Layout/MemberBar/MemberBar';
+import { Header } from '@/webapp/components/Layout/Header';
+import { Breadcrumbs } from '@/webapp/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const Layout = () => {
   return (

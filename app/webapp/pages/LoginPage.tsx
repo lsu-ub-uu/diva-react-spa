@@ -18,13 +18,12 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useBackdrop, FormGenerator, AsidePortal } from '../components';
+import { AsidePortal, FormGenerator, useBackdrop } from '../components';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { FormSchema } from '../components/FormGenerator/types';
 import { loginPasswordAsync } from '../features/auth/actions';
@@ -104,9 +103,9 @@ export const LoginPage = () => {
     );
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>{t('divaClient_loginPageText')} | DiVA</title>
-      </Helmet>
+      </Helmet>*/}
       <AsidePortal>
         <p>loginPage</p>
       </AsidePortal>
