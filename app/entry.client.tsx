@@ -5,14 +5,54 @@
  */
 
 import { RemixBrowser } from '@remix-run/react';
-import { startTransition, StrictMode } from 'react';
+import {
+  ReactNode,
+  startTransition,
+  StrictMode,
+  useMemo,
+  useState,
+} from 'react';
 import { hydrateRoot } from 'react-dom/client';
+import createEmotionCache from '@/createEmotionCache';
+import ClientStyleContext from '@/ClientStyleContext';
+import { CacheProvider, ThemeProvider } from '@emotion/react';
+import { divaTheme } from '@/theme';
+import { CssBaseline } from '@mui/material';
+
+interface ClientCacheProviderProps {
+  children: ReactNode;
+}
+
+function ClientCacheProvider({ children }: ClientCacheProviderProps) {
+  const [cache, setCache] = useState(createEmotionCache());
+
+  const clientStyleContextValue = useMemo(
+    () => ({
+      reset() {
+        setCache(createEmotionCache());
+      },
+    }),
+    [],
+  );
+
+  return (
+    <ClientStyleContext.Provider value={clientStyleContextValue}>
+      <CacheProvider value={cache}>{children}</CacheProvider>
+    </ClientStyleContext.Provider>
+  );
+}
 
 startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <RemixBrowser />
+      <ClientCacheProvider>
+        <ThemeProvider theme={divaTheme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <RemixBrowser />
+        </ThemeProvider>
+      </ClientCacheProvider>
     </StrictMode>,
   );
 });

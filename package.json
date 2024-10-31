@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
+    "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.13.0",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.9.0",

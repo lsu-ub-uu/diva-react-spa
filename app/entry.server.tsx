@@ -11,6 +11,10 @@ import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
+import createEmotionCache from './createEmotionCache';
+import { CacheProvider, ThemeProvider } from '@emotion/react';
+import { CssBaseline } from '@mui/material';
+import { divaTheme } from '@/theme';
 
 const ABORT_DELAY = 5_000;
 
@@ -95,14 +99,20 @@ function handleBrowserRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
+  const cache = createEmotionCache();
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer
-        context={remixContext}
-        url={request.url}
-        abortDelay={ABORT_DELAY}
-      />,
+      <CacheProvider value={cache}>
+        <ThemeProvider theme={divaTheme}>
+          <CssBaseline />
+          <RemixServer
+            context={remixContext}
+            url={request.url}
+            abortDelay={ABORT_DELAY}
+          />
+        </ThemeProvider>
+      </CacheProvider>,
       {
         onShellReady() {
           shellRendered = true;
