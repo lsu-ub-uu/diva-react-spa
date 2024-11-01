@@ -16,8 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { UpdateRecordPage } from '@/webapp/pages';
+import axios from 'axios';
+import { FormSchema } from '@/components/FormGenerator/types';
 
-export default function UpdateRecordRoute() {
-  return <UpdateRecordPage />;
-}
+export const getFormDefinitionByValidationTypeId = async (
+  validationTypeId: string,
+  mode: 'create' | 'update' | 'view',
+) => {
+  const response = await axios.get(`/form/${validationTypeId}/${mode}`);
+  return response.data as FormSchema;
+};

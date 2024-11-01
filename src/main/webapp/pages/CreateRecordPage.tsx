@@ -32,7 +32,7 @@ import {
 import { FormSchema } from '../components/FormGenerator/types';
 import { removeEmpty } from '../utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '../utils/getRecordInfo';
-import { CoraRecord } from '@/webapp/app/hooks';
+import { CoraRecord } from '@/app/hooks';
 
 interface CreateRecordPageProps {
   record: CoraRecord;

@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { LoginPage } from '@/webapp/pages';
+import { ViewRecordPage } from '@/pages';
 
-export default function LoginRoute() {
-  return <LoginPage />;
+export default function ViewRecordRoute() {
+  return <ViewRecordPage />;
 }

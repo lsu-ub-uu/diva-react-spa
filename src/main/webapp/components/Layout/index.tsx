@@ -18,9 +18,9 @@
 
 import { Container, Grid, AppBar } from '@mui/material';
 import { Outlet } from '@remix-run/react';
-import { MemberBar } from '@/webapp/components/Layout/MemberBar/MemberBar';
-import { Header } from '@/webapp/components/Layout/Header';
-import { Breadcrumbs } from '@/webapp/components/Layout/Breadcrumbs/Breadcrumbs';
+import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
+import { Header } from '@/components/Layout/Header';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 
 export const Layout = () => {
   return (

@@ -16,10 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
-import { CoraRecord } from '@/webapp/app/hooks';
+import { UpdateRecordPage } from '@/pages';
 
-export const getRecordByValidationTypeId = async (validationTypeId: string) => {
-  const response = await axios.get<CoraRecord>(`/record/${validationTypeId}`);
-  return response.data as CoraRecord;
-};
+export default function UpdateRecordRoute() {
+  return <UpdateRecordPage />;
+}

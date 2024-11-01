@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2023 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,13 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
-import { FormSchema } from '@/webapp/components/FormGenerator/types';
+import { HomePage } from '@/pages';
 
-export const getFormDefinitionByValidationTypeId = async (
-  validationTypeId: string,
-  mode: 'create' | 'update' | 'view',
-) => {
-  const response = await axios.get(`/form/${validationTypeId}/${mode}`);
-  return response.data as FormSchema;
-};
+export default function IndexRoute() {
+  return <HomePage />;
+}

@@ -26,14 +26,14 @@ import {
   loginAsync,
   loginWebRedirectAsync,
   logoutAsync,
-} from '@/webapp/features/auth/actions';
-import { useAppDispatch, useAppSelector } from '@/webapp/app/hooks';
+} from '@/features/auth/actions';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { useBackdrop } from '../../../index';
-import { authStateSelector } from '@/webapp/features/auth/selectors';
+import { authStateSelector } from '@/features/auth/selectors';
 import {
   loadLoginUnitsAsync,
   loginUnitsSelector,
-} from '@/webapp/features/loginUnits';
+} from '@/features/loginUnits';
 import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
@@ -41,7 +41,7 @@ import {
   splitBasenameFromUrl,
   splitSlashFromUrl,
 } from './utils/utils';
-import { hasError } from '@/webapp/features/auth/authSlice';
+import { hasError } from '@/features/auth/authSlice';
 
 export const Login = (): JSX.Element => {
   const { MODE } = import.meta.env;

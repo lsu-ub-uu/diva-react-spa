@@ -26,14 +26,13 @@ import {
   BackdropProvider,
   Layout as RootLayout,
   SnackbarProvider,
-} from '@/webapp/components';
-import store from '@/webapp/app/store';
+} from '@/components';
+import store from '@/app/store';
 import { CssBaseline } from '@mui/material';
-import '@/webapp/app/i18n';
-import { divaTheme } from '@/webapp/themes/diva';
+import '@/app/i18n';
+import { divaTheme } from '@/themes/diva';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Provider as StateProvider } from 'react-redux';
-import './webapp/app/i18n';
 
 export const links: LinksFunction = () => [];
 

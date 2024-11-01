@@ -17,7 +17,7 @@
  */
 
 import axios from 'axios';
-import { CoraRecord } from '@/webapp/app/hooks';
+import { CoraRecord } from '@/app/hooks';
 
 export const getRecordByRecordTypeAndRecordId = async (
   recordType: string,

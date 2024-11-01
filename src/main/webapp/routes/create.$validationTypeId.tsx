@@ -19,7 +19,7 @@
 import { invariant } from '@remix-run/router/history';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import CreateRecordPage from '@/webapp/pages/CreateRecordPage';
+import CreateRecordPage from '@/pages/CreateRecordPage';
 import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 
