@@ -19,7 +19,7 @@
 import { Links, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/utils';
-import { ThemeProvider, withEmotionCache } from '@emotion/react';
+import { withEmotionCache } from '@emotion/react';
 import { ReactNode, Suspense, useContext } from 'react';
 import ClientStyleContext from '@/ClientStyleContext';
 import {
@@ -33,6 +33,7 @@ import '@/webapp/app/i18n';
 import { divaTheme } from '@/webapp/themes/diva';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Provider as StateProvider } from 'react-redux';
+import './webapp/app/i18n';
 
 export const links: LinksFunction = () => [];
 
@@ -95,10 +96,10 @@ export function Layout({ children }: { children: ReactNode }) {
 
 export default function App() {
   return (
-    <BackdropProvider>
-      <StateProvider store={store}>
-        <ThemeProvider theme={divaTheme}>
-          <CssBaseline />
+    <>
+      <CssBaseline />
+      <BackdropProvider>
+        <StateProvider store={store}>
           <SnackbarProvider maxSnack={5}>
             <ErrorBoundary
               fallback={<h1>Something went wrong. Try again later</h1>}
@@ -108,8 +109,8 @@ export default function App() {
               </Suspense>
             </ErrorBoundary>
           </SnackbarProvider>
-        </ThemeProvider>
-      </StateProvider>
-    </BackdropProvider>
+        </StateProvider>
+      </BackdropProvider>
+    </>
   );
 }

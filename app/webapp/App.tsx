@@ -17,15 +17,6 @@
  */
 
 import Router from './routes/routes';
-import { Suspense } from 'react';
-import './app/i18n';
-import store from '@/webapp/app/store';
-import { divaTheme } from '@/webapp/themes/diva';
-import { CssBaseline } from '@mui/material';
-import { BackdropProvider, SnackbarProvider } from '@/webapp/components';
-import { ThemeProvider } from '@emotion/react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { Provider as StateProvider } from 'react-redux';
 
 const App = () => {
   return <Router />;
