@@ -17,7 +17,7 @@
  */
 
 import axios from 'axios';
-import { CoraRecord } from '@/app/hooks';
+import {CoraRecord} from "@/features/record/types";
 
 export const getRecordByValidationTypeId = async (validationTypeId: string) => {
   const response = await axios.get<CoraRecord>(`/record/${validationTypeId}`);

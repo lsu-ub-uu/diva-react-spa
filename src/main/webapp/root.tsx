@@ -33,8 +33,13 @@ import '@/app/i18n';
 import { divaTheme } from '@/themes/diva';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Provider as StateProvider } from 'react-redux';
+import dev_favicon from '@/images/dev_favicon.svg'
+import favicon from '@/images/favicon.svg'
 
-export const links: LinksFunction = () => [];
+
+export const links: LinksFunction = () => [
+
+];
 
 interface DocumentProps {
   children: ReactNode;
@@ -59,31 +64,38 @@ const Document = withEmotionCache(
       clientStyleData.reset();
     }, []);
 
+    const { MODE } = import.meta.env;
+
     return (
       <html lang='en'>
-        <head>
-          <meta charSet='utf-8' />
-          <meta
-            name='viewport'
-            content='width=device-width,initial-scale=1'
-          />
-          <meta
-            name='theme-color'
-            content={divaTheme.palette.primary.main}
-          />
-          {title ? <title>{title}</title> : null}
-          <Meta />
-          <Links />
-          <meta
-            name='emotion-insertion-point'
-            content='emotion-insertion-point'
-          />
-        </head>
-        <body>
-          {children}
-          <ScrollRestoration />
-          <Scripts />
-        </body>
+      <head>
+        <meta charSet='utf-8'/>
+        <meta
+          name='viewport'
+          content='width=device-width,initial-scale=1'
+        />
+        <meta
+          name='theme-color'
+          content={divaTheme.palette.primary.main}
+        />
+        <link
+          rel='icon'
+          type='image/svg+xml'
+          href={MODE === 'development' ? dev_favicon : favicon}
+        />
+        {title ? <title>{title}</title> : null}
+        <Meta/>
+        <Links/>
+        <meta
+          name='emotion-insertion-point'
+          content='emotion-insertion-point'
+        />
+      </head>
+      <body>
+      {children}
+      <ScrollRestoration/>
+      <Scripts/>
+      </body>
       </html>
     );
   },

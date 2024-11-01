@@ -58,9 +58,6 @@ export const SearchPage = () => {
   );
 
   useEffect(() => {
-    if(typeof window === 'undefined') {
-      return null;
-    }
     const search = async () => {
       const response = await axios.get(
         `/search/advanced/${searchType}?query=${window.encodeURIComponent(JSON.stringify(query))}`,
@@ -72,15 +69,15 @@ export const SearchPage = () => {
 
   return (
     <div>
-      <h1>{t('divaClient_searchPageHeaderText' as any)}</h1>
+      <h1>{t('divaClient_searchPageHeaderText')}</h1>
       <SearchPublicationCard />
 
       {searchResults && (
         <>
           <h2>
-            {t('divaClient_searchPageResultText' as any, {
+            {t('divaClient_searchPageResultText', {
               numberOfResults: searchResults?.totalNo,
-            } as any) }
+            })}
           </h2>
           <SearchResultList>
             {searchResults.data.map((record) => (

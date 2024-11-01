@@ -62,8 +62,9 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
       case 'read':
         return (
           <IconButton
+            key={`${record.id}_rab_${userRight}`}
             component={Link}
-            to={`/view/record/${record.recordType}/${record.id}`}
+            to={`/view/${record.recordType}/${record.id}`}
           >
             <FeedIcon />
           </IconButton>
@@ -71,15 +72,19 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
       case 'update':
         return (
           <IconButton
+            key={`${record.id}_rab_${userRight}`}
             component={Link}
-            to={`/update/record/${record.recordType}/${record.id}`}
+            to={`/update/${record.recordType}/${record.id}`}
           >
             <EditIcon />
           </IconButton>
         );
       case 'delete':
         return (
-          <IconButton onClick={handleDeleteClick}>
+          <IconButton
+            key={`${record.id}_rab_${userRight}`}
+            onClick={handleDeleteClick}
+          >
             <DeleteForeverIcon />
           </IconButton>
         );
