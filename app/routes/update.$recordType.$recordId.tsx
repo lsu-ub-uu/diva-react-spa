@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,10 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import Router from './routes/routes';
+import { UpdateRecordPage } from '@/webapp/pages';
 
-const App = () => {
-  return <Router />;
-};
-
-export default App;
+export default function UpdateRecordRoute() {
+  return <UpdateRecordPage />;
+}

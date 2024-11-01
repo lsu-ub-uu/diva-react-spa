@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { HomePage } from '@/webapp/pages';
+import { LoginPage } from '@/webapp/pages';
 
-export default function IndexRoute() {
-  return <HomePage />;
+export default function LoginRoute() {
+  return <LoginPage />;
 }

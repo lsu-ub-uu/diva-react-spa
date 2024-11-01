@@ -68,8 +68,7 @@ export default function CreateRecordPage({
       const recordInfo = getRecordInfo(response.data);
       const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;
       const recordType = getValueFromRecordInfo(recordInfo, 'type')[0].value;
-      console.log(recordType);
-      navigate(`/update/record/${recordType}/${id}`);
+      navigate(`/update/${recordType}/${id}`);
     } catch (err: any) {
       notification(`${err.message}`, 'error');
     }

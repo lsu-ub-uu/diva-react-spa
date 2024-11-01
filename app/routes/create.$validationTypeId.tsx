@@ -18,24 +18,10 @@
 
 import { invariant } from '@remix-run/router/history';
 import { LoaderFunctionArgs } from '@remix-run/node';
-import axios from 'axios';
-import { CoraRecord } from '@/webapp/app/hooks';
 import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/webapp/pages/CreateRecordPage';
-import { FormSchema } from '@/webapp/components/FormGenerator/types';
-
-const getRecordByValidationTypeId = async (validationTypeId: string) => {
-  const response = await axios.get<CoraRecord>(`/record/${validationTypeId}`);
-  return response.data as CoraRecord;
-};
-
-const getFormDefinitionByValidationTypeId = async (
-  validationTypeId: string,
-  mode: 'create' | 'update' | 'view',
-) => {
-  const response = await axios.get(`/form/${validationTypeId}/${mode}`);
-  return response.data as FormSchema;
-};
+import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { validationTypeId } = params;
@@ -48,7 +34,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return { record, formDefinition };
 };
 
-export default function CreateRecord() {
+export default function CreateRecordRoute() {
   const { record, formDefinition } = useLoaderData<typeof loader>();
 
   return (

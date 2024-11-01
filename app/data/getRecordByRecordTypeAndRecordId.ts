@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,8 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { HomePage } from '@/webapp/pages';
+import axios from 'axios';
+import { CoraRecord } from '@/webapp/app/hooks';
 
-export default function IndexRoute() {
-  return <HomePage />;
-}
+export const getRecordByRecordTypeAndRecordId = async (
+  recordType: string,
+  recordId: string,
+) => {
+  const response = await axios.get<CoraRecord>(
+    `/record/${recordType}/${recordId}`,
+  );
+  return response.data as CoraRecord;
+};
