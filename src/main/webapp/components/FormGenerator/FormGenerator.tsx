@@ -18,39 +18,17 @@
  */
 
 import React from 'react';
-import {
-  Box,
-  Container,
-  Grid,
-  IconButton,
-  Toolbar,
-  AppBar,
-  Button,
-} from '@mui/material';
-import {
-  Control,
-  FieldErrors,
-  FieldValues,
-  useForm,
-  UseFormGetValues,
-} from 'react-hook-form';
+import { Box, Grid, IconButton } from '@mui/material';
+import { Control, FieldErrors, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
 import InfoIcon from '@mui/icons-material/Info';
-import {
-  ControlledTextField,
-  ControlledSelectField,
-  ControlledLinkedRecord,
-} from '../Controlled';
+import { ControlledLinkedRecord, ControlledSelectField, ControlledTextField } from '../Controlled';
 import {
   addAttributesToName,
-  createDefaultValuesFromFormSchema,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
-  hasCurrentComponentSameNameInData,
-  RecordData,
+  hasCurrentComponentSameNameInData
 } from './utils';
-import { generateYupSchemaFromFormSchema } from './utils/yupSchema';
 import {
   checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
@@ -60,19 +38,13 @@ import {
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
-  isFirstLevelGroup,
-  isFirstLevelVariable,
+  isFirstLevelGroup
 } from './utils/helper';
-import {
-  Typography,
-  LinkButton,
-  ControlledAutocomplete,
-  Tooltip,
-} from '../index';
+import { ControlledAutocomplete, LinkButton, Tooltip, Typography } from '@/components';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
-import { CoraRecord } from '../../app/hooks';
+import { CoraRecord } from '@/features/record/types';
 
 interface FormGeneratorProps {
   record?: CoraRecord;
@@ -80,24 +52,17 @@ interface FormGeneratorProps {
   onSubmit: (formValues: FieldValues) => void;
   onInvalid?: (fieldErrors: FieldErrors) => void;
   linkedData?: boolean;
+  control: Control<FieldValues, any>;
+  getValues: UseFormGetValues<any>;
 }
 
 export const FormGenerator = ({
   linkedData = false,
+  control,
+  getValues,
   ...props
 }: FormGeneratorProps) => {
   const { t } = useTranslation();
-  const methods = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(
-      props.formSchema,
-      props.record?.data as RecordData,
-    ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
-  });
-  const { control, handleSubmit, reset, getValues } = methods;
 
   const generateFormComponent = (
     component: FormComponent,
@@ -149,6 +114,7 @@ export const FormGenerator = ({
               key={attribute.name}
               item
               xs={6}
+              id={`anchor_${addAttributesToName(component, component.name)}`}
             >
               <ControlledSelectField
                 key={`${attribute.name}_${index}`}
@@ -175,6 +141,7 @@ export const FormGenerator = ({
               key={attribute.name}
               item
               xs={6}
+              id={`anchor_${addAttributesToName(component, component.name)}`}
             >
               <ControlledSelectField
                 key={`${attribute.name}_${index}`}
@@ -266,7 +233,7 @@ export const FormGenerator = ({
     return (
       <React.Fragment key={reactKey}>
         <div
-          id='surrounding-container'
+          id={`anchor_${addAttributesToName(component, component.name)}`}
           key={reactKey}
           style={{
             // background: 'lightgray',
@@ -307,10 +274,12 @@ export const FormGenerator = ({
       currentComponentNamePath,
       linkedData,
     ) ? (
-      <span
+      <Grid
+        item
+        xs={12}
         key={reactKey}
-        className='anchorLink'
-        id={`anchor_${component.name}`}
+        className='anchorLink isComponentFirstLevelAndNOTLinkedData'
+        id={`anchor_${addAttributesToName(component, component.name)}`}
       >
         <Box sx={{ mb: 2 }}>
           <Box
@@ -321,31 +290,35 @@ export const FormGenerator = ({
             }}
           >
             {component.showLabel === true ? (
-              <Typography
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
+              <>
+                <Typography
+                  text={component?.label ?? ''}
+                  variant={headlineLevelToTypographyVariant(
+                    component.headlineLevel,
+                  )}
+                />
+                <Tooltip
+                  title={t(component.tooltip?.title as string)}
+                  body={t(component.tooltip?.body as string)}
+                >
+                  <IconButton
+                    disableRipple
+                    color='info'
+                    aria-label='info'
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
             ) : null}
-            <Tooltip
-              title={t(component.tooltip?.title as string)}
-              body={t(component.tooltip?.body as string)}
-            >
-              <IconButton
-                disableRipple
-                color='info'
-                aria-label='info'
-              >
-                <InfoIcon />
-              </IconButton>
-            </Tooltip>
           </Box>
           <Grid
             container
             spacing={2}
             justifyContent='space-between'
             alignItems='flex-start'
+            className={'NOTisComponentFirstLevelAndNOTLinkedData'}
+            id={`anchor_${addAttributesToName(component, component.name)}`}
           >
             {createFormComponentAttributes(component, currentComponentNamePath)}
 
@@ -358,12 +331,13 @@ export const FormGenerator = ({
               )}
           </Grid>
         </Box>
-      </span>
+      </Grid>
     ) : (
-      <Box
+      <Grid
+        item
         key={reactKey}
-        id={component.name}
-        className='aaaaaaaaa'
+        id={`anchor_${addAttributesToName(component, component.name)}`}
+        xs={12}
         sx={{
           display: 'flex',
           flexDirection:
@@ -413,7 +387,7 @@ export const FormGenerator = ({
               : component.presentationStyle,
             currentComponentNamePath,
           )}
-      </Box>
+      </Grid>
     );
   };
 
@@ -452,6 +426,7 @@ export const FormGenerator = ({
         xs={12}
         key={reactKey}
         sx={{ position: 'relative' }}
+        id={`anchor_${addAttributesToName(component, component.name)}`}
       >
         {component?.showLabel && (
           <Box
@@ -562,73 +537,8 @@ export const FormGenerator = ({
       );
     });
   };
-  // FormGenerator return
-  return linkedData !== true ? (
-    <Box
-      component='form'
-      sx={{ width: '100%' }}
-      onSubmit={handleSubmit(
-        (values) => props.onSubmit(values),
-        (errors) => props.onInvalid && props.onInvalid(errors),
-      )}
-    >
-      {generateFormComponent(props.formSchema.form, 0, '')}
 
-      <AppBar
-        position='fixed'
-        style={{
-          backgroundColor: '#eee',
-          top: 'auto',
-          bottom: 0,
-          display: 'block',
-        }}
-      >
-        <Container maxWidth='lg'>
-          <Grid container>
-            <Grid
-              item
-              xs={3}
-            />
-            <Grid
-              item
-              xs={9}
-            >
-              <Toolbar>
-                <Box
-                  component='div'
-                  sx={{ mt: 1, mb: 1, width: '100%' }}
-                  display='flex'
-                  justifyContent='space-between'
-                  alignItems='center'
-                >
-                  <Button
-                    disableRipple
-                    variant='contained'
-                    color='secondary'
-                    sx={{ height: 40 }}
-                    onClick={() => reset()}
-                  >
-                    {t('divaClient_ResetButtonText')}
-                  </Button>
-                  <Button
-                    type='submit'
-                    disableRipple
-                    variant='contained'
-                    color='primary'
-                    sx={{ height: 40 }}
-                  >
-                    {t('divaClient_SubmitButtonText')}
-                  </Button>
-                </Box>
-              </Toolbar>
-            </Grid>
-          </Grid>
-        </Container>
-      </AppBar>
-    </Box>
-  ) : (
-    generateFormComponent(props.formSchema.form, 0, '')
-  );
+  return generateFormComponent(props.formSchema.form, 0, '');
 };
 
 export const renderLeafComponent = (
@@ -734,11 +644,7 @@ const createTextOrNumberVariable = (
             ? 'auto'
             : '100%',
       }}
-      id={
-        isFirstLevelVariable(name)
-          ? `anchor_${addAttributesToName(component, component.name)}`
-          : ''
-      }
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <ControlledTextField
         multiline={component.inputType === 'textarea'}
@@ -770,6 +676,7 @@ const createRecordLinkWithSearch = (
       key={reactKey}
       item
       xs={12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
       sm={renderElementGridWrapper ? component.gridColSpan : 12}
     >
       <ControlledAutocomplete
@@ -835,6 +742,7 @@ const createCollectionVariable = (
       item
       xs={12}
       sm={renderElementGridWrapper ? component.gridColSpan : 12}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <ControlledSelectField
         name={name}
@@ -871,6 +779,7 @@ const createText = (
             ? 'auto'
             : '2em',
       }}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <Typography
         variant={component.textStyle ?? 'bodyTextStyle'}

@@ -18,17 +18,19 @@
  */
 
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { useNavigate, useSearchParams } from '@remix-run/react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { AsidePortal, FormGenerator, useBackdrop } from '../components';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { FormSchema } from '../components/FormGenerator/types';
-import { loginPasswordAsync } from '../features/auth/actions';
-import { AppDispatch } from '../app/store';
-import { authStateSelector } from '../features/auth/selectors';
+import { AsidePortal, useBackdrop } from '@/components';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { FormSchema, RecordFormSchema } from '@/components/FormGenerator/types';
+import { loginPasswordAsync } from '@/features/auth/actions';
+import { AppDispatch } from '@/app/store';
+import { authStateSelector } from '@/features/auth/selectors';
+import { RecordForm } from '@/components/Form/RecordForm';
 
 export const LoginPage = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -39,7 +41,7 @@ export const LoginPage = () => {
   const [error] = useState<string | null>(null);
   const [presentationParam] = useSearchParams();
   const [schema, setSchema] = useState<null | FormSchema>(null);
-  const [formIsDiry, setFormIsDirty] = useState(false);
+  const [formIsDirty, setFormIsDirty] = useState(false);
   const authState = useAppSelector(authStateSelector);
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -59,14 +61,14 @@ export const LoginPage = () => {
   }, [isLoading, setBackdrop, isSubmitting]);
 
   useEffect(() => {
-    if (authState.hasError && authState.userSession === null && formIsDiry) {
+    if (authState.hasError && authState.userSession === null && formIsDirty) {
       notification(`Loggin error`, 'error');
     }
-    if (authState.userSession !== null && formIsDiry) {
+    if (authState.userSession !== null && formIsDirty) {
       notification(`Loggin success`, 'success');
       navigate(-1);
     }
-  }, [formIsDiry, navigate, notification, authState]);
+  }, [formIsDirty, navigate, notification, authState]);
 
   useEffect(() => {
     const parsedPresentation = JSON.parse(
@@ -103,7 +105,7 @@ export const LoginPage = () => {
     );
   return (
     <>
-      {/* <Helmet>
+      {/*<Helmet>
         <title>{t('divaClient_loginPageText')} | DiVA</title>
       </Helmet>*/}
       <AsidePortal>
@@ -112,12 +114,12 @@ export const LoginPage = () => {
       <div>
         <Stack spacing={2}>
           {schema !== null ? (
-            <FormGenerator
+            <RecordForm
               onSubmit={handlePasswordSelection}
               onInvalid={() => {
                 notification(`Form is invalid`, 'error');
               }}
-              formSchema={schema as FormSchema}
+              formSchema={schema as RecordFormSchema}
             />
           ) : (
             <span />

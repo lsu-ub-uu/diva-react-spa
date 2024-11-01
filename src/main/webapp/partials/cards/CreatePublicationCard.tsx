@@ -19,24 +19,25 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, MenuItem, SelectChangeEvent, Button } from '@mui/material';
-import { Link as RouterLink } from '@remix-run/react';
+import { Grid, MenuItem, SelectChangeEvent } from '@mui/material';
+import Button from '@mui/material/Button';
+import { Link as RouterLink } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Card, Select } from '../../components';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { Card, Select } from '@/components';
 import {
-  loadPublicationTypesAsync,
-  publicationTypeSelector,
-} from '../../features/publicationTypes';
+  loadValidationTypesAsync,
+  validationTypeSelector,
+} from '@/features/validationTypes';
 
 export const CreatePublicationCard = () => {
   const { t } = useTranslation();
   const [validationType, setValidationType] = useState('');
   const dispatch = useAppDispatch();
-  const publicationTypeState = useAppSelector(publicationTypeSelector);
+  const validationTypeState = useAppSelector(validationTypeSelector);
 
   useEffect(() => {
-    dispatch(loadPublicationTypesAsync());
+    dispatch(loadValidationTypesAsync());
   }, [dispatch]);
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
@@ -46,7 +47,7 @@ export const CreatePublicationCard = () => {
 
   return (
     <Card
-      title={t('divaClient_createPublicationTypeText') as string}
+      title={t('divaClient_createPublicationTypeText')}
       variant='variant1'
       tooltipTitle={
         t('divaClient_createPublicationTypeTooltipTitleText') as string
@@ -77,20 +78,18 @@ export const CreatePublicationCard = () => {
             }}
             name='publication-type-select'
             size='small'
-            loading={publicationTypeState.isLoading}
+            loading={validationTypeState.isLoading}
             fullWidth
           >
-            {publicationTypeState.publicationTypes.map(
-              (publicationTypeOption) => (
-                <MenuItem
-                  key={publicationTypeOption.value}
-                  value={publicationTypeOption.value}
-                  disableRipple
-                >
-                  {t(publicationTypeOption.label)}
-                </MenuItem>
-              ),
-            )}
+            {validationTypeState.validationTypes.map((validationTypeOption) => (
+              <MenuItem
+                key={validationTypeOption.value}
+                value={validationTypeOption.value}
+                disableRipple
+              >
+                {t(validationTypeOption.label)}
+              </MenuItem>
+            ))}
           </Select>
         </Grid>
         <Grid

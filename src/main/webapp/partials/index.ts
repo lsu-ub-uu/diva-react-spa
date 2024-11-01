@@ -20,4 +20,3 @@
 export { CreatePublicationCard } from './cards/CreatePublicationCard';
 export { ListPublicationsCard } from './cards/ListPublicationsCard';
 export { SearchPublicationCard } from './cards/SearchPublicationCard';
-export { ImportPublicationCard } from './cards/ImportPublicationCard';

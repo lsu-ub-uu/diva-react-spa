@@ -18,14 +18,13 @@
 
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, styled } from '@mui/material';
-import { CreatePublicationCard, ListPublicationsCard } from '../../partials';
+import { CreatePublicationCard, ListPublicationsCard, SearchPublicationCard } from "@/partials";
 
 interface TabsMenuProps {
   children: React.ReactNode;
   value: number;
   index: number;
 }
-
 const StyledTab = styled(Tab)({
   color: '#666666',
   '&.Mui-selected': {
@@ -101,6 +100,7 @@ export const TabsMenu = () => {
         index={0}
       >
         <CreatePublicationCard />
+        <SearchPublicationCard />
       </TabPanel>
       <TabPanel
         value={value}

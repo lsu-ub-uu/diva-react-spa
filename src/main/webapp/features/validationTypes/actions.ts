@@ -16,31 +16,22 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FieldErrors } from 'react-hook-form';
-import { Alert } from '@mui/material';
+import axios from 'axios';
+import { AppThunk } from '@/app/store';
+import { hasError, update, updating } from './validationTypeSlice';
+import { Option } from '@/components';
 
-interface ErrorMessageProp {
-  title?: string;
-  errors: FieldErrors;
-}
-
-export const ErrorMessage = (props: ErrorMessageProp): JSX.Element | null => {
-  if (Object.entries(props.errors).length < 1) return null;
-
-  return (
-    <Alert
-      severity='error'
-      sx={{ mb: 2 }}
-    >
-      <span>{props.title ?? 'Form validation error(s):'}</span>
-      <ul>
-        {props.errors &&
-          Object.entries(props.errors).map(([field, err]) => (
-            <li key={field}>
-              {(err?.message ?? 'TODO HANDLE SUBFORM ERRORS').toString()}
-            </li>
-          ))}
-      </ul>
-    </Alert>
-  );
-};
+export const loadValidationTypesAsync =
+  (callback?: () => void): AppThunk =>
+  async (dispatch) => {
+    try {
+      dispatch(updating());
+      // validationTypes in Cora is really our available publications types.
+      const response = await axios.get(`/validationTypes`);
+      dispatch(update(response.data as Option[]));
+    } catch {
+      dispatch(hasError('Error occurred loading publication types'));
+    } finally {
+      if (callback) callback();
+    }
+  };

@@ -19,21 +19,14 @@
 
 import { useEffect } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { useParams } from '@remix-run/react';
-import {
-  CoraRecord,
-  useCoraFormSchemaByValidationType,
-  useCoraRecordByTypeAndId,
-} from '../app/hooks';
-import {
-  AsidePortal,
-  FormGenerator,
-  linksFromFormSchema,
-  NavigationPanel,
-  useBackdrop,
-  useSectionScroller,
-} from '../components';
-import { removeComponentsWithoutValuesFromSchema } from '../components/NavigationPanel/utils';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
+import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
+import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
+import { AsidePortal, linksFromFormSchema, NavigationPanel, useBackdrop, useSectionScroller } from '@/components';
+import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
+import { CoraRecord } from '@/features/record/types';
+import { RecordForm } from '@/components/Form/RecordForm';
 
 export const ViewRecordPage = () => {
   const { recordType, recordId } = useParams();
@@ -73,7 +66,7 @@ export const ViewRecordPage = () => {
 
   return (
     <>
-      {/* <Helmet>
+ {/*     <Helmet>
         <title>{coraRecord.record?.id ?? 'not found'} | DiVA</title>
       </Helmet>*/}
       <AsidePortal>
@@ -94,7 +87,7 @@ export const ViewRecordPage = () => {
       <div>
         <Stack spacing={2}>
           {coraSchema.schema && coraRecord.record && (
-            <FormGenerator
+            <RecordForm
               record={coraRecord.record}
               onSubmit={() => {}}
               onInvalid={() => {}}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,39 +16,33 @@
  *     You should have received a copy of the GNU General Public License
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { RecordFormSchema } from '@/components/FormGenerator/types';
 import axios from 'axios';
-import { useTranslation } from 'react-i18next';
-import { CoraRecord } from '@/features/record/types';
-import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
 
-interface LinkedRecordProps {
-  recordType: string;
-  id: string;
-  presentationRecordLinkId: string;
+interface UseFormSchemaByValidationType {
+  schema: RecordFormSchema | undefined;
+  isLoading: boolean;
+  error: string | null;
 }
 
-export const LinkedRecord: FC<LinkedRecordProps> = (
-  props: LinkedRecordProps,
-) => {
-  const [record, setRecord] = useState<CoraRecord | null>(null);
+export const useCoraFormSchemaByValidationType = (
+  validationType: string | undefined,
+  mode: 'create' | 'update' | 'view',
+): UseFormSchemaByValidationType => {
+  const [schema, setSchema] = useState<RecordFormSchema>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const { t } = useTranslation();
 
   useEffect(() => {
     let isMounted = true;
 
-    const fetchData = async () => {
+    const fetchFormSchema = async () => {
       try {
-        const response = await axios.get(
-          `/record/${props.recordType}/${props.id}?presentationRecordLinkId=${props.presentationRecordLinkId}`,
-        );
+        const response = await axios.get(`/form/${validationType}/${mode}`);
         if (isMounted) {
           setError(null);
-          setRecord(response.data);
+          setSchema(response.data as RecordFormSchema);
           setIsLoading(false);
         }
       } catch (err: unknown) {
@@ -63,20 +57,12 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
       }
     };
 
-    fetchData().then();
+    if (validationType !== undefined) fetchFormSchema().then();
 
     return () => {
       isMounted = false;
     };
-  }, [props.id, props.recordType, props.presentationRecordLinkId]);
+  }, [validationType, mode]);
 
-  if (isLoading) {
-    return <div>{t('divaClient_loadingText')}</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  return <>{record && <LinkedRecordForm record={record} />}</>;
+  return { isLoading, schema, error };
 };

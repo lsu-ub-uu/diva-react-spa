@@ -26,7 +26,7 @@ import {
   logout,
   Auth,
 } from './authSlice';
-import { loadPublicationTypesAsync } from '../publicationTypes';
+import { loadValidationTypesAsync } from '../validationTypes';
 import { loadPublicationsAsync } from '../publications';
 import { deleteFromCora, isValidJSON } from './utils/utils';
 import { renameObjectKey } from '../../utils';
@@ -50,7 +50,7 @@ export const loginAsync =
         options,
       );
       dispatch(authenticated(response.data.auth));
-      dispatch(loadPublicationTypesAsync());
+      dispatch(loadValidationTypesAsync());
       dispatch(loadPublicationsAsync());
     } catch {
       dispatch(hasError('login error'));
@@ -74,7 +74,7 @@ export const loginPasswordAsync =
       );
 
       dispatch(authenticated(response.data.authToken));
-      dispatch(loadPublicationTypesAsync());
+      dispatch(loadValidationTypesAsync());
       dispatch(loadPublicationsAsync());
     } catch {
       dispatch(hasError('login error'));
@@ -89,7 +89,7 @@ export const loginWebRedirectAsync =
     try {
       dispatch(authenticating());
       dispatch(authenticated(account));
-      dispatch(loadPublicationTypesAsync());
+      dispatch(loadValidationTypesAsync());
       dispatch(loadPublicationsAsync());
     } catch {
       dispatch(hasError('login error'));
@@ -119,7 +119,7 @@ export const logoutAsync = (): AppThunk => async (dispatch) => {
 
       await deleteFromCora(url, actionLinks);
       dispatch(logout());
-      dispatch(loadPublicationTypesAsync());
+      dispatch(loadValidationTypesAsync());
       dispatch(loadPublicationsAsync());
     } catch (e: any) {
       dispatch(logout());

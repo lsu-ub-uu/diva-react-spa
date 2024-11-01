@@ -44,7 +44,7 @@ describe('<App />', () => {
     );
 
     const logoImage = screen.getByAltText('logo');
-    screen.debug();
+    
     expect(logoImage).toBeInTheDocument();
   });
 });

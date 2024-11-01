@@ -24,19 +24,19 @@ import { FieldValues } from 'react-hook-form';
 import { useNavigate } from '@remix-run/react';
 import {
   AsidePortal,
-  FormGenerator,
-  linksFromFormSchema,
   NavigationPanel,
+  linksFromFormSchema,
   useSectionScroller,
-} from '../components';
-import { FormSchema } from '../components/FormGenerator/types';
-import { removeEmpty } from '../utils/removeEmpty';
-import { getRecordInfo, getValueFromRecordInfo } from '../utils/getRecordInfo';
-import { CoraRecord } from '@/app/hooks';
+} from '@/components';
+import { RecordFormSchema} from '@/components/FormGenerator/types';
+import { removeEmpty } from '@/utils/removeEmpty';
+import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
+import { RecordForm } from '@/components/Form/RecordForm';
+import {CoraRecord} from "@/features/record/types";
 
 interface CreateRecordPageProps {
   record: CoraRecord;
-  formDefinition: FormSchema;
+  formDefinition: RecordFormSchema;
 }
 
 export default function CreateRecordPage({
@@ -89,7 +89,7 @@ export default function CreateRecordPage({
       </AsidePortal>
       <div>
         <Stack spacing={2}>
-          <FormGenerator
+          <RecordForm
             record={record}
             onSubmit={handleSubmit}
             onInvalid={() => {

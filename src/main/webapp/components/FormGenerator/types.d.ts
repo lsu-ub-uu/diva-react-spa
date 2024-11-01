@@ -20,8 +20,15 @@
 import { Option } from '@/index';
 
 export interface FormSchema {
-  validationTypeId: string;
   form: FormComponent;
+}
+
+export interface RecordFormSchema extends FormSchema {
+  validationTypeId: string;
+}
+
+export interface SearchFormSchema extends FormSchema {
+  recordTypeToSearchIn: string[];
 }
 
 export interface FormComponentRepeat {
@@ -83,7 +90,7 @@ export interface FormComponent {
   presentationRecordLinkId?: string;
   linkedRecordPresentation?: LinkedPresentation;
   search?: string;
-  
+
   inputFormat?: 'password';
   attributesToShow?: 'all' | 'selectable' | 'none';
 }

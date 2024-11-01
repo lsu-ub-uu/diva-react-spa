@@ -20,7 +20,7 @@
 import { useEffect, useState } from 'react';
 import { FormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
-import { CoraRecord } from '../../app/hooks';
+import { CoraRecord } from '@/features/record/types';
 import {
   addAttributesToName,
   hasCurrentComponentSameNameInData,

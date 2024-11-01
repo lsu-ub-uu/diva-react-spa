@@ -20,8 +20,10 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { useCoraFormSchemaByValidationType } from '../hooks';
-import { FormSchema } from '../../components/FormGenerator/types';
+import { RecordFormSchema } from '@/components/FormGenerator/types';
+import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
+
+
 
 describe('useCoraFormSchemaByValidationType', () => {
   let mockAxios: MockAdapter;
@@ -34,7 +36,7 @@ describe('useCoraFormSchemaByValidationType', () => {
   });
 
   it('returns schema for validation type', async () => {
-    const expectedFormSchema: FormSchema = {
+    const expectedFormSchema: RecordFormSchema = {
       validationTypeId: 'someValidationTypeId',
       form: {
         type: 'group',

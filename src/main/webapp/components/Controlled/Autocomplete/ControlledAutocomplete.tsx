@@ -18,8 +18,8 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import TextField from '@mui/material/TextField';
 import {
-  TextField,
   Autocomplete as MuiAutocomplete,
   FormControl,
   FormLabel,
@@ -32,9 +32,10 @@ import axios from 'axios';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Tooltip, FormGenerator, LinkedRecord } from '../../index';
+import { Tooltip, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
-import { CoraRecord } from '../../../app/hooks';
+import { CoraRecord } from '@/features/record/types';
+import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 
 interface AutoCompleteProps {
   name: string;
@@ -184,12 +185,9 @@ export const ControlledAutocomplete = (
                     {...renderProps}
                     key={option.id}
                   >
-                    <FormGenerator
+                    <AutocompleteForm
                       record={option}
-                      onSubmit={() => {}}
-                      onInvalid={() => {}}
                       formSchema={option.presentation as FormSchema}
-                      linkedData
                     />
                   </li>
                 );

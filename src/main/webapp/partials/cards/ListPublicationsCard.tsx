@@ -39,8 +39,8 @@ import { DivaOutput } from '../../features/publications/actions';
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const publicationsState = useAppSelector(publicationsSelector);
+  const { enqueueSnackbar } = useSnackbar();
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {

@@ -17,32 +17,32 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Option } from '../../components';
+import { Option } from '@/components';
 
-interface PublicationTypeState {
-  publicationTypes: Option[];
+interface ValidationTypeState {
+  validationTypes: Option[];
   isLoading: boolean;
   isError: boolean;
   message: string;
 }
 
-const initialState: PublicationTypeState = {
-  publicationTypes: [],
+const initialState: ValidationTypeState = {
+  validationTypes: [],
   isLoading: false,
   isError: false,
   message: '',
 };
 
-export const publicationTypeSlice = createSlice({
-  name: 'publicationType',
+export const validationTypeSlice = createSlice({
+  name: 'validationType',
   initialState,
   reducers: {
     updating: (state) => {
-      state.publicationTypes = [];
+      state.validationTypes = [];
       state.isLoading = true;
     },
     update: (state, action: PayloadAction<Option[]>) => {
-      state.publicationTypes = action.payload;
+      state.validationTypes = action.payload;
       state.isLoading = false;
     },
     hasError: (state, action: PayloadAction<string>) => {
@@ -53,5 +53,5 @@ export const publicationTypeSlice = createSlice({
   },
 });
 
-export const { update, updating, hasError } = publicationTypeSlice.actions;
-export default publicationTypeSlice.reducer;
+export const { update, updating, hasError } = validationTypeSlice.actions;
+export default validationTypeSlice.reducer;

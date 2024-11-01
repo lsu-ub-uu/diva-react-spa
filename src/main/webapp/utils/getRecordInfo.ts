@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CoraRecord, RecordInfo } from '../app/hooks';
+import { CoraRecord, RecordInfo } from '@/features/record/types';
 
 export const getRecordInfo = (response: CoraRecord): RecordInfo => {
   const temp = Object.entries(response.data).map(([, value]) => {
