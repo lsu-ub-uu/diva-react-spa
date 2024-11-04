@@ -23,6 +23,7 @@ interface UseCoraRecordByTypeAndId {
   record?: CoraRecord;
   isLoading: boolean;
   error: string | null;
+  setRecord: (record: CoraRecord) => void;
 }
 
 interface CoraUpdate {

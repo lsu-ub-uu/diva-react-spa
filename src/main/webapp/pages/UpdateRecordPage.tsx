@@ -35,6 +35,7 @@ import {
 } from '@/components';
 import { removeEmpty } from '@/utils/removeEmpty';
 import { RecordForm } from '@/components/Form/RecordForm';
+import { CoraRecord } from '@/features/record/types';
 
 export const UpdateRecordPage = () => {
   const { recordType, recordId } = useParams();
@@ -47,6 +48,10 @@ export const UpdateRecordPage = () => {
     coraRecord.record?.validationType,
     'update',
   );
+
+  const lastUpdate =
+    coraRecord?.record?.updated &&
+    coraRecord.record.updated[coraRecord.record.updated?.length - 1].updateAt;
 
   useEffect(() => {
     setBackdrop(coraRecord.isLoading || isSubmitting);
@@ -77,10 +82,16 @@ export const UpdateRecordPage = () => {
     try {
       setIsSubmitting(true);
       const payload = { values };
-      await axios.post(
+
+      const response = await axios.post(
         `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,
         removeEmpty(payload),
       );
+
+      const updatedRecord = response.data as CoraRecord;
+
+      coraRecord.setRecord(updatedRecord);
+
       notification(`Record was successfully updated!`, 'success');
     } catch (err: any) {
       setIsSubmitting(false);
@@ -117,6 +128,7 @@ export const UpdateRecordPage = () => {
         <Stack spacing={2}>
           {coraSchema.schema && coraRecord.record && (
             <RecordForm
+              key={lastUpdate}
               record={coraRecord.record}
               onSubmit={handleSubmit}
               onInvalid={() => notification(`Update Form is invalid`, 'error')}
