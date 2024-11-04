@@ -28,8 +28,8 @@ import { ActionButtonGroup } from './ActionButtonGroup';
 import { FormComponent } from './types';
 import { createDefaultValuesFromComponent } from './utils';
 import {
+  isComponentGroup,
   isComponentSingularAndOptional,
-  isFirstLevelGroup,
 } from './utils/helper';
 import { Typography, Tooltip } from '@/components';
 import { headlineLevelToTypographyVariant } from './FormGenerator';
@@ -86,30 +86,20 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
                     mb: 2,
                   }}
                 >
-                  <div
-                    key={`${field.id}_${index}_c`}
-                    style={{
-                      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-                      width: '25%',
-                      marginRight: '5px',
-                    }}
-                  />
-                  <Chip
-                    key={`${field.id}_${index}_d`}
-                    label={`${t(props.component.label ?? '')} ${index + 1}`}
-                  />
-                  <div
-                    key={`${field.id}_${index}_e`}
-                    style={{
-                      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-                      width: '25%',
-                      marginLeft: '5px',
-                    }}
-                  />
+                  {!isComponentSingularAndOptional(props.component) &&
+                  isComponentGroup(props.component) ? (
+                    <Typography
+                      variant={
+                        headlineLevelToTypographyVariant(
+                          props.component.headlineLevel,
+                        ) ?? 'bodyTextStyle'
+                      }
+                      text={props.component.label!}
+                    />
+                  ) : null}
                 </Box>
               )}
               {props.component.mode === 'input' && (
@@ -168,67 +158,16 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
     );
   }
 
-  function renderFirstLevel() {
-    return (
-      <span
-        key={props.name}
-        className='anchorLink'
-        id={`anchor_${props.component.name}`}
-      >
-        <Box sx={{ mb: 2 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            {props.component.showLabel === true ? (
-              <Typography
-                text={props.component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  props.component.headlineLevel,
-                )}
-              />
-            ) : null}
-            <Tooltip
-              title={t(props.component.tooltip?.title as string)}
-              body={t(props.component.tooltip?.body as string)}
-            >
-              <IconButton
-                disableRipple
-                color='info'
-                aria-label='info'
-              >
-                <InfoIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          {getContent()}
-        </Box>
-      </span>
-    );
-  }
-
-  function renderOtherLevels() {
-    return (!checkForFieldValue(fields) && props.component.mode === 'output') ||
-      props.component.mode === 'input' ? (
-      <Grid
-        key={props.name}
-        item
-        xs={12}
-        sm={props.component.gridColSpan}
-        id={`${props.name}_id`}
-        flexDirection='column'
-      >
-        <React.Fragment key={`${props.name}_grid`}>
-          {getContent()}
-        </React.Fragment>
-      </Grid>
-    ) : null;
-  }
-
-  return isFirstLevelGroup(props.name)
-    ? renderFirstLevel()
-    : renderOtherLevels();
+  return (
+    <Grid
+      key={props.name}
+      item
+      xs={12}
+      sm={props.component.gridColSpan}
+      id={`${props.name}_id`}
+      flexDirection='column'
+    >
+      <React.Fragment key={`${props.name}_grid`}>{getContent()}</React.Fragment>
+    </Grid>
+  );
 };

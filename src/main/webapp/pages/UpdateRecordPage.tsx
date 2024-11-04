@@ -82,6 +82,7 @@ export const UpdateRecordPage = () => {
         removeEmpty(payload),
       );
       notification(`Record was successfully updated!`, 'success');
+
     } catch (err: any) {
       setIsSubmitting(false);
       notification(`${err.message}`, 'error');

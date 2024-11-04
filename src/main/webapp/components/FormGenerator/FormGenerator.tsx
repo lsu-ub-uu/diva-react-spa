@@ -19,15 +19,24 @@
 
 import React from 'react';
 import { Box, Grid, IconButton } from '@mui/material';
-import { Control, FieldErrors, FieldValues, UseFormGetValues } from 'react-hook-form';
+import {
+  Control,
+  FieldErrors,
+  FieldValues,
+  UseFormGetValues,
+} from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
-import { ControlledLinkedRecord, ControlledSelectField, ControlledTextField } from '../Controlled';
+import {
+  ControlledLinkedRecord,
+  ControlledSelectField,
+  ControlledTextField,
+} from '../Controlled';
 import {
   addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
-  hasCurrentComponentSameNameInData
+  hasCurrentComponentSameNameInData,
 } from './utils';
 import {
   checkIfComponentHasValue,
@@ -38,9 +47,14 @@ import {
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
-  isFirstLevelGroup
+  isFirstLevelGroup,
 } from './utils/helper';
-import { ControlledAutocomplete, LinkButton, Tooltip, Typography } from '@/components';
+import {
+  ControlledAutocomplete,
+  LinkButton,
+  Tooltip,
+  Typography,
+} from '@/components';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
@@ -247,6 +261,7 @@ export const FormGenerator = ({
               : undefined,
           }}
         >
+          createComponentSurroundingContainerAndNOTRepeating
           {component.components &&
             createFormComponents(
               component.components,
@@ -402,25 +417,7 @@ export const FormGenerator = ({
     parentPresentationStyle: string | undefined,
     childWithNameInDataArray: string[],
   ) => {
-    return isFirstLevelGroup(currentComponentNamePath) ? (
-      <FieldArrayComponent
-        key={reactKey}
-        control={control}
-        component={component}
-        name={currentComponentNamePath}
-        renderCallback={(arrayPath: string) => {
-          return [
-            ...createFormComponentAttributes(component, arrayPath),
-            ...createFormComponents(
-              component.components ?? [],
-              childWithNameInDataArray,
-              component.presentationStyle ?? parentPresentationStyle,
-              arrayPath,
-            ),
-          ];
-        }}
-      />
-    ) : (
+    return (
       <Grid
         item
         xs={12}
@@ -428,6 +425,7 @@ export const FormGenerator = ({
         sx={{ position: 'relative' }}
         id={`anchor_${addAttributesToName(component, component.name)}`}
       >
+        {/*createComponentGroupAndRepeating {component.label}
         {component?.showLabel && (
           <Box
             sx={{
@@ -457,7 +455,7 @@ export const FormGenerator = ({
               </IconButton>
             </Tooltip>
           </Box>
-        )}
+        )}*/}
 
         <FieldArrayComponent
           key={reactKey}
