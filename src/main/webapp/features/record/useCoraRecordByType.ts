@@ -59,5 +59,5 @@ export const useCoraRecordByType = (
     };
   }, [recordType]);
 
-  return { isLoading, error, record };
+  return { isLoading, error, record, setRecord };
 };
