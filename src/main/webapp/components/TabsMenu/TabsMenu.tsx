@@ -18,7 +18,11 @@
 
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, styled } from '@mui/material';
-import { CreatePublicationCard, ListPublicationsCard, SearchPublicationCard } from "@/partials";
+import {
+  CreatePublicationCard,
+  ListPublicationsCard,
+  SearchPublicationCard,
+} from '@/partials';
 
 interface TabsMenuProps {
   children: React.ReactNode;
@@ -71,7 +75,6 @@ export const TabsMenu = () => {
             style: {
               backgroundColor: '#613985',
               height: '100%',
-              width: '33.33%',
               borderRadius: '8px 8px 0 0',
               zIndex: '-1',
               // transition: 'all 400ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
