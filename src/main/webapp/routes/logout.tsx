@@ -16,17 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
-import { CoraRecord } from '@/features/record/types';
+import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import { destroySession, getSession } from '@/sessions';
 
-export const getRecordByRecordTypeAndRecordId = async (
-  recordType: string,
-  recordId: string,
-  authToken: string,
-) => {
-  const response = await axios.get<CoraRecord>(
-    `/record/${recordType}/${recordId}`,
-    { headers: { Authtoken: authToken } },
-  );
-  return response.data as CoraRecord;
-};
+export async function action({ request }: ActionFunctionArgs) {
+  const session = await getSession(request.headers.get('Cookie'));
+
+  return redirect('/login', {
+    headers: {
+      'Set-Cookie': await destroySession(session),
+    },
+  });
+}
+
+export const loader = async () => redirect('/');

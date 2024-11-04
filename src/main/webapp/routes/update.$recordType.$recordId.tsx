@@ -18,6 +18,45 @@
 
 import { UpdateRecordPage } from '@/pages';
 
+import { getAuth } from '@/sessions';
+import { LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
+import { invariant } from '@remix-run/router/history';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
+import { useLoaderData } from '@remix-run/react';
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  const { recordType, recordId } = params;
+  invariant(recordType, 'Missing recordType param');
+  invariant(recordId, 'Missing recordId param');
+
+  const auth = await getAuth(request);
+  if (!auth) {
+    return redirect('/login');
+  }
+  const record = await getRecordByRecordTypeAndRecordId(
+    recordType,
+    recordId,
+    auth.data.token,
+  );
+
+  if (record?.validationType == null) {
+    throw new Error();
+  }
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    record.validationType,
+    'update',
+  );
+
+  return { record, formDefinition };
+}
+
 export default function UpdateRecordRoute() {
-  return <UpdateRecordPage />;
+  const { record, formDefinition } = useLoaderData<typeof loader>();
+  return (
+    <UpdateRecordPage
+      record={record}
+      formDefinition={formDefinition}
+    />
+  );
 }

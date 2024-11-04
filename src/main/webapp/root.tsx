@@ -16,11 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Links, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/node';
+import {
+  Links,
+  Meta,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+} from '@remix-run/react';
+import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/utils';
 import { withEmotionCache } from '@emotion/react';
-import { ReactNode, Suspense, useContext } from 'react';
+import { ReactNode, Suspense, useContext, useEffect } from 'react';
 import ClientStyleContext from '@/ClientStyleContext';
 import {
   BackdropProvider,
@@ -33,6 +39,8 @@ import '@/app/i18n';
 import { divaTheme } from '@/themes/diva';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Provider as StateProvider } from 'react-redux';
+import { getAuth } from '@/sessions';
+import axios from 'axios';
 import dev_favicon from '@/images/dev_favicon.svg'
 import favicon from '@/images/favicon.svg'
 
@@ -44,6 +52,12 @@ export const links: LinksFunction = () => [
 interface DocumentProps {
   children: ReactNode;
   title?: string;
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const auth = await getAuth(request);
+
+  return { auth };
 }
 
 const Document = withEmotionCache(
@@ -106,6 +120,14 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
+  const { auth } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    axios.defaults.headers.common = {
+      Authtoken: auth?.data.token ?? '',
+    };
+  }, [auth]);
+
   return (
     <>
       <CssBaseline />

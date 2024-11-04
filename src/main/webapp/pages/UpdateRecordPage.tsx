@@ -17,54 +17,32 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from 'react';
-import { Alert, Skeleton, Stack } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
-import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
-import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
 import {
   AsidePortal,
   linksFromFormSchema,
   NavigationPanel,
-  useBackdrop,
   useSectionScroller,
 } from '@/components';
 import { removeEmpty } from '@/utils/removeEmpty';
 import { RecordForm } from '@/components/Form/RecordForm';
+import { CoraRecord } from '@/features/record/types';
+import { RecordFormSchema } from '@/components/FormGenerator/types';
 
-export const UpdateRecordPage = () => {
-  const { recordType, recordId } = useParams();
+interface UpdateRecordPageProps {
+  record: CoraRecord;
+  formDefinition: RecordFormSchema;
+}
+
+export const UpdateRecordPage = ({
+  record,
+  formDefinition,
+}: UpdateRecordPageProps) => {
   const activeSection = useSectionScroller();
   const { enqueueSnackbar } = useSnackbar();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { setBackdrop } = useBackdrop();
-  const coraRecord = useCoraRecordByTypeAndId(recordType as string, recordId);
-  const coraSchema = useCoraFormSchemaByValidationType(
-    coraRecord.record?.validationType,
-    'update',
-  );
-
-  useEffect(() => {
-    setBackdrop(coraRecord.isLoading || isSubmitting);
-  }, [coraRecord.isLoading, isSubmitting, setBackdrop]);
-
-  if (coraRecord.isLoading)
-    return (
-      <Skeleton
-        variant='rectangular'
-        height={800}
-      />
-    );
-
-  if (coraRecord.error)
-    return <Alert severity='error'>{coraRecord.error}</Alert>;
-
-  if (coraSchema.error)
-    return <Alert severity='error'>{coraSchema.error}</Alert>;
 
   const notification = (message: string, variant: VariantType) => {
     enqueueSnackbar(message, {
@@ -75,28 +53,16 @@ export const UpdateRecordPage = () => {
 
   const handleSubmit = async (values: FieldValues) => {
     try {
-      setIsSubmitting(true);
       const payload = { values };
       await axios.post(
-        `/record/${coraSchema?.schema?.validationTypeId}/${coraRecord.record?.id}`,
+        `/record/${formDefinition?.validationTypeId}/${record?.id}`,
         removeEmpty(payload),
       );
       notification(`Record was successfully updated!`, 'success');
     } catch (err: any) {
-      setIsSubmitting(false);
       notification(`${err.message}`, 'error');
-    } finally {
-      setIsSubmitting(false);
     }
   };
-
-  if (coraSchema.isLoading)
-    return (
-      <Skeleton
-        variant='rectangular'
-        height={800}
-      />
-    );
 
   return (
     <>
@@ -106,23 +72,19 @@ export const UpdateRecordPage = () => {
       <AsidePortal>
         <NavigationPanel
           links={
-            coraSchema.schema
-              ? linksFromFormSchema(coraSchema.schema) || []
-              : []
+            formDefinition ? linksFromFormSchema(formDefinition) || [] : []
           }
           activeLinkName={activeSection}
         />
       </AsidePortal>
       <div>
         <Stack spacing={2}>
-          {coraSchema.schema && coraRecord.record && (
-            <RecordForm
-              record={coraRecord.record}
-              onSubmit={handleSubmit}
-              onInvalid={() => notification(`Update Form is invalid`, 'error')}
-              formSchema={coraSchema.schema!}
-            />
-          )}
+          <RecordForm
+            record={record}
+            onSubmit={handleSubmit}
+            onInvalid={() => notification(`Update Form is invalid`, 'error')}
+            formSchema={formDefinition}
+          />
         </Stack>
       </div>
     </>

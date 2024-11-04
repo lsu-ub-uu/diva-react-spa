@@ -21,8 +21,8 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import CachedIcon from '@mui/icons-material/Cached';
 import { Link as RouterLink } from '@remix-run/react';
-import { Login } from './Login/Login';
 import divaLogo from '../../../assets/divaLogo.svg';
+import User from '@/components/Layout/Header/Login/User';
 
 export const Header = () => {
   const { i18n } = useTranslation();
@@ -69,7 +69,7 @@ export const Header = () => {
             <Button onClick={() => i18n.changeLanguage('en')}>English</Button>
           </Grid>
           <Grid item>
-            <Login />
+            <User />
           </Grid>
         </Grid>
       </Container>
