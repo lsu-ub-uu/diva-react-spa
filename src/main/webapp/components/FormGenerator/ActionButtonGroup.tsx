@@ -40,21 +40,11 @@ export const ActionButtonGroup = (
 ): JSX.Element => {
   const { t } = useTranslation();
 
-  const marginTopValue =
-    props.entityName === 'Polygon'
-      ? '30px'
-      : isComponentGroupAndSingularForStyling(
-          props.entityType,
-          props.hideMoveButtons,
-        )
-      ? '-46px'
-      : null;
-
   return (
     <ButtonGroup
       size='small'
       sx={{
-        marginTop: marginTopValue,
+        // marginTop: marginTopValue,
         position: 'absolute',
         top: 0,
         right: 0,

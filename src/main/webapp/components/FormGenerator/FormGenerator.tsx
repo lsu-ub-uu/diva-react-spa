@@ -121,6 +121,7 @@ export const FormGenerator = ({
     ) => {
       return (aComponent.attributes ?? []).map((attribute, index) => {
         const hasValue = checkIfComponentHasValue(getValues, attribute.name);
+
         const attributesToShow = checkIfAttributesToShowIsAValue(component);
         if (attributesToShow === 'all') {
           return (
@@ -207,7 +208,6 @@ export const FormGenerator = ({
         component,
         createFormComponentAttributes,
         parentPresentationStyle,
-        childrenWithSameNameInData,
       );
     }
 
@@ -261,7 +261,6 @@ export const FormGenerator = ({
               : undefined,
           }}
         >
-          createComponentSurroundingContainerAndNOTRepeating
           {component.components &&
             createFormComponents(
               component.components,
@@ -415,66 +414,25 @@ export const FormGenerator = ({
       aPath: string,
     ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
-    childWithNameInDataArray: string[],
   ) => {
     return (
-      <Grid
-        item
-        xs={12}
+      <FieldArrayComponent
         key={reactKey}
-        sx={{ position: 'relative' }}
-        id={`anchor_${addAttributesToName(component, component.name)}`}
-      >
-        {/*createComponentGroupAndRepeating {component.label}
-        {component?.showLabel && (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            {component.showLabel ? (
-              <Typography
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
-            ) : null}
-            <Tooltip
-              title={t(component.tooltip?.title as string)}
-              body={t(component.tooltip?.body as string)}
-            >
-              <IconButton
-                disableRipple
-                color='info'
-                aria-label='info'
-              >
-                <InfoIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}*/}
-
-        <FieldArrayComponent
-          key={reactKey}
-          control={control}
-          component={component}
-          name={currentComponentNamePath}
-          renderCallback={(arrayPath: string) => {
-            return [
-              ...createFormComponentAttributes(component, arrayPath),
-              ...createFormComponents(
-                component.components ?? [],
-                [],
-                component.presentationStyle ?? parentPresentationStyle,
-                arrayPath,
-              ),
-            ];
-          }}
-        />
-      </Grid>
+        control={control}
+        component={component}
+        name={currentComponentNamePath}
+        renderCallback={(arrayPath: string) => {
+          return [
+            ...createFormComponentAttributes(component, arrayPath),
+            ...createFormComponents(
+              component.components ?? [],
+              [],
+              component.presentationStyle ?? parentPresentationStyle,
+              arrayPath,
+            ),
+          ];
+        }}
+      />
     );
   };
 
