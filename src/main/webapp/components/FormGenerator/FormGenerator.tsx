@@ -208,6 +208,7 @@ export const FormGenerator = ({
         component,
         createFormComponentAttributes,
         parentPresentationStyle,
+        childrenWithSameNameInData,
       );
     }
 
@@ -414,6 +415,7 @@ export const FormGenerator = ({
       aPath: string,
     ) => (JSX.Element | null)[],
     parentPresentationStyle: string | undefined,
+    childWithNameInDataArray: string[],
   ) => {
     return (
       <FieldArrayComponent
@@ -426,7 +428,7 @@ export const FormGenerator = ({
             ...createFormComponentAttributes(component, arrayPath),
             ...createFormComponents(
               component.components ?? [],
-              [],
+              childWithNameInDataArray,
               component.presentationStyle ?? parentPresentationStyle,
               arrayPath,
             ),

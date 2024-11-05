@@ -44,7 +44,6 @@ export const ActionButtonGroup = (
     <ButtonGroup
       size='small'
       sx={{
-        // marginTop: marginTopValue,
         position: 'absolute',
         top: 0,
         right: 0,

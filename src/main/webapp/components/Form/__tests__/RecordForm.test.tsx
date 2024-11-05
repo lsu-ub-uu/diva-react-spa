@@ -80,9 +80,12 @@ import {
   formDefWithTextVar,
   formDefWithTextVarAndNestedGroupsWithOneTextVar,
   formDefWithTwoTextVariableHavingFinalValue,
-  formDefWithWithOptionalGroupWithRequiredVar
+  formDefWithWithOptionalGroupWithRequiredVar,
 } from '@/__mocks__/data/formDef';
-import { getChildrenWithSameNameInDataFromSchema, hasComponentSameNameInData } from '../../FormGenerator/FormGenerator';
+import {
+  getChildrenWithSameNameInDataFromSchema,
+  hasComponentSameNameInData,
+} from '../../FormGenerator/FormGenerator';
 import { FormComponent } from '../../FormGenerator/types';
 import { getChildNameInDataArray } from '@/components/FormGenerator/utils';
 import { RecordForm } from '@/components/Form/RecordForm';
