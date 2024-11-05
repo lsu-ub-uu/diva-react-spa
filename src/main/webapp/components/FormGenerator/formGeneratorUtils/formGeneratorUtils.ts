@@ -18,12 +18,15 @@
  */
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { FormComponent } from '../types';
+import { FormComponent, FormSchema } from '../types';
 import { removeEmpty } from '@/utils/removeEmpty';
 import {
   addAttributesToName,
+  getChildNameInDataArray,
+  getChildrenWithSameNameInData,
   hasCurrentComponentSameNameInData,
-} from '@/components/FormGenerator/utils';
+} from '@/components/FormGenerator/defaultValues/defaultValues';
+import { DivaTypographyVariants } from '@/components/Typography/Typography';
 
 export const countStringCharOccurrences = (
   inputString: string,
@@ -185,3 +188,57 @@ export function getNameInData(
     ? addAttributesToName(component, component.name)
     : component.name;
 }
+
+export const checkIfPresentationStyleIsInline = (component: FormComponent) => {
+  return component.presentationStyle === 'inline';
+};
+
+export const checkIfPresentationStyleOrParentIsInline = (
+  component: FormComponent,
+  parentPresentationStyle: string | undefined,
+) => {
+  return (
+    component.presentationStyle === 'inline' ||
+    parentPresentationStyle === 'inline'
+  );
+};
+export const headlineLevelToTypographyVariant = (
+  headlineLevel: string | undefined,
+): DivaTypographyVariants['variant'] => {
+  let typographyVariant: DivaTypographyVariants['variant'];
+  if (headlineLevel !== undefined) {
+    typographyVariant =
+      `${headlineLevel}TextStyle` as DivaTypographyVariants['variant'];
+  } else {
+    typographyVariant = 'h2TextStyle';
+  }
+
+  return typographyVariant as DivaTypographyVariants['variant']; // check style to return as default
+};
+export const convertChildStyleToString = (
+  childStyle: string[] | undefined,
+): string | null => {
+  return childStyle?.[0] === undefined ? '' : childStyle[0].toString();
+};
+export const hasComponentSameNameInData = (component: FormComponent) => {
+  if (component.components === undefined) {
+    return false;
+  }
+
+  if (component.components.length === 1) {
+    return false;
+  }
+
+  if (!isComponentGroup(component)) {
+    return false;
+  }
+  const nameArray = getChildNameInDataArray(component);
+  return getChildrenWithSameNameInData(nameArray).length >= 1;
+};
+export const getChildrenWithSameNameInDataFromSchema = (
+  formSchema: FormSchema,
+) => {
+  return getChildrenWithSameNameInData(
+    getChildNameInDataArray(formSchema?.form),
+  );
+};

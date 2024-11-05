@@ -136,7 +136,7 @@ const validationExclusiveExtras = (
   return obj;
 };
 
-describe('generate yupSchema', () => {
+describe('generate validation', () => {
   it('should return correct validationSchema for one textVar and one numberVar', () => {
     const yupSchema = generateYupSchemaFromFormSchema(
       formDefWithTextVar as FormSchema,

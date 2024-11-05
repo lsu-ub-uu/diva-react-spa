@@ -29,7 +29,7 @@ import {
 } from '../utils';
 import { Auth } from '@/features/auth/authSlice';
 
-describe('Login utils', () => {
+describe('Login validation', () => {
   it('messageIsFromWindowOpenedFromHere return false on different event url', () => {
     const actual = messageIsFromWindowOpenedFromHere('someUrl', 'someOtherUrl');
     expect(actual).toBe(false);

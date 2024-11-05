@@ -16,13 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import {
   createDefaultValuesFromFormSchema,
   RecordData,
-} from '@/components/FormGenerator/utils';
+} from '@/components/FormGenerator/defaultValues/defaultValues';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/utils/yupSchema';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
@@ -46,19 +46,15 @@ export const LinkedRecordForm = ({ record }: LinkedRecordFormProps) => {
       generateYupSchemaFromFormSchema(formSchema as FormSchema),
     ),
   });
-  const { control, getValues } = methods;
 
   return (
     formSchema?.form && (
-      <FormGenerator
-        record={record}
-        onSubmit={() => {}}
-        onInvalid={() => {}}
-        formSchema={record.presentation as FormSchema}
-        linkedData
-        control={control}
-        getValues={getValues}
-      />
+      <FormProvider {...methods}>
+        <FormGenerator
+          formSchema={record.presentation as FormSchema}
+          linkedData
+        />
+      </FormProvider>
     )
   );
 };

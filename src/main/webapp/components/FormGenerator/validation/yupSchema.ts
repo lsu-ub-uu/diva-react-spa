@@ -42,12 +42,12 @@ import {
   isComponentValidForDataCarrying,
   isComponentGroupAndOptional,
   getNameInData,
-} from './helper';
+} from '../formGeneratorUtils/formGeneratorUtils';
 
 import {
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
-} from '../utils';
+} from '../defaultValues/defaultValues';
 
 export const generateYupSchemaFromFormSchema = (formSchema: FormSchema) => {
   const rule = createYupValidationsFromComponent(formSchema.form);
