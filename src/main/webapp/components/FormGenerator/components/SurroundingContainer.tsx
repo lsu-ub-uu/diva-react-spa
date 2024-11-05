@@ -18,9 +18,9 @@
 
 import { FormComponent } from '@/components/FormGenerator/types';
 import React from 'react';
-import { addAttributesToName } from '@/components/FormGenerator/utils';
-import { checkIfPresentationStyleIsInline } from '@/components/FormGenerator/utils/helper';
-import { FormComponentListGenerator } from '@/components/FormGenerator/FormComponentListGenerator';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { checkIfPresentationStyleIsInline } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { ComponentList } from '@/components/FormGenerator/ComponentList';
 
 interface SurroundingContainerProps {
   reactKey: string;
@@ -51,7 +51,7 @@ export const SurroundingContainer = ({
         }}
       >
         {component.components && (
-          <FormComponentListGenerator
+          <ComponentList
             components={component.components}
             childWithNameInDataArray={[]}
             parentPresentationStyle={

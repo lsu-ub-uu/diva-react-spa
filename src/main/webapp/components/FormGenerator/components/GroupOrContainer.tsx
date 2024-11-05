@@ -18,41 +18,38 @@
 
 import { FormComponent } from '@/components/FormGenerator/types';
 import { Box, Grid, IconButton } from '@mui/material';
-import { addAttributesToName } from '@/components/FormGenerator/utils';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { Tooltip, Typography } from '@/components';
 import InfoIcon from '@mui/icons-material/Info';
-import { headlineLevelToTypographyVariant } from '@/components/FormGenerator/FormGenerator';
 import {
   checkIfPresentationStyleIsInline,
   checkIfPresentationStyleOrParentIsInline,
+  headlineLevelToTypographyVariant,
   isFirstLevelGroup,
-} from '@/components/FormGenerator/utils/helper';
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useTranslation } from 'react-i18next';
-import { FormComponentListGenerator } from '@/components/FormGenerator/FormComponentListGenerator';
+import { ComponentList } from '@/components/FormGenerator/ComponentList';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import { useContext } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
   reactKey: string;
   component: FormComponent;
-  createFormComponentAttributes: (
-    aComponent: FormComponent,
-    aPath: string,
-  ) => (JSX.Element | null)[];
   parentPresentationStyle: string | undefined;
   childWithNameInDataArray: string[];
-  linkedData: boolean;
 }
 
 export const GroupOrContainer = ({
   currentComponentNamePath,
   reactKey,
   component,
-  createFormComponentAttributes,
   parentPresentationStyle,
   childWithNameInDataArray,
-  linkedData,
 }: GroupOrContainerProps) => {
   const { t } = useTranslation();
+  const { linkedData } = useContext(FormGeneratorContext);
   return isComponentFirstLevelAndNOTLinkedData(
     currentComponentNamePath,
     linkedData,
@@ -61,7 +58,7 @@ export const GroupOrContainer = ({
       item
       xs={12}
       key={reactKey}
-      className='anchorLink isComponentFirstLevelAndNOTLinkedData'
+      className='anchorLink'
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <Box sx={{ mb: 2 }}>
@@ -100,13 +97,15 @@ export const GroupOrContainer = ({
           spacing={2}
           justifyContent='space-between'
           alignItems='flex-start'
-          className={'NOTisComponentFirstLevelAndNOTLinkedData'}
           id={`anchor_${addAttributesToName(component, component.name)}`}
         >
-          {createFormComponentAttributes(component, currentComponentNamePath)}
+          <Attributes
+            component={component}
+            path={currentComponentNamePath}
+          />
 
           {component.components && (
-            <FormComponentListGenerator
+            <ComponentList
               components={component.components}
               childWithNameInDataArray={childWithNameInDataArray}
               parentPresentationStyle={
@@ -161,9 +160,13 @@ export const GroupOrContainer = ({
             />
           </span>
         ))}
-      {createFormComponentAttributes(component, currentComponentNamePath)}
+
+      <Attributes
+        component={component}
+        path={currentComponentNamePath}
+      />
       {component.components && (
-        <FormComponentListGenerator
+        <ComponentList
           components={component.components}
           childWithNameInDataArray={childWithNameInDataArray}
           parentPresentationStyle={

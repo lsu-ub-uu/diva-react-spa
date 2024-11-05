@@ -357,9 +357,8 @@ describe('<Login/>', () => {
       await user.click(loginUrl);
 
       waitFor(async () => {
-        const loginInput = await screen.findByPlaceholderText(
-          'loginIdTextVarText',
-        );
+        const loginInput =
+          await screen.findByPlaceholderText('loginIdTextVarText');
         expect(loginInput).toBeInTheDocument();
       });
     });

@@ -17,8 +17,8 @@
  */
 
 import { FormComponent } from '@/components/FormGenerator/types';
-import { FormComponentGenerator } from '@/components/FormGenerator/FormComponentGenerator';
-import { addAttributesToName } from '@/components/FormGenerator/utils';
+import { Component } from '@/components/FormGenerator/Component';
+import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
@@ -27,14 +27,14 @@ interface FormComponentListGeneratorProps {
   path?: string;
 }
 
-export const FormComponentListGenerator = ({
+export const ComponentList = ({
   components,
   childWithNameInDataArray,
   parentPresentationStyle,
   path = '',
 }: FormComponentListGeneratorProps): (JSX.Element | null)[] => {
   return components.map((c, i) => (
-    <FormComponentGenerator
+    <Component
       key={addAttributesToName(c, c.name)}
       component={c}
       idx={i}

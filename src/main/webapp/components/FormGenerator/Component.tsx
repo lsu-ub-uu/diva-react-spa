@@ -21,25 +21,22 @@ import {
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
   hasCurrentComponentSameNameInData,
-} from '@/components/FormGenerator/utils';
+} from '@/components/FormGenerator/defaultValues/defaultValues';
 import {
-  checkIfComponentHasValue,
   isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
-} from '@/components/FormGenerator/utils/helper';
-import { Grid } from '@mui/material';
-import { ControlledSelectField } from '@/components/Controlled';
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import React from 'react';
-import { renderLeafComponent } from '@/components/FormGenerator/FormGenerator';
-import { useFormContext } from 'react-hook-form';
-import { SurroundingContainer } from '@/components/FormGenerator/SurroundingContainer';
-import { GroupOrContainer } from '@/components/FormGenerator/GroupOrContainer';
-import { RepeatingGroup } from '@/components/FormGenerator/RepeatingGroup';
-import { RepeatingVariable } from '@/components/FormGenerator/RepeatingVariable';
+import { SurroundingContainer } from '@/components/FormGenerator/components/SurroundingContainer';
+import { GroupOrContainer } from '@/components/FormGenerator/components/GroupOrContainer';
+import { RepeatingGroup } from '@/components/FormGenerator/components/RepeatingGroup';
+import { RepeatingVariable } from '@/components/FormGenerator/components/RepeatingVariable';
+import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
 
 interface FormComponentGeneratorProps {
   component: FormComponent;
@@ -47,18 +44,15 @@ interface FormComponentGeneratorProps {
   path: string;
   childWithNameInDataArray?: string[];
   parentPresentationStyle?: string;
-  linkedData: boolean;
 }
 
-export const FormComponentGenerator = ({
+export const Component = ({
   component,
   idx,
   path,
   childWithNameInDataArray = [],
   parentPresentationStyle,
-  linkedData,
 }: FormComponentGeneratorProps) => {
-  const { getValues, control } = useFormContext();
   const reactKey = `key_${idx}`;
 
   let currentComponentNamePath;
@@ -89,72 +83,6 @@ export const FormComponentGenerator = ({
       : addAttributesForMatchingNameInDataWithPath;
   }
 
-  const createFormComponentAttributes = (
-    aComponent: FormComponent,
-    aPath: string,
-  ) => {
-    return (aComponent.attributes ?? []).map((attribute, index) => {
-      const hasValue = checkIfComponentHasValue(getValues, attribute.name);
-
-      const attributesToShow = checkIfAttributesToShowIsAValue(component);
-      if (attributesToShow === 'all') {
-        return (
-          <Grid
-            key={attribute.name}
-            item
-            xs={6}
-            id={`anchor_${addAttributesToName(component, component.name)}`}
-          >
-            <ControlledSelectField
-              key={`${attribute.name}_${index}`}
-              name={`${aPath}._${attribute.name}`}
-              isLoading={false}
-              loadingError={false}
-              label={attribute.label ?? ''}
-              showLabel={component.showLabel}
-              placeholder={attribute.placeholder}
-              tooltip={attribute.tooltip}
-              control={control}
-              options={attribute.options}
-              readOnly={!!attribute.finalValue}
-              displayMode={attribute.mode}
-              hasValue={hasValue}
-            />
-          </Grid>
-        );
-      }
-
-      if (attributesToShow === 'selectable' && !attribute.finalValue) {
-        return (
-          <Grid
-            key={attribute.name}
-            item
-            xs={6}
-            id={`anchor_${addAttributesToName(component, component.name)}`}
-          >
-            <ControlledSelectField
-              key={`${attribute.name}_${index}`}
-              name={`${aPath}._${attribute.name}`}
-              isLoading={false}
-              loadingError={false}
-              label={attribute.label ?? ''}
-              showLabel={component.showLabel}
-              placeholder={attribute.placeholder}
-              tooltip={attribute.tooltip}
-              control={control}
-              options={attribute.options}
-              readOnly={!!attribute.finalValue}
-              displayMode={attribute.mode}
-              hasValue={hasValue}
-            />
-          </Grid>
-        );
-      }
-
-      return null;
-    });
-  };
-
   if (isComponentSurroundingContainerAndNOTRepeating(component)) {
     return (
       <SurroundingContainer
@@ -172,10 +100,8 @@ export const FormComponentGenerator = ({
         currentComponentNamePath={currentComponentNamePath}
         reactKey={reactKey}
         component={component}
-        createFormComponentAttributes={createFormComponentAttributes}
         parentPresentationStyle={parentPresentationStyle}
         childWithNameInDataArray={childrenWithSameNameInData}
-        linkedData={linkedData}
       />
     );
   }
@@ -186,7 +112,6 @@ export const FormComponentGenerator = ({
         currentComponentNamePath={currentComponentNamePath}
         reactKey={reactKey}
         component={component}
-        createFormComponentAttributes={createFormComponentAttributes}
         parentPresentationStyle={parentPresentationStyle}
         childWithNameInDataArray={childrenWithSameNameInData}
       />
@@ -199,41 +124,26 @@ export const FormComponentGenerator = ({
         reactKey={reactKey}
         component={component}
         currentComponentNamePath={currentComponentNamePath}
-        createFormComponentAttributes={createFormComponentAttributes}
         parentPresentationStyle={parentPresentationStyle}
-        linkedData={linkedData}
       />
     );
   }
 
   return (
     <React.Fragment key={reactKey}>
-      {createFormComponentAttributes(component, currentComponentNamePath)}
-      {renderLeafComponent(
-        // Variable
-        component,
-        reactKey,
-        control,
-        `${currentComponentNamePath}.value`,
-        true,
-        getValues,
-        parentPresentationStyle,
-      )}
+      <Attributes
+        component={component}
+        path={currentComponentNamePath}
+      />
+      <LeafComponent
+        component={component}
+        reactKey={reactKey}
+        name={`${currentComponentNamePath}.value`}
+        renderElementGridWrapper={true}
+        parentPresentationStyle={parentPresentationStyle}
+      />
     </React.Fragment>
   );
-};
-
-const checkIfAttributesToShowIsAValue = (component: FormComponent) => {
-  if (
-    component.attributesToShow === 'all' ||
-    component.attributesToShow === undefined
-  ) {
-    return 'all';
-  }
-  if (component.attributesToShow === 'selectable') {
-    return 'selectable';
-  }
-  return 'none';
 };
 
 const isComponentSurroundingContainerAndNOTRepeating = (

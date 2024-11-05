@@ -21,31 +21,28 @@ import { useFormContext } from 'react-hook-form';
 import {
   checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
-} from '@/components/FormGenerator/utils/helper';
-import { FieldArrayComponent } from '@/components/FormGenerator/FieldArrayComponent';
-import { renderLeafComponent } from '@/components/FormGenerator/FormGenerator';
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
+import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import { useContext } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface RepeatingVariableProps {
   reactKey: string;
   component: FormComponent;
   currentComponentNamePath: string;
-  createFormComponentAttributes: (
-    aComponent: FormComponent,
-    aPath: string,
-  ) => (JSX.Element | null)[];
   parentPresentationStyle: string | undefined;
-  linkedData: boolean;
 }
 
 export const RepeatingVariable = ({
   reactKey,
   component,
   currentComponentNamePath,
-  createFormComponentAttributes,
   parentPresentationStyle,
-  linkedData,
 }: RepeatingVariableProps) => {
   const { control, getValues } = useFormContext();
+  const { linkedData } = useContext(FormGeneratorContext);
   const hasValue = checkIfComponentHasValue(getValues, component.name);
   const hasLinkedDataValue = checkIfSingularComponentHasValue(
     getValues,
@@ -58,18 +55,21 @@ export const RepeatingVariable = ({
       component={component}
       name={currentComponentNamePath}
       renderCallback={(variableArrayPath: string) => {
-        return [
-          ...createFormComponentAttributes(component, variableArrayPath),
-          renderLeafComponent(
-            component,
-            variableArrayPath,
-            control,
-            `${variableArrayPath}.value`,
-            false,
-            getValues,
-            parentPresentationStyle,
-          ),
-        ];
+        return (
+          <>
+            <Attributes
+              component={component}
+              path={variableArrayPath}
+            />
+            <LeafComponent
+              component={component}
+              reactKey={variableArrayPath}
+              name={`${variableArrayPath}.value`}
+              renderElementGridWrapper={false}
+              parentPresentationStyle={parentPresentationStyle}
+            />
+          </>
+        );
       }}
       hasValue={hasValue}
     />

@@ -24,14 +24,17 @@ import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import { FormComponent } from './types';
-import { addAttributesToName, createDefaultValuesFromComponent } from './utils';
+import { FormComponent } from '../types';
 import {
+  addAttributesToName,
+  createDefaultValuesFromComponent,
+} from '../defaultValues/defaultValues';
+import {
+  headlineLevelToTypographyVariant,
   isComponentGroup,
   isComponentSingularAndOptional,
-} from './utils/helper';
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Typography, Tooltip } from '@/components';
-import { headlineLevelToTypographyVariant } from './FormGenerator';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;

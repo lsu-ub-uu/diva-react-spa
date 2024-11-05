@@ -17,19 +17,15 @@
  */
 
 import { FormComponent } from '@/components/FormGenerator/types';
-import { FieldArrayComponent } from '@/components/FormGenerator/FieldArrayComponent';
-import React from 'react';
+import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { useFormContext } from 'react-hook-form';
-import { FormComponentListGenerator } from '@/components/FormGenerator/FormComponentListGenerator';
+import { ComponentList } from '@/components/FormGenerator/ComponentList';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
   reactKey: string;
   component: FormComponent;
-  createFormComponentAttributes: (
-    aComponent: FormComponent,
-    aPath: string,
-  ) => (JSX.Element | null)[];
   parentPresentationStyle: string | undefined;
   childWithNameInDataArray: string[];
 }
@@ -38,7 +34,6 @@ export const RepeatingGroup = ({
   currentComponentNamePath,
   reactKey,
   component,
-  createFormComponentAttributes,
   parentPresentationStyle,
   childWithNameInDataArray,
 }: RepeatingGroupProps) => {
@@ -50,18 +45,23 @@ export const RepeatingGroup = ({
       component={component}
       name={currentComponentNamePath}
       renderCallback={(arrayPath: string) => {
-        return [
-          ...createFormComponentAttributes(component, arrayPath),
-          <FormComponentListGenerator
-            key={`${reactKey}_components`}
-            components={component.components ?? []}
-            childWithNameInDataArray={childWithNameInDataArray}
-            parentPresentationStyle={
-              component.presentationStyle ?? parentPresentationStyle
-            }
-            path={arrayPath}
-          />,
-        ];
+        return (
+          <>
+            <Attributes
+              component={component}
+              path={arrayPath}
+            />
+            <ComponentList
+              components={component.components ?? []}
+              childWithNameInDataArray={childWithNameInDataArray}
+              parentPresentationStyle={
+                component.presentationStyle ?? parentPresentationStyle
+              }
+              path={arrayPath}
+            />
+            ,
+          </>
+        );
       }}
     />
   );

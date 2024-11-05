@@ -24,8 +24,9 @@ import { CoraRecord } from '@/features/record/types';
 import {
   addAttributesToName,
   hasCurrentComponentSameNameInData,
-} from '../FormGenerator/utils';
-import { getChildrenWithSameNameInDataFromSchema } from '../FormGenerator/FormGenerator';
+} from '../FormGenerator/defaultValues/defaultValues';
+
+import { getChildrenWithSameNameInDataFromSchema } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 export const linksFromFormSchema = (
   formSchema: FormSchema,

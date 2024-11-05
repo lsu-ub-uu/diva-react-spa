@@ -31,8 +31,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
   createDefaultValuesFromFormSchema,
   RecordData,
-} from '../FormGenerator/utils';
-import { generateYupSchemaFromFormSchema } from '../FormGenerator/utils/yupSchema';
+} from '../FormGenerator/defaultValues/defaultValues';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
 import { RecordFormSchema } from '../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
@@ -58,7 +58,7 @@ export const RecordForm = ({ ...props }: RecordFormProps) => {
     ),
     resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
   });
-  const { control, handleSubmit, reset, getValues } = methods;
+  const { handleSubmit, reset } = methods;
 
   return (
     <Box
@@ -70,13 +70,7 @@ export const RecordForm = ({ ...props }: RecordFormProps) => {
       )}
     >
       <FormProvider {...methods}>
-        <FormGenerator
-          formSchema={props.formSchema}
-          onSubmit={props.onSubmit}
-          onInvalid={props.onInvalid}
-          control={control}
-          getValues={getValues}
-        />
+        <FormGenerator formSchema={props.formSchema} />
       </FormProvider>
 
       <AppBar
