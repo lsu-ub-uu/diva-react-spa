@@ -19,15 +19,24 @@
 
 import React from 'react';
 import { Box, Grid, IconButton } from '@mui/material';
-import { Control, FieldErrors, FieldValues, UseFormGetValues } from 'react-hook-form';
+import {
+  Control,
+  FieldErrors,
+  FieldValues,
+  UseFormGetValues,
+} from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
-import { ControlledLinkedRecord, ControlledSelectField, ControlledTextField } from '../Controlled';
+import {
+  ControlledLinkedRecord,
+  ControlledSelectField,
+  ControlledTextField,
+} from '../Controlled';
 import {
   addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
-  hasCurrentComponentSameNameInData
+  hasCurrentComponentSameNameInData,
 } from './utils';
 import {
   checkIfComponentHasValue,
@@ -38,9 +47,14 @@ import {
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
-  isFirstLevelGroup
+  isFirstLevelGroup,
 } from './utils/helper';
-import { ControlledAutocomplete, LinkButton, Tooltip, Typography } from '@/components';
+import {
+  ControlledAutocomplete,
+  LinkButton,
+  Tooltip,
+  Typography,
+} from '@/components';
 import { FormComponent, FormSchema } from './types';
 import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
@@ -107,6 +121,7 @@ export const FormGenerator = ({
     ) => {
       return (aComponent.attributes ?? []).map((attribute, index) => {
         const hasValue = checkIfComponentHasValue(getValues, attribute.name);
+
         const attributesToShow = checkIfAttributesToShowIsAValue(component);
         if (attributesToShow === 'all') {
           return (
@@ -402,7 +417,7 @@ export const FormGenerator = ({
     parentPresentationStyle: string | undefined,
     childWithNameInDataArray: string[],
   ) => {
-    return isFirstLevelGroup(currentComponentNamePath) ? (
+    return (
       <FieldArrayComponent
         key={reactKey}
         control={control}
@@ -420,63 +435,6 @@ export const FormGenerator = ({
           ];
         }}
       />
-    ) : (
-      <Grid
-        item
-        xs={12}
-        key={reactKey}
-        sx={{ position: 'relative' }}
-        id={`anchor_${addAttributesToName(component, component.name)}`}
-      >
-        {component?.showLabel && (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            {component.showLabel ? (
-              <Typography
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
-            ) : null}
-            <Tooltip
-              title={t(component.tooltip?.title as string)}
-              body={t(component.tooltip?.body as string)}
-            >
-              <IconButton
-                disableRipple
-                color='info'
-                aria-label='info'
-              >
-                <InfoIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-
-        <FieldArrayComponent
-          key={reactKey}
-          control={control}
-          component={component}
-          name={currentComponentNamePath}
-          renderCallback={(arrayPath: string) => {
-            return [
-              ...createFormComponentAttributes(component, arrayPath),
-              ...createFormComponents(
-                component.components ?? [],
-                [],
-                component.presentationStyle ?? parentPresentationStyle,
-                arrayPath,
-              ),
-            ];
-          }}
-        />
-      </Grid>
     );
   };
 

@@ -93,6 +93,7 @@ export const UpdateRecordPage = () => {
       coraRecord.setRecord(updatedRecord);
 
       notification(`Record was successfully updated!`, 'success');
+
     } catch (err: any) {
       setIsSubmitting(false);
       notification(`${err.message}`, 'error');
