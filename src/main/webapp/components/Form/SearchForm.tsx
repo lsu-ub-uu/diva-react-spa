@@ -18,7 +18,12 @@
  */
 
 import { Box } from '@mui/material';
-import { FieldErrors, FieldValues, useForm } from 'react-hook-form';
+import {
+  FieldErrors,
+  FieldValues,
+  FormProvider,
+  useForm,
+} from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -59,13 +64,15 @@ export const SearchForm = ({ ...props }: SearchFormProps) => {
         (errors) => props.onInvalid && props.onInvalid(errors),
       )}
     >
-      <FormGenerator
-        formSchema={props.formSchema}
-        onSubmit={props.onSubmit}
-        onInvalid={props.onInvalid}
-        control={control}
-        getValues={getValues}
-      />
+      <FormProvider {...methods}>
+        <FormGenerator
+          formSchema={props.formSchema}
+          onSubmit={props.onSubmit}
+          onInvalid={props.onInvalid}
+          control={control}
+          getValues={getValues}
+        />
+      </FormProvider>
       <Button
         type='submit'
         disableRipple

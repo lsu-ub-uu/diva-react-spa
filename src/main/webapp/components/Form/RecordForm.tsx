@@ -18,7 +18,12 @@
  */
 
 import { Box, Container, Grid, Toolbar } from '@mui/material';
-import { FieldErrors, FieldValues, useForm } from 'react-hook-form';
+import {
+  FieldErrors,
+  FieldValues,
+  FormProvider,
+  useForm,
+} from 'react-hook-form';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
@@ -64,13 +69,15 @@ export const RecordForm = ({ ...props }: RecordFormProps) => {
         (errors) => props.onInvalid && props.onInvalid(errors),
       )}
     >
-      <FormGenerator
-        formSchema={props.formSchema}
-        onSubmit={props.onSubmit}
-        onInvalid={props.onInvalid}
-        control={control}
-        getValues={getValues}
-      />
+      <FormProvider {...methods}>
+        <FormGenerator
+          formSchema={props.formSchema}
+          onSubmit={props.onSubmit}
+          onInvalid={props.onInvalid}
+          control={control}
+          getValues={getValues}
+        />
+      </FormProvider>
 
       <AppBar
         position='fixed'

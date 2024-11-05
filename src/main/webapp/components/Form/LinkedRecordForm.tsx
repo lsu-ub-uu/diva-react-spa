@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import {
   createDefaultValuesFromFormSchema,
   RecordData,
@@ -50,15 +50,17 @@ export const LinkedRecordForm = ({ record }: LinkedRecordFormProps) => {
 
   return (
     formSchema?.form && (
-      <FormGenerator
-        record={record}
-        onSubmit={() => {}}
-        onInvalid={() => {}}
-        formSchema={record.presentation as FormSchema}
-        linkedData
-        control={control}
-        getValues={getValues}
-      />
+      <FormProvider {...methods}>
+        <FormGenerator
+          record={record}
+          onSubmit={() => {}}
+          onInvalid={() => {}}
+          formSchema={record.presentation as FormSchema}
+          linkedData
+          control={control}
+          getValues={getValues}
+        />
+      </FormProvider>
     )
   );
 };

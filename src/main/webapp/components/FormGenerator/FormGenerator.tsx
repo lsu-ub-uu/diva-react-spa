@@ -18,15 +18,13 @@
  */
 
 import React from 'react';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
   Control,
   FieldErrors,
   FieldValues,
   UseFormGetValues,
 } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import InfoIcon from '@mui/icons-material/Info';
 import {
   ControlledLinkedRecord,
   ControlledSelectField,
@@ -36,12 +34,9 @@ import {
   addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
-  hasCurrentComponentSameNameInData,
 } from './utils';
 import {
   checkIfComponentHasValue,
-  checkIfSingularComponentHasValue,
-  isComponentContainer,
   isComponentGroup,
   isComponentRepeating,
   isComponentRepeatingContainer,
@@ -49,16 +44,11 @@ import {
   isComponentVariable,
   isFirstLevelGroup,
 } from './utils/helper';
-import {
-  ControlledAutocomplete,
-  LinkButton,
-  Tooltip,
-  Typography,
-} from '@/components';
+import { ControlledAutocomplete, LinkButton, Typography } from '@/components';
 import { FormComponent, FormSchema } from './types';
-import { FieldArrayComponent } from './FieldArrayComponent';
 import { DivaTypographyVariants } from '../Typography/Typography';
 import { CoraRecord } from '@/features/record/types';
+import { FormComponentGenerator } from '@/components/FormGenerator/FormComponentGenerator';
 
 interface FormGeneratorProps {
   record?: CoraRecord;
@@ -72,431 +62,16 @@ interface FormGeneratorProps {
 
 export const FormGenerator = ({
   linkedData = false,
-  control,
-  getValues,
   ...props
 }: FormGeneratorProps) => {
-  const { t } = useTranslation();
-
-  const generateFormComponent = (
-    component: FormComponent,
-    idx: number,
-    path: string,
-    childWithNameInDataArray: string[] = [],
-    parentPresentationStyle?: string,
-  ) => {
-    const reactKey = `key_${idx}`;
-
-    let currentComponentNamePath;
-
-    const childrenWithSameNameInData = getChildrenWithSameNameInData(
-      getChildNameInDataArray(component),
-    );
-
-    const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
-      childWithNameInDataArray,
-      component.name,
-    );
-    const addAttributesForMatchingNameInDataWithoutPath =
-      currentComponentSameNameInData
-        ? `${addAttributesToName(component, component.name)}`
-        : `${component.name}`;
-
-    const addAttributesForMatchingNameInDataWithPath =
-      currentComponentSameNameInData
-        ? `${path}.${addAttributesToName(component, component.name)}`
-        : `${path}.${component.name}`;
-
-    if (isComponentContainer(component)) {
-      currentComponentNamePath = path;
-    } else {
-      currentComponentNamePath = !path
-        ? addAttributesForMatchingNameInDataWithoutPath
-        : addAttributesForMatchingNameInDataWithPath;
-    }
-
-    const createFormComponentAttributes = (
-      aComponent: FormComponent,
-      aPath: string,
-    ) => {
-      return (aComponent.attributes ?? []).map((attribute, index) => {
-        const hasValue = checkIfComponentHasValue(getValues, attribute.name);
-
-        const attributesToShow = checkIfAttributesToShowIsAValue(component);
-        if (attributesToShow === 'all') {
-          return (
-            <Grid
-              key={attribute.name}
-              item
-              xs={6}
-              id={`anchor_${addAttributesToName(component, component.name)}`}
-            >
-              <ControlledSelectField
-                key={`${attribute.name}_${index}`}
-                name={`${aPath}._${attribute.name}`}
-                isLoading={false}
-                loadingError={false}
-                label={attribute.label ?? ''}
-                showLabel={component.showLabel}
-                placeholder={attribute.placeholder}
-                tooltip={attribute.tooltip}
-                control={control}
-                options={attribute.options}
-                readOnly={!!attribute.finalValue}
-                displayMode={attribute.mode}
-                hasValue={hasValue}
-              />
-            </Grid>
-          );
-        }
-
-        if (attributesToShow === 'selectable' && !attribute.finalValue) {
-          return (
-            <Grid
-              key={attribute.name}
-              item
-              xs={6}
-              id={`anchor_${addAttributesToName(component, component.name)}`}
-            >
-              <ControlledSelectField
-                key={`${attribute.name}_${index}`}
-                name={`${aPath}._${attribute.name}`}
-                isLoading={false}
-                loadingError={false}
-                label={attribute.label ?? ''}
-                showLabel={component.showLabel}
-                placeholder={attribute.placeholder}
-                tooltip={attribute.tooltip}
-                control={control}
-                options={attribute.options}
-                readOnly={!!attribute.finalValue}
-                displayMode={attribute.mode}
-                hasValue={hasValue}
-              />
-            </Grid>
-          );
-        }
-
-        return null;
-      });
-    };
-
-    if (isComponentSurroundingContainerAndNOTRepeating(component)) {
-      return createComponentSurroundingContainerAndNOTRepeating(
-        reactKey,
-        component,
-        currentComponentNamePath,
-        parentPresentationStyle,
-      );
-    }
-
-    if (isComponentGroupOrRepeatingContainerAndNOTRepeating(component)) {
-      return createComponentGroupOrRepeatingContainerAndNOTRepeating(
-        currentComponentNamePath,
-        reactKey,
-        component,
-        createFormComponentAttributes,
-        parentPresentationStyle,
-        childrenWithSameNameInData,
-      );
-    }
-
-    if (isComponentGroupAndRepeating(component)) {
-      return createComponentGroupAndRepeating(
-        currentComponentNamePath,
-        reactKey,
-        component,
-        createFormComponentAttributes,
-        parentPresentationStyle,
-        childrenWithSameNameInData,
-      );
-    }
-
-    if (isComponentVariableAndRepeating(component)) {
-      return createComponentVariableAndRepeating(
-        reactKey,
-        component,
-        currentComponentNamePath,
-        createFormComponentAttributes,
-        parentPresentationStyle,
-        getValues,
-      );
-    }
-
-    return (
-      <React.Fragment key={reactKey}>
-        {createFormComponentAttributes(component, currentComponentNamePath)}
-        {renderLeafComponent(
-          component,
-          reactKey,
-          control,
-          `${currentComponentNamePath}.value`,
-          true,
-          getValues,
-          parentPresentationStyle,
-        )}
-      </React.Fragment>
-    );
-  };
-
-  const createComponentSurroundingContainerAndNOTRepeating = (
-    reactKey: string,
-    component: FormComponent,
-    currentComponentNamePath: string,
-    parentPresentationStyle: string | undefined,
-  ) => {
-    return (
-      <React.Fragment key={reactKey}>
-        <div
-          id={`anchor_${addAttributesToName(component, component.name)}`}
-          key={reactKey}
-          style={{
-            // background: 'lightgray',
-            // border: '1px solid black',
-            display: 'flex',
-            flexDirection: checkIfPresentationStyleIsInline(component)
-              ? 'row'
-              : 'column',
-            alignItems: checkIfPresentationStyleIsInline(component)
-              ? 'center'
-              : undefined,
-          }}
-        >
-          {component.components &&
-            createFormComponents(
-              component.components,
-              [],
-              component.presentationStyle ?? parentPresentationStyle,
-              currentComponentNamePath,
-            )}
-        </div>
-      </React.Fragment>
-    );
-  };
-
-  const createComponentGroupOrRepeatingContainerAndNOTRepeating = (
-    currentComponentNamePath: string,
-    reactKey: string,
-    component: FormComponent,
-    createFormComponentAttributes: (
-      aComponent: FormComponent,
-      aPath: string,
-    ) => (JSX.Element | null)[],
-    parentPresentationStyle: string | undefined,
-    childWithNameInDataArray: string[],
-  ) => {
-    return isComponentFirstLevelAndNOTLinkedData(
-      currentComponentNamePath,
-      linkedData,
-    ) ? (
-      <Grid
-        item
-        xs={12}
-        key={reactKey}
-        className='anchorLink isComponentFirstLevelAndNOTLinkedData'
-        id={`anchor_${addAttributesToName(component, component.name)}`}
-      >
-        <Box sx={{ mb: 2 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            {component.showLabel === true ? (
-              <>
-                <Typography
-                  text={component?.label ?? ''}
-                  variant={headlineLevelToTypographyVariant(
-                    component.headlineLevel,
-                  )}
-                />
-                <Tooltip
-                  title={t(component.tooltip?.title as string)}
-                  body={t(component.tooltip?.body as string)}
-                >
-                  <IconButton
-                    disableRipple
-                    color='info'
-                    aria-label='info'
-                  >
-                    <InfoIcon />
-                  </IconButton>
-                </Tooltip>
-              </>
-            ) : null}
-          </Box>
-          <Grid
-            container
-            spacing={2}
-            justifyContent='space-between'
-            alignItems='flex-start'
-            className={'NOTisComponentFirstLevelAndNOTLinkedData'}
-            id={`anchor_${addAttributesToName(component, component.name)}`}
-          >
-            {createFormComponentAttributes(component, currentComponentNamePath)}
-
-            {component.components &&
-              createFormComponents(
-                component.components,
-                childWithNameInDataArray,
-                component.presentationStyle ?? parentPresentationStyle,
-                currentComponentNamePath,
-              )}
-          </Grid>
-        </Box>
-      </Grid>
-    ) : (
-      <Grid
-        item
-        key={reactKey}
-        id={`anchor_${addAttributesToName(component, component.name)}`}
-        xs={12}
-        sx={{
-          display: 'flex',
-          flexDirection:
-            checkIfPresentationStyleIsInline(component) || linkedData
-              ? 'row'
-              : 'column',
-          flexWrap: 'wrap',
-          alignItems: checkIfPresentationStyleOrParentIsInline(
-            component,
-            parentPresentationStyle,
-          )
-            ? 'center'
-            : null,
-          gap: checkIfPresentationStyleOrParentIsInline(
-            component,
-            parentPresentationStyle,
-          )
-            ? '0.2em'
-            : null,
-        }}
-      >
-        {component?.showLabel &&
-          (!linkedData ? (
-            <Typography
-              text={component?.label ?? ''}
-              variant={headlineLevelToTypographyVariant(
-                component.headlineLevel,
-              )}
-            />
-          ) : (
-            <span style={{ width: '100%' }}>
-              <Typography
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
-            </span>
-          ))}
-        {createFormComponentAttributes(component, currentComponentNamePath)}
-        {component.components &&
-          createFormComponents(
-            component.components,
-            childWithNameInDataArray,
-            checkIfPresentationStyleIsUndefinedOrEmpty(component)
-              ? parentPresentationStyle
-              : component.presentationStyle,
-            currentComponentNamePath,
-          )}
-      </Grid>
-    );
-  };
-
-  const createComponentGroupAndRepeating = (
-    currentComponentNamePath: string,
-    reactKey: string,
-    component: FormComponent,
-    createFormComponentAttributes: (
-      aComponent: FormComponent,
-      aPath: string,
-    ) => (JSX.Element | null)[],
-    parentPresentationStyle: string | undefined,
-    childWithNameInDataArray: string[],
-  ) => {
-    return (
-      <FieldArrayComponent
-        key={reactKey}
-        control={control}
-        component={component}
-        name={currentComponentNamePath}
-        renderCallback={(arrayPath: string) => {
-          return [
-            ...createFormComponentAttributes(component, arrayPath),
-            ...createFormComponents(
-              component.components ?? [],
-              childWithNameInDataArray,
-              component.presentationStyle ?? parentPresentationStyle,
-              arrayPath,
-            ),
-          ];
-        }}
-      />
-    );
-  };
-
-  const createComponentVariableAndRepeating = (
-    reactKey: string,
-    component: FormComponent,
-    currentComponentNamePath: string,
-    createFormComponentAttributes: (
-      aComponent: FormComponent,
-      aPath: string,
-    ) => (JSX.Element | null)[],
-    parentPresentationStyle: string | undefined,
-    getValues: UseFormGetValues<FieldValues>,
-  ) => {
-    const hasValue = checkIfComponentHasValue(getValues, component.name);
-    const hasLinkedDataValue = checkIfSingularComponentHasValue(
-      getValues,
-      currentComponentNamePath,
-    );
-    return !hasLinkedDataValue && linkedData ? null : (
-      <FieldArrayComponent
-        key={reactKey}
-        control={control}
-        component={component}
-        name={currentComponentNamePath}
-        renderCallback={(variableArrayPath: string) => {
-          return [
-            ...createFormComponentAttributes(component, variableArrayPath),
-            renderLeafComponent(
-              component,
-              variableArrayPath,
-              control,
-              `${variableArrayPath}.value`,
-              false,
-              getValues,
-              parentPresentationStyle,
-            ),
-          ];
-        }}
-        hasValue={hasValue}
-      />
-    );
-  };
-
-  const createFormComponents = (
-    components: FormComponent[],
-    childWithNameInDataArray: string[],
-    parentPresentationStyle?: string,
-    path = '',
-  ): (JSX.Element | null)[] => {
-    return components.map((c, i) => {
-      return generateFormComponent(
-        c,
-        i,
-        path,
-        childWithNameInDataArray,
-        parentPresentationStyle as string,
-      );
-    });
-  };
-
-  return generateFormComponent(props.formSchema.form, 0, '');
+  return (
+    <FormComponentGenerator
+      component={props.formSchema.form}
+      idx={0}
+      path={''}
+      linkedData={linkedData}
+    />
+  );
 };
 
 export const renderLeafComponent = (
@@ -822,29 +397,6 @@ const checkIfAttributesToShowIsAValue = (component: FormComponent) => {
     return 'selectable';
   }
   return 'none';
-};
-
-const checkIfPresentationStyleOrParentIsInline = (
-  component: FormComponent,
-  parentPresentationStyle: string | undefined,
-) => {
-  return (
-    component.presentationStyle === 'inline' ||
-    parentPresentationStyle === 'inline'
-  );
-};
-
-const checkIfPresentationStyleIsUndefinedOrEmpty = (
-  component: FormComponent,
-) => {
-  return (
-    component.presentationStyle === undefined ||
-    component.presentationStyle === ''
-  );
-};
-
-const checkIfPresentationStyleIsInline = (component: FormComponent) => {
-  return component.presentationStyle === 'inline';
 };
 
 const checkIfComponentContainsSearchId = (component: FormComponent) => {

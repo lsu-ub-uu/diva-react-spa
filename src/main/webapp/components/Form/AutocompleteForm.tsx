@@ -17,9 +17,12 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createDefaultValuesFromFormSchema, RecordData } from '../FormGenerator/utils';
+import {
+  createDefaultValuesFromFormSchema,
+  RecordData,
+} from '../FormGenerator/utils';
 import { generateYupSchemaFromFormSchema } from '../FormGenerator/utils/yupSchema';
 import { FormGenerator } from '@/components';
 import { FormSchema } from '../FormGenerator/types';
@@ -44,13 +47,15 @@ export const AutocompleteForm = ({ ...props }: AutocompleteFormProps) => {
   const { control, getValues } = methods;
 
   return (
-    <FormGenerator
-      formSchema={props.formSchema}
-      onSubmit={() => {}}
-      onInvalid={() => {}}
-      control={control}
-      getValues={getValues}
-      linkedData
-    />
+    <FormProvider {...methods}>
+      <FormGenerator
+        formSchema={props.formSchema}
+        onSubmit={() => {}}
+        onInvalid={() => {}}
+        control={control}
+        getValues={getValues}
+        linkedData
+      />
+    </FormProvider>
   );
 };

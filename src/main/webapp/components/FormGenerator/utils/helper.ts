@@ -185,3 +185,17 @@ export function getNameInData(
     ? addAttributesToName(component, component.name)
     : component.name;
 }
+
+export const checkIfPresentationStyleIsInline = (component: FormComponent) => {
+  return component.presentationStyle === 'inline';
+};
+
+export const checkIfPresentationStyleOrParentIsInline = (
+  component: FormComponent,
+  parentPresentationStyle: string | undefined,
+) => {
+  return (
+    component.presentationStyle === 'inline' ||
+    parentPresentationStyle === 'inline'
+  );
+};
