@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -15,25 +15,16 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import I18NextHttpBackend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
-
 const { VITE_BFF_API_URL } = import.meta.env;
 
-i18n
-  .use(initReactI18next)
-  .use(LanguageDetector)
-  .use(I18NextHttpBackend)
-  .init({
-    fallbackLng: 'sv',
-    debug: false, // TODO set to true if dev env
-    interpolation: {
-      escapeValue: false,
-    },
-    backend: {
-      loadPath: `${VITE_BFF_API_URL}/translations/{{lng}}`,
-    },
-  });
+export const i18nConfig = {
+  fallbackLng: 'sv',
+  supportedLngs: ['sv', 'en'],
+  debug: false, // TODO set to true if dev env
+  interpolation: {
+    escapeValue: false,
+  },
+  backend: {
+    loadPath: `${VITE_BFF_API_URL}/translations/{{lng}}`,
+  },
+};

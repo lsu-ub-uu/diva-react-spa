@@ -9,6 +9,7 @@ import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import axios from 'axios';
 import { MuiProvider } from '@/mui/MuiProvider';
+import '@/app/i18n.client';
 
 const { VITE_BFF_API_URL } = import.meta.env;
 axios.defaults.baseURL = VITE_BFF_API_URL;

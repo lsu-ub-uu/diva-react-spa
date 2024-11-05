@@ -23,6 +23,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import { Link as RouterLink } from '@remix-run/react';
 import divaLogo from '../../../assets/divaLogo.svg';
 import User from '@/components/Layout/Header/Login/User';
+import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 
 export const Header = () => {
   const { i18n } = useTranslation();
@@ -65,8 +66,9 @@ export const Header = () => {
             >
               Refresh Def <CachedIcon />
             </Button>
-            <Button onClick={() => i18n.changeLanguage('sv')}>Svenska</Button>
-            <Button onClick={() => i18n.changeLanguage('en')}>English</Button>
+          </Grid>
+          <Grid item>
+            <LanguageSwitcher />
           </Grid>
           <Grid item>
             <User />

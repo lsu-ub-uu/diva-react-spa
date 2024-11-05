@@ -13,6 +13,11 @@ import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 import axios from 'axios';
 import { MuiProvider } from '@/mui/MuiProvider';
+import i18next from 'i18next';
+import i18nextServer from '@/app/i18n.server';
+import { initReactI18next } from 'react-i18next';
+import { i18nConfig } from '@/app/i18nConfig';
+import I18NextHttpBackend from 'i18next-http-backend';
 
 const ABORT_DELAY = 5_000;
 
@@ -94,12 +99,22 @@ function handleBotRequest(
   });
 }
 
-function handleBrowserRequest(
+async function handleBrowserRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
+  const locale = await i18nextServer.getLocale(request);
+
+  await i18next
+    .use(initReactI18next) // Tell our instance to use react-i18next
+    .use(I18NextHttpBackend) // Setup our backend
+    .init({
+      ...i18nConfig, // spread the configuration
+      lng: locale, // The locale we detected above
+    });
+
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(

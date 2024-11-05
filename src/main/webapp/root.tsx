@@ -23,7 +23,13 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react';
-import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
+import {
+  ActionFunctionArgs,
+  json,
+  LinksFunction,
+  LoaderFunctionArgs,
+  redirect,
+} from '@remix-run/node';
 import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/utils';
 import { withEmotionCache } from '@emotion/react';
 import { ReactNode, Suspense, useContext, useEffect } from 'react';
@@ -35,19 +41,18 @@ import {
 } from '@/components';
 import store from '@/app/store';
 import { CssBaseline } from '@mui/material';
-import '@/app/i18n';
 import { divaTheme } from '@/themes/diva';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Provider as StateProvider } from 'react-redux';
 import { getAuth } from '@/sessions';
 import axios from 'axios';
-import dev_favicon from '@/images/dev_favicon.svg'
-import favicon from '@/images/favicon.svg'
+import dev_favicon from '@/images/dev_favicon.svg';
+import favicon from '@/images/favicon.svg';
+import i18nServer from '@/app/i18n.server';
+import { useChangeLanguage } from 'remix-i18next/react';
+import { i18nCookie } from '@/app/i18nCookie';
 
-
-export const links: LinksFunction = () => [
-
-];
+export const links: LinksFunction = () => [];
 
 interface DocumentProps {
   children: ReactNode;
@@ -56,12 +61,32 @@ interface DocumentProps {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const auth = await getAuth(request);
+  const locale = await i18nServer.getLocale(request);
+  return json(
+    { auth, locale },
+    {
+      headers: { 'Set-Cookie': await i18nCookie.serialize(locale) },
+    },
+  );
+}
 
-  return { auth };
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const language = formData.get('language');
+  console.log({ request });
+  if (typeof language === 'string') {
+    return redirect('/', {
+      headers: {
+        'Set-Cookie': await i18nCookie.serialize(language),
+      },
+    });
+  }
 }
 
 const Document = withEmotionCache(
   ({ children, title }: DocumentProps, emotionCache) => {
+    const { locale } = useLoaderData<typeof loader>();
+
     const clientStyleData = useContext(ClientStyleContext);
 
     // Only executed on client
@@ -81,35 +106,35 @@ const Document = withEmotionCache(
     const { MODE } = import.meta.env;
 
     return (
-      <html lang='en'>
-      <head>
-        <meta charSet='utf-8'/>
-        <meta
-          name='viewport'
-          content='width=device-width,initial-scale=1'
-        />
-        <meta
-          name='theme-color'
-          content={divaTheme.palette.primary.main}
-        />
-        <link
-          rel='icon'
-          type='image/svg+xml'
-          href={MODE === 'development' ? dev_favicon : favicon}
-        />
-        {title ? <title>{title}</title> : null}
-        <Meta/>
-        <Links/>
-        <meta
-          name='emotion-insertion-point'
-          content='emotion-insertion-point'
-        />
-      </head>
-      <body>
-      {children}
-      <ScrollRestoration/>
-      <Scripts/>
-      </body>
+      <html lang={locale}>
+        <head>
+          <meta charSet='utf-8' />
+          <meta
+            name='viewport'
+            content='width=device-width,initial-scale=1'
+          />
+          <meta
+            name='theme-color'
+            content={divaTheme.palette.primary.main}
+          />
+          <link
+            rel='icon'
+            type='image/svg+xml'
+            href={MODE === 'development' ? dev_favicon : favicon}
+          />
+          <title>{title ?? ''}</title>
+          <Meta />
+          <Links />
+          <meta
+            name='emotion-insertion-point'
+            content='emotion-insertion-point'
+          />
+        </head>
+        <body>
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </body>
       </html>
     );
   },
@@ -120,7 +145,9 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
-  const { auth } = useLoaderData<typeof loader>();
+  const { auth, locale } = useLoaderData<typeof loader>();
+
+  useChangeLanguage(locale);
 
   useEffect(() => {
     axios.defaults.headers.common = {
