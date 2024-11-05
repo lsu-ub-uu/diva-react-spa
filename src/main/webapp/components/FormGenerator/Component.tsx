@@ -55,33 +55,15 @@ export const Component = ({
 }: FormComponentGeneratorProps) => {
   const reactKey = `key_${idx}`;
 
-  let currentComponentNamePath;
-
   const childrenWithSameNameInData = getChildrenWithSameNameInData(
     getChildNameInDataArray(component),
   );
 
-  const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
+  const currentComponentNamePath = getCurrentComponentNamePath(
     childWithNameInDataArray,
-    component.name,
+    component,
+    path,
   );
-  const addAttributesForMatchingNameInDataWithoutPath =
-    currentComponentSameNameInData
-      ? `${addAttributesToName(component, component.name)}`
-      : `${component.name}`;
-
-  const addAttributesForMatchingNameInDataWithPath =
-    currentComponentSameNameInData
-      ? `${path}.${addAttributesToName(component, component.name)}`
-      : `${path}.${component.name}`;
-
-  if (isComponentContainer(component)) {
-    currentComponentNamePath = path;
-  } else {
-    currentComponentNamePath = !path
-      ? addAttributesForMatchingNameInDataWithoutPath
-      : addAttributesForMatchingNameInDataWithPath;
-  }
 
   if (isComponentSurroundingContainerAndNOTRepeating(component)) {
     return (
@@ -144,6 +126,34 @@ export const Component = ({
       />
     </React.Fragment>
   );
+};
+
+const getCurrentComponentNamePath = (
+  childWithNameInDataArray: string[],
+  component: FormComponent,
+  path: string,
+) => {
+  const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
+    childWithNameInDataArray,
+    component.name,
+  );
+  const addAttributesForMatchingNameInDataWithoutPath =
+    currentComponentSameNameInData
+      ? `${addAttributesToName(component, component.name)}`
+      : `${component.name}`;
+
+  const addAttributesForMatchingNameInDataWithPath =
+    currentComponentSameNameInData
+      ? `${path}.${addAttributesToName(component, component.name)}`
+      : `${path}.${component.name}`;
+
+  if (isComponentContainer(component)) {
+    return path;
+  } else {
+    return !path
+      ? addAttributesForMatchingNameInDataWithoutPath
+      : addAttributesForMatchingNameInDataWithPath;
+  }
 };
 
 const isComponentSurroundingContainerAndNOTRepeating = (
