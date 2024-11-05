@@ -17,13 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FormAttributeCollection, FormComponent, FormSchema } from './types';
+import { FormAttributeCollection, FormComponent, FormSchema } from '../types';
 import {
   isComponentContainer,
   isComponentRepeating,
   isComponentValidForDataCarrying,
   isComponentVariable,
-} from './utils/helper';
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { uniq } from 'lodash';
 
 export interface RecordData {

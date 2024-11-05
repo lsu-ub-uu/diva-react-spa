@@ -32,7 +32,7 @@ import {
   mergeArrays,
   mergeObjects,
   removeRootObject,
-} from '../utils';
+} from '../defaultValues';
 import {
   formComponentGroup,
   formComponentGroupAndTextVariableWithinGroup,
@@ -51,9 +51,9 @@ import {
   formDefWithOneRepeatingTextVariable,
   formDefRealDemoWithAttributesButWithoutFinalValue,
   formComponentTitleInfoGroup,
-} from '../../../__mocks__/data/formDef';
-import { FormComponent, FormSchema } from '../types';
-import { removeEmpty } from '../../../utils/removeEmpty';
+} from '@/__mocks__/data/formDef';
+import { FormComponent, FormSchema } from '../../types';
+import { removeEmpty } from '@/utils/removeEmpty';
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {

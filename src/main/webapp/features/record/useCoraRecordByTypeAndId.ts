@@ -64,5 +64,5 @@ export const useCoraRecordByTypeAndId = (
     };
   }, [presentationRecordLinkId, recordType, recordId]);
 
-  return { isLoading, error, record };
+  return { isLoading, error, record, setRecord };
 };

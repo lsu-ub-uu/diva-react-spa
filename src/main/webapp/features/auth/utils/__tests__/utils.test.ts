@@ -32,7 +32,7 @@ describe('actions', () => {
     mockAxios.restore();
   });
 
-  it('utils sends request to DELETE authtoken from Cora', async () => {
+  it('validation sends request to DELETE authtoken from Cora', async () => {
     const userSession: Auth = {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
@@ -64,7 +64,7 @@ describe('actions', () => {
     expect(response.status).toEqual(expectedResponse.status);
   });
 
-  it('utils returns 500 on failed DELETE authtoken from Cora', async () => {
+  it('validation returns 500 on failed DELETE authtoken from Cora', async () => {
     const userSession: Auth = {
       data: {
         token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
