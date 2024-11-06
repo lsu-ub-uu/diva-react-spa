@@ -19,7 +19,6 @@
 
 import { authRoute } from './authRoute';
 import { translationRoute } from './translationRoute';
-import { divaOutputsRoute } from './divaOutputsRoute';
 import { validationTypesRoute } from './validationTypesRoute';
 import { recordRoute } from './recordRoute';
 import { formRoute } from './formRoute';
@@ -29,7 +28,6 @@ import { searchRoute } from './searchRoute';
 export {
   authRoute,
   translationRoute,
-  divaOutputsRoute,
   validationTypesRoute,
   recordRoute,
   formRoute,

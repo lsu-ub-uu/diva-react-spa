@@ -17,11 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import express from 'express';
-import {
-  getAdvancedPublicSearchResult,
-  getPublicSearchResult
-} from '../controllers/searchController';
+import express from "express";
+import { getAdvancedPublicSearchResult, getPublicSearchResult } from "../controllers/searchController";
 
 const searchRoute = express.Router();
 
