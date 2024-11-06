@@ -9,6 +9,7 @@ export default defineConfig({
   //publicDir: '../public',
   //  root: 'src/main/webapp',
   // envDir: '../../../',
+
   plugins: [
     remix({
       appDirectory: 'src/main/webapp',

@@ -24,6 +24,8 @@ import {
   FormLabel,
   InputLabel,
   MenuItem,
+  NativeSelect,
+  OutlinedInput,
   Select,
 } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -39,17 +41,17 @@ export const LanguageSwitcher = () => {
       method='post'
       onChange={(event) => submit(event.currentTarget)}
     >
-      <Select
+      <NativeSelect
         name='language'
         defaultValue={locale}
-        variant='outlined'
+        input={<OutlinedInput />}
         size='small'
         startAdornment={<LanguageIcon />}
         aria-label={t('divaClient_ChooseLanguageText')}
       >
-        <MenuItem value='en'>English</MenuItem>
-        <MenuItem value='sv'>Svenska</MenuItem>
-      </Select>
+        <option value='en'>English</option>
+        <option value='sv'>Svenska</option>
+      </NativeSelect>
     </Form>
   );
 };
