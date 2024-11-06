@@ -116,7 +116,9 @@ export default function User() {
             disabled
             sx={{ py: 0 }}
           >
-            <Typography variant='overline'>Testkonton</Typography>
+            <Typography variant='overline'>
+              {t('divaClient_LoginDevAccountText')}
+            </Typography>
           </MenuItem>
           {devAccounts.map((devAccount) => (
             <MenuItem
@@ -131,11 +133,13 @@ export default function User() {
             disabled
             sx={{ py: 0 }}
           >
-            <Typography variant='overline'>Genensam inloggning</Typography>
+            <Typography variant='overline'>
+              {t('divaClient_LoginWebRedirectText')}
+            </Typography>
           </MenuItem>
           {loginUnits
             .filter(({ type }) => type === 'webRedirect')
-            .map(({ loginDescription, url, type, presentation }) => (
+            .map(({ loginDescription, url }) => (
               <MenuItem
                 key={loginDescription}
                 onClick={() => handleWebRedirectSelection(url)}
@@ -148,11 +152,13 @@ export default function User() {
             disabled
             sx={{ py: 0 }}
           >
-            <Typography variant='overline'>Användarnamn / lösenord </Typography>
+            <Typography variant='overline'>
+              {t('divaClient_LoginPasswordText')}
+            </Typography>
           </MenuItem>
           {loginUnits
             .filter(({ type }) => type === 'password')
-            .map(({ loginDescription, url, type, presentation }) => (
+            .map(({ loginDescription, presentation }) => (
               <MenuItem
                 key='tempLoginUnitPassword'
                 component={Link}

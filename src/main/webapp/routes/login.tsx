@@ -2,39 +2,12 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'; /
 import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
 import { Form, useLoaderData } from '@remix-run/react';
 import { commitSession, getSession } from '@/sessions';
-import {
-  Account,
-  devAccounts,
-} from '@/components/Layout/Header/Login/devAccounts';
+import { Account } from '@/components/Layout/Header/Login/devAccounts';
 import axios from 'axios';
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  MenuItem,
-  Select,
-  Stack,
-} from '@mui/material';
-import {
-  Auth,
-  authenticated,
-  authenticating,
-  hasError,
-} from '@/features/auth/authSlice';
-import { RecordForm } from '@/components/Form/RecordForm';
-import { RecordFormSchema } from '@/components/FormGenerator/types';
+import { Button, Stack } from '@mui/material';
+import { Auth } from '@/features/auth/authSlice';
 import { FormGenerator } from '@/components';
-import { FieldValues, FormProvider, useForm } from 'react-hook-form';
-import {
-  createDefaultValuesFromFormSchema,
-  RecordData,
-} from '@/components/FormGenerator/defaultValues/defaultValues';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { AppThunk } from '@/app/store';
-import { renameObjectKey } from '@/utils';
-import { loadValidationTypesAsync } from '@/features/validationTypes';
-import { loadPublicationsAsync } from '@/features/publications';
+import { FormProvider, useForm } from 'react-hook-form';
 
 async function appTokenLogin(account: Account) {
   const response = await axios.post(
@@ -47,7 +20,6 @@ async function appTokenLogin(account: Account) {
 
 const usernamePasswordLogin = async (loginId: string, password: string) => {
   try {
-    console.log('login');
     const response = await axios.post(
       `/auth/password`,
       { user: loginId, password },
@@ -55,11 +27,9 @@ const usernamePasswordLogin = async (loginId: string, password: string) => {
         headers: { 'Content-Type': 'application/json' },
       },
     );
-    console.log({ response: response.data });
-    return response.data.auth;
+    return response.data.authToken;
   } catch (e) {
     console.error(e);
-    // TODO dispatch(hasError('login error'));
   }
 };
 
@@ -87,6 +57,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
   const form = await request.formData();
+
   const loginType = form.get('loginType');
   console.log({ loginType });
   let auth: Auth | null = null;
@@ -97,13 +68,13 @@ export async function action({ request }: ActionFunctionArgs) {
     auth = JSON.parse(form.get('auth')!.toString());
   } else if (loginType === 'password') {
     auth = await usernamePasswordLogin(
-      form.get('password.loginId.value')!,
-      form.get('password.password.value')!,
+      form.get('password.loginId.value')!.toString(),
+      form.get('password.password.value')!.toString(),
     );
   }
 
   if (auth == null) {
-    session.flash('error', 'Invalid username/password');
+    session.flash('error', 'Invalid credentials');
 
     // Redirect back to the login page with errors.
     return redirect('/login', {

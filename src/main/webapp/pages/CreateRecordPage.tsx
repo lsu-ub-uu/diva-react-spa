@@ -28,11 +28,11 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '@/components';
-import { RecordFormSchema} from '@/components/FormGenerator/types';
+import { RecordFormSchema } from '@/components/FormGenerator/types';
 import { removeEmpty } from '@/utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 import { RecordForm } from '@/components/Form/RecordForm';
-import {CoraRecord} from "@/features/record/types";
+import { CoraRecord } from '@/features/record/types';
 
 interface CreateRecordPageProps {
   record: CoraRecord;

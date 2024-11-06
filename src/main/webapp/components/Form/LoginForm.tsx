@@ -17,14 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Box } from '@mui/material';
+import { AppBar, Box, Button, Container, Grid } from '@mui/material';
 import {
   FieldErrors,
   FieldValues,
   FormProvider,
   useForm,
 } from 'react-hook-form';
-
+import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   createDefaultValuesFromFormSchema,
@@ -32,19 +32,20 @@ import {
 } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
-import { FormSchema } from '../FormGenerator/types';
+import { RecordFormSchema } from '../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
-import { useTranslation } from 'react-i18next';
 
-interface SearchFormProps {
+interface RecordFormProps {
   record?: CoraRecord;
-  formSchema: FormSchema;
+  formSchema: RecordFormSchema;
   onSubmit: (formValues: FieldValues) => void;
   onInvalid?: (fieldErrors: FieldErrors) => void;
+  linkedData?: boolean;
 }
 
-export const SearchForm = ({ ...props }: SearchFormProps) => {
+export const LoginForm = ({ ...props }: RecordFormProps) => {
   const { t } = useTranslation();
+
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -69,6 +70,7 @@ export const SearchForm = ({ ...props }: SearchFormProps) => {
       <FormProvider {...methods}>
         <FormGenerator formSchema={props.formSchema} />
       </FormProvider>
+
       <Button
         type='submit'
         disableRipple
@@ -76,7 +78,7 @@ export const SearchForm = ({ ...props }: SearchFormProps) => {
         color='secondary'
         sx={{ height: 40 }}
       >
-        {t('divaClient_SearchButtonText')}
+        {t('divaClient_LoginButtonText')}
       </Button>
     </Box>
   );
