@@ -31,8 +31,7 @@ export interface DivaOutput {
 
 export const transformToTable = (data: any) => {
   return data.map((record: any) => {
-    const { validationType } = record;
-    const title = getCorrectTitle(validationType, record);
+    const title = getCorrectTitle(record);
     return {
       id: record.id,
       title: title ?? '',
@@ -45,10 +44,8 @@ export const transformToTable = (data: any) => {
   });
 };
 
-export const getCorrectTitle = (validationType: any, record: any) => {
-  return validationType === 'divaOutputSwepub'
-    ? record.data.output.titleInfo.title.value
-    : record.data.divaOutput.title.mainTitle.value;
+export const getCorrectTitle = (record: any) => {
+  return record.data.output.titleInfo.title.value
 };
 
 export const loadPublicationsAsync =
@@ -56,8 +53,22 @@ export const loadPublicationsAsync =
   async (dispatch) => {
     try {
       dispatch(updating());
-      const response = await axios.get(`/divaOutputs`);
-      const transformed = transformToTable(response.data);
+      const query = JSON.stringify({
+        search: {
+          include: {
+            includePart: {
+              genericSearchTerm: [
+                {
+                  value: "**"
+                }
+              ]
+            }
+          }
+        }
+      })
+
+      const response = await axios.get(`search/advanced/diva-outputSearch?query=${query}`);
+      const transformed = transformToTable(response.data.data);
       dispatch(update(transformed as DivaOutput[]));
     } catch (e) {
       console.log(e);
