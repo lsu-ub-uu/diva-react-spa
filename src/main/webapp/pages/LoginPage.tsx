@@ -17,11 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
 import { AsidePortal, useBackdrop } from '@/components';
@@ -31,10 +28,10 @@ import { loginPasswordAsync } from '@/features/auth/actions';
 import { AppDispatch } from '@/app/store';
 import { authStateSelector } from '@/features/auth/selectors';
 import { RecordForm } from '@/components/Form/RecordForm';
+import { useNavigate, useSearchParams } from '@remix-run/react';
 
 export const LoginPage = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
   const [isLoading] = useState(false);

@@ -19,11 +19,16 @@
 
 import { useEffect } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@remix-run/react';
 import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
 import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
-import { AsidePortal, linksFromFormSchema, NavigationPanel, useBackdrop, useSectionScroller } from '@/components';
+import {
+  AsidePortal,
+  linksFromFormSchema,
+  NavigationPanel,
+  useBackdrop,
+  useSectionScroller,
+} from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
 import { CoraRecord } from '@/features/record/types';
 import { RecordForm } from '@/components/Form/RecordForm';
@@ -66,7 +71,7 @@ export const ViewRecordPage = () => {
 
   return (
     <>
- {/*     <Helmet>
+      {/*     <Helmet>
         <title>{coraRecord.record?.id ?? 'not found'} | DiVA</title>
       </Helmet>*/}
       <AsidePortal>

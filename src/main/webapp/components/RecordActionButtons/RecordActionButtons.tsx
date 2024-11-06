@@ -17,7 +17,7 @@
  */
 
 import { IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link } from '@remix-run/react';
 import FeedIcon from '@mui/icons-material/Feed';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
