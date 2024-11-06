@@ -18,16 +18,7 @@
 
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { loader } from '@/root';
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  NativeSelect,
-  OutlinedInput,
-  Select,
-} from '@mui/material';
+import { MenuItem, OutlinedInput, Select } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from 'react-i18next';
 
@@ -37,21 +28,21 @@ export const LanguageSwitcher = () => {
   const submit = useSubmit();
 
   return (
-    <Form
-      method='post'
-      onChange={(event) => submit(event.currentTarget)}
-    >
-      <NativeSelect
+    <Form method='post'>
+      <Select
+        variant='outlined'
         name='language'
-        defaultValue={locale}
-        input={<OutlinedInput />}
+        value={locale}
         size='small'
         startAdornment={<LanguageIcon />}
         aria-label={t('divaClient_ChooseLanguageText')}
+        onChange={(e) =>
+          submit({ language: e.target.value }, { method: 'post' })
+        }
       >
-        <option value='en'>English</option>
-        <option value='sv'>Svenska</option>
-      </NativeSelect>
+        <MenuItem value='en'>English</MenuItem>
+        <MenuItem value='sv'>Svenska</MenuItem>
+      </Select>
     </Form>
   );
 };

@@ -43,6 +43,7 @@ import favicon from '@/images/favicon.svg';
 import i18nServer from '@/app/i18n.server';
 import { useChangeLanguage } from 'remix-i18next/react';
 import { i18nCookie } from '@/app/i18nCookie';
+import { getLoginUnits } from '@/data/getLoginUnits';
 
 interface DocumentProps {
   children: ReactNode;
@@ -50,9 +51,10 @@ interface DocumentProps {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const auth = await getAuth(request);
+  const loginUnits = await getLoginUnits();
   const locale = await i18nServer.getLocale(request);
   return json(
-    { auth, locale },
+    { auth, locale, loginUnits },
     {
       headers: { 'Set-Cookie': await i18nCookie.serialize(locale) },
     },

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -17,19 +17,9 @@
  */
 
 import axios from 'axios';
-import { AppThunk } from '../../app/store';
-import { hasError, LoginUnit, update, updating } from './loginUnitsSlice';
+import { LoginUnit } from '@/features/loginUnits/loginUnitsSlice';
 
-export const loadLoginUnitsAsync =
-  (callback?: () => void): AppThunk =>
-  async (dispatch) => {
-    try {
-      dispatch(updating());
-      const response = await axios.get(`/auth/loginUnits`);
-      dispatch(update(response.data as LoginUnit[]));
-    } catch {
-      dispatch(hasError('Error occurred loading login units'));
-    } finally {
-      if (callback) callback();
-    }
-  };
+export const getLoginUnits = async () => {
+  const response = await axios.get('/auth/loginUnits');
+  return response.data as LoginUnit[];
+};

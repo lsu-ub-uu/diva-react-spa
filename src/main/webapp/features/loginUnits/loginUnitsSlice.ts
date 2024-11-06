@@ -19,13 +19,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface LoginUnitsState {
-  loginUnits: LoginUnitsArray[];
+  loginUnits: LoginUnit[];
   isLoading: boolean;
   isError: boolean;
   message: string;
 }
 
-export interface LoginUnitsArray {
+export interface LoginUnit {
   presentation?: any;
   loginDescription: string;
   url: string;
@@ -47,7 +47,7 @@ export const loginUnitsSlice = createSlice({
       state.loginUnits = [];
       state.isLoading = true;
     },
-    update: (state, action: PayloadAction<LoginUnitsArray[]>) => {
+    update: (state, action: PayloadAction<LoginUnit[]>) => {
       state.loginUnits = action.payload;
       state.isLoading = false;
     },

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
-    "dev": "node ./server.js",
+    "dev": "node server.js",
     "typecheck": "tsc",
     "build:prod": "tsc && vite build --base=$BASENAME",
     "preview": "vite preview",

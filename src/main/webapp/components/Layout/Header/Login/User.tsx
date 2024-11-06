@@ -16,23 +16,153 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, Link, useLoaderData } from '@remix-run/react';
-import { Box, Button, IconButton, Stack } from '@mui/material';
+import { Form, Link, useLoaderData, useSubmit } from '@remix-run/react';
+import {
+  Box,
+  Button,
+  Divider,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { loader } from '@/root';
-import { printUserNameOnPage } from '@/components/Layout/Header/Login/utils/utils';
+import {
+  convertWebRedirectToUserSession,
+  messageIsFromWindowOpenedFromHere,
+  printUserNameOnPage,
+  splitBasenameFromUrl,
+  splitSlashFromUrl,
+} from '@/components/Layout/Header/Login/utils/utils';
 import LogoutIcon from '@mui/icons-material/Logout';
+import {
+  Account,
+  devAccounts,
+} from '@/components/Layout/Header/Login/devAccounts';
+import { useTranslation } from 'react-i18next';
+import { useRef, useState } from 'react';
 
 export default function User() {
-  const { auth } = useLoaderData<typeof loader>();
+  const { MODE } = import.meta.env;
+  const { auth, loginUnits } = useLoaderData<typeof loader>();
+  const submit = useSubmit();
+  const { t } = useTranslation();
+  const anchorEl = useRef<HTMLButtonElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleDevSelection = (account: Account) => {
+    setMenuOpen(false);
+    submit(
+      { loginType: 'appToken', account: JSON.stringify(account) },
+      { action: '/login', method: 'post' },
+    );
+  };
+
+  const handleWebRedirectSelection = (url: string) => {
+    try {
+      window.open(MODE === 'development' ? '/devLogin' : url);
+      window.addEventListener('message', receiveMessage, { once: true });
+    } catch (e: any) {
+      if (e === undefined) {
+        console.log('undef', event);
+      }
+      console.log(e.message());
+    }
+    setMenuOpen(false);
+  };
+
+  const receiveMessage = (event: any) => {
+    if (event === undefined || event.data.source === 'react-devtools-bridge') {
+      // dispatch(hasError('login error'));
+    }
+
+    if (event.data.source !== 'react-devtools-bridge') {
+      if (
+        messageIsFromWindowOpenedFromHere(
+          splitSlashFromUrl(
+            splitBasenameFromUrl(window.location.href, 'divaclient'),
+          ),
+          splitSlashFromUrl(event.origin as string),
+        )
+      ) {
+        submit(
+          {
+            loginType: 'webRedirect',
+            auth: JSON.stringify(convertWebRedirectToUserSession(event.data)),
+          },
+          { action: '/login', method: 'post' },
+        );
+      }
+    }
+  };
 
   if (!auth) {
     return (
-      <Button
-        component={Link}
-        to='/login'
-      >
-        Logga in
-      </Button>
+      <>
+        <Button
+          ref={anchorEl}
+          onClick={() => setMenuOpen(true)}
+        >
+          {t('divaClient_LoginText')}
+        </Button>
+        <Menu
+          open={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          anchorEl={anchorEl.current}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          <MenuItem
+            disabled
+            sx={{ py: 0 }}
+          >
+            <Typography variant='overline'>Testkonton</Typography>
+          </MenuItem>
+          {devAccounts.map((devAccount) => (
+            <MenuItem
+              key={devAccount.userId}
+              onClick={() => handleDevSelection(devAccount)}
+            >
+              {devAccount.lastName} {devAccount.firstName}
+            </MenuItem>
+          ))}
+          <Divider />
+          <MenuItem
+            disabled
+            sx={{ py: 0 }}
+          >
+            <Typography variant='overline'>Genensam inloggning</Typography>
+          </MenuItem>
+          {loginUnits
+            .filter(({ type }) => type === 'webRedirect')
+            .map(({ loginDescription, url, type, presentation }) => (
+              <MenuItem
+                key={loginDescription}
+                onClick={() => handleWebRedirectSelection(url)}
+              >
+                {t(loginDescription)}
+              </MenuItem>
+            ))}
+          <Divider />
+          <MenuItem
+            disabled
+            sx={{ py: 0 }}
+          >
+            <Typography variant='overline'>Användarnamn / lösenord </Typography>
+          </MenuItem>
+          {loginUnits
+            .filter(({ type }) => type === 'password')
+            .map(({ loginDescription, url, type, presentation }) => (
+              <MenuItem
+                key='tempLoginUnitPassword'
+                component={Link}
+                to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}`}
+              >
+                {t(loginDescription)}
+              </MenuItem>
+            ))}
+        </Menu>
+      </>
     );
   }
 

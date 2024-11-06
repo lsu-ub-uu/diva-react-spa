@@ -3,6 +3,11 @@ import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const viteDevServer =
   process.env.NODE_ENV === 'production'
@@ -42,6 +47,12 @@ if (viteDevServer) {
 app.use(express.static('build/client', { maxAge: '1h' }));
 
 app.use(morgan('tiny'));
+
+if (process.env.NODE_ENV !== 'production') {
+  app.get('/devLogin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'devLogin.html'));
+  });
+}
 
 // handle SSR requests
 app.all('*', remixHandler);
