@@ -17,14 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import {
   FieldErrors,
   FieldValues,
   FormProvider,
   useForm,
 } from 'react-hook-form';
-import Button from '@mui/material/Button';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   createDefaultValuesFromFormSchema,

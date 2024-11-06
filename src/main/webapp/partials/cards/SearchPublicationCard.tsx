@@ -18,14 +18,13 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { AlertTitle, Skeleton } from '@mui/material';
+import { Alert, AlertTitle, Skeleton } from '@mui/material';
 import { Card } from '@/components';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { useCoraSearchForm } from '@/features/search/useCoraSearch';
-import Alert from '@mui/material/Alert';
 import { SearchForm } from '@/components/Form/SearchForm';
 import { FieldValues } from 'react-hook-form';
-import {useNavigate} from "@remix-run/react";
+import { useNavigate } from '@remix-run/react';
 
 const searchType = 'diva-outputSimpleSearch';
 export const SearchPublicationCard = () => {

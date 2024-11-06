@@ -17,15 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Container, Grid, Toolbar } from '@mui/material';
+import { AppBar, Button, Box, Container, Grid, Toolbar } from '@mui/material';
 import {
   FieldErrors,
   FieldValues,
   FormProvider,
   useForm,
 } from 'react-hook-form';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
