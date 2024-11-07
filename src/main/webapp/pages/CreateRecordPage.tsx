@@ -33,6 +33,7 @@ import { removeEmpty } from '@/utils/removeEmpty';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { CoraRecord } from '@/features/record/types';
+import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 
 interface CreateRecordPageProps {
   record: CoraRecord;

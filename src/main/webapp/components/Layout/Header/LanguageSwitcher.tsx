@@ -16,29 +16,32 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+import { Form, useFetcher, useLoaderData } from '@remix-run/react';
 import { loader } from '@/root';
-import { MenuItem, OutlinedInput, Select } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from 'react-i18next';
 
 export const LanguageSwitcher = () => {
   const { locale } = useLoaderData<typeof loader>();
-  const { t } = useTranslation();
-  const submit = useSubmit();
+  const { t, i18n } = useTranslation();
+  const fetcher = useFetcher();
+  const language = fetcher.formData ? fetcher.formData.get('language') : locale;
 
   return (
     <Form method='post'>
       <Select
         variant='outlined'
         name='language'
-        value={locale}
+        value={language}
         size='small'
-        startAdornment={<LanguageIcon />}
+        startAdornment={<LanguageIcon sx={{ mr: 1, fontSize: '1rem' }} />}
         aria-label={t('divaClient_ChooseLanguageText')}
-        onChange={(e) =>
-          submit({ language: e.target.value }, { method: 'post' })
-        }
+        onChange={(e) => {
+          const language = e.target.value as string;
+          i18n.changeLanguage(language);
+          fetcher.submit({ language }, { method: 'post' });
+        }}
       >
         <MenuItem value='en'>English</MenuItem>
         <MenuItem value='sv'>Svenska</MenuItem>

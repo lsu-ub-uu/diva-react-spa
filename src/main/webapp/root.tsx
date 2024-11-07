@@ -55,9 +55,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const locale = await i18nServer.getLocale(request);
   return json(
     { auth, locale, loginUnits },
-    {
-      headers: { 'Set-Cookie': await i18nCookie.serialize(locale) },
-    },
+    /* {
+       headers: { 'Set-Cookie': await i18nCookie.serialize(locale) },
+     },*/
   );
 }
 
@@ -65,11 +65,14 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const language = formData.get('language');
   if (typeof language === 'string') {
-    return redirect('/', {
-      headers: {
-        'Set-Cookie': await i18nCookie.serialize(language),
+    return json(
+      {},
+      {
+        headers: {
+          'Set-Cookie': await i18nCookie.serialize(language),
+        },
       },
-    });
+    );
   }
 }
 
