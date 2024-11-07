@@ -28,18 +28,13 @@ import {
   logoutAsync,
 } from '@/features/auth/actions';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { useBackdrop } from '../../../index';
+import { useBackdrop } from '@/components';
 import { authStateSelector } from '@/features/auth/selectors';
-import {
-  loadLoginUnitsAsync,
-  loginUnitsSelector,
-} from '@/features/loginUnits';
+import { loadLoginUnitsAsync, loginUnitsSelector } from '@/features/loginUnits';
 import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
-  splitBasenameFromUrl,
-  splitSlashFromUrl,
 } from './utils/utils';
 import { hasError } from '@/features/auth/authSlice';
 
@@ -94,14 +89,7 @@ export const Login = (): JSX.Element => {
     }
 
     if (event.data.source !== 'react-devtools-bridge') {
-      if (
-        messageIsFromWindowOpenedFromHere(
-          splitSlashFromUrl(
-            splitBasenameFromUrl(window.location.href, 'divaclient'),
-          ),
-          splitSlashFromUrl(event.origin as string),
-        )
-      ) {
+      if (messageIsFromWindowOpenedFromHere(event)) {
         dispatch(
           loginWebRedirectAsync(
             convertWebRedirectToUserSession(event.data),

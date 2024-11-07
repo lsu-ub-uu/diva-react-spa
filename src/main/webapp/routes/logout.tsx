@@ -21,8 +21,10 @@ import { destroySession, getSession } from '@/sessions';
 
 export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
+  const form = await request.formData();
+  const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
 
-  return redirect('/login', {
+  return redirect(returnTo ?? '/', {
     // TODO logout from cora
     headers: {
       'Set-Cookie': await destroySession(session),

@@ -16,10 +16,18 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Form, Link, useLoaderData, useSubmit } from '@remix-run/react';
+import {
+  Form,
+  Link,
+  useLoaderData,
+  useLocation,
+  useNavigation,
+  useSubmit,
+} from '@remix-run/react';
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   Menu,
   MenuItem,
@@ -31,8 +39,6 @@ import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
-  splitBasenameFromUrl,
-  splitSlashFromUrl,
 } from '@/components/Layout/Header/Login/utils/utils';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {
@@ -49,11 +55,15 @@ export default function User() {
   const { t } = useTranslation();
   const anchorEl = useRef<HTMLButtonElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigation = useNavigation();
+
+  const returnTo = encodeURIComponent(location.pathname);
 
   const handleDevSelection = (account: Account) => {
     setMenuOpen(false);
     submit(
-      { loginType: 'appToken', account: JSON.stringify(account) },
+      { loginType: 'appToken', account: JSON.stringify(account), returnTo },
       { action: '/login', method: 'post' },
     );
   };
@@ -63,9 +73,6 @@ export default function User() {
       window.open(MODE === 'development' ? '/devLogin' : url);
       window.addEventListener('message', receiveMessage, { once: true });
     } catch (e: any) {
-      if (e === undefined) {
-        console.log('undef', event);
-      }
       console.log(e.message());
     }
     setMenuOpen(false);
@@ -77,18 +84,12 @@ export default function User() {
     }
 
     if (event.data.source !== 'react-devtools-bridge') {
-      if (
-        messageIsFromWindowOpenedFromHere(
-          splitSlashFromUrl(
-            splitBasenameFromUrl(window.location.href, 'divaclient'),
-          ),
-          splitSlashFromUrl(event.origin as string),
-        )
-      ) {
+      if (messageIsFromWindowOpenedFromHere(event)) {
         submit(
           {
             loginType: 'webRedirect',
             auth: JSON.stringify(convertWebRedirectToUserSession(event.data)),
+            returnTo,
           },
           { action: '/login', method: 'post' },
         );
@@ -102,8 +103,19 @@ export default function User() {
         <Button
           ref={anchorEl}
           onClick={() => setMenuOpen(true)}
+          disabled={navigation.state === 'submitting'}
         >
-          {t('divaClient_LoginText')}
+          {navigation.state === 'submitting' ? (
+            <>
+              {t('divaClient_LoginText')}{' '}
+              <CircularProgress
+                size='1em'
+                sx={{ ml: 1 }}
+              />
+            </>
+          ) : (
+            t('divaClient_LoginText')
+          )}
         </Button>
         <Menu
           open={menuOpen}
@@ -162,7 +174,8 @@ export default function User() {
               <MenuItem
                 key='tempLoginUnitPassword'
                 component={Link}
-                to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}`}
+                to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}&returnTo=${returnTo}`}
+                onClick={() => setMenuOpen(false)}
               >
                 {t(loginDescription)}
               </MenuItem>
@@ -184,11 +197,16 @@ export default function User() {
         action='/logout'
         method='post'
       >
+        <input
+          type='hidden'
+          name='returnTo'
+          value={returnTo}
+        />
         <Button
           type='submit'
           endIcon={<LogoutIcon />}
         >
-          Log out
+          {t('divaClient_LogoutText')}
         </Button>
       </Form>
     </Stack>
