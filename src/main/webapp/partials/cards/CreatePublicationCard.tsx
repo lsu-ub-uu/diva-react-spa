@@ -17,32 +17,23 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, MenuItem, SelectChangeEvent, Button } from '@mui/material';
-import { Link as RouterLink } from '@remix-run/react';
+import { Button, Grid, MenuItem } from '@mui/material';
+import { Form, useLoaderData, useNavigation } from '@remix-run/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { Card, Select } from '@/components';
-import {
-  loadValidationTypesAsync,
-  validationTypeSelector,
-} from '@/features/validationTypes';
+import { loader } from '@/routes/_index';
 
 export const CreatePublicationCard = () => {
+  const { validationTypes } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
-  const [validationType, setValidationType] = useState('');
-  const dispatch = useAppDispatch();
-  const validationTypeState = useAppSelector(validationTypeSelector);
+  const navigation = useNavigation();
 
-  useEffect(() => {
-    dispatch(loadValidationTypesAsync());
-  }, [dispatch]);
+  const loading = navigation.state === 'loading';
 
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
-    event.preventDefault();
-    setValidationType(event.target.value as string);
-  };
+  if (validationTypes === null || validationTypes.length === 0) {
+    return null;
+  }
 
   return (
     <Card
@@ -55,59 +46,60 @@ export const CreatePublicationCard = () => {
         t('divaClient_createPublicationTypeTooltipBodyText') as string
       }
     >
-      <Grid
-        container
-        spacing={2}
-        justifyContent='space-between'
-        alignItems='flex-start'
-      >
+      <Form action='/create'>
         <Grid
-          item
-          xs={12}
-          sm={6}
+          container
+          spacing={2}
+          justifyContent='space-between'
+          alignItems='flex-start'
         >
-          <Select
-            value={validationType || ''}
-            onChange={handleChange}
-            sx={{
-              '& .MuiSelect-select .notranslate::after': {
-                content: `"${t('divaClient_selectPublicationTypeText')}"`,
-                opacity: 0.42,
-              },
-            }}
-            name='publication-type-select'
-            size='small'
-            loading={validationTypeState.isLoading}
-            fullWidth
+          <Grid
+            item
+            xs={12}
+            sm={6}
           >
-            {validationTypeState.validationTypes.map((validationTypeOption) => (
-              <MenuItem
-                key={validationTypeOption.value}
-                value={validationTypeOption.value}
-                disableRipple
-              >
-                {t(validationTypeOption.label)}
-              </MenuItem>
-            ))}
-          </Select>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-        >
-          <Button
-            disabled={!validationType}
-            disableRipple
-            variant='contained'
-            component={RouterLink}
-            to={`/create/${validationType}`}
-            endIcon={<ArrowForwardIcon />}
+            <Select
+              defaultValue=''
+              name='validationType'
+              sx={{
+                '& .MuiSelect-select .notranslate::after': {
+                  content: `"${t('divaClient_selectPublicationTypeText')}"`,
+                  opacity: 0.42,
+                },
+              }}
+              size='small'
+              loading={loading}
+              fullWidth
+              required
+            >
+              {validationTypes.map((validationType) => (
+                <MenuItem
+                  key={validationType.value}
+                  value={validationType.value}
+                  disableRipple
+                >
+                  {t(validationType.label)}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
           >
-            {t('divaClient_continueText')}
-          </Button>
+            <Button
+              disabled={loading}
+              type='submit'
+              disableRipple
+              variant='contained'
+              endIcon={<ArrowForwardIcon />}
+            >
+              {t('divaClient_continueText')}
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      </Form>
     </Card>
   );
 };

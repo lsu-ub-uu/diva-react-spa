@@ -17,14 +17,15 @@
  */
 
 import { invariant } from '@remix-run/router/history';
-import { LoaderFunctionArgs } from '@remix-run/node';
+import { type ActionFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/pages/CreateRecordPage';
 import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const { validationTypeId } = params;
+export const loader = async ({ request }: ActionFunctionArgs) => {
+  const url = new URL(request.url);
+  const validationTypeId = url.searchParams.get('validationType');
   invariant(validationTypeId, 'Missing validationTypeId param');
   const record = await getRecordByValidationTypeId(validationTypeId);
   const formDefinition = await getFormDefinitionByValidationTypeId(

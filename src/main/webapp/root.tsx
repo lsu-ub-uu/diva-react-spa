@@ -26,8 +26,8 @@ import {
 import {
   ActionFunctionArgs,
   json,
+  LinksFunction,
   LoaderFunctionArgs,
-  redirect,
 } from '@remix-run/node';
 import { ReactNode, Suspense, useEffect } from 'react';
 import { BackdropProvider, Layout, SnackbarProvider } from '@/components';
@@ -45,20 +45,25 @@ import { useChangeLanguage } from 'remix-i18next/react';
 import { i18nCookie } from '@/app/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
 
+const { MODE } = import.meta.env;
+
 interface DocumentProps {
   children: ReactNode;
 }
+
+export const links: LinksFunction = () => [
+  {
+    rel: 'icon',
+    type: 'image/svg+xml',
+    href: MODE === 'development' ? dev_favicon : favicon,
+  },
+];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const auth = await getAuth(request);
   const loginUnits = await getLoginUnits();
   const locale = await i18nServer.getLocale(request);
-  return json(
-    { auth, locale, loginUnits },
-    /* {
-       headers: { 'Set-Cookie': await i18nCookie.serialize(locale) },
-     },*/
-  );
+  return json({ auth, locale, loginUnits });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -78,7 +83,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 const Document = ({ children }: DocumentProps) => {
   const { locale } = useLoaderData<typeof loader>();
-  const { MODE } = import.meta.env;
+
   useChangeLanguage(locale);
 
   return (
@@ -92,11 +97,6 @@ const Document = ({ children }: DocumentProps) => {
         <meta
           name='theme-color'
           content={divaTheme.palette.primary.main}
-        />
-        <link
-          rel='icon'
-          type='image/svg+xml'
-          href={MODE === 'development' ? dev_favicon : favicon}
         />
         <title>DiVA</title>
         <Meta />

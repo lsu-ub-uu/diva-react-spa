@@ -58,7 +58,7 @@ export default function User() {
   const location = useLocation();
   const navigation = useNavigation();
 
-  const returnTo = encodeURIComponent(location.pathname);
+  const returnTo = encodeURIComponent(location.pathname + location.search);
 
   const handleDevSelection = (account: Account) => {
     setMenuOpen(false);

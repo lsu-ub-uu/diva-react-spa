@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,19 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { HomePage } from '@/pages';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
-import { getAuth } from '@/sessions';
-import { getValidationTypes } from '@/data/getValidationTypes';
+import axios from 'axios';
+import { Option } from '@/components';
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const auth = await getAuth(request);
-  const validationTypes = auth
-    ? await getValidationTypes(auth.data.token)
-    : null;
-  return json({ validationTypes });
-}
-
-export default function IndexRoute() {
-  return <HomePage />;
-}
+export const getValidationTypes = async (authToken: string) => {
+  const response = await axios.get(`/validationTypes`, {
+    headers: { Authtoken: authToken },
+  });
+  return response.data as Option[];
+};
