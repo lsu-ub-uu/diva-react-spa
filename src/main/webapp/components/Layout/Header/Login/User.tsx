@@ -41,12 +41,12 @@ import {
   printUserNameOnPage,
 } from '@/components/Layout/Header/Login/utils/utils';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {
-  Account,
-  devAccounts,
-} from '@/components/Layout/Header/Login/devAccounts';
+import { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { useTranslation } from 'react-i18next';
 import { useRef, useState } from 'react';
+import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
+import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
+import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
 
 export default function User() {
   const { MODE } = import.meta.env;
@@ -124,62 +124,14 @@ export default function User() {
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          <MenuItem
-            disabled
-            sx={{ py: 0 }}
-          >
-            <Typography variant='overline'>
-              {t('divaClient_LoginDevAccountText')}
-            </Typography>
-          </MenuItem>
-          {devAccounts.map((devAccount) => (
-            <MenuItem
-              key={devAccount.userId}
-              onClick={() => handleDevSelection(devAccount)}
-            >
-              {devAccount.lastName} {devAccount.firstName}
-            </MenuItem>
-          ))}
+          <DevAccountLoginOptions onSelect={handleDevSelection} />
           <Divider />
-          <MenuItem
-            disabled
-            sx={{ py: 0 }}
-          >
-            <Typography variant='overline'>
-              {t('divaClient_LoginWebRedirectText')}
-            </Typography>
-          </MenuItem>
-          {loginUnits
-            .filter(({ type }) => type === 'webRedirect')
-            .map(({ loginDescription, url }) => (
-              <MenuItem
-                key={loginDescription}
-                onClick={() => handleWebRedirectSelection(url)}
-              >
-                {t(loginDescription)}
-              </MenuItem>
-            ))}
+          <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
           <Divider />
-          <MenuItem
-            disabled
-            sx={{ py: 0 }}
-          >
-            <Typography variant='overline'>
-              {t('divaClient_LoginPasswordText')}
-            </Typography>
-          </MenuItem>
-          {loginUnits
-            .filter(({ type }) => type === 'password')
-            .map(({ loginDescription, presentation }) => (
-              <MenuItem
-                key='tempLoginUnitPassword'
-                component={Link}
-                to={`/login?presentation=${encodeURIComponent(JSON.stringify(presentation))}&returnTo=${returnTo}`}
-                onClick={() => setMenuOpen(false)}
-              >
-                {t(loginDescription)}
-              </MenuItem>
-            ))}
+          <PasswordLoginOptions
+            returnTo={returnTo}
+            onSelect={() => setMenuOpen(false)}
+          />
         </Menu>
       </>
     );
