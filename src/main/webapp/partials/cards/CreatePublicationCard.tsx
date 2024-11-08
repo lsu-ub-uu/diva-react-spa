@@ -18,10 +18,10 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Button, Grid, MenuItem } from '@mui/material';
+import { Button, Grid, NativeSelect, OutlinedInput } from '@mui/material';
 import { Form, useLoaderData, useNavigation } from '@remix-run/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Card, Select } from '@/components';
+import { Card } from '@/components';
 import { loader } from '@/routes/_index';
 
 export const CreatePublicationCard = () => {
@@ -58,30 +58,29 @@ export const CreatePublicationCard = () => {
             xs={12}
             sm={6}
           >
-            <Select
+            <NativeSelect
               defaultValue=''
               name='validationType'
-              sx={{
-                '& .MuiSelect-select .notranslate::after': {
-                  content: `"${t('divaClient_selectPublicationTypeText')}"`,
-                  opacity: 0.42,
-                },
-              }}
+              input={<OutlinedInput />}
               size='small'
-              loading={loading}
               fullWidth
               required
             >
+              <option
+                value=''
+                disabled
+              >
+                {t('divaClient_selectPublicationTypeText')}
+              </option>
               {validationTypes.map((validationType) => (
-                <MenuItem
+                <option
                   key={validationType.value}
                   value={validationType.value}
-                  disableRipple
                 >
                   {t(validationType.label)}
-                </MenuItem>
+                </option>
               ))}
-            </Select>
+            </NativeSelect>
           </Grid>
           <Grid
             item
