@@ -17,13 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Box } from '@mui/material';
-import {
-  FieldErrors,
-  FieldValues,
-  FormProvider,
-  useForm,
-} from 'react-hook-form';
+import { Button } from '@mui/material';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -32,42 +27,53 @@ import {
 } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
-import { FormSchema } from '../FormGenerator/types';
+import { SearchFormSchema } from '../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
 import { useTranslation } from 'react-i18next';
+import { Form } from '@remix-run/react';
+import { Simulate } from 'react-dom/test-utils';
+import { useSnackbar, VariantType } from 'notistack';
+import submit = Simulate.submit;
 
 interface SearchFormProps {
+  searchType: string;
   record?: CoraRecord;
-  formSchema: FormSchema;
-  onSubmit: (formValues: FieldValues) => void;
-  onInvalid?: (fieldErrors: FieldErrors) => void;
+  formSchema: SearchFormSchema;
 }
 
-export const SearchForm = ({ ...props }: SearchFormProps) => {
+export const SearchForm = ({
+  searchType,
+  record,
+  formSchema,
+}: SearchFormProps) => {
   const { t } = useTranslation();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const notification = (message: string, variant: VariantType) => {
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { vertical: 'top', horizontal: 'right' },
+    });
+  };
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(
-      props.formSchema,
-      props.record?.data as RecordData,
+      formSchema,
+      record?.data as RecordData,
     ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
   const { handleSubmit } = methods;
 
   return (
-    <Box
-      component='form'
-      sx={{ width: '100%' }}
-      onSubmit={handleSubmit(
-        (values) => props.onSubmit(values),
-        (errors) => props.onInvalid && props.onInvalid(errors),
-      )}
+    <Form
+      method='GET'
+      action={`/search/${searchType}`}
     >
       <FormProvider {...methods}>
-        <FormGenerator formSchema={props.formSchema} />
+        <FormGenerator formSchema={formSchema} />
       </FormProvider>
       <Button
         type='submit'
@@ -78,6 +84,6 @@ export const SearchForm = ({ ...props }: SearchFormProps) => {
       >
         {t('divaClient_SearchButtonText')}
       </Button>
-    </Box>
+    </Form>
   );
 };

@@ -18,39 +18,25 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Alert, AlertTitle, Skeleton } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 import { Card } from '@/components';
-import { FormSchema } from '@/components/FormGenerator/types';
-import { useCoraSearchForm } from '@/features/search/useCoraSearch';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { FieldValues } from 'react-hook-form';
-import { useNavigate } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
+import { loader } from '@/routes/_index';
 
 const searchType = 'diva-outputSimpleSearch';
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { searchForm, error } = useCoraSearchForm(searchType);
-  const handleSearch = async (values: FieldValues) => {
-    navigate(
-      `/search/${searchType}?query=${window.encodeURIComponent(JSON.stringify(values))}`,
-    );
-  };
+  const {
+    simpleSearch: { error, form },
+  } = useLoaderData<typeof loader>();
+
   if (error) {
     return (
       <Alert severity='error'>
         <AlertTitle>Hoppsan!</AlertTitle>Fel vid hämtning av sökformuläret.
         Försök igen lite senare.
       </Alert>
-    );
-  }
-
-  if (searchForm === null) {
-    return (
-      <Skeleton
-        height={300}
-        width='100%'
-      />
     );
   }
 
@@ -66,9 +52,8 @@ export const SearchPublicationCard = () => {
       }
     >
       <SearchForm
-        onSubmit={handleSearch}
-        onInvalid={() => {}}
-        formSchema={searchForm as FormSchema}
+        formSchema={form!}
+        searchType={searchType}
       />
     </Card>
   );

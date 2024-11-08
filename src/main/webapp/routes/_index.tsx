@@ -20,15 +20,34 @@ import { HomePage } from '@/pages';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import { getAuth } from '@/sessions';
 import { getValidationTypes } from '@/data/getValidationTypes';
+import { getSearchForm } from '@/data/getSearchForm';
+import { SearchFormSchema } from '@/components/FormGenerator/types';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const auth = await getAuth(request);
   const validationTypes = auth
     ? await getValidationTypes(auth.data.token)
     : null;
-  return json({ validationTypes });
+
+  const simpleSearch = await getSimpleSearch();
+
+  return json({ validationTypes, simpleSearch });
 }
 
 export default function IndexRoute() {
   return <HomePage />;
 }
+
+interface SimpleSearch {
+  form?: SearchFormSchema;
+  error?: unknown;
+}
+
+const getSimpleSearch = async (): Promise<SimpleSearch> => {
+  try {
+    const form = await getSearchForm('diva-outputSimpleSearch');
+    return { form };
+  } catch (error) {
+    return { error };
+  }
+};

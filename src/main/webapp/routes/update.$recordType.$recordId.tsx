@@ -19,7 +19,7 @@
 import { UpdateRecordPage } from '@/pages';
 
 import { getAuth } from '@/sessions';
-import { LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { json, LoaderFunctionArgs } from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
@@ -32,7 +32,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const auth = await getAuth(request);
   if (!auth) {
-    return redirect('/login');
+    // Show error boundary
+    throw json('Unauthorized', { status: 401 });
   }
   const record = await getRecordByRecordTypeAndRecordId(
     recordType,
