@@ -1,9 +1,7 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'; // or cloudflare/deno
+import type { ActionFunction, LoaderFunctionArgs } from '@remix-run/node'; // or cloudflare/deno
 import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { commitSession, getSession } from '@/sessions';
-import { Account } from '@/components/Layout/Header/Login/devAccounts';
-import axios from 'axios';
 import { Alert, Button, Stack } from '@mui/material';
 import { Auth } from '@/features/auth/authSlice';
 import { FormGenerator } from '@/components';
@@ -13,46 +11,33 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useSnackbar, VariantType } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { loginWithAppToken } from '@/data/loginWithAppToken';
+import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
 
-async function appTokenLogin(account: Account) {
-  const response = await axios.post(
-    '/auth/appToken',
-    { user: account.idFromLogin, appToken: account.appToken },
-    { headers: { 'Content-Type': 'application/json' } },
-  );
-  return response.data.auth;
-}
-
-const usernamePasswordLogin = async (loginId: string, password: string) => {
+const parsePresentation = (searchParam: string | null) => {
+  if (searchParam === null) {
+    return null;
+  }
   try {
-    const response = await axios.post(
-      `/auth/password`,
-      { user: loginId, password },
-      {
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
-    return response.data.authToken;
-  } catch (e) {
-    console.error(e);
+    return JSON.parse(decodeURIComponent(searchParam));
+  } catch {
+    console.error('Failed to parse presentation search param', searchParam);
+    return null;
   }
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
-  const presentationString = url.searchParams.get('presentation');
-  const presentation =
-    presentationString && JSON.parse(decodeURIComponent(presentationString));
+  const presentation = parsePresentation(url.searchParams.get('presentation'));
+
   const session = await getSession(request.headers.get('Cookie'));
 
   if (session.has('auth')) {
-    // Redirect to the home page if they are already signed in.
-    return redirect('/');
+    return redirect(returnTo ?? '/');
   }
 
   const data = { presentation, error: session.get('error'), returnTo };
-
   return json(data, {
     headers: {
       'Set-Cookie': await commitSession(session),
@@ -60,28 +45,38 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+const authenticate = async (form: FormData) => {
+  const loginType = form.get('loginType');
+
+  switch (loginType) {
+    case 'appToken': {
+      const account = form.get('account');
+      return loginWithAppToken(JSON.parse(account!.toString()));
+    }
+    case 'webRedirect':
+      return JSON.parse(form.get('auth')!.toString()) as Auth;
+    case 'password':
+      return await loginWithUsernameAndPassword(
+        form.get('password.loginId.value')!.toString(),
+        form.get('password.password.value')!.toString(),
+      );
+    default:
+      return null;
+  }
+};
+
+export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));
   const form = await request.formData();
   const returnToEncoded = form.get('returnTo');
   const returnTo =
     returnToEncoded && decodeURIComponent(returnToEncoded.toString());
-  const loginType = form.get('loginType');
-  const presentationString = form.get('presentation');
-  let auth: Auth | null = null;
-  if (loginType === 'appToken') {
-    const account = form.get('account');
-    auth = await appTokenLogin(JSON.parse(account!.toString()));
-  } else if (loginType === 'webRedirect') {
-    auth = JSON.parse(form.get('auth')!.toString());
-  } else if (loginType === 'password') {
-    auth = await usernamePasswordLogin(
-      form.get('password.loginId.value')!.toString(),
-      form.get('password.password.value')!.toString(),
-    );
-  }
 
-  if (auth == null) {
+  const presentationString = form.get('presentation');
+
+  const auth = await authenticate(form);
+
+  if (auth === null) {
     session.flash('error', 'Invalid credentials');
 
     // Redirect back to the login page with errors.
@@ -103,7 +98,7 @@ export async function action({ request }: ActionFunctionArgs) {
       'Set-Cookie': await commitSession(session),
     },
   });
-}
+};
 
 export default function Login() {
   const { error, presentation, returnTo } = useLoaderData<typeof loader>();
