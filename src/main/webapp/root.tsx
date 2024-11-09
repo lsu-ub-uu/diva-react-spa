@@ -33,16 +33,9 @@ import {
   LoaderFunctionArgs,
 } from '@remix-run/node';
 import { ReactNode, Suspense, useEffect } from 'react';
-import { BackdropProvider, SnackbarProvider } from '@/components';
+import { BackdropProvider, PageLayout, SnackbarProvider } from '@/components';
 import store from '@/app/store';
-import {
-  Alert,
-  AlertTitle,
-  AppBar,
-  Container,
-  CssBaseline,
-  Grid,
-} from '@mui/material';
+import { Alert, AlertTitle, CssBaseline } from '@mui/material';
 import { divaTheme } from '@/themes/diva';
 import { Provider as StateProvider } from 'react-redux';
 import { getAuth } from '@/sessions';
@@ -54,10 +47,6 @@ import { useChangeLanguage } from 'remix-i18next/react';
 import { i18nCookie } from '@/app/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
-import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
-import { Header } from '@/components/Layout/Header';
-import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 
 const { MODE } = import.meta.env;
 
@@ -183,51 +172,9 @@ export default function App() {
     <BackdropProvider>
       <StateProvider store={store}>
         <SnackbarProvider maxSnack={5}>
-          <AppBar
-            position='static'
-            color='default'
-          >
-            <NavigationLoader />
-            <MemberBar color='#efefef'>
-              <p>AppBar</p>
-            </MemberBar>
-            <Header />
-          </AppBar>
-          <Container
-            maxWidth='lg'
-            sx={{ minHeight: '100vh' }}
-          >
-            <Grid container>
-              <Grid
-                item
-                xs={12}
-                sx={{ pt: 2, pb: 4 }}
-              >
-                <Breadcrumbs />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              columnSpacing={{ md: 4 }}
-            >
-              <Grid
-                item
-                style={{ width: '300px' }}
-                display={{ xs: 'none', sm: 'none', md: 'block' }}
-              >
-                <aside id='sidebar-content' />
-              </Grid>
-              <Grid
-                item
-                xs
-                sx={{ paddingBottom: '64px' }}
-              >
-                <main>
-                  <Outlet />
-                </main>
-              </Grid>
-            </Grid>
-          </Container>
+          <PageLayout>
+            <Outlet />
+          </PageLayout>
         </SnackbarProvider>
       </StateProvider>
     </BackdropProvider>

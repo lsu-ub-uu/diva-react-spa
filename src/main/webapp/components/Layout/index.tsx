@@ -21,14 +21,21 @@ import { Outlet } from '@remix-run/react';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
+import { ReactNode } from 'react';
 
-export const Layout = () => {
+interface PageLayoutProps {
+  children: ReactNode;
+}
+
+export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <>
       <AppBar
         position='static'
         color='default'
       >
+        <NavigationLoader />
         <MemberBar color='#efefef'>
           <p>AppBar</p>
         </MemberBar>
@@ -63,9 +70,7 @@ export const Layout = () => {
             xs
             sx={{ paddingBottom: '64px' }}
           >
-            <main>
-              <Outlet />
-            </main>
+            <main>{children}</main>
           </Grid>
         </Grid>
       </Container>

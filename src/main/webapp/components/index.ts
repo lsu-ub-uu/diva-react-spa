@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export { Layout } from './Layout';
+export { PageLayout } from './Layout';
 
 export { AsidePortal } from './AsidePortal/AsidePortal';
 
