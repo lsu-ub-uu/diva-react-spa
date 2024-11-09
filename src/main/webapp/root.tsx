@@ -17,11 +17,14 @@
  */
 
 import {
+  isRouteErrorResponse,
   Links,
   Meta,
+  Outlet,
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useRouteError,
 } from '@remix-run/react';
 import {
   ActionFunctionArgs,
@@ -30,11 +33,17 @@ import {
   LoaderFunctionArgs,
 } from '@remix-run/node';
 import { ReactNode, Suspense, useEffect } from 'react';
-import { BackdropProvider, Layout, SnackbarProvider } from '@/components';
+import { BackdropProvider, SnackbarProvider } from '@/components';
 import store from '@/app/store';
-import { CssBaseline } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  AppBar,
+  Container,
+  CssBaseline,
+  Grid,
+} from '@mui/material';
 import { divaTheme } from '@/themes/diva';
-import { ErrorBoundary } from 'react-error-boundary';
 import { Provider as StateProvider } from 'react-redux';
 import { getAuth } from '@/sessions';
 import axios from 'axios';
@@ -44,6 +53,11 @@ import i18nServer from '@/app/i18n.server';
 import { useChangeLanguage } from 'remix-i18next/react';
 import { i18nCookie } from '@/app/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
+import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
+import { Header } from '@/components/Layout/Header';
+import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
 
 const { MODE } = import.meta.env;
 
@@ -81,6 +95,36 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 }
 
+export const ErrorBoundary: ErrorBoundaryComponent = () => {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <Alert severity='error'>
+        <AlertTitle>
+          {error.status} {error.statusText}
+        </AlertTitle>
+        <p>{error.data}</p>
+      </Alert>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <Alert severity='error'>
+        <AlertTitle>Error</AlertTitle>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </Alert>
+    );
+  } else {
+    return (
+      <Alert severity='error'>
+        <AlertTitle>Unknown Error</AlertTitle>
+      </Alert>
+    );
+  }
+};
+
 const Document = ({ children }: DocumentProps) => {
   const { locale } = useLoaderData<typeof loader>();
 
@@ -115,7 +159,7 @@ const Document = ({ children }: DocumentProps) => {
   );
 };
 
-export default function App() {
+export const Layout = ({ children }: { children: ReactNode }) => {
   const { auth } = useLoaderData<typeof loader>();
 
   useEffect(() => {
@@ -128,18 +172,64 @@ export default function App() {
     <Suspense>
       <Document>
         <CssBaseline />
-        <BackdropProvider>
-          <StateProvider store={store}>
-            <SnackbarProvider maxSnack={5}>
-              <ErrorBoundary
-                fallback={<h1>Something went wrong. Try again later</h1>}
-              >
-                <Layout />
-              </ErrorBoundary>
-            </SnackbarProvider>
-          </StateProvider>
-        </BackdropProvider>
+        {children}
       </Document>
     </Suspense>
+  );
+};
+
+export default function App() {
+  return (
+    <BackdropProvider>
+      <StateProvider store={store}>
+        <SnackbarProvider maxSnack={5}>
+          <AppBar
+            position='static'
+            color='default'
+          >
+            <NavigationLoader />
+            <MemberBar color='#efefef'>
+              <p>AppBar</p>
+            </MemberBar>
+            <Header />
+          </AppBar>
+          <Container
+            maxWidth='lg'
+            sx={{ minHeight: '100vh' }}
+          >
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                sx={{ pt: 2, pb: 4 }}
+              >
+                <Breadcrumbs />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              columnSpacing={{ md: 4 }}
+            >
+              <Grid
+                item
+                style={{ width: '300px' }}
+                display={{ xs: 'none', sm: 'none', md: 'block' }}
+              >
+                <aside id='sidebar-content' />
+              </Grid>
+              <Grid
+                item
+                xs
+                sx={{ paddingBottom: '64px' }}
+              >
+                <main>
+                  <Outlet />
+                </main>
+              </Grid>
+            </Grid>
+          </Container>
+        </SnackbarProvider>
+      </StateProvider>
+    </BackdropProvider>
   );
 }
