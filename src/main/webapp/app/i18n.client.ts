@@ -23,20 +23,22 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { i18nConfig } from '@/app/i18nConfig';
 import { getInitialNamespaces } from 'remix-i18next/client';
 
-i18n
-  .use(initReactI18next)
-  .use(LanguageDetector)
-  .use(I18NextHttpBackend)
-  .init({
-    ...i18nConfig,
-    ns: getInitialNamespaces(),
-    detection: {
-      // Here only enable htmlTag detection, we'll detect the language only
-      // server-side with remix-i18next, by using the `<html lang>` attribute
-      // we can communicate to the client the language detected server-side
-      order: ['htmlTag'],
-      // Because we only use htmlTag, there's no reason to cache the language
-      // on the browser, so we disable it
-      caches: [],
-    },
-  });
+export const initClienti18n = () => {
+  return i18n
+    .use(initReactI18next)
+    .use(LanguageDetector)
+    .use(I18NextHttpBackend)
+    .init({
+      ...i18nConfig,
+      ns: getInitialNamespaces(),
+      detection: {
+        // Here only enable htmlTag detection, we'll detect the language only
+        // server-side with remix-i18next, by using the `<html lang>` attribute
+        // we can communicate to the client the language detected server-side
+        order: ['htmlTag'],
+        // Because we only use htmlTag, there's no reason to cache the language
+        // on the browser, so we disable it
+        caches: [],
+      },
+    });
+};

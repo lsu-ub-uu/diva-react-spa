@@ -31,9 +31,7 @@ import { SearchFormSchema } from '../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
 import { useTranslation } from 'react-i18next';
 import { Form } from '@remix-run/react';
-import { Simulate } from 'react-dom/test-utils';
 import { useSnackbar, VariantType } from 'notistack';
-import submit = Simulate.submit;
 
 interface SearchFormProps {
   searchType: string;

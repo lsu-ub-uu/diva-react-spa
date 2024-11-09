@@ -158,12 +158,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   }, [auth]);
 
   return (
-    <Suspense>
-      <Document>
-        <CssBaseline />
-        {children}
-      </Document>
-    </Suspense>
+    <Document>
+      <CssBaseline />
+      {children}
+    </Document>
   );
 };
 
