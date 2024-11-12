@@ -85,7 +85,6 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const authToken = req.header('authToken');
 
     const payload = cleanJson(req.body);
-    const { values } = payload;
 
     const { validationTypePool } = dependencies;
     const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
@@ -98,7 +97,7 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
 
-    const transformData = transformToCoraData(formMetaDataPathLookup, values);
+    const transformData = transformToCoraData(formMetaDataPathLookup, payload);
 
     const response = await updateRecordDataById<RecordWrapper>(
       recordId,
