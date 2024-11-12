@@ -17,7 +17,7 @@
  */
 
 // app/sessions.ts
-import { createCookieSessionStorage } from '@remix-run/node';
+import { createCookieSessionStorage, json, Session } from '@remix-run/node';
 import { Auth } from '@/features/auth/authSlice';
 
 type SessionData = {
@@ -25,6 +25,7 @@ type SessionData = {
 };
 
 type SessionFlashData = {
+  success: string;
   error: string;
 };
 
@@ -42,9 +43,30 @@ const { getSession, commitSession, destroySession } =
     },
   });
 
-async function getAuth(request: Request) {
-  const session = await getSession(request.headers.get('Cookie'));
+async function getSessionFromCookie(request: Request) {
+  return getSession(request.headers.get('Cookie'));
+}
+
+function getAuthentication(session: Session<SessionData, SessionFlashData>) {
   return session.get('auth');
 }
 
-export { getSession, commitSession, destroySession, getAuth };
+async function requireAuthentication(
+  session: Session<SessionData, SessionFlashData>,
+) {
+  const auth = getAuthentication(session);
+  if (!auth) {
+    // Show error boundary
+    throw json('Unauthorized', { status: 401 });
+  }
+  return auth;
+}
+
+export {
+  getSession,
+  commitSession,
+  destroySession,
+  requireAuthentication,
+  getAuthentication,
+  getSessionFromCookie,
+};

@@ -18,13 +18,13 @@
 
 import { FormComponent } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { useFormContext } from 'react-hook-form';
 import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { CollectionVariable } from '@/components/FormGenerator/components/CollectionVariable';
 import { Text } from '@/components/FormGenerator/components/Text';
 import { GuiElementLink } from '@/components/FormGenerator/components/GuiElementLink';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface LeafComponentProps {
   component: FormComponent;
@@ -41,7 +41,7 @@ export const LeafComponent = ({
   renderElementGridWrapper,
   parentPresentationStyle,
 }: LeafComponentProps): JSX.Element | null => {
-  const { getValues } = useFormContext();
+  const { getValues } = useRemixFormContext();
 
   switch (component.type) {
     case 'textVariable':

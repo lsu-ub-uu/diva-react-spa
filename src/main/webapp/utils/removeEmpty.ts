@@ -26,6 +26,7 @@ export const removeEmpty = (obj: any): any => {
     return acc;
   }, {});
 };
+
 const hasOnlyAttributes = (obj: any) => {
   return isEmpty(omitBy(obj, (_, key) => isAttribute(key)));
 };

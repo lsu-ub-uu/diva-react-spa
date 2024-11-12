@@ -21,7 +21,7 @@ import { checkIfComponentHasValue } from '@/components/FormGenerator/formGenerat
 import { Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
-import { useFormContext } from 'react-hook-form';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface CollectionVariableProps {
   reactKey: string;
@@ -36,7 +36,7 @@ export const CollectionVariable = ({
   component,
   name,
 }: CollectionVariableProps) => {
-  const { getValues, control } = useFormContext();
+  const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
 
   return (

@@ -18,22 +18,15 @@
  */
 
 import { Stack } from '@mui/material';
-import axios from 'axios';
-import { useSnackbar, VariantType } from 'notistack';
-import { FieldValues } from 'react-hook-form';
-import { useNavigate } from '@remix-run/react';
 import {
   AsidePortal,
-  NavigationPanel,
   linksFromFormSchema,
+  NavigationPanel,
   useSectionScroller,
 } from '@/components';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
-import { removeEmpty } from '@/utils/removeEmpty';
-import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { CoraRecord } from '@/features/record/types';
-import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 
 interface CreateRecordPageProps {
   record: CoraRecord;
@@ -45,40 +38,11 @@ export default function CreateRecordPage({
   formDefinition,
 }: CreateRecordPageProps) {
   const activeSection = useSectionScroller();
-  const { enqueueSnackbar } = useSnackbar();
-
-  const navigate = useNavigate();
-
-  const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
-  };
-
-  const handleSubmit = async (values: FieldValues) => {
-    try {
-      const response = await axios.post(
-        `/record/${formDefinition?.validationTypeId}`,
-        removeEmpty(values),
-      );
-      notification(
-        `Record was successfully created ${response.data.id}`,
-        'success',
-      );
-      const recordInfo = getRecordInfo(response.data);
-      const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;
-      const recordType = getValueFromRecordInfo(recordInfo, 'type')[0].value;
-      navigate(`/update/${recordType}/${id}`);
-    } catch (err: any) {
-      notification(`${err.message}`, 'error');
-    }
-  };
 
   return (
     <>
       {/* <Helmet>
-        <title>{t(schema?.form.label as string)} | DiVA</title>
+        <title></title>
       </Helmet>*/}
       <AsidePortal>
         <NavigationPanel
@@ -92,10 +56,6 @@ export default function CreateRecordPage({
         <Stack spacing={2}>
           <RecordForm
             record={record}
-            onSubmit={handleSubmit}
-            onInvalid={() => {
-              notification(`Form is invalid`, 'error');
-            }}
             formSchema={formDefinition}
           />
         </Stack>

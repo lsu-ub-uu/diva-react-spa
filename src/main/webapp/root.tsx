@@ -25,6 +25,7 @@ import {
   ScrollRestoration,
   useLoaderData,
   useRouteError,
+  useRouteLoaderData,
 } from '@remix-run/react';
 import {
   ActionFunctionArgs,
@@ -32,13 +33,13 @@ import {
   LinksFunction,
   LoaderFunctionArgs,
 } from '@remix-run/node';
-import { ReactNode, Suspense, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { BackdropProvider, PageLayout, SnackbarProvider } from '@/components';
 import store from '@/app/store';
 import { Alert, AlertTitle, CssBaseline } from '@mui/material';
 import { divaTheme } from '@/themes/diva';
 import { Provider as StateProvider } from 'react-redux';
-import { getAuth } from '@/sessions';
+import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import axios from 'axios';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
@@ -63,7 +64,9 @@ export const links: LinksFunction = () => [
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const auth = await getAuth(request);
+  const session = await getSessionFromCookie(request);
+  const auth = getAuthentication(session);
+
   const loginUnits = await getLoginUnits();
   const locale = await i18nServer.getLocale(request);
   return json({ auth, locale, loginUnits });
@@ -115,7 +118,8 @@ export const ErrorBoundary: ErrorBoundaryComponent = () => {
 };
 
 const Document = ({ children }: DocumentProps) => {
-  const { locale } = useLoaderData<typeof loader>();
+  const data = useRouteLoaderData<typeof loader>('root');
+  const locale = data?.locale ?? 'sv';
 
   useChangeLanguage(locale);
 
@@ -149,14 +153,6 @@ const Document = ({ children }: DocumentProps) => {
 };
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const { auth } = useLoaderData<typeof loader>();
-
-  useEffect(() => {
-    axios.defaults.headers.common = {
-      Authtoken: auth?.data.token ?? '',
-    };
-  }, [auth]);
-
   return (
     <Document>
       <CssBaseline />
@@ -166,6 +162,14 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App() {
+  const { auth } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    axios.defaults.headers.common = {
+      Authtoken: auth?.data.token ?? '',
+    };
+  }, [auth]);
+
   return (
     <BackdropProvider>
       <StateProvider store={store}>

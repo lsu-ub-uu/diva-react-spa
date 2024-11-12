@@ -18,16 +18,12 @@
  */
 
 import { Stack } from '@mui/material';
-import axios from 'axios';
-import { useSnackbar, VariantType } from 'notistack';
-import { FieldValues } from 'react-hook-form';
 import {
   AsidePortal,
   linksFromFormSchema,
   NavigationPanel,
   useSectionScroller,
 } from '@/components';
-import { removeEmpty } from '@/utils/removeEmpty';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { CoraRecord } from '@/features/record/types';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
@@ -42,27 +38,8 @@ export const UpdateRecordPage = ({
   formDefinition,
 }: UpdateRecordPageProps) => {
   const activeSection = useSectionScroller();
-  const { enqueueSnackbar } = useSnackbar();
-
-  const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
-  };
-
-  const handleSubmit = async (values: FieldValues) => {
-    try {
-      const payload = { values };
-      await axios.post(
-        `/record/${formDefinition?.validationTypeId}/${record?.id}`,
-        removeEmpty(payload),
-      );
-      notification(`Record was successfully updated!`, 'success');
-    } catch (err: any) {
-      notification(`${err.message}`, 'error');
-    }
-  };
+  const lastUpdate =
+    record?.updated && record.updated[record.updated?.length - 1].updateAt;
 
   return (
     <>
@@ -80,9 +57,8 @@ export const UpdateRecordPage = ({
       <div>
         <Stack spacing={2}>
           <RecordForm
+            key={lastUpdate}
             record={record}
-            onSubmit={handleSubmit}
-            onInvalid={() => notification(`Update Form is invalid`, 'error')}
             formSchema={formDefinition}
           />
         </Stack>

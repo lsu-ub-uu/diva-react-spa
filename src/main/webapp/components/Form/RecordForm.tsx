@@ -17,13 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppBar, Button, Box, Container, Grid, Toolbar } from '@mui/material';
-import {
-  FieldErrors,
-  FieldValues,
-  FormProvider,
-  useForm,
-} from 'react-hook-form';
+import { AppBar, Box, Button, Container, Grid, Toolbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -34,42 +28,45 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { FormGenerator } from '@/components';
 import { RecordFormSchema } from '../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
+import { Form, useNavigation } from '@remix-run/react';
 
 interface RecordFormProps {
   record?: CoraRecord;
   formSchema: RecordFormSchema;
-  onSubmit: (formValues: FieldValues) => void;
-  onInvalid?: (fieldErrors: FieldErrors) => void;
-  linkedData?: boolean;
 }
 
-export const RecordForm = ({ ...props }: RecordFormProps) => {
+export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
   const { t } = useTranslation();
-
-  const methods = useForm({
+  const navigation = useNavigation();
+  const submitting = navigation.state === 'submitting';
+  const defaultValues = createDefaultValuesFromFormSchema(
+    formSchema,
+    record?.data as RecordData,
+  );
+  const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(
-      props.formSchema,
-      props.record?.data as RecordData,
-    ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
+    defaultValues,
+    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
   const { handleSubmit, reset } = methods;
 
   return (
     <Box
-      component='form'
-      sx={{ width: '100%' }}
-      onSubmit={handleSubmit(
-        (values) => props.onSubmit(values),
-        (errors) => props.onInvalid && props.onInvalid(errors),
-      )}
+      component={Form}
+      method='POST'
+      sx={{
+        width: '100%',
+        opacity: submitting ? 0.5 : 1,
+        pointerEvents: submitting ? 'none' : 'all',
+      }}
+      onSubmit={handleSubmit}
     >
-      <FormProvider {...methods}>
-        <FormGenerator formSchema={props.formSchema} />
-      </FormProvider>
+      <RemixFormProvider {...methods}>
+        <FormGenerator formSchema={formSchema} />
+      </RemixFormProvider>
 
       <AppBar
         position='fixed'
@@ -99,6 +96,7 @@ export const RecordForm = ({ ...props }: RecordFormProps) => {
                   alignItems='center'
                 >
                   <Button
+                    disabled={submitting}
                     disableRipple
                     variant='contained'
                     color='secondary'
@@ -108,6 +106,7 @@ export const RecordForm = ({ ...props }: RecordFormProps) => {
                     {t('divaClient_ResetButtonText')}
                   </Button>
                   <Button
+                    disabled={submitting}
                     type='submit'
                     disableRipple
                     variant='contained'

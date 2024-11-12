@@ -18,13 +18,15 @@
 
 import { HomePage } from '@/pages';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
-import { getAuth } from '@/sessions';
+import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { getValidationTypes } from '@/data/getValidationTypes';
 import { getSearchForm } from '@/data/getSearchForm';
 import { SearchFormSchema } from '@/components/FormGenerator/types';
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const auth = await getAuth(request);
+  const session = await getSessionFromCookie(request);
+  const auth = getAuthentication(session);
+
   const validationTypes = auth
     ? await getValidationTypes(auth.data.token)
     : null;

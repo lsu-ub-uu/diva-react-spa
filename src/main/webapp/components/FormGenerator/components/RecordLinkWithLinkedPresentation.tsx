@@ -17,11 +17,11 @@
  */
 
 import { FormComponent } from '@/components/FormGenerator/types';
-import { useFormContext } from 'react-hook-form';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import React from 'react';
 import { Grid } from '@mui/material';
 import { ControlledLinkedRecord } from '@/components/Controlled';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface RecordLinkWithLinkedPresentationProps {
   reactKey: string;
@@ -36,7 +36,7 @@ export const RecordLinkWithLinkedPresentation = ({
   component,
   name,
 }: RecordLinkWithLinkedPresentationProps) => {
-  const { getValues, control } = useFormContext();
+  const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
   return (
     <React.Fragment key={`${reactKey}_${name}`}>

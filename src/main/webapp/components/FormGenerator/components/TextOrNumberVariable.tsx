@@ -17,7 +17,6 @@
  */
 
 import { FormComponent } from '@/components/FormGenerator/types';
-import { useFormContext } from 'react-hook-form';
 import {
   checkIfComponentHasValue,
   convertChildStyleToString,
@@ -25,6 +24,7 @@ import {
 import { Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledTextField } from '@/components/Controlled';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -41,7 +41,7 @@ export const TextOrNumberVariable = ({
   name,
   parentPresentationStyle,
 }: TextOrNumberVariableProps) => {
-  const { getValues, control } = useFormContext();
+  const { getValues, control } = useRemixFormContext();
 
   const hasValue = checkIfComponentHasValue(getValues, name);
   return (

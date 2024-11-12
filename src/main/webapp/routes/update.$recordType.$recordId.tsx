@@ -18,23 +18,80 @@
 
 import { UpdateRecordPage } from '@/pages';
 
-import { getAuth } from '@/sessions';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import {
+  commitSession,
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/sessions';
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useNavigation } from '@remix-run/react';
+import { enqueueSnackbar } from 'notistack';
+import { useEffect } from 'react';
+import { getValidatedFormData, parseFormData } from 'remix-hook-form';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { updateRecord } from '@/data/updateRecord';
+import { removeEmpty } from '@/utils/removeEmpty';
+import { CoraRecord } from '@/features/record/types';
+import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
+import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+  const url = new URL(request.url);
+  const session = await getSessionFromCookie(request);
+  const auth = await requireAuthentication(session);
+  const { recordType, recordId } = params;
+  invariant(recordType, 'Missing recordType param');
+  invariant(recordId, 'Missing recordId param');
+  const formData = await request.formData();
+  const parsedFormData = (await parseFormData(formData)) as any;
+  const validationType =
+    parsedFormData.output?.recordInfo?.validationType?.value;
+  invariant(validationType, 'Failed to extract validationType from form data');
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    validationType,
+    'update',
+  );
+  const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
+  const {
+    errors,
+    data,
+    receivedValues: defaultValues,
+  } = await getValidatedFormData(formData, resolver);
+
+  if (errors) {
+    return json({ errors, defaultValues });
+  }
+
+  try {
+    await updateRecord(
+      validationType,
+      recordId,
+      removeEmpty(data) as CoraRecord,
+      auth,
+    );
+    session.flash('success', `Record was successfully updated`);
+  } catch (error) {
+    console.error(error);
+    session.flash('error', 'Failed to create record');
+  }
+
+  return redirectAndCommitSession(url.pathname + url.search, session);
+};
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
+  const session = await getSessionFromCookie(request);
+  const auth = await requireAuthentication(session);
+
+  const successMessage = session.get('success');
+
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
 
-  const auth = await getAuth(request);
-  if (!auth) {
-    // Show error boundary
-    throw json('Unauthorized', { status: 401 });
-  }
   const record = await getRecordByRecordTypeAndRecordId(
     recordType,
     recordId,
@@ -49,11 +106,34 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     'update',
   );
 
-  return { record, formDefinition };
+  const defaultValues = createDefaultValuesFromFormSchema(
+    formDefinition,
+    record,
+  );
+
+  return json(
+    { record, formDefinition, defaultValues, successMessage },
+    {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    },
+  );
 }
 
 export default function UpdateRecordRoute() {
-  const { record, formDefinition } = useLoaderData<typeof loader>();
+  const { record, formDefinition, successMessage } =
+    useLoaderData<typeof loader>();
+  const navigation = useNavigation();
+  useEffect(() => {
+    if (successMessage && navigation.state === 'idle') {
+      enqueueSnackbar(successMessage, {
+        variant: 'success',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      });
+    }
+  }, [successMessage, navigation.state]);
+
   return (
     <UpdateRecordPage
       record={record}
