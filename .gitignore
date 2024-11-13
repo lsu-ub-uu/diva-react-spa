@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Remix
+build/
+tsconfig.tsbuildinfo
+
 # Editor directories and files
 !.vscode/extensions.json
 .idea
