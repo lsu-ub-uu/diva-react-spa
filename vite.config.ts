@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   const basename = process.env.BASE_PATH;
 
   return {
-    base: basename ? `${basename}/` : '',
+    base: basename ? `${basename}/` : undefined,
     plugins: [
       remix({
         appDirectory: 'src/main/webapp',
