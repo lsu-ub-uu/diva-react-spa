@@ -20,11 +20,11 @@
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { IconButton, Stack, Tooltip } from '@mui/material';
+import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Link as RouterLink, useLoaderData } from '@remix-run/react';
+import { Await, Link as RouterLink, useLoaderData } from '@remix-run/react';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -35,6 +35,7 @@ import {
 } from '@/features/publications';
 import { loader } from '@/routes/_index';
 import { CoraRecord } from '@/features/record/types';
+import { Suspense } from 'react';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
@@ -139,39 +140,49 @@ export const ListPublicationsCard = () => {
   ];
 
   return (
-    <Card
-      title={t('divaClient_listPublicationsText') as string}
-      variant='variant5'
-      tooltipTitle={t('divaClient_listPublicationsTooltipTitleText') as string}
-      tooltipBody={t('divaClient_listPublicationsTooltipBodyText') as string}
-    >
-      <div style={{ height: 600, width: '100%' }}>
-        <DataGrid<CoraRecord>
-          sx={{
-            '& .MuiDataGrid-cell:focus': {
-              outline: 'none',
-            },
-            '& .MuiDataGrid-columnHeader:focus': {
-              outline: 'none',
-            },
-            '& .MuiDataGrid-columnHeader:focus-within': {
-              outline: 'none',
-            },
-          }}
-          autoHeight
-          disableColumnMenu
-          disableColumnSelector
-          disableSelectionOnClick
-          loading={publicationsState.isLoading}
-          rows={recordList.data}
-          columns={columns}
-          /* components={{
-            NoRowsOverlay: () => <p>TODO: better no data message</p>,
-          }} */
-          hideFooter
-        />
-      </div>
-    </Card>
+    <Suspense fallback={<Skeleton height={500} />}>
+      <Await resolve={recordList}>
+        {(recordList) => (
+          <Card
+            title={t('divaClient_listPublicationsText') as string}
+            variant='variant5'
+            tooltipTitle={
+              t('divaClient_listPublicationsTooltipTitleText') as string
+            }
+            tooltipBody={
+              t('divaClient_listPublicationsTooltipBodyText') as string
+            }
+          >
+            <div style={{ height: 600, width: '100%' }}>
+              <DataGrid<CoraRecord>
+                sx={{
+                  '& .MuiDataGrid-cell:focus': {
+                    outline: 'none',
+                  },
+                  '& .MuiDataGrid-columnHeader:focus': {
+                    outline: 'none',
+                  },
+                  '& .MuiDataGrid-columnHeader:focus-within': {
+                    outline: 'none',
+                  },
+                }}
+                autoHeight
+                disableColumnMenu
+                disableColumnSelector
+                disableSelectionOnClick
+                loading={publicationsState.isLoading}
+                rows={recordList.data}
+                columns={columns}
+                /* components={{
+                  NoRowsOverlay: () => <p>TODO: better no data message</p>,
+                }} */
+                hideFooter
+              />
+            </div>
+          </Card>
+        )}
+      </Await>
+    </Suspense>
   );
 };
 

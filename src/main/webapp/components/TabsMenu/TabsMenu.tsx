@@ -16,14 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import React, { useState } from 'react';
-import { Tabs, Tab, Box, styled } from '@mui/material';
+import React, { Suspense, useState } from 'react';
+import { Tabs, Tab, Box, styled, Skeleton } from '@mui/material';
 import {
   CreatePublicationCard,
   ListPublicationsCard,
   SearchPublicationCard,
 } from '@/partials';
-import { useLoaderData } from '@remix-run/react';
+import { Await, useLoaderData } from '@remix-run/react';
 import { loader } from '@/routes/_index';
 
 interface TabsMenuProps {
@@ -31,6 +31,7 @@ interface TabsMenuProps {
   value: number;
   index: number;
 }
+
 const StyledTab = styled(Tab)({
   color: '#666666',
   '&.Mui-selected': {
@@ -106,7 +107,7 @@ export const TabsMenu = () => {
         index={0}
       >
         <CreatePublicationCard />
-        <SearchPublicationCard searchForm={searchForm} />
+        <SearchPublicationCard />
       </TabPanel>
       <TabPanel
         value={value}

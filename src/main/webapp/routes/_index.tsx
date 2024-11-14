@@ -20,8 +20,7 @@ import { getSearchForm } from '@/data/getSearchForm';
 import { getValidationTypes } from '@/data/getValidationTypes';
 import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
-import axios from 'axios';
+import { defer, LoaderFunctionArgs } from '@remix-run/node';
 import { searchRecords } from '@/data/searchRecords';
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -29,10 +28,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const auth = getAuthentication(session);
 
   const validationTypes = auth
-    ? await getValidationTypes(auth.data.token)
-    : null;
+    ? getValidationTypes(auth.data.token)
+    : Promise.resolve(null);
 
-  const searchForm = await getSearchForm('diva-outputSimpleSearch');
+  const searchForm = getSearchForm('diva-outputSimpleSearch');
 
   const query = {
     search: {
@@ -47,9 +46,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       },
     },
   };
-  const recordList = await searchRecords('diva-outputSearch', query, auth);
+  const recordList = searchRecords('diva-outputSearch', query, auth);
 
-  return json({ validationTypes, searchForm, recordList });
+  return defer({ validationTypes, searchForm, recordList });
 }
 
 export default function IndexRoute() {

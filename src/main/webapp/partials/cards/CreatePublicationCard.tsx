@@ -24,11 +24,13 @@ import {
   Grid,
   NativeSelect,
   OutlinedInput,
+  Skeleton,
 } from '@mui/material';
-import { Form, useLoaderData, useNavigation } from '@remix-run/react';
+import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card } from '@/components';
 import { loader } from '@/routes/_index';
+import { Suspense } from 'react';
 
 const formAction = '/create';
 
@@ -39,76 +41,82 @@ export const CreatePublicationCard = () => {
 
   const loading = navigation.formAction === formAction;
 
-  if (validationTypes === null || validationTypes.length === 0) {
-    return null;
-  }
-
   return (
-    <Card
-      title={t('divaClient_createPublicationTypeText')}
-      variant='variant1'
-      tooltipTitle={
-        t('divaClient_createPublicationTypeTooltipTitleText') as string
-      }
-      tooltipBody={
-        t('divaClient_createPublicationTypeTooltipBodyText') as string
-      }
-    >
-      <Form action={formAction}>
-        <Grid
-          container
-          spacing={2}
-          justifyContent='space-between'
-          alignItems='flex-start'
-        >
-          <Grid
-            item
-            xs={12}
-            sm={6}
+    <Suspense fallback={<Skeleton height={164} />}>
+      <Await resolve={validationTypes}>
+        {(validationTypes) => (
+          <Card
+            title={t('divaClient_createPublicationTypeText')}
+            variant='variant1'
+            tooltipTitle={
+              t('divaClient_createPublicationTypeTooltipTitleText') as string
+            }
+            tooltipBody={
+              t('divaClient_createPublicationTypeTooltipBodyText') as string
+            }
           >
-            <NativeSelect
-              defaultValue=''
-              name='validationType'
-              input={<OutlinedInput />}
-              size='small'
-              fullWidth
-              required
-            >
-              <option
-                value=''
-                disabled
+            <Form action={formAction}>
+              <Grid
+                container
+                spacing={2}
+                justifyContent='space-between'
+                alignItems='flex-start'
               >
-                {t('divaClient_selectPublicationTypeText')}
-              </option>
-              {validationTypes.map((validationType) => (
-                <option
-                  key={validationType.value}
-                  value={validationType.value}
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
                 >
-                  {t(validationType.label)}
-                </option>
-              ))}
-            </NativeSelect>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-          >
-            <Button
-              disabled={loading}
-              type='submit'
-              disableRipple
-              variant='contained'
-              endIcon={
-                loading ? <CircularProgress size='1em' /> : <ArrowForwardIcon />
-              }
-            >
-              {t('divaClient_continueText')}
-            </Button>
-          </Grid>
-        </Grid>
-      </Form>
-    </Card>
+                  <NativeSelect
+                    defaultValue=''
+                    name='validationType'
+                    input={<OutlinedInput />}
+                    size='small'
+                    fullWidth
+                    required
+                  >
+                    <option
+                      value=''
+                      disabled
+                    >
+                      {t('divaClient_selectPublicationTypeText')}
+                    </option>
+                    {(validationTypes ?? []).map((validationType) => (
+                      <option
+                        key={validationType.value}
+                        value={validationType.value}
+                      >
+                        {t(validationType.label)}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                >
+                  <Button
+                    disabled={loading}
+                    type='submit'
+                    disableRipple
+                    variant='contained'
+                    endIcon={
+                      loading ? (
+                        <CircularProgress size='1em' />
+                      ) : (
+                        <ArrowForwardIcon />
+                      )
+                    }
+                  >
+                    {t('divaClient_continueText')}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
+          </Card>
+        )}
+      </Await>
+    </Suspense>
   );
 };

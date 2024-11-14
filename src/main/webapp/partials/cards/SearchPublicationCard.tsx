@@ -18,46 +18,40 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Alert, AlertTitle } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { Card } from '@/components';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { Search } from '@/data/getSearchForm';
+import { Suspense } from 'react';
+import { Await, useLoaderData } from '@remix-run/react';
+import { loader } from '@/routes/_index';
 
 const searchType = 'diva-outputSimpleSearch';
-interface SearchPublicationCardProps {
-  searchForm: Search;
-}
 
-export const SearchPublicationCard = ({
-  searchForm,
-}: SearchPublicationCardProps) => {
+export const SearchPublicationCard = () => {
   const { t } = useTranslation();
-  const { error, form } = searchForm;
-
-  if (error) {
-    return (
-      <Alert severity='error'>
-        <AlertTitle>Hoppsan!</AlertTitle>Fel vid hämtning av sökformuläret.
-        Försök igen lite senare.
-      </Alert>
-    );
-  }
+  const { searchForm } = useLoaderData<typeof loader>();
 
   return (
-    <Card
-      title={t('divaClient_searchPublicationText') as string}
-      variant='variant2'
-      tooltipTitle={
-        t('divaClient_searchPublicationTypeTooltipTitleText') as string
-      }
-      tooltipBody={
-        t('divaClient_searchPublicationTypeTooltipBodyText') as string
-      }
-    >
-      <SearchForm
-        formSchema={form!}
-        searchType={searchType}
-      />
-    </Card>
+    <Suspense fallback={<Skeleton height={296} />}>
+      <Await resolve={searchForm}>
+        {(searchForm) => (
+          <Card
+            title={t('divaClient_searchPublicationText') as string}
+            variant='variant2'
+            tooltipTitle={
+              t('divaClient_searchPublicationTypeTooltipTitleText') as string
+            }
+            tooltipBody={
+              t('divaClient_searchPublicationTypeTooltipBodyText') as string
+            }
+          >
+            <SearchForm
+              formSchema={searchForm.form}
+              searchType={searchType}
+            />
+          </Card>
+        )}
+      </Await>
+    </Suspense>
   );
 };
