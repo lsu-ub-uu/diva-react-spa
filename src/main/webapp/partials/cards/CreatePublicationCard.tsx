@@ -18,18 +18,26 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Button, Grid, NativeSelect, OutlinedInput } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  NativeSelect,
+  OutlinedInput,
+} from '@mui/material';
 import { Form, useLoaderData, useNavigation } from '@remix-run/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card } from '@/components';
 import { loader } from '@/routes/_index';
+
+const formAction = '/create';
 
 export const CreatePublicationCard = () => {
   const { validationTypes } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const loading = navigation.state === 'loading';
+  const loading = navigation.formAction === formAction;
 
   if (validationTypes === null || validationTypes.length === 0) {
     return null;
@@ -46,7 +54,7 @@ export const CreatePublicationCard = () => {
         t('divaClient_createPublicationTypeTooltipBodyText') as string
       }
     >
-      <Form action='/create'>
+      <Form action={formAction}>
         <Grid
           container
           spacing={2}
@@ -92,7 +100,9 @@ export const CreatePublicationCard = () => {
               type='submit'
               disableRipple
               variant='contained'
-              endIcon={<ArrowForwardIcon />}
+              endIcon={
+                loading ? <CircularProgress size='1em' /> : <ArrowForwardIcon />
+              }
             >
               {t('divaClient_continueText')}
             </Button>

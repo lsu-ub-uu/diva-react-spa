@@ -23,6 +23,7 @@ import { Box, styled } from '@mui/material';
 import { RecordActionButtons } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { loader } from '@/routes/search.$searchType';
+import { SearchPublicationCard } from '@/partials';
 
 const SearchResultList = styled('ol')`
   list-style: none;
@@ -41,14 +42,14 @@ const SearchResultListItem = styled('li')(({ theme }) => ({
 }));
 
 export const SearchPage = () => {
-  const { searchResults } = useLoaderData<typeof loader>();
+  const { searchForm, searchResults } = useLoaderData<typeof loader>();
 
   const { t } = useTranslation();
   console.log({ searchResults });
   return (
     <div>
       <h1>{t('divaClient_searchPageHeaderText')}</h1>
-      {/*<SearchPublicationCard />*/}
+      <SearchPublicationCard searchForm={searchForm} />
 
       {searchResults && (
         <>

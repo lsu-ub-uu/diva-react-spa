@@ -124,7 +124,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function UpdateRecordRoute() {
   const { record, formDefinition, successMessage } =
     useLoaderData<typeof loader>();
+
   const navigation = useNavigation();
+
   useEffect(() => {
     if (successMessage && navigation.state === 'idle') {
       enqueueSnackbar(successMessage, {

@@ -21,15 +21,18 @@ import { useTranslation } from 'react-i18next';
 import { Alert, AlertTitle } from '@mui/material';
 import { Card } from '@/components';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { useLoaderData } from '@remix-run/react';
-import { loader } from '@/routes/_index';
+import { Search } from '@/data/getSearchForm';
 
 const searchType = 'diva-outputSimpleSearch';
-export const SearchPublicationCard = () => {
+interface SearchPublicationCardProps {
+  searchForm: Search;
+}
+
+export const SearchPublicationCard = ({
+  searchForm,
+}: SearchPublicationCardProps) => {
   const { t } = useTranslation();
-  const {
-    simpleSearch: { error, form },
-  } = useLoaderData<typeof loader>();
+  const { error, form } = searchForm;
 
   if (error) {
     return (

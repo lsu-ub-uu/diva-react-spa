@@ -16,12 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { HomePage } from '@/pages';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
-import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import { getValidationTypes } from '@/data/getValidationTypes';
 import { getSearchForm } from '@/data/getSearchForm';
-import { SearchFormSchema } from '@/components/FormGenerator/types';
+import { getValidationTypes } from '@/data/getValidationTypes';
+import { HomePage } from '@/pages';
+import { getAuthentication, getSessionFromCookie } from '@/sessions';
+import { json, LoaderFunctionArgs } from '@remix-run/node';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
@@ -31,25 +30,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     ? await getValidationTypes(auth.data.token)
     : null;
 
-  const simpleSearch = await getSimpleSearch();
+  const searchForm = await getSearchForm('diva-outputSimpleSearch');
 
-  return json({ validationTypes, simpleSearch });
+  return json({ validationTypes, searchForm });
 }
 
 export default function IndexRoute() {
   return <HomePage />;
 }
-
-interface SimpleSearch {
-  form?: SearchFormSchema;
-  error?: unknown;
-}
-
-const getSimpleSearch = async (): Promise<SimpleSearch> => {
-  try {
-    const form = await getSearchForm('diva-outputSimpleSearch');
-    return { form };
-  } catch (error) {
-    return { error };
-  }
-};

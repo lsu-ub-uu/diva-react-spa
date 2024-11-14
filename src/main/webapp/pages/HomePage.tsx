@@ -28,7 +28,6 @@ export const HomePage = () => {
 
   return (
     <>
-      {' '}
       {/*<Helmet>
         <title>{t('start')} | DiVA</title>
       </Helmet>*/}

@@ -16,26 +16,33 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { SearchPage } from '@/pages';
-import { LoaderFunctionArgs } from '@remix-run/node';
+import { getSearchForm } from '@/data/getSearchForm';
 import { searchRecords } from '@/data/searchRecords';
-import { invariant } from '@remix-run/router/history';
 import { CoraSearchResult } from '@/features/record/types';
+import { SearchPage } from '@/pages';
+import { getAuthentication, getSessionFromCookie } from '@/sessions';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { invariant } from '@remix-run/router/history';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { searchType } = params;
   invariant(searchType, 'Missing searchType param');
-  const url = new URL(request.url);
-  const query = Object.fromEntries(url.searchParams);
+  const session = await getSessionFromCookie(request);
+  const auth = getAuthentication(session);
+
+  const searchForm = await getSearchForm('diva-outputSimpleSearch');
+
+  const query = parseFormDataFromSearchParams(request);
 
   let searchResults: CoraSearchResult | null = null;
   try {
-    searchResults = await searchRecords(searchType, query);
+    searchResults = await searchRecords(searchType, query, auth);
   } catch (e) {
     console.error(e);
   }
 
-  return { searchResults };
+  return { searchForm, searchResults };
 };
 
 export default function SearchRoute() {

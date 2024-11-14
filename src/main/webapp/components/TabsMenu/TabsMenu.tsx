@@ -23,6 +23,8 @@ import {
   ListPublicationsCard,
   SearchPublicationCard,
 } from '@/partials';
+import { useLoaderData } from '@remix-run/react';
+import { loader } from '@/routes/_index';
 
 interface TabsMenuProps {
   children: React.ReactNode;
@@ -56,6 +58,7 @@ const a11yProps = (name: string) => {
 };
 
 export const TabsMenu = () => {
+  const { searchForm } = useLoaderData<typeof loader>();
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -103,7 +106,7 @@ export const TabsMenu = () => {
         index={0}
       >
         <CreatePublicationCard />
-        <SearchPublicationCard />
+        <SearchPublicationCard searchForm={searchForm} />
       </TabPanel>
       <TabPanel
         value={value}

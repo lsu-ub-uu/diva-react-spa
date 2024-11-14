@@ -18,20 +18,19 @@
  */
 
 import { Button } from '@mui/material';
-import { FormProvider, useForm } from 'react-hook-form';
 
+import { FormGenerator } from '@/components';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { CoraRecord } from '@/features/record/types';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Form } from '@remix-run/react';
+import { useTranslation } from 'react-i18next';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import {
   createDefaultValuesFromFormSchema,
   RecordData,
 } from '../FormGenerator/defaultValues/defaultValues';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { FormGenerator } from '@/components';
 import { SearchFormSchema } from '../FormGenerator/types';
-import { CoraRecord } from '@/features/record/types';
-import { useTranslation } from 'react-i18next';
-import { Form } from '@remix-run/react';
-import { useSnackbar, VariantType } from 'notistack';
 
 interface SearchFormProps {
   searchType: string;
@@ -45,15 +44,7 @@ export const SearchForm = ({
   formSchema,
 }: SearchFormProps) => {
   const { t } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
-
-  const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
-  };
-  const methods = useForm({
+  const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
@@ -63,16 +54,15 @@ export const SearchForm = ({
     ),
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
-  const { handleSubmit } = methods;
 
   return (
     <Form
       method='GET'
       action={`/search/${searchType}`}
     >
-      <FormProvider {...methods}>
+      <RemixFormProvider {...methods}>
         <FormGenerator formSchema={formSchema} />
-      </FormProvider>
+      </RemixFormProvider>
       <Button
         type='submit'
         disableRipple

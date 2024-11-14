@@ -20,6 +20,16 @@ import axios from 'axios';
 import { SearchFormSchema } from '@/components/FormGenerator/types';
 
 export const getSearchForm = async (searchId: string) => {
-  const response = await axios.get(`/form/search/${searchId}`);
-  return response.data as SearchFormSchema;
+  try {
+    const response = await axios.get(`/form/search/${searchId}`);
+    return { form: response.data as SearchFormSchema };
+  } catch (error) {
+    return { error }
+  }
 };
+
+
+export interface Search {
+  form?: SearchFormSchema;
+  error?: unknown;
+}
