@@ -18,7 +18,7 @@
 
 import { Form, useFetcher, useLoaderData } from '@remix-run/react';
 import { loader } from '@/root';
-import { MenuItem, Select } from '@mui/material';
+import { MenuItem, NativeSelect, OutlinedInput, Select } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from 'react-i18next';
 
@@ -30,8 +30,8 @@ export const LanguageSwitcher = () => {
 
   return (
     <Form method='post'>
-      <Select
-        variant='outlined'
+      <NativeSelect
+        input={<OutlinedInput />}
         name='language'
         value={language}
         size='small'
@@ -43,9 +43,9 @@ export const LanguageSwitcher = () => {
           fetcher.submit({ language }, { method: 'post' });
         }}
       >
-        <MenuItem value='en'>English</MenuItem>
-        <MenuItem value='sv'>Svenska</MenuItem>
-      </Select>
+        <option value='en'>English</option>
+        <option value='sv'>Svenska</option>
+      </NativeSelect>
     </Form>
   );
 };
