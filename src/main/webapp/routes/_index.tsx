@@ -21,6 +21,8 @@ import { getValidationTypes } from '@/data/getValidationTypes';
 import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
+import axios from 'axios';
+import { searchRecords } from '@/data/searchRecords';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
@@ -32,7 +34,22 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const searchForm = await getSearchForm('diva-outputSimpleSearch');
 
-  return json({ validationTypes, searchForm });
+  const query = {
+    search: {
+      include: {
+        includePart: {
+          genericSearchTerm: [
+            {
+              value: '**',
+            },
+          ],
+        },
+      },
+    },
+  };
+  const recordList = await searchRecords('diva-outputSearch', query, auth);
+
+  return json({ validationTypes, searchForm, recordList });
 }
 
 export default function IndexRoute() {

@@ -17,7 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
@@ -25,7 +24,7 @@ import { IconButton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Link as RouterLink } from '@remix-run/react';
+import { Link as RouterLink, useLoaderData } from '@remix-run/react';
 import axios from 'axios';
 import { useSnackbar, VariantType } from 'notistack';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -34,10 +33,13 @@ import {
   loadPublicationsAsync,
   publicationsSelector,
 } from '@/features/publications';
-import { DivaOutput } from '@/features/publications/actions';
+import { loader } from '@/routes/_index';
+import { CoraRecord } from '@/features/record/types';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
+  const { recordList } = useLoaderData<typeof loader>();
+
   const dispatch = useAppDispatch();
   const publicationsState = useAppSelector(publicationsSelector);
   const { enqueueSnackbar } = useSnackbar();
@@ -48,10 +50,6 @@ export const ListPublicationsCard = () => {
       anchorOrigin: { vertical: 'top', horizontal: 'right' },
     });
   };
-
-  useEffect(() => {
-    dispatch(loadPublicationsAsync());
-  }, [dispatch]);
 
   const columns: GridColDef[] = [
     {
@@ -68,6 +66,7 @@ export const ListPublicationsCard = () => {
       field: 'title',
       headerName: `${t('divaClient_listPublicationsHeaderTitleText')}`, // Title
       width: 200,
+      valueGetter: (params) => getCorrectTitle(params.row),
     },
     {
       field: 'createdAt',
@@ -147,7 +146,7 @@ export const ListPublicationsCard = () => {
       tooltipBody={t('divaClient_listPublicationsTooltipBodyText') as string}
     >
       <div style={{ height: 600, width: '100%' }}>
-        <DataGrid<DivaOutput>
+        <DataGrid<CoraRecord>
           sx={{
             '& .MuiDataGrid-cell:focus': {
               outline: 'none',
@@ -164,7 +163,7 @@ export const ListPublicationsCard = () => {
           disableColumnSelector
           disableSelectionOnClick
           loading={publicationsState.isLoading}
-          rows={publicationsState.publications}
+          rows={recordList.data}
           columns={columns}
           /* components={{
             NoRowsOverlay: () => <p>TODO: better no data message</p>,
@@ -174,4 +173,8 @@ export const ListPublicationsCard = () => {
       </div>
     </Card>
   );
+};
+
+export const getCorrectTitle = (record: CoraRecord) => {
+  return record.data.output.titleInfo.title.value;
 };
