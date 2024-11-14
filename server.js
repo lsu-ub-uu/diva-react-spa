@@ -21,7 +21,7 @@ const viteDevServer =
 const remixHandler = createRequestHandler({
   build: viteDevServer
     ? () => viteDevServer.ssrLoadModule('virtual:remix/server-build')
-    : await import('./build/server/index.js'),
+    : await import('./dist/server/index.js'),
 });
 
 const app = express();
@@ -38,13 +38,13 @@ if (viteDevServer) {
   // Vite fingerprints its assets so we can cache forever.
   app.use(
     '/assets',
-    express.static('build/client/assets', { immutable: true, maxAge: '1y' }),
+    express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
 }
 
 // Everything else (like favicon.ico) is cached for an hour. You may want to be
 // more aggressive with this caching.
-app.use(express.static('build/client', { maxAge: '1h' }));
+app.use(express.static('dist/client', { maxAge: '1h' }));
 
 app.use(morgan('tiny'));
 
