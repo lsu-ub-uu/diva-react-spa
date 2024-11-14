@@ -7,9 +7,8 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "node server.js",
+    "start": "cross-env NODE_ENV=production node ./server.js",
     "typecheck": "tsc",
-    "build:prod": "tsc && vite build --base=$BASENAME",
-    "preview": "vite preview",
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
     "prettier-format": "prettier --write \"src/**/*.{ts,tsx,json}\" --config ./.prettierrc.json",
@@ -73,6 +72,7 @@
     "axios-mock-adapter": "^2.1.0",
     "babel-loader": "^9.2.1",
     "c8": "^10.1.2",
+    "cross-env": "^7.0.3",
     "eslint": "^9.13.0",
     "eslint-plugin-jsx-a11y": "^6.10.1",
     "eslint-plugin-react": "^7.37.1",

@@ -5,7 +5,7 @@ import { vitePlugin as remix } from '@remix-run/dev';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({mode}) =>({
   //publicDir: '../public',
   //  root: 'src/main/webapp',
   // envDir: '../../../',
@@ -43,4 +43,11 @@ export default defineConfig({
     },
     noExternal: ['@mui/icons-material', 'lodash'],
   },
-});
+   resolve: mode === "production" ? {
+    // Fix mui cjs imports when building for production
+    alias: {
+      '@mui/material/utils': '@mui/material', 
+      '@mui/material/styles': '@mui/material',
+    },
+  } : {}, 
+}));
