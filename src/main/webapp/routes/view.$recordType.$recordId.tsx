@@ -17,7 +17,39 @@
  */
 
 import { ViewRecordPage } from '@/pages';
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { getSessionFromCookie, requireAuthentication } from '@/sessions';
+import { invariant } from '@remix-run/router/history';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
+import { useLoaderData } from '@remix-run/react';
+
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  const session = await getSessionFromCookie(request);
+  const auth = await requireAuthentication(session);
+  const { recordType, recordId } = params;
+  invariant(recordType, 'Missing recordType param');
+  invariant(recordId, 'Missing recordId param');
+  const record = await getRecordByRecordTypeAndRecordId(
+    recordType,
+    recordId,
+    auth.data.token,
+  );
+  invariant(record.validationType, 'Record has no validation type');
+  const formDefinition = await getFormDefinitionByValidationTypeId(
+    record.validationType,
+    'view',
+  );
+
+  return { record, formDefinition };
+};
 
 export default function ViewRecordRoute() {
-  return <ViewRecordPage />;
+  const { record, formDefinition } = useLoaderData<typeof loader>();
+  return (
+    <ViewRecordPage
+      record={record}
+      formDefinition={formDefinition}
+    />
+  );
 }

@@ -103,7 +103,7 @@ export const ListPublicationsCard = () => {
                 disabled={!params.row.userRights.includes('read')}
                 aria-label='view'
                 component={RouterLink}
-                to={`/view/record/${params.row.recordType}/${params.id}`}
+                to={`/view/${params.row.recordType}/${params.id}`}
               >
                 <FeedIcon />
               </IconButton>

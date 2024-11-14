@@ -19,9 +19,7 @@
 
 import { useEffect } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { useParams } from '@remix-run/react';
-import { useCoraFormSchemaByValidationType } from '@/features/record/useCoraFormSchemaByValidationType';
-import { useCoraRecordByTypeAndId } from '@/features/record/useCoraRecordByTypeAndId';
+
 import {
   AsidePortal,
   linksFromFormSchema,
@@ -32,42 +30,18 @@ import {
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
 import { CoraRecord } from '@/features/record/types';
 import { RecordForm } from '@/components/Form/RecordForm';
+import { RecordFormSchema } from '@/components/FormGenerator/types';
 
-export const ViewRecordPage = () => {
-  const { recordType, recordId } = useParams();
+interface ViewRecordPageProps {
+  record: CoraRecord;
+  formDefinition: RecordFormSchema;
+}
+
+export const ViewRecordPage = ({
+  record,
+  formDefinition,
+}: ViewRecordPageProps) => {
   const activeSection = useSectionScroller();
-  const { setBackdrop } = useBackdrop();
-  const coraRecord = useCoraRecordByTypeAndId(recordType as string, recordId);
-  const coraSchema = useCoraFormSchemaByValidationType(
-    coraRecord.record?.validationType,
-    'view',
-  );
-
-  useEffect(() => {
-    setBackdrop(coraRecord.isLoading);
-  }, [coraRecord.isLoading, setBackdrop]);
-
-  if (coraRecord.isLoading)
-    return (
-      <Skeleton
-        variant='rectangular'
-        height={800}
-      />
-    );
-
-  if (coraRecord.error)
-    return <Alert severity='error'>{coraRecord.error}</Alert>;
-
-  if (coraSchema.error)
-    return <Alert severity='error'>{coraSchema.error}</Alert>;
-
-  if (coraSchema.isLoading)
-    return (
-      <Skeleton
-        variant='rectangular'
-        height={800}
-      />
-    );
 
   return (
     <>
@@ -77,11 +51,11 @@ export const ViewRecordPage = () => {
       <AsidePortal>
         <NavigationPanel
           links={
-            coraSchema.schema
+            formDefinition
               ? linksFromFormSchema(
                   removeComponentsWithoutValuesFromSchema(
-                    coraSchema.schema,
-                    coraRecord.record as CoraRecord,
+                    formDefinition,
+                    record,
                   ),
                 ) || []
               : []
@@ -91,14 +65,10 @@ export const ViewRecordPage = () => {
       </AsidePortal>
       <div>
         <Stack spacing={2}>
-          {coraSchema.schema && coraRecord.record && (
-            <RecordForm
-              record={coraRecord.record}
-              onSubmit={() => {}}
-              onInvalid={() => {}}
-              formSchema={coraSchema.schema}
-            />
-          )}
+          <RecordForm
+            record={record}
+            formSchema={formDefinition}
+          />
         </Stack>
       </div>
     </>
