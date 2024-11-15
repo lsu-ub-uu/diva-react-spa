@@ -1,0 +1,12 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "editor.formatOnSave": true,
+  "codetogether.virtualCursorJoin": "sharedVirtualCursor",
+  "cSpell.words": ["apptoken", "cduw", "Colour", "Datas", "Egil", "svenska"],
+  "explorer.autoReveal": false
+}

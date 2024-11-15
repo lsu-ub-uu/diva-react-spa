@@ -1,0 +1,508 @@
+{
+  "record": {
+    "data": {
+      "children": [
+        {
+          "children": [
+            {
+              "name": "id",
+              "value": "exampleDevOutput:5538156835926548"
+            },
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "recordType"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "exampleDevOutput"
+                }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "http://localhost:38082/diva/rest/record/recordType/exampleDevOutput",
+                  "accept": "application/vnd.uub.record+json"
+                }
+              },
+              "name": "type"
+            },
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "system"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "diva"
+                }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "http://localhost:38082/diva/rest/record/system/diva",
+                  "accept": "application/vnd.uub.record+json"
+                }
+              },
+              "name": "dataDivider"
+            },
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "validationType"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "exampleDevOutputValidationType"
+                }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "http://localhost:38082/diva/rest/record/validationType/exampleDevOutputValidationType",
+                  "accept": "application/vnd.uub.record+json"
+                }
+              },
+              "name": "validationType"
+            },
+            {
+              "repeatId": "0",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T12:19:48.803081Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "repeatId": "1",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T12:22:27.413192Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "repeatId": "2",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T12:22:33.497458Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "repeatId": "3",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T12:34:56.326143Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "repeatId": "4",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T12:35:09.674338Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "repeatId": "5",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T12:35:15.294940Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "repeatId": "6",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T13:22:42.604625Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "repeatId": "7",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T14:00:13.100410Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "repeatId": "8",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "linkedRecordType",
+                      "value": "user"
+                    },
+                    {
+                      "name": "linkedRecordId",
+                      "value": "coraUser:490742519075086"
+                    }
+                  ],
+                  "actionLinks": {
+                    "read": {
+                      "requestMethod": "GET",
+                      "rel": "read",
+                      "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                      "accept": "application/vnd.uub.record+json"
+                    }
+                  },
+                  "name": "updatedBy"
+                },
+                {
+                  "name": "tsUpdated",
+                  "value": "2023-08-16T14:00:28.808862Z"
+                }
+              ],
+              "name": "updated"
+            },
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "user"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "coraUser:490742519075086"
+                }
+              ],
+              "actionLinks": {
+                "read": {
+                  "requestMethod": "GET",
+                  "rel": "read",
+                  "url": "http://localhost:38082/diva/rest/record/user/coraUser:490742519075086",
+                  "accept": "application/vnd.uub.record+json"
+                }
+              },
+              "name": "createdBy"
+            },
+            {
+              "name": "tsCreated",
+              "value": "2023-08-16T12:19:48.803081Z"
+            }
+          ],
+          "name": "recordInfo"
+        },
+        {
+          "name": "title",
+          "value": "my funny title"
+        },
+        {
+          "repeatId": "1",
+          "children": [
+            {
+              "name": "linkedRecordType",
+              "value": "binary"
+            },
+            {
+              "name": "linkedRecordId",
+              "value": "binary:5539077429562763"
+            }
+          ],
+          "actionLinks": {
+            "read": {
+              "requestMethod": "GET",
+              "rel": "read",
+              "url": "http://localhost:38082/diva/rest/record/binary/binary:5539077429562763",
+              "accept": "application/vnd.uub.record+json"
+            }
+          },
+          "name": "image"
+        },
+        {
+          "repeatId": "2",
+          "children": [
+            {
+              "name": "linkedRecordType",
+              "value": "binary"
+            },
+            {
+              "name": "linkedRecordId",
+              "value": "binary:5541930361396406"
+            }
+          ],
+          "actionLinks": {
+            "read": {
+              "requestMethod": "GET",
+              "rel": "read",
+              "url": "http://localhost:38082/diva/rest/record/binary/binary:5541930361396406",
+              "accept": "application/vnd.uub.record+json"
+            }
+          },
+          "name": "image"
+        },
+        {
+          "repeatId": "3",
+          "children": [
+            {
+              "name": "linkedRecordType",
+              "value": "binary"
+            },
+            {
+              "name": "linkedRecordId",
+              "value": "binary:5544196564251830"
+            }
+          ],
+          "actionLinks": {
+            "read": {
+              "requestMethod": "GET",
+              "rel": "read",
+              "url": "http://localhost:38082/diva/rest/record/binary/binary:5544196564251830",
+              "accept": "application/vnd.uub.record+json"
+            }
+          },
+          "name": "image"
+        }
+      ],
+      "name": "example"
+    },
+    "actionLinks": {
+      "read": {
+        "requestMethod": "GET",
+        "rel": "read",
+        "url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548",
+        "accept": "application/vnd.uub.record+json"
+      },
+      "update": {
+        "requestMethod": "POST",
+        "rel": "update",
+        "contentType": "application/vnd.uub.record+json",
+        "url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548",
+        "accept": "application/vnd.uub.record+json"
+      },
+      "index": {
+        "requestMethod": "POST",
+        "rel": "index",
+        "body": {
+          "children": [
+            {
+              "children": [
+                {
+                  "name": "linkedRecordType",
+                  "value": "recordType"
+                },
+                {
+                  "name": "linkedRecordId",
+                  "value": "exampleDevOutput"
+                }
+              ],
+              "name": "recordType"
+            },
+            {
+              "name": "recordId",
+              "value": "exampleDevOutput:5538156835926548"
+            },
+            {
+              "name": "type",
+              "value": "index"
+            }
+          ],
+          "name": "workOrder"
+        },
+        "contentType": "application/vnd.uub.record+json",
+        "url": "http://localhost:38082/diva/rest/record/workOrder/",
+        "accept": "application/vnd.uub.record+json"
+      },
+      "delete": {
+        "requestMethod": "DELETE",
+        "rel": "delete",
+        "url": "http://localhost:38082/diva/rest/record/exampleDevOutput/exampleDevOutput:5538156835926548"
+      }
+    }
+  }
+}

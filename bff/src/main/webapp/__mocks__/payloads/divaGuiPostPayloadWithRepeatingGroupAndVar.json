@@ -1,0 +1,36 @@
+{
+  "someRecordType": {
+    "author": [
+      {
+        "givenName": {
+          "value": "Egil"
+        },
+        "shoeSizeGroup": {
+          "shoeSize": [
+            {
+              "value": "29"
+            },
+            {
+              "value": "35"
+            }
+          ]
+        }
+      },
+      {
+        "givenName": {
+          "value": "Erik"
+        },
+        "shoeSizeGroup": {
+          "shoeSize": [
+            {
+              "value": "43"
+            },
+            {
+              "value": "44"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

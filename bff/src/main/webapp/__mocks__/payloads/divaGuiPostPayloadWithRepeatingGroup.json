@@ -1,0 +1,16 @@
+{
+  "someRecordType": {
+    "author": [
+      {
+        "givenName": {
+          "value": "Egil"
+        }
+      },
+      {
+        "givenName": {
+          "value": "Erik"
+        }
+      }
+    ]
+  }
+}

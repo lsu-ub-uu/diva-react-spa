@@ -1,0 +1,461 @@
+GET http://localhost:8080/api/refreshDefinitions
+
+###
+GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/refreshDefinitions
+
+###
+GET http://localhost:9877/api/refreshDefinitions
+
+###
+GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/validationTypes
+Content-Type: application/json
+Authtoken: 65904f00-c785-45c1-893d-81af309cbb650
+
+###
+POST https://cora.epc.ub.uu.se/diva/spaclientbff/api/auth/coraUser:490742519075086
+Content-Type: application/json
+Authtoken:
+
+{"token":"2e57eb36-55b9-4820-8c44-8271baab4e8e"}
+
+###
+DELETE https://cora.epc.ub.uu.se/diva/spaclientbff/api/auth/coraUser:490742519075086
+Content-Type: text/plain;charset=UTF-8
+Authtoken: 11a379d7-8686-43f2-b48a-6bd18b2a3133
+
+###
+POST http://localhost:8080/api/auth/coraUser:490742519075086
+Content-Type: application/json
+Authtoken:
+
+{"token":"2e57eb36-55b9-4820-8c44-8271baab4e8e"}
+
+###
+DELETE http://localhost:8080/api/auth/
+Content-Type: text/plain;charset=UTF-8
+Authtoken: fdfe6de8-9d30-47a1-83d5-a5f2de3e640b
+
+{
+  "actionLinks": {
+    "delete": {
+      "requestMethod": "DELETE",
+      "rel": "delete",
+      "url": "https://cora.epc.ub.uu.se/diva/login/rest/authToken/ada615d0-c0b1-4a60-9e5b-4641183e5bde"
+    }
+  }
+}
+
+###
+GET http://localhost:8080/api/search/nationalSubjectCategorySearch?searchTermValue=*
+
+###
+GET http://localhost:8080/api/search/personSearch?searchTermValue=*
+
+###
+GET http://localhost:8080/api/translations/sv
+
+###
+GET http://localhost:8080/api/auth/loginUnits
+
+###
+GET https://cora.epc.ub.uu.se/diva/spaclientbff/api/auth/loginUnits
+
+###
+GET http://localhost:8080/api/validationTypes
+Content-Type: application/json
+Authtoken: a9afefcd-f4f1-4037-bc8c-afb758331b89
+
+###
+GET http://localhost:8080/api/divaOutputs
+Content-Type: application/json
+Authtoken: a9afefcd-f4f1-4037-bc8c-afb758331b89
+
+
+###
+GET http://localhost:8080/api/record/nationalSubjectCategory/10101?presentationRecordLinkId=nationalSubjectCategoryOutputPLink
+Authtoken: 1f9714a7-d50d-4a1b-9d0c-5c0fcbf56c49
+
+###
+GET http://localhost:8080/api/record/recordType/divaOutputSwepub?presentationRecordLinkId=recordTypeOutputOutputPLink
+Authtoken: b918c8b7-0b4f-4dc7-ba4f-a33fde95928d
+
+###
+GET http://localhost:8080/api/record/nationalSubjectCategory
+Authtoken: b918c8b7-0b4f-4dc7-ba4f-a33fde95928d
+
+###
+GET http://localhost:8080/api/form/search/divaOutputSwepubSearch
+Authtoken: 2ffadcbb-d848-4fa8-8f69-15244232274b
+
+###
+POST http://localhost:8080/api/record/manuscript
+Content-Type: application/json
+Authtoken: 65904f00-c785-45c1-893d-81af309cbb650
+
+{
+  "divaOutput": {
+    "abstract": [],
+    "administrativeNote": [
+      {
+        "value": null
+      }
+    ],
+    "alternativeTitle": [],
+    "archiveNumber": [
+      {
+        "value": null
+      }
+    ],
+    "artisticWork": {
+      "value": "divaYes"
+    },
+    "attachment": [],
+    "contentType": {
+      "value": "OtherAcademic"
+    },
+    "contributor": {
+      "author": [
+        {
+          "birthYear": [
+            {
+              "value": null
+            }
+          ],
+          "correspondingAuthor": [
+            {
+              "value": null
+            }
+          ],
+          "deathYear": [
+            {
+              "value": null
+            }
+          ],
+          "divaPerson": [
+            {
+              "value": null
+            }
+          ],
+          "email": [
+            {
+              "value": null
+            }
+          ],
+          "familyName": {
+            "value": "e"
+          },
+          "givenName": {
+            "value": "a"
+          },
+          "localUserId": [
+            {
+              "value": null
+            }
+          ],
+          "ORCID": [
+            {
+              "value": null
+            }
+          ],
+          "organisation": [
+            {
+              "value": null
+            }
+          ],
+          "otherOrganisation": [],
+          "otherResearchGroup": [],
+          "researchGroup": [
+            {
+              "value": null
+            }
+          ]
+        }
+      ]
+    },
+    "externalNote": [
+      {
+        "value": null
+      }
+    ],
+    "funders": [],
+    "geoData": [
+      {
+        "description": [
+          {
+            "value": null
+          }
+        ],
+        "endDate": [
+          {
+            "day": [
+              {
+                "value": null
+              }
+            ],
+            "month": [
+              {
+                "value": null
+              }
+            ],
+            "year": [
+              {
+                "value": null
+              }
+            ]
+          }
+        ],
+        "polygon": [],
+        "startDate": [
+          {
+            "day": [
+              {
+                "value": null
+              }
+            ],
+            "month": [
+              {
+                "value": null
+              }
+            ],
+            "year": [
+              {
+                "value": null
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "keywords": [],
+    "localId": [
+      {
+        "value": null
+      }
+    ],
+    "nationalSubjectCategory": [
+      {
+        "value": "nationalSubjectCategory:6325637849942919"
+      }
+    ],
+    "numberOfContributors": [
+      {
+        "value": null
+      }
+    ],
+    "otherFunder": [],
+    "otherProject": [],
+    "project": [],
+    "researchSubject": [],
+    "title": {
+      "_language": "nob",
+      "mainTitle": {
+        "value": "aaaaa"
+      },
+      "subTitle": [
+        {
+          "value": null
+        }
+      ]
+    },
+    "url": []
+  }
+}
+
+###
+POST http://localhost:8080/api/record/manuscript
+Content-Type: application/json
+Authtoken: b67ac032-05bd-40ab-867b-b752e1149705
+
+{
+  "divaOutput": {
+    "artisticWork": {
+      "value": "divaYes"
+    },
+    "contentType": {
+      "value": "OtherAcademic"
+    },
+    "contributor": {
+      "author": [
+        {
+          "familyName": {
+            "value": "Efternamn"
+          },
+          "givenName": {
+            "value": "Förnamn"
+          }
+        }
+      ]
+    },
+    "nationalSubjectCategory": [
+      {
+        "value": "nationalSubjectCategory:6325637849942919"
+      }
+    ],
+    "title": {
+      "_language": "nob",
+      "mainTitle": {
+        "value": "mainTitle"
+      }
+    }
+  }
+}
+
+###
+POST http://localhost:8080/api/record/thesisManuscript/divaOutput:3038399305959804
+Content-Type: application/json
+Authtoken: 2d9a3476-e980-41f9-96ce-4a3b6af49e92
+
+{
+  "lastUpdate": {
+    "updateAt": "2024-06-04T15:13:57.698204Z",
+    "updatedBy": "161616"
+  },
+  "created": {
+    "createdAt": "2024-06-04T15:13:57.698204Z",
+    "createdBy": "161616"
+  },
+  "values": {
+    "divaOutput": {
+      "geoData": [
+        {
+          "polygon": [],
+          "endDate": [],
+          "startDate": [],
+          "description": [
+            {
+              "value": null
+            }
+          ]
+        }
+      ],
+      "note": [
+        {
+          "value": null
+        }
+      ],
+      "localId": [
+        {
+          "value": null
+        }
+      ],
+      "archiveNumber": [
+        {
+          "value": null
+        }
+      ],
+      "relatedResearchData": [],
+      "url": [],
+      "nationalSubjectCategory": [
+        {
+          "value": null
+        }
+      ],
+      "otherProject": [],
+      "otherFunder": [],
+      "funder": [],
+      "keywords": [
+        {
+          "value": null,
+          "_language": ""
+        }
+      ],
+      "abstract": [
+        {
+          "value": null,
+          "_language": ""
+        }
+      ],
+      "noOfContributors": [
+        {
+          "value": null
+        }
+      ],
+      "author": [],
+      "alternativeTitle": [],
+      "title": {
+        "_language": "lat",
+        "subtitle": [
+          {
+            "value": null
+          }
+        ],
+        "mainTitle": {
+          "value": "Latin"
+        }
+      },
+      "artisticWork": [
+        {
+          "value": null
+        }
+      ],
+      "contentType": [
+        {
+          "value": "otherAcademic"
+        }
+      ],
+      "outputType": {
+        "subType": [
+          {
+            "value": null
+          }
+        ],
+        "type": [
+          {
+            "value": null
+          }
+        ],
+        "outputType": {
+          "value": "conference"
+        }
+      },
+      "domain": {
+        "value": "fmv"
+      }
+    }
+  }
+}
+
+
+
+###
+POST http://localhost:8080/api/record/divaOutputSwepub/divaOutputSwepub:3631231353216065
+Content-Type: application/json
+Authtoken: 509d0d1a-0da0-4a27-9485-a86b57f39061
+
+{
+  "lastUpdate": {
+    "updateAt": "2024-10-01T08:40:15.844475Z",
+    "updatedBy": "161616"
+  },
+  "created": {
+    "createdAt": "2024-10-01T08:40:15.844475Z",
+    "createdBy": "161616"
+  },
+  "values": {
+    "output": {
+      "titleInfo": {
+        "_lang": "amh",
+        "title": {
+          "value": "dddddd"
+        }
+      },
+      "genre_type_contentType": {
+        "value": "ref",
+        "_type": "contentType"
+      },
+      "language": {
+        "languageTerm": [
+          {
+            "value": "alg",
+            "_type": "code",
+            "_authority": "iso639-2b"
+          }
+        ]
+      },
+      "genre_type_outputType": {
+        "value": "publication_report-chapter",
+        "_type": "outputType"
+      }
+    }
+  }
+}

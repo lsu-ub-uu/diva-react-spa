@@ -1,0 +1,130 @@
+
+<!--
+  ~ Copyright 2024 Uppsala University Library
+  ~
+  ~ This file is part of Cora.
+  ~
+  ~     Cora is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     Cora is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>se.uu.ub.cora</groupId>
+		<artifactId>cora-parent</artifactId>
+		<version>2.6.0</version>
+	</parent>
+
+	<artifactId>diva-client-bff</artifactId>
+	<version>1.8-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>DiVA Client BFF</name>
+
+	<properties>
+		<xml-maven-plugin.version>1.0.2</xml-maven-plugin.version>
+		<exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+
+		<sonar.language>js</sonar.language>
+		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+		<!--<sonar.sources>src/main/webapp/script</sonar.sources>
+		<sonar.tests>src/test/script/</sonar.tests>
+		<sonar.exclusions>src/main/webapp/script/lib/**</sonar.exclusions>
+		<sonar.testExecutionReportPaths>target/generated-resources/xml/xslt/karma-junit.xml</sonar.testExecutionReportPaths>
+		<sonar.javascript.lcov.reportPaths>target/jsReportFromDocker/coverage/firefox/lcov.info,target/jsReportFromDocker/coverage/chrome/lcov.info</sonar.javascript.lcov.reportPaths>-->
+		<sonar.nodejs.executable>${project.build.directory}/nodeJs/node/node</sonar.nodejs.executable>
+		<frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
+
+		<jsClientContainerName>myJsClientContainer3</jsClientContainerName>
+		<basename>/</basename>
+
+		<nodeVersion>v18.16.0</nodeVersion>
+	</properties>
+
+
+
+	<scm>
+		<connection>scm:git:https://github.com/lsu-ub-uu/diva-react-spa-bff.git</connection>
+		<developerConnection>scm:git:https://github.com/lsu-ub-uu/diva-react-spa-bff.git</developerConnection>
+		<url>https://github.com/lsu-ub-uu/diva-react-spa-bff.git</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>dist</directory>
+				<targetPath>dist</targetPath>
+				<includes><include>**/*</include></includes>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>${frontend-maven-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>${frontend-maven-plugin.version}</version>
+				<configuration>
+					<installDirectory>${project.build.directory}/nodeJs</installDirectory> <!--??-->
+					<workingDirectory>${project.build.directory}/nodeJs</workingDirectory> <!--??-->
+				</configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>${nodeVersion}</nodeVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>npm run build</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>${frontend-maven-plugin.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>

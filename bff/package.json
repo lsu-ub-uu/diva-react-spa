@@ -1,0 +1,44 @@
+{
+  "name": "diva-client-bff",
+  "version": "1.0.0",
+  "description": "Diva Client BFF",
+  "scripts": {
+    "dev": "tsx watch src/main/webapp/server.ts",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint --fix ./src/**/*.ts",
+    "prettier-format": "prettier --write \"src/**/*.{ts,json}\" --config ./.prettierrc.json",
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --selectProjects unit",
+    "test:integration": "jest --selectProjects integration",
+    "coverage": "jest --selectProjects unit --coverage /;exit 0"
+  },
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@eslint/js": "^9.12.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.13",
+    "@types/lodash": "^4.17.10",
+    "@types/node": "^22.7.5",
+    "@types/supertest": "^6.0.2",
+    "axios-mock-adapter": "^2.1.0",
+    "eslint": "^9.12.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.11.0",
+    "prettier": "^3.3.3",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.9.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "lodash": "^4.17.21"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "someNewMetadataGroupRepeatingGroupsNameInData": {
+    "someChildGroupNameInData": [
+      {
+        "someNameInData": {
+          "value": "Erik"
+        }
+      },
+      {
+        "someNameInData": {
+          "value": "Egil"
+        }
+      }
+    ]
+  }
+}

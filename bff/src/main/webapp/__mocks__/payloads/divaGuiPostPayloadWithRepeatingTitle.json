@@ -1,0 +1,12 @@
+{
+  "someRecordType": {
+    "title": [
+      {
+        "value": "value0"
+      },
+      {
+        "value": "value1"
+      }
+    ]
+  }
+}

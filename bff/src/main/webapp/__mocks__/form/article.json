@@ -1,0 +1,892 @@
+{
+  "name": "article",
+  "cards": [
+    {
+      "label": {
+        "en": "subcategory",
+        "sv": "Underkategori"
+      },
+      "name": "subcategory",
+      "deftext": {
+        "sv": "Listar underkategorierna till publikationstypen artikel"
+      },
+      "children": [
+        {
+          "type": "select",
+          "children": [
+            {
+              "value": "--",
+              "name": {
+                "en": "-- Pick an item from the list --",
+                "sv": "-- Gör ett val ur listan --"
+              }
+            },
+            {
+              "value": "reviewSurvey",
+              "name": {
+                "en": "Review/survey",
+                "sv": "Forskningsöversikt"
+              }
+            },
+            {
+              "value": "bookReview",
+              "name": {
+                "en": "Book review",
+                "sv": "Recension"
+              }
+            },
+            {
+              "value": "meetingAbstract",
+              "name": {
+                "en": "Meeting abstract",
+                "sv": "Meeting abstract"
+              }
+            },
+            {
+              "value": "EditorialMaterial",
+              "name": {
+                "en": "Editorial material",
+                "sv": "Editorial material"
+              }
+            },
+            {
+              "value": "Letter",
+              "name": {
+                "en": "Letter",
+                "sv": "Letter"
+              }
+            },
+            {
+              "value": "news",
+              "name": {
+                "en": "News item",
+                "sv": "Dags-/nyhetstidning"
+              }
+            }
+          ],
+          "label": {
+            "sv": "Underkategori"
+          },
+          "name": "subcategory"
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Author",
+        "sv": "Författare"
+      },
+      "name": "author",
+      "deftext": {
+        "sv": "Metadatagruppen samlar bibliografiska metadata om författaren"
+      },
+      "max": 3,
+      "min": 0,
+      "children": [
+        {
+          "required": true,
+          "type": "input",
+          "regex": ".+",
+          "name": "lastName",
+          "label": {
+            "sv": "Efternamn"
+          },
+          "deftext": {
+            "sv": "Personens familjenamn eller släktnamn, det vill säga den del av en persons namn som anger till vilken familj eller släkt denna hör."
+          }
+        },
+        {
+          "required": true,
+          "type": "input",
+          "regex": ".+",
+          "name": "givenName",
+          "label": {
+            "sv": "Förnamn"
+          },
+          "deftext": {
+            "sv": "Personens individuella namn."
+          }
+        },
+        {
+          "required": true,
+          "type": "input",
+          "regex": "^[0-9]{4}$",
+          "name": "yearOfBirth",
+          "label": {
+            "sv": "Födelseår"
+          },
+          "deftext": {
+            "sv": "Personens födelseår."
+          }
+        },
+        {
+          "type": "input",
+          "regex": "^[0-9]{4}$",
+          "name": "yearOfDeath",
+          "label": {
+            "sv": "Dödsår"
+          },
+          "deftext": {
+            "sv": "Personens dödsår."
+          }
+        },
+        {
+          "required": true,
+          "type": "input",
+          "regex": ".+",
+          "name": "localID",
+          "label": {
+            "sv": "Lokalt användarid"
+          },
+          "deftext": {
+            "sv": "Avser personens unika användar-id i den egna organisationen "
+          }
+        },
+        {
+          "required": true,
+          "type": "input",
+          "regex": "^(\\d{4})-(\\d{4})-(\\d{4})-(\\d{3}[0-9X])$",
+          "name": "ORCID",
+          "label": {
+            "sv": "ORCID-id"
+          },
+          "deftext": {
+            "sv": "Avser personens unika ORCID-id"
+          }
+        },
+        {
+          "type": "button",
+          "regex": "",
+          "name": "organisationLink",
+          "label": {
+            "sv": "Länk till organisation"
+          },
+          "deftext": {
+            "sv": "Länk till en annan organisation i en DiVA-medlems lokala organisationsstruktur."
+          }
+        },
+        {
+          "type": "input",
+          "regex": ".+",
+          "name": "researchGroup",
+          "label": {
+            "sv": "Forskargrupp"
+          },
+          "deftext": {
+            "sv": "Avser relation till forskargrupp (Fritext)"
+          }
+        },
+        {
+          "type": "input",
+          "regex": "^\\S+@\\S+\\.\\S+$",
+          "name": "email",
+          "label": {
+            "sv": "E-post"
+          },
+          "deftext": {
+            "sv": "Avser e-post"
+          }
+        },
+        {
+          "type": "input",
+          "regex": ".+",
+          "name": "otherOrganisation",
+          "label": {
+            "sv": "Annan organisation"
+          },
+          "deftext": {
+            "sv": "Avser annan organisationstillhörighet"
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Other contributor",
+        "sv": "Annan upphovsperson"
+      },
+      "name": "otherContributor",
+      "children": [
+        {
+          "type": "button",
+          "regex": "",
+          "name": "contributorLink",
+          "label": {
+            "sv": "Lägg till upphovsman"
+          },
+          "deftext": {
+            "sv": ""
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Title",
+        "sv": "Titel"
+      },
+      "name": "title",
+      "deftext": {
+        "sv": "Grupp för huvudtitel, undertitel och språk"
+      },
+      "children": [
+        {
+          "type": "textarea",
+          "regex": ".+",
+          "name": "mainTitle",
+          "label": {
+            "sv": "Huvudtitel"
+          },
+          "deftext": {
+            "sv": "Avser ord eller fras som namnger en publikation"
+          }
+        },
+        {
+          "type": "textarea",
+          "regex": ".+",
+          "name": "subTitle",
+          "label": {
+            "sv": "Undertitel"
+          },
+          "deftext": {
+            "sv": "Anges som det står i publikationen och skall alltid föregås av en huvudtitel"
+          }
+        },
+        {
+          "type": "select",
+          "name": "language",
+          "label": {
+            "sv": "Språk"
+          },
+          "deftext": {
+            "sv": "Samlar metadata om språk"
+          },
+          "children": [
+            {
+              "value": "--",
+              "name": {
+                "sv": "-- Gör ett val ur listan --",
+                "en": "-- Pick an item from the list --"
+              }
+            },
+            {
+              "value": "eng",
+              "name": {
+                "sv": "Engelska",
+                "en": "English"
+              }
+            },
+            {
+              "value": "swe",
+              "name": {
+                "sv": "Svenska",
+                "en": "Swedish"
+              }
+            },
+            {
+              "value": "nor",
+              "name": {
+                "sv": "Norska",
+                "en": "Norwegian"
+              }
+            },
+            {
+              "value": "alb",
+              "name": {
+                "sv": "Albanska",
+                "en": "Albanian"
+              }
+            },
+            {
+              "value": "ara",
+              "name": {
+                "sv": "Arabiska",
+                "en": "Arabic"
+              }
+            },
+            {
+              "value": "bal",
+              "name": {
+                "sv": "Baluchi",
+                "en": "Baluchi"
+              }
+            },
+            {
+              "value": "nob",
+              "name": {
+                "sv": "Bokmål",
+                "en": "Bokmål - Norwegian; Norwegian Bokmål"
+              }
+            },
+            {
+              "value": "bos",
+              "name": {
+                "sv": "Bosniska",
+                "en": "Bosnian"
+              }
+            },
+            {
+              "value": "bul",
+              "name": {
+                "sv": "Bulgariska",
+                "en": "Bulgarian"
+              }
+            },
+            {
+              "value": "dan",
+              "name": {
+                "sv": "Danska",
+                "en": "Danish"
+              }
+            },
+            {
+              "value": "epo",
+              "name": {
+                "sv": "Esperanto",
+                "en": "Esperanto"
+              }
+            },
+            {
+              "value": "est",
+              "name": {
+                "sv": "Estniska",
+                "en": "Estonian"
+              }
+            },
+            {
+              "value": "fin",
+              "name": {
+                "sv": "Finska",
+                "en": "Finnish"
+              }
+            },
+            {
+              "value": "fre",
+              "name": {
+                "sv": "Franska",
+                "en": "French"
+              }
+            },
+            {
+              "value": "fry",
+              "name": {
+                "sv": "Frisiska",
+                "en": "Western Frisian"
+              }
+            },
+            {
+              "value": "fao",
+              "name": {
+                "sv": "Färöiska",
+                "en": "Faroese"
+              }
+            },
+            {
+              "value": "grc",
+              "name": {
+                "sv": "Grekiska - klassisk (-1453)",
+                "en": "Greek - Ancient (to 1453)"
+              }
+            },
+            {
+              "value": "kal",
+              "name": {
+                "sv": "Grönländska (Kalaallit oqaasi)",
+                "en": "Kalaallisut; Greenlandic"
+              }
+            },
+            {
+              "value": "heb",
+              "name": {
+                "sv": "Hebreiska",
+                "en": "Hebrew"
+              }
+            },
+            {
+              "value": "hin",
+              "name": {
+                "sv": "Hindi",
+                "en": "Hindi"
+              }
+            },
+            {
+              "value": "ind",
+              "name": {
+                "sv": "Indonesiska",
+                "en": "Indonesian"
+              }
+            },
+            {
+              "value": "gle",
+              "name": {
+                "sv": "Iriska",
+                "en": "Irish"
+              }
+            },
+            {
+              "value": "ice",
+              "name": {
+                "sv": "Isländska",
+                "en": "Icelandic"
+              }
+            },
+            {
+              "value": "ita",
+              "name": {
+                "sv": "Italienska",
+                "en": "Italian"
+              }
+            },
+            {
+              "value": "jpn",
+              "name": {
+                "sv": "Japanska",
+                "en": "Japanese"
+              }
+            },
+            {
+              "value": "yid",
+              "name": {
+                "sv": "Jiddisch",
+                "en": "Yiddish"
+              }
+            },
+            {
+              "value": "cat",
+              "name": {
+                "sv": "Katalanska",
+                "en": "Catalan; Valencian"
+              }
+            },
+            {
+              "value": "chi",
+              "name": {
+                "sv": "Kinesiska",
+                "en": "Chinese"
+              }
+            },
+            {
+              "value": "kor",
+              "name": {
+                "sv": "Koreanska",
+                "en": "Korean"
+              }
+            },
+            {
+              "value": "hrv",
+              "name": {
+                "sv": "Kroatiska",
+                "en": "Croatian"
+              }
+            },
+            {
+              "value": "kur",
+              "name": {
+                "sv": "Kurdiska",
+                "en": "Kurdish"
+              }
+            },
+            {
+              "value": "lat",
+              "name": {
+                "sv": "Latin",
+                "en": "Latin"
+              }
+            },
+            {
+              "value": "lav",
+              "name": {
+                "sv": "Lettiska",
+                "en": "Latvian"
+              }
+            },
+            {
+              "value": "lit",
+              "name": {
+                "sv": "Litauiska",
+                "en": "Lithuanian"
+              }
+            },
+            {
+              "value": "mad",
+              "name": {
+                "sv": "Madurese",
+                "en": "Madurese"
+              }
+            },
+            {
+              "value": "mac",
+              "name": {
+                "sv": "Makedonska",
+                "en": "Macedonian"
+              }
+            },
+            {
+              "value": "fit",
+              "name": {
+                "sv": "Meänkieli",
+                "en": "Tornedalen Finnish"
+              }
+            },
+            {
+              "value": "mon",
+              "name": {
+                "sv": "Mongoliskt språk",
+                "en": "Mongolian"
+              }
+            },
+            {
+              "value": "dut",
+              "name": {
+                "sv": "Nederländska",
+                "en": "Dutch; Flemish"
+              }
+            },
+            {
+              "value": "gre",
+              "name": {
+                "sv": "Nygrekiska (1453-)",
+                "en": "Greek - Modern (1453-)"
+              }
+            },
+            {
+              "value": "nno",
+              "name": {
+                "sv": "Nynorsk",
+                "en": "Norwegian Nynorsk; Nynorsk"
+              }
+            },
+            {
+              "value": "und",
+              "name": {
+                "sv": "Odefinierat språk",
+                "en": "Undetermined"
+              }
+            },
+            {
+              "value": "per",
+              "name": {
+                "sv": "Persiska",
+                "en": "Persian"
+              }
+            },
+            {
+              "value": "pol",
+              "name": {
+                "sv": "Polska",
+                "en": "Polish"
+              }
+            },
+            {
+              "value": "por",
+              "name": {
+                "sv": "Portugisiska",
+                "en": "Portuguese"
+              }
+            },
+            {
+              "value": "rom",
+              "name": {
+                "sv": "Romani",
+                "en": "Romany"
+              }
+            },
+            {
+              "value": "rum",
+              "name": {
+                "sv": "Rumänska",
+                "en": "Romanian"
+              }
+            },
+            {
+              "value": "rus",
+              "name": {
+                "sv": "Ryska",
+                "en": "Russian"
+              }
+            },
+            {
+              "value": "smi",
+              "name": {
+                "sv": "Samiskt språk",
+                "en": "Sami languages (Other)"
+              }
+            },
+            {
+              "value": "san",
+              "name": {
+                "sv": "Sanskrit",
+                "en": "Sanskrit"
+              }
+            },
+            {
+              "value": "srp",
+              "name": {
+                "sv": "Serbiska",
+                "en": "Serbian"
+              }
+            },
+            {
+              "value": "slo",
+              "name": {
+                "sv": "Slovakiska",
+                "en": "Slovak"
+              }
+            },
+            {
+              "value": "slv",
+              "name": {
+                "sv": "Slovenska",
+                "en": "Slovenian"
+              }
+            },
+            {
+              "value": "spa",
+              "name": {
+                "sv": "Spanska",
+                "en": "Spanish"
+              }
+            },
+            {
+              "value": "swa",
+              "name": {
+                "sv": "Swahili",
+                "en": "Swahili"
+              }
+            },
+            {
+              "value": "tir",
+              "name": {
+                "sv": "Tigrinja",
+                "en": "Tigrinya"
+              }
+            },
+            {
+              "value": "cze",
+              "name": {
+                "sv": "Tjeckiska",
+                "en": "Czech"
+              }
+            },
+            {
+              "value": "tur",
+              "name": {
+                "sv": "Turkiska",
+                "en": "Turkish"
+              }
+            },
+            {
+              "value": "tru",
+              "name": {
+                "sv": "Turoyo",
+                "en": "Turoyo"
+              }
+            },
+            {
+              "value": "ukr",
+              "name": {
+                "sv": "Ukrainska",
+                "en": "Ukrainian"
+              }
+            },
+            {
+              "value": "hun",
+              "name": {
+                "sv": "Ungerska",
+                "en": "Hungarian"
+              }
+            },
+            {
+              "value": "urd",
+              "name": {
+                "sv": "Urdu",
+                "en": "Urdu"
+              }
+            },
+            {
+              "value": "vie",
+              "name": {
+                "sv": "Vietnamesiska",
+                "en": "Vietnamese"
+              }
+            },
+            {
+              "value": "bel",
+              "name": {
+                "sv": "Vitryska",
+                "en": "Belarusian"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Content Type",
+        "sv": "Typ av innehåll"
+      },
+      "name": "contentType",
+      "deftext": {
+        "sv": "Typ av innehåll obligatorisk uppgift Refereegranskat: publikationens vetenskapliga innehåll har granskats av oberoende referenter och accepterats för presentation och/eller publicering Övrigt vetenskapligt: publikationens innehåll är av vetenskaplig karaktär och riktar sig mot vetenskapssamhället men har inte genomgått refereegranskning. Övrigt (populärvetenskap, debatt): publikationens innehåll är av populärvetenskaplig karaktär och riktar sig mot allmänheten. Även debattinlägg räknas hit."
+      },
+      "children": [
+        {
+          "type": "radio",
+          "name": "contentType",
+          "label": {
+            "sv": "Typ av innehåll"
+          },
+          "children": [
+            {
+              "value": "refereed",
+              "name": {
+                "sv": "Refereegranskat"
+              }
+            },
+            {
+              "value": "otherAcademic",
+              "name": {
+                "sv": "Övrigt vetenskapligt"
+              }
+            },
+            {
+              "value": "other",
+              "name": {
+                "sv": "Övrig (populärvetenskap, debatt, mm)"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Content category",
+        "sv": "Innehållskategori"
+      },
+      "name": "artisticWork",
+      "children": [
+        {
+          "type": "checkbox",
+          "name": "artisticWork",
+          "label": {
+            "sv": "Forskning på konstnärlig grund"
+          },
+          "deftext": {
+            "sv": "Kryssa i rutan om arbetet utgör forskning på konstnärlig grund"
+          },
+          "children": [
+            {
+              "value": "true",
+              "name": {
+                "sv": "Forskning på konstnärlig grund"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": {
+        "sv": "Parallellpublicering",
+        "en": "ParallellPublishing"
+      },
+      "name": "publishing",
+      "children": [
+        {
+          "type": "text",
+          "regex": "",
+          "name": "ParallellPublishingText",
+          "deftext": {
+            "sv": ""
+          },
+          "children": {
+            "en": [
+              "\\begin{document}",
+              "",
+              "\\hypertarget{titel}{%",
+              "\\section{Titel:}label{titel}}",
+              "",
+              "Publication name will be shown herer",
+              "",
+              "Most scientific journals and publishers allow you to parallel publish a copy of your article in an open archive, \"open access\". Check the publisher's policy in SHERPA/RoMEO",
+              "",
+              "\\url{www.sherpa.ac.uk/romeo}.",
+              "",
+              "\\end{document}"
+            ],
+            "sv": [
+              "\\begin{document}",
+              "",
+              "\\hypertarget{titel}{%",
+              "\\section{Titel:}label{titel}}",
+              "",
+              "Publikationens namn visas här",
+              "",
+              "De flesta vetenskapliga tidskrifter och förlag tillåter att du parallellpublicerarar en kopia av din artikel i ett öppet arkiv, \"open access\". Kontrollera förlagets policy i SHERPA/RoMEO",
+              "",
+              "\\url{www.sherpa.ac.uk/romeo}.",
+              "",
+              "\\end{document}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "sv": "När ska filen göras fritt tillgänglig?",
+        "en": "When will the file be made freely available?"
+      },
+      "name": "available",
+      "children": [
+        {
+          "type": "date",
+          "regex": "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$",
+          "name": "publicationDate",
+          "label": {
+            "sv": "Välj datum",
+            "en": "Pick date"
+          },
+          "deftext": {
+            "sv": "Avser datum"
+          }
+        },
+        {
+          "type": "time",
+          "regex": "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
+          "name": "publicationTime",
+          "label": {
+            "sv": "Välj tid",
+            "en": "Pick date"
+          },
+          "deftext": {
+            "sv": "Avser datum"
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "sv": "Ladda upp fil",
+        "en": "Upload file"
+      },
+      "name": "fileUpload",
+      "children": [
+        {
+          "type": "file",
+          "accept": "application/pdf",
+          "name": "fileUploadInput",
+          "label": {
+            "sv": "Välj fil att ladda upp",
+            "en": "Select file to upload"
+          },
+          "deftext": {
+            "sv": "Avser uppladdning av fil"
+          }
+        }
+      ]
+    }
+  ]
+}
