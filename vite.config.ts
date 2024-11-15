@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
     base: basename ? `${basename}/` : undefined,
     plugins: [
       remix({
-        appDirectory: 'src/main/webapp',
+        appDirectory: 'src/main/.server',
         buildDirectory: 'dist',
         basename,
         future: {

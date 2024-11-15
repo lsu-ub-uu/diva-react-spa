@@ -23,11 +23,8 @@ import morgan from 'morgan';
 import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadStuffOnServerStart } from './bff/src/main/webapp/config/configureServer';
-import {
-  CORA_DATA_LOADED_EVENT,
-  eventEmitter,
-} from './bff/src/main/webapp/app';
+import { loadStuffOnServerStart } from '@/.server/config/configureServer';
+import { CORA_DATA_LOADED_EVENT, eventEmitter } from '@/.server/app';
 import {
   authRoute,
   formRoute,
@@ -36,7 +33,7 @@ import {
   searchRoute,
   translationRoute,
   validationTypesRoute,
-} from './bff/src/main/webapp/routes';
+} from '@/.server/routes';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

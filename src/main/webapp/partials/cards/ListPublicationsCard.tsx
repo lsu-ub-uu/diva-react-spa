@@ -26,7 +26,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Await, Link as RouterLink, useLoaderData } from '@remix-run/react';
 import axios from 'axios';
-import { useSnackbar, VariantType } from 'notistack';
+// import { useSnackbar, VariantType } from 'notistack';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { Card } from '@/components';
 import {
@@ -43,13 +43,12 @@ export const ListPublicationsCard = () => {
 
   const dispatch = useAppDispatch();
   const publicationsState = useAppSelector(publicationsSelector);
-  const { enqueueSnackbar } = useSnackbar();
 
   const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
+    /*enqueueSnackbar(message, {
       variant,
       anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
+    });*/
   };
 
   const columns: GridColDef[] = [

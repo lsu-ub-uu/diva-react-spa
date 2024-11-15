@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Diva Client BFF",
   "scripts": {
-    "dev": "tsx watch src/main/webapp/server.ts",
+    "dev": "tsx watch src/main/.server/server.ts",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
     "prettier-format": "prettier --write \"src/**/*.{ts,json}\" --config ./.prettierrc.json",

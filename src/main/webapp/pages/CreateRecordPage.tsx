@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Stack } from '@mui/material';
+import { Alert, Stack } from '@mui/material';
 import {
   AsidePortal,
   linksFromFormSchema,
@@ -27,6 +27,8 @@ import {
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { CoraRecord } from '@/features/record/types';
+import { useLoaderData } from '@remix-run/react';
+import { loader } from '@/routes/create';
 
 interface CreateRecordPageProps {
   record: CoraRecord;
@@ -38,6 +40,7 @@ export default function CreateRecordPage({
   formDefinition,
 }: CreateRecordPageProps) {
   const activeSection = useSectionScroller();
+  const { errorMessage } = useLoaderData<typeof loader>();
 
   return (
     <>
@@ -54,6 +57,7 @@ export default function CreateRecordPage({
       </AsidePortal>
       <div>
         <Stack spacing={2}>
+          {errorMessage && <Alert severity='error'>{errorMessage}</Alert>}
           <RecordForm
             record={record}
             formSchema={formDefinition}

@@ -19,7 +19,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { useSnackbar, VariantType } from 'notistack';
+// import { useSnackbar, VariantType } from 'notistack';
 import { FieldValues } from 'react-hook-form';
 import { AsidePortal, useBackdrop } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -31,7 +31,7 @@ import { RecordForm } from '@/components/Form/RecordForm';
 import { useNavigate, useSearchParams } from '@remix-run/react';
 
 export const LoginPage = () => {
-  const { enqueueSnackbar } = useSnackbar();
+  //  const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setBackdrop } = useBackdrop();
   const [isLoading] = useState(false);
@@ -43,29 +43,29 @@ export const LoginPage = () => {
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const notification = useCallback(
-    (message: string, variant: VariantType) => {
-      enqueueSnackbar(message, {
-        variant,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-      });
-    },
-    [enqueueSnackbar],
-  );
+  /*  const notification = useCallback(
+      (message: string, variant: VariantType) => {
+        enqueueSnackbar(message, {
+          variant,
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+      },
+      [enqueueSnackbar],
+    );*/
 
   useEffect(() => {
     setBackdrop(isLoading || isSubmitting);
   }, [isLoading, setBackdrop, isSubmitting]);
 
-  useEffect(() => {
-    if (authState.hasError && authState.userSession === null && formIsDirty) {
-      notification(`Loggin error`, 'error');
-    }
-    if (authState.userSession !== null && formIsDirty) {
-      notification(`Loggin success`, 'success');
-      navigate(-1);
-    }
-  }, [formIsDirty, navigate, notification, authState]);
+  /*  useEffect(() => {
+      if (authState.hasError && authState.userSession === null && formIsDirty) {
+        notification(`Loggin error`, 'error');
+      }
+      if (authState.userSession !== null && formIsDirty) {
+        notification(`Loggin success`, 'success');
+        navigate(-1);
+      }
+    }, [formIsDirty, navigate, notification, authState]);*/
 
   useEffect(() => {
     const parsedPresentation = JSON.parse(
@@ -114,7 +114,7 @@ export const LoginPage = () => {
             <RecordForm
               onSubmit={handlePasswordSelection}
               onInvalid={() => {
-                notification(`Form is invalid`, 'error');
+                //  notification(`Form is invalid`, 'error');
               }}
               formSchema={schema as RecordFormSchema}
             />
