@@ -36,6 +36,7 @@
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
     "eslint-plugin-react-hooks": "^5.0.0",
     "i18next": "^23.16.2",
     "i18next-browser-languagedetector": "^8.0.0",
