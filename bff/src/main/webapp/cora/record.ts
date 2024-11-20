@@ -19,7 +19,7 @@
 
 import axios, { AxiosResponse } from 'axios';
 import { DataGroup } from '../utils/cora-data/CoraData';
-import * as console from "node:console";
+import * as console from 'node:console';
 
 const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
 const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
@@ -51,7 +51,7 @@ export async function getSearchResultDataListBySearchType<T>(
   searchData: DataGroup,
   authToken?: string
 ): Promise<AxiosResponse<T>> {
-  console.log(searchType)
+  console.log(searchType);
   const apiUrl: string = `/record/searchResult/${searchType}`;
 
   const searchDataString = JSON.stringify(searchData);
@@ -78,7 +78,8 @@ export async function postRecordData<T>(
   type: string,
   authToken?: string
 ): Promise<AxiosResponse<T>> {
-  const apiUrl: string = `/record/${type}`;
+  const { CORA_API_URL } = process.env;
+  const apiUrl: string = `${CORA_API_URL}/record/${type}`;
 
   const headers = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
