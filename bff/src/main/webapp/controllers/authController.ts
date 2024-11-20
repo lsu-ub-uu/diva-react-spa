@@ -32,6 +32,7 @@ export const deleteAuthTokenOnLogout = async (req: Request, res: Response) => {
   try {
     const response = await deleteAuthTokenFromCora(actionLinks, authToken);
     res.status(response.status).json(response.status);
+    ('');
   } catch (error: unknown) {
     console.log(error);
     const errorResponse = errorHandler(error);
