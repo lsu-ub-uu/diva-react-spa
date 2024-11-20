@@ -9,7 +9,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-// import { useSnackbar, VariantType } from 'notistack';
+import { useSnackbar, VariantType } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
@@ -103,13 +103,13 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Login() {
   const { error, presentation, returnTo } = useLoaderData<typeof loader>();
   const submit = useSubmit();
-  // const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const notification = (message: string, variant: VariantType) => {
-    /*  enqueueSnackbar(message, {
-        variant,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-      });*/
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { vertical: 'top', horizontal: 'right' },
+    });
   };
   const methods = useForm({
     mode: 'onChange',

@@ -17,13 +17,14 @@
  */
 
 import { styled } from '@mui/material';
+import { SnackbarProvider as NotistackSnackbarProvider } from 'notistack';
 
 interface SnackbarProviderProps {
   maxSnack: number;
   children: React.ReactNode;
 }
 
-/*const StyledSnackbarProvider = styled(NotistackSnackbarProvider)(() => ({
+const StyledSnackbarProvider = styled(NotistackSnackbarProvider)(() => ({
   '&.notistack-MuiContent': {
     backgroundColor: '#efefef',
     color: 'rgba(0, 0, 0, 0.87)',
@@ -53,7 +54,11 @@ interface SnackbarProviderProps {
     },
   },
 }));
-*/
+
 export const SnackbarProvider = (props: SnackbarProviderProps) => {
-  return props.children;
+  return (
+    <StyledSnackbarProvider maxSnack={props.maxSnack}>
+      {props.children}
+    </StyledSnackbarProvider>
+  );
 };

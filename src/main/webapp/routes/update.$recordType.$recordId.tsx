@@ -28,8 +28,8 @@ import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAn
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 import { useLoaderData, useNavigation } from '@remix-run/react';
-// import { enqueueSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
+import { useEffect } from 'react';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -38,7 +38,6 @@ import { removeEmpty } from '@/utils/removeEmpty';
 import { CoraRecord } from '@/features/record/types';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { Snackbar } from '@mui/material';
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const url = new URL(request.url);
@@ -130,10 +129,10 @@ export default function UpdateRecordRoute() {
 
   useEffect(() => {
     if (successMessage && navigation.state === 'idle') {
-      /* enqueueSnackbar(successMessage, {
-         variant: 'success',
-         anchorOrigin: { vertical: 'top', horizontal: 'right' },
-       });*/
+      enqueueSnackbar(successMessage, {
+        variant: 'success',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      });
     }
   }, [successMessage, navigation.state]);
 

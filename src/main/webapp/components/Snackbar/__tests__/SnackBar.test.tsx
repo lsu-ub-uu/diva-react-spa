@@ -1,5 +1,4 @@
 /*
-/!*
  * Copyright 2023 Uppsala University Library
  *
  * This file is part of DiVA Client.
@@ -15,7 +14,7 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *!/
+ */
 
 import { expect } from 'vitest';
 import { screen } from '@testing-library/react';
@@ -24,7 +23,7 @@ import { useSnackbar } from 'notistack';
 import { render } from '../../../utils/testUtils';
 
 const Button = () => {
-  // const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <button
       type='button'
@@ -58,4 +57,3 @@ describe('Snackbars', () => {
     },
   );
 });
-*/

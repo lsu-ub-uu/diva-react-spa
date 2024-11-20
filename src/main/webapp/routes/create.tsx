@@ -34,7 +34,7 @@ import {
   requireAuthentication,
 } from '@/sessions';
 import { useEffect } from 'react';
-//import { enqueueSnackbar } from 'notistack';
+import { enqueueSnackbar } from 'notistack';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -71,7 +71,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return redirectAndCommitSession(`/update/${recordType}/${id}`, session);
   } catch (error) {
     console.error(error);
-    session.flash('error', 'Failed to create record ' + error.message);
+    session.flash('error', 'Failed to create record');
     return redirectAndCommitSession(url.pathname + url.search, session);
   }
 };
@@ -104,11 +104,11 @@ export default function CreateRecordRoute() {
 
   useEffect(() => {
     if (errorMessage) {
-      /* enqueueSnackbar(errorMessage, {
-         variant: 'error',
-         anchorOrigin: { vertical: 'top', horizontal: 'right' },
-         preventDuplicate: true,
-       });*/
+      enqueueSnackbar(errorMessage, {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        preventDuplicate: true,
+      });
     }
   }, [errorMessage]);
 

@@ -7,7 +7,7 @@
   "scripts": {
     "build": "remix vite:build",
     "build:prod": "BASE_PATH=$BASENAME remix vite:build",
-    "dev": "tsx watch --ignore './vite.config.ts*' ./server.ts",
+    "dev": "tsx server.ts",
     "start": "NODE_ENV=production node server.ts",
     "typecheck": "tsc",
     "lint": "eslint ./src/**/*.{ts,tsx}",

@@ -23,6 +23,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CoraRecord } from '@/features/record/types';
 import axios from 'axios';
+import { useSnackbar, VariantType } from 'notistack';
 
 interface RecordActionButtonProps {
   record: CoraRecord;

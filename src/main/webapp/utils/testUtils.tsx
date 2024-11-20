@@ -17,7 +17,7 @@
  */
 
 import { render } from '@testing-library/react';
-// import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider } from 'notistack';
 import { Provider as StateProvider } from 'react-redux';
 import { configureStore, PreloadedState } from '@reduxjs/toolkit';
 import { PropsWithChildren } from 'react';
@@ -34,7 +34,8 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   store?: AppStore;
 }
 
-const renderWithSnackbarProvider = (ui: JSX.Element) => render(ui);
+const renderWithSnackbarProvider = (ui: JSX.Element) =>
+  render(ui, { wrapper: SnackbarProvider });
 
 const renderWithReduxProvider = (
   ui: React.ReactElement,

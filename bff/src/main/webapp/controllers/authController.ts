@@ -10,10 +10,7 @@ import { dependencies } from '../config/configureServer';
  * @access Public
  */
 export const postAppTokenToGetAuthToken = async (req: Request, res: Response) => {
-  const body = req.body;
-  console.log({ body });
-
-  const { appToken, user } = body;
+  const { appToken, user } = req.body;
   try {
     const auth = await requestAuthTokenOnLogin(user, appToken, 'apptoken');
     res.status(201).json({ auth });
