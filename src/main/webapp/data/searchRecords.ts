@@ -18,12 +18,16 @@
 
 import axios from 'axios';
 import { CoraSearchResult } from '@/features/record/types';
-import { Auth } from '@/features/auth/authSlice';
+import { Auth } from '@/types/Auth';
 
-export const searchRecords = async (searchType: string, query: any, auth?: Auth) => {
+export const searchRecords = async (
+  searchType: string,
+  query: any,
+  auth?: Auth,
+) => {
   const response = await axios.get(
     `/search/advanced/${searchType}?query=${encodeURIComponent(JSON.stringify(query))}`,
-   auth ? { headers: {Authtoken: auth.data.token }} : undefined
+    auth ? { headers: { Authtoken: auth.data.token } } : undefined,
   );
   return response.data as CoraSearchResult;
 };

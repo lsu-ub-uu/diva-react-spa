@@ -48,6 +48,7 @@ import { useChangeLanguage } from 'remix-i18next/react';
 import { i18nCookie } from '@/app/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { dependencies } from '@/data/pool.server';
 
 const { MODE } = import.meta.env;
 

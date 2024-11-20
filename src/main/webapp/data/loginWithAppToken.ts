@@ -1,6 +1,6 @@
 import { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { requestAuthTokenOnLogin } from '../../../../bff/src/main/webapp/cora/auth';
-import { Auth } from '@/features/auth/authSlice';
+import { Auth } from '@/types/Auth';
 
 export async function loginWithAppToken(account: Account) {
   try {

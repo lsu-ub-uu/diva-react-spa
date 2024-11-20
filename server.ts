@@ -24,11 +24,8 @@ import morgan from 'morgan';
 import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadStuffOnServerStart } from './bff/src/main/webapp/config/configureServer';
-import {
-  CORA_DATA_LOADED_EVENT,
-  eventEmitter,
-} from './bff/src/main/webapp/app';
+import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
+import { loadStuffOnServerStart as loadStuffOnServerStartBFF } from './bff/src/main/webapp/config/configureServer';
 import {
   authRoute,
   formRoute,
@@ -54,6 +51,7 @@ const viteDevServer =
       );
 
 const remixHandler = createRequestHandler({
+  getLoadContext: () => ({ pool: dependencies }),
   build: viteDevServer
     ? () => viteDevServer.ssrLoadModule('virtual:remix/server-build')
     : // @ts-expect-error The built file is not ts
@@ -61,6 +59,9 @@ const remixHandler = createRequestHandler({
 });
 
 const app = express();
+
+/*app.use(express.json());
+app.use(express.urlencoded({ extended: true }));*/
 
 app.use(compression());
 
@@ -108,7 +109,11 @@ app.listen(port, () => {
   console.log(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
   console.log(`Express server listening at http://localhost:${port}`);
   loadStuffOnServerStart().then(() => {
-    eventEmitter.emit(CORA_DATA_LOADED_EVENT);
-    console.log('Loaded stuff from cora');
+    // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
+    console.log('Loaded stuff for Remix');
+  });
+  loadStuffOnServerStartBFF().then(() => {
+    // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
+    console.log('Loaded stuff from BFF');
   });
 });

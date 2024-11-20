@@ -37,7 +37,7 @@ import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ context, request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
 
@@ -63,6 +63,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   try {
     const { recordType, id } = await createRecord(
+      context.pool,
       formDefinition,
       removeEmpty(data) as CoraRecord,
       auth,

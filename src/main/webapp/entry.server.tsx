@@ -18,6 +18,7 @@ import i18nextServer from '@/app/i18n.server';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { i18nConfig } from '@/app/i18nConfig';
 import I18NextHttpBackend from 'i18next-http-backend';
+import { dependencies } from './data/pool.server';
 
 const ABORT_DELAY = 5_000;
 
@@ -34,6 +35,7 @@ export default async function handleRequest(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadContext: AppLoadContext,
 ) {
+  console.log('HANDLE REQUEST', dependencies.validationTypePool);
   const i18nInstance = createInstance();
   const locale = await i18nextServer.getLocale(request);
 

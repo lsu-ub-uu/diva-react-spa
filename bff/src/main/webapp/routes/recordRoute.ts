@@ -28,7 +28,7 @@ import {
 
 const recordRoute = express.Router();
 
-recordRoute.route('/:validationTypeId').post(postRecordByValidationType);
+// recordRoute.route('/:validationTypeId').post(postRecordByValidationType);
 recordRoute.route('/:validationTypeId/:recordId').post(postRecordByValidationTypeAndId);
 recordRoute.route('/:recordType/:recordId').delete(deleteRecordByValidationTypeAndId);
 recordRoute.route('/:recordType/:recordId').get(getRecordByRecordTypeAndId);

@@ -1,19 +1,11 @@
-import axios from 'axios';
-import { Auth } from '@/features/auth/authSlice';
+import { requestAuthTokenOnLogin } from '../../../../bff/src/main/webapp/cora/auth';
 
 export const loginWithUsernameAndPassword = async (
   loginId: string,
   password: string,
 ) => {
   try {
-    const response = await axios.post(
-      `/auth/password`,
-      { user: loginId, password },
-      {
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
-    return response.data.authToken as Auth;
+    return await requestAuthTokenOnLogin(loginId, password, 'password');
   } catch {
     return null;
   }

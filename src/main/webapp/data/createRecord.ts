@@ -17,24 +17,58 @@
  */
 
 import { CoraRecord } from '@/features/record/types';
-import axios from 'axios';
+
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
-import { Auth } from '@/features/auth/authSlice';
+import { Auth } from '@/types/Auth';
+import { createFormMetaData } from '../../../../bff/src/main/webapp/formDefinition/formMetadata';
+import { createFormMetaDataPathLookup } from '../../../../bff/src/main/webapp/utils/structs/metadataPathLookup';
+import { transformToCoraData } from '../../../../bff/src/main/webapp/config/transformToCora';
+import { cleanJson } from '../../../../bff/src/main/webapp/utils/structs/removeEmpty';
+import { postRecordData } from '../../../../bff/src/main/webapp/cora/record';
+import { transformRecord } from '../../../../bff/src/main/webapp/config/transformRecord';
+import {
+  RecordWrapper,
+  DataGroup,
+} from '../../../../bff/src/main/webapp/utils/cora-data/CoraData';
 
 export const createRecord = async (
+  pool: any,
   formDefinition: RecordFormSchema,
   record: CoraRecord,
   auth: Auth,
 ) => {
-  const response = await axios.post(
-    `/record/${formDefinition?.validationTypeId}`,
-    record,
-    { headers: { Authtoken: auth.data.token } },
-  );
-  const recordInfo = getRecordInfo(response.data);
-  const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;
-  const recordType = getValueFromRecordInfo(recordInfo, 'type')[0].value;
+  const validationTypeId = formDefinition.validationTypeId;
+  const { validationTypePool } = pool;
 
-  return { id, recordType, data: response.data };
+  const recordType =
+    validationTypePool.get(validationTypeId).validatesRecordTypeId;
+
+  if (!validationTypePool.has(validationTypeId)) {
+    throw new Error(`Validation type [${validationTypeId}] does not exist`);
+  }
+
+  const FORM_MODE_NEW = 'create';
+
+  const formMetaData = createFormMetaData(
+    pool,
+    validationTypeId,
+    FORM_MODE_NEW,
+  );
+  const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+  const payload = cleanJson(record);
+  const transformData = transformToCoraData(formMetaDataPathLookup, payload);
+
+  const response = await postRecordData<RecordWrapper>(
+    transformData[0] as DataGroup,
+    recordType,
+    auth.data.token,
+  );
+
+  const createdRecord = transformRecord(pool, response.data);
+
+  const recordInfo = getRecordInfo(createdRecord);
+  const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;
+
+  return { id, recordType, data: createdRecord };
 };

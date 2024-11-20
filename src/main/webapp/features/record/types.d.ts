@@ -38,11 +38,13 @@ export interface CoraRecord {
   createdAt?: string;
   createdBy?: string;
   updated?: CoraUpdate[];
-  userRights?: string[];
+  userRights?: Array<'read' | 'read_incoming_links' | 'update' | 'index'>;
   data: {
     [key: string]: Metadata;
   };
   presentation?: unknown;
+  listPresentation?: unknown;
+  autoCompletePresentation?: unknown;
 }
 
 export interface CoraSearchResult {

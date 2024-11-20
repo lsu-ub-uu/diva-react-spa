@@ -18,7 +18,7 @@
 
 import { CoraRecord } from '@/features/record/types';
 import axios from 'axios';
-import { Auth } from '@/features/auth/authSlice';
+import { Auth } from '@/types/Auth';
 
 export const updateRecord = async (
   validationTypeId: string,

@@ -18,7 +18,7 @@
 
 // app/sessions.ts
 import { createCookieSessionStorage, json, Session } from '@remix-run/node';
-import { Auth } from '@/features/auth/authSlice';
+import { Auth } from '@/types/Auth';
 
 type SessionData = {
   auth: Auth;

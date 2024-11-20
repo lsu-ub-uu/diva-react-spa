@@ -23,44 +23,17 @@ import { isValidJSON } from './utils/utils';
 const LOCAL_STORAGE_NAME = 'diva_session';
 
 // a temporary user session object
-export interface Auth {
-  data: {
-    token: string;
-    validForNoSeconds: string;
-    userId?: string;
-    loginId: string;
-    lastName?: string;
-    firstName?: string;
-  };
-  actionLinks?: ActionLinks;
-}
-
-export interface ActionLinks {
-  read?: ActionLink;
-  update?: ActionLink;
-  index?: ActionLink;
-  delete?: ActionLink;
-}
-
-export interface ActionLink {
-  requestMethod: string;
-  rel: string;
-  url: string;
-  accept?: string;
-  contentType?: string;
-  body?: any;
-}
 
 export interface AuthState {
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   hasError: boolean;
   error?: string;
-  userSession: Auth | null;
+  userSession: any;
 }
 
 export const checkIfDataShouldBeSaved = (
-  userSession: Auth | Record<string, never> | null,
+  userSession: any | Record<string, never> | null,
 ) => {
   if (
     JSON.stringify(userSession) === '{}' ||
@@ -71,7 +44,7 @@ export const checkIfDataShouldBeSaved = (
   return isValidJSON(JSON.stringify(userSession));
 };
 
-export const writeState = (userSession: Auth) => {
+export const writeState = (userSession: any) => {
   if (checkIfDataShouldBeSaved(userSession)) {
     localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(userSession));
   }
@@ -81,7 +54,7 @@ export const deleteState = (): void => {
   localStorage.removeItem(LOCAL_STORAGE_NAME);
 };
 
-export const createInitialState = (): Auth | null => {
+export const createInitialState = (): any | null => {
   if (typeof window === 'undefined') {
     return null;
   }
@@ -109,7 +82,7 @@ export const createInitialState = (): Auth | null => {
   axios.defaults.headers.common = {
     Authtoken: session.data.token,
   };
-  return session as Auth;
+  return session as any;
 };
 
 const initialState = {
@@ -132,7 +105,7 @@ export const authSlice = createSlice({
       state.error = `${action.payload}`;
       state.isAuthenticating = false;
     },
-    authenticated: (state, action: PayloadAction<Auth>) => {
+    authenticated: (state, action: PayloadAction<any>) => {
       state.isAuthenticating = false;
       state.isAuthenticated = true;
       state.hasError = false;

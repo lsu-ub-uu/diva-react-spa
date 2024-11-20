@@ -41,6 +41,7 @@ import { Dependencies } from '../formDefinition/formDefinitionsDep';
 import { removeEmpty } from '../utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
 import { createFormMetaData } from '../formDefinition/formMetadata';
+import { CoraRecord } from '@/features/record/types';
 
 /**
  * Transforms records
@@ -86,7 +87,7 @@ interface TransformRecordDataInterface {
 export const transformRecord = (
   dependencies: Dependencies,
   recordWrapper: RecordWrapper
-): TransformRecordInterface => {
+): CoraRecord => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   let createdAt;

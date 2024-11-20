@@ -17,13 +17,11 @@
  */
 
 import 'dotenv/config';
-
-import express, { Application, Request } from 'express';
-import { getRecordDataListByType } from '../cora/record';
-import { DataListWrapper } from '../utils/cora-data/CoraData';
-import { transformCoraTexts } from './transformTexts';
-import { transformMetadata } from './transformMetadata';
-import { listToPool } from '../utils/structs/listToPool';
+import { getRecordDataListByType } from '../../../../bff/src/main/webapp/cora/record';
+import { DataListWrapper } from '../../../../bff/src/main/webapp/utils/cora-data/CoraData';
+import { transformCoraTexts } from '../../../../bff/src/main/webapp/config/transformTexts';
+import { transformMetadata } from '../../../../bff/src/main/webapp/config/transformMetadata';
+import { listToPool } from '../../../../bff/src/main/webapp/utils/structs/listToPool';
 import {
   BFFGuiElement,
   BFFLoginPassword,
@@ -35,18 +33,20 @@ import {
   BFFRecordType,
   BFFSearch,
   BFFText,
-  BFFValidationType
-} from './bffTypes';
-import { transformCoraPresentations } from './transformPresentations';
-import { transformCoraValidationTypes } from './transformValidationTypes';
-import { transformCoraRecordTypes } from './transformRecordTypes';
-import { Dependencies } from '../formDefinition/formDefinitionsDep';
-import { transformCoraSearch } from './transformCoraSearch';
-import { transformLoginUnit } from './transformLoginUnit';
-import { transformLogin } from './transformLogin';
+  BFFValidationType,
+} from '../../../../bff/src/main/webapp/config/bffTypes';
+import { transformCoraPresentations } from '../../../../bff/src/main/webapp/config/transformPresentations';
+import { transformCoraValidationTypes } from '../../../../bff/src/main/webapp/config/transformValidationTypes';
+import { transformCoraRecordTypes } from '../../../../bff/src/main/webapp/config/transformRecordTypes';
+import { Dependencies } from '../../../../bff/src/main/webapp/formDefinition/formDefinitionsDep';
+import { transformCoraSearch } from '../../../../bff/src/main/webapp/config/transformCoraSearch';
+import { transformLoginUnit } from '../../../../bff/src/main/webapp/config/transformLoginUnit';
+import { transformLogin } from '../../../../bff/src/main/webapp/config/transformLogin';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
-  const promises = poolTypes.map((type) => getRecordDataListByType<DataListWrapper>(type, ''));
+  const promises = poolTypes.map((type) =>
+    getRecordDataListByType<DataListWrapper>(type, ''),
+  );
   return Promise.all(promises);
 };
 
@@ -58,7 +58,7 @@ const dependencies: Dependencies = {
   validationTypePool: listToPool<BFFValidationType>([]),
   searchPool: listToPool<BFFSearch>([]),
   loginUnitPool: listToPool<BFFLoginUnit>([]),
-  loginPool: listToPool<BFFLoginWebRedirect>([])
+  loginPool: listToPool<BFFLoginWebRedirect>([]),
 };
 
 const loadStuffOnServerStart = async () => {
@@ -73,7 +73,7 @@ const loadStuffOnServerStart = async () => {
     'recordType',
     'search',
     'loginUnit',
-    'login'
+    'login',
   ];
   const result = await getPoolsFromCora(types);
 
@@ -82,10 +82,9 @@ const loadStuffOnServerStart = async () => {
   const presentation = transformCoraPresentations(result[1].data);
   const guiElements = transformCoraPresentations(result[3].data);
 
-  const presentationPool = listToPool<BFFPresentation | BFFPresentationGroup | BFFGuiElement>([
-    ...presentation,
-    ...guiElements
-  ]);
+  const presentationPool = listToPool<
+    BFFPresentation | BFFPresentationGroup | BFFGuiElement
+  >([...presentation, ...guiElements]);
 
   const validationTypes = transformCoraValidationTypes(result[2].data);
   const validationTypePool = listToPool<BFFValidationType>(validationTypes);

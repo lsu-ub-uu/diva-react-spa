@@ -16,15 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Auth } from '@/features/auth/authSlice';
-import axios from 'axios';
+import { deleteAuthTokenFromCora } from '../../../../bff/src/main/webapp/cora/auth';
+import { Auth } from '@/types/Auth';
 
 export const deleteSession = async (auth: Auth) => {
   const { actionLinks } = auth;
-  return axios.delete('/auth', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: { actionLinks },
-  });
+
+  return deleteAuthTokenFromCora(actionLinks!, auth.data.token);
 };

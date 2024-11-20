@@ -18,10 +18,10 @@
  */
 
 import axios from 'axios';
-import { Auth } from '../types/Auth';
 import { ActionLinks, CoraRecord } from '../utils/cora-data/CoraData';
 import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
 import assertExists from '../utils/assertExists';
+import { Auth } from '../../../../../src/main/webapp/types/Auth';
 
 export async function requestAuthTokenOnLogin(
   user: string,
