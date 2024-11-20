@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => {
       optimizeDeps: {
         include: ['lodash'],
       },
-      noExternal: ['@mui/icons-material', 'lodash'],
+      noExternal: ['@mui/icons-material', 'lodash', 'notistack'],
     },
     resolve:
       mode === 'production'
