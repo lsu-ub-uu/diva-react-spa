@@ -16,28 +16,3 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-const { CORA_API_URL, CORA_LOGIN_URL } = process.env;
-
-export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
-export const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
-
-export const createHeaders = (
-  init: Record<string, string>,
-  authToken?: string,
-): Record<string, string> => {
-  const headers = init;
-
-  if (authToken) {
-    headers.Authtoken = authToken;
-  }
-
-  return headers;
-};
-
-export const coraApiUrl = (path: string) => {
-  return `${CORA_API_URL}${path}`;
-};
-
-export const coraLoginUrl = (path: string) => {
-  return `${CORA_LOGIN_URL}${path}`;
-};

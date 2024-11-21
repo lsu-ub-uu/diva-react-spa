@@ -18,7 +18,7 @@
 
 import { DataGroup } from '@/cora/cora-data/CoraData';
 import axios, { AxiosResponse } from 'axios';
-import { coraUrl, createHeaders, RECORD_CONTENT_TYPE } from '@/cora/helper';
+import { coraApiUrl, createHeaders, RECORD_CONTENT_TYPE } from '@/cora/helper';
 
 export const updateRecordDataById = async <T>(
   recordId: string,
@@ -26,7 +26,7 @@ export const updateRecordDataById = async <T>(
   type: string,
   authToken?: string,
 ): Promise<AxiosResponse<T>> => {
-  const apiUrl: string = coraUrl(`/record/${type}/${recordId}`);
+  const apiUrl: string = coraApiUrl(`/record/${type}/${recordId}`);
   const headers = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
     authToken,

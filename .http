@@ -87,6 +87,15 @@ Authtoken: b918c8b7-0b4f-4dc7-ba4f-a33fde95928d
 GET http://localhost:8080/api/form/search/divaOutputSwepubSearch
 Authtoken: 2ffadcbb-d848-4fa8-8f69-15244232274b
 
+
+###
+
+POST https://cora.epc.ub.uu.se/diva/login/apptoken
+Content-Type: application/vnd.uub.login
+
+divaAdmin@cora.epc.ub.uu.se
+49ce00fb-68b5-4089-a5f7-1c225d3cf156
+
 ###
 POST http://localhost:8080/api/record/manuscript
 Content-Type: application/json

@@ -16,28 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-const { CORA_API_URL, CORA_LOGIN_URL } = process.env;
+import axios, { AxiosResponse } from 'axios';
+import { coraApiUrl, createHeaders } from '@/cora/helper';
 
-export const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
-export const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
-
-export const createHeaders = (
-  init: Record<string, string>,
+export async function deleteRecordDataById<T>(
+  recordId: string,
+  type: string,
   authToken?: string,
-): Record<string, string> => {
-  const headers = init;
+): Promise<AxiosResponse<T>> {
+  const apiUrl: string = coraApiUrl(`/record/${type}/${recordId}`);
+  const headers = createHeaders({}, authToken);
 
-  if (authToken) {
-    headers.Authtoken = authToken;
-  }
-
-  return headers;
-};
-
-export const coraApiUrl = (path: string) => {
-  return `${CORA_API_URL}${path}`;
-};
-
-export const coraLoginUrl = (path: string) => {
-  return `${CORA_LOGIN_URL}${path}`;
-};
+  return axios.delete(apiUrl, { headers });
+}

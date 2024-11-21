@@ -18,7 +18,7 @@
 
 import { Auth } from '@/types/Auth';
 import axios from 'axios';
-import { coraUrl } from '@/cora/helper';
+import { coraLoginUrl } from '@/cora/helper';
 import { CoraRecord } from '@/cora/cora-data/CoraData';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers';
 import { invariant } from '@remix-run/router/history';
@@ -28,14 +28,19 @@ export async function requestAuthTokenOnLogin(
   authToken: string | undefined,
   loginType: 'apptoken' | 'password',
 ): Promise<Auth> {
-  const url = coraUrl(`/${loginType}`);
+  const url = coraLoginUrl(`/${loginType}`);
 
   const headers = {
     'Content-Type': 'application/vnd.uub.login',
   };
   const body = `${user}\n${authToken}`;
-  const response = await axios.post(url, body, { headers });
-  return extractDataFromResult(response.data);
+  try {
+    const response = await axios.post(url, body, { headers });
+    return extractDataFromResult(response.data);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 const extractDataFromResult = (record: CoraRecord): Auth => {

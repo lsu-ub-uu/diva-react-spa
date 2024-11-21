@@ -20,7 +20,7 @@ import { DataGroup } from '@/cora/cora-data/CoraData';
 import axios, { AxiosResponse } from 'axios';
 import console from 'node:console';
 import {
-  coraUrl,
+  coraApiUrl,
   createHeaders,
   RECORD_LIST_CONTENT_TYPE,
 } from '@/cora/helper';
@@ -31,7 +31,7 @@ export async function getSearchResultDataListBySearchType<T>(
   authToken?: string,
 ): Promise<AxiosResponse<T>> {
   console.log(searchType);
-  const apiUrl: string = coraUrl(`/record/searchResult/${searchType}`);
+  const apiUrl: string = coraApiUrl(`/record/searchResult/${searchType}`);
 
   const searchDataString = JSON.stringify(searchData);
   const finalUrl = encodeURI(`${apiUrl}?searchData=${searchDataString}`);

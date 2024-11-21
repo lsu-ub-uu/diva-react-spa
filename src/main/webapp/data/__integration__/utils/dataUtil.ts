@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { deleteRecordDataById, postRecordData } from '../../../cora/record';
+import {
+  deleteRecordDataById,
+  postRecordData,
+} from '../../../../../../bff/src/main/webapp/cora/record';
 import { DataGroup, RecordWrapper } from '@/cora/cora-data/CoraData';
 import {
   getFirstChildWithNameInData,

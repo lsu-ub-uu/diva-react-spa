@@ -18,14 +18,14 @@
 
 import { DataGroup } from '@/cora/cora-data/CoraData';
 import axios, { AxiosResponse } from 'axios';
-import { coraUrl, createHeaders, RECORD_CONTENT_TYPE } from '@/cora/helper';
+import { coraApiUrl, createHeaders, RECORD_CONTENT_TYPE } from '@/cora/helper';
 
 export async function postRecordData<T>(
   payload: DataGroup,
   type: string,
   authToken?: string,
 ): Promise<AxiosResponse<T>> {
-  const apiUrl = coraUrl(`/record/${type}`);
+  const apiUrl = coraApiUrl(`/record/${type}`);
 
   const headers = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
