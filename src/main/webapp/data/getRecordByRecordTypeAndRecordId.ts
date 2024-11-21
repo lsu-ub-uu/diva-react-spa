@@ -17,11 +17,11 @@
  */
 
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
-import { getRecordDataById } from '../../../../bff/src/main/webapp/cora/record';
 import { RecordWrapper } from '@/cora/cora-data/CoraData';
 import { transformRecord } from '@/cora/transform/transformRecord';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/formDefinition';
 import { getGroupsFromPresentationLinkId } from '../../../../bff/src/main/webapp/controllers/recordController';
+import { getRecordDataById } from '@/cora/getRecordDataById';
 
 export const getRecordByRecordTypeAndRecordId = async (
   dependencies: Dependencies,

@@ -25,7 +25,6 @@ import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
-import { loadStuffOnServerStart as loadStuffOnServerStartBFF } from './bff/src/main/webapp/configureServer';
 import {
   authRoute,
   formRoute,
@@ -91,15 +90,6 @@ if (NODE_ENV !== 'production') {
   });
 }
 
-// BFF API routes
-app.use('/api/auth', authRoute);
-app.use('/api/translations/', translationRoute);
-app.use('/api/validationTypes', validationTypesRoute);
-app.use('/api/search', searchRoute);
-app.use('/api/record', recordRoute);
-app.use('/api/form', formRoute);
-app.use('/api/refreshDefinitions', refreshDefinitionsRoute);
-
 // Remix SSR requests
 app.all('*', remixHandler);
 
@@ -110,10 +100,6 @@ app.listen(port, () => {
   console.log(`Express server listening at http://localhost:${port}`);
   loadStuffOnServerStart().then(() => {
     // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
-    console.log('Loaded stuff for Remix');
-  });
-  loadStuffOnServerStartBFF().then(() => {
-    // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
-    console.log('Loaded stuff from BFF');
+    console.log('Loaded stuff from Cora');
   });
 });

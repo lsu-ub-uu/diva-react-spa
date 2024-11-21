@@ -1,4 +1,4 @@
-import { requestAuthTokenOnLogin } from '../../../../bff/src/main/webapp/cora/auth';
+import { requestAuthTokenOnLogin } from '@/cora/requestAuthTokenOnLogin';
 
 export const loginWithUsernameAndPassword = async (
   loginId: string,

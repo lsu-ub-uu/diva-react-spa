@@ -16,12 +16,44 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
 import { Option } from '@/components';
+import { DataGroup, DataListWrapper } from '@/cora/cora-data/CoraData';
+import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes';
+import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType';
 
 export const getValidationTypes = async (authToken: string) => {
-  const response = await axios.get(`/validationTypes`, {
-    headers: { Authtoken: authToken },
-  });
-  return response.data as Option[];
+  const searchQuery: DataGroup = {
+    name: 'validationTypeSearch',
+    children: [
+      {
+        name: 'include',
+        children: [
+          {
+            name: 'includePart',
+            children: [
+              {
+                name: 'validatesRecordTypeSearchTerm',
+                value: 'recordType_diva-output',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  const response = await getSearchResultDataListBySearchType<DataListWrapper>(
+    'validationTypeSearch',
+    searchQuery,
+    authToken,
+  );
+
+  const validationTypes = transformCoraValidationTypes(response.data);
+
+  return validationTypes.map(
+    (validationType): Option => ({
+      value: validationType.id,
+      label: validationType.nameTextId,
+    }),
+  );
 };
