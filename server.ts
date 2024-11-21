@@ -25,15 +25,7 @@ import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
-import {
-  authRoute,
-  formRoute,
-  recordRoute,
-  refreshDefinitionsRoute,
-  searchRoute,
-  translationRoute,
-  validationTypesRoute,
-} from './bff/src/main/webapp/routes';
+import { createTextDefinition } from '@/data/textDefinition/textDefinition';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -66,6 +58,16 @@ app.use(compression());
 
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
 app.disable('x-powered-by');
+
+app.use('/api/translations/:lang', (req, res) => {
+  try {
+    const textDefinitions = createTextDefinition(dependencies, req.params.lang);
+    res.status(200).json(textDefinitions);
+  } catch (error: unknown) {
+    console.error(error);
+    res.status(500).json('Internal server error');
+  }
+});
 
 // handle asset requests
 if (viteDevServer) {

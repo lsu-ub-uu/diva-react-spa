@@ -23,7 +23,7 @@ import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { defer, LoaderFunctionArgs } from '@remix-run/node';
 import { searchRecords } from '@/data/searchRecords';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
 
@@ -31,7 +31,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
     ? getValidationTypes(auth.data.token)
     : Promise.resolve(null);
 
-  const searchForm = getSearchForm('diva-outputSimpleSearch');
+  const searchForm = getSearchForm(
+    context.dependencies,
+    'diva-outputSimpleSearch',
+  );
 
   const query = {
     search: {
@@ -46,7 +49,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
       },
     },
   };
-  const recordList = searchRecords('diva-outputSearch', query, auth);
+  const recordList = searchRecords(
+    context.dependencies,
+    'diva-outputSearch',
+    query,
+    auth,
+  );
 
   return defer({ validationTypes, searchForm, recordList });
 }

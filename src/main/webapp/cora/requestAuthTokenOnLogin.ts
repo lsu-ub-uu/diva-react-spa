@@ -18,8 +18,10 @@
 
 import { Auth } from '@/types/Auth';
 import axios from 'axios';
-import { extractDataFromResult } from '../../../../bff/src/main/webapp/cora/auth';
 import { coraUrl } from '@/cora/helper';
+import { CoraRecord } from '@/cora/cora-data/CoraData';
+import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers';
+import { invariant } from '@remix-run/router/history';
 
 export async function requestAuthTokenOnLogin(
   user: string,
@@ -35,3 +37,33 @@ export async function requestAuthTokenOnLogin(
   const response = await axios.post(url, body, { headers });
   return extractDataFromResult(response.data);
 }
+
+const extractDataFromResult = (record: CoraRecord): Auth => {
+  const dataGroup = record.data;
+  const token = getFirstDataAtomicValueWithNameInData(dataGroup, 'token');
+  const validForNoSeconds = getFirstDataAtomicValueWithNameInData(
+    dataGroup,
+    'validForNoSeconds',
+  );
+  const userId = getFirstDataAtomicValueWithNameInData(dataGroup, 'userId');
+  const loginId = getFirstDataAtomicValueWithNameInData(dataGroup, 'loginId');
+  const firstName = getFirstDataAtomicValueWithNameInData(
+    dataGroup,
+    'firstName',
+  );
+  const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
+
+  invariant(record.actionLinks);
+
+  return {
+    data: {
+      token,
+      validForNoSeconds,
+      userId,
+      loginId,
+      firstName,
+      lastName,
+    },
+    actionLinks: record.actionLinks,
+  };
+};

@@ -18,7 +18,7 @@
 
 import { Form, useFetcher, useLoaderData } from '@remix-run/react';
 import { loader } from '@/root';
-import { MenuItem, NativeSelect, OutlinedInput, Select } from '@mui/material';
+import { NativeSelect, OutlinedInput } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from 'react-i18next';
 

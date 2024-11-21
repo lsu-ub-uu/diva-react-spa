@@ -16,11 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
 import { CoraSearchResult } from '@/features/record/types';
 import { Auth } from '@/types/Auth';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
-import { FormMetaData } from '@/data/formDefinition/formDefinition';
+import {
+  createLinkedRecordDefinition,
+  FormMetaData,
+} from '@/data/formDefinition/formDefinition';
 import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
 import {
   createBFFMetadataReference,
@@ -30,6 +32,7 @@ import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup
 import { transformToCoraData } from '@/cora/transform/transformToCora';
 import { getSearchResultDataListBySearchType } from '@/cora/getSearchResultDataListBySearchType';
 import { DataGroup, DataListWrapper } from '@/cora/cora-data/CoraData';
+import { transformRecords } from '@/cora/transform/transformRecord';
 
 export const searchRecords = async (
   dependencies: Dependencies,
@@ -37,21 +40,13 @@ export const searchRecords = async (
   query: any,
   auth?: Auth,
 ) => {
-  const response = await axios.get(
-    `/search/advanced/${searchType}?query=${encodeURIComponent(JSON.stringify(query))}`,
-    auth ? { headers: { Authtoken: auth.data.token } } : undefined,
-  );
-
   if (!dependencies.searchPool.has(searchType)) {
     throw new Error(`Search [${searchType}] does not exist`);
   }
 
-  const searchName = dependencies.searchPool.get(searchType);
+  const search = dependencies.searchPool.get(searchType);
 
-  const searchMetadata = createSearchMetaData(
-    dependencies,
-    searchName.metadataId,
-  );
+  const searchMetadata = createSearchMetaData(dependencies, search.metadataId);
   const formMetaDataPathLookup = createFormMetaDataPathLookup(searchMetadata);
   const transformData = transformToCoraData(formMetaDataPathLookup, query);
 
@@ -83,7 +78,14 @@ export const searchRecords = async (
       presentationGroup,
     );
   });
-  return response.data as CoraSearchResult;
+
+  return {
+    fromNo: Number(fromNo),
+    toNo: Number(toNo),
+    totalNo: Number(totalNo),
+    containDataOfType,
+    data: transformedRecords,
+  } as CoraSearchResult;
 };
 
 const createSearchMetaData = (

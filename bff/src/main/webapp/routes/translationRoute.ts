@@ -18,7 +18,7 @@
  */
 
 import express from 'express';
-import { getTranslations } from '../controllers/translationController';
+import { getTranslations } from '../../../../../translationController';
 
 const translationRoute = express.Router();
 

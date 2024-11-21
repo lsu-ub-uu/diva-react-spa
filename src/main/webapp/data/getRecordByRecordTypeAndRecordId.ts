@@ -20,8 +20,8 @@ import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { RecordWrapper } from '@/cora/cora-data/CoraData';
 import { transformRecord } from '@/cora/transform/transformRecord';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/formDefinition';
-import { getGroupsFromPresentationLinkId } from '../../../../bff/src/main/webapp/controllers/recordController';
 import { getRecordDataById } from '@/cora/getRecordDataById';
+import * as TYPES from '@/cora/transform/bffTypes';
 
 export const getRecordByRecordTypeAndRecordId = async (
   dependencies: Dependencies,
@@ -40,7 +40,7 @@ export const getRecordByRecordTypeAndRecordId = async (
 
   if (presentationRecordLinkId !== undefined) {
     const { presentationGroup, metadataGroup } =
-      getGroupsFromPresentationLinkId(presentationRecordLinkId);
+      getGroupsFromPresentationLinkId(dependencies, presentationRecordLinkId);
     record.presentation = createLinkedRecordDefinition(
       dependencies,
       metadataGroup,
@@ -57,4 +57,22 @@ export const getRecordByRecordTypeAndRecordId = async (
   }
 
   return record;
+};
+
+const getGroupsFromPresentationLinkId = (
+  dependencies: Dependencies,
+  presentationLinkId: string,
+) => {
+  const presentationLink = dependencies.presentationPool.get(
+    presentationLinkId,
+  ) as TYPES.BFFPresentationRecordLink;
+  const presentationId =
+    presentationLink.linkedRecordPresentations !== undefined
+      ? presentationLink.linkedRecordPresentations[0].presentationId
+      : presentationLink.id;
+  const presentationGroup = dependencies.presentationPool.get(presentationId);
+  const metadataGroup = dependencies.metadataPool.get(
+    presentationGroup.presentationOf,
+  ) as TYPES.BFFMetadataGroup;
+  return { presentationGroup, metadataGroup };
 };

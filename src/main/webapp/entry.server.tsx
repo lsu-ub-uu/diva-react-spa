@@ -11,19 +11,14 @@ import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
-import axios from 'axios';
 import { MuiProvider } from '@/mui/MuiProvider';
 import { createInstance, i18n } from 'i18next';
 import i18nextServer from '@/app/i18n.server';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { i18nConfig } from '@/app/i18nConfig';
 import I18NextHttpBackend from 'i18next-http-backend';
-import { dependencies } from './data/pool.server';
 
 const ABORT_DELAY = 5_000;
-
-const { VITE_BFF_API_URL } = import.meta.env;
-axios.defaults.baseURL = VITE_BFF_API_URL;
 
 export default async function handleRequest(
   request: Request,
@@ -35,7 +30,6 @@ export default async function handleRequest(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadContext: AppLoadContext,
 ) {
-  console.log('HANDLE REQUEST', dependencies.validationTypePool);
   const i18nInstance = createInstance();
   const locale = await i18nextServer.getLocale(request);
 

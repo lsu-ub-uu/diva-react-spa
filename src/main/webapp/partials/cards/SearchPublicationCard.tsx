@@ -46,7 +46,7 @@ export const SearchPublicationCard = () => {
             }
           >
             <SearchForm
-              formSchema={searchForm.form}
+              formSchema={searchForm}
               searchType={searchType}
             />
           </Card>

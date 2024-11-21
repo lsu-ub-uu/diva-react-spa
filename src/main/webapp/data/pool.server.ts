@@ -33,7 +33,7 @@ import {
   BFFSearch,
   BFFText,
   BFFValidationType,
-} from '../cora/transform/bffTypes';
+} from '@/cora/transform/bffTypes';
 import { transformCoraPresentations } from '@/cora/transform/transformPresentations';
 import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes';
 import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes';

@@ -44,7 +44,12 @@ export const loader = async ({
 
   let searchResults: CoraSearchResult | null = null;
   try {
-    searchResults = await searchRecords(searchType, query, auth);
+    searchResults = await searchRecords(
+      context.dependencies,
+      searchType,
+      query,
+      auth,
+    );
   } catch (e) {
     console.error(e);
   }

@@ -14,24 +14,22 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Request, Response } from 'express';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition';
-import { dependencies } from '../configureServer';
+import { DataGroup } from '@/cora/cora-data/CoraData';
+import axios, { AxiosResponse } from 'axios';
+import { coraUrl, createHeaders, RECORD_CONTENT_TYPE } from '@/cora/helper';
 
-/**
- * @desc Get translations for requested language
- * @route GET /api/translation/:lang
- * @access	Public
- */
-export const getTranslations = async (req: Request, res: Response) => {
-  try {
-    const textDefinitions = createTextDefinition(dependencies, req.params.lang);
-    res.status(200).json(textDefinitions);
-  } catch (error: unknown) {
-    console.error(error);
-    res.status(500).json('Internal server error');
-  }
+export const updateRecordDataById = async <T>(
+  recordId: string,
+  payload: DataGroup,
+  type: string,
+  authToken?: string,
+): Promise<AxiosResponse<T>> => {
+  const apiUrl: string = coraUrl(`/record/${type}/${recordId}`);
+  const headers = createHeaders(
+    { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
+    authToken,
+  );
+  return axios.post(apiUrl, payload, { headers });
 };
