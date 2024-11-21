@@ -34,16 +34,13 @@ export default defineConfig(({ mode }) => {
         '**/target/**',
         '**/*.{test,spec}.{js,mjs,cjs,jsx}',
       ],
-      setupFiles: '../../../setupTest.ts',
+      setupFiles: './setupTest.ts',
     },
     build: {
-      outDir: '../../../dist',
+      outDir: './dist',
     },
     ssr: {
-      optimizeDeps: {
-        include: ['lodash'],
-      },
-      noExternal: ['@mui/icons-material', 'lodash', 'notistack'],
+      noExternal: ['@mui/icons-material', 'notistack'],
     },
     resolve:
       mode === 'production'

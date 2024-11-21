@@ -16,18 +16,31 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
 import { SearchFormSchema } from '@/components/FormGenerator/types';
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
+import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
+import { createLinkedRecordDefinition } from '@/data/formDefinition/formDefinition';
 
-export const getSearchForm = async (searchId: string) => {
-  try {
-    const response = await axios.get(`/form/search/${searchId}`);
-    return { form: response.data as SearchFormSchema };
-  } catch (error) {
-    return { error }
-  }
+export const getSearchForm = (dependencies: Dependencies, searchId: string) => {
+  const searchFromPool = dependencies.searchPool.get(searchId);
+  const searchMetadataGroup = dependencies.metadataPool.get(
+    searchFromPool.metadataId,
+  ) as BFFMetadataGroup;
+  const searchPresentationGroup = dependencies.presentationPool.get(
+    searchFromPool.presentationId,
+  );
+
+  const { form } = createLinkedRecordDefinition(
+    dependencies,
+    searchMetadataGroup,
+    searchPresentationGroup,
+  );
+
+  return {
+    form,
+    recordTypeToSearchIn: searchFromPool.recordTypeToSearchIn,
+  } as SearchFormSchema;
 };
-
 
 export interface Search {
   form?: SearchFormSchema;

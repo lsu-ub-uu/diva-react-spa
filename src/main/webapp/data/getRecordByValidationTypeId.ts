@@ -16,10 +16,47 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
-import {CoraRecord} from "@/features/record/types";
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
+import {
+  BFFMetadataGroup,
+  BFFMetadataRecordLink,
+} from '@/cora/transform/bffTypes';
+import { CoraRecord } from '@/features/record/types';
 
-export const getRecordByValidationTypeId = async (validationTypeId: string) => {
-  const response = await axios.get<CoraRecord>(`/record/${validationTypeId}`);
-  return response.data as CoraRecord;
+export const getRecordByValidationTypeId = (
+  dependencies: Dependencies,
+  validationTypeId: string,
+) => {
+  const validationType = dependencies.validationTypePool.get(validationTypeId);
+  const recordTypeGroup = dependencies.recordTypePool.get(
+    validationType.validatesRecordTypeId,
+  );
+  const metadataGroup = dependencies.metadataPool.get(
+    recordTypeGroup.metadataId,
+  ) as BFFMetadataGroup;
+  const recordInfoChildGroup = dependencies.metadataPool.get(
+    metadataGroup.children[0].childId,
+  ) as BFFMetadataGroup;
+
+  const recordInfo = recordInfoChildGroup.children
+    .filter((child) => parseInt(child.repeatMin) > 0)
+    .map(
+      (child) =>
+        dependencies.metadataPool.get(child.childId) as BFFMetadataRecordLink,
+    )
+    .reduce<Record<string, any>>((acc, curr) => {
+      if (curr.finalValue !== undefined) {
+        acc[curr.nameInData] = { value: curr.finalValue };
+      }
+      return acc;
+    }, {});
+
+  const record = {
+    data: {
+      [metadataGroup.nameInData]: {
+        [recordInfoChildGroup.nameInData]: recordInfo,
+      },
+    },
+  };
+  return record as CoraRecord;
 };

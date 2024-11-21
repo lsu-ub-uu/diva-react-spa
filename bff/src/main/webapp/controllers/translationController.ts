@@ -18,8 +18,8 @@
  */
 
 import { Request, Response } from 'express';
-import { createTextDefinition } from '../textDefinition/textDefinition';
-import { dependencies } from '../config/configureServer';
+import { createTextDefinition } from '@/data/textDefinition/textDefinition';
+import { dependencies } from '../configureServer';
 
 /**
  * @desc Get translations for requested language

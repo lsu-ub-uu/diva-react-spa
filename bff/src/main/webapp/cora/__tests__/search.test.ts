@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { listToPool } from '../../utils/structs/listToPool';
+import { listToPool } from '@/utils/structs/listToPool';
 import {
   BFFMetadata,
   BFFMetadataItemCollection,
@@ -30,11 +30,11 @@ import {
   BFFSearch,
   BFFMetadataTextVariable,
   BFFLoginUnit,
-  BFFLoginWebRedirect
-} from '../../config/bffTypes';
-import { Lookup } from '../../utils/structs/lookup';
+  BFFLoginWebRedirect,
+} from '@/cora/transform/bffTypes';
+import { Lookup } from '@/utils/structs/lookup';
 
-import { Dependencies } from '../../formDefinition/formDefinitionsDep';
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { getSearchTermNameFromSearchLink } from '../search';
 
 describe('formDefinition', () => {
@@ -48,7 +48,7 @@ describe('formDefinition', () => {
       nationalSubjectCategoryAutocompleteSearchGroup,
       nationalSubjectCategoryAutocompleteIncludeGroup,
       nationalSubjectCategoryAutocompleteIncludePartGroup,
-      nationalSubjectCategoryAutocompleteTextVar
+      nationalSubjectCategoryAutocompleteTextVar,
     ]);
 
     searchPool = listToPool<BFFSearch>([someBFFSearch]);
@@ -61,7 +61,7 @@ describe('formDefinition', () => {
       recordTypePool: listToPool<BFFRecordType>([]),
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
-      searchPool
+      searchPool,
     };
   });
 
@@ -72,7 +72,7 @@ describe('formDefinition', () => {
     recordTypeToSearchIn: ['nationalSubjectCategory'],
     searchGroup: 'autocomplete',
     searchDefText: 'someSearchDefText',
-    searchText: 'someSearchText'
+    searchText: 'someSearchText',
   };
 
   const nationalSubjectCategoryAutocompleteSearchGroup: BFFMetadataGroup = {
@@ -85,9 +85,9 @@ describe('formDefinition', () => {
       {
         childId: 'nationalSubjectCategoryAutocompleteIncludeGroup',
         repeatMax: '1',
-        repeatMin: '1'
-      }
-    ]
+        repeatMin: '1',
+      },
+    ],
   };
 
   const nationalSubjectCategoryAutocompleteIncludeGroup: BFFMetadataGroup = {
@@ -100,25 +100,26 @@ describe('formDefinition', () => {
       {
         childId: 'nationalSubjectCategoryAutocompleteIncludePartGroup',
         repeatMax: '1',
-        repeatMin: '1'
-      }
-    ]
+        repeatMin: '1',
+      },
+    ],
   };
 
-  const nationalSubjectCategoryAutocompleteIncludePartGroup: BFFMetadataGroup = {
-    id: 'nationalSubjectCategoryAutocompleteIncludePartGroup',
-    nameInData: 'include',
-    type: 'group',
-    textId: '',
-    defTextId: '',
-    children: [
-      {
-        childId: 'nationalSubjectCategoryAutocompleteTextVar',
-        repeatMax: '1',
-        repeatMin: '1'
-      }
-    ]
-  };
+  const nationalSubjectCategoryAutocompleteIncludePartGroup: BFFMetadataGroup =
+    {
+      id: 'nationalSubjectCategoryAutocompleteIncludePartGroup',
+      nameInData: 'include',
+      type: 'group',
+      textId: '',
+      defTextId: '',
+      children: [
+        {
+          childId: 'nationalSubjectCategoryAutocompleteTextVar',
+          repeatMax: '1',
+          repeatMin: '1',
+        },
+      ],
+    };
 
   const nationalSubjectCategoryAutocompleteTextVar: BFFMetadataTextVariable = {
     regEx: '.+',
@@ -126,12 +127,15 @@ describe('formDefinition', () => {
     nameInData: 'nationalSubjectCategorySearchTerm',
     type: 'textVariable',
     textId: '',
-    defTextId: ''
+    defTextId: '',
   };
 
   it('finds some search', () => {
     const searchLink = 'nationalSubjectCategorySearch';
-    const searchTermName = getSearchTermNameFromSearchLink(dependencies, searchLink);
+    const searchTermName = getSearchTermNameFromSearchLink(
+      dependencies,
+      searchLink,
+    );
 
     expect(searchTermName).toBe('nationalSubjectCategorySearchTerm');
   });

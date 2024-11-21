@@ -17,11 +17,10 @@
  */
 
 import 'dotenv/config';
-import { getRecordDataListByType } from '../../../../bff/src/main/webapp/cora/record';
-import { DataListWrapper } from '../../../../bff/src/main/webapp/utils/cora-data/CoraData';
-import { transformCoraTexts } from '../../../../bff/src/main/webapp/config/transformTexts';
-import { transformMetadata } from '../../../../bff/src/main/webapp/config/transformMetadata';
-import { listToPool } from '../../../../bff/src/main/webapp/utils/structs/listToPool';
+import { DataListWrapper } from '@/cora/cora-data/CoraData';
+import { transformCoraTexts } from '@/cora/transform/transformTexts';
+import { transformMetadata } from '@/cora/transform/transformMetadata';
+import { listToPool } from '@/utils/structs/listToPool';
 import {
   BFFGuiElement,
   BFFLoginPassword,
@@ -34,14 +33,15 @@ import {
   BFFSearch,
   BFFText,
   BFFValidationType,
-} from '../../../../bff/src/main/webapp/config/bffTypes';
-import { transformCoraPresentations } from '../../../../bff/src/main/webapp/config/transformPresentations';
-import { transformCoraValidationTypes } from '../../../../bff/src/main/webapp/config/transformValidationTypes';
-import { transformCoraRecordTypes } from '../../../../bff/src/main/webapp/config/transformRecordTypes';
-import { Dependencies } from '../../../../bff/src/main/webapp/formDefinition/formDefinitionsDep';
-import { transformCoraSearch } from '../../../../bff/src/main/webapp/config/transformCoraSearch';
-import { transformLoginUnit } from '../../../../bff/src/main/webapp/config/transformLoginUnit';
-import { transformLogin } from '../../../../bff/src/main/webapp/config/transformLogin';
+} from '../cora/transform/bffTypes';
+import { transformCoraPresentations } from '@/cora/transform/transformPresentations';
+import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes';
+import { transformCoraRecordTypes } from '@/cora/transform/transformRecordTypes';
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
+import { transformCoraSearch } from '@/cora/transform/transformCoraSearch';
+import { transformLoginUnit } from '@/cora/transform/transformLoginUnit';
+import { transformLogin } from '@/cora/transform/transformLogin';
+import { getRecordDataListByType } from '@/cora/getRecordDataListByType';
 
 const getPoolsFromCora = (poolTypes: string[]) => {
   const promises = poolTypes.map((type) =>

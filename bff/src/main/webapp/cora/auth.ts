@@ -18,21 +18,21 @@
  */
 
 import axios from 'axios';
-import { ActionLinks, CoraRecord } from '../utils/cora-data/CoraData';
-import { getFirstDataAtomicValueWithNameInData } from '../utils/cora-data/CoraDataUtilsWrappers';
-import assertExists from '../utils/assertExists';
-import { Auth } from '../../../../../src/main/webapp/types/Auth';
+import { ActionLinks, CoraRecord } from '@/cora/cora-data/CoraData';
+import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers';
+import { Auth } from '@/types/Auth';
+import { invariant } from '@remix-run/router/history';
 
 export async function requestAuthTokenOnLogin(
   user: string,
   authToken: string | undefined,
-  loginType: 'apptoken' | 'password'
+  loginType: 'apptoken' | 'password',
 ): Promise<Auth> {
   const { CORA_LOGIN_URL } = process.env;
   const url = `${CORA_LOGIN_URL}/${loginType}`;
 
   const headers = {
-    'Content-Type': 'application/vnd.uub.login'
+    'Content-Type': 'application/vnd.uub.login',
   };
   const body = `${user}\n${authToken}`;
   const response = await axios.post(url, body, { headers });
@@ -42,13 +42,19 @@ export async function requestAuthTokenOnLogin(
 export const extractDataFromResult = (record: CoraRecord): Auth => {
   const dataGroup = record.data;
   const token = getFirstDataAtomicValueWithNameInData(dataGroup, 'token');
-  const validForNoSeconds = getFirstDataAtomicValueWithNameInData(dataGroup, 'validForNoSeconds');
+  const validForNoSeconds = getFirstDataAtomicValueWithNameInData(
+    dataGroup,
+    'validForNoSeconds',
+  );
   const userId = getFirstDataAtomicValueWithNameInData(dataGroup, 'userId');
   const loginId = getFirstDataAtomicValueWithNameInData(dataGroup, 'loginId');
-  const firstName = getFirstDataAtomicValueWithNameInData(dataGroup, 'firstName');
+  const firstName = getFirstDataAtomicValueWithNameInData(
+    dataGroup,
+    'firstName',
+  );
   const lastName = getFirstDataAtomicValueWithNameInData(dataGroup, 'lastName');
 
-  assertExists(record.actionLinks);
+  invariant(record.actionLinks);
 
   return {
     data: {
@@ -57,15 +63,15 @@ export const extractDataFromResult = (record: CoraRecord): Auth => {
       userId,
       loginId,
       firstName,
-      lastName
+      lastName,
     },
-    actionLinks: record.actionLinks
+    actionLinks: record.actionLinks,
   };
 };
 
 export const deleteAuthTokenFromCora = async (
   actionLinks: ActionLinks,
-  authToken: string | undefined
+  authToken: string | undefined,
 ) => {
   const url = actionLinks.delete;
   if (url === undefined) {
@@ -73,11 +79,11 @@ export const deleteAuthTokenFromCora = async (
   }
 
   const headers = {
-    Authtoken: authToken
+    Authtoken: authToken,
   };
   return axios.request({
     method: actionLinks.delete?.requestMethod,
     url: actionLinks.delete?.url,
-    headers
+    headers,
   });
 };

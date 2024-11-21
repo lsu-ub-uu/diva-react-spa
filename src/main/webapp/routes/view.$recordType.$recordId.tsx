@@ -24,19 +24,25 @@ import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAn
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 import { useLoaderData } from '@remix-run/react';
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const loader = async ({
+  request,
+  params,
+  context,
+}: LoaderFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
   const record = await getRecordByRecordTypeAndRecordId(
+    context.dependencies,
     recordType,
     recordId,
     auth.data.token,
   );
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
     record.validationType,
     'view',
   );

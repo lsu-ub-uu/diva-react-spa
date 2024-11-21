@@ -21,25 +21,23 @@ import { CoraRecord } from '@/features/record/types';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 import { Auth } from '@/types/Auth';
-import { createFormMetaData } from '../../../../bff/src/main/webapp/formDefinition/formMetadata';
-import { createFormMetaDataPathLookup } from '../../../../bff/src/main/webapp/utils/structs/metadataPathLookup';
-import { transformToCoraData } from '../../../../bff/src/main/webapp/config/transformToCora';
-import { cleanJson } from '../../../../bff/src/main/webapp/utils/structs/removeEmpty';
-import { postRecordData } from '../../../../bff/src/main/webapp/cora/record';
-import { transformRecord } from '../../../../bff/src/main/webapp/config/transformRecord';
-import {
-  RecordWrapper,
-  DataGroup,
-} from '../../../../bff/src/main/webapp/utils/cora-data/CoraData';
+import { createFormMetaData } from '@/data/formDefinition/formMetadata';
+import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
+import { transformToCoraData } from '@/cora/transform/transformToCora';
+import { cleanJson } from '@/utils/structs/removeEmpty';
+import { transformRecord } from '@/cora/transform/transformRecord';
+import { RecordWrapper, DataGroup } from '@/cora/cora-data/CoraData';
+import { postRecordData } from '@/cora/postRecordData';
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 
 export const createRecord = async (
-  pool: any,
+  dependencies: Dependencies,
   formDefinition: RecordFormSchema,
   record: CoraRecord,
   auth: Auth,
 ) => {
   const validationTypeId = formDefinition.validationTypeId;
-  const { validationTypePool } = pool;
+  const { validationTypePool } = dependencies;
 
   const recordType =
     validationTypePool.get(validationTypeId).validatesRecordTypeId;
@@ -51,7 +49,7 @@ export const createRecord = async (
   const FORM_MODE_NEW = 'create';
 
   const formMetaData = createFormMetaData(
-    pool,
+    dependencies,
     validationTypeId,
     FORM_MODE_NEW,
   );
@@ -65,7 +63,7 @@ export const createRecord = async (
     auth.data.token,
   );
 
-  const createdRecord = transformRecord(pool, response.data);
+  const createdRecord = transformRecord(dependencies, response.data);
 
   const recordInfo = getRecordInfo(createdRecord);
   const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;

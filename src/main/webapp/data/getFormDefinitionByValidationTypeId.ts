@@ -16,13 +16,22 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
-import {RecordFormSchema} from '@/components/FormGenerator/types';
+import { RecordFormSchema } from '@/components/FormGenerator/types';
+import { createFormDefinition } from '@/data/formDefinition/formDefinition';
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 
 export const getFormDefinitionByValidationTypeId = async (
+  dependencies: Dependencies,
   validationTypeId: string,
   mode: 'create' | 'update' | 'view',
 ) => {
-  const response = await axios.get(`/form/${validationTypeId}/${mode}`);
-  return response.data as RecordFormSchema;
+  if (!dependencies.validationTypePool.has(validationTypeId)) {
+    throw new Error(`Validation type [${validationTypeId}] does not exist`);
+  }
+
+  return createFormDefinition(
+    dependencies,
+    validationTypeId,
+    mode,
+  ) as RecordFormSchema;
 };

@@ -17,11 +17,11 @@
  */
 
 import { deleteRecordDataById, postRecordData } from '../../../cora/record';
-import { DataGroup, RecordWrapper } from '../../../utils/cora-data/CoraData';
+import { DataGroup, RecordWrapper } from '@/cora/cora-data/CoraData';
 import {
   getFirstChildWithNameInData,
-  getFirstDataAtomicWithNameInData
-} from '../../../utils/cora-data/CoraDataUtils';
+  getFirstDataAtomicWithNameInData,
+} from '@/cora/cora-data/CoraDataUtils';
 
 export interface CreatedRecord {
   id: string;
@@ -31,14 +31,20 @@ export interface CreatedRecord {
 
 export const createDivaOutput = async (
   payload: DataGroup,
-  authToken: string
+  authToken: string,
 ): Promise<CreatedRecord> => {
   const response = await postRecordData(payload, 'diva-output', authToken);
   const record = response.data as RecordWrapper;
-  const recordInfo = getFirstChildWithNameInData(record.record.data, 'recordInfo') as DataGroup;
+  const recordInfo = getFirstChildWithNameInData(
+    record.record.data,
+    'recordInfo',
+  ) as DataGroup;
   const id = getFirstDataAtomicWithNameInData(recordInfo, 'id');
   const tsCreated = getFirstDataAtomicWithNameInData(recordInfo, 'tsCreated');
-  const updated = getFirstChildWithNameInData(recordInfo, 'updated') as DataGroup;
+  const updated = getFirstChildWithNameInData(
+    recordInfo,
+    'updated',
+  ) as DataGroup;
   return { id: id.value, tsCreated: tsCreated.value, updated };
 };
 

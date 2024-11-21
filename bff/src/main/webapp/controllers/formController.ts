@@ -18,13 +18,13 @@
  */
 
 import { Request, Response } from 'express';
-import { dependencies } from '../config/configureServer';
-import { errorHandler } from '../app';
+import { dependencies } from '../configureServer';
+import { errorHandler } from '@/data/errorHandler';
 import {
   createFormDefinition,
-  createLinkedRecordDefinition
-} from '../formDefinition/formDefinition';
-import { BFFMetadataGroup } from '../config/bffTypes';
+  createLinkedRecordDefinition,
+} from '@/data/formDefinition/formDefinition';
+import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
 
 /**
  * @desc Get requested form
@@ -46,7 +46,7 @@ export const getForm = async (req: Request, res: Response) => {
     const formDef = createFormDefinition(
       dependencies,
       validationTypeId,
-      mode as 'create' | 'update' | 'view'
+      mode as 'create' | 'update' | 'view',
     );
 
     res.status(200).json(formDef);
@@ -76,19 +76,22 @@ export const getSearchForm = async (req: Request, res: Response) => {
 
     const searchFromPool = dependencies.searchPool.get(searchId);
     const searchMetadataGroup = dependencies.metadataPool.get(
-      searchFromPool.metadataId
+      searchFromPool.metadataId,
     ) as BFFMetadataGroup;
     const searchPresentationGroup = dependencies.presentationPool.get(
-      searchFromPool.presentationId
+      searchFromPool.presentationId,
     );
 
     const { form } = createLinkedRecordDefinition(
       dependencies,
       searchMetadataGroup,
-      searchPresentationGroup
+      searchPresentationGroup,
     );
 
-    res.status(200).json({ form, recordTypeToSearchIn: searchFromPool.recordTypeToSearchIn });
+    res.status(200).json({
+      form,
+      recordTypeToSearchIn: searchFromPool.recordTypeToSearchIn,
+    });
   } catch (error: unknown) {
     console.log(error);
     const errorResponse = errorHandler(error);

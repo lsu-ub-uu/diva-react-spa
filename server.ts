@@ -25,7 +25,7 @@ import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
-import { loadStuffOnServerStart as loadStuffOnServerStartBFF } from './bff/src/main/webapp/config/configureServer';
+import { loadStuffOnServerStart as loadStuffOnServerStartBFF } from './bff/src/main/webapp/configureServer';
 import {
   authRoute,
   formRoute,
@@ -51,7 +51,7 @@ const viteDevServer =
       );
 
 const remixHandler = createRequestHandler({
-  getLoadContext: () => ({ pool: dependencies }),
+  getLoadContext: () => ({ dependencies }),
   build: viteDevServer
     ? () => viteDevServer.ssrLoadModule('virtual:remix/server-build')
     : // @ts-expect-error The built file is not ts

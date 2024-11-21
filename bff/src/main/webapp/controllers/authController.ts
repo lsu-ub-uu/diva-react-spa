@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { deleteAuthTokenFromCora, requestAuthTokenOnLogin } from '../cora/auth';
-import { errorHandler } from '../app';
-import { createLoginDefinition } from '../loginDefinition/loginDefinition';
+import { errorHandler } from '@/data/errorHandler';
+import { createLoginDefinition } from '@/data/loginDefinition/loginDefinition';
 import { dependencies } from '@/data/pool.server';
 
 // /**

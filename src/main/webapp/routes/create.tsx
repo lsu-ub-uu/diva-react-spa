@@ -26,7 +26,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord';
-import { removeEmpty } from '@/utils/removeEmpty';
+import { cleanFormData } from '@/utils/cleanFormData';
 import { CoraRecord } from '@/features/record/types';
 import {
   commitSession,
@@ -47,6 +47,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   invariant(validationTypeId, 'Missing validationTypeId param');
 
   const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
     validationTypeId,
     'create',
   );
@@ -63,9 +64,9 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   }
   try {
     const { recordType, id } = await createRecord(
-      context.pool,
+      context.dependencies,
       formDefinition,
-      removeEmpty(data) as CoraRecord,
+      cleanFormData(data) as CoraRecord,
       auth,
     );
     session.flash('success', `Record was successfully created ${id}`);
@@ -77,15 +78,19 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   }
 };
 
-export const loader = async ({ request }: ActionFunctionArgs) => {
+export const loader = async ({ request, context }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const errorMessage = session.get('error');
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
   invariant(validationTypeId, 'Missing validationTypeId param');
-  const record = await getRecordByValidationTypeId(validationTypeId);
+  const record = getRecordByValidationTypeId(
+    context.dependencies,
+    validationTypeId,
+  );
   const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
     validationTypeId,
     'create',
   );

@@ -19,7 +19,7 @@
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormComponent, FormSchema } from '../types';
-import { removeEmpty } from '@/utils/removeEmpty';
+import { cleanFormData } from '@/utils/cleanFormData';
 import {
   addAttributesToName,
   getChildNameInDataArray,
@@ -166,7 +166,7 @@ export const checkForExistingSiblings = (formValues: any) => {
         newObj[key] = formValues[key];
         return newObj;
       }, {});
-    const cleanedValues = removeEmpty(valuesWithoutAttribs);
+    const cleanedValues = cleanFormData(valuesWithoutAttribs);
     const valueLength = Object.keys(cleanedValues).length;
     return valueLength > 0;
   }

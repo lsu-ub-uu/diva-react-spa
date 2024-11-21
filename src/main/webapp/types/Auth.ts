@@ -1,4 +1,4 @@
-import { ActionLinks } from '../../../../bff/src/main/webapp/utils/cora-data/CoraData';
+import { ActionLinks } from '@/cora/cora-data/CoraData';
 
 export interface Auth {
   data: {

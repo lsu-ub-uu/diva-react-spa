@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { deleteAuthTokenFromCora } from '../../../../bff/src/main/webapp/cora/auth';
 import { Auth } from '@/types/Auth';
+import { deleteAuthTokenFromCora } from '@/cora/deleteAuthToken';
 
 export const deleteSession = async (auth: Auth) => {
   const { actionLinks } = auth;

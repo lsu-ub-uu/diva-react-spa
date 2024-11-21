@@ -53,7 +53,7 @@ import {
   formComponentTitleInfoGroup,
 } from '@/__mocks__/data/formDef';
 import { FormComponent, FormSchema } from '../../types';
-import { removeEmpty } from '@/utils/removeEmpty';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 describe('FormGenerator Utils', () => {
   describe('generate defaultValues', () => {
@@ -1279,7 +1279,7 @@ describe('FormGenerator Utils', () => {
           .max(3)
           .transform((array) =>
             array
-              .map(removeEmpty)
+              .map(cleanFormData)
               .filter((o: any) => Object.keys(o).length > 0),
           )
           .of(

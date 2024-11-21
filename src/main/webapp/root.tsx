@@ -64,11 +64,11 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
 
-  const loginUnits = await getLoginUnits();
+  const loginUnits = getLoginUnits(context.dependencies);
   const locale = await i18nServer.getLocale(request);
   return json({ auth, locale, loginUnits });
 }

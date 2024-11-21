@@ -18,7 +18,7 @@
  */
 
 import axios, { AxiosResponse } from 'axios';
-import { DataGroup } from '../utils/cora-data/CoraData';
+import { DataGroup } from '@/cora/cora-data/CoraData';
 import * as console from 'node:console';
 
 const RECORD_LIST_CONTENT_TYPE = 'application/vnd.uub.recordList+json';
@@ -26,7 +26,7 @@ const RECORD_CONTENT_TYPE = 'application/vnd.uub.record+json';
 
 const createHeaders = (
   init: Record<string, string>,
-  authToken?: string
+  authToken?: string,
 ): Record<string, string> => {
   const headers = init;
 
@@ -39,17 +39,20 @@ const createHeaders = (
 
 export async function getRecordDataListByType<T>(
   type: string,
-  authToken?: string
+  authToken?: string,
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}`;
-  const headers = createHeaders({ Accept: RECORD_LIST_CONTENT_TYPE }, authToken);
+  const headers = createHeaders(
+    { Accept: RECORD_LIST_CONTENT_TYPE },
+    authToken,
+  );
   return axios.get(apiUrl, { headers });
 }
 
 export async function getSearchResultDataListBySearchType<T>(
   searchType: string,
   searchData: DataGroup,
-  authToken?: string
+  authToken?: string,
 ): Promise<AxiosResponse<T>> {
   console.log(searchType);
   const apiUrl: string = `/record/searchResult/${searchType}`;
@@ -57,7 +60,10 @@ export async function getSearchResultDataListBySearchType<T>(
   const searchDataString = JSON.stringify(searchData);
   const finalUrl = encodeURI(`${apiUrl}?searchData=${searchDataString}`);
 
-  const headers = createHeaders({ Accept: RECORD_LIST_CONTENT_TYPE }, authToken);
+  const headers = createHeaders(
+    { Accept: RECORD_LIST_CONTENT_TYPE },
+    authToken,
+  );
 
   return axios.get(finalUrl, { headers });
 }
@@ -65,7 +71,7 @@ export async function getSearchResultDataListBySearchType<T>(
 export async function getRecordDataById<T>(
   type: string,
   id: string,
-  authToken?: string
+  authToken?: string,
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${id}`;
   const headers = createHeaders({ Accept: RECORD_CONTENT_TYPE }, authToken);
@@ -76,14 +82,14 @@ export async function getRecordDataById<T>(
 export async function postRecordData<T>(
   payload: DataGroup,
   type: string,
-  authToken?: string
+  authToken?: string,
 ): Promise<AxiosResponse<T>> {
   const { CORA_API_URL } = process.env;
   const apiUrl: string = `${CORA_API_URL}/record/${type}`;
 
   const headers = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
-    authToken
+    authToken,
   );
 
   return axios.post(apiUrl, payload, { headers });
@@ -93,12 +99,12 @@ export async function updateRecordDataById<T>(
   recordId: string,
   payload: DataGroup,
   type: string,
-  authToken?: string
+  authToken?: string,
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${recordId}`;
   const headers = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },
-    authToken
+    authToken,
   );
   return axios.post(apiUrl, payload, { headers });
 }
@@ -106,7 +112,7 @@ export async function updateRecordDataById<T>(
 export async function deleteRecordDataById<T>(
   recordId: string,
   type: string,
-  authToken?: string
+  authToken?: string,
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = `/record/${type}/${recordId}`;
   const headers = createHeaders({}, authToken);

@@ -17,17 +17,23 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BFFMetadataGroup } from '../config/bffTypes';
-import { Dependencies } from '../formDefinition/formDefinitionsDep';
+import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 
-export const getSearchTermNameFromSearchLink = (dependencies: Dependencies, searchLink: string) => {
+export const getSearchTermNameFromSearchLink = (
+  dependencies: Dependencies,
+  searchLink: string,
+) => {
   const searchName = dependencies.searchPool.get(searchLink);
-  const metadataGroup = dependencies.metadataPool.get(searchName.metadataId) as BFFMetadataGroup;
+  const metadataGroup = dependencies.metadataPool.get(
+    searchName.metadataId,
+  ) as BFFMetadataGroup;
   const includeGroup = dependencies.metadataPool.get(
-    metadataGroup.children[0].childId
+    metadataGroup.children[0].childId,
   ) as BFFMetadataGroup;
   const includePartGroup = dependencies.metadataPool.get(
-    includeGroup.children[0].childId
+    includeGroup.children[0].childId,
   ) as BFFMetadataGroup;
-  return dependencies.metadataPool.get(includePartGroup.children[0].childId).nameInData;
+  return dependencies.metadataPool.get(includePartGroup.children[0].childId)
+    .nameInData;
 };

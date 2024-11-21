@@ -18,17 +18,20 @@
  */
 
 import { Request, Response } from 'express';
-import { DataGroup, DataListWrapper } from '../utils/cora-data/CoraData';
+import { DataGroup, DataListWrapper } from '@/cora/cora-data/CoraData';
 import { getSearchResultDataListBySearchType } from '../cora/record';
-import { transformCoraValidationTypes } from '../config/transformValidationTypes';
-import { errorHandler } from '../app';
+import { transformCoraValidationTypes } from '@/cora/transform/transformValidationTypes';
+import { errorHandler } from '@/data/errorHandler';
 
 /**
  * @desc Get list of existing validationTypes
  * @route GET /api/validationTypes
  * @access Private
  */
-export const getSearchedValidationTypes = async (req: Request, res: Response) => {
+export const getSearchedValidationTypes = async (
+  req: Request,
+  res: Response,
+) => {
   try {
     const authToken = req.header('authToken') ?? '';
     const searchQuery: DataGroup = {
@@ -42,24 +45,24 @@ export const getSearchedValidationTypes = async (req: Request, res: Response) =>
               children: [
                 {
                   name: 'validatesRecordTypeSearchTerm',
-                  value: 'recordType_diva-output'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  value: 'recordType_diva-output',
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const response = await getSearchResultDataListBySearchType<DataListWrapper>(
       'validationTypeSearch',
       searchQuery,
-      authToken
+      authToken,
     );
     const validationTypes = transformCoraValidationTypes(response.data);
     const optionList = validationTypes.map((validationType) => ({
       value: validationType.id,
-      label: validationType.nameTextId
+      label: validationType.nameTextId,
     }));
     res.status(200).json(optionList);
   } catch (error: unknown) {

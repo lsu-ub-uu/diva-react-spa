@@ -16,17 +16,45 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
-import { CoraRecord } from '@/features/record/types';
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
+import { getRecordDataById } from '../../../../bff/src/main/webapp/cora/record';
+import { RecordWrapper } from '@/cora/cora-data/CoraData';
+import { transformRecord } from '@/cora/transform/transformRecord';
+import { createLinkedRecordDefinition } from '@/data/formDefinition/formDefinition';
+import { getGroupsFromPresentationLinkId } from '../../../../bff/src/main/webapp/controllers/recordController';
 
 export const getRecordByRecordTypeAndRecordId = async (
+  dependencies: Dependencies,
   recordType: string,
   recordId: string,
   authToken: string,
+  presentationRecordLinkId?: string,
 ) => {
-  const response = await axios.get<CoraRecord>(
-    `/record/${recordType}/${recordId}`,
-    { headers: { Authtoken: authToken } },
+  const response = await getRecordDataById<RecordWrapper>(
+    recordType,
+    recordId,
+    authToken,
   );
-  return response.data as CoraRecord;
+  const recordWrapper = response.data;
+  const record = transformRecord(dependencies, recordWrapper);
+
+  if (presentationRecordLinkId !== undefined) {
+    const { presentationGroup, metadataGroup } =
+      getGroupsFromPresentationLinkId(presentationRecordLinkId);
+    record.presentation = createLinkedRecordDefinition(
+      dependencies,
+      metadataGroup,
+      presentationGroup,
+    );
+    const listPresentationGroup = dependencies.presentationPool.get(
+      dependencies.recordTypePool.get(recordType).listPresentationViewId,
+    );
+    record.listPresentation = createLinkedRecordDefinition(
+      dependencies,
+      metadataGroup,
+      listPresentationGroup,
+    );
+  }
+
+  return record;
 };

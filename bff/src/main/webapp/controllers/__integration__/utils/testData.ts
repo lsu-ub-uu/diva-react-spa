@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { DataAtomic, DataGroup } from '../../../utils/cora-data/CoraData';
+import { DataAtomic, DataGroup } from '@/cora/cora-data/CoraData';
 import { CreatedRecord } from './dataUtil';
 
 export const createExampleDivaOuput = (title: string): DataGroup => ({
@@ -25,21 +25,21 @@ export const createExampleDivaOuput = (title: string): DataGroup => ({
     {
       name: 'titleInfo',
       attributes: {
-        lang: 'alb'
+        lang: 'alb',
       },
       children: [
         {
           name: 'title',
-          value: title
-        }
-      ]
+          value: title,
+        },
+      ],
     },
     {
       name: 'genre',
       value: 'ref',
       attributes: {
-        type: 'contentType'
-      }
+        type: 'contentType',
+      },
     },
     {
       name: 'language',
@@ -49,18 +49,18 @@ export const createExampleDivaOuput = (title: string): DataGroup => ({
           value: 'alb',
           attributes: {
             type: 'code',
-            authority: 'iso639-2b'
+            authority: 'iso639-2b',
           },
-          repeatId: '0'
-        }
-      ]
+          repeatId: '0',
+        },
+      ],
     },
     {
       name: 'genre',
       value: 'publication_review-article',
       attributes: {
-        type: 'outputType'
-      }
+        type: 'outputType',
+      },
     },
     {
       name: 'recordInfo',
@@ -70,30 +70,30 @@ export const createExampleDivaOuput = (title: string): DataGroup => ({
           children: [
             {
               name: 'linkedRecordType',
-              value: 'validationType'
+              value: 'validationType',
             },
             {
               name: 'linkedRecordId',
-              value: 'diva-output'
-            }
-          ]
+              value: 'diva-output',
+            },
+          ],
         },
         {
           name: 'dataDivider',
           children: [
             {
               name: 'linkedRecordType',
-              value: 'system'
+              value: 'system',
             },
             {
               name: 'linkedRecordId',
-              value: 'divaData'
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              value: 'divaData',
+            },
+          ],
+        },
+      ],
+    },
+  ],
 });
 
 export const createBFFDivaOutput = {
@@ -101,49 +101,55 @@ export const createBFFDivaOutput = {
     titleInfo: {
       _lang: 'alg',
       title: {
-        value: 'aaaaaa'
-      }
+        value: 'aaaaaa',
+      },
     },
     genre_type_contentType: {
       value: 'ref',
-      _type: 'contentType'
+      _type: 'contentType',
     },
     language: {
       languageTerm: [
         {
           value: 'alt',
           _type: 'code',
-          _authority: 'iso639-2b'
-        }
-      ]
+          _authority: 'iso639-2b',
+        },
+      ],
     },
     genre_type_outputType: {
       value: 'publication_newspaper-article',
-      _type: 'outputType'
+      _type: 'outputType',
     },
     recordInfo: {
       validationType: {
-        value: 'diva-output'
+        value: 'diva-output',
       },
       dataDivider: {
-        value: 'divaData'
-      }
-    }
-  }
+        value: 'divaData',
+      },
+    },
+  },
 };
 
-export const createBFFUpdatedDivaOutput = ({ id, tsCreated, updated }: CreatedRecord) => ({
+export const createBFFUpdatedDivaOutput = ({
+  id,
+  tsCreated,
+  updated,
+}: CreatedRecord) => ({
   values: {
     output: {
       titleInfo: { _lang: 'alg', title: { value: 'ggggggg' } },
       genre_type_contentType: { value: 'vet', _type: 'contentType' },
       language: {
-        languageTerm: [{ value: 'ale', _authority: 'iso639-2b', _type: 'code' }]
+        languageTerm: [
+          { value: 'ale', _authority: 'iso639-2b', _type: 'code' },
+        ],
       },
       'artistic-work': [{ value: 'artistic-work', _type: 'outputType' }],
       genre_type_outputType: {
         value: 'publication_newspaper-article',
-        _type: 'outputType'
+        _type: 'outputType',
       },
       recordInfo: {
         recordContentSource: [{ value: 'hv' }],
@@ -157,11 +163,13 @@ export const createBFFUpdatedDivaOutput = ({ id, tsCreated, updated }: CreatedRe
           {
             tsUpdated: { value: (updated.children[0] as DataAtomic).value },
             updatedBy: {
-              value: ((updated.children[1] as DataGroup).children[1] as DataAtomic).value
-            }
-          }
-        ]
-      }
-    }
-  }
+              value: (
+                (updated.children[1] as DataGroup).children[1] as DataAtomic
+              ).value,
+            },
+          },
+        ],
+      },
+    },
+  },
 });

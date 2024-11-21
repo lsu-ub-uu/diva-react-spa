@@ -24,7 +24,7 @@ import {
   isComponentValidForDataCarrying,
   isComponentVariable,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { uniq } from 'lodash';
+import { uniq } from 'lodash-es';
 
 export interface RecordData {
   [key: string]: any;

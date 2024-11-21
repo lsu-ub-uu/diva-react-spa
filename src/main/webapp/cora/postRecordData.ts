@@ -16,17 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { DataGroup } from '../../../../bff/src/main/webapp/utils/cora-data/CoraData';
+import { DataGroup } from '@/cora/cora-data/CoraData';
 import axios, { AxiosResponse } from 'axios';
-import { createHeaders, RECORD_CONTENT_TYPE } from '@/cora/helper';
+import { coraUrl, createHeaders, RECORD_CONTENT_TYPE } from '@/cora/helper';
 
 export async function postRecordData<T>(
   payload: DataGroup,
   type: string,
   authToken?: string,
 ): Promise<AxiosResponse<T>> {
-  const { CORA_API_URL } = process.env;
-  const apiUrl: string = `${CORA_API_URL}/record/${type}`;
+  const apiUrl = coraUrl(`/record/${type}`);
 
   const headers = createHeaders(
     { Accept: RECORD_CONTENT_TYPE, 'Content-Type': RECORD_CONTENT_TYPE },

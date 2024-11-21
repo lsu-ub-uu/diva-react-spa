@@ -34,12 +34,16 @@ import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord';
-import { removeEmpty } from '@/utils/removeEmpty';
+import { cleanFormData } from '@/utils/cleanFormData';
 import { CoraRecord } from '@/features/record/types';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
+export const action = async ({
+  request,
+  params,
+  context,
+}: ActionFunctionArgs) => {
   const url = new URL(request.url);
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
@@ -52,6 +56,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     parsedFormData.output?.recordInfo?.validationType?.value;
   invariant(validationType, 'Failed to extract validationType from form data');
   const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
     validationType,
     'update',
   );
@@ -70,7 +75,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     await updateRecord(
       validationType,
       recordId,
-      removeEmpty(data) as CoraRecord,
+      cleanFormData(data) as CoraRecord,
       auth,
     );
     session.flash('success', `Record was successfully updated`);
@@ -82,7 +87,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   return redirectAndCommitSession(url.pathname + url.search, session);
 };
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ request, params, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
 
@@ -93,6 +98,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(recordId, 'Missing recordId param');
 
   const record = await getRecordByRecordTypeAndRecordId(
+    context.dependencies,
     recordType,
     recordId,
     auth.data.token,
@@ -102,6 +108,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     throw new Error();
   }
   const formDefinition = await getFormDefinitionByValidationTypeId(
+    context.dependencies,
     record.validationType,
     'update',
   );

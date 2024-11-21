@@ -25,13 +25,20 @@ import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchPa
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const loader = async ({
+  request,
+  params,
+  context,
+}: LoaderFunctionArgs) => {
   const { searchType } = params;
   invariant(searchType, 'Missing searchType param');
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
 
-  const searchForm = await getSearchForm('diva-outputSimpleSearch');
+  const searchForm = getSearchForm(
+    context.dependencies,
+    'diva-outputSimpleSearch',
+  );
 
   const query = parseFormDataFromSearchParams(request);
 

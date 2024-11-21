@@ -16,7 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { CORA_DATA_LOADED_EVENT, eventEmitter, start } from '../../../app';
+import {
+  CORA_DATA_LOADED_EVENT,
+  eventEmitter,
+  start,
+} from '@/data/errorHandler';
 import { Server } from 'http';
 
 const getRandomPort = () => Math.floor(Math.random() * (65535 - 1024) + 1024);

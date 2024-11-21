@@ -18,30 +18,36 @@
  */
 
 import { Request, Response } from 'express';
-import { DataGroup, RecordWrapper } from '../utils/cora-data/CoraData';
+import { DataGroup, RecordWrapper } from '@/cora/cora-data/CoraData';
 import {
   deleteRecordDataById,
   getRecordDataById,
   postRecordData,
-  updateRecordDataById
+  updateRecordDataById,
 } from '../cora/record';
-import { errorHandler } from '../app';
-import { cleanJson } from '../utils/structs/removeEmpty';
-import { dependencies } from '../config/configureServer';
-import { createFormMetaData } from '../formDefinition/formMetadata';
-import { createFormMetaDataPathLookup } from '../utils/structs/metadataPathLookup';
-import { transformToCoraData } from '../config/transformToCora';
-import { transformRecord } from '../config/transformRecord';
-import { createLinkedRecordDefinition } from '../formDefinition/formDefinition';
-import * as TYPES from '../config/bffTypes';
-import { BFFMetadataGroup, BFFMetadataRecordLink } from '../config/bffTypes';
+import { errorHandler } from '@/data/errorHandler';
+import { cleanJson } from '@/utils/structs/removeEmpty';
+import { dependencies } from '../configureServer';
+import { createFormMetaData } from '@/data/formDefinition/formMetadata';
+import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
+import { transformToCoraData } from '@/cora/transform/transformToCora';
+import { transformRecord } from '@/cora/transform/transformRecord';
+import { createLinkedRecordDefinition } from '@/data/formDefinition/formDefinition';
+import * as TYPES from '@/cora/transform/bffTypes';
+import {
+  BFFMetadataGroup,
+  BFFMetadataRecordLink,
+} from '@/cora/transform/bffTypes';
 
 /**
  * @desc Create a new record to Cora
  * @route POST /api/record/:validationTypeId/
  * @access Private
  */
-export const postRecordByValidationType = async (req: Request, res: Response) => {
+export const postRecordByValidationType = async (
+  req: Request,
+  res: Response,
+) => {
   try {
     const { validationTypeId } = req.params;
     const authToken = req.header('authToken');
@@ -49,21 +55,26 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
     const payload = cleanJson(req.body);
 
     const { validationTypePool } = dependencies;
-    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
+    const recordType =
+      validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
 
     const FORM_MODE_NEW = 'create';
 
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_NEW);
+    const formMetaData = createFormMetaData(
+      dependencies,
+      validationTypeId,
+      FORM_MODE_NEW,
+    );
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
 
     const response = await postRecordData<RecordWrapper>(
       transformData[0] as DataGroup,
       recordType,
-      authToken
+      authToken,
     );
     const record = transformRecord(dependencies, response.data);
     res.status(response.status).json(record); // return id for now
@@ -79,7 +90,10 @@ export const postRecordByValidationType = async (req: Request, res: Response) =>
  * @route POST /api/record/:validationTypeId/:recordId
  * @access Private
  */
-export const postRecordByValidationTypeAndId = async (req: Request, res: Response) => {
+export const postRecordByValidationTypeAndId = async (
+  req: Request,
+  res: Response,
+) => {
   try {
     const { validationTypeId, recordId } = req.params;
     const authToken = req.header('authToken');
@@ -87,14 +101,19 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
     const payload = cleanJson(req.body);
 
     const { validationTypePool } = dependencies;
-    const recordType = validationTypePool.get(validationTypeId).validatesRecordTypeId;
+    const recordType =
+      validationTypePool.get(validationTypeId).validatesRecordTypeId;
     if (!validationTypePool.has(validationTypeId)) {
       throw new Error(`Validation type [${validationTypeId}] does not exist`);
     }
 
     const FORM_MODE_UPDATE = 'update';
 
-    const formMetaData = createFormMetaData(dependencies, validationTypeId, FORM_MODE_UPDATE);
+    const formMetaData = createFormMetaData(
+      dependencies,
+      validationTypeId,
+      FORM_MODE_UPDATE,
+    );
     const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
 
     const transformData = transformToCoraData(formMetaDataPathLookup, payload);
@@ -103,7 +122,7 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
       recordId,
       transformData[0] as DataGroup,
       recordType,
-      authToken
+      authToken,
     );
 
     const record = transformRecord(dependencies, response.data);
@@ -120,7 +139,10 @@ export const postRecordByValidationTypeAndId = async (req: Request, res: Respons
  * @route DELETE /api/record/:validationTypeId/:recordId
  * @access Private
  */
-export const deleteRecordByValidationTypeAndId = async (req: Request, res: Response) => {
+export const deleteRecordByValidationTypeAndId = async (
+  req: Request,
+  res: Response,
+) => {
   try {
     const { recordType, recordId } = req.params;
     const authToken = req.header('authToken');
@@ -133,7 +155,11 @@ export const deleteRecordByValidationTypeAndId = async (req: Request, res: Respo
       return;
     }
 
-    const response = await deleteRecordDataById(recordId, recordType, authToken);
+    const response = await deleteRecordDataById(
+      recordId,
+      recordType,
+      authToken,
+    );
 
     res.status(response.status).json({ message: 'de' });
   } catch (error: unknown) {
@@ -148,32 +174,38 @@ export const deleteRecordByValidationTypeAndId = async (req: Request, res: Respo
  * @route GET /api/record/:recordType/:recordId
  * @access Private
  */
-export const getRecordByRecordTypeAndId = async (req: Request, res: Response) => {
+export const getRecordByRecordTypeAndId = async (
+  req: Request,
+  res: Response,
+) => {
   try {
     const { presentationRecordLinkId } = req.query;
     const { recordType, recordId } = req.params;
 
     const authToken = req.header('authToken');
-    const response = await getRecordDataById<RecordWrapper>(recordType, recordId, authToken);
+    const response = await getRecordDataById<RecordWrapper>(
+      recordType,
+      recordId,
+      authToken,
+    );
 
     const recordWrapper = response.data;
     const record = transformRecord(dependencies, recordWrapper);
     if (presentationRecordLinkId !== undefined) {
-      const { presentationGroup, metadataGroup } = getGroupsFromPresentationLinkId(
-        presentationRecordLinkId as string
-      );
+      const { presentationGroup, metadataGroup } =
+        getGroupsFromPresentationLinkId(presentationRecordLinkId as string);
       record.presentation = createLinkedRecordDefinition(
         dependencies,
         metadataGroup,
-        presentationGroup
+        presentationGroup,
       );
       const listPresentationGroup = dependencies.presentationPool.get(
-        dependencies.recordTypePool.get(recordType).listPresentationViewId
+        dependencies.recordTypePool.get(recordType).listPresentationViewId,
       );
       record.listPresentation = createLinkedRecordDefinition(
         dependencies,
         metadataGroup,
-        listPresentationGroup
+        listPresentationGroup,
       );
     }
 
@@ -187,7 +219,7 @@ export const getRecordByRecordTypeAndId = async (req: Request, res: Response) =>
 
 export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
   const presentationLink = dependencies.presentationPool.get(
-    presentationLinkId
+    presentationLinkId,
   ) as TYPES.BFFPresentationRecordLink;
   const presentationId =
     presentationLink.linkedRecordPresentations !== undefined
@@ -195,7 +227,7 @@ export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
       : presentationLink.id;
   const presentationGroup = dependencies.presentationPool.get(presentationId);
   const metadataGroup = dependencies.metadataPool.get(
-    presentationGroup.presentationOf
+    presentationGroup.presentationOf,
   ) as TYPES.BFFMetadataGroup;
   return { presentationGroup, metadataGroup };
 };
@@ -205,22 +237,31 @@ export const getGroupsFromPresentationLinkId = (presentationLinkId: string) => {
  * @route GET /api/record/:validationType
  * @access Private
  */
-export const getRecordByValidationTypeId = async (req: Request, res: Response) => {
+export const getRecordByValidationTypeId = async (
+  req: Request,
+  res: Response,
+) => {
   try {
     const { validationTypeId } = req.params;
 
-    const validationType = dependencies.validationTypePool.get(validationTypeId);
-    const recordTypeGroup = dependencies.recordTypePool.get(validationType.validatesRecordTypeId);
+    const validationType =
+      dependencies.validationTypePool.get(validationTypeId);
+    const recordTypeGroup = dependencies.recordTypePool.get(
+      validationType.validatesRecordTypeId,
+    );
     const metadataGroup = dependencies.metadataPool.get(
-      recordTypeGroup.metadataId
+      recordTypeGroup.metadataId,
     ) as BFFMetadataGroup;
     const recordInfoChildGroup = dependencies.metadataPool.get(
-      metadataGroup.children[0].childId
+      metadataGroup.children[0].childId,
     ) as BFFMetadataGroup;
 
     const recordInfo = recordInfoChildGroup.children
       .filter((child) => parseInt(child.repeatMin) > 0)
-      .map((child) => dependencies.metadataPool.get(child.childId) as BFFMetadataRecordLink)
+      .map(
+        (child) =>
+          dependencies.metadataPool.get(child.childId) as BFFMetadataRecordLink,
+      )
       .reduce<Record<string, any>>((acc, curr) => {
         if (curr.finalValue !== undefined) {
           acc[curr.nameInData] = { value: curr.finalValue };
@@ -229,7 +270,11 @@ export const getRecordByValidationTypeId = async (req: Request, res: Response) =
       }, {});
 
     const record = {
-      data: { [metadataGroup.nameInData]: { [recordInfoChildGroup.nameInData]: recordInfo } }
+      data: {
+        [metadataGroup.nameInData]: {
+          [recordInfoChildGroup.nameInData]: recordInfo,
+        },
+      },
     };
 
     res.status(200).json(record);

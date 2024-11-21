@@ -16,10 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios from 'axios';
-import { LoginUnit } from '@/features/loginUnits/loginUnitsSlice';
+import { createLoginDefinition } from '@/data/loginDefinition/loginDefinition';
+import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 
-export const getLoginUnits = async () => {
-  const response = await axios.get('/auth/loginUnits');
-  return response.data as LoginUnit[];
+export const getLoginUnits = (dependencies: Dependencies) => {
+  return createLoginDefinition(dependencies);
 };

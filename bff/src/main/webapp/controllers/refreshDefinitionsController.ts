@@ -18,8 +18,8 @@
  */
 
 import { Request, Response } from 'express';
-import { loadStuffOnServerStart } from '../config/configureServer';
-import { errorHandler } from '../app';
+import { loadStuffOnServerStart } from '../configureServer';
+import { errorHandler } from '@/data/errorHandler';
 
 /**
  * @desc Get refreshed definitions
