@@ -21,7 +21,7 @@ import { Button } from '@mui/material';
 
 import { FormGenerator } from '@/components';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';

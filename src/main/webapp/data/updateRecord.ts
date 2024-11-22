@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { Auth } from '@/types/Auth';
 import { cleanJson } from '@/utils/structs/removeEmpty';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata';

@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Auth } from '@/features/auth/authSlice';
+import { Auth } from '@/types/Auth';
 
 export const messageIsFromWindowOpenedFromHere = (event: any) => {
   return event.origin === window.location.origin;

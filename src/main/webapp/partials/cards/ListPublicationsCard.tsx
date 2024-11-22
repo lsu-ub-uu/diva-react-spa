@@ -30,19 +30,15 @@ import {
   useFetcher,
   useLoaderData,
 } from '@remix-run/react';
-import { useAppSelector } from '@/app/hooks';
 import { Card } from '@/components';
-import { publicationsSelector } from '@/features/publications';
 import { loader } from '@/routes/_index';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { Suspense } from 'react';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
   const { recordList } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
-
-  const publicationsState = useAppSelector(publicationsSelector);
 
   const columns: GridColDef[] = [
     {
@@ -149,7 +145,6 @@ export const ListPublicationsCard = () => {
                 disableColumnMenu
                 disableColumnSelector
                 disableSelectionOnClick
-                loading={publicationsState.isLoading}
                 rows={recordList.data}
                 columns={columns}
                 /* components={{

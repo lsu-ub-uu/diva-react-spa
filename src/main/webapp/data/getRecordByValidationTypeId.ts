@@ -21,7 +21,7 @@ import {
   BFFMetadataGroup,
   BFFMetadataRecordLink,
 } from '@/cora/transform/bffTypes';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 
 export const getRecordByValidationTypeId = (
   dependencies: Dependencies,

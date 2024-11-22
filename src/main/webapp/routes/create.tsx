@@ -27,7 +27,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import {
   commitSession,
   getSessionFromCookie,

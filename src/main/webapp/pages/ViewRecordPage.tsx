@@ -28,7 +28,7 @@ import {
   useSectionScroller,
 } from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 

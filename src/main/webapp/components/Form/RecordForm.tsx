@@ -27,7 +27,7 @@ import {
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
 import { RecordFormSchema } from '../FormGenerator/types';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from '@remix-run/react';
 

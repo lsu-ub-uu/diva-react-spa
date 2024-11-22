@@ -17,20 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CoraRecord } from '@/features/record/types';
-
-interface UseCoraRecordByTypeAndId {
-  record?: CoraRecord;
-  isLoading: boolean;
-  error: string | null;
-  setRecord: (record: CoraRecord) => void;
-}
-
-interface CoraUpdate {
-  updateAt: string;
-  updatedBy: string;
-}
-
 export interface CoraRecord {
   id?: string;
   recordType?: string;
@@ -49,6 +35,11 @@ export interface CoraRecord {
   autoCompletePresentation?: unknown;
 }
 
+interface CoraUpdate {
+  updateAt: string;
+  updatedBy: string;
+}
+
 export interface CoraSearchResult {
   data: CoraRecord[];
   fromNo: number;
@@ -59,13 +50,11 @@ export interface CoraSearchResult {
 
 export interface Metadata {
   recordInfo: RecordInfo;
-
   [key: string]: any;
 }
 
 export interface RecordInfo {
   [key: string]: any;
-
   createdBy?: Value[];
   dataDivider: Value;
   id?: Value[];
@@ -82,6 +71,5 @@ interface UpdatedGroup {
 
 interface Value {
   value: string;
-
   [key: string]: any;
 }

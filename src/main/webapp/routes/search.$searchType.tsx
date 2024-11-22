@@ -18,7 +18,7 @@
 
 import { getSearchForm } from '@/data/getSearchForm';
 import { searchRecords } from '@/data/searchRecords';
-import { CoraSearchResult } from '@/features/record/types';
+import { CoraSearchResult } from '@/types/record';
 import { SearchPage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';

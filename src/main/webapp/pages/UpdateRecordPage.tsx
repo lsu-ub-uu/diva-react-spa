@@ -25,7 +25,7 @@ import {
   useSectionScroller,
 } from '@/components';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 
 interface UpdateRecordPageProps {

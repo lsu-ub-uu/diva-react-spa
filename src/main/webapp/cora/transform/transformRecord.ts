@@ -40,7 +40,7 @@ import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { groupBy } from 'lodash-es';
 
 /**

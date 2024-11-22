@@ -35,7 +35,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 

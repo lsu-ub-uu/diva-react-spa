@@ -20,7 +20,7 @@
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
 
 interface LinkedRecordProps {

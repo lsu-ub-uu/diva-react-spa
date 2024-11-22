@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';

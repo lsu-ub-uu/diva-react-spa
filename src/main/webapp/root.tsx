@@ -35,7 +35,6 @@ import {
 } from '@remix-run/node';
 import { ReactNode, useEffect } from 'react';
 import { BackdropProvider, PageLayout, SnackbarProvider } from '@/components';
-import store from '@/app/store';
 import { Alert, AlertTitle, CssBaseline } from '@mui/material';
 import { divaTheme } from '@/themes/diva';
 import { Provider as StateProvider } from 'react-redux';
@@ -172,13 +171,11 @@ export default function App() {
 
   return (
     <BackdropProvider>
-      <StateProvider store={store}>
-        <SnackbarProvider maxSnack={5}>
-          <PageLayout>
-            <Outlet />
-          </PageLayout>
-        </SnackbarProvider>
-      </StateProvider>
+      <SnackbarProvider maxSnack={5}>
+        <PageLayout>
+          <Outlet />
+        </PageLayout>
+      </SnackbarProvider>
     </BackdropProvider>
   );
 }

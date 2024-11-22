@@ -35,7 +35,7 @@ import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { useSubmit } from '@remix-run/react';
 

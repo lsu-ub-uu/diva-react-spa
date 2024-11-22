@@ -26,7 +26,7 @@ import {
 } from '@/components';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 
 interface CreateRecordPageProps {
   record: CoraRecord;

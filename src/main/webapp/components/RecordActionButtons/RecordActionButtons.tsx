@@ -21,7 +21,7 @@ import { Link, useFetcher } from '@remix-run/react';
 import FeedIcon from '@mui/icons-material/Feed';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { CoraRecord } from '@/features/record/types';
+import { CoraRecord } from '@/types/record';
 
 interface RecordActionButtonProps {
   record: CoraRecord;

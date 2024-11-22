@@ -3,7 +3,6 @@ import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { commitSession, getSession } from '@/sessions';
 import { Alert, Button, Stack } from '@mui/material';
-import { Auth } from '@/features/auth/authSlice';
 import { FormGenerator } from '@/components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,6 +12,7 @@ import { useSnackbar, VariantType } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
+import { Auth } from '@/types/Auth';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {

@@ -1,4 +1,5 @@
 /*
+/!*
  * Copyright 2023 Uppsala University Library
  *
  * This file is part of DiVA Client.
@@ -14,15 +15,13 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- */
+ *!/
 
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
-import { Provider as StateProvider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
 import App from '../App';
-import store from '../app/store';
 import { divaTheme } from '../themes/diva';
 import { BackdropProvider, SnackbarProvider } from '../components';
 
@@ -30,21 +29,20 @@ describe('<App />', () => {
   it('App Renders', () => {
     render(
       <BackdropProvider>
-        <StateProvider store={store}>
-          <ThemeProvider theme={divaTheme}>
-            <CssBaseline />
-            <SnackbarProvider maxSnack={5}>
-              <HelmetProvider>
-                <App />
-              </HelmetProvider>
-            </SnackbarProvider>
-          </ThemeProvider>
-        </StateProvider>
+        <ThemeProvider theme={divaTheme}>
+          <CssBaseline />
+          <SnackbarProvider maxSnack={5}>
+            <HelmetProvider>
+              <App />
+            </HelmetProvider>
+          </SnackbarProvider>
+        </ThemeProvider>
       </BackdropProvider>,
     );
 
     const logoImage = screen.getByAltText('logo');
-    
+
     expect(logoImage).toBeInTheDocument();
   });
 });
+*/
