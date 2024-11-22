@@ -17,6 +17,7 @@ import i18nextServer from '@/app/i18n.server';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { i18nConfig } from '@/app/i18nConfig';
 import I18NextHttpBackend from 'i18next-http-backend';
+import { createTextDefinition } from '@/data/textDefinition/textDefinition';
 
 const ABORT_DELAY = 5_000;
 
@@ -38,6 +39,14 @@ export default async function handleRequest(
     .use(I18NextHttpBackend)
     .init({
       ...i18nConfig,
+      resources: {
+        en: {
+          translation: createTextDefinition(loadContext.dependencies, 'en'),
+        },
+        sv: {
+          translation: createTextDefinition(loadContext.dependencies, 'sv'),
+        },
+      },
       lng: locale,
     });
 

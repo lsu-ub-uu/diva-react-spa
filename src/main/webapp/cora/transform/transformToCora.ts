@@ -45,6 +45,9 @@ export const transformToCoraData = (
 
     if (isNotAttribute(fieldKey)) {
       const currentMetadataLookup = lookup[currentPath];
+      if (currentMetadataLookup === undefined) {
+        throw new Error(`Failed to find path ${currentPath} in lookup`);
+      }
       const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
       if (isRepeatingVariable(value)) {
         value.forEach((item: DataGroup | DataAtomic, index: number) => {

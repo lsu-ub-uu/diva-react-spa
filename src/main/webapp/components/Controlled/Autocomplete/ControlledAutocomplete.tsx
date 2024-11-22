@@ -37,6 +37,7 @@ import { Tooltip, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
 import { CoraRecord } from '@/features/record/types';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
+import { useSubmit } from '@remix-run/react';
 
 interface AutoCompleteProps {
   name: string;
@@ -58,7 +59,6 @@ export const ControlledAutocomplete = (
   props: AutoCompleteProps,
 ): JSX.Element => {
   const { t } = useTranslation();
-
   const [options, setOptions] = useState<CoraRecord[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [presentationValue, setPresentationValue] = useState<CoraRecord | null>(
@@ -77,7 +77,7 @@ export const ControlledAutocomplete = (
           return undefined;
         }
         const response = await axios.get(
-          `/search/${props.searchLink}?searchTermValue=${inputValue}`,
+          `/autocompleteSearch?searchType=${props.searchLink}&searchTermValue=${inputValue}`,
         );
 
         if (isMounted) {

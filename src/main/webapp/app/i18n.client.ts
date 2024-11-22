@@ -30,6 +30,9 @@ export const initClienti18n = () => {
     .use(I18NextHttpBackend)
     .init({
       ...i18nConfig,
+      backend: {
+        loadPath: `/translations/{{lng}}`,
+      },
       ns: getInitialNamespaces(),
       detection: {
         // Here only enable htmlTag detection, we'll detect the language only

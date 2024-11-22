@@ -16,11 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export const i18nConfig = {
-  fallbackLng: 'sv',
-  supportedLngs: ['sv', 'en'],
-  debug: false, // TODO set to true if dev env
-  interpolation: {
-    escapeValue: false,
-  },
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { createTextDefinition } from '@/data/textDefinition/textDefinition';
+import { invariant } from '@remix-run/router/history';
+
+export const loader = async ({ context, params }: LoaderFunctionArgs) => {
+  const { lang } = params;
+  invariant(lang, 'Missing param lang');
+
+  return createTextDefinition(context.dependencies, lang);
 };

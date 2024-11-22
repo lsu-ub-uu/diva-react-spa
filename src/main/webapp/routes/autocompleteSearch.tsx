@@ -14,11 +14,57 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { invariant } from '@remix-run/router/history';
+import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
+import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
+import { DataGroup } from '@/cora/cora-data/CoraData';
+import { searchRecords } from '@/data/searchRecords';
+import { Auth } from '@/types/Auth';
+
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+
+  const searchType = url.searchParams.get('searchType');
+  invariant(searchType, 'Missing searchType param');
+
+  const searchTermValue = url.searchParams.get('searchTermValue');
+  invariant(searchTermValue, 'Missing searchTermValue param');
+
+  const session = await getSessionFromCookie(request);
+  const auth = getAuthentication(session);
+
+  const searchTermName = getSearchTermNameFromSearchLink(
+    context.dependencies,
+    searchType,
+  );
+
+  const query = {
+    search: {
+      include: {
+        includePart: {
+          [searchTermName]: [
+            {
+              value: searchTermValue,
+            },
+          ],
+        },
+      },
+    },
+  };
+
+  const result = await searchRecords(
+    context.dependencies,
+    searchType,
+    query,
+    auth,
+  );
+
+  return result.data;
+};
 
 export const getSearchTermNameFromSearchLink = (
   dependencies: Dependencies,
