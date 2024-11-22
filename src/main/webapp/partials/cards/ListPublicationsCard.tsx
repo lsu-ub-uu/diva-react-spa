@@ -24,15 +24,15 @@ import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Await, Link as RouterLink, useLoaderData } from '@remix-run/react';
-import axios from 'axios';
-import { useSnackbar, VariantType } from 'notistack';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { Card } from '@/components';
 import {
-  loadPublicationsAsync,
-  publicationsSelector,
-} from '@/features/publications';
+  Await,
+  Link as RouterLink,
+  useFetcher,
+  useLoaderData,
+} from '@remix-run/react';
+import { useAppSelector } from '@/app/hooks';
+import { Card } from '@/components';
+import { publicationsSelector } from '@/features/publications';
 import { loader } from '@/routes/_index';
 import { CoraRecord } from '@/features/record/types';
 import { Suspense } from 'react';
@@ -40,17 +40,9 @@ import { Suspense } from 'react';
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
   const { recordList } = useLoaderData<typeof loader>();
+  const fetcher = useFetcher();
 
-  const dispatch = useAppDispatch();
   const publicationsState = useAppSelector(publicationsSelector);
-  const { enqueueSnackbar } = useSnackbar();
-
-  const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
-  };
 
   const columns: GridColDef[] = [
     {
@@ -91,7 +83,7 @@ export const ListPublicationsCard = () => {
                 disabled={!params.row.userRights.includes('update')}
                 aria-label='edit'
                 component={RouterLink}
-                to={`/update/record/${params.row.recordType}/${params.id}`}
+                to={`/update/${params.row.recordType}/${params.id}`}
               >
                 <EditIcon />
               </IconButton>
@@ -111,27 +103,14 @@ export const ListPublicationsCard = () => {
           </Tooltip>
           <Tooltip title={t('divaClient_deletePublicationText')}>
             <span>
-              <IconButton
-                disabled={!params.row.userRights.includes('delete')}
-                aria-label='delete'
-                onClick={async () => {
-                  try {
-                    await axios.delete(
-                      `/record/${params.row.recordType}/${params.row.id}`,
-                    );
-                    dispatch(loadPublicationsAsync());
-                    notification(
-                      `Record ${params.row.id} was successfully deleted `,
-                      'success',
-                    );
-                  } catch (err: any) {
-                    console.log('err', err);
-                    notification(`${err.message}`, 'error');
-                  }
-                }}
+              <fetcher.Form
+                method='POST'
+                action={`/delete/${params.row.recordType}/${params.row.id}`}
               >
-                <DeleteForeverIcon />
-              </IconButton>
+                <IconButton type='submit'>
+                  <DeleteForeverIcon />
+                </IconButton>
+              </fetcher.Form>
             </span>
           </Tooltip>
         </Stack>

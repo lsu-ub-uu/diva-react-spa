@@ -73,7 +73,7 @@ export const action = async ({
 
   try {
     await updateRecord(
-      context.dependencies,r
+      context.dependencies,
       validationType,
       recordId,
       cleanFormData(data) as CoraRecord,

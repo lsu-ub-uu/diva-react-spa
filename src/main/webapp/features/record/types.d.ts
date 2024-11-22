@@ -38,7 +38,9 @@ export interface CoraRecord {
   createdAt?: string;
   createdBy?: string;
   updated?: CoraUpdate[];
-  userRights?: Array<'read' | 'read_incoming_links' | 'update' | 'index'>;
+  userRights?: Array<
+    'read' | 'read_incoming_links' | 'update' | 'index' | 'delete'
+  >;
   data: {
     [key: string]: Metadata;
   };

@@ -17,45 +17,18 @@
  */
 
 import { IconButton } from '@mui/material';
-import { Link } from '@remix-run/react';
+import { Link, useFetcher } from '@remix-run/react';
 import FeedIcon from '@mui/icons-material/Feed';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CoraRecord } from '@/features/record/types';
-import axios from 'axios';
-import { useSnackbar, VariantType } from 'notistack';
 
 interface RecordActionButtonProps {
   record: CoraRecord;
 }
 
 export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
-  const { enqueueSnackbar } = useSnackbar();
-
-  const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
-  };
-
-  const deleteRecord = async () => {
-    try {
-      await axios.delete(`/record/${record.recordType}/${record.id}`);
-      notification(`Record ${record.id} was successfully deleted `, 'success');
-      window.location.reload();
-    } catch (err: any) {
-      console.log('err', err);
-    }
-  };
-
-  const handleDeleteClick = () => {
-    if (
-      confirm(`Are you sure you want to delete record with id ${record.id}?`)
-    ) {
-      deleteRecord();
-    }
-  };
+  const fetcher = useFetcher();
 
   return record.userRights?.map((userRight) => {
     switch (userRight) {
@@ -81,12 +54,15 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
         );
       case 'delete':
         return (
-          <IconButton
+          <fetcher.Form
             key={`${record.id}_rab_${userRight}`}
-            onClick={handleDeleteClick}
+            method='POST'
+            action={`/delete/${record.recordType}/${record.id}`}
           >
-            <DeleteForeverIcon />
-          </IconButton>
+            <IconButton type='submit'>
+              <DeleteForeverIcon />
+            </IconButton>
+          </fetcher.Form>
         );
       default:
         return null;
