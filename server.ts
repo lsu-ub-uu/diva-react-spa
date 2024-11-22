@@ -41,7 +41,10 @@ const viteDevServer =
       );
 
 const remixHandler = createRequestHandler({
-  getLoadContext: () => ({ dependencies }),
+  getLoadContext: () => ({
+    dependencies,
+    refreshDependencies: loadStuffOnServerStart,
+  }),
   build: viteDevServer
     ? () => viteDevServer.ssrLoadModule('virtual:remix/server-build')
     : // @ts-expect-error The built file is not ts

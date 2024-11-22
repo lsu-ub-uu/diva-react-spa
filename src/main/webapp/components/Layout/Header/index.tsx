@@ -20,13 +20,20 @@ import { Box, Button, Container, Grid, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Link as RouterLink } from '@remix-run/react';
+import {
+  Form,
+  Link as RouterLink,
+  useFetcher,
+  useLocation,
+} from '@remix-run/react';
 import divaLogo from '../../../assets/divaLogo.svg';
 import User from '@/components/Layout/Header/Login/User';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 
 export const Header = () => {
-  const { i18n } = useTranslation();
+  const location = useLocation();
+  const returnTo = encodeURIComponent(location.pathname + location.search);
+
   return (
     <Box
       sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
@@ -57,15 +64,19 @@ export const Header = () => {
             xs
           />
           <Grid item>
-            <Button
-              onClick={() => {
-                axios.get('/refreshDefinitions').then(() => {
-                  location.reload();
-                });
-              }}
+            <Form
+              action='/refreshDefinitions'
+              method='POST'
             >
-              Refresh Def <CachedIcon />
-            </Button>
+              <input
+                type='hidden'
+                name='returnTo'
+                value={returnTo}
+              />
+              <Button type='submit'>
+                Refresh Def <CachedIcon />
+              </Button>
+            </Form>
           </Grid>
           <Grid item>
             <LanguageSwitcher />

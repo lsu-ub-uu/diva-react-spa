@@ -14,14 +14,15 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import express from 'express';
-import { getTranslations } from '../../../../../translationController';
+import { ActionFunctionArgs, redirect } from '@remix-run/node';
 
-const translationRoute = express.Router();
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  const form = await request.formData();
 
-translationRoute.route('/:lang').get(getTranslations);
+  const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
 
-export { translationRoute };
+  await context.refreshDependencies();
+  return redirect(returnTo);
+};

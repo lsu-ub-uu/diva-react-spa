@@ -25,7 +25,7 @@ import {
   getRecordDataListByType,
   postRecordData,
   updateRecordDataById,
-} from '../record';
+} from '../../../../../bff/src/main/webapp/cora/record';
 import {
   DataGroup,
   DataListWrapper,
