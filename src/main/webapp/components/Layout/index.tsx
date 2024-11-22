@@ -17,7 +17,6 @@
  */
 
 import { Container, Grid, AppBar } from '@mui/material';
-import { Outlet } from '@remix-run/react';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';

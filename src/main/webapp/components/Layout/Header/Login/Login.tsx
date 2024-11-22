@@ -18,7 +18,6 @@
 
 import {
   Form,
-  Link,
   useLoaderData,
   useLocation,
   useNavigation,
@@ -30,9 +29,7 @@ import {
   CircularProgress,
   Divider,
   Menu,
-  MenuItem,
   Stack,
-  Typography,
 } from '@mui/material';
 import { loader } from '@/root';
 import {
@@ -48,16 +45,15 @@ import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAcco
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
 
-export default function User() {
+export default function Login() {
   const { MODE } = import.meta.env;
-  const { auth, loginUnits } = useLoaderData<typeof loader>();
+  const { auth } = useLoaderData<typeof loader>();
   const submit = useSubmit();
   const { t } = useTranslation();
   const anchorEl = useRef<HTMLButtonElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigation = useNavigation();
-
   const returnTo = encodeURIComponent(location.pathname + location.search);
 
   const handleDevSelection = (account: Account) => {

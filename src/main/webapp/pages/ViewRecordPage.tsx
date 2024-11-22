@@ -24,7 +24,6 @@ import {
   AsidePortal,
   linksFromFormSchema,
   NavigationPanel,
-  useBackdrop,
   useSectionScroller,
 } from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';

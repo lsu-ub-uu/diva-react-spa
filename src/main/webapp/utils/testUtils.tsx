@@ -18,51 +18,10 @@
 
 import { render } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
-import { Provider as StateProvider } from 'react-redux';
-import { configureStore, PreloadedState } from '@reduxjs/toolkit';
-import { PropsWithChildren } from 'react';
-import type { RenderOptions } from '@testing-library/react';
-import { AppStore, RootState } from '@/app/store';
-
-import validationTypeReducer from '@/features/validationTypes/validationTypeSlice';
-import authReducer from '@/features/auth/authSlice';
-import publicationsReducer from '@/features/publications/publicationsSlice';
-import loginUnitsReducer from '@/features/loginUnits/loginUnitsSlice';
-
-interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  preloadedState?: PreloadedState<RootState>;
-  store?: AppStore;
-}
 
 const renderWithSnackbarProvider = (ui: JSX.Element) =>
   render(ui, { wrapper: SnackbarProvider });
 
-const renderWithReduxProvider = (
-  ui: React.ReactElement,
-  {
-    preloadedState = {},
-    store = configureStore({
-      reducer: {
-        auth: authReducer,
-        validationType: validationTypeReducer,
-        publications: publicationsReducer,
-        loginUnits: loginUnitsReducer,
-      },
-      preloadedState,
-    }),
-    ...renderOptions
-  }: ExtendedRenderOptions = {},
-) => {
-  function Wrapper({ children }: PropsWithChildren): JSX.Element {
-    return <StateProvider store={store}>{children}</StateProvider>;
-  }
-
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
-};
-
 export * from '@testing-library/react';
 
-export {
-  renderWithSnackbarProvider as render,
-  renderWithReduxProvider as reduxRender,
-};
+export { renderWithSnackbarProvider as render };

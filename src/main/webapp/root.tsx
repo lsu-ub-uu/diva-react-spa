@@ -161,21 +161,11 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App() {
-  const { auth } = useLoaderData<typeof loader>();
-
-  useEffect(() => {
-    axios.defaults.headers.common = {
-      Authtoken: auth?.data.token ?? '',
-    };
-  }, [auth]);
-
   return (
-    <BackdropProvider>
-      <SnackbarProvider maxSnack={5}>
-        <PageLayout>
-          <Outlet />
-        </PageLayout>
-      </SnackbarProvider>
-    </BackdropProvider>
+    <SnackbarProvider maxSnack={5}>
+      <PageLayout>
+        <Outlet />
+      </PageLayout>
+    </SnackbarProvider>
   );
 }

@@ -27,7 +27,7 @@ import {
   useLocation,
 } from '@remix-run/react';
 import divaLogo from '../../../assets/divaLogo.svg';
-import User from '@/components/Layout/Header/Login/User';
+import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
 
 export const Header = () => {
@@ -82,7 +82,7 @@ export const Header = () => {
             <LanguageSwitcher />
           </Grid>
           <Grid item>
-            <User />
+            <Login />
           </Grid>
         </Grid>
       </Container>
