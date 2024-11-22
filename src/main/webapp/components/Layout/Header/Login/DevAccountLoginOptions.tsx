@@ -16,12 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Account,
-  devAccounts,
-} from '@/components/Layout/Header/Login/devAccounts';
 import { MenuItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Account, getDevAccounts } from './devAccounts';
 
 interface DevAccountsProps {
   onSelect: (account: Account) => void;
@@ -39,7 +36,7 @@ export const DevAccountLoginOptions = ({ onSelect }: DevAccountsProps) => {
           {t('divaClient_LoginDevAccountText')}
         </Typography>
       </MenuItem>
-      {devAccounts.map((devAccount) => (
+      {getDevAccounts().map((devAccount) => (
         <MenuItem
           key={devAccount.userId}
           onClick={() => onSelect(devAccount)}

@@ -19,7 +19,7 @@
 
 import { Auth } from '@/types/Auth';
 
-export const messageIsFromWindowOpenedFromHere = (event: any) => {
+export const messageIsFromWindowOpenedFromHere = (event: MessageEvent<any>) => {
   return event.origin === window.location.origin;
 };
 

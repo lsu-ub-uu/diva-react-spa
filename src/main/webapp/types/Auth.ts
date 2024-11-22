@@ -6,8 +6,8 @@ export interface Auth {
     validForNoSeconds: string;
     userId: string;
     loginId: string;
-    lastName: string;
-    firstName: string;
+    lastName?: string;
+    firstName?: string;
   };
   actionLinks?: ActionLinks;
 }

@@ -22,10 +22,6 @@ import userEvent from '@testing-library/user-event';
 import { createRemixStub } from '@remix-run/testing';
 import Login from '@/components/Layout/Header/Login/Login';
 import { json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-
-/*vi.spyOn(Storage.prototype, 'setItem');
-vi.mock('@/utils/getEnvironment');*/
 
 const loginUnits = [
   {
@@ -46,24 +42,6 @@ const loginUnits = [
 ];
 
 describe('<Login/>', () => {
-  test('renders loader data', async () => {
-    const RemixStub = createRemixStub([
-      {
-        path: '/',
-        Component: Login,
-        loader() {
-          return json({ undefined, loginUnits });
-        },
-      },
-    ]);
-
-    render(<RemixStub />);
-
-    await waitFor(() =>
-      screen.getByRole('button', { name: 'divaClient_LoginText' }),
-    );
-  });
-
   describe('Login menu', () => {
     it('shows the accounts in a list', async () => {
       const user = userEvent.setup();
@@ -91,78 +69,95 @@ describe('<Login/>', () => {
         const userNameList = screen.queryAllByRole('menuitem');
         const listItems = userNameList.map((item) => item.textContent);
         expect(listItems).toEqual([
-          'AppToken for DiVAAdmin',
-          'AppToken for DiVAEverything',
-          'AppToken for AdminSystem',
-          'AppToken for UUdomainAdmin',
-          'AppToken for KTHdomainAdmin',
+          'divaClient_LoginDevAccountText',
+          'DiVA Admin',
+          'DiVA Everything',
+          'Admin System',
+          'UU domainAdmin',
+          'KTH domainAdmin',
+          'divaClient_LoginWebRedirectText',
           'rkhTestDiVALoginUnitText',
           'skhTestDiVALoginUnitText',
           'ltuDiVALoginUnitText',
+          'divaClient_LoginPasswordText',
         ]);
       });
     });
 
-    // it('returns only DiVAAdmin when environment is pre', async () => {
-    //   vi.mocked(getEnvironment).mockReturnValue('pre');
-    //
-    //   const unitUrl: string = `/auth/loginUnits`;
-    //   mockAxios.onGet(unitUrl).reply(200, loginUnits);
-    //   const user = userEvent.setup();
-    //
-    //   render(
-    //     <MemoryRouter initialEntries={['/']}>
-    //       <Login />
-    //     </MemoryRouter>,
-    //   );
-    //
-    //   const loginButton = screen.getByRole('button', {
-    //     name: 'divaClient_LoginText',
-    //   });
-    //   await user.click(loginButton);
-    //
-    //   await waitFor(() => {
-    //     const userNameList = screen.queryAllByRole('menuitem');
-    //     const listItems = userNameList.map((item) => item.textContent);
-    //     expect(listItems).toEqual([
-    //       'AppToken for DiVAAdmin',
-    //       'rkhTestDiVALoginUnitText',
-    //       'skhTestDiVALoginUnitText',
-    //       'ltuDiVALoginUnitText',
-    //     ]);
-    //   });
-    // });
-    //
-    // describe('webRedirect accounts has a link to Shibboleth', async () => {
-    //   it.each([
-    //     ['rkhTestDiVALoginUnitText', 'http://localhost:1234/rkh'],
-    //     ['skhTestDiVALoginUnitText', 'http://localhost:1234/skh'],
-    //     ['ltuDiVALoginUnitText', 'http://localhost:1234/ltu'],
-    //   ])('%s url is correct', async (loginUnitName, loginUnitUrl) => {
-    //     const unitUrl: string = `/auth/loginUnits`;
-    //     mockAxios.onGet(unitUrl).reply(200, loginUnits);
-    //     const user = userEvent.setup();
-    //     window.open = vi.fn();
-    //
-    //     render(
-    //       <MemoryRouter initialEntries={['/']}>
-    //         <Login />
-    //       </MemoryRouter>,
-    //     );
-    //
-    //     const loginButton = screen.getByRole('button', {
-    //       name: 'divaClient_LoginText',
-    //     });
-    //     await user.click(loginButton);
-    //
-    //     const shibbolethUrl = screen.queryByText(loginUnitName) as HTMLElement;
-    //     expect(shibbolethUrl).toBeInTheDocument();
-    //     await user.click(shibbolethUrl);
-    //     // const unitUrl: string = `loginUnitUrl`;
-    //     mockAxios.onGet(loginUnitUrl).reply(200, loginUnits);
-    //   });
-    // });
-    //
+    it('returns only DiVAAdmin when environment is pre', async () => {
+      vi.stubEnv('ENVIRONMENT', 'pre');
+      const user = userEvent.setup();
+
+      const RemixStub = createRemixStub([
+        {
+          path: '/',
+          Component: Login,
+          loader() {
+            return json({ loginUnits });
+          },
+        },
+      ]);
+
+      render(<RemixStub />);
+
+      const loginButton = await waitFor(() =>
+        screen.getByRole('button', {
+          name: 'divaClient_LoginText',
+        }),
+      );
+      await user.click(loginButton);
+
+      await waitFor(() => {
+        const userNameList = screen.queryAllByRole('menuitem');
+        const listItems = userNameList.map((item) => item.textContent);
+        expect(listItems).toEqual([
+          'divaClient_LoginDevAccountText',
+          'DiVA Admin',
+          'divaClient_LoginWebRedirectText',
+          'rkhTestDiVALoginUnitText',
+          'skhTestDiVALoginUnitText',
+          'ltuDiVALoginUnitText',
+          'divaClient_LoginPasswordText',
+        ]);
+      });
+    });
+
+    describe('webRedirect accounts opens a link to Shibboleth', async () => {
+      it.each(
+        loginUnits.map((loginUnit) => [
+          loginUnit.loginDescription,
+          loginUnit.url,
+        ]),
+      )('%s url is correct', async (loginUnitName, loginUnitUrl) => {
+        const windowOpenSpy = vi.spyOn(window, 'open');
+
+        const user = userEvent.setup();
+
+        const RemixStub = createRemixStub([
+          {
+            path: '/',
+            Component: Login,
+            loader() {
+              return json({ loginUnits });
+            },
+          },
+        ]);
+
+        render(<RemixStub />);
+
+        const loginButton = await waitFor(() =>
+          screen.getByRole('button', {
+            name: 'divaClient_LoginText',
+          }),
+        );
+        await user.click(loginButton);
+
+        const link = screen.getByRole('menuitem', { name: loginUnitName });
+        await userEvent.click(link);
+        expect(windowOpenSpy).toHaveBeenCalledWith(loginUnitUrl);
+      });
+    });
+
     // it('axios gets called on click', async () => {
     //   const redirectUrl = loginUnits[0].url;
     //   mockAxios.onGet(redirectUrl).reply(200, {

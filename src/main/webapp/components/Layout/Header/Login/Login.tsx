@@ -45,7 +45,7 @@ import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAcco
 import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
 import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
 
-export default function Login() {
+export default function User() {
   const { MODE } = import.meta.env;
   const { auth } = useLoaderData<typeof loader>();
   const submit = useSubmit();
@@ -74,7 +74,7 @@ export default function Login() {
     setMenuOpen(false);
   };
 
-  const receiveMessage = (event: any) => {
+  const receiveMessage = (event: MessageEvent<any>) => {
     if (event === undefined || event.data.source === 'react-devtools-bridge') {
       // dispatch(hasError('login error'));
     }
