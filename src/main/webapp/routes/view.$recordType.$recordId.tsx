@@ -23,6 +23,10 @@ import { invariant } from '@remix-run/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 import { useLoaderData } from '@remix-run/react';
+import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+
+export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
 
 export const loader = async ({
   request,

@@ -24,6 +24,10 @@ import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
+import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+
+export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
 
 export const loader = async ({
   request,

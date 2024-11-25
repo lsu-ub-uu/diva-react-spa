@@ -17,14 +17,11 @@
  */
 
 import {
-  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
-  useRouteError,
   useRouteLoaderData,
 } from '@remix-run/react';
 import {
@@ -33,20 +30,17 @@ import {
   LinksFunction,
   LoaderFunctionArgs,
 } from '@remix-run/node';
-import { ReactNode, useEffect } from 'react';
-import { BackdropProvider, PageLayout, SnackbarProvider } from '@/components';
-import { Alert, AlertTitle, CssBaseline } from '@mui/material';
+import { ReactNode } from 'react';
+import { PageLayout, SnackbarProvider } from '@/components';
+import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/themes/diva';
-import { Provider as StateProvider } from 'react-redux';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import axios from 'axios';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
 import i18nServer from '@/app/i18n.server';
 import { useChangeLanguage } from 'remix-i18next/react';
 import { i18nCookie } from '@/app/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 
 const { MODE } = import.meta.env;
 
@@ -85,36 +79,6 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 }
-
-export const ErrorBoundary: ErrorBoundaryComponent = () => {
-  const error = useRouteError();
-
-  if (isRouteErrorResponse(error)) {
-    return (
-      <Alert severity='error'>
-        <AlertTitle>
-          {error.status} {error.statusText}
-        </AlertTitle>
-        <p>{error.data}</p>
-      </Alert>
-    );
-  } else if (error instanceof Error) {
-    return (
-      <Alert severity='error'>
-        <AlertTitle>Error</AlertTitle>
-        <p>{error.message}</p>
-        <p>The stack trace is:</p>
-        <pre>{error.stack}</pre>
-      </Alert>
-    );
-  } else {
-    return (
-      <Alert severity='error'>
-        <AlertTitle>Unknown Error</AlertTitle>
-      </Alert>
-    );
-  }
-};
 
 const Document = ({ children }: DocumentProps) => {
   const data = useRouteLoaderData<typeof loader>('root');

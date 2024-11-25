@@ -38,6 +38,10 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { BFFDataRecord } from '@/types/record';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+
+export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
 
 export const action = async ({
   request,

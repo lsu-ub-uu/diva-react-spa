@@ -36,6 +36,10 @@ import {
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
+import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+
+export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
