@@ -20,7 +20,7 @@
 import { useEffect, useState } from 'react';
 import { FormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 import {
   addAttributesToName,
   hasCurrentComponentSameNameInData,
@@ -53,7 +53,7 @@ export const linksFromFormSchema = (
 
 export const removeComponentsWithoutValuesFromSchema = (
   formSchema: FormSchema,
-  record: CoraRecord,
+  record: BFFDataRecord,
 ): FormSchema => {
   const schema = formSchema;
   let componentsFromSchema = formSchema.form.components;

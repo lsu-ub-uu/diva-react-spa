@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { CoraSearchResult } from '@/types/record';
+import { BFFSearchResult } from '@/types/record';
 import { Auth } from '@/types/Auth';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import {
@@ -85,7 +85,7 @@ export const searchRecords = async (
     totalNo: Number(totalNo),
     containDataOfType,
     data: transformedRecords,
-  } as CoraSearchResult;
+  } as BFFSearchResult;
 };
 
 const createSearchMetaData = (

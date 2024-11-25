@@ -25,11 +25,11 @@ import {
   useSectionScroller,
 } from '@/components';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 
 interface UpdateRecordPageProps {
-  record: CoraRecord;
+  record: BFFDataRecord;
   formDefinition: RecordFormSchema;
 }
 

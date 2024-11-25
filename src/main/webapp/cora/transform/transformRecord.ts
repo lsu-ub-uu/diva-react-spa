@@ -40,7 +40,7 @@ import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 import { groupBy } from 'lodash-es';
 
 /**
@@ -70,7 +70,7 @@ export const transformRecords = (
 export const transformRecord = (
   dependencies: Dependencies,
   recordWrapper: RecordWrapper,
-): CoraRecord => {
+): BFFDataRecord => {
   const coraRecord = recordWrapper.record;
   const dataRecordGroup = coraRecord.data;
   let createdAt;

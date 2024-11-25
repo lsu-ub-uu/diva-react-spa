@@ -32,7 +32,7 @@ import {
 } from '@remix-run/react';
 import { Card } from '@/components';
 import { loader } from '@/routes/_index';
-import { CoraRecord, CoraSearchResult } from '@/types/record';
+import { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 
 export const ListPublicationsCard = () => {
@@ -129,7 +129,7 @@ export const ListPublicationsCard = () => {
             }
           >
             <div style={{ height: 600, width: '100%' }}>
-              <DataGrid<CoraRecord>
+              <DataGrid<BFFDataRecord>
                 sx={{
                   '& .MuiDataGrid-cell:focus': {
                     outline: 'none',
@@ -145,7 +145,7 @@ export const ListPublicationsCard = () => {
                 disableColumnMenu
                 disableColumnSelector
                 disableSelectionOnClick
-                rows={(recordList as CoraSearchResult).data}
+                rows={(recordList as BFFSearchResult).data}
                 columns={columns}
                 /* components={{
                   NoRowsOverlay: () => <p>TODO: better no data message</p>,
@@ -160,6 +160,6 @@ export const ListPublicationsCard = () => {
   );
 };
 
-export const getCorrectTitle = (record: CoraRecord) => {
+export const getCorrectTitle = (record: BFFDataRecord) => {
   return record.data.output.titleInfo.title.value;
 };

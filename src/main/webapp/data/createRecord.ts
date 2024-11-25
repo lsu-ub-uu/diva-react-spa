@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
@@ -33,7 +33,7 @@ import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 export const createRecord = async (
   dependencies: Dependencies,
   formDefinition: RecordFormSchema,
-  record: CoraRecord,
+  record: BFFDataRecord,
   auth: Auth,
 ) => {
   const validationTypeId = formDefinition.validationTypeId;

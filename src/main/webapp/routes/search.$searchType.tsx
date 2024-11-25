@@ -18,7 +18,7 @@
 
 import { getSearchForm } from '@/data/getSearchForm';
 import { searchRecords } from '@/data/searchRecords';
-import { CoraSearchResult } from '@/types/record';
+import { BFFSearchResult } from '@/types/record';
 import { SearchPage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
@@ -42,7 +42,7 @@ export const loader = async ({
 
   const query = parseFormDataFromSearchParams(request);
 
-  let searchResults: CoraSearchResult | null = null;
+  let searchResults: BFFSearchResult | null = null;
   try {
     searchResults = await searchRecords(
       context.dependencies,

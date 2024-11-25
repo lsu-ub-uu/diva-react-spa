@@ -27,12 +27,12 @@ import {
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
 import { RecordFormSchema } from '../FormGenerator/types';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from '@remix-run/react';
 
 export interface RecordFormProps {
-  record?: CoraRecord;
+  record?: BFFDataRecord;
   formSchema: RecordFormSchema;
 }
 

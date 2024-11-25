@@ -33,10 +33,10 @@ import {
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
 import { RecordFormSchema } from '../FormGenerator/types';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 
 interface RecordFormProps {
-  record?: CoraRecord;
+  record?: BFFDataRecord;
   formSchema: RecordFormSchema;
   onSubmit: (formValues: FieldValues) => void;
   onInvalid?: (fieldErrors: FieldErrors) => void;

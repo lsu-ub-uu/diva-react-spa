@@ -84,6 +84,7 @@ import {
 } from '@/__mocks__/data/formDef';
 import { RecordForm, RecordFormProps } from '@/components/Form/RecordForm';
 import { createRemixStub } from '@remix-run/testing';
+import { BFFDataRecord } from '@/types/record';
 
 const actionSpy = vi.fn();
 
@@ -998,7 +999,7 @@ describe('<Form />', () => {
     });
 
     it('renders a textVariable 1-1 with mode output', async () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -1055,7 +1056,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneRepeatingTextVariableWithModeOutput}
-          record={coraRecord}
+          record={record}
         />,
       );
       const inputElement = screen.getByText('someTestText');
@@ -1063,7 +1064,7 @@ describe('<Form />', () => {
     });
 
     it('does not render a textVariable 1-1 with mode output with no data', async () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -1120,7 +1121,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneRepeatingTextVariableWithModeOutput}
-          record={coraRecord}
+          record={record}
         />,
       );
       const label = screen.queryByLabelText('exampleWrongTextVar');
@@ -1228,7 +1229,7 @@ describe('<Form />', () => {
     });
 
     it('renders a numberVariable with mode output', async () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -1285,7 +1286,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableModeOutput}
-          record={coraRecord}
+          record={record}
         />,
       );
       const inputElement = screen.getByText('2');
@@ -1293,7 +1294,7 @@ describe('<Form />', () => {
     });
 
     it('does not render a numberVariable 1-1 with mode output with no data', async () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -1350,7 +1351,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableBeingOptionalOutput}
-          record={coraRecord}
+          record={record}
         />,
       );
       const label = screen.queryByPlaceholderText(
@@ -1652,7 +1653,7 @@ describe('<Form />', () => {
     });
 
     it('renders a collectionVariable 1-1 with mode output', async () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -1709,7 +1710,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneCollectionVariableWithModeOutput}
-          record={coraRecord}
+          record={record}
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
@@ -1717,7 +1718,7 @@ describe('<Form />', () => {
     });
 
     it('does not render a collectionVariable 1-1 with mode output without data', async () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -1774,7 +1775,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneCollectionVariableWithModeOutput}
-          record={coraRecord}
+          record={record}
         />,
       );
       const inputElement = screen.getByText('exampleBlueItemText');
@@ -2663,7 +2664,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 0-1 with nested textVars 1-1 with mode output with data', async () => {
-      const givenAndFamilyName = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:8988822974651200',
         recordType: 'divaOutput',
         validationType: 'preprint',
@@ -2733,7 +2734,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefPreprintWithOnlyAuthorName}
-          record={givenAndFamilyName}
+          record={record}
         />,
       );
 
@@ -2885,7 +2886,7 @@ describe('<Form />', () => {
   });
   describe('checkIfComponentHasValue', () => {
     it('checkIfComponentHasValue does not hides variable in output with value', () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -2942,7 +2943,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefForCheckTextValue}
-          record={coraRecord}
+          record={record}
         />,
       );
       const inputElement = screen.getByLabelText('someMetadataTextVarText');
@@ -2950,7 +2951,7 @@ describe('<Form />', () => {
     });
 
     it('checkIfComponentHasValue hides variable in output with no value', () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -3005,7 +3006,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefForCheckTextValue}
-          record={coraRecord}
+          record={record}
         />,
       );
       const input1Element = screen.queryByLabelText('someMetadataTextVarText');
@@ -3017,7 +3018,7 @@ describe('<Form />', () => {
     });
 
     it('checkIfComponentHasValue hides variable in output with no value 2', () => {
-      const coraRecord = {
+      const record: BFFDataRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
         validationType: 'someValidationTypeId',
@@ -3072,7 +3073,7 @@ describe('<Form />', () => {
       render(
         <RecordFormWithRemixStub
           formSchema={formDefForCheckNumberValue}
-          record={coraRecord}
+          record={record}
         />,
       );
       const input1Element = screen.queryByLabelText('someMetadataTextVarText');

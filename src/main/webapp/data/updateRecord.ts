@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 import { Auth } from '@/types/Auth';
 import { cleanJson } from '@/utils/structs/removeEmpty';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata';
@@ -31,7 +31,7 @@ export const updateRecord = async (
   dependencies: Dependencies,
   validationTypeId: string,
   recordId: string,
-  data: CoraRecord,
+  data: BFFDataRecord,
   auth: Auth,
 ) => {
   const payload = cleanJson(data);
@@ -63,5 +63,5 @@ export const updateRecord = async (
 
   const record = transformRecord(dependencies, response.data);
 
-  return record as CoraRecord;
+  return record as BFFDataRecord;
 };

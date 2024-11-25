@@ -35,7 +35,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 
@@ -76,7 +76,7 @@ export const action = async ({
       context.dependencies,
       validationType,
       recordId,
-      cleanFormData(data) as CoraRecord,
+      cleanFormData(data) as BFFDataRecord,
       auth,
     );
     session.flash('success', `Record was successfully updated`);

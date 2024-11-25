@@ -27,12 +27,12 @@ import {
   useSectionScroller,
 } from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 
 interface ViewRecordPageProps {
-  record: CoraRecord;
+  record: BFFDataRecord;
   formDefinition: RecordFormSchema;
 }
 

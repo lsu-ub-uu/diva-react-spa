@@ -27,7 +27,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord';
 import { cleanFormData } from '@/utils/cleanFormData';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 import {
   commitSession,
   getSessionFromCookie,
@@ -66,7 +66,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
     const { recordType, id } = await createRecord(
       context.dependencies,
       formDefinition,
-      cleanFormData(data) as CoraRecord,
+      cleanFormData(data) as BFFDataRecord,
       auth,
     );
     session.flash('success', `Record was successfully created ${id}`);

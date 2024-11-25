@@ -17,13 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface CoraRecord {
+export interface BFFDataRecord {
   id?: string;
   recordType?: string;
   validationType?: string;
   createdAt?: string;
   createdBy?: string;
-  updated?: CoraUpdate[];
+  updated?: BFFUpdate[];
   userRights?: Array<
     'read' | 'read_incoming_links' | 'update' | 'index' | 'delete'
   >;
@@ -35,13 +35,13 @@ export interface CoraRecord {
   autoCompletePresentation?: unknown;
 }
 
-interface CoraUpdate {
+interface BFFUpdate {
   updateAt: string;
   updatedBy: string;
 }
 
-export interface CoraSearchResult {
-  data: CoraRecord[];
+export interface BFFSearchResult {
+  data: BFFDataRecord[];
   fromNo: number;
   toNo: number;
   totalNo: number;

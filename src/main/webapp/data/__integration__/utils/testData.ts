@@ -18,7 +18,7 @@
 
 import { DataAtomic, DataGroup } from '@/cora/cora-data/CoraData';
 import { CreatedRecord } from './dataUtil';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 
 export const createExampleDivaOuput = (title: string): DataGroup => ({
   name: 'output',
@@ -97,7 +97,7 @@ export const createExampleDivaOuput = (title: string): DataGroup => ({
   ],
 });
 
-export const createBFFDivaOutput: CoraRecord = {
+export const createBFFDivaOutput: BFFDataRecord = {
   data: {
     output: {
       admin: { reviewed: { value: 'true' } },

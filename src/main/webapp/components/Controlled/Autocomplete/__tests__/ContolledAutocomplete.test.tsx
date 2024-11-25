@@ -24,9 +24,9 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'vitest';
 import { ControlledAutocomplete } from '@/components';
-import { CoraRecord } from '@/types/record';
+import { BFFDataRecord } from '@/types/record';
 
-const mockOptions: CoraRecord[] = [
+const mockOptions: BFFDataRecord[] = [
   {
     id: 'nationalSubjectCategory:6325356888554468',
     recordType: 'nationalSubjectCategory',

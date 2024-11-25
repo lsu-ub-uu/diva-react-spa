@@ -17,9 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CoraRecord, RecordInfo } from '@/types/record';
+import { BFFDataRecord, RecordInfo } from '@/types/record';
 
-export const getRecordInfo = (response: CoraRecord): RecordInfo => {
+export const getRecordInfo = (response: BFFDataRecord): RecordInfo => {
   const temp = Object.entries(response.data).map(([, value]) => {
     return value['recordInfo'];
   });
