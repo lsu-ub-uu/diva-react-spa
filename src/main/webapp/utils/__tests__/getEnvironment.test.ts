@@ -19,12 +19,9 @@
 import getEnvironment from '../getEnvironment';
 
 describe('getEnvironment', () => {
-  it.each([
-    ['pre', 'pre.diva-portal.org'],
-    ['preview', 'cora.epc.ub.uu.se'],
-    ['local', 'localhost:5173'],
-  ])('returns %s when host is %s', (expected, host) => {
-    vi.stubGlobal('location', { host });
+  it('returns the value from ENVIRONMENT env variable', () => {
+    const expected = 'some-env';
+    vi.stubEnv('ENVIRONMENT', expected);
 
     const environment = getEnvironment();
 

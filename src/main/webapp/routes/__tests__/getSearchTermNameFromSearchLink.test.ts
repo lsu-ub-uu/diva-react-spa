@@ -35,9 +35,9 @@ import {
 import { Lookup } from '@/utils/structs/lookup';
 
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
-import { getSearchTermNameFromSearchLink } from '../search';
+import { getSearchTermNameFromSearchLink } from '@/routes/autocompleteSearch';
 
-describe('formDefinition', () => {
+describe('getSearchTermNameFromSearchLink', () => {
   let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
   let searchPool: Lookup<string, BFFSearch>;
 

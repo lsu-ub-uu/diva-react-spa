@@ -26,6 +26,6 @@ export async function deleteRecordDataById<T>(
 ): Promise<AxiosResponse<T>> {
   const apiUrl: string = coraApiUrl(`/record/${type}/${recordId}`);
   const headers = createHeaders({}, authToken);
-
-  return axios.delete(apiUrl, { headers });
+  const response = axios.delete(apiUrl, { headers });
+  return response;
 }
