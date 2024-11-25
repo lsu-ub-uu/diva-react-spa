@@ -32,7 +32,7 @@ import {
 } from '@remix-run/react';
 import { Card } from '@/components';
 import { loader } from '@/routes/_index';
-import { CoraRecord } from '@/types/record';
+import { CoraRecord, CoraSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 
 export const ListPublicationsCard = () => {
@@ -145,7 +145,7 @@ export const ListPublicationsCard = () => {
                 disableColumnMenu
                 disableColumnSelector
                 disableSelectionOnClick
-                rows={recordList.data}
+                rows={(recordList as CoraSearchResult).data}
                 columns={columns}
                 /* components={{
                   NoRowsOverlay: () => <p>TODO: better no data message</p>,

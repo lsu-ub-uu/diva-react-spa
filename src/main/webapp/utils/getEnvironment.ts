@@ -19,7 +19,7 @@
 export type Environment = 'pre' | 'preview' | 'local';
 
 export default function getEnvironment(): Environment {
-  const { ENVIRONMENT } = process.env;
+  const { ENVIRONMENT } = import.meta.env;
 
   return (ENVIRONMENT as Environment) ?? 'local';
 }

@@ -22,12 +22,11 @@ import {
   FormHelperText,
   FormLabel,
   IconButton,
-  NativeSelect,
-  OutlinedInput,
+  MenuItem,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
-import { Option, Tooltip } from '../../index';
+import { Option, Tooltip, Select } from '@/components';
 
 interface ControlledSelectFieldProps {
   name: string;
@@ -103,12 +102,21 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
               </FormLabel>
             ) : null}
             {displayMode === 'input' ? (
-              <NativeSelect
-                input={<OutlinedInput />}
+              <Select
+                sx={{
+                  '& .MuiSelect-select .notranslate::after': props.placeholder
+                    ? {
+                        content: `"${t(props.placeholder)}"`,
+                        opacity: 0.42,
+                      }
+                    : {},
+                }}
                 inputProps={{
                   id: props.name,
                   inputRef: ref,
+                  readOnly: props.readOnly,
                 }}
+                labelId={name}
                 onBlur={onBlur}
                 size='small'
                 // defaultValue=''
@@ -117,24 +125,30 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 }
                 onChange={onChange}
                 fullWidth
-                //  loadingError={props.loadingError}
+                loadingError={props.loadingError}
                 error={error !== undefined}
-                disabled={props.isLoading || props.readOnly}
+                loading={props.isLoading}
               >
-                <option value=''>{t('divaClient_optionNoneText')}</option>
+                <MenuItem
+                  value=''
+                  disableRipple
+                >
+                  <em>{t('divaClient_optionNoneText')}</em>
+                </MenuItem>
                 {props.options &&
                   props.options.map((item, index) => {
                     return (
-                      <option
+                      <MenuItem
                         disabled={item.disabled}
                         key={`${props.name}_$option-${index}`}
+                        disableRipple
                         value={item.value}
                       >
                         {t(item.label)}
-                      </option>
+                      </MenuItem>
                     );
                   })}
-              </NativeSelect>
+              </Select>
             ) : (
               <>
                 {props.hasValue === true ? (

@@ -16,13 +16,27 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { TabsMenu } from '../../index';
-import { reduxRender } from '../../../utils/testUtils';
+import { createRemixStub } from '@remix-run/testing';
+import { formDefWithTextVar } from '@/__mocks__/data/formDef';
+
+const RemixStub = createRemixStub([
+  {
+    path: '/',
+    Component: TabsMenu,
+    loader() {
+      return {
+        validationTypes: [],
+        searchForm: formDefWithTextVar,
+        recordList: { data: [] },
+      };
+    },
+  },
+]);
 
 describe('TabsMenu', () => {
   let mockAxios: MockAdapter;
@@ -56,61 +70,28 @@ describe('TabsMenu', () => {
     mockAxios.restore();
   });
   it('TabsMenu renders', async () => {
-    reduxRender(
-      <MemoryRouter>
-        <TabsMenu />
-      </MemoryRouter>,
-    );
-    waitFor(async () => {
-      const tabs = await screen.findAllByRole('tab');
-      expect(tabs).toHaveLength(3);
+    render(<RemixStub />);
+    const tabs = await screen.findAllByRole('tab');
+    expect(tabs).toHaveLength(3);
 
-      const tabsTexts = tabs.map((element) => element.id);
-      expect(tabsTexts).toEqual([
-        'Registrera & hantera',
-        'Administrera',
-        'Mina publikationer & projekt',
-      ]);
-    });
+    const tabsTexts = tabs.map((element) => element.id);
+    expect(tabsTexts).toEqual([
+      'Registrera & hantera',
+      'Administrera',
+      'Mina publikationer & projekt',
+    ]);
   });
+
   it('Tabs change when clicked', async () => {
-    reduxRender(
-      <MemoryRouter>
-        <TabsMenu />
-      </MemoryRouter>,
-    );
+    render(<RemixStub />);
     const user = userEvent.setup();
-
-    const administrera = screen.getByRole('tab', {
+    const administrera = await screen.findByRole('tab', {
       name: /administrera/i,
     });
 
     await user.click(administrera);
-    const administreraText = screen.getByText('Administrera');
-    expect(administreraText).toHaveTextContent('Administrera');
-  });
-  it('Tabs change when clicked and then back when clicked again', async () => {
-    reduxRender(
-      <MemoryRouter>
-        <TabsMenu />
-      </MemoryRouter>,
-    );
-    const user = userEvent.setup();
-
-    const registrera = screen.getByRole('tab', {
-      name: /Registrera & hantera/i,
-    });
-    const administrera = screen.getByRole('tab', {
-      name: /administrera/i,
-    });
-    expect(registrera).toBeInTheDocument();
-
-    await user.click(administrera);
-    const administreraText = screen.getByText('Administrera');
-    expect(administreraText).toHaveTextContent('Administrera');
-
-    await user.click(registrera);
-    const registreraText = screen.getByText('Registrera & hantera');
-    expect(registreraText).toHaveTextContent('Registrera & hantera');
+    expect(
+      await screen.findByText('divaClient_listPublicationsText'),
+    ).toBeInTheDocument();
   });
 });

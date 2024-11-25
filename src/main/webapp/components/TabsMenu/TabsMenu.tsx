@@ -59,7 +59,6 @@ const a11yProps = (name: string) => {
 };
 
 export const TabsMenu = () => {
-  const { searchForm } = useLoaderData<typeof loader>();
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

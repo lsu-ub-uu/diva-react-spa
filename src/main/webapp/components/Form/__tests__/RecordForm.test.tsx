@@ -468,6 +468,8 @@ describe('<Form />', () => {
           formSchema={formDefCollVarsWithSameNameInData}
         />,
       );
+
+      screen.logTestingPlaygroundURL();
       const thesisElement = screen.getByDisplayValue(
         'artistic-work_artistic-thesis',
       );

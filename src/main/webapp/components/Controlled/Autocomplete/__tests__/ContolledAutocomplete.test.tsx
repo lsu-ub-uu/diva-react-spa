@@ -906,10 +906,11 @@ describe('<Autocomplete/>', () => {
 
   beforeEach(() => {
     mockAxios = new MockAdapter(axios);
-    const listUrl: string = `/search/nationalSubjectCategory?searchTermValue=*`;
+    const listUrl: string = `/autocompleteSearch?searchType=nationalSubjectCategory&searchTermValue=*`;
     mockAxios.onGet(listUrl).reply(200, mockOptions);
     const optionUrl =
       '/record/nationalSubjectCategory/nationalSubjectCategory:6325356888554468?presentationRecordLinkId=nationalSubjectCategoryPLink';
+
     mockAxios.onGet(optionUrl).reply(200, softwareEngineeringOption);
   });
 
