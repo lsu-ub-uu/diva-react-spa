@@ -18,6 +18,7 @@
 
 import { DataAtomic, DataGroup } from '@/cora/cora-data/CoraData';
 import { CreatedRecord } from './dataUtil';
+import { CoraRecord } from '@/types/record';
 
 export const createExampleDivaOuput = (title: string): DataGroup => ({
   name: 'output',
@@ -96,37 +97,31 @@ export const createExampleDivaOuput = (title: string): DataGroup => ({
   ],
 });
 
-export const createBFFDivaOutput = {
-  output: {
-    titleInfo: {
-      _lang: 'alg',
-      title: {
-        value: 'aaaaaa',
-      },
-    },
-    genre_type_contentType: {
-      value: 'ref',
-      _type: 'contentType',
-    },
-    language: {
-      languageTerm: [
+export const createBFFDivaOutput: CoraRecord = {
+  data: {
+    output: {
+      admin: { reviewed: { value: 'true' } },
+      originInfo: [
         {
-          value: 'alt',
-          _type: 'code',
-          _authority: 'iso639-2b',
+          agent: [{ role: { roleTerm: { value: 'pbl' } } }],
+          dateIssued: { year: { value: '1991' } },
         },
       ],
-    },
-    genre_type_outputType: {
-      value: 'publication_newspaper-article',
-      _type: 'outputType',
-    },
-    recordInfo: {
-      validationType: {
-        value: 'diva-output',
+      titleInfo: { _lang: 'afa', title: { value: 'aaaaaaa' } },
+      genre_type_reviewed: { value: 'refereed', _type: 'reviewed' },
+      genre_type_contentType: { value: 'ref', _type: 'contentType' },
+      language: {
+        languageTerm: [
+          { value: 'alb', _type: 'code', _authority: 'iso639-2b' },
+        ],
       },
-      dataDivider: {
-        value: 'divaData',
+      genre_type_outputType: {
+        value: 'publication_newspaper-article',
+        _type: 'outputType',
+      },
+      recordInfo: {
+        validationType: { value: 'diva-output' },
+        dataDivider: { value: 'divaData' },
       },
     },
   },

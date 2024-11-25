@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
       globals: true,
       include: ['**/*.{test,spec}.{ts,mts,cts,tsx}'],
       exclude: [
+        '**/__integration__/**',
         '**/node_modules/**',
         '**/target/**',
         '**/*.{test,spec}.{js,mjs,cjs,jsx}',

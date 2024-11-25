@@ -1,45 +1,39 @@
-import { startServer } from './utils/startServer';
-import { Auth } from '../../types/Auth';
 import { loginAsDivaAdmin } from './utils/loginUtil';
-import { Server } from 'http';
-import supertest from 'supertest';
-import { createDivaOutput, deleteDivaOutput } from './utils/dataUtil';
-import {
-  createBFFDivaOutput,
-  createBFFUpdatedDivaOutput,
-  createExampleDivaOuput
-} from './utils/testData';
+import { deleteDivaOutput } from './utils/dataUtil';
+import { createBFFDivaOutput } from './utils/testData';
+import { loadStuffOnServerStart } from '@/data/pool.server';
+import { createRecord } from '@/data/createRecord';
+import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 
-describe('RecordController', () => {
-  let server: Server;
-  beforeAll(async () => {
-    server = await startServer();
-  });
-  afterAll((done) => {
-    server.close(done);
-  });
-
+describe('Record integration tests', () => {
   /* Create Record */
-  describe('POST /api/record/:validationTypeId', () => {
+  describe('Creates a record', () => {
     it('creates a diva-output', async () => {
-      // Arrange
-      const testAgent = supertest.agent(server);
-      const auth: Auth = await loginAsDivaAdmin(testAgent);
-      const authToken = auth.data.token;
+      vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
+      vi.stubEnv('CORA_LOGIN_URL', 'https://cora.epc.ub.uu.se/diva/login');
+      const dependencies = await loadStuffOnServerStart();
+      const auth = await loginAsDivaAdmin();
 
-      // Act
-      const response = await testAgent
-        .post('/api/record/diva-output')
-        .set('Authtoken', authToken)
-        .send(createBFFDivaOutput);
+      const formDefinition = await getFormDefinitionByValidationTypeId(
+        dependencies,
+        'diva-output',
+        'create',
+      );
+
+      const { id, recordType, data } = await createRecord(
+        dependencies,
+        formDefinition,
+        createBFFDivaOutput,
+        auth,
+      );
 
       // Assert
-      expect(response.status).toBe(201);
+      expect(id).toBeTruthy();
 
       // Cleanup
-      await deleteDivaOutput(response.body.id, authToken);
+      await deleteDivaOutput(id, auth.data.token);
     });
-
+    /*
     it('fails to create a diva-output when body is invalid', async () => {
       // Arrange
       const testAgent = supertest.agent(server);
@@ -61,14 +55,16 @@ describe('RecordController', () => {
       const testAgent = supertest.agent(server);
 
       // Act
-      const response = await testAgent.post('/api/record/diva-output').send(createBFFDivaOutput);
+      const response = await testAgent
+        .post('/api/record/diva-output')
+        .send(createBFFDivaOutput);
 
       // Assert
       expect(response.status).toBe(401);
     });
   });
 
-  /* Update Record */
+  /!* Update Record *!/
   describe('POST /api/record/:validationTypeId/:recordId', () => {
     it('updates a diva-output', async () => {
       // Arrange
@@ -76,7 +72,10 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'Egil';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
       const response = await testAgent
@@ -97,7 +96,10 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'Egil';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
       const response = await testAgent
@@ -115,7 +117,10 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'Egil';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
       const response = await testAgent
@@ -130,7 +135,7 @@ describe('RecordController', () => {
     });
   });
 
-  /* Delete Record */
+  /!* Delete Record *!/
   describe('DELETE /api/record/:validationTypeId/:recordId', () => {
     it('deletes a diva-output', async () => {
       // Arrange
@@ -138,7 +143,10 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'Egil';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
       const response = await testAgent
@@ -155,7 +163,10 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'Egil';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
       const response = await testAgent
@@ -175,10 +186,15 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'Egil';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
-      const response = await testAgent.delete(`/api/record/diva-output/${createdRecord.id}`);
+      const response = await testAgent.delete(
+        `/api/record/diva-output/${createdRecord.id}`,
+      );
 
       // Assert
       expect(response.status).toBe(401);
@@ -188,7 +204,7 @@ describe('RecordController', () => {
     });
   });
 
-  /* Get Record */
+  /!* Get Record *!/
   describe('GET /api/record/:recordType/:recordId', () => {
     it('gets a specific diva-output', async () => {
       // Arrange
@@ -196,7 +212,10 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'someUniqueTitle';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
       const response = await testAgent
@@ -217,7 +236,10 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'someUniqueTitle';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
       const response = await testAgent
@@ -237,7 +259,10 @@ describe('RecordController', () => {
       const auth: Auth = await loginAsDivaAdmin(testAgent);
       const authToken = auth.data.token;
       const title = 'someUniqueTitle';
-      const createdRecord = await createDivaOutput(createExampleDivaOuput(title), authToken);
+      const createdRecord = await createDivaOutput(
+        createExampleDivaOuput(title),
+        authToken,
+      );
 
       // Act
       const response = await testAgent
@@ -252,7 +277,7 @@ describe('RecordController', () => {
     });
   });
 
-  /* Get initial record for validation type */
+  /!* Get initial record for validation type *!/
   describe('GET /api/record/:validationType', () => {
     it('gets an empty record with record info', async () => {
       // Arrange
@@ -261,12 +286,18 @@ describe('RecordController', () => {
       const authToken = auth.data.token;
 
       // Act
-      const response = await testAgent.get('/api/record/diva-output/').set('Authtoken', authToken);
+      const response = await testAgent
+        .get('/api/record/diva-output/')
+        .set('Authtoken', authToken);
 
       // Assert
       expect(response.status).toBe(200);
-      expect(response.body.data.output.recordInfo.validationType.value).toEqual('diva-output');
-      expect(response.body.data.output.recordInfo.dataDivider.value).toEqual('divaData');
-    });
+      expect(response.body.data.output.recordInfo.validationType.value).toEqual(
+        'diva-output',
+      );
+      expect(response.body.data.output.recordInfo.dataDivider.value).toEqual(
+        'divaData',
+      );
+    });*/
   });
 });

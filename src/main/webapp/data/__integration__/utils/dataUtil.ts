@@ -16,15 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  deleteRecordDataById,
-  postRecordData,
-} from '../../../../../../bff/src/main/webapp/cora/record';
 import { DataGroup, RecordWrapper } from '@/cora/cora-data/CoraData';
 import {
   getFirstChildWithNameInData,
   getFirstDataAtomicWithNameInData,
 } from '@/cora/cora-data/CoraDataUtils';
+import { deleteRecordDataById } from '@/cora/deleteRecordDataById';
+import { postRecordData } from '@/cora/postRecordData';
 
 export interface CreatedRecord {
   id: string;

@@ -16,16 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import TestAgent from 'supertest/lib/agent';
-import { Auth } from '../../../types/Auth';
+import { Auth } from '@/types/Auth';
+import { loginWithAppToken } from '@/data/loginWithAppToken';
 
 const divaAdminUser = {
-  user: 'divaAdmin@cora.epc.ub.uu.se',
-  appToken: '49ce00fb-68b5-4089-a5f7-1c225d3cf156'
+  idFromLogin: 'divaAdmin@cora.epc.ub.uu.se',
+  appToken: '49ce00fb-68b5-4089-a5f7-1c225d3cf156',
 };
 
-export const loginAsDivaAdmin = async (testAgent: TestAgent): Promise<Auth> => {
-  const response = await testAgent.post('/api/auth/appToken').send(divaAdminUser);
-  expect(response.status).toBe(201);
-  return response.body.auth;
+export const loginAsDivaAdmin = async (): Promise<Auth> => {
+  const auth = await loginWithAppToken(divaAdminUser);
+
+  if (!auth) {
+    throw new Error('Login failed');
+  }
+
+  return auth;
 };
