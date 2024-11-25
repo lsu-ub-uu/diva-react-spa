@@ -82,7 +82,27 @@ import {
   formDefWithTwoTextVariableHavingFinalValue,
   formDefWithWithOptionalGroupWithRequiredVar,
 } from '@/__mocks__/data/formDef';
-import { RecordForm } from '@/components/Form/RecordForm';
+import { RecordForm, RecordFormProps } from '@/components/Form/RecordForm';
+import { createRemixStub } from '@remix-run/testing';
+
+const actionSpy = vi.fn();
+
+const RecordFormWithRemixStub = ({ formSchema, record }: RecordFormProps) => {
+  const RemixStub = createRemixStub([
+    {
+      path: '/',
+      Component: () => (
+        <RecordForm
+          formSchema={formSchema}
+          record={record}
+        />
+      ),
+      action: actionSpy,
+    },
+  ]);
+
+  return <RemixStub />;
+};
 
 describe('<Form />', () => {
   vi.mock('react-i18next', () => ({
@@ -95,13 +115,7 @@ describe('<Form />', () => {
 
   describe('form', () => {
     it('renders a form from a given definition', () => {
-      const mockSubmit = vi.fn();
-      render(
-        <RecordForm
-          formSchema={formDefWithTextVar}
-          onSubmit={mockSubmit}
-        />,
-      );
+      render(<RecordFormWithRemixStub formSchema={formDefWithTextVar} />);
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
       expect(inputElement).toBeInTheDocument();
 
@@ -117,9 +131,8 @@ describe('<Form />', () => {
     });
 
     it('renders a form from a given definition for a update definition with variables with same nameInData', () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -187,7 +200,6 @@ describe('<Form />', () => {
               },
             },
           }}
-          onSubmit={mockSubmit}
           formSchema={{
             validationTypeId: 'nationalSubjectCategory',
             form: {
@@ -387,9 +399,8 @@ describe('<Form />', () => {
     });
 
     it('renders a form from a given definition for a update definition with colVar with same nameInData', () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -454,7 +465,6 @@ describe('<Form />', () => {
               },
             },
           }}
-          onSubmit={mockSubmit}
           formSchema={formDefCollVarsWithSameNameInData}
         />,
       );
@@ -470,13 +480,8 @@ describe('<Form />', () => {
     });
 
     it('renders a form from a given definition does validate it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariable}
-        />,
+        <RecordFormWithRemixStub formSchema={formDefWithOneTextVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -491,17 +496,12 @@ describe('<Form />', () => {
       await user.type(inputElement, 'a');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a form from a given definition does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
       const { container } = render(
-        <RecordForm
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneTextVariable}
-        />,
+        <RecordFormWithRemixStub formSchema={formDefWithOneTextVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -518,17 +518,12 @@ describe('<Form />', () => {
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a form from a given definition with groups with same nameInData and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
       const { container } = render(
-        <RecordForm
-          onSubmit={mockSubmit}
-          formSchema={formDefTitleInfoGroup}
-        />,
+        <RecordFormWithRemixStub formSchema={formDefTitleInfoGroup} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -545,15 +540,12 @@ describe('<Form />', () => {
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a form from a given definition for variables with same nameInData and validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefTextVarsWithSameNameInData}
         />,
       );
@@ -573,15 +565,12 @@ describe('<Form />', () => {
       await user.type(engElement, 'english');
 
       await user.click(submitButton);
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a form from a given definition for collectionVariables with same nameInData and validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefCollVarsWithSameNameInData}
         />,
       );
@@ -611,13 +600,12 @@ describe('<Form />', () => {
         'artisticWorkArtisticThesisItemText',
       );
       await user.click(submitButton);
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a form from a given definition for a update definition with group with same nameInData', () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           record={{
             id: 'divaOutput:1729757581842184',
             recordType: 'divaOutput',
@@ -692,7 +680,6 @@ describe('<Form />', () => {
               },
             },
           }}
-          onSubmit={mockSubmit}
           formSchema={{
             validationTypeId: 'nationalSubjectCategory',
             form: {
@@ -940,11 +927,8 @@ describe('<Form />', () => {
 
   describe('recordLink', () => {
     it('renders a recordLink 0-1 and minNumberToShow 1 and validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneRecordLinkBeingOptional}
         />,
       );
@@ -954,15 +938,12 @@ describe('<Form />', () => {
 
       const user = userEvent.setup();
       await user.click(submitButton);
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a recordLink 1-1 and does NOT validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneRecordLinkBeingRequired}
         />,
       );
@@ -973,20 +954,13 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
   });
 
   describe('textVariable', () => {
     it('renders a textVariable 1-1 and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
-      render(
-        <RecordForm
-          onSubmit={mockSubmit}
-          formSchema={formDefWithTextVar}
-        />,
-      );
+      render(<RecordFormWithRemixStub formSchema={formDefWithTextVar} />);
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
@@ -996,15 +970,12 @@ describe('<Form />', () => {
       await user.type(inputElement, 'does not validate');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a multiple textVariables 1-1 with finalValue ', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithTwoTextVariableHavingFinalValue}
         />,
       );
@@ -1021,11 +992,10 @@ describe('<Form />', () => {
 
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a textVariable 1-1 with mode output', async () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -1081,8 +1051,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneRepeatingTextVariableWithModeOutput}
           record={coraRecord}
         />,
@@ -1092,7 +1061,6 @@ describe('<Form />', () => {
     });
 
     it('does not render a textVariable 1-1 with mode output with no data', async () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -1148,8 +1116,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneRepeatingTextVariableWithModeOutput}
           record={coraRecord}
         />,
@@ -1161,11 +1128,8 @@ describe('<Form />', () => {
     });
 
     it('renders a textVariable 0-1 and minNumberOfRepeatingToShow 1', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneTextVariableBeingOptional}
         />,
       );
@@ -1176,15 +1140,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     test('renders a textVariable 0-2 and minNumberOfRepeatingToShow 1', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneTextVariableBeingRepeating}
         />,
       );
@@ -1195,15 +1156,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a textVariable 0-1, minNumberToShow 1 and bad input', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneTextVariableBeingOptional}
         />,
       );
@@ -1218,16 +1176,13 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(mockSubmit).toHaveBeenCalledTimes(0);
+        expect(actionSpy).toHaveBeenCalledTimes(0);
       });
     });
 
     it('renders a textVariable 0-1 as password', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneTextVariableBeingPassword}
         />,
       );
@@ -1245,20 +1200,15 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(mockSubmit).toHaveBeenCalledTimes(0);
+        expect(actionSpy).toHaveBeenCalledTimes(0);
       });
     });
   });
 
   describe('numberVariable', () => {
     it('renders a numberVariable 1-1 and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariable}
-        />,
+        <RecordFormWithRemixStub formSchema={formDefWithOneNumberVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -1272,11 +1222,10 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, 'does not validate');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable with mode output', async () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -1332,8 +1281,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableModeOutput}
           record={coraRecord}
         />,
@@ -1343,7 +1291,6 @@ describe('<Form />', () => {
     });
 
     it('does not render a numberVariable 1-1 with mode output with no data', async () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -1399,8 +1346,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableBeingOptionalOutput}
           record={coraRecord}
         />,
@@ -1414,13 +1360,8 @@ describe('<Form />', () => {
     });
 
     it('renders a numberVariable 1-1 with input under min', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariable}
-        />,
+        <RecordFormWithRemixStub formSchema={formDefWithOneNumberVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -1434,17 +1375,12 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, '0');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable 1-1 with input over max', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
-          formSchema={formDefWithOneNumberVariable}
-        />,
+        <RecordFormWithRemixStub formSchema={formDefWithOneNumberVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
@@ -1458,15 +1394,12 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, '21');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable 0-1 and does NOT validate text', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
@@ -1485,17 +1418,14 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(mockSubmit).toHaveBeenCalledTimes(0);
+        expect(actionSpy).toHaveBeenCalledTimes(0);
         expect((inputNumberElement as HTMLInputElement).value).toBe('aaa');
       });
     });
 
     it('renders a numberVariable 1-1 with numberOfDecimals 2 and does NOT validate', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableHavingDecimals}
         />,
       );
@@ -1511,15 +1441,12 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, '12.0123');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable 1-1 with numberOfDecimals 2 and does validate', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableHavingDecimals}
         />,
       );
@@ -1535,15 +1462,12 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, '12.00');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a numberVariable 0-1 with minNumberOfRepeatingToShow 1 with no input and does validate', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
@@ -1554,15 +1478,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a numberVariable 0-1 with minNumberOfRepeatingToShow 1 and does validate', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableBeingOptional}
         />,
       );
@@ -1579,17 +1500,14 @@ describe('<Form />', () => {
       await user.type(inputElement, '10');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('minNumberOfRepeatingToShow', () => {
     it('renders a textVariable 2-3 should render 2 based on minNumberOfRepeatingToShow', () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
         />,
       );
@@ -1601,11 +1519,9 @@ describe('<Form />', () => {
 
   describe('repeatMax', () => {
     it('should NOT render add button when repeatMax is reached', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1626,13 +1542,11 @@ describe('<Form />', () => {
     });
 
     it('should NOT render move buttons when repeatMax is less or equal to one', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero
           }
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1649,11 +1563,9 @@ describe('<Form />', () => {
 
   describe('repeatMin', () => {
     it('Remove buttons should be disabled when repeatMin is reached', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneTextVariableWithMinNumberOfRepeatingToShow}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1665,13 +1577,11 @@ describe('<Form />', () => {
     });
 
     it('Remove button should be visible when repeatMin is zero and minNumberOfRepeatingToShow is 1', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMinZero
           }
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1684,11 +1594,9 @@ describe('<Form />', () => {
 
   describe('collectionVariable', () => {
     it('renders a collectionVariable 1-1 and its options', async () => {
-      const mockSubmit = vi.fn();
       const { container } = render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneCollectionVariable}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1700,11 +1608,9 @@ describe('<Form />', () => {
     });
 
     it('renders a collectionVariable 1-1 and does validate it', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneCollectionVariable}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1723,15 +1629,13 @@ describe('<Form />', () => {
       await user.selectOptions(items, 'exampleBlueItemText');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a collectionVariable 1-1 and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneCollectionVariable}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1742,11 +1646,10 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a collectionVariable 1-1 with mode output', async () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -1802,8 +1705,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneCollectionVariableWithModeOutput}
           record={coraRecord}
         />,
@@ -1813,7 +1715,6 @@ describe('<Form />', () => {
     });
 
     it('does not render a collectionVariable 1-1 with mode output without data', async () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -1869,8 +1770,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneCollectionVariableWithModeOutput}
           record={coraRecord}
         />,
@@ -1882,11 +1782,9 @@ describe('<Form />', () => {
 
   describe('attribute collection', () => {
     it('renders a numberVariable 1-1 with attribute and does NOT validate it when skipped', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableWithAttributeCollection}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1916,15 +1814,13 @@ describe('<Form />', () => {
       });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable 1-1 with attribute has styling for attribute', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneOptionalGroupWithAttributeCollection}
-          onSubmit={mockSubmit}
         />,
       );
       // const expandButton = screen.getByRole('combobox', { expanded: false });
@@ -1941,11 +1837,9 @@ describe('<Form />', () => {
     });
 
     it('renders a numberVariable 1-1 with attribute and validates it when filled', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableWithAttributeCollection}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -1972,17 +1866,15 @@ describe('<Form />', () => {
       });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a numberVariable 0-1 with attribute and validates it when skipped', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneOptionalNumberVariableWithAttributeCollection
           }
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -2008,17 +1900,15 @@ describe('<Form />', () => {
       });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a numberVariable 1-1 and attribute and does NOT validate it when only attribute is picked', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneRequiredNumberVariableWithAttributeCollection
           }
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -2044,17 +1934,15 @@ describe('<Form />', () => {
       });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable 0-1 and attribute and does NOT validates it when variable is written in', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneOptionalNumberVariableWithAttributeCollection
           }
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -2077,17 +1965,15 @@ describe('<Form />', () => {
       });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable 1-1 and a numberVariable 0-1 with attribute and validates it', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeCollection
           }
-          onSubmit={mockSubmit}
         />,
       );
       const numberInput = screen.getByPlaceholderText(
@@ -2112,15 +1998,13 @@ describe('<Form />', () => {
       });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 with attribute and textVariable 1-1 and validates it', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneOptionalGroupWithAttributeCollection}
-          onSubmit={mockSubmit}
         />,
       );
       const textInput = screen.getByPlaceholderText(
@@ -2140,15 +2024,13 @@ describe('<Form />', () => {
       });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 1-1 with a textVariable 1-1 and attribute and validates it', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneRequiredGroupWithAttributeCollection}
-          onSubmit={mockSubmit}
         />,
       );
       const textInput = screen.getByPlaceholderText(
@@ -2178,15 +2060,12 @@ describe('<Form />', () => {
 
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 with a group 1-1 having textVars 1-1 an validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
         />,
       );
@@ -2207,15 +2086,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group having 0-1 with a group having 1-1 having textVars having 1-1 and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
       const { container } = render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
         />,
       );
@@ -2240,17 +2116,15 @@ describe('<Form />', () => {
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 0-1 with attribute and with a textVariable 0-1 and attribute and validates it', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAttribute
           }
-          onSubmit={mockSubmit}
         />,
       );
       const attributeButtons = screen.getAllByRole('combobox', {
@@ -2272,17 +2146,15 @@ describe('<Form />', () => {
       });
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a optional group with multiple attributes and with a required textVariable and attribute and validates it', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneOptionalGroupWithTextVariableAndAttributeCollection
           }
-          onSubmit={mockSubmit}
         />,
       );
       const attributeButtons = screen.getAllByRole('combobox', {
@@ -2327,17 +2199,15 @@ describe('<Form />', () => {
 
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a optional group with attribute with a optional group and with a required textVariable and attribute and validates it', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOneOptionalGroupWithOneOptionalGroupWithTextVariableAndAttributeCollection
           }
-          onSubmit={mockSubmit}
         />,
       );
       const attributeButtons = screen.getAllByRole('combobox', {
@@ -2384,17 +2254,15 @@ describe('<Form />', () => {
 
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('group', () => {
     it('renders a group 1-1 with textVariable 1-1 child', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneGroupHavingTextVariableAsChild}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -2403,11 +2271,9 @@ describe('<Form />', () => {
     });
 
     it('renders a group 1-10 and headlineLevel 1', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithGroupWithSpecifiedHeadlineLevel}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -2419,11 +2285,9 @@ describe('<Form />', () => {
     });
 
     it('renders a group 1-10 and headlineLevel 3', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithGroupWithSpecifiedHeadlineLevel}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -2435,11 +2299,9 @@ describe('<Form />', () => {
     });
 
     it('renders a group 1-10 and headlineLevel default', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithGroupWithDefaultHeadlineLevel}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -2451,11 +2313,8 @@ describe('<Form />', () => {
     });
 
     it('renders a group 0-1 and textVariable 1-1 and validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredTextVar}
         />,
       );
@@ -2466,15 +2325,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group group 0-1 and numberVariable being 1-1 and validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredNumberVar}
         />,
       );
@@ -2485,15 +2341,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 and recordLink being 1-1 and validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredRecordLink}
         />,
       );
@@ -2504,15 +2357,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 and namePart being 1-1 and shows a validation error', async () => {
-      const mockSubmit = vi.fn();
-
       const { container } = render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithWithOptionalGroupWithRequiredVar}
         />,
       );
@@ -2530,15 +2380,12 @@ describe('<Form />', () => {
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('render a group 0-1 with a child group 1-X and textVar being 1-1 and validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOptionalGroupWithNestedOptionalGroupWithTextVar
           }
@@ -2551,15 +2398,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('render a group 1-1 and some sub groups 0-1 and does NOT validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefContributorGroupWithAuthorGroupAuthor}
         />,
       );
@@ -2570,15 +2414,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 and some textVars 0-1 and 1-1 and does NOT validates it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOptionalGroupWithMixOptionalAndRequiredTextVars
           }
@@ -2598,15 +2439,12 @@ describe('<Form />', () => {
       await user.type(inputNumberElement, '1.23');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 and textVars 1-1 being partially filled and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
       const { container } = render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars}
         />,
       );
@@ -2627,15 +2465,12 @@ describe('<Form />', () => {
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 and numberVars 1-1 being partially filled and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
       const { container } = render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={
             formDefWithOptionalGroupWithLongitudeAndLatitudeNumberVars
           }
@@ -2658,15 +2493,12 @@ describe('<Form />', () => {
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 and collectionVars being partially filled and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
       const { container } = render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithTwoCollectionVars}
         />,
       );
@@ -2690,15 +2522,12 @@ describe('<Form />', () => {
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 0-1 with textVar having 1-1, a group having 1-1 with textVar 1-1 and does NOT validate it', async () => {
-      const mockSubmit = vi.fn();
-
       const { container } = render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar}
         />,
       );
@@ -2719,15 +2548,12 @@ describe('<Form />', () => {
       expect(
         container.getElementsByClassName('Mui-error').length,
       ).toBeGreaterThan(0);
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 0-1 with nested textVars 1-1 and does validate it', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefTwoOptionalGroupsWithRequiredTextVars}
         />,
       );
@@ -2746,15 +2572,12 @@ describe('<Form />', () => {
       await user.type(latitudeElement, '1.25');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 1-1 with same nameInData with nested textVars 1-1 and does validate it ', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={
             formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars
           }
@@ -2780,15 +2603,12 @@ describe('<Form />', () => {
       await user.type(givenName2, 'Daniel');
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 with with nested textVars  1-1 with attributes for both and does validate it ', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={
             formDefSubjectGroupOptionalWithAttributesAndTopicWithAttributes
           }
@@ -2801,15 +2621,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 1-1 with with nested textVars 1-1 with attributes for both and does validate it ', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={
             formDefSubjectGroupRequiredWithAttributesAndTopicWithAttributes
           }
@@ -2822,15 +2639,12 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(0);
+      expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 with same nameInData with nested recordLinks 1-1 with attributes and does validate it ', async () => {
-      const mockSubmit = vi.fn();
-
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={
             formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttributes
           }
@@ -2843,12 +2657,10 @@ describe('<Form />', () => {
       const user = userEvent.setup();
       await user.click(submitButton);
 
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 with nested textVars 1-1 with mode output with data', async () => {
-      const mockSubmit = vi.fn();
-
       const givenAndFamilyName = {
         id: 'divaOutput:8988822974651200',
         recordType: 'divaOutput',
@@ -2917,8 +2729,7 @@ describe('<Form />', () => {
       };
 
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefPreprintWithOnlyAuthorName}
           record={givenAndFamilyName}
         />,
@@ -2934,11 +2745,9 @@ describe('<Form />', () => {
 
   describe('guiElementLink', () => {
     it('renders a numberVariable 1-1 and guiElementLink', async () => {
-      const mockSubmit = vi.fn();
       render(
-        <RecordForm
+        <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableAndGuiElementLink}
-          onSubmit={mockSubmit}
         />,
       );
 
@@ -2951,12 +2760,9 @@ describe('<Form />', () => {
   describe('1-X', () => {
     describe('textVar', () => {
       it('renders a textVar 1-X with group 1-1 and does not validate it', async () => {
-        const mockSubmit = vi.fn();
-
         const { container } = render(
-          <RecordForm
+          <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingTextVar}
-            onSubmit={mockSubmit}
           />,
         );
 
@@ -2971,16 +2777,13 @@ describe('<Form />', () => {
         expect(
           container.getElementsByClassName('Mui-error').length,
         ).toBeGreaterThan(0);
-        expect(mockSubmit).toHaveBeenCalledTimes(0);
+        expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
       it('renders a textVar 1-X with group 0-1 and does validate it', async () => {
-        const mockSubmit = vi.fn();
-
         render(
-          <RecordForm
+          <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingText2Var}
-            onSubmit={mockSubmit}
           />,
         );
 
@@ -2992,18 +2795,15 @@ describe('<Form />', () => {
 
         await user.click(submitButton);
 
-        expect(mockSubmit).toHaveBeenCalledTimes(1);
+        expect(actionSpy).toHaveBeenCalledTimes(1);
       });
     });
 
     describe('numberVar', () => {
       it('renders a numberVar 1-X with group 1-1 and does not validate it', async () => {
-        const mockSubmit = vi.fn();
-
         const { container } = render(
-          <RecordForm
+          <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingNumberVar}
-            onSubmit={mockSubmit}
           />,
         );
 
@@ -3018,16 +2818,13 @@ describe('<Form />', () => {
         expect(
           container.getElementsByClassName('Mui-error').length,
         ).toBeGreaterThan(0);
-        expect(mockSubmit).toHaveBeenCalledTimes(0);
+        expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
       it('renders a numberVar 1-X with group 0-1 and does validate it', async () => {
-        const mockSubmit = vi.fn();
-
         render(
-          <RecordForm
+          <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingNumber2Var}
-            onSubmit={mockSubmit}
           />,
         );
 
@@ -3039,18 +2836,15 @@ describe('<Form />', () => {
 
         await user.click(submitButton);
 
-        expect(mockSubmit).toHaveBeenCalledTimes(1);
+        expect(actionSpy).toHaveBeenCalledTimes(1);
       });
     });
 
     describe('collection', () => {
       it('renders a collectionVariable 1-X with group 1-1 and does not validate it', async () => {
-        const mockSubmit = vi.fn();
-
         const { container } = render(
-          <RecordForm
+          <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingCollectionVar}
-            onSubmit={mockSubmit}
           />,
         );
 
@@ -3065,16 +2859,13 @@ describe('<Form />', () => {
         expect(
           container.getElementsByClassName('Mui-error').length,
         ).toBeGreaterThan(0);
-        expect(mockSubmit).toHaveBeenCalledTimes(0);
+        expect(actionSpy).toHaveBeenCalledTimes(0);
       });
 
       it('renders a collectionVariable 1-X with group 0-1 and does validate it', async () => {
-        const mockSubmit = vi.fn();
-
         render(
-          <RecordForm
+          <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingCollection2Var}
-            onSubmit={mockSubmit}
           />,
         );
 
@@ -3086,13 +2877,12 @@ describe('<Form />', () => {
 
         await user.click(submitButton);
 
-        expect(mockSubmit).toHaveBeenCalledTimes(1);
+        expect(actionSpy).toHaveBeenCalledTimes(1);
       });
     });
   });
   describe('checkIfComponentHasValue', () => {
     it('checkIfComponentHasValue does not hides variable in output with value', () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -3148,8 +2938,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefForCheckTextValue}
           record={coraRecord}
         />,
@@ -3159,7 +2948,6 @@ describe('<Form />', () => {
     });
 
     it('checkIfComponentHasValue hides variable in output with no value', () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -3213,8 +3001,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefForCheckTextValue}
           record={coraRecord}
         />,
@@ -3228,7 +3015,6 @@ describe('<Form />', () => {
     });
 
     it('checkIfComponentHasValue hides variable in output with no value 2', () => {
-      const mockSubmit = vi.fn();
       const coraRecord = {
         id: 'divaOutput:519333261463755',
         recordType: 'divaOutput',
@@ -3282,8 +3068,7 @@ describe('<Form />', () => {
         },
       };
       render(
-        <RecordForm
-          onSubmit={mockSubmit}
+        <RecordFormWithRemixStub
           formSchema={formDefForCheckNumberValue}
           record={coraRecord}
         />,

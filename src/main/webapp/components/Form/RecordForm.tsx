@@ -31,7 +31,7 @@ import { CoraRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from '@remix-run/react';
 
-interface RecordFormProps {
+export interface RecordFormProps {
   record?: CoraRecord;
   formSchema: RecordFormSchema;
 }
