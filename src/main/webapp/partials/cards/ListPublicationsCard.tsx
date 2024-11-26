@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -40,7 +40,7 @@ export const ListPublicationsCard = () => {
   const { recordList } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef<BFFDataRecord>[] = [
     {
       field: 'id',
       headerName: `${t('divaClient_listPublicationsHeaderIdText')}`, // ID
@@ -55,15 +55,15 @@ export const ListPublicationsCard = () => {
       field: 'title',
       headerName: `${t('divaClient_listPublicationsHeaderTitleText')}`, // Title
       width: 200,
-      valueGetter: (params) => getCorrectTitle(params.row),
+      valueGetter: (_, row) => getCorrectTitle(row),
     },
     {
       field: 'createdAt',
       headerName: `${t('divaClient_listPublicationsHeaderCreatedText')}`, // Created,
       sortable: true,
       width: 160,
-      valueGetter: (params: GridValueGetterParams) =>
-        dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss') || '-',
+      valueGetter: (_, row) =>
+        dayjs(row.createdAt).format('YYYY-MM-DD HH:mm:ss') || '-',
     },
     {
       field: 'action',
@@ -76,7 +76,10 @@ export const ListPublicationsCard = () => {
           <Tooltip title={t('divaClient_updatePublicationText')}>
             <span>
               <IconButton
-                disabled={!params.row.userRights.includes('update')}
+                disabled={
+                  !params.row.userRights ||
+                  !params.row.userRights.includes('update')
+                }
                 aria-label='edit'
                 component={RouterLink}
                 to={`/update/${params.row.recordType}/${params.id}`}
@@ -88,7 +91,10 @@ export const ListPublicationsCard = () => {
           <Tooltip title={t('divaClient_readPublicationText')}>
             <span>
               <IconButton
-                disabled={!params.row.userRights.includes('read')}
+                disabled={
+                  !params.row.userRights ||
+                  !params.row.userRights.includes('read')
+                }
                 aria-label='view'
                 component={RouterLink}
                 to={`/view/${params.row.recordType}/${params.id}`}
@@ -144,7 +150,7 @@ export const ListPublicationsCard = () => {
                 autoHeight
                 disableColumnMenu
                 disableColumnSelector
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 rows={(recordList as BFFSearchResult).data}
                 columns={columns}
                 /* components={{
