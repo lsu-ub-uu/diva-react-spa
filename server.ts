@@ -29,7 +29,7 @@ import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const { CORA_API_URL, CORA_LOGIN_URL, NODE_ENV, PORT } = process.env;
+const { CORA_API_URL, CORA_LOGIN_URL, NODE_ENV, PORT, BASE_NAME } = process.env;
 
 const viteDevServer =
   NODE_ENV === 'production'
@@ -64,7 +64,7 @@ if (viteDevServer) {
 } else {
   // Vite fingerprints its assets so we can cache forever.
   app.use(
-    '/assets',
+    BASE_NAME ? `${BASE_NAME}/assets` : '/assets',
     express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
 }
