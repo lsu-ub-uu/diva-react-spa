@@ -20,7 +20,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import I18NextHttpBackend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { i18nConfig } from '@/app/i18nConfig';
+import { i18nConfig } from '@/i18n/i18nConfig';
 import { getInitialNamespaces } from 'remix-i18next/client';
 
 export const initClienti18n = () => {

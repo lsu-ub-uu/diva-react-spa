@@ -37,9 +37,9 @@ import { divaTheme } from '@/themes/diva';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
-import i18nServer from '@/app/i18n.server';
+import i18nServer from '@/i18n/i18n.server';
 import { useChangeLanguage } from 'remix-i18next/react';
-import { i18nCookie } from '@/app/i18nCookie';
+import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
 
 const { MODE } = import.meta.env;

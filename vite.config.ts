@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => {
     plugins: [
       !process.env.VITEST &&
         remix({
-          appDirectory: 'src/main/webapp',
           buildDirectory: 'dist',
           basename: BASE_PATH,
           future: {

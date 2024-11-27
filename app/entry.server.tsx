@@ -13,9 +13,9 @@ import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 import { MuiProvider } from '@/mui/MuiProvider';
 import { createInstance, i18n } from 'i18next';
-import i18nextServer from '@/app/i18n.server';
+import i18nextServer from '@/i18n/i18n.server';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { i18nConfig } from '@/app/i18nConfig';
+import { i18nConfig } from '@/i18n/i18nConfig';
 import I18NextHttpBackend from 'i18next-http-backend';
 import { createTextDefinition } from '@/data/textDefinition/textDefinition';
 
@@ -27,7 +27,7 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
   // This is ignored so we can keep it in the template for visibility.  Feel
-  // free to delete this parameter in your webapp if you're not using it!
+  // free to delete this parameter in your i18n if you're not using it!
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadContext: AppLoadContext,
 ) {

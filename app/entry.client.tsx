@@ -1,5 +1,5 @@
 /**
- * By default, Remix will handle hydrating your webapp on the client for you.
+ * By default, Remix will handle hydrating your i18n on the client for you.
  * You are free to delete this file if you'd like to, but if you ever want it revealed again, you can run `npx remix reveal` ✨
  * For more information, see https://remix.run/file-conventions/entry.client
  */
@@ -10,7 +10,7 @@ import { hydrateRoot } from 'react-dom/client';
 import i18next from 'i18next';
 import { MuiProvider } from '@/mui/MuiProvider';
 import { I18nextProvider } from 'react-i18next';
-import { initClienti18n } from '@/app/i18n.client';
+import { initClienti18n } from '@/i18n/i18n.client';
 
 async function hydrate() {
   await initClienti18n();

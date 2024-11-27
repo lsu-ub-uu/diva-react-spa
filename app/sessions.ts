@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-// app/sessions.ts
+// i18n/sessions.ts
 import { createCookieSessionStorage, json, Session } from '@remix-run/node';
 import { Auth } from '@/types/Auth';
 

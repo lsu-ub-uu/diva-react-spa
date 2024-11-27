@@ -19,7 +19,7 @@ import I18NextHttpBackend from 'i18next-http-backend';
 
 import { RemixI18Next } from 'remix-i18next/server';
 import { i18nConfig } from './i18nConfig';
-import { i18nCookie } from '@/app/i18nCookie';
+import { i18nCookie } from '@/i18n/i18nCookie';
 
 const i18next = new RemixI18Next({
   detection: {
