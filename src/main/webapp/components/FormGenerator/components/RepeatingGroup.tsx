@@ -18,9 +18,9 @@
 
 import { FormComponent } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
-import { useFormContext } from 'react-hook-form';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -37,7 +37,7 @@ export const RepeatingGroup = ({
   parentPresentationStyle,
   childWithNameInDataArray,
 }: RepeatingGroupProps) => {
-  const { control } = useFormContext();
+  const { control } = useRemixFormContext();
   return (
     <FieldArrayComponent
       key={reactKey}

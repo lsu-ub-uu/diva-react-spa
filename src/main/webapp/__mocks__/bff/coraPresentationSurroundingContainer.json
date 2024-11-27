@@ -1,0 +1,222 @@
+{
+  "dataList": {
+    "fromNo": "0",
+    "data": [
+      {
+        "record": {
+          "data": {
+            "name": "presentation",
+            "children": [
+              {
+                "name": "recordInfo",
+                "children": [
+                  {
+                    "name": "id",
+                    "value": "labelInputSContainer"
+                  },
+                  {
+                    "name": "type",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "recordType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "presentation"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "createdBy",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "user"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "141414"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "dataDivider",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "system"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "cora"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "tsCreated",
+                    "value": "2023-10-06T15:08:34.801186Z"
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "141414"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2023-10-06T15:08:34.801186Z"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "updated",
+                    "repeatId": "1",
+                    "children": [
+                      {
+                        "name": "updatedBy",
+                        "children": [
+                          {
+                            "name": "linkedRecordType",
+                            "value": "user"
+                          },
+                          {
+                            "name": "linkedRecordId",
+                            "value": "141414"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "tsUpdated",
+                        "value": "2023-10-06T15:21:04.340963Z"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "validationType",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "validationType"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "presentationSurroundingContainer"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "presentationsOf",
+                "children": [
+                  {
+                    "name": "presentationOf",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "linkedRecordType",
+                        "value": "metadata"
+                      },
+                      {
+                        "name": "linkedRecordId",
+                        "value": "showLabelCollectionVar"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "childReferences",
+                "children": [
+                  {
+                    "name": "childReference",
+                    "repeatId": "0",
+                    "children": [
+                      {
+                        "name": "textStyle",
+                        "value": "h2TextStyle"
+                      },
+                      {
+                        "name": "refGroup",
+                        "repeatId": "0",
+                        "children": [
+                          {
+                            "name": "ref",
+                            "children": [
+                              {
+                                "name": "linkedRecordType",
+                                "value": "text"
+                              },
+                              {
+                                "name": "linkedRecordId",
+                                "value": "labelHeadlineText"
+                              }
+                            ],
+                            "attributes": {
+                              "type": "text"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "childReference",
+                    "repeatId": "1",
+                    "children": [
+                      {
+                        "name": "refGroup",
+                        "repeatId": "0",
+                        "children": [
+                          {
+                            "name": "ref",
+                            "children": [
+                              {
+                                "name": "linkedRecordType",
+                                "value": "presentation"
+                              },
+                              {
+                                "name": "linkedRecordId",
+                                "value": "showLabelPCollVar"
+                              }
+                            ],
+                            "attributes": {
+                              "type": "presentation"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "mode",
+                "value": "input"
+              }
+            ],
+            "attributes": {
+              "type": "container",
+              "repeat": "children"
+            }
+          }
+        }
+      }
+    ],
+    "totalNo": "1",
+    "containDataOfType": "recordType",
+    "toNo": "1"
+  }
+}

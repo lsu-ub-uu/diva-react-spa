@@ -18,9 +18,9 @@
  */
 
 import { Control, Controller, useFieldArray } from 'react-hook-form';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Button, Box, Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import Button from '@mui/material/Button';
+
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';

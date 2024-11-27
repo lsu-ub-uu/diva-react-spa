@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright 2024 Uppsala University Library
+  ~
+  ~ This file is part of Cora.
+  ~
+  ~     Cora is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     Cora is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+  <script type="text/javascript">
+    window.onload = start;
+
+    function start() {
+      var authInfo = {
+        userId: '131313',
+        token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        loginId: 'johdo290@user.uu.se',
+        validForNoSeconds: '600',
+        actionLinks: {
+          delete: {
+            requestMethod: 'DELETE',
+            rel: 'delete',
+            url: 'https://pre.diva-portal.org/login/rest/authToken/17c2a9a8-9851-47fc-b502-8e41a314eb83'
+          }
+        }
+      };
+      if (null != window.opener) {
+        window.opener.postMessage(authInfo, '*');
+        window.opener.focus();
+        window.close();
+      }
+    }
+  </script>
+<body>
+token: 0367365e-1add-4562-bf5e-0ed3d8789cd7
+</body>
+</html>

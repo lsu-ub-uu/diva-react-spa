@@ -22,7 +22,7 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Tooltip } from '@/components';
+import { Tooltip } from '../../index';
 
 describe('<Tooltip />', () => {
   it('Renders tooltip when child button is clicked and can be closed', async () => {

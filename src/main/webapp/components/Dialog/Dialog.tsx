@@ -17,18 +17,18 @@
  */
 
 import { useEffect, useState, ReactNode } from 'react';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import {
+  DialogContent,
+  DialogActions,
+  Button,
   Dialog as MuiDialog,
   DialogTitle as MuiDialogTitle,
   Paper,
   Stack,
   Theme,
+  IconButton,
 } from '@mui/material';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 
@@ -83,6 +83,7 @@ interface DialogProps {
   closeAction?: () => void;
   actions?: ReactNode[];
 }
+
 const StyledDialogPaper = styled(Paper)(() => ({
   width: '900px',
   height: '800px',

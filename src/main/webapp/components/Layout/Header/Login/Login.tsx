@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,193 +16,147 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useState, MouseEvent, useEffect } from 'react';
-import { Button, Menu, MenuItem, Stack, Box, IconButton } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { Account, getDevAccounts } from './devAccounts';
 import {
-  loginAsync,
-  loginWebRedirectAsync,
-  logoutAsync,
-} from '@/features/auth/actions';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { useBackdrop } from '@/components';
-import { authStateSelector } from '@/features/auth/selectors';
-import { loadLoginUnitsAsync, loginUnitsSelector } from '@/features/loginUnits';
+  Form,
+  useLoaderData,
+  useLocation,
+  useNavigation,
+  useSubmit,
+} from '@remix-run/react';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Menu,
+  Stack,
+} from '@mui/material';
+import { loader } from '@/root';
 import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
-  splitBasenameFromUrl,
-  splitSlashFromUrl,
-} from './utils/utils';
-import { hasError } from '@/features/auth/authSlice';
+} from '@/components/Layout/Header/Login/utils/utils';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Account } from '@/components/Layout/Header/Login/devAccounts';
+import { useTranslation } from 'react-i18next';
+import { useRef, useState } from 'react';
+import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';
+import { WebRedirectLoginOptions } from '@/components/Layout/Header/Login/WebRedirectLoginOptions';
+import { PasswordLoginOptions } from '@/components/Layout/Header/Login/PasswordLoginOptions';
 
-export const Login = (): JSX.Element => {
+export default function User() {
   const { MODE } = import.meta.env;
+  const { auth } = useLoaderData<typeof loader>();
+  const submit = useSubmit();
   const { t } = useTranslation();
-  const { setBackdrop } = useBackdrop();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const dispatch = useAppDispatch();
-  const authState = useAppSelector(authStateSelector);
-  const loginUnitsState = useAppSelector(loginUnitsSelector);
+  const anchorEl = useRef<HTMLButtonElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigation = useNavigation();
+  const returnTo = encodeURIComponent(location.pathname + location.search);
 
-  useEffect(() => {
-    dispatch(loadLoginUnitsAsync());
-  }, [dispatch]);
-
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleDevSelection = (account: Account) => {
+    setMenuOpen(false);
+    submit(
+      { loginType: 'appToken', account: JSON.stringify(account), returnTo },
+      { action: '/login', method: 'post' },
+    );
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleDevSelection = (
-    event: MouseEvent<HTMLElement>,
-    account: Account,
-  ) => {
-    event.preventDefault();
-    setBackdrop(true);
-    dispatch(loginAsync(account, () => setBackdrop(false)));
-    handleClose();
-  };
-
-  const handleWebRedirectSelection = (
-    event: any,
-    url: string,
-  ) => {
+  const handleWebRedirectSelection = (url: string) => {
     try {
-      window.open(MODE === 'development' ? 'http://localhost:1234' : url);
+      window.open(MODE === 'development' ? '/devLogin' : url);
       window.addEventListener('message', receiveMessage, { once: true });
     } catch (e: any) {
-      if (e === undefined) {
-        console.log('undef', event);
-      }
       console.log(e.message());
     }
-    handleClose();
+    setMenuOpen(false);
   };
 
-  const receiveMessage = (event: any) => {
+  const receiveMessage = (event: MessageEvent<any>) => {
     if (event === undefined || event.data.source === 'react-devtools-bridge') {
-      dispatch(hasError('login error'));
+      // dispatch(hasError('login error'));
     }
 
     if (event.data.source !== 'react-devtools-bridge') {
-      if (
-        messageIsFromWindowOpenedFromHere(
-          splitSlashFromUrl(
-            splitBasenameFromUrl(window.location.href, 'divaclient'),
-          ),
-          splitSlashFromUrl(event.origin as string),
-        )
-      ) {
-        dispatch(
-          loginWebRedirectAsync(
-            convertWebRedirectToUserSession(event.data),
-            () => setBackdrop(false),
-          ),
+      if (messageIsFromWindowOpenedFromHere(event)) {
+        submit(
+          {
+            loginType: 'webRedirect',
+            auth: JSON.stringify(convertWebRedirectToUserSession(event.data)),
+            returnTo,
+          },
+          { action: '/login', method: 'post' },
         );
       }
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logoutAsync());
-  };
+  if (!auth) {
+    return (
+      <>
+        <Button
+          ref={anchorEl}
+          onClick={() => setMenuOpen(true)}
+          disabled={navigation.state === 'submitting'}
+        >
+          {navigation.state === 'submitting' ? (
+            <>
+              {t('divaClient_LoginText')}{' '}
+              <CircularProgress
+                size='1em'
+                sx={{ ml: 1 }}
+              />
+            </>
+          ) : (
+            t('divaClient_LoginText')
+          )}
+        </Button>
+        <Menu
+          open={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          anchorEl={anchorEl.current}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          <DevAccountLoginOptions onSelect={handleDevSelection} />
+          <Divider />
+          <WebRedirectLoginOptions onSelect={handleWebRedirectSelection} />
+          <Divider />
+          <PasswordLoginOptions
+            returnTo={returnTo}
+            onSelect={() => setMenuOpen(false)}
+          />
+        </Menu>
+      </>
+    );
+  }
 
   return (
-    <div>
-      {authState.userSession !== null ? (
-        <Stack
-          direction='row'
-          spacing={2}
-          alignItems='center'
-          style={{ marginTop: '-2px' }}
+    <Stack
+      direction='row'
+      alignItems='center'
+      spacing={2}
+      style={{ marginTop: '-1px' }}
+    >
+      <Box style={{ fontSize: '14px' }}>{printUserNameOnPage(auth)}</Box>
+      <Form
+        action='/logout'
+        method='post'
+      >
+        <input
+          type='hidden'
+          name='returnTo'
+          value={returnTo}
+        />
+        <Button
+          type='submit'
+          endIcon={<LogoutIcon />}
         >
-          <Box style={{ fontSize: '14px' }}>
-            {printUserNameOnPage(authState.userSession)}
-          </Box>
-          <Stack
-            direction='row'
-            spacing={2}
-            alignItems='center'
-            onClick={handleLogout}
-            style={{ fontSize: '14px' }}
-          >
-            {t('divaClient_LogoutText')}
-            <IconButton>
-              <LogoutIcon />
-            </IconButton>
-          </Stack>
-        </Stack>
-      ) : (
-        <Stack>
-          <Button
-            style={{ fontSize: '14px' }}
-            onClick={handleClick}
-          >
-            {t('divaClient_LoginText')}
-          </Button>
-          <Menu
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            id='login-dropdown-menu'
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-          >
-            {getDevAccounts().map((devAccount, index) => (
-              <MenuItem
-                key={`${index}_${devAccount.id}`}
-                onClick={(event: any) => handleDevSelection(event, devAccount)}
-              >
-                {devAccount.lastName}
-                {devAccount.firstName}
-              </MenuItem>
-            ))}
-            {loginUnitsState?.loginUnits.map((loginUnit, index) =>
-              loginUnit.type === 'webRedirect' ? (
-                <MenuItem
-                  key={`${index}_${loginUnit.loginDescription}`}
-                  onClick={(event: any) =>
-                    handleWebRedirectSelection(event, loginUnit.url)
-                  }
-                >
-                  {t(loginUnit.loginDescription)}
-                </MenuItem>
-              ) : (
-                <MenuItem
-                  key='tempLoginUnitPassword'
-                  onClick={() => {
-                    handleClose();
-                  }}
-                >
-                  <Link
-                    style={{
-                      color: 'black',
-                      textDecorationLine: 'none',
-                    }}
-                    to={`/login?presentation=${JSON.stringify(
-                      loginUnit.presentation,
-                    )}`}
-                  >
-                    {t(loginUnit.loginDescription)}
-                  </Link>
-                </MenuItem>
-              ),
-            )}
-          </Menu>
-        </Stack>
-      )}
-    </div>
+          {t('divaClient_LogoutText')}
+        </Button>
+      </Form>
+    </Stack>
   );
-};
+}

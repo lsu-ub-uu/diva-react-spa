@@ -17,25 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Auth } from '@/features/auth/authSlice';
+import { Auth } from '@/types/Auth';
 
-export const messageIsFromWindowOpenedFromHere = (
-  originUrl: string,
-  eventUrl: string,
-): boolean => {
-  return originUrl === eventUrl;
-};
-
-export const splitSlashFromUrl = (url: string) => {
-  const lastCharacter = url.slice(-1);
-  if (lastCharacter === '/') {
-    return url.substring(0, url.length - 1);
-  }
-  return url;
-};
-
-export const splitBasenameFromUrl = (url: string, basename: string) => {
-  return url.split(`${basename}`)[0];
+export const messageIsFromWindowOpenedFromHere = (event: MessageEvent<any>) => {
+  return event.origin === window.location.origin;
 };
 
 export const convertWebRedirectToUserSession = (coraUser: any): Auth => {

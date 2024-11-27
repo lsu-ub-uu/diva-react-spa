@@ -24,9 +24,9 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'vitest';
 import { ControlledAutocomplete } from '@/components';
-import { CoraRecord } from '@/features/record/types';
+import { BFFDataRecord } from '@/types/record';
 
-const mockOptions: CoraRecord[] = [
+const mockOptions: BFFDataRecord[] = [
   {
     id: 'nationalSubjectCategory:6325356888554468',
     recordType: 'nationalSubjectCategory',
@@ -906,10 +906,11 @@ describe('<Autocomplete/>', () => {
 
   beforeEach(() => {
     mockAxios = new MockAdapter(axios);
-    const listUrl: string = `/search/nationalSubjectCategory?searchTermValue=*`;
+    const listUrl: string = `/autocompleteSearch?searchType=nationalSubjectCategory&searchTermValue=*`;
     mockAxios.onGet(listUrl).reply(200, mockOptions);
     const optionUrl =
       '/record/nationalSubjectCategory/nationalSubjectCategory:6325356888554468?presentationRecordLinkId=nationalSubjectCategoryPLink';
+
     mockAxios.onGet(optionUrl).reply(200, softwareEngineeringOption);
   });
 

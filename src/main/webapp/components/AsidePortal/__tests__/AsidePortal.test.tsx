@@ -18,7 +18,7 @@
 
 import { useEffect, useState } from 'react';
 import { render, screen } from '@testing-library/react';
-import { AsidePortal } from '@/components';
+import { AsidePortal } from '../../index';
 
 const TestableAsidePortal = () => {
   const [element, setElement] = useState<Element>();

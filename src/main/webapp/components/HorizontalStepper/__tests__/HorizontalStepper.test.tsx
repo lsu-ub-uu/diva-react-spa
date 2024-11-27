@@ -18,7 +18,7 @@
 
 import { render, screen } from '@testing-library/react';
 import { Step, StepLabel } from '@mui/material';
-import { HorizontalStepper, StepIcon } from '@/components';
+import { HorizontalStepper, StepIcon } from '../../index';
 
 describe('<HorizontalStepper />', () => {
   it('It renders the steps of the form', () => {

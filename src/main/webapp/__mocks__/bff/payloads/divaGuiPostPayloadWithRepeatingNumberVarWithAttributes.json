@@ -1,0 +1,16 @@
+{
+  "someRecordType": {
+    "exampleNumberVar": [
+      {
+        "value": "12.99",
+        "_someTestAttribute": "someAttributeValue",
+        "_someTestAttribute2": "someAttributeValue2"
+      },
+      {
+        "value": "1.34",
+        "_someTestAttribute": "someAttributeValue3",
+        "_someTestAttribute2": "someAttributeValue4"
+      }
+    ]
+  }
+}

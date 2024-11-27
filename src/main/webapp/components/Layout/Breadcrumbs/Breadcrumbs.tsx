@@ -21,8 +21,9 @@ import {
   createSvgIcon,
   Link,
 } from '@mui/material';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+import { useLocation, Link as RouterLink } from '@remix-run/react';
 
 const HomeIcon = createSvgIcon(
   <path

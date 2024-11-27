@@ -18,64 +18,40 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { AlertTitle, Skeleton } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { Card } from '@/components';
-import { FormSchema } from '@/components/FormGenerator/types';
-import { useCoraSearchForm } from '@/features/search/useCoraSearch';
-import Alert from '@mui/material/Alert';
 import { SearchForm } from '@/components/Form/SearchForm';
-import { FieldValues } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Suspense } from 'react';
+import { Await, useLoaderData } from '@remix-run/react';
+import { loader } from '@/routes/_index';
 
 const searchType = 'diva-outputSimpleSearch';
+
 export const SearchPublicationCard = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { searchForm, error } = useCoraSearchForm(searchType);
-  const handleSearch = async (values: FieldValues) => {
-    console.log(
-      'values',
-      `search/${searchType}?query=${window.encodeURIComponent(JSON.stringify(values))}`,
-    );
-
-    navigate(
-      `/search/${searchType}?query=${window.encodeURIComponent(JSON.stringify(values))}`,
-    );
-  };
-  if (error) {
-    return (
-      <Alert severity='error'>
-        <AlertTitle>Hoppsan!</AlertTitle>Fel vid hämtning av sökformuläret.
-        Försök igen lite senare.
-      </Alert>
-    );
-  }
-
-  if (searchForm === null) {
-    return (
-      <Skeleton
-        height={300}
-        width='100%'
-      />
-    );
-  }
+  const { searchForm } = useLoaderData<typeof loader>();
 
   return (
-    <Card
-      title={t('divaClient_searchPublicationText') as string}
-      variant='variant2'
-      tooltipTitle={
-        t('divaClient_searchPublicationTypeTooltipTitleText') as string
-      }
-      tooltipBody={
-        t('divaClient_searchPublicationTypeTooltipBodyText') as string
-      }
-    >
-      <SearchForm
-        onSubmit={handleSearch}
-        onInvalid={() => {}}
-        formSchema={searchForm as FormSchema}
-      />
-    </Card>
+    <Suspense fallback={<Skeleton height={296} />}>
+      <Await resolve={searchForm}>
+        {(searchForm) => (
+          <Card
+            title={t('divaClient_searchPublicationText') as string}
+            variant='variant2'
+            tooltipTitle={
+              t('divaClient_searchPublicationTypeTooltipTitleText') as string
+            }
+            tooltipBody={
+              t('divaClient_searchPublicationTypeTooltipBodyText') as string
+            }
+          >
+            <SearchForm
+              formSchema={searchForm}
+              searchType={searchType}
+            />
+          </Card>
+        )}
+      </Await>
+    </Suspense>
   );
 };

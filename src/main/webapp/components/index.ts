@@ -16,13 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export { Layout } from './Layout';
+export { PageLayout } from './Layout';
+
 export { AsidePortal } from './AsidePortal/AsidePortal';
+
 export { Tooltip } from './Tooltip/Tooltip';
+
 export { Dialog } from './Dialog/Dialog';
-export { Backdrop } from './Backdrop/Backdrop';
+
 export { Card } from './Card/Card';
-export { BackdropProvider, useBackdrop } from './Backdrop/BackdropContext';
 export { FileUpload } from './FileUpload/FileUpload';
 export {
   HorizontalStepper,

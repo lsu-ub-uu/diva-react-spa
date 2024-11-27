@@ -17,7 +17,6 @@
  */
 
 import { FormComponent } from '@/components/FormGenerator/types';
-import { useFormContext } from 'react-hook-form';
 import {
   checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
@@ -27,6 +26,7 @@ import { LeafComponent } from '@/components/FormGenerator/components/LeafCompone
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface RepeatingVariableProps {
   reactKey: string;
@@ -41,7 +41,7 @@ export const RepeatingVariable = ({
   currentComponentNamePath,
   parentPresentationStyle,
 }: RepeatingVariableProps) => {
-  const { control, getValues } = useFormContext();
+  const { control, getValues } = useRemixFormContext();
   const { linkedData } = useContext(FormGeneratorContext);
   const hasValue = checkIfComponentHasValue(getValues, component.name);
   const hasLinkedDataValue = checkIfSingularComponentHasValue(

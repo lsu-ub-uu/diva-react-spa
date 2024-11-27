@@ -17,13 +17,18 @@
  */
 
 import { useState, useEffect, SyntheticEvent } from 'react';
-import TextField from '@mui/material/TextField';
-import { Autocomplete as MuiAutocomplete, IconButton } from '@mui/material';
+
+import {
+  Autocomplete as MuiAutocomplete,
+  IconButton,
+  TextField,
+} from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+
+import { SelectItem } from '../../index';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import { SelectItem } from '@/components';
 
 interface MultiAutoCompleteProps {
   loading: boolean;

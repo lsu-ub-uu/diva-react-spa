@@ -17,7 +17,7 @@
  */
 
 import { Control, Controller } from 'react-hook-form';
-import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
+import { LinkedRecord } from '../../LinkedRecord/LinkedPresentationRecord';
 
 interface ControlledLinkedRecordProps {
   recordType: string;

@@ -17,7 +17,7 @@
  */
 
 import { render, screen } from '@testing-library/react';
-import { Dialog } from '@/components';
+import { Dialog } from '../../index';
 
 describe('<Dialog />', () => {
   it('Renders with title and body content', () => {

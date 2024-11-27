@@ -17,8 +17,6 @@
  */
 
 export { HomePage } from './HomePage';
-export { CreateRecordPage } from './CreateRecordPage';
 export { UpdateRecordPage } from './UpdateRecordPage';
 export { ViewRecordPage } from './ViewRecordPage';
-export { LoginPage } from './LoginPage';
 export { SearchPage } from './SearchPage';

@@ -21,7 +21,7 @@ import { checkIfComponentHasValue } from '@/components/FormGenerator/formGenerat
 import { Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
-import { useFormContext } from 'react-hook-form';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface AttributesProps {
   component: FormComponent;
@@ -29,7 +29,7 @@ interface AttributesProps {
 }
 
 export const Attributes = ({ component, path }: AttributesProps) => {
-  const { getValues, control } = useFormContext();
+  const { getValues, control } = useRemixFormContext();
 
   return (component.attributes ?? []).map((attribute, index) => {
     const hasValue = checkIfComponentHasValue(getValues, attribute.name);

@@ -16,16 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  Alert,
-  Box,
-  Button,
-  LinearProgress,
-  linearProgressClasses,
-  Stack,
-  styled,
-  Typography,
-} from '@mui/material';
+import { Alert, Box, Button, LinearProgress, linearProgressClasses, Stack, styled, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import axios from 'axios';
@@ -47,7 +38,7 @@ interface UploadProgressProps {
 }
 
 const axiosInstance = axios.create({
-  baseURL: `${window.location.protocol}//${window.location.host}`,
+  baseURL: `TODO`,
 });
 
 const UploadProgress = (props: UploadProgressProps) => {

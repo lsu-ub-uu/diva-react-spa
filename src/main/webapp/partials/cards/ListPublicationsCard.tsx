@@ -17,43 +17,30 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { IconButton, Stack, Tooltip } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Link as RouterLink } from 'react-router-dom';
-import axios from 'axios';
-import { useSnackbar, VariantType } from 'notistack';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { Card } from '@/components';
 import {
-  loadPublicationsAsync,
-  publicationsSelector,
-} from '@/features/publications';
-import { DivaOutput } from '@/features/publications/actions';
+  Await,
+  Link as RouterLink,
+  useFetcher,
+  useLoaderData,
+} from '@remix-run/react';
+import { Card } from '@/components';
+import { loader } from '@/routes/_index';
+import { BFFDataRecord, BFFSearchResult } from '@/types/record';
+import { Suspense } from 'react';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
-  const dispatch = useAppDispatch();
-  const publicationsState = useAppSelector(publicationsSelector);
-  const { enqueueSnackbar } = useSnackbar();
+  const { recordList } = useLoaderData<typeof loader>();
+  const fetcher = useFetcher();
 
-  const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
-  };
-
-  useEffect(() => {
-    dispatch(loadPublicationsAsync());
-  }, [dispatch]);
-
-  const columns: GridColDef[] = [
+  const columns: GridColDef<BFFDataRecord>[] = [
     {
       field: 'id',
       headerName: `${t('divaClient_listPublicationsHeaderIdText')}`, // ID
@@ -68,14 +55,15 @@ export const ListPublicationsCard = () => {
       field: 'title',
       headerName: `${t('divaClient_listPublicationsHeaderTitleText')}`, // Title
       width: 200,
+      valueGetter: (_, row) => getCorrectTitle(row),
     },
     {
       field: 'createdAt',
       headerName: `${t('divaClient_listPublicationsHeaderCreatedText')}`, // Created,
       sortable: true,
       width: 160,
-      valueGetter: (params: GridValueGetterParams) =>
-        dayjs(params.row.createdAt).format('YYYY-MM-DD HH:mm:ss') || '-',
+      valueGetter: (_, row) =>
+        dayjs(row.createdAt).format('YYYY-MM-DD HH:mm:ss') || '-',
     },
     {
       field: 'action',
@@ -88,10 +76,13 @@ export const ListPublicationsCard = () => {
           <Tooltip title={t('divaClient_updatePublicationText')}>
             <span>
               <IconButton
-                disabled={!params.row.userRights.includes('update')}
+                disabled={
+                  !params.row.userRights ||
+                  !params.row.userRights.includes('update')
+                }
                 aria-label='edit'
                 component={RouterLink}
-                to={`/update/record/${params.row.recordType}/${params.id}`}
+                to={`/update/${params.row.recordType}/${params.id}`}
               >
                 <EditIcon />
               </IconButton>
@@ -100,10 +91,13 @@ export const ListPublicationsCard = () => {
           <Tooltip title={t('divaClient_readPublicationText')}>
             <span>
               <IconButton
-                disabled={!params.row.userRights.includes('read')}
+                disabled={
+                  !params.row.userRights ||
+                  !params.row.userRights.includes('read')
+                }
                 aria-label='view'
                 component={RouterLink}
-                to={`/view/record/${params.row.recordType}/${params.id}`}
+                to={`/view/${params.row.recordType}/${params.id}`}
               >
                 <FeedIcon />
               </IconButton>
@@ -111,27 +105,14 @@ export const ListPublicationsCard = () => {
           </Tooltip>
           <Tooltip title={t('divaClient_deletePublicationText')}>
             <span>
-              <IconButton
-                disabled={!params.row.userRights.includes('delete')}
-                aria-label='delete'
-                onClick={async () => {
-                  try {
-                    await axios.delete(
-                      `/record/${params.row.recordType}/${params.row.id}`,
-                    );
-                    dispatch(loadPublicationsAsync());
-                    notification(
-                      `Record ${params.row.id} was successfully deleted `,
-                      'success',
-                    );
-                  } catch (err: any) {
-                    console.log('err', err);
-                    notification(`${err.message}`, 'error');
-                  }
-                }}
+              <fetcher.Form
+                method='POST'
+                action={`/delete/${params.row.recordType}/${params.row.id}`}
               >
-                <DeleteForeverIcon />
-              </IconButton>
+                <IconButton type='submit'>
+                  <DeleteForeverIcon />
+                </IconButton>
+              </fetcher.Form>
             </span>
           </Tooltip>
         </Stack>
@@ -140,38 +121,51 @@ export const ListPublicationsCard = () => {
   ];
 
   return (
-    <Card
-      title={t('divaClient_listPublicationsText') as string}
-      variant='variant5'
-      tooltipTitle={t('divaClient_listPublicationsTooltipTitleText') as string}
-      tooltipBody={t('divaClient_listPublicationsTooltipBodyText') as string}
-    >
-      <div style={{ height: 600, width: '100%' }}>
-        <DataGrid<DivaOutput>
-          sx={{
-            '& .MuiDataGrid-cell:focus': {
-              outline: 'none',
-            },
-            '& .MuiDataGrid-columnHeader:focus': {
-              outline: 'none',
-            },
-            '& .MuiDataGrid-columnHeader:focus-within': {
-              outline: 'none',
-            },
-          }}
-          autoHeight
-          disableColumnMenu
-          disableColumnSelector
-          disableSelectionOnClick
-          loading={publicationsState.isLoading}
-          rows={publicationsState.publications}
-          columns={columns}
-          /* components={{
-            NoRowsOverlay: () => <p>TODO: better no data message</p>,
-          }} */
-          hideFooter
-        />
-      </div>
-    </Card>
+    <Suspense fallback={<Skeleton height={500} />}>
+      <Await resolve={recordList}>
+        {(recordList) => (
+          <Card
+            title={t('divaClient_listPublicationsText') as string}
+            variant='variant5'
+            tooltipTitle={
+              t('divaClient_listPublicationsTooltipTitleText') as string
+            }
+            tooltipBody={
+              t('divaClient_listPublicationsTooltipBodyText') as string
+            }
+          >
+            <div style={{ height: 600, width: '100%' }}>
+              <DataGrid<BFFDataRecord>
+                sx={{
+                  '& .MuiDataGrid-cell:focus': {
+                    outline: 'none',
+                  },
+                  '& .MuiDataGrid-columnHeader:focus': {
+                    outline: 'none',
+                  },
+                  '& .MuiDataGrid-columnHeader:focus-within': {
+                    outline: 'none',
+                  },
+                }}
+                autoHeight
+                disableColumnMenu
+                disableColumnSelector
+                disableRowSelectionOnClick
+                rows={(recordList as BFFSearchResult).data}
+                columns={columns}
+                /* components={{
+                  NoRowsOverlay: () => <p>TODO: better no data message</p>,
+                }} */
+                hideFooter
+              />
+            </div>
+          </Card>
+        )}
+      </Await>
+    </Suspense>
   );
+};
+
+export const getCorrectTitle = (record: BFFDataRecord) => {
+  return record.data.output.titleInfo.title.value;
 };

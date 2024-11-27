@@ -24,71 +24,25 @@ import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
-  splitBasenameFromUrl,
-  splitSlashFromUrl,
 } from '../utils';
-import { Auth } from '@/features/auth/authSlice';
+import { Auth } from '@/types/Auth';
 
 describe('Login validation', () => {
   it('messageIsFromWindowOpenedFromHere return false on different event url', () => {
-    const actual = messageIsFromWindowOpenedFromHere('someUrl', 'someOtherUrl');
+    vi.stubGlobal('location', { origin: 'someOtherUrl' });
+    const actual = messageIsFromWindowOpenedFromHere({
+      origin: 'someUrl',
+    } as MessageEvent<any>);
     expect(actual).toBe(false);
   });
 
   it('messageIsFromWindowOpenedFromHere return true on same event url', () => {
-    const actual = messageIsFromWindowOpenedFromHere('someUrl', 'someUrl');
+    vi.stubGlobal('location', { origin: 'someUrl' });
+
+    const actual = messageIsFromWindowOpenedFromHere({
+      origin: 'someUrl',
+    } as MessageEvent<any>);
     expect(actual).toBe(true);
-  });
-
-  it('splitSlashFromUrl removes / when present', () => {
-    const actual = splitSlashFromUrl('http://localhost:5173/');
-    expect(actual).toBe('http://localhost:5173');
-  });
-
-  it('splitSlashFromUrl return url', () => {
-    const actual = splitSlashFromUrl('http://localhost:5173');
-    expect(actual).toBe('http://localhost:5173');
-  });
-  describe('splitBasenameFromUrl', () => {
-    it('splitBasenameFromUrl returns url with removed basename', () => {
-      const actual = splitBasenameFromUrl(
-        'http://localhost:9876/divaclient/',
-        'divaclient',
-      );
-      expect(actual).toEqual('http://localhost:9876/');
-    });
-
-    it('splitBasenameFromUrl returns url with removed basename without /', () => {
-      const actual = splitBasenameFromUrl(
-        'http://localhost:9876/divaclient',
-        'divaclient',
-      );
-      expect(actual).toEqual('http://localhost:9876/');
-    });
-
-    it('splitBasenameFromUrl returns epc url without basename', () => {
-      const actual = splitBasenameFromUrl(
-        'https://cora.epc.ub.uu.se/divaclient/',
-        'divaclient',
-      );
-      expect(actual).toEqual('https://cora.epc.ub.uu.se/');
-    });
-
-    it('splitBasenameFromUrl returns epc url with removed basename without /', () => {
-      const actual = splitBasenameFromUrl(
-        'https://cora.epc.ub.uu.se/divaclient',
-        'divaclient',
-      );
-      expect(actual).toEqual('https://cora.epc.ub.uu.se/');
-    });
-
-    it('splitBasenameFromUrl returns epc url with manuscript with removed basename without /', () => {
-      const actual = splitBasenameFromUrl(
-        'https://cora.epc.ub.uu.se/divaclient/create/record/thesisManuscript',
-        'divaclient',
-      );
-      expect(actual).toEqual('https://cora.epc.ub.uu.se/');
-    });
   });
 
   it('convertWebRedirectToUserSession converts to UserSession', () => {
@@ -140,6 +94,7 @@ describe('Login validation', () => {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
           loginId: 'johdo290@user.uu.se',
+          userId: 'blaha',
         },
       },
       'webRedirect',
@@ -181,6 +136,7 @@ describe('Login validation', () => {
         data: {
           token: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
           validForNoSeconds: '600',
+          userId: 'coraUser:222222222222',
           loginId: 'johdo290@user.uu.se',
         },
       },

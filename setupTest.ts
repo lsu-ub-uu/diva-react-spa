@@ -5,6 +5,9 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 beforeAll(() => {
+  vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
+  vi.stubEnv('CORA_LOGIN_URL', 'https://cora.epc.ub.uu.se/diva/login');
+
   i18n.use(initReactI18next).init({
     resources: {
       en: {
@@ -28,5 +31,6 @@ beforeAll(() => {
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
+  vi.resetAllMocks();
   vi.clearAllMocks();
 });

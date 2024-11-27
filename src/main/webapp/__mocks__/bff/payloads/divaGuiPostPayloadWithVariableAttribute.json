@@ -1,0 +1,9 @@
+{
+  "someRecordType": {
+    "givenName": {
+      "value": "Egil",
+      "_someTestAttribute": "someAttributeValue",
+      "_someTestAttribute2": "someAttributeValue2"
+    }
+  }
+}

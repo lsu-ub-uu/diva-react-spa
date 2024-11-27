@@ -16,16 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useParams, useSearchParams } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
-import { CoraSearchResult } from '@/features/record/types';
+import { useLoaderData } from '@remix-run/react';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';
-import { SearchPublicationCard } from '@/partials';
 import { RecordActionButtons } from '@/components';
 import { useTranslation } from 'react-i18next';
+import { loader } from '@/routes/search.$searchType';
+import { SearchPublicationCard } from '@/partials';
 
 const SearchResultList = styled('ol')`
   list-style: none;
@@ -44,29 +42,10 @@ const SearchResultListItem = styled('li')(({ theme }) => ({
 }));
 
 export const SearchPage = () => {
-  const { searchType } = useParams();
-  const [searchParams] = useSearchParams();
-  const queryString = searchParams.get('query');
-  const [searchResults, setSearchResults] = useState<CoraSearchResult | null>(
-    null,
-  );
+  const { searchResults } = useLoaderData<typeof loader>();
+
   const { t } = useTranslation();
-
-  const query = useMemo(
-    () => (queryString !== null ? JSON.parse(queryString) : null),
-    [queryString],
-  );
-
-  useEffect(() => {
-    const search = async () => {
-      const response = await axios.get(
-        `/search/advanced/${'diva-outputSimpleSearch'}?query=${window.encodeURIComponent(JSON.stringify(query))}`,
-      );
-      setSearchResults(response.data);
-    };
-    search();
-  }, [searchType, query]);
-
+  console.log({ searchResults });
   return (
     <div>
       <h1>{t('divaClient_searchPageHeaderText')}</h1>

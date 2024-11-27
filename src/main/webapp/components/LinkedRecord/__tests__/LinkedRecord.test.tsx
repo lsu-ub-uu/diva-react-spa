@@ -26,7 +26,7 @@ import {
 import { expect } from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { LinkedRecord } from '@/components';
+import { LinkedRecord } from '../../index';
 
 const nationalSubjectCategory = {
   id: 'nationalSubjectCategory:6325370460697648',

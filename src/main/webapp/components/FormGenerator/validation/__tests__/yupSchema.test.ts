@@ -36,9 +36,9 @@ import {
   formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
   formDefWithSurroundingContainerAroundTextVariable,
   formDefWithTwoRepeatingVarsAndCollectionVar,
-} from '@/__mocks__/data/formDef';
-import { FormComponent, FormSchema } from '@/components/FormGenerator/types';
-import { removeEmpty } from '@/utils/removeEmpty';
+} from '../../../../__mocks__/data/formDef';
+import { FormComponent, FormSchema } from '../../types';
+import { cleanFormData } from '../../../../utils/cleanFormData';
 
 const numberValidationTests = (
   min: number,
@@ -880,7 +880,9 @@ describe('custom validate yupSchemas for array schemas', () => {
         .min(1)
         .max(3)
         .transform((array) =>
-          array.map(removeEmpty).filter((o: any) => Object.keys(o).length > 0),
+          array
+            .map(cleanFormData)
+            .filter((o: any) => Object.keys(o).length > 0),
         )
         .of(
           yup.object().shape({

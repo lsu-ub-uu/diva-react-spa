@@ -20,7 +20,7 @@
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { CoraRecord } from '@/features/record/types';
+import { BFFDataRecord } from '@/types/record';
 import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
 
 interface LinkedRecordProps {
@@ -32,7 +32,7 @@ interface LinkedRecordProps {
 export const LinkedRecord: FC<LinkedRecordProps> = (
   props: LinkedRecordProps,
 ) => {
-  const [record, setRecord] = useState<CoraRecord | null>(null);
+  const [record, setRecord] = useState<BFFDataRecord | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -17,16 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 export type Environment = 'pre' | 'preview' | 'local';
+
 export default function getEnvironment(): Environment {
-  const { host } = window.location;
+  const { ENVIRONMENT } = import.meta.env;
 
-  if (host.startsWith('cora.epc')) {
-    return 'preview';
-  }
-
-  if (host.startsWith('pre')) {
-    return 'pre';
-  }
-
-  return 'local';
+  return (ENVIRONMENT as Environment) ?? 'local';
 }

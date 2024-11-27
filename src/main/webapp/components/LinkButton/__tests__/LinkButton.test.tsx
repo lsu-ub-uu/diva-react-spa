@@ -19,7 +19,7 @@
 
 import { expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { LinkButton } from '@/components';
+import { LinkButton } from '../../index';
 
 describe('<LinkButton>', () => {
   vi.mock('react-i18next', () => ({

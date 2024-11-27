@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import CardContent from '@mui/material/CardContent';
 import {
+  CardContent,
   Card as MuiCard,
   Collapse,
   CardHeader,
@@ -31,7 +31,7 @@ import {
 import { ReactNode, useState, useEffect } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Tooltip } from '@/components';
+import { Tooltip } from '../index';
 
 const StyledCardHeader = styled(CardHeader)((props) => ({
   borderTopLeftRadius: 8,

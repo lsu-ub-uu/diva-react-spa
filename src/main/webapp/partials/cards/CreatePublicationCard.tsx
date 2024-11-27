@@ -17,98 +17,106 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, MenuItem, SelectChangeEvent } from '@mui/material';
-import Button from '@mui/material/Button';
-import { Link as RouterLink } from 'react-router-dom';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { Card, Select } from '@/components';
 import {
-  loadValidationTypesAsync,
-  validationTypeSelector,
-} from '@/features/validationTypes';
+  Button,
+  CircularProgress,
+  Grid,
+  NativeSelect,
+  OutlinedInput,
+  Skeleton,
+} from '@mui/material';
+import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Card } from '@/components';
+import { loader } from '@/routes/_index';
+import { Suspense } from 'react';
+
+const formAction = '/create';
 
 export const CreatePublicationCard = () => {
+  const { validationTypes } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
-  const [validationType, setValidationType] = useState('');
-  const dispatch = useAppDispatch();
-  const validationTypeState = useAppSelector(validationTypeSelector);
+  const navigation = useNavigation();
 
-  useEffect(() => {
-    dispatch(loadValidationTypesAsync());
-  }, [dispatch]);
-
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
-    event.preventDefault();
-    setValidationType(event.target.value as string);
-  };
+  const loading = navigation.formAction === formAction;
 
   return (
-    <Card
-      title={t('divaClient_createPublicationTypeText') as string}
-      variant='variant1'
-      tooltipTitle={
-        t('divaClient_createPublicationTypeTooltipTitleText') as string
-      }
-      tooltipBody={
-        t('divaClient_createPublicationTypeTooltipBodyText') as string
-      }
-    >
-      <Grid
-        container
-        spacing={2}
-        justifyContent='space-between'
-        alignItems='flex-start'
-      >
-        <Grid
-          item
-          xs={12}
-          sm={6}
-        >
-          <Select
-            value={validationType || ''}
-            onChange={handleChange}
-            sx={{
-              '& .MuiSelect-select .notranslate::after': {
-                content: `"${t('divaClient_selectPublicationTypeText')}"`,
-                opacity: 0.42,
-              },
-            }}
-            name='publication-type-select'
-            size='small'
-            loading={validationTypeState.isLoading}
-            fullWidth
+    <Suspense fallback={<Skeleton height={164} />}>
+      <Await resolve={validationTypes}>
+        {(validationTypes) => (
+          <Card
+            title={t('divaClient_createPublicationTypeText')}
+            variant='variant1'
+            tooltipTitle={
+              t('divaClient_createPublicationTypeTooltipTitleText') as string
+            }
+            tooltipBody={
+              t('divaClient_createPublicationTypeTooltipBodyText') as string
+            }
           >
-            {validationTypeState.validationTypes.map((validationTypeOption) => (
-              <MenuItem
-                key={validationTypeOption.value}
-                value={validationTypeOption.value}
-                disableRipple
+            <Form action={formAction}>
+              <Grid
+                container
+                spacing={2}
+                justifyContent='space-between'
+                alignItems='flex-start'
               >
-                {t(validationTypeOption.label)}
-              </MenuItem>
-            ))}
-          </Select>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-        >
-          <Button
-            disabled={!validationType}
-            disableRipple
-            variant='contained'
-            component={RouterLink}
-            to={`/create/record/${validationType}`}
-            endIcon={<ArrowForwardIcon />}
-          >
-            {t('divaClient_continueText')}
-          </Button>
-        </Grid>
-      </Grid>
-    </Card>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                >
+                  <NativeSelect
+                    defaultValue=''
+                    name='validationType'
+                    input={<OutlinedInput />}
+                    size='small'
+                    fullWidth
+                    required
+                  >
+                    <option
+                      value=''
+                      disabled
+                    >
+                      {t('divaClient_selectPublicationTypeText')}
+                    </option>
+                    {(validationTypes ?? []).map((validationType) => (
+                      <option
+                        key={validationType.value}
+                        value={validationType.value}
+                      >
+                        {t(validationType.label)}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                >
+                  <Button
+                    disabled={loading}
+                    type='submit'
+                    disableRipple
+                    variant='contained'
+                    endIcon={
+                      loading ? (
+                        <CircularProgress size='1em' />
+                      ) : (
+                        <ArrowForwardIcon />
+                      )
+                    }
+                  >
+                    {t('divaClient_continueText')}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
+          </Card>
+        )}
+      </Await>
+    </Suspense>
   );
 };

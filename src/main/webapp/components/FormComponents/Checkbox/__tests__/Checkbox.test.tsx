@@ -18,7 +18,7 @@
 
 import { render, screen } from '@testing-library/react';
 import { FormControlLabel } from '@mui/material';
-import { Checkbox } from '@/components';
+import { Checkbox } from '../../../index';
 
 describe('<Checkbox />', () => {
   it('Renders', () => {

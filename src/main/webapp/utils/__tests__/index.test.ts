@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { renameObjectKey } from '..';
+import { renameObjectKey } from '../index';
 
 it('rename', () => {
   const actual = renameObjectKey({ value: 'aaaa' }, 'password');

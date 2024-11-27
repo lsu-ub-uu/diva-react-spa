@@ -17,56 +17,52 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box } from '@mui/material';
-import {
-  FieldErrors,
-  FieldValues,
-  FormProvider,
-  useForm,
-} from 'react-hook-form';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
+
+import { FormGenerator } from '@/components';
+import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
+import { BFFDataRecord } from '@/types/record';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Form } from '@remix-run/react';
+import { useTranslation } from 'react-i18next';
+import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import {
   createDefaultValuesFromFormSchema,
   RecordData,
 } from '../FormGenerator/defaultValues/defaultValues';
-import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { FormGenerator } from '@/components';
-import { FormSchema } from '../FormGenerator/types';
-import { CoraRecord } from '@/features/record/types';
+import { SearchFormSchema } from '../FormGenerator/types';
 
 interface SearchFormProps {
-  record?: CoraRecord;
-  formSchema: FormSchema;
-  onSubmit: (formValues: FieldValues) => void;
-  onInvalid?: (fieldErrors: FieldErrors) => void;
+  searchType: string;
+  record?: BFFDataRecord;
+  formSchema: SearchFormSchema;
 }
 
-export const SearchForm = ({ ...props }: SearchFormProps) => {
-  const methods = useForm({
+export const SearchForm = ({
+  searchType,
+  record,
+  formSchema,
+}: SearchFormProps) => {
+  const { t } = useTranslation();
+  const methods = useRemixForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
     defaultValues: createDefaultValuesFromFormSchema(
-      props.formSchema,
-      props.record?.data as RecordData,
+      formSchema,
+      record?.data as RecordData,
     ),
-    resolver: yupResolver(generateYupSchemaFromFormSchema(props.formSchema)),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
-  const { handleSubmit } = methods;
 
   return (
-    <Box
-      component='form'
-      sx={{ width: '100%' }}
-      onSubmit={handleSubmit(
-        (values) => props.onSubmit(values),
-        (errors) => props.onInvalid && props.onInvalid(errors),
-      )}
+    <Form
+      method='GET'
+      action={`/search/${searchType}`}
     >
-      <FormProvider {...methods}>
-        <FormGenerator formSchema={props.formSchema} />
-      </FormProvider>
+      <RemixFormProvider {...methods}>
+        <FormGenerator formSchema={formSchema} />
+      </RemixFormProvider>
       <Button
         type='submit'
         disableRipple
@@ -74,8 +70,8 @@ export const SearchForm = ({ ...props }: SearchFormProps) => {
         color='secondary'
         sx={{ height: 40 }}
       >
-        Sök
+        {t('divaClient_SearchButtonText')}
       </Button>
-    </Box>
+    </Form>
   );
 };

@@ -25,10 +25,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
 import { FormSchema } from '@/components/FormGenerator/types';
-import { CoraRecord } from '@/features/record/types';
+import { BFFDataRecord } from '@/types/record';
 
 interface LinkedRecordFormProps {
-  record: CoraRecord;
+  record: BFFDataRecord;
 }
 
 export const LinkedRecordForm = ({ record }: LinkedRecordFormProps) => {

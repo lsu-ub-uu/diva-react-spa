@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { removeEmpty } from '../removeEmpty';
+import { cleanFormData } from '../cleanFormData';
 
 describe('removeEmpty', () => {
   it('clear objects', () => {
@@ -47,7 +47,7 @@ describe('removeEmpty', () => {
         _language: 'swe',
       },
     };
-    const actual = removeEmpty(testObject);
+    const actual = cleanFormData(testObject);
     const expected = {};
     expect(actual).toStrictEqual(expected);
   });
@@ -88,7 +88,7 @@ describe('removeEmpty', () => {
         },
       },
     };
-    const actual = removeEmpty(testObject);
+    const actual = cleanFormData(testObject);
     const expected = {
       property3: {
         value: 'someValueText',
@@ -283,7 +283,7 @@ describe('removeEmpty', () => {
         url: [],
       },
     };
-    const actual = removeEmpty(testObject);
+    const actual = cleanFormData(testObject);
     const expected = {
       divaOutput: {
         artisticWork: {
@@ -324,7 +324,7 @@ describe('removeEmpty', () => {
       latitude: { value: '' },
       longitude: { value: '' },
     };
-    const actual = removeEmpty(testObject);
+    const actual = cleanFormData(testObject);
 
     expect(actual).toEqual({});
   });
@@ -344,7 +344,7 @@ describe('removeEmpty', () => {
       },
     ];
 
-    expect(removeEmpty(testObject)).toEqual({});
+    expect(cleanFormData(testObject)).toEqual({});
   });
 
   it('does not clear attribute when values exist', () => {
@@ -360,7 +360,7 @@ describe('removeEmpty', () => {
       },
     };
 
-    expect(removeEmpty(testObject)).toEqual({
+    expect(cleanFormData(testObject)).toEqual({
       _type: 'personal',
       namePart_type_given: {
         _type: 'given',
@@ -381,7 +381,7 @@ describe('removeEmpty', () => {
       },
     };
 
-    expect(removeEmpty(testObject)).toStrictEqual({});
+    expect(cleanFormData(testObject)).toStrictEqual({});
   });
 
   it('clears object with attribute and empty array', () => {
@@ -396,6 +396,6 @@ describe('removeEmpty', () => {
       },
     };
 
-    expect(removeEmpty(testObject)).toEqual({});
+    expect(cleanFormData(testObject)).toEqual({});
   });
 });

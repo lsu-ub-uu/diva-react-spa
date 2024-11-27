@@ -20,7 +20,7 @@ import { expect } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useSnackbar } from 'notistack';
-import { render } from '@/utils/testUtils';
+import { render } from '../../../utils/testUtils';
 
 const Button = () => {
   const { enqueueSnackbar } = useSnackbar();

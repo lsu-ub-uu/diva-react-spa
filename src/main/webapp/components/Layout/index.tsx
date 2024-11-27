@@ -16,20 +16,25 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Outlet } from 'react-router-dom';
-import { Container, Grid } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
-import { Header } from './Header';
-import { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
-import { MemberBar } from './MemberBar/MemberBar';
+import { Container, Grid, AppBar } from '@mui/material';
+import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
+import { Header } from '@/components/Layout/Header';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
+import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
+import { ReactNode } from 'react';
 
-export const Layout = () => {
+interface PageLayoutProps {
+  children: ReactNode;
+}
+
+export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <>
       <AppBar
         position='static'
         color='default'
       >
+        <NavigationLoader />
         <MemberBar color='#efefef'>
           <p>AppBar</p>
         </MemberBar>
@@ -64,9 +69,7 @@ export const Layout = () => {
             xs
             sx={{ paddingBottom: '64px' }}
           >
-            <main>
-              <Outlet />
-            </main>
+            <main>{children}</main>
           </Grid>
         </Grid>
       </Container>

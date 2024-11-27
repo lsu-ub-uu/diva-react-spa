@@ -26,10 +26,10 @@ import {
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
 import { FormSchema } from '../FormGenerator/types';
-import { CoraRecord } from '@/features/record/types';
+import { BFFDataRecord } from '@/types/record';
 
 interface AutocompleteFormProps {
-  record?: CoraRecord;
+  record?: BFFDataRecord;
   formSchema: FormSchema;
 }
 

@@ -18,8 +18,9 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
+
 import {
+  TextField,
   Autocomplete as MuiAutocomplete,
   FormControl,
   FormLabel,
@@ -34,8 +35,9 @@ import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
-import { CoraRecord } from '@/features/record/types';
+import { BFFDataRecord } from '@/types/record';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
+import { useSubmit } from '@remix-run/react';
 
 interface AutoCompleteProps {
   name: string;
@@ -57,12 +59,10 @@ export const ControlledAutocomplete = (
   props: AutoCompleteProps,
 ): JSX.Element => {
   const { t } = useTranslation();
-
-  const [options, setOptions] = useState<CoraRecord[]>([]);
+  const [options, setOptions] = useState<BFFDataRecord[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const [presentationValue, setPresentationValue] = useState<CoraRecord | null>(
-    null,
-  );
+  const [presentationValue, setPresentationValue] =
+    useState<BFFDataRecord | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -76,7 +76,7 @@ export const ControlledAutocomplete = (
           return undefined;
         }
         const response = await axios.get(
-          `/search/${props.searchLink}?searchTermValue=${inputValue}`,
+          `/autocompleteSearch?searchType=${props.searchLink}&searchTermValue=${inputValue}`,
         );
 
         if (isMounted) {
@@ -141,7 +141,7 @@ export const ControlledAutocomplete = (
               popupIcon={<ExpandMoreIcon />}
               onChange={(
                 event: React.SyntheticEvent,
-                newValue: CoraRecord | null,
+                newValue: BFFDataRecord | null,
               ) => {
                 field.onChange(newValue?.id);
                 setPresentationValue(newValue);
