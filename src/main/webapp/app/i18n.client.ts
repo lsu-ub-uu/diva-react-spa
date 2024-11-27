@@ -31,7 +31,7 @@ export const initClienti18n = () => {
     .init({
       ...i18nConfig,
       backend: {
-        loadPath: `/translations/{{lng}}`,
+        loadPath: `${import.meta.env.BASE_URL}translations/{{lng}}`,
       },
       ns: getInitialNamespaces(),
       detection: {

@@ -29,7 +29,8 @@ import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const { CORA_API_URL, CORA_LOGIN_URL, NODE_ENV, PORT, BASE_NAME } = process.env;
+const { CORA_API_URL, CORA_LOGIN_URL, NODE_ENV, DOMAIN, PORT, BASE_PATH } =
+  process.env;
 
 const viteDevServer =
   NODE_ENV === 'production'
@@ -64,7 +65,7 @@ if (viteDevServer) {
 } else {
   // Vite fingerprints its assets so we can cache forever.
   app.use(
-    BASE_NAME ? `${BASE_NAME}/assets` : '/assets',
+    `${BASE_PATH ?? ''}/assets`,
     express.static('dist/client/assets', { immutable: true, maxAge: '1y' }),
   );
 }
@@ -88,7 +89,10 @@ const port = PORT || 5173;
 app.listen(port, () => {
   console.log(`Cora API-url ${CORA_API_URL}`);
   console.log(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
-  console.log(`Express server listening at http://0.0.0.0:${port}`);
+  console.log(`BASE_PATH ${BASE_PATH}`);
+  console.log(
+    `Express server listening at http://${DOMAIN}:${port}${BASE_PATH ?? ''}`,
+  );
   loadStuffOnServerStart().then(() => {
     // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
     console.log('Loaded stuff from Cora');

@@ -109,7 +109,5 @@ const loadStuffOnServerStart = async () => {
   dependencies.searchPool = searchPool;
   dependencies.loginUnitPool = loginUnitPool;
   dependencies.loginPool = loginPool;
-
-  return dependencies;
 };
 export { dependencies, loadStuffOnServerStart };
