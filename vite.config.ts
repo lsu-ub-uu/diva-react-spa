@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
   const { BASE_PATH } = process.env;
 
   return {
-    base: BASE_PATH ? `${BASE_PATH}` : undefined,
+    base: BASE_PATH ? `${BASE_PATH}/` : undefined,
     plugins: [
       !process.env.VITEST &&
         remix({

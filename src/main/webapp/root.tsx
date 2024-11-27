@@ -107,7 +107,6 @@ const Document = ({ children }: DocumentProps) => {
         />
       </head>
       <body>
-        <div>{JSON.stringify(process.env)}</div>
         {children}
         <ScrollRestoration />
         <Scripts />
