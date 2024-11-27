@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20-slim
 
 WORKDIR /usr/divaclient
 
@@ -6,10 +6,9 @@ COPY package.json package-lock.json ./
 
 RUN npm install
 
-COPY . .
+COPY src ./src
+COPY vite.config.ts tsconfig.json server.ts ./
 
-ENV BASE_PATH=/divaclient
 RUN npm run build
 
-ENV NODE_ENV=production
 CMD ["npm", "run", "start"]

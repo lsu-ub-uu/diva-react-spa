@@ -88,7 +88,7 @@ const port = PORT || 5173;
 app.listen(port, () => {
   console.log(`Cora API-url ${CORA_API_URL}`);
   console.log(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
-  console.log(`Express server listening at http://localhost:${port}`);
+  console.log(`Express server listening at http://0.0.0.0:${port}`);
   loadStuffOnServerStart().then(() => {
     // eventEmitter.emit(CORA_DATA_LOADED_EVENT);
     console.log('Loaded stuff from Cora');
