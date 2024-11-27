@@ -4,16 +4,14 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const basename = process.env.BASE_PATH;
-
   return {
-    base: basename ? `${basename}/` : undefined,
+    base: '/divaclient/',
     plugins: [
       !process.env.VITEST &&
         remix({
           appDirectory: 'src/main/webapp',
           buildDirectory: 'dist',
-          basename,
+          basename: '/divaclient',
           future: {
             v3_fetcherPersist: true,
             v3_relativeSplatPath: true,
