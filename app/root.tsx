@@ -37,10 +37,9 @@ import { divaTheme } from '@/themes/diva';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
-import i18nServer from '@/i18n/i18n.server';
-import { useChangeLanguage } from 'remix-i18next/react';
 import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
+import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 
 const { MODE } = import.meta.env;
 
@@ -61,7 +60,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const auth = getAuthentication(session);
 
   const loginUnits = getLoginUnits(context.dependencies);
-  const locale = await i18nServer.getLocale(request);
+  const locale = context.i18n.language;
   return json({ auth, locale, loginUnits });
 }
 

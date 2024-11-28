@@ -16,9 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createCookie } from '@remix-run/node';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
-export const i18nCookie = createCookie('language', {
-  sameSite: 'lax',
-  path: '/',
-});
+export const useChangeLanguage = (locale: string) => {
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    if (locale !== i18n.language) {
+      i18n.changeLanguage(locale);
+    }
+  }, [locale, i18n]);
+};
