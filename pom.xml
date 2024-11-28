@@ -38,9 +38,9 @@
 
 
     <scm>
-        <connection>scm:git:https://github.com/lsu-ub-uu/diva-react-spa.git</connection>
-        <developerConnection>scm:git:https://github.com/lsu-ub-uu/diva-react-spa.git</developerConnection>
-        <url>https://github.com/lsu-ub-uu/diva-react-spa.git</url>
+        <connection>scm:git:https://github.com/lsu-ub-uu/diva-client.git</connection>
+        <developerConnection>scm:git:https://github.com/lsu-ub-uu/diva-client.git</developerConnection>
+        <url>https://github.com/lsu-ub-uu/diva-client.git</url>
         <tag>HEAD</tag>
     </scm>
 
