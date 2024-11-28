@@ -17,7 +17,7 @@
  */
 
 import { ViewRecordPage } from '@/pages';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { invariant } from '@remix-run/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
@@ -25,6 +25,7 @@ import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByV
 import { useLoaderData } from '@remix-run/react';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 
 export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
 
@@ -35,6 +36,8 @@ export const loader = async ({
 }: LoaderFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
+  const { t } = context.i18n;
+
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
@@ -44,6 +47,8 @@ export const loader = async ({
     recordId,
     auth.data.token,
   );
+  const title = `${getCorrectTitle(record)} | DiVA`;
+
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
@@ -51,7 +56,11 @@ export const loader = async ({
     'view',
   );
 
-  return json({ record, formDefinition });
+  return json({ record, formDefinition, title });
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.title }];
 };
 
 export default function ViewRecordRoute() {

@@ -97,7 +97,6 @@ const Document = ({ children }: DocumentProps) => {
           name='theme-color'
           content={divaTheme.palette.primary.main}
         />
-        <title>DiVA</title>
         <Meta />
         <Links />
         <meta

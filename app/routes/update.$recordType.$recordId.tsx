@@ -23,7 +23,12 @@ import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/sessions';
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
+import {
+  ActionFunctionArgs,
+  json,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
@@ -40,6 +45,7 @@ import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 
 export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
 
@@ -95,6 +101,7 @@ export const action = async ({
 export async function loader({ request, params, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
+  const { t } = context.i18n;
 
   const successMessage = session.get('success');
 
@@ -108,6 +115,8 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     recordId,
     auth.data.token,
   );
+
+  const title = `${t('divaClient_UpdatingPageTitleText')} ${getCorrectTitle(record)} | DiVA`;
 
   if (record?.validationType == null) {
     throw new Error();
@@ -124,7 +133,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   );
 
   return json(
-    { record, formDefinition, defaultValues, successMessage },
+    { record, formDefinition, defaultValues, successMessage, title },
     {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -132,6 +141,10 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     },
   );
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.title }];
+};
 
 export default function UpdateRecordRoute() {
   const { record, formDefinition, successMessage } =
