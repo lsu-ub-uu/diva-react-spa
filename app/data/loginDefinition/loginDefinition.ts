@@ -23,6 +23,7 @@ import {
   BFFLoginPassword,
   BFFLoginWebRedirect,
   BFFMetadataGroup,
+  BFFPresentationGroup,
 } from '@/cora/transform/bffTypes';
 
 interface LoginDefinition {
@@ -31,6 +32,7 @@ interface LoginDefinition {
   url?: string;
   presentation?: any;
 }
+
 export const createLoginDefinition = (
   dependencies: Dependencies,
 ): LoginDefinition[] => {
@@ -59,7 +61,9 @@ export const createLoginDefinition = (
         presentation: createLinkedRecordDefinition(
           dependencies,
           dependencies.metadataPool.get(viewDefinition) as BFFMetadataGroup,
-          dependencies.presentationPool.get(viewPresentation),
+          dependencies.presentationPool.get(
+            viewPresentation,
+          ) as BFFPresentationGroup,
         ),
       };
     }

@@ -10,6 +10,8 @@ import {
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFLoginPassword,
+  BFFPresentationSurroundingContainer,
+  BFFGuiElement,
 } from '@/cora/transform/bffTypes';
 
 export interface Dependencies {

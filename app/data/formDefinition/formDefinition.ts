@@ -305,8 +305,9 @@ const createFormPartsForGroupOrVariable = (
   const { metadataPool, presentationPool } = dependencies;
   let metadataOverrideId;
   const presentationChildId = presentationChildReference.childId;
-  const presentation: BFFPresentation =
-    presentationPool.get(presentationChildId);
+  const presentation = presentationPool.get(
+    presentationChildId,
+  ) as BFFPresentation;
   if (
     presentation.type !== 'container' &&
     noIdMatchForChildRefAndPresentationOf(metadataChildReferences, presentation)
@@ -663,8 +664,9 @@ const createDetailedPresentationBasedOnPresentationType = (
     presentationChildReference.childStyle ?? [],
   );
   const presentationChildId = presentationChildReference.childId;
-  const presentation: BFFPresentation =
-    presentationPool.get(presentationChildId);
+  const presentation = presentationPool.get(
+    presentationChildId,
+  ) as BFFPresentation;
   // containers does not have presentationOf, it has presentationsOf
   if (presentation.type !== 'container') {
     metadataId = metadataOverrideId ?? presentation.presentationOf;
@@ -795,9 +797,9 @@ const createDetailedPresentationBasedOnPresentationType = (
 
   if (presentation.type === 'pGroup') {
     const group = metadata as BFFMetadataGroup;
-    const presentationGroup: BFFPresentationGroup = presentationPool.get(
+    const presentationGroup = presentationPool.get(
       presentation.id,
-    );
+    ) as BFFPresentationGroup;
     presentationStyle = convertStylesToShortName(
       presentationGroup.presentationStyle ?? '',
     );
