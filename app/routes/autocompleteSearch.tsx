@@ -16,14 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { LoaderFunctionArgs } from '@remix-run/node';
+import { json, LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
-import { DataGroup } from '@/cora/cora-data/CoraData';
 import { searchRecords } from '@/data/searchRecords';
-import { Auth } from '@/types/Auth';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -63,7 +61,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     auth,
   );
 
-  return result.data;
+  return json(result.data);
 };
 
 export const getSearchTermNameFromSearchLink = (
