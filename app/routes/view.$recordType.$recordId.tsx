@@ -17,7 +17,7 @@
  */
 
 import { ViewRecordPage } from '@/pages';
-import { LoaderFunctionArgs } from '@remix-run/node';
+import { json, LoaderFunctionArgs } from '@remix-run/node';
 import { getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { invariant } from '@remix-run/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
@@ -51,7 +51,7 @@ export const loader = async ({
     'view',
   );
 
-  return { record, formDefinition };
+  return json({ record, formDefinition });
 };
 
 export default function ViewRecordRoute() {

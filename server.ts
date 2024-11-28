@@ -90,6 +90,7 @@ app.listen(port, () => {
   console.log(`Cora API-url ${CORA_API_URL}`);
   console.log(`CORA_LOGIN_URL-url ${CORA_LOGIN_URL}`);
   console.log(`BASE_PATH ${BASE_PATH}`);
+  console.log(`DOMAIN ${DOMAIN}`);
   console.log(
     `Express server listening at http://${DOMAIN}:${port}${BASE_PATH ?? ''}`,
   );

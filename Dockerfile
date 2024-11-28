@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 
 RUN npm install
 
-COPY src ./src
+COPY app ./app
 COPY vite.config.ts tsconfig.json server.ts ./
 
 ARG BASE_PATH

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ActionFunctionArgs, data } from '@remix-run/node';
+import { ActionFunctionArgs, json } from '@remix-run/node';
 import { deleteRecord } from '@/data/deleteRecord';
 import {
   commitSession,
@@ -41,7 +41,7 @@ export const action = async ({
   await deleteRecord(context.dependencies, recordType, recordId, auth);
 
   session.flash('success', 'Successfully deleted record');
-  return data(
+  return json(
     {},
     {
       headers: {
