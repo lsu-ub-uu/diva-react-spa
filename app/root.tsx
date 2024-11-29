@@ -17,7 +17,7 @@
  */
 
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteLoaderData } from 'react-router';
-import { ActionFunctionArgs, data, json, LinksFunction, LoaderFunctionArgs } from 'react-router';
+import { ActionFunctionArgs, data, LinksFunction, LoaderFunctionArgs } from 'react-router';
 import { ReactNode } from 'react';
 import { PageLayout, SnackbarProvider } from '@/components';
 import { CssBaseline } from '@mui/material';
@@ -25,10 +25,9 @@ import { divaTheme } from '@/themes/diva';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
-import i18nServer from '@/i18n/i18n.server';
-import { useChangeLanguage } from 'remix-i18next/react';
 import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
+import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 
 const { MODE } = import.meta.env;
 
@@ -49,7 +48,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const auth = getAuthentication(session);
 
   const loginUnits = getLoginUnits(context.dependencies);
-  const locale = await i18nServer.getLocale(request);
+  const locale = context.i18n.language;
   return { auth, locale, loginUnits };
 }
 
@@ -86,7 +85,6 @@ const Document = ({ children }: DocumentProps) => {
           name='theme-color'
           content={divaTheme.palette.primary.main}
         />
-        <title>DiVA</title>
         <Meta />
         <Links />
         <meta

@@ -19,9 +19,11 @@
 import { UpdateRecordPage } from '@/pages';
 
 import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
-import { ActionFunctionArgs, data, LoaderFunctionArgs } from 'react-router';
+import { ActionFunctionArgs, data,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
-import { invariant } from '@react-router/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 import { useLoaderData, useNavigation } from 'react-router';
 import { enqueueSnackbar } from 'notistack';
@@ -34,10 +36,11 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { BFFDataRecord } from '@/types/record';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary = DefaultErrorBoundary;
 
 export const action = async ({
   request,
@@ -91,6 +94,7 @@ export const action = async ({
 export async function loader({ request, params, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
+  const { t } = context.i18n;
 
   const successMessage = session.get('success');
 
@@ -104,6 +108,8 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     recordId,
     auth.data.token,
   );
+
+  const title = `${t('divaClient_UpdatingPageTitleText')} ${getCorrectTitle(record)} | DiVA`;
 
   if (record?.validationType == null) {
     throw new Error();
@@ -120,7 +126,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   );
 
   return data(
-    { record, formDefinition, defaultValues, successMessage },
+    { record, formDefinition, defaultValues, successMessage, title },
     {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -128,6 +134,10 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     },
   );
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.title }];
+};
 
 export default function UpdateRecordRoute() {
   const { record, formDefinition, successMessage } =

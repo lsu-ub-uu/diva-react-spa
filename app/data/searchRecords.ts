@@ -23,7 +23,10 @@ import {
   createLinkedRecordDefinition,
   FormMetaData,
 } from '@/data/formDefinition/formDefinition';
-import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
+import {
+  BFFMetadataGroup,
+  BFFPresentationGroup,
+} from '@/cora/transform/bffTypes';
 import {
   createBFFMetadataReference,
   createMetaDataFromChildReference,
@@ -68,7 +71,7 @@ export const searchRecords = async (
 
     const presentationGroup = dependencies.presentationPool.get(
       listPresentationViewId,
-    );
+    ) as BFFPresentationGroup;
     const metadataGroup = dependencies.metadataPool.get(
       presentationGroup.presentationOf,
     ) as BFFMetadataGroup;

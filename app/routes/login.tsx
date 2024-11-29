@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
 import { Auth } from '@/types/Auth';
-import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 
 const parsePresentation = (searchParam: string | null) => {
@@ -27,7 +26,7 @@ const parsePresentation = (searchParam: string | null) => {
   }
 };
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary = DefaultErrorBoundary;
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);

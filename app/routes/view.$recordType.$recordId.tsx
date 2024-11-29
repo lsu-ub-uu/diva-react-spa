@@ -17,16 +17,16 @@
  */
 
 import { ViewRecordPage } from '@/pages';
-import { json, LoaderFunctionArgs } from 'react-router';
+import {  LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { getSessionFromCookie, requireAuthentication } from '@/sessions';
-import { invariant } from '@react-router/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 import { useLoaderData } from 'react-router';
-import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary = DefaultErrorBoundary;
 
 export const loader = async ({
   request,
@@ -35,6 +35,7 @@ export const loader = async ({
 }: LoaderFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
+
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
@@ -44,6 +45,8 @@ export const loader = async ({
     recordId,
     auth.data.token,
   );
+  const title = `${getCorrectTitle(record)} | DiVA`;
+
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(
     context.dependencies,
@@ -51,7 +54,11 @@ export const loader = async ({
     'view',
   );
 
-  return { record, formDefinition };
+  return { record, formDefinition, title };
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.title }];
 };
 
 export default function ViewRecordRoute() {

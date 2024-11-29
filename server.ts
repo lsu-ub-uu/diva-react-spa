@@ -19,18 +19,48 @@
 import 'dotenv/config';
 import { createRequestHandler } from '@react-router/express';
 import compression from 'compression';
-import express from 'express';
+import express, { Request } from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
+import { createInstance } from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import I18NextHttpBackend from 'i18next-http-backend';
+import { i18nConfig } from '@/i18n/i18nConfig';
+import { createTextDefinition } from '@/data/textDefinition/textDefinition';
+import { i18nCookie } from '@/i18n/i18nCookie';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const { CORA_API_URL, CORA_LOGIN_URL, NODE_ENV, DOMAIN, PORT, BASE_PATH } =
   process.env;
+
+const createi18nInstance = async (request: Request) => {
+  const i18nInstance = createInstance();
+
+  const languageCookie = await i18nCookie.parse(request.headers.cookie ?? null);
+  const locale = languageCookie ?? 'sv';
+  await i18nInstance
+    .use(initReactI18next)
+    .use(I18NextHttpBackend)
+    .init({
+      ...i18nConfig,
+      resources: {
+        en: {
+          translation: createTextDefinition(dependencies, 'en'),
+        },
+        sv: {
+          translation: createTextDefinition(dependencies, 'sv'),
+        },
+      },
+      lng: locale,
+    });
+
+  return i18nInstance;
+};
 
 const viteDevServer =
   NODE_ENV === 'production'
@@ -42,9 +72,10 @@ const viteDevServer =
       );
 
 const remixHandler = createRequestHandler({
-  getLoadContext: () => ({
+  getLoadContext: async (request) => ({
     dependencies,
     refreshDependencies: loadStuffOnServerStart,
+    i18n: await createi18nInstance(request),
   }),
   build: viteDevServer
     ? () => viteDevServer.ssrLoadModule('virtual:react-router/server-build')
@@ -54,6 +85,7 @@ const remixHandler = createRequestHandler({
 
 const app = express();
 
+// app.use(cookieParser());
 app.use(compression());
 
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header

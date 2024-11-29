@@ -12,12 +12,8 @@ import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 import { MuiProvider } from '@/mui/MuiProvider';
-import { createInstance, i18n } from 'i18next';
-import i18nextServer from '@/i18n/i18n.server';
-import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { i18nConfig } from '@/i18n/i18nConfig';
-import I18NextHttpBackend from 'i18next-http-backend';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition';
+import { i18n } from 'i18next';
+import { I18nextProvider } from 'react-i18next';
 
 const ABORT_DELAY = 5_000;
 
@@ -28,27 +24,10 @@ export default async function handleRequest(
   reactRouterContext: EntryContext,
   // This is ignored so we can keep it in the template for visibility.  Feel
   // free to delete this parameter in your i18n if you're not using it!
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   loadContext: AppLoadContext,
 ) {
-  const i18nInstance = createInstance();
-  const locale = await i18nextServer.getLocale(request);
-
-  await i18nInstance
-    .use(initReactI18next)
-    .use(I18NextHttpBackend)
-    .init({
-      ...i18nConfig,
-      resources: {
-        en: {
-          translation: createTextDefinition(loadContext.dependencies, 'en'),
-        },
-        sv: {
-          translation: createTextDefinition(loadContext.dependencies, 'sv'),
-        },
-      },
-      lng: locale,
-    });
+  const i18nInstance = loadContext.i18n;
 
   return isbot(request.headers.get('user-agent') || '')
     ? handleBotRequest(

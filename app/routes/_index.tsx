@@ -20,17 +20,17 @@ import { getSearchForm } from '@/data/getSearchForm';
 import { getValidationTypes } from '@/data/getValidationTypes';
 import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import { LoaderFunctionArgs } from 'react-router';
+import { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { searchRecords } from '@/data/searchRecords';
-import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary = DefaultErrorBoundary;
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
-
+  const { t } = context.i18n;
+  const title = `DiVA | ${t('divaClient_HomePageTitleText')}`;
   const validationTypes = auth
     ? getValidationTypes(auth.data.token)
     : Promise.resolve(null);
@@ -60,8 +60,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     auth,
   );
 
-  return { validationTypes, searchForm, recordList };
+  return { validationTypes, searchForm, recordList, title };
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.title }];
+};
 
 export default function IndexRoute() {
   return <HomePage />;

@@ -18,7 +18,7 @@
 
 import { createCookie } from 'react-router';
 
-export const i18nCookie = createCookie('i18nCookie', {
+export const i18nCookie = createCookie('language', {
   sameSite: 'lax',
   path: '/',
 });

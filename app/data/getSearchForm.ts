@@ -18,7 +18,10 @@
 
 import { SearchFormSchema } from '@/components/FormGenerator/types';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
-import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
+import {
+  BFFMetadataGroup,
+  BFFPresentationGroup,
+} from '@/cora/transform/bffTypes';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/formDefinition';
 
 export const getSearchForm = (dependencies: Dependencies, searchId: string) => {
@@ -28,7 +31,7 @@ export const getSearchForm = (dependencies: Dependencies, searchId: string) => {
   ) as BFFMetadataGroup;
   const searchPresentationGroup = dependencies.presentationPool.get(
     searchFromPool.presentationId,
-  );
+  ) as BFFPresentationGroup;
 
   const { form } = createLinkedRecordDefinition(
     dependencies,

@@ -16,8 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { invariant } from '@react-router/router/history';
-import { type ActionFunctionArgs, data, json } from 'react-router';
+import { type ActionFunctionArgs, data } from 'react-router';
 import { useLoaderData } from 'react-router';
 import CreateRecordPage from '@/pages/CreateRecordPage';
 import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
@@ -32,10 +31,10 @@ import { commitSession, getSessionFromCookie, requireAuthentication } from '@/se
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
-import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary = DefaultErrorBoundary;
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);

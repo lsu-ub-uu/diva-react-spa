@@ -22,6 +22,7 @@ import { transformRecord } from '@/cora/transform/transformRecord';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/formDefinition';
 import { getRecordDataById } from '@/cora/getRecordDataById';
 import * as TYPES from '@/cora/transform/bffTypes';
+import { BFFPresentationGroup } from '@/cora/transform/bffTypes';
 
 export const getRecordByRecordTypeAndRecordId = async (
   dependencies: Dependencies,
@@ -48,7 +49,7 @@ export const getRecordByRecordTypeAndRecordId = async (
     );
     const listPresentationGroup = dependencies.presentationPool.get(
       dependencies.recordTypePool.get(recordType).listPresentationViewId,
-    );
+    ) as BFFPresentationGroup;
     record.listPresentation = createLinkedRecordDefinition(
       dependencies,
       metadataGroup,
@@ -70,7 +71,9 @@ const getGroupsFromPresentationLinkId = (
     presentationLink.linkedRecordPresentations !== undefined
       ? presentationLink.linkedRecordPresentations[0].presentationId
       : presentationLink.id;
-  const presentationGroup = dependencies.presentationPool.get(presentationId);
+  const presentationGroup = dependencies.presentationPool.get(
+    presentationId,
+  ) as BFFPresentationGroup;
   const metadataGroup = dependencies.metadataPool.get(
     presentationGroup.presentationOf,
   ) as TYPES.BFFMetadataGroup;

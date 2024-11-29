@@ -15,19 +15,9 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import I18NextHttpBackend from 'i18next-http-backend';
 
-import { RemixI18Next } from 'remix-i18next/server';
-import { i18nConfig } from './i18nConfig';
-import { i18nCookie } from '@/i18n/i18nCookie';
-
-const i18next = new RemixI18Next({
-  detection: {
-    cookie: i18nCookie,
-    supportedLanguages: i18nConfig.supportedLngs,
-    fallbackLanguage: i18nConfig.fallbackLng,
-  },
-  plugins: [I18NextHttpBackend],
-});
-
-export default i18next;
+export const invariant: <T>(data: T, message: string) => asserts data is NonNullable<T> = (data, message) => {
+  if (!data) {
+    throw new Error(message);
+  }
+};
