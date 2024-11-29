@@ -19,7 +19,7 @@
 import { ActionFunctionArgs, data } from 'react-router';
 import { deleteRecord } from '@/data/deleteRecord';
 import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
-import { invariant } from '@react-router/router/history';
+import { invariant } from '@/utils/invariant';
 
 export const action = async ({
   request,

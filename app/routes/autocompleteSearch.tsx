@@ -17,11 +17,11 @@
  */
 
 import { LoaderFunctionArgs } from 'react-router';
-import { invariant } from '@react-router/router/history';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
 import { searchRecords } from '@/data/searchRecords';
+import { invariant } from '@/utils/invariant';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const url = new URL(request.url);

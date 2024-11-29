@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export const invariant: <T>(data: T, message: string) => asserts data is NonNullable<T> = (data, message) => {
+export const invariant: <T>(data: T, message?: string) => asserts data is NonNullable<T> = (data, message?) => {
   if (!data) {
-    throw new Error(message);
+    throw new Error(message ?? "Invariant. Value is not defined.");
   }
 };

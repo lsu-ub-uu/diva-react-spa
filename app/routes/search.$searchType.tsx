@@ -22,12 +22,11 @@ import { BFFSearchResult } from '@/types/record';
 import { SearchPage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import { json, LoaderFunctionArgs } from 'react-router';
-import { invariant } from '@react-router/router/history';
-import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
+import {  LoaderFunctionArgs } from 'react-router';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary = DefaultErrorBoundary;
 
 export const loader = async ({
   request,

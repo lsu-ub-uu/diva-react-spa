@@ -18,7 +18,7 @@
 
 import { LoaderFunctionArgs } from 'react-router';
 import { createTextDefinition } from '@/data/textDefinition/textDefinition';
-import { invariant } from '@react-router/router/history';
+import { invariant } from '@/utils/invariant';
 
 export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   const { lang } = params;
