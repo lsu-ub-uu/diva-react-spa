@@ -20,12 +20,7 @@ import { Box, Button, Container, Grid, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import CachedIcon from '@mui/icons-material/Cached';
-import {
-  Form,
-  Link as RouterLink,
-  useFetcher,
-  useLocation,
-} from '@remix-run/react';
+import { Form, Link as RouterLink, useFetcher, useLocation } from 'react-router';
 import divaLogo from '../../../assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';

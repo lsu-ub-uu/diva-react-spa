@@ -19,9 +19,9 @@
 import { expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRemixStub } from '@remix-run/testing';
+import { createRoutesStub } from 'react-router';
 import Login from '@/components/Layout/Header/Login/Login';
-import { json } from '@remix-run/node';
+import { json } from 'react-router';
 
 const loginUnits = [
   {
@@ -46,7 +46,7 @@ describe('<Login/>', () => {
     it('shows the accounts in a list', async () => {
       const user = userEvent.setup();
 
-      const RemixStub = createRemixStub([
+      const RemixStub = createRoutesStub([
         {
           path: '/',
           Component: Login,
@@ -88,7 +88,7 @@ describe('<Login/>', () => {
       vi.stubEnv('ENVIRONMENT', 'pre');
       const user = userEvent.setup();
 
-      const RemixStub = createRemixStub([
+      const RemixStub = createRoutesStub([
         {
           path: '/',
           Component: Login,
@@ -133,7 +133,7 @@ describe('<Login/>', () => {
 
         const user = userEvent.setup();
 
-        const RemixStub = createRemixStub([
+        const RemixStub = createRoutesStub([
           {
             path: '/',
             Component: Login,

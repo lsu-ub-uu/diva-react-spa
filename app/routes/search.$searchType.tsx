@@ -22,9 +22,9 @@ import { BFFSearchResult } from '@/types/record';
 import { SearchPage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
-import { invariant } from '@remix-run/router/history';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { json, LoaderFunctionArgs } from 'react-router';
+import { invariant } from '@react-router/router/history';
+import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 
 export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;

@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { invariant } from '@remix-run/router/history';
-import { type ActionFunctionArgs, data, json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { invariant } from '@react-router/router/history';
+import { type ActionFunctionArgs, data, json } from 'react-router';
+import { useLoaderData } from 'react-router';
 import CreateRecordPage from '@/pages/CreateRecordPage';
 import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
@@ -32,7 +32,7 @@ import { commitSession, getSessionFromCookie, requireAuthentication } from '@/se
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 
 export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { isRouteErrorResponse, useRouteError } from '@remix-run/react';
+import { isRouteErrorResponse, useRouteError } from 'react-router';
 import { Alert, AlertTitle } from '@mui/material';
 
 export const DefaultErrorBoundary = () => {

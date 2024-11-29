@@ -22,7 +22,7 @@ import { Skeleton } from '@mui/material';
 import { Card } from '@/components';
 import { SearchForm } from '@/components/Form/SearchForm';
 import { Suspense } from 'react';
-import { Await, useLoaderData } from '@remix-run/react';
+import { Await, useLoaderData } from 'react-router';
 import { loader } from '@/routes/_index';
 
 const searchType = 'diva-outputSimpleSearch';

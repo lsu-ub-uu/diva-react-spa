@@ -4,7 +4,7 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 
-import { RemixBrowser } from '@remix-run/react';
+import { HydratedRouter } from 'react-router/dom';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import i18next from 'i18next';
@@ -21,7 +21,7 @@ async function hydrate() {
       <I18nextProvider i18n={i18next}>
         <StrictMode>
           <MuiProvider>
-            <RemixBrowser />
+            <HydratedRouter />
           </MuiProvider>
         </StrictMode>
       </I18nextProvider>,

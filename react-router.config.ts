@@ -15,14 +15,11 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
+import type { Config } from "@react-router/dev/config";
 
-import { LoaderFunctionArgs } from 'react-router';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition';
-import { invariant } from '@react-router/router/history';
+const { BASE_PATH } = process.env;
 
-export const loader = async ({ context, params }: LoaderFunctionArgs) => {
-  const { lang } = params;
-  invariant(lang, 'Missing param lang');
-
-  return Response.json(createTextDefinition(context.dependencies, lang));
-};
+export default {
+  buildDirectory: 'dist',
+  basename: BASE_PATH,
+} satisfies Config;

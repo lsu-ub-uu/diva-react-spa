@@ -17,7 +17,7 @@
  */
 
 // i18n/sessions.ts
-import { createCookieSessionStorage, data, Session } from '@remix-run/node';
+import { createCookieSessionStorage, data, Session } from 'react-router';
 import { Auth } from '@/types/Auth';
 
 type SessionData = {

@@ -17,7 +17,7 @@
  */
 
 import 'dotenv/config';
-import { createRequestHandler } from '@remix-run/express';
+import { createRequestHandler } from '@react-router/express';
 import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
@@ -47,7 +47,7 @@ const remixHandler = createRequestHandler({
     refreshDependencies: loadStuffOnServerStart,
   }),
   build: viteDevServer
-    ? () => viteDevServer.ssrLoadModule('virtual:remix/server-build')
+    ? () => viteDevServer.ssrLoadModule('virtual:react-router/server-build')
     : // @ts-expect-error The built file is not ts
       await import('./dist/server/index.js'),
 });

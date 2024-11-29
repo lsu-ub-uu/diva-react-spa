@@ -83,13 +83,13 @@ import {
   formDefWithWithOptionalGroupWithRequiredVar,
 } from '@/__mocks__/data/formDef';
 import { RecordForm, RecordFormProps } from '@/components/Form/RecordForm';
-import { createRemixStub } from '@remix-run/testing';
+import { createRoutesStub } from 'react-router';
 import { BFFDataRecord } from '@/types/record';
 
 const actionSpy = vi.fn();
 
 const RecordFormWithRemixStub = ({ formSchema, record }: RecordFormProps) => {
-  const RemixStub = createRemixStub([
+  const RemixStub = createRoutesStub([
     {
       path: '/',
       Component: () => (

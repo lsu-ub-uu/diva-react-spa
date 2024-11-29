@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, redirect } from 'react-router';
 import { destroySession, getAuthentication, getSession } from '@/sessions';
 import { deleteSession } from '@/data/deleteSession';
 

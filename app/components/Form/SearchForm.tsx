@@ -23,7 +23,7 @@ import { FormGenerator } from '@/components';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { BFFDataRecord } from '@/types/record';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form } from '@remix-run/react';
+import { Form } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import {

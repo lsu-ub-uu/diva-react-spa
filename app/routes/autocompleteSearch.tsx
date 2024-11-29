@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { LoaderFunctionArgs } from '@remix-run/node';
-import { invariant } from '@remix-run/router/history';
+import { LoaderFunctionArgs } from 'react-router';
+import { invariant } from '@react-router/router/history';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { BFFMetadataGroup } from '@/cora/transform/bffTypes';

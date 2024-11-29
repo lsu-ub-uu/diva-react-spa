@@ -16,13 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { LoaderFunctionArgs } from 'react-router';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition';
-import { invariant } from '@react-router/router/history';
+import { type RouteConfig } from "@react-router/dev/routes";
+import { flatRoutes } from "@react-router/fs-routes";
 
-export const loader = async ({ context, params }: LoaderFunctionArgs) => {
-  const { lang } = params;
-  invariant(lang, 'Missing param lang');
-
-  return Response.json(createTextDefinition(context.dependencies, lang));
-};
+export default flatRoutes() satisfies RouteConfig;

@@ -29,7 +29,7 @@ import { FormGenerator } from '@/components';
 import { RecordFormSchema } from '../FormGenerator/types';
 import { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import { Form, useNavigation } from '@remix-run/react';
+import { Form, useNavigation } from 'react-router';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;

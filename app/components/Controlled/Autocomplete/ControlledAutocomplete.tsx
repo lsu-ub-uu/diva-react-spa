@@ -37,7 +37,7 @@ import { Tooltip, LinkedRecord } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
 import { BFFDataRecord } from '@/types/record';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
-import { useSubmit } from '@remix-run/react';
+import { useSubmit } from 'react-router';
 
 interface AutoCompleteProps {
   name: string;

@@ -21,7 +21,7 @@ import axios from 'axios';
 import { coraLoginUrl } from '@/cora/helper';
 import { CoraRecord } from '@/cora/cora-data/CoraData';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers';
-import { invariant } from '@remix-run/router/history';
+import { invariant } from '@react-router/router/history';
 
 export async function requestAuthTokenOnLogin(
   user: string,

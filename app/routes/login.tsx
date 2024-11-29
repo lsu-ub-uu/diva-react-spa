@@ -1,10 +1,5 @@
-import {
-  ActionFunction,
-  data,
-  LoaderFunctionArgs,
-  redirect,
-} from '@remix-run/node'; // or cloudflare/deno // or cloudflare/deno
-import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+import { ActionFunction, data, LoaderFunctionArgs, redirect } from 'react-router'; // or cloudflare/deno // or cloudflare/deno
+import { Form, useLoaderData, useSubmit } from 'react-router';
 import { commitSession, getSession } from '@/sessions';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormGenerator } from '@/components';
@@ -17,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
 import { Auth } from '@/types/Auth';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 
 const parsePresentation = (searchParam: string | null) => {

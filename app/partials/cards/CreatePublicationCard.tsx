@@ -26,7 +26,7 @@ import {
   OutlinedInput,
   Skeleton,
 } from '@mui/material';
-import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
+import { Await, Form, useLoaderData, useNavigation } from 'react-router';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card } from '@/components';
 import { loader } from '@/routes/_index';

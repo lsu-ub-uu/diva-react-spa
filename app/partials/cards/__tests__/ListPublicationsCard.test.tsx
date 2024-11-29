@@ -19,7 +19,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
 import { CreatePublicationCard } from '@/partials';
-import { createRemixStub } from '@remix-run/testing';
+import { createRoutesStub } from 'react-router';
 
 const divaOutputs = [
   {
@@ -40,7 +40,7 @@ const divaOutputs = [
   },
 ];
 
-const RemixStub = createRemixStub([
+const RemixStub = createRoutesStub([
   {
     path: '/',
     Component: CreatePublicationCard,

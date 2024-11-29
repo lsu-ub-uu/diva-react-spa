@@ -19,11 +19,11 @@
 import { UpdateRecordPage } from '@/pages';
 
 import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
-import { ActionFunctionArgs, data, LoaderFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs, data, LoaderFunctionArgs } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
-import { invariant } from '@remix-run/router/history';
+import { invariant } from '@react-router/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
-import { useLoaderData, useNavigation } from '@remix-run/react';
+import { useLoaderData, useNavigation } from 'react-router';
 import { enqueueSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
@@ -34,7 +34,7 @@ import { cleanFormData } from '@/utils/cleanFormData';
 import { BFFDataRecord } from '@/types/record';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 
 export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;

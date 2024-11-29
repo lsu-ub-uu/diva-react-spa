@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ActionFunctionArgs, data } from '@remix-run/node';
+import { ActionFunctionArgs, data } from 'react-router';
 import { deleteRecord } from '@/data/deleteRecord';
 import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
-import { invariant } from '@remix-run/router/history';
+import { invariant } from '@react-router/router/history';
 
 export const action = async ({
   request,

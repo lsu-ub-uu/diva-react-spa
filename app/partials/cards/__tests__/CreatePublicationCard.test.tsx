@@ -18,7 +18,7 @@
 
 import { render, screen, waitFor } from '@testing-library/react';
 import { CreatePublicationCard } from '@/partials';
-import { createRemixStub } from '@remix-run/testing';
+import { createRoutesStub } from 'react-router';
 
 const validationTypes = [
   { value: 'thesisManuscript', label: 'thesisManuscriptText' },
@@ -26,7 +26,7 @@ const validationTypes = [
   { value: 'divaOutput', label: 'divaOutputText' },
 ];
 
-const RemixStub = createRemixStub([
+const RemixStub = createRoutesStub([
   {
     path: '/',
     Component: CreatePublicationCard,

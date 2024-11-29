@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData } from 'react-router';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';

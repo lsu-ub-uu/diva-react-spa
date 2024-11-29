@@ -40,3 +40,6 @@ target
 
 # Vite
 vite.config.ts.timestamp-*
+
+# React router
+.react-router/

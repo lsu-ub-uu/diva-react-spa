@@ -17,13 +17,13 @@
  */
 
 import { ViewRecordPage } from '@/pages';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import { json, LoaderFunctionArgs } from 'react-router';
 import { getSessionFromCookie, requireAuthentication } from '@/sessions';
-import { invariant } from '@remix-run/router/history';
+import { invariant } from '@react-router/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
-import { useLoaderData } from '@remix-run/react';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { useLoaderData } from 'react-router';
+import { ErrorBoundaryComponent } from '@react-router/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 
 export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
