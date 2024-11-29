@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import {
+  FormComponent,
+  FormComponentGroup,
+} from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
@@ -25,7 +28,7 @@ import { useRemixFormContext } from 'remix-hook-form';
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
   reactKey: string;
-  component: FormComponent;
+  component: FormComponentGroup;
   parentPresentationStyle: string | undefined;
   childWithNameInDataArray: string[];
 }

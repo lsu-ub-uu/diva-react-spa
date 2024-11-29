@@ -16,7 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import {
+  FormComponent,
+  FormComponentContainer,
+  FormComponentGroup,
+} from '@/components/FormGenerator/types';
 import { Box, Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { Tooltip, Typography } from '@/components';
@@ -36,7 +40,7 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
   reactKey: string;
-  component: FormComponent;
+  component: FormComponentContainer | FormComponentGroup;
   parentPresentationStyle: string | undefined;
   childWithNameInDataArray: string[];
 }
@@ -189,7 +193,7 @@ const isComponentFirstLevelAndNOTLinkedData = (
 };
 
 const checkIfPresentationStyleIsUndefinedOrEmpty = (
-  component: FormComponent,
+  component: FormComponentContainer | FormComponentGroup,
 ) => {
   return (
     component.presentationStyle === undefined ||

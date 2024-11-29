@@ -61,15 +61,17 @@ export const isComponentGroup = (component: FormComponent) =>
 export const isComponentContainer = (component: FormComponent) =>
   component.type === 'container';
 
-export const isComponentSurroundingContainer = (component: FormComponent) =>
-  isComponentContainer(component) && component.containerType === 'surrounding';
+export const isComponentSurroundingContainer = (component: FormComponent) => {
+  return isComponentContainer(component) && 'containerType' in component
+    ? component.containerType === 'surrounding'
+    : false;
+};
 
-export const isComponentRepeatingContainer = (
-  component: FormComponent | undefined,
-) =>
-  component !== undefined &&
-  isComponentContainer(component) &&
-  component.containerType === 'repeating';
+export const isComponentRepeatingContainer = (component: FormComponent) => {
+  return isComponentContainer(component) && 'containerType' in component
+    ? component.containerType === 'repeating'
+    : false;
+};
 
 export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentVariable(component) ||

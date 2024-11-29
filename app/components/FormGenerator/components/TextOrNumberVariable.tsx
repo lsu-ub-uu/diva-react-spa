@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import {
+  FormComponentNumVar,
+  FormComponentVar,
+} from '@/components/FormGenerator/types';
 import {
   checkIfComponentHasValue,
   convertChildStyleToString,
@@ -29,7 +32,7 @@ import { useRemixFormContext } from 'remix-hook-form';
 interface TextOrNumberVariableProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
-  component: FormComponent;
+  component: FormComponentVar | FormComponentNumVar;
   name: string;
   parentPresentationStyle: string | undefined;
 }
@@ -59,7 +62,11 @@ export const TextOrNumberVariable = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <ControlledTextField
-        multiline={component.inputType === 'textarea'}
+        multiline={
+          'inputType' in component
+            ? component.inputType === 'textarea'
+            : undefined
+        }
         label={component.label ?? ''}
         showLabel={component.showLabel}
         name={name}
@@ -70,7 +77,9 @@ export const TextOrNumberVariable = ({
         displayMode={component.mode}
         parentPresentationStyle={parentPresentationStyle}
         hasValue={hasValue}
-        inputFormat={component.inputFormat}
+        inputFormat={
+          'inputFormat' in component ? component.inputFormat : undefined
+        }
       />
     </Grid>
   );

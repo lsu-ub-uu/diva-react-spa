@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import {
+  FormComponent,
+  FormComponentCollVar,
+} from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
@@ -24,7 +27,7 @@ import { ControlledSelectField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
 
 interface AttributesProps {
-  component: FormComponent;
+  component: FormComponentCollVar;
   path: string;
 }
 

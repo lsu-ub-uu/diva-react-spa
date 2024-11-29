@@ -17,8 +17,6 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Option } from '@/index';
-
 export interface FormSchema {
   form: FormComponent;
 }
@@ -46,8 +44,7 @@ export interface LinkedPresentation {
   presentationId: string;
   presentedRecordType: string;
 }
-
-export interface FormComponent {
+export interface FormComponentBase {
   type:
     | 'recordLink'
     | 'collectionVariable'
@@ -58,18 +55,61 @@ export interface FormComponent {
     | 'container'
     | 'guiElementLink';
   name: string;
+  placeholder?: string;
+  mode?: string;
+  tooltip?: FormComponentTooltip;
   label?: string;
   showLabel?: boolean;
-  finalValue?: string;
-  placeholder?: string;
-  validation?: FormRegexValidation | FormNumberValidation;
+  headlineLevel?: string;
+  attributesToShow?: 'all' | 'selectable' | 'none';
   repeat?: FormComponentRepeat;
-  tooltip?: FormComponentTooltip;
+  finalValue?: string;
+  gridColSpan?: number;
+  childStyle?: string[];
+}
+
+export interface FormComponentVar extends FormComponentBase {
   inputType?: 'input' | 'textarea'; // really be optional?
-  mode?: string;
-  options?: Option[];
+  inputFormat?: 'password';
+  validation?: FormRegexValidation | FormNumberValidation;
   attributes?: FormAttributeCollection[];
+}
+
+export interface FormComponentNumVar extends FormComponentBase {
+  validation?: FormRegexValidation | FormNumberValidation;
+  attributes?: FormAttributeCollection[];
+}
+export interface FormComponentCollVar extends FormComponentBase {
+  options?: FormComponentCollItem[];
+  attributes?: FormAttributeCollection[];
+}
+
+interface FormComponentCollItem {
+  value: string;
+  label: string;
+}
+
+export interface FormComponentRecordLink extends FormComponentBase {
+  attributes?: FormAttributeCollection[];
+  recordLinkType?: string;
+  presentationRecordLinkId?: string;
+  search?: string;
+  linkedRecordPresentation?: LinkedPresentation;
+}
+
+export interface FormComponentContainer extends FormComponentBase {
+  containerType?: 'repeating' | 'surrounding';
+  presentationStyle?: string; // frame etc
   components?: FormComponent[]; // for groups
+}
+
+export interface FormComponentGroup extends FormComponentBase {
+  attributes?: FormAttributeCollection[];
+  presentationStyle?: string; // frame etc
+  components?: FormComponent[]; // for groups
+}
+
+export interface FormComponentText extends FormComponentBase {
   textStyle?:
     | 'h1TextStyle'
     | 'h2TextStyle'
@@ -79,24 +119,26 @@ export interface FormComponent {
     | 'h6TextStyle'
     | 'bodyTextStyle';
   childStyle?: string[];
-  gridColSpan?: number;
+}
+
+export interface FormComponentGuiElement extends FormComponentBase {
   url?: string; // used for guiElementLink
   elementText?: string; // used for guiElementLink
   presentAs?: string; // used for guiElementLink
-  containerType?: 'repeating' | 'surrounding';
-  presentationStyle?: string; // frame etc
-  headlineLevel?: string;
-  recordLinkType?: string;
-  presentationRecordLinkId?: string;
-  linkedRecordPresentation?: LinkedPresentation;
-  search?: string;
-
-  inputFormat?: 'password';
-  attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
+export type FormComponent =
+  | FormComponentVar
+  | FormComponentNumVar
+  | FormComponentCollVar
+  | FormComponentRecordLink
+  | FormComponentContainer
+  | FormComponentGroup
+  | FormComponentText
+  | FormComponentGuiElement;
+
 type FormAttributeCollection = Omit<
-  FormComponent,
+  FormComponentCollVar,
   'repeat' | 'inputType' | 'attributes'
 >;
 
@@ -113,3 +155,10 @@ interface FormNumberValidation {
   warningMax: number;
   numberOfDecimals: number;
 }
+
+export type FormComponentWithData =
+  | FormComponentVar
+  | FormComponentNumVar
+  | FormComponentCollVar
+  | FormComponentRecordLink
+  | FormComponentGroup;

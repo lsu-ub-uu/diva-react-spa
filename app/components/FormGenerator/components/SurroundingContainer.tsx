@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import { FormComponentContainer } from '@/components/FormGenerator/types';
 import React from 'react';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { checkIfPresentationStyleIsInline } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -24,7 +24,7 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 
 interface SurroundingContainerProps {
   reactKey: string;
-  component: FormComponent;
+  component: FormComponentContainer;
   currentComponentNamePath: string;
   parentPresentationStyle: string | undefined;
 }
