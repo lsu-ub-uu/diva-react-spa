@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import { LoaderFunctionArgs } from '@remix-run/node';
 import { createTextDefinition } from '@/data/textDefinition/textDefinition';
 import { invariant } from '@remix-run/router/history';
 
@@ -24,5 +24,5 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   const { lang } = params;
   invariant(lang, 'Missing param lang');
 
-  return json(createTextDefinition(context.dependencies, lang));
+  return Response.json(createTextDefinition(context.dependencies, lang));
 };

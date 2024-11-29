@@ -17,7 +17,7 @@
  */
 
 // i18n/sessions.ts
-import { createCookieSessionStorage, json, Session } from '@remix-run/node';
+import { createCookieSessionStorage, data, Session } from '@remix-run/node';
 import { Auth } from '@/types/Auth';
 
 type SessionData = {
@@ -57,7 +57,7 @@ async function requireAuthentication(
   const auth = getAuthentication(session);
   if (!auth) {
     // Show error boundary
-    throw json('Unauthorized', { status: 401 });
+    throw data('Unauthorized', { status: 401 });
   }
   return auth;
 }

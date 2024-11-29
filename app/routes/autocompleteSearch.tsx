@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import { LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
@@ -61,7 +61,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     auth,
   );
 
-  return json(result.data);
+  return Response.json(result.data);
 };
 
 export const getSearchTermNameFromSearchLink = (

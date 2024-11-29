@@ -51,7 +51,7 @@ export const loader = async ({
     'view',
   );
 
-  return json({ record, formDefinition });
+  return { record, formDefinition };
 };
 
 export default function ViewRecordRoute() {

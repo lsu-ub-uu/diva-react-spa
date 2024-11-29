@@ -25,7 +25,7 @@ import {
   useRouteLoaderData,
 } from '@remix-run/react';
 import {
-  ActionFunctionArgs,
+  ActionFunctionArgs, data,
   json,
   LinksFunction,
   LoaderFunctionArgs,
@@ -62,14 +62,14 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   const loginUnits = getLoginUnits(context.dependencies);
   const locale = await i18nServer.getLocale(request);
-  return json({ auth, locale, loginUnits });
+  return { auth, locale, loginUnits };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const language = formData.get('language');
   if (typeof language === 'string') {
-    return json(
+    return data(
       {},
       {
         headers: {

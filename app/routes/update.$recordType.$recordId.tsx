@@ -18,12 +18,8 @@
 
 import { UpdateRecordPage } from '@/pages';
 
-import {
-  commitSession,
-  getSessionFromCookie,
-  requireAuthentication,
-} from '@/sessions';
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
+import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
+import { ActionFunctionArgs, data, LoaderFunctionArgs } from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
@@ -72,7 +68,7 @@ export const action = async ({
   } = await getValidatedFormData(formData, resolver);
 
   if (errors) {
-    return json({ errors, defaultValues });
+    return { errors, defaultValues };
   }
 
   try {
@@ -123,7 +119,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     record,
   );
 
-  return json(
+  return data(
     { record, formDefinition, defaultValues, successMessage },
     {
       headers: {

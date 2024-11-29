@@ -17,7 +17,7 @@
  */
 
 import { invariant } from '@remix-run/router/history';
-import { type ActionFunctionArgs, json } from '@remix-run/node';
+import { type ActionFunctionArgs, data, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/pages/CreateRecordPage';
 import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
@@ -28,11 +28,7 @@ import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { BFFDataRecord } from '@/types/record';
-import {
-  commitSession,
-  getSessionFromCookie,
-  requireAuthentication,
-} from '@/sessions';
+import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
@@ -64,7 +60,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   } = await getValidatedFormData(request, resolver);
   console.log({ data, errors });
   if (errors) {
-    return json({ errors, defaultValues });
+    return { errors, defaultValues };
   }
   try {
     const { recordType, id } = await createRecord(
@@ -98,7 +94,7 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
     validationTypeId,
     'create',
   );
-  return json(
+  return data(
     { record, formDefinition, errorMessage },
     {
       headers: {
