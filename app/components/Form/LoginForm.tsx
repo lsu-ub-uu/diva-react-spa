@@ -17,19 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppBar, Box, Button, Container, Grid } from '@mui/material';
-import {
-  FieldErrors,
-  FieldValues,
-  FormProvider,
-  useForm,
-} from 'react-hook-form';
+import { Box, Button } from '@mui/material';
+import { FieldErrors, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  createDefaultValuesFromFormSchema,
-  RecordData,
-} from '../FormGenerator/defaultValues/defaultValues';
+import { createDefaultValuesFromFormSchema, RecordData } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { FormGenerator } from '@/components';
 import { RecordFormSchema } from '../FormGenerator/types';
