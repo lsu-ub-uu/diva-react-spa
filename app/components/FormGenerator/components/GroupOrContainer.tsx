@@ -17,7 +17,6 @@
  */
 
 import {
-  FormComponent,
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';

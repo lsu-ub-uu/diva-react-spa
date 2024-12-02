@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  FormComponent,
-  FormComponentRecordLink,
-} from '@/components/FormGenerator/types';
+import { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import React from 'react';
 import { Grid } from '@mui/material';

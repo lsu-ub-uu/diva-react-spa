@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  FormComponent,
-  FormComponentText,
-} from '@/components/FormGenerator/types';
+import { FormComponentText } from '@/components/FormGenerator/types';
 import { Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { Typography } from '@/components';

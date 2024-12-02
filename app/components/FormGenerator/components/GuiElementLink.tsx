@@ -16,10 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  FormComponent,
-  FormComponentGuiElement,
-} from '@/components/FormGenerator/types';
+import { FormComponentGuiElement } from '@/components/FormGenerator/types';
 import { LinkButton } from '@/components';
 
 interface GuiElementLinkProps {
