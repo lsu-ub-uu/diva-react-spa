@@ -18,7 +18,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { FormSchema, RecordFormSchema } from '../FormGenerator/types';
+import { RecordFormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
 import { BFFDataRecord } from '@/types/record';
 import {
@@ -52,9 +52,9 @@ export const linksFromFormSchema = (
 };
 
 export const removeComponentsWithoutValuesFromSchema = (
-  formSchema: FormSchema,
+  formSchema: RecordFormSchema,
   record: BFFDataRecord,
-): FormSchema => {
+): RecordFormSchema => {
   const schema = formSchema;
   let componentsFromSchema = formSchema.form.components;
 

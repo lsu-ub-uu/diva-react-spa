@@ -20,11 +20,10 @@
 import {
   flattenObject,
   getLastKeyFromString,
-  toShortString,
   removeComponentsWithoutValuesFromSchema,
+  toShortString,
 } from '../utils';
 import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/formDef';
-import { FormSchema } from '../../FormGenerator/types';
 import {
   authorAndTitleSchema,
   authorRecord,
@@ -36,7 +35,7 @@ import {
 describe('removeComponentsWithoutValuesFromSchema', () => {
   it('returns someRootNameInData', () => {
     const actual = removeComponentsWithoutValuesFromSchema(
-      formDefWithTwoTextVariableWithModeOutput as FormSchema,
+      formDefWithTwoTextVariableWithModeOutput,
       coraRecord,
     );
     expect(actual).toStrictEqual({
@@ -81,7 +80,7 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
 
   it('returns textVar', () => {
     const actual = removeComponentsWithoutValuesFromSchema(
-      formDefWithTwoTextVariableWithModeOutput as FormSchema,
+      formDefWithTwoTextVariableWithModeOutput,
       coraRecord,
     );
     expect(actual).toStrictEqual({
@@ -126,7 +125,7 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
 
   it('returns an author group', () => {
     const actual = removeComponentsWithoutValuesFromSchema(
-      authorAndTitleSchema as FormSchema,
+      authorAndTitleSchema,
       authorRecord,
     );
     expect(actual).toStrictEqual({
