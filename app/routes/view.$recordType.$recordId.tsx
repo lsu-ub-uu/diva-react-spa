@@ -36,7 +36,6 @@ export const loader = async ({
 }: LoaderFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
-  const { t } = context.i18n;
 
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');

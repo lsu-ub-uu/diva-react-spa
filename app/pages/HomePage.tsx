@@ -27,10 +27,6 @@ export const HomePage = () => {
   const { t } = useTranslation();
 
   return (
-    <>
-      {/*<Helmet>
-        <title>{t('start')} | DiVA</title>
-      </Helmet>*/}
       <div>
         <AsidePortal>
           <p>
@@ -49,6 +45,5 @@ export const HomePage = () => {
           <TabsMenu />
         </Stack>
       </div>
-    </>
   );
 };

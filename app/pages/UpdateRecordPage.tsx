@@ -43,9 +43,6 @@ export const UpdateRecordPage = ({
 
   return (
     <>
-      {/*<Helmet>
-        <title>{coraRecord.record?.id ?? 'not found'} | DiVA</title>
-      </Helmet>*/}
       <AsidePortal>
         <NavigationPanel
           links={
