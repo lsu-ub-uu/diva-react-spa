@@ -45,7 +45,7 @@ export const WebRedirectLoginOptions = ({
         .map(({ loginDescription, url }) => (
           <MenuItem
             key={loginDescription}
-            onClick={() => onSelect(url)}
+            onClick={() => onSelect(url!)}
           >
             {t(loginDescription)}
           </MenuItem>

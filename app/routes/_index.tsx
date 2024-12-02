@@ -20,7 +20,7 @@ import { getSearchForm } from '@/data/getSearchForm';
 import { getValidationTypes } from '@/data/getValidationTypes';
 import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import { defer, LoaderFunctionArgs } from '@remix-run/node';
+import { defer, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { searchRecords } from '@/data/searchRecords';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
@@ -30,7 +30,8 @@ export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
-
+  const { t } = context.i18n;
+  const title = `DiVA | ${t('divaClient_HomePageTitleText')}`;
   const validationTypes = auth
     ? getValidationTypes(auth.data.token)
     : Promise.resolve(null);
@@ -60,8 +61,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     auth,
   );
 
-  return defer({ validationTypes, searchForm, recordList });
+  return defer({ validationTypes, searchForm, recordList, title });
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.title }];
+};
 
 export default function IndexRoute() {
   return <HomePage />;

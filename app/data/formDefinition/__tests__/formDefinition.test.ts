@@ -2019,7 +2019,7 @@ describe('formDefinition', () => {
       const metadataGroup = dependencies.metadataPool.get('personGroup');
       const presentationGroup = dependencies.presentationPool.get(
         'personWhenLinkedOutputPGroup',
-      );
+      ) as BFFPresentationGroup;
 
       const linkedRecordDefinition = createLinkedRecordDefinition(
         dependencies,
@@ -2240,7 +2240,7 @@ describe('formDefinition', () => {
       );
       const presentationGroup = dependencies.presentationPool.get(
         'nationalSubjectCategoryWhenLinkedPGroup',
-      );
+      ) as BFFPresentationGroup;
 
       const linkedRecordDefinition = createLinkedRecordDefinition(
         dependencies,

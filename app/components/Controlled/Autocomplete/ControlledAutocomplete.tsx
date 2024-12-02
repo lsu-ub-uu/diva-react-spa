@@ -17,15 +17,9 @@
  */
 
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  TextField,
-  Autocomplete as MuiAutocomplete,
-  FormControl,
-  FormLabel,
-  IconButton,
-} from '@mui/material';
+import { Autocomplete as MuiAutocomplete, FormControl, FormLabel, IconButton, TextField } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -33,11 +27,10 @@ import axios from 'axios';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Tooltip, LinkedRecord } from '@/components';
+import { LinkedRecord, Tooltip } from '@/components';
 import { FormSchema } from '../../FormGenerator/types';
 import { BFFDataRecord } from '@/types/record';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
-import { useSubmit } from '@remix-run/react';
 
 interface AutoCompleteProps {
   name: string;

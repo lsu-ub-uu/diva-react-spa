@@ -18,7 +18,7 @@
 
 import { createCookie } from '@remix-run/node';
 
-export const i18nCookie = createCookie('i18nCookie', {
+export const i18nCookie = createCookie('language', {
   sameSite: 'lax',
   path: '/',
 });

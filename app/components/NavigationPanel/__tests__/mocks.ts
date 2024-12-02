@@ -17,7 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const coraRecord = {
+import { BFFDataRecord } from '@/types/record';
+
+export const coraRecord: BFFDataRecord = {
   id: 'divaOutput:519333261463755',
   recordType: 'divaOutput',
   validationType: 'someValidationTypeId',
@@ -250,7 +252,7 @@ export const authorAndTitleSchema = {
   },
 };
 
-export const authorRecord = {
+export const authorRecord: BFFDataRecord = {
   id: 'divaOutput:9164778159149964',
   recordType: 'divaOutput',
   validationType: 'preprint',

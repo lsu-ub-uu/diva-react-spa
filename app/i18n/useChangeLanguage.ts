@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -16,22 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  CORA_DATA_LOADED_EVENT,
-  eventEmitter,
-  start,
-} from '@/data/errorHandler';
-import { Server } from 'http';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const getRandomPort = () => Math.floor(Math.random() * (65535 - 1024) + 1024);
-
-export const startServer = async (): Promise<Server> => {
-  const coraDataLoaded = new Promise((resolve) => {
-    eventEmitter.once(CORA_DATA_LOADED_EVENT, resolve);
-  });
-
-  const server = start(getRandomPort());
-
-  await coraDataLoaded;
-  return server;
+export const useChangeLanguage = (locale: string) => {
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    if (locale !== i18n.language) {
+      i18n.changeLanguage(locale);
+    }
+  }, [locale, i18n]);
 };

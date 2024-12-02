@@ -17,15 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect } from 'react';
-import { Alert, Skeleton, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
-import {
-  AsidePortal,
-  linksFromFormSchema,
-  NavigationPanel,
-  useSectionScroller,
-} from '@/components';
+import { AsidePortal, linksFromFormSchema, NavigationPanel, useSectionScroller } from '@/components';
 import { removeComponentsWithoutValuesFromSchema } from '@/components/NavigationPanel/utils';
 import { BFFDataRecord } from '@/types/record';
 import { RecordForm } from '@/components/Form/RecordForm';
@@ -44,9 +38,6 @@ export const ViewRecordPage = ({
 
   return (
     <>
-      {/*     <Helmet>
-        <title>{coraRecord.record?.id ?? 'not found'} | DiVA</title>
-      </Helmet>*/}
       <AsidePortal>
         <NavigationPanel
           links={
