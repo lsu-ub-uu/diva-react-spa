@@ -41,7 +41,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/data/updateRecord';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { BFFDataRecord } from '@/types/record';
-import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
+import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
@@ -95,7 +95,7 @@ export const action = async ({
     session.flash('error', 'Failed to create record');
   }
 
-  return redirectAndCommitSession(url.pathname + url.search, session);
+  return json(null, await getResponseInitWithSession(session));
 };
 
 export async function loader({ request, params, context }: LoaderFunctionArgs) {
@@ -157,6 +157,7 @@ export default function UpdateRecordRoute() {
       enqueueSnackbar(successMessage, {
         variant: 'success',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        preventDuplicate: true,
       });
     }
   }, [successMessage, navigation.state]);

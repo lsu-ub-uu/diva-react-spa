@@ -28,14 +28,13 @@ import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { BFFDataRecord } from '@/types/record';
-import {
-  commitSession,
-  getSessionFromCookie,
-  requireAuthentication,
-} from '@/sessions';
+import { getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
-import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
+import {
+  getResponseInitWithSession,
+  redirectAndCommitSession,
+} from '@/utils/redirectAndCommitSession';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 
@@ -78,7 +77,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   } catch (error) {
     console.error(error);
     session.flash('error', 'Failed to create record');
-    return redirectAndCommitSession(url.pathname + url.search, session);
+    return json(null, await getResponseInitWithSession(session));
   }
 };
 
@@ -100,11 +99,7 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
   );
   return json(
     { record, formDefinition, errorMessage },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
+    await getResponseInitWithSession(session),
   );
 };
 

@@ -27,18 +27,31 @@ export const getRecordByValidationTypeId = (
   dependencies: Dependencies,
   validationTypeId: string,
 ) => {
-  const validationType = dependencies.validationTypePool.get(validationTypeId);
-  const recordTypeGroup = dependencies.recordTypePool.get(
-    validationType.validatesRecordTypeId,
-  );
+  const validationType = dependencies.validationTypePool.get(validationTypeId); // manuscript
   const metadataGroup = dependencies.metadataPool.get(
-    recordTypeGroup.metadataId,
+    validationType.newMetadataGroupId,
   ) as BFFMetadataGroup;
   const recordInfoChildGroup = dependencies.metadataPool.get(
     metadataGroup.children[0].childId,
   ) as BFFMetadataGroup;
 
-  const recordInfo = recordInfoChildGroup.children
+  const recordInfo = getRecordInfo(recordInfoChildGroup, dependencies);
+
+  const record = {
+    data: {
+      [metadataGroup.nameInData]: {
+        [recordInfoChildGroup.nameInData]: recordInfo,
+      },
+    },
+  };
+  return record as BFFDataRecord;
+};
+
+const getRecordInfo = (
+  recordInfoMetadata: BFFMetadataGroup,
+  dependencies: Dependencies,
+) => {
+  return recordInfoMetadata.children
     .filter((child) => parseInt(child.repeatMin) > 0)
     .map(
       (child) =>
@@ -50,13 +63,4 @@ export const getRecordByValidationTypeId = (
       }
       return acc;
     }, {});
-
-  const record = {
-    data: {
-      [metadataGroup.nameInData]: {
-        [recordInfoChildGroup.nameInData]: recordInfo,
-      },
-    },
-  };
-  return record as BFFDataRecord;
 };
