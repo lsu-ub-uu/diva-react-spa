@@ -10,7 +10,7 @@
     "start": "NODE_ENV=production tsx server.ts",
     "typecheck": "tsc",
     "lint": "eslint ./app/**/*.{ts,tsx}",
-    "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
+    "lint:fix": "eslint --fix ./app/**/*.{ts,tsx}",
     "prettier-format": "prettier --write \"src/**/*.{ts,tsx,json}\" --config ./.prettierrc.json",
     "test": "vitest",
     "test:ci": "vitest run",
