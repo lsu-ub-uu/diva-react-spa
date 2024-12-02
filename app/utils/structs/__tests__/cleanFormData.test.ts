@@ -18,8 +18,9 @@
  */
 
 import { removeEmpty } from '../removeEmpty';
+import { cleanFormData } from '@/utils/cleanFormData';
 
-describe('RemoveEmpty', () => {
+describe('removeEmpty', () => {
   const data = {
     prop1: 'hello',
     prop2: undefined,
@@ -45,5 +46,11 @@ describe('RemoveEmpty', () => {
 
   it('should return a data object with properties removed if null or undefined', () => {
     expect(removeEmpty(data)).toStrictEqual(cleaned);
+  });
+});
+
+describe('cleanFormData', () => {
+  it('removes null', () => {
+    expect(cleanFormData({ value: null }, formSchema)).toEqual({});
   });
 });

@@ -69,7 +69,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
     const { recordType, id } = await createRecord(
       context.dependencies,
       formDefinition,
-      cleanFormData(data) as BFFDataRecord,
+      cleanFormData(data, formDefinition) as BFFDataRecord,
       auth,
     );
     session.flash('success', `Record was successfully created ${id}`);
@@ -97,6 +97,7 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
     validationTypeId,
     'create',
   );
+  console.log({ formDefinition });
   return json(
     { record, formDefinition, errorMessage },
     await getResponseInitWithSession(session),

@@ -19,7 +19,6 @@
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormComponent, FormComponentGroup, FormSchema } from '../types';
-import { cleanFormData } from '@/utils/cleanFormData';
 import {
   addAttributesToName,
   getChildNameInDataArray,
@@ -27,6 +26,7 @@ import {
   hasCurrentComponentSameNameInData,
 } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { DivaTypographyVariants } from '@/components/Typography/Typography';
+import { removeEmpty } from '@/utils/cleanFormData';
 
 export const countStringCharOccurrences = (
   inputString: string,
@@ -168,7 +168,7 @@ export const checkForExistingSiblings = (formValues: any) => {
         newObj[key] = formValues[key];
         return newObj;
       }, {});
-    const cleanedValues = cleanFormData(valuesWithoutAttribs);
+    const cleanedValues = removeEmpty(valuesWithoutAttribs);
     const valueLength = Object.keys(cleanedValues).length;
     return valueLength > 0;
   }
