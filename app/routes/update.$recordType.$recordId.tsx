@@ -54,7 +54,6 @@ export const action = async ({
   params,
   context,
 }: ActionFunctionArgs) => {
-  const url = new URL(request.url);
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
   const { recordType, recordId } = params;
