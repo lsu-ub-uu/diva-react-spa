@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import { FormComponentGuiElement } from '@/components/FormGenerator/types';
 import { LinkButton } from '@/components';
 
 interface GuiElementLinkProps {
   reactKey: string;
-  component: FormComponent;
+  component: FormComponentGuiElement;
 }
 
 export const GuiElementLink = ({

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import { FormComponentText } from '@/components/FormGenerator/types';
 import { Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { Typography } from '@/components';
@@ -26,7 +26,7 @@ import { convertChildStyleToString } from '@/components/FormGenerator/formGenera
 interface TextProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
-  component: FormComponent;
+  component: FormComponentText;
 }
 
 export const Text = ({

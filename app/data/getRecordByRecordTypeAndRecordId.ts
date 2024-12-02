@@ -45,7 +45,7 @@ export const getRecordByRecordTypeAndRecordId = async (
     record.presentation = createLinkedRecordDefinition(
       dependencies,
       metadataGroup,
-      presentationGroup,
+      presentationGroup as BFFPresentationGroup,
     );
     const listPresentationGroup = dependencies.presentationPool.get(
       dependencies.recordTypePool.get(recordType).listPresentationViewId,
@@ -53,7 +53,7 @@ export const getRecordByRecordTypeAndRecordId = async (
     record.listPresentation = createLinkedRecordDefinition(
       dependencies,
       metadataGroup,
-      listPresentationGroup,
+      listPresentationGroup as BFFPresentationGroup,
     );
   }
 

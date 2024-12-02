@@ -2024,7 +2024,7 @@ describe('formDefinition', () => {
       const linkedRecordDefinition = createLinkedRecordDefinition(
         dependencies,
         metadataGroup as BFFMetadataGroup,
-        presentationGroup,
+        presentationGroup as BFFPresentationGroup,
       );
       expect(linkedRecordDefinition.form.components).toHaveLength(1);
       expect(linkedRecordDefinition).toStrictEqual({
@@ -2245,7 +2245,7 @@ describe('formDefinition', () => {
       const linkedRecordDefinition = createLinkedRecordDefinition(
         dependencies,
         metadataGroup as BFFMetadataGroup,
-        presentationGroup,
+        presentationGroup as BFFPresentationGroup,
       );
 
       expect(linkedRecordDefinition.form.components).toHaveLength(8);

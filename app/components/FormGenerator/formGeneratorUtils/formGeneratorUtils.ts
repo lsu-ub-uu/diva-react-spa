@@ -18,7 +18,7 @@
  */
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { FormComponent, FormSchema } from '../types';
+import { FormComponent, FormComponentGroup, FormSchema } from '../types';
 import { cleanFormData } from '@/utils/cleanFormData';
 import {
   addAttributesToName,
@@ -61,15 +61,17 @@ export const isComponentGroup = (component: FormComponent) =>
 export const isComponentContainer = (component: FormComponent) =>
   component.type === 'container';
 
-export const isComponentSurroundingContainer = (component: FormComponent) =>
-  isComponentContainer(component) && component.containerType === 'surrounding';
+export const isComponentSurroundingContainer = (component: FormComponent) => {
+  return isComponentContainer(component) && 'containerType' in component
+    ? component.containerType === 'surrounding'
+    : false;
+};
 
-export const isComponentRepeatingContainer = (
-  component: FormComponent | undefined,
-) =>
-  component !== undefined &&
-  isComponentContainer(component) &&
-  component.containerType === 'repeating';
+export const isComponentRepeatingContainer = (component: FormComponent) => {
+  return isComponentContainer(component) && 'containerType' in component
+    ? component.containerType === 'repeating'
+    : false;
+};
 
 export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentVariable(component) ||
@@ -220,7 +222,8 @@ export const convertChildStyleToString = (
 ): string | null => {
   return childStyle?.[0] === undefined ? '' : childStyle[0].toString();
 };
-export const hasComponentSameNameInData = (component: FormComponent) => {
+
+export const hasComponentSameNameInData = (component: FormComponentGroup) => {
   if (component.components === undefined) {
     return false;
   }

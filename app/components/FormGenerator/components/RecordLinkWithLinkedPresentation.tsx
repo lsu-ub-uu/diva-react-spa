@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import React from 'react';
 import { Grid } from '@mui/material';
@@ -26,7 +26,7 @@ import { useRemixFormContext } from 'remix-hook-form';
 interface RecordLinkWithLinkedPresentationProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
-  component: FormComponent;
+  component: FormComponentRecordLink;
   name: string;
 }
 

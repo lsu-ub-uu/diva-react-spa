@@ -18,6 +18,7 @@
  */
 
 import { BFFDataRecord } from '@/types/record';
+import { RecordFormSchema } from '@/components/FormGenerator/types';
 
 export const coraRecord: BFFDataRecord = {
   id: 'divaOutput:519333261463755',
@@ -137,7 +138,7 @@ export const coraRecord3 = {
   },
 };
 
-export const authorAndTitleSchema = {
+export const authorAndTitleSchema: RecordFormSchema = {
   validationTypeId: 'preprint',
   form: {
     name: 'divaOutput',

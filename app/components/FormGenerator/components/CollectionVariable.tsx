@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import { FormComponentCollVar } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
@@ -26,7 +26,7 @@ import { useRemixFormContext } from 'remix-hook-form';
 interface CollectionVariableProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
-  component: FormComponent;
+  component: FormComponentCollVar;
   name: string;
 }
 
