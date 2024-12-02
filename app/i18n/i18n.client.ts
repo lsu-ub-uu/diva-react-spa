@@ -21,7 +21,6 @@ import { initReactI18next } from 'react-i18next';
 import I18NextHttpBackend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { i18nConfig } from '@/i18n/i18nConfig';
-import { getInitialNamespaces } from 'remix-i18next/client';
 
 export const initClienti18n = () => {
   return i18n
@@ -33,7 +32,6 @@ export const initClienti18n = () => {
       backend: {
         loadPath: `${import.meta.env.BASE_URL}translations/{{lng}}`,
       },
-      ns: getInitialNamespaces(),
       detection: {
         // Here only enable htmlTag detection, we'll detect the language only
         // server-side with remix-i18next, by using the `<html lang>` attribute

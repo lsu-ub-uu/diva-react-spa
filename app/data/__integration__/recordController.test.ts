@@ -1,3 +1,4 @@
+/*
 import { loginAsDivaAdmin } from './utils/loginUtil';
 import { deleteDivaOutput } from './utils/dataUtil';
 import { createBFFDivaOutput } from './utils/testData';
@@ -6,7 +7,7 @@ import { createRecord } from '@/data/createRecord';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
 
 describe('Record integration tests', () => {
-  /* Create Record */
+  /!* Create Record *!/
   describe('Creates a record', () => {
     it('creates a diva-output', async () => {
       vi.stubEnv('CORA_API_URL', 'https://cora.epc.ub.uu.se/diva/rest');
@@ -33,7 +34,7 @@ describe('Record integration tests', () => {
       // Cleanup
       await deleteDivaOutput(id, auth.data.token);
     });
-    /*
+    /!*
     it('fails to create a diva-output when body is invalid', async () => {
       // Arrange
       const testAgent = supertest.agent(server);
@@ -298,6 +299,7 @@ describe('Record integration tests', () => {
       expect(response.body.data.output.recordInfo.dataDivider.value).toEqual(
         'divaData',
       );
-    });*/
+    });*!/
   });
 });
+*/

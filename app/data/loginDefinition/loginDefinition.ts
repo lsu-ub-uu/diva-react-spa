@@ -32,6 +32,7 @@ interface LoginDefinition {
   url?: string;
   presentation?: any;
 }
+
 export const createLoginDefinition = (
   dependencies: Dependencies,
 ): LoginDefinition[] => {

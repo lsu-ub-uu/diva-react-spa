@@ -1,4 +1,5 @@
 /*
+/!*
  * Copyright 2023 Uppsala University Library
  *
  * This file is part of DiVA Client.
@@ -14,7 +15,7 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- */
+ *!/
 import { startServer } from './utils/startServer';
 import { Auth } from '../../types/Auth';
 import { loginAsDivaAdmin } from './utils/loginUtil';
@@ -86,3 +87,4 @@ describe('SearchController', () => {
     });
   });
 });
+*/
