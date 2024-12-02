@@ -18,7 +18,7 @@
  */
 
 export interface FormSchema {
-  form: FormComponent;
+  form: FormComponentGroup;
 }
 
 export interface RecordFormSchema extends FormSchema {
@@ -66,6 +66,7 @@ export interface FormComponentBase {
   finalValue?: string;
   gridColSpan?: number;
   childStyle?: string[];
+  presentationStyle?: string; // frame etc
 }
 
 export interface FormComponentVar extends FormComponentBase {
@@ -99,13 +100,13 @@ export interface FormComponentRecordLink extends FormComponentBase {
 
 export interface FormComponentContainer extends FormComponentBase {
   containerType?: 'repeating' | 'surrounding';
-  presentationStyle?: string; // frame etc
+  // presentationStyle?: string; // frame etc
   components?: FormComponent[]; // for groups
 }
 
 export interface FormComponentGroup extends FormComponentBase {
   attributes?: FormAttributeCollection[];
-  presentationStyle?: string; // frame etc
+  // presentationStyle?: string; // frame etc
   components?: FormComponent[]; // for groups
 }
 
@@ -137,6 +138,13 @@ export type FormComponent =
   | FormComponentText
   | FormComponentGuiElement;
 
+export type FormComponentWithData =
+  | FormComponentVar
+  | FormComponentNumVar
+  | FormComponentCollVar
+  | FormComponentRecordLink
+  | FormComponentGroup;
+
 type FormAttributeCollection = Omit<
   FormComponentCollVar,
   'repeat' | 'inputType' | 'attributes'
@@ -155,10 +163,3 @@ interface FormNumberValidation {
   warningMax: number;
   numberOfDecimals: number;
 }
-
-export type FormComponentWithData =
-  | FormComponentVar
-  | FormComponentNumVar
-  | FormComponentCollVar
-  | FormComponentRecordLink
-  | FormComponentGroup;

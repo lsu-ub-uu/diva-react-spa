@@ -18,7 +18,7 @@
  */
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { FormComponent, FormSchema } from '../types';
+import { FormComponent, FormComponentGroup, FormSchema } from '../types';
 import { cleanFormData } from '@/utils/cleanFormData';
 import {
   addAttributesToName,
@@ -222,7 +222,8 @@ export const convertChildStyleToString = (
 ): string | null => {
   return childStyle?.[0] === undefined ? '' : childStyle[0].toString();
 };
-export const hasComponentSameNameInData = (component: FormComponent) => {
+
+export const hasComponentSameNameInData = (component: FormComponentGroup) => {
   if (component.components === undefined) {
     return false;
   }

@@ -18,7 +18,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { FormSchema } from '../FormGenerator/types';
+import { FormSchema, RecordFormSchema } from '../FormGenerator/types';
 import { NavigationPanelLink } from '../index';
 import { BFFDataRecord } from '@/types/record';
 import {
@@ -29,7 +29,7 @@ import {
 import { getChildrenWithSameNameInDataFromSchema } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 export const linksFromFormSchema = (
-  formSchema: FormSchema,
+  formSchema: RecordFormSchema,
 ): NavigationPanelLink[] | undefined => {
   const childrenWithSameNameInData =
     getChildrenWithSameNameInDataFromSchema(formSchema);
