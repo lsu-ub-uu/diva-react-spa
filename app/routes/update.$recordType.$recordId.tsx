@@ -18,8 +18,14 @@
 
 import { UpdateRecordPage } from '@/pages';
 
-import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
-import { ActionFunctionArgs, data,
+import {
+  commitSession,
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/sessions';
+import {
+  ActionFunctionArgs,
+  data,
   LoaderFunctionArgs,
   MetaFunction,
 } from 'react-router';
@@ -86,7 +92,7 @@ export const action = async ({
     session.flash('error', 'Failed to create record');
   }
 
-  return json(null, await getResponseInitWithSession(session));
+  return data(null, await getResponseInitWithSession(session));
 };
 
 export async function loader({ request, params, context }: LoaderFunctionArgs) {

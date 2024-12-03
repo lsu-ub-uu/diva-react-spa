@@ -63,7 +63,7 @@ export const SearchPage = () => {
               <SearchResultListItem key={record.id}>
                 <AutocompleteForm
                   record={record}
-                  formSchema={record.presentation as FormSchema}
+                  formSchema={record.presentation as unknown as FormSchema}
                 />
                 <Box
                   sx={(theme) => ({

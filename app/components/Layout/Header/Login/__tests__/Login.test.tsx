@@ -21,7 +21,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRoutesStub } from 'react-router';
 import Login from '@/components/Layout/Header/Login/Login';
-import { json } from 'react-router';
 
 const loginUnits = [
   {
@@ -51,7 +50,7 @@ describe('<Login/>', () => {
           path: '/',
           Component: Login,
           loader() {
-            return json({ loginUnits });
+            return { loginUnits };
           },
         },
       ]);
@@ -93,7 +92,7 @@ describe('<Login/>', () => {
           path: '/',
           Component: Login,
           loader() {
-            return json({ loginUnits });
+            return { loginUnits };
           },
         },
       ]);
@@ -138,7 +137,7 @@ describe('<Login/>', () => {
             path: '/',
             Component: Login,
             loader() {
-              return json({ loginUnits });
+              return { loginUnits };
             },
           },
         ]);
