@@ -17,11 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const removeEmpty = (data: any): any => {
+export const removeEmpty = <T>(data: T): T => {
   if (Array.isArray(data)) {
     return data
       .filter((value) => value != null)
-      .map((value) => (typeof value === 'object' ? removeEmpty(value) : value));
+      .map((value) =>
+        typeof value === 'object' ? removeEmpty(value) : value,
+      ) as T;
   }
   if (typeof data === 'object' && data !== null) {
     const entries = Object.entries(data).filter(([, value]) => value != null);
@@ -32,5 +34,5 @@ export const removeEmpty = (data: any): any => {
     });
     return Object.fromEntries(clean);
   }
-  return data;
+  return data as T;
 };

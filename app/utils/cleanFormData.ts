@@ -7,15 +7,22 @@ export const cleanFormData = (obj: any, formSchema: RecordFormSchema): any => {
       const value = obj[key];
 
       if (Array.isArray(value)) {
-        const newArray = value
-          .map(doClean)
-          .filter((o) => !hasOnlyAttributes(o))
-          .filter((o: any) => Object.keys(o).length > 0);
+        const cleanedArray = value.map(doClean);
+
+        const arrayWithoutOnlyAttributeValues = cleanedArray.filter(
+          (o) => !hasOnlyAttributes(o),
+        );
+        // path = "output.originInfo"
+        // if optionalGroup -> component.finalValue
+        const newArray = arrayWithoutOnlyAttributeValues.filter(
+          (o: any) => Object.keys(o).length > 0,
+        );
         if (!isEmpty(newArray)) {
           acc[key] = newArray;
         }
       } else if (isObjectAndHasLength(value)) {
         const newObj = doClean(value);
+
         if (!hasOnlyAttributes(newObj)) {
           acc[key] = newObj;
         }

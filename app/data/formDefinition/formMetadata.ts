@@ -19,6 +19,7 @@
 
 import {
   BFFMetadataChildReference,
+  BFFMetadataCollectionVariable,
   BFFMetadataGroup,
   BFFMetadataRecordLink,
   BFFValidationType,
@@ -26,6 +27,7 @@ import {
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import { determineRepeatMax, FormMetaData } from './formDefinition';
+import { dependencies } from '@/data/pool.server';
 
 export const createFormMetaData = (
   dependencies: Dependencies,
@@ -53,7 +55,7 @@ export const createFormMetaData = (
 
 export const createMetaDataFromChildReference = (
   metadataChildReference: BFFMetadataChildReference,
-  metadataPool: any,
+  metadataPool: typeof dependencies.metadataPool,
 ): FormMetaData => {
   const metadata = metadataPool.get(metadataChildReference.childId);
   const repeatMin = parseInt(metadataChildReference.repeatMin);
@@ -61,9 +63,15 @@ export const createMetaDataFromChildReference = (
   let children;
   let linkedRecordType;
   let attributes;
+  let finalValue;
+  if ('finalValue' in metadata) {
+    finalValue = metadata.finalValue;
+  }
   if (metadata.attributeReferences !== undefined) {
     metadata.attributeReferences.map((ref: any) => {
-      const attributeCollectionVar = metadataPool.get(ref.refCollectionVarId);
+      const attributeCollectionVar = metadataPool.get(
+        ref.refCollectionVarId,
+      ) as BFFMetadataCollectionVariable;
       if (attributeCollectionVar.finalValue) {
         attributes = {
           [attributeCollectionVar.nameInData]:
@@ -94,6 +102,7 @@ export const createMetaDataFromChildReference = (
     },
     children,
     linkedRecordType,
+    finalValue,
   } as FormMetaData);
 };
 

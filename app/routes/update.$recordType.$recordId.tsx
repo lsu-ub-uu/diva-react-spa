@@ -85,7 +85,7 @@ export const action = async ({
       context.dependencies,
       validationType,
       recordId,
-      cleanFormData(data) as BFFDataRecord,
+      data as unknown as BFFDataRecord,
       auth,
     );
     session.flash('success', `Record was successfully updated`);

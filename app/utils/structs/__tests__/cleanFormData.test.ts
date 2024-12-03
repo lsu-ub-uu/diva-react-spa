@@ -19,6 +19,7 @@
 
 import { removeEmpty } from '../removeEmpty';
 import { cleanFormData } from '@/utils/cleanFormData';
+import { RecordFormSchema } from '@/components/FormGenerator/types';
 
 describe('removeEmpty', () => {
   const data = {
@@ -50,7 +51,220 @@ describe('removeEmpty', () => {
 });
 
 describe('cleanFormData', () => {
-  it('removes null', () => {
-    expect(cleanFormData({ value: null }, formSchema)).toEqual({});
+  it('removes optional group if it contains no valuable data', () => {
+    const formData = {
+      output: {
+        someMandatoryVar: {
+          value: 'hej',
+        },
+        originInfo: [
+          {
+            agent: [
+              {
+                role: {
+                  roleTerm: {
+                    value: 'pbl',
+                    finalValue: true,
+                  },
+                },
+              },
+            ],
+            dateIssued: {
+              year: {
+                value: null,
+              },
+            },
+          },
+        ],
+      },
+    };
+
+    const expected = {
+      output: {
+        someMandatoryVar: { value: 'hej' },
+      },
+    };
+
+    expect(cleanFormData(formData, formSchema)).toEqual(expected);
   });
 });
+
+const formSchema: RecordFormSchema = {
+  validationTypeId: 'diva-output',
+  form: {
+    name: 'output',
+    type: 'group',
+    mode: 'input',
+    tooltip: {
+      title: 'outputNewGroupText',
+      body: 'outputNewGroupDefText',
+    },
+    label: 'outputNewGroupText',
+    showLabel: true,
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    components: [
+      {
+        name: 'someMandatoryVar',
+        type: 'textVariable',
+        mode: 'input',
+        inputType: 'input',
+        tooltip: {
+          title: 'yearTextVarText',
+          body: 'yearTextVarDefText',
+        },
+        label: 'yearTextVarText',
+        showLabel: true,
+        validation: {
+          type: 'regex',
+          pattern: '(^[0-9]{4,4}$)',
+        },
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+      {
+        name: 'originInfo',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'originInfoGroupText',
+          body: 'originInfoGroupDefText',
+        },
+        label: 'originInfoGroupText',
+        showLabel: true,
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        components: [
+          {
+            name: 'dateIssued',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'dateIssuedGroupText',
+              body: 'dateIssuedGroupDefText',
+            },
+            label: 'dateIssuedGroupText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'year',
+                type: 'textVariable',
+                mode: 'input',
+                inputType: 'input',
+                tooltip: {
+                  title: 'yearTextVarText',
+                  body: 'yearTextVarDefText',
+                },
+                label: 'yearTextVarText',
+                showLabel: true,
+                validation: {
+                  type: 'regex',
+                  pattern: '(^[0-9]{4,4}$)',
+                },
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+          {
+            name: 'agent',
+            type: 'group',
+            mode: 'input',
+            tooltip: {
+              title: 'agentGroupText',
+              body: 'agentGroupDefText',
+            },
+            label: 'agentGroupText',
+            showLabel: true,
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+            components: [
+              {
+                name: 'role',
+                type: 'group',
+                mode: 'input',
+                tooltip: {
+                  title: 'rolePublisherGroupText',
+                  body: 'rolePublisherGroupDefText',
+                },
+                label: 'rolePublisherGroupText',
+                showLabel: true,
+                repeat: {
+                  minNumberOfRepeatingToShow: 1,
+                  repeatMin: 1,
+                  repeatMax: 1,
+                },
+                components: [
+                  {
+                    name: 'roleTerm',
+                    type: 'collectionVariable',
+                    placeholder: 'initialEmptyValueText',
+                    mode: 'input',
+                    tooltip: {
+                      title: 'roleCollectionVarText',
+                      body: 'roleCollectionVarDefText',
+                    },
+                    label: 'roleCollectionVarText',
+                    showLabel: true,
+                    repeat: {
+                      minNumberOfRepeatingToShow: 1,
+                      repeatMin: 1,
+                      repeatMax: 1,
+                    },
+                    options: [
+                      {
+                        value: 'aut',
+                        label: 'autItemText',
+                      },
+                    ],
+                    finalValue: 'aut',
+                    childStyle: [''],
+                    gridColSpan: 12,
+                  },
+                ],
+                presentationStyle: '',
+                childStyle: [''],
+                gridColSpan: 12,
+              },
+            ],
+            presentationStyle: '',
+            childStyle: [''],
+            gridColSpan: 12,
+          },
+        ],
+        presentationStyle: '',
+        childStyle: [''],
+        gridColSpan: 12,
+      },
+    ],
+    presentationStyle: '',
+    childStyle: [''],
+    gridColSpan: 12,
+  },
+};

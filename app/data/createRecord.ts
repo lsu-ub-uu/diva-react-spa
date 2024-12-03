@@ -52,6 +52,7 @@ export const createRecord = async (
     FORM_MODE_NEW,
   );
   const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+
   const transformData = transformToCoraData(formMetaDataPathLookup, record);
 
   const response = await postRecordData<RecordWrapper>(

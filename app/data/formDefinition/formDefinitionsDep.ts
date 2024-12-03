@@ -1,22 +1,33 @@
 import { Lookup } from '@/utils/structs/lookup';
 import {
-  BFFMetadata,
-  BFFValidationType,
-  BFFPresentation,
-  BFFPresentationGroup,
-  BFFText,
-  BFFRecordType,
-  BFFSearch,
+  BFFGuiElement,
+  BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,
-  BFFLoginPassword,
+  BFFMetadataCollectionVariable,
+  BFFMetadataGroup,
+  BFFMetadataNumberVariable,
+  BFFMetadataRecordLink,
+  BFFMetadataTextVariable,
+  BFFPresentation,
+  BFFPresentationGroup,
   BFFPresentationSurroundingContainer,
-  BFFGuiElement,
+  BFFRecordType,
+  BFFSearch,
+  BFFText,
+  BFFValidationType,
 } from '@/cora/transform/bffTypes';
 
 export interface Dependencies {
   validationTypePool: Lookup<string, BFFValidationType>;
-  metadataPool: Lookup<string, BFFMetadata>;
+  metadataPool: Lookup<
+    string,
+    | BFFMetadataTextVariable
+    | BFFMetadataNumberVariable
+    | BFFMetadataRecordLink
+    | BFFMetadataCollectionVariable
+    | BFFMetadataGroup
+  >;
   presentationPool: Lookup<
     string,
     | BFFPresentation

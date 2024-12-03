@@ -41,9 +41,9 @@ import {
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { Dependencies } from './formDefinitionsDep';
 import {
-  convertStylesToShortName,
   convertChildStylesToGridColSpan,
   convertChildStylesToShortName,
+  convertStylesToShortName,
 } from '@/cora/cora-data/CoraDataUtilsPresentations';
 import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
@@ -80,6 +80,7 @@ export interface FormMetaData {
   attributes?: {
     [key: string]: string;
   };
+  finalValue?: string;
 }
 
 /**
