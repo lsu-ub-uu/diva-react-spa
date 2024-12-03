@@ -40,7 +40,7 @@ import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata';
-import { BFFDataRecord } from '@/types/record';
+import { BFFDataRecord, BFFUpdate, BFFUserRight } from '@/types/record';
 import { groupBy } from 'lodash-es';
 
 /**
@@ -100,9 +100,9 @@ export const transformRecord = (
   }
   const updated = extractRecordUpdates(recordInfo);
 
-  let userRights: string[] = [];
+  let userRights: BFFUserRight[] = [];
   if (coraRecord.actionLinks !== undefined) {
-    userRights = Object.keys(coraRecord.actionLinks);
+    userRights = Object.keys(coraRecord.actionLinks) as BFFUserRight[];
   }
 
   const formMetadata = createFormMetaData(
@@ -129,7 +129,7 @@ const extractRecordInfoDataGroup = (coraRecordGroup: DataGroup): DataGroup => {
   return getFirstDataGroupWithNameInData(coraRecordGroup, 'recordInfo');
 };
 
-const extractRecordUpdates = (recordInfo: DataGroup): unknown[] => {
+const extractRecordUpdates = (recordInfo: DataGroup): BFFUpdate[] => {
   const updates = getAllChildrenWithNameInData(recordInfo, 'updated');
   return updates.map((update) => {
     const updatedGroup = update as DataGroup;

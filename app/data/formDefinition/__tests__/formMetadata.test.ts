@@ -28,10 +28,10 @@ import {
   BFFGuiElement,
   BFFLoginUnit,
   BFFLoginWebRedirect,
-  BFFMetadata,
+  BFFMetadataBase,
   BFFMetadataGroup,
   BFFMetadataItemCollection,
-  BFFPresentation,
+  BFFPresentationBase,
   BFFPresentationGroup,
   BFFPresentationSurroundingContainer,
   BFFRecordType,
@@ -48,6 +48,10 @@ import {
   genreOtherCollectionVar,
   givenNameTextVar,
   mainTitleTextVar,
+  newLangCollVariable,
+  newLangItemCollection,
+  newLangItemCollectionItemEng,
+  newLangItemCollectionItemSwe,
   newNationalSubjectCategoryRecordTypeGroup,
   newNationalSubjectCategoryRecordTypeNewGroup,
   newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
@@ -61,12 +65,20 @@ import {
   pNewNationSubjectCategoryMetadataGroup,
   pNewNationSubjectCategorySweVar,
   preprintNewGroup,
+  pSomeMainTitleTitleInfoTextVariable,
+  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+  pSomeNewMetadataGroupTitleInfoAlternativePGroup,
+  pSomeNewMetadataGroupTitleInfoPGroup,
+  someMainTitleTitleInfoATextVariable,
   someMetadataChildGroup,
   someMetadataRecordLink,
   someMetadataTextVariable,
   someNewMetadataGroupRepeatingCollectionNameInDataGroup,
   someNewMetadataGroupRepeatingGroupsNameInDataGroup,
   someNewMetadataGroupRepeatingRecordLinksNameInDataGroup,
+  someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+  someNewMetadataGroupTitleInfoAlternativeGroup,
+  someNewMetadataGroupTitleInfoGroup,
   someNewRecordLinkId,
   someNewSimpleMetadataGroup,
   someOtherNewRecordLinkId,
@@ -75,34 +87,22 @@ import {
   someValidationTypeForRepeatingCollectionsNameInDataId,
   someValidationTypeForRepeatingGroupsNameInDataId,
   someValidationTypeForRepeatingRecordLinksNameInDataId,
-  titleGroup,
-  typeOutputTypeCollectionVar,
   someValidationTypeForRepeatingTitleInfoId,
-  someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
-  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
-  someNewMetadataGroupTitleInfoGroup,
-  pSomeNewMetadataGroupTitleInfoPGroup,
-  pSomeNewMetadataGroupTitleInfoAlternativePGroup,
-  someNewMetadataGroupTitleInfoAlternativeGroup,
+  titleGroup,
+  typeCollectionItemAlternative,
   typeCollVariable,
   typeItemCollection,
-  typeCollectionItemAlternative,
-  someMainTitleTitleInfoATextVariable,
-  pSomeMainTitleTitleInfoTextVariable,
-  newLangCollVariable,
-  newLangItemCollection,
-  newLangItemCollectionItemEng,
-  newLangItemCollectionItemSwe,
+  typeOutputTypeCollectionVar,
 } from '@/__mocks__/bff/form/bffMock';
 import { Lookup } from '@/utils/structs/lookup';
 import { Dependencies } from '../formDefinitionsDep';
 
 describe('formMetadata', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
-  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
+  let metadataPool: Lookup<string, BFFMetadataBase | BFFMetadataItemCollection>;
   let presentationPool: Lookup<
     string,
-    | BFFPresentation
+    | BFFPresentationBase
     | BFFPresentationGroup
     | BFFPresentationSurroundingContainer
     | BFFGuiElement
@@ -123,7 +123,7 @@ describe('formMetadata', () => {
       someValidationTypeForRepeatingRecordLinksNameInDataId,
       someValidationTypeForRepeatingTitleInfoId,
     ]);
-    metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
+    metadataPool = listToPool<BFFMetadataBase | BFFMetadataGroup>([
       someMetadataTextVariable,
       someRecordInfo,
       someMetadataChildGroup,
@@ -166,7 +166,7 @@ describe('formMetadata', () => {
       newLangItemCollectionItemSwe,
     ]);
     presentationPool = listToPool<
-      | BFFPresentation
+      | BFFPresentationBase
       | BFFPresentationGroup
       | BFFPresentationSurroundingContainer
       | BFFGuiElement

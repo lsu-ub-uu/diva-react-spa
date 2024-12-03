@@ -26,7 +26,7 @@ import {
   hasCurrentComponentSameNameInData,
 } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { DivaTypographyVariants } from '@/components/Typography/Typography';
-import { removeEmpty } from '@/utils/cleanFormData';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 export const countStringCharOccurrences = (
   inputString: string,
@@ -168,7 +168,7 @@ export const checkForExistingSiblings = (formValues: any) => {
         newObj[key] = formValues[key];
         return newObj;
       }, {});
-    const cleanedValues = removeEmpty(valuesWithoutAttribs);
+    const cleanedValues = cleanFormData(valuesWithoutAttribs);
     const valueLength = Object.keys(cleanedValues).length;
     return valueLength > 0;
   }

@@ -1,17 +1,10 @@
 import { Lookup } from '@/utils/structs/lookup';
 import {
-  BFFGuiElement,
   BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,
-  BFFMetadataCollectionVariable,
-  BFFMetadataGroup,
-  BFFMetadataNumberVariable,
-  BFFMetadataRecordLink,
-  BFFMetadataTextVariable,
+  BFFMetadata,
   BFFPresentation,
-  BFFPresentationGroup,
-  BFFPresentationSurroundingContainer,
   BFFRecordType,
   BFFSearch,
   BFFText,
@@ -20,21 +13,8 @@ import {
 
 export interface Dependencies {
   validationTypePool: Lookup<string, BFFValidationType>;
-  metadataPool: Lookup<
-    string,
-    | BFFMetadataTextVariable
-    | BFFMetadataNumberVariable
-    | BFFMetadataRecordLink
-    | BFFMetadataCollectionVariable
-    | BFFMetadataGroup
-  >;
-  presentationPool: Lookup<
-    string,
-    | BFFPresentation
-    | BFFPresentationGroup
-    | BFFPresentationSurroundingContainer
-    | BFFGuiElement
-  >;
+  metadataPool: Lookup<string, BFFMetadata>;
+  presentationPool: Lookup<string, BFFPresentation>;
   textPool: Lookup<string, BFFText>;
   recordTypePool: Lookup<string, BFFRecordType>;
   searchPool: Lookup<string, BFFSearch>;

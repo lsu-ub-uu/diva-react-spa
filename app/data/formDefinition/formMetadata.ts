@@ -67,7 +67,10 @@ export const createMetaDataFromChildReference = (
   if ('finalValue' in metadata) {
     finalValue = metadata.finalValue;
   }
-  if (metadata.attributeReferences !== undefined) {
+  if (
+    'attributeReferences' in metadata &&
+    metadata.attributeReferences !== undefined
+  ) {
     metadata.attributeReferences.map((ref: any) => {
       const attributeCollectionVar = metadataPool.get(
         ref.refCollectionVarId,

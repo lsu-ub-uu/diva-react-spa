@@ -33,5 +33,5 @@ export const getFormDefinitionByValidationTypeId = async (
     dependencies,
     validationTypeId,
     mode,
-  ) as RecordFormSchema;
+  ) as unknown as RecordFormSchema;
 };

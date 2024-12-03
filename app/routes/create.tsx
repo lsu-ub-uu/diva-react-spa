@@ -26,7 +26,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord';
-import { cleanFormData } from '@/utils/cleanFormData';
 import { BFFDataRecord } from '@/types/record';
 import { getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { useEffect } from 'react';

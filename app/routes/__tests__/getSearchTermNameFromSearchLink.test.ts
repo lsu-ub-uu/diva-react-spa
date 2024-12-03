@@ -19,18 +19,17 @@
 
 import { listToPool } from '@/utils/structs/listToPool';
 import {
-  BFFMetadata,
-  BFFMetadataItemCollection,
-  BFFPresentation,
-  BFFPresentationGroup,
-  BFFValidationType,
-  BFFRecordType,
-  BFFMetadataGroup,
-  BFFText,
-  BFFSearch,
-  BFFMetadataTextVariable,
   BFFLoginUnit,
   BFFLoginWebRedirect,
+  BFFMetadata,
+  BFFMetadataGroup,
+  BFFMetadataTextVariable,
+  BFFPresentationBase,
+  BFFPresentationGroup,
+  BFFRecordType,
+  BFFSearch,
+  BFFText,
+  BFFValidationType,
 } from '@/cora/transform/bffTypes';
 import { Lookup } from '@/utils/structs/lookup';
 
@@ -38,13 +37,13 @@ import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { getSearchTermNameFromSearchLink } from '@/routes/autocompleteSearch';
 
 describe('getSearchTermNameFromSearchLink', () => {
-  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
+  let metadataPool: Lookup<string, BFFMetadata>;
   let searchPool: Lookup<string, BFFSearch>;
 
   let dependencies: Dependencies;
 
   beforeEach(() => {
-    metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
+    metadataPool = listToPool<BFFMetadata>([
       nationalSubjectCategoryAutocompleteSearchGroup,
       nationalSubjectCategoryAutocompleteIncludeGroup,
       nationalSubjectCategoryAutocompleteIncludePartGroup,
@@ -57,7 +56,9 @@ describe('getSearchTermNameFromSearchLink', () => {
       validationTypePool: listToPool<BFFValidationType>([]),
       metadataPool,
       textPool: listToPool<BFFText>([]),
-      presentationPool: listToPool<BFFPresentation | BFFPresentationGroup>([]),
+      presentationPool: listToPool<BFFPresentationBase | BFFPresentationGroup>(
+        [],
+      ),
       recordTypePool: listToPool<BFFRecordType>([]),
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),

@@ -36,7 +36,7 @@ export interface BFFRecordType extends BFFBase {
   listPresentationViewId: string;
 }
 
-export interface BFFMetadata extends BFFBase {
+export interface BFFMetadataBase extends BFFBase {
   nameInData: string;
   type:
     | 'group'
@@ -51,17 +51,26 @@ export interface BFFMetadata extends BFFBase {
   defTextId: string;
 }
 
+export type BFFMetadata =
+  | BFFMetadataBase
+  | BFFMetadataTextVariable
+  | BFFMetadataNumberVariable
+  | BFFMetadataRecordLink
+  | BFFMetadataCollectionVariable
+  | BFFMetadataGroup
+  | BFFMetadataItemCollection;
+
 export interface BFFAttributeReference {
   refCollectionVarId: string;
 }
 
-export interface BFFMetadataTextVariable extends BFFMetadata {
+export interface BFFMetadataTextVariable extends BFFMetadataBase {
   regEx: string;
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
 }
 
-export interface BFFMetadataNumberVariable extends BFFMetadata {
+export interface BFFMetadataNumberVariable extends BFFMetadataBase {
   min: string;
   max: string;
   warningMin: string;
@@ -71,13 +80,13 @@ export interface BFFMetadataNumberVariable extends BFFMetadata {
   attributeReferences?: BFFAttributeReference[];
 }
 
-export interface BFFMetadataRecordLink extends BFFMetadata {
+export interface BFFMetadataRecordLink extends BFFMetadataBase {
   linkedRecordType: string;
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
 }
 
-export interface BFFMetadataCollectionVariable extends BFFMetadata {
+export interface BFFMetadataCollectionVariable extends BFFMetadataBase {
   refCollection: string;
   finalValue?: string;
   attributeReferences?: BFFAttributeReference[];
@@ -87,11 +96,11 @@ export interface BFFCollectionItemReference {
   refCollectionItemId: string;
 }
 
-export interface BFFMetadataItemCollection extends BFFMetadata {
+export interface BFFMetadataItemCollection extends BFFMetadataBase {
   collectionItemReferences: BFFCollectionItemReference[];
 }
 
-export interface BFFMetadataGroup extends BFFMetadata {
+export interface BFFMetadataGroup extends BFFMetadataBase {
   attributeReferences?: BFFAttributeReference[];
   children: BFFMetadataChildReference[];
 }
@@ -103,7 +112,7 @@ export interface BFFMetadataChildReference {
   recordPartConstraint?: 'write' | 'readWrite';
 }
 
-export interface BFFPresentation extends BFFBase {
+export interface BFFPresentationBase extends BFFBase {
   type:
     | 'pGroup'
     | 'pVar'
@@ -123,7 +132,7 @@ export interface BFFPresentation extends BFFBase {
   attributesToShow?: 'all' | 'selectable' | 'none';
 }
 
-export interface BFFPresentationRecordLink extends BFFPresentation {
+export interface BFFPresentationRecordLink extends BFFPresentationBase {
   linkedRecordPresentations?: BFFLinkedRecordPresentation[];
   search?: string;
 }
@@ -133,7 +142,7 @@ export interface BFFLinkedRecordPresentation {
   presentationId: string;
 }
 
-export interface BFFPresentationContainer extends BFFPresentation {
+export interface BFFPresentationContainer extends BFFPresentationBase {
   repeat: 'children' | 'this';
   presentationStyle?: string;
   children: BFFPresentationChildReference[];
@@ -149,7 +158,7 @@ export interface BFFPresentationSurroundingContainer
   presentationsOf?: string[];
 }
 
-export interface BFFPresentationGroup extends BFFPresentation {
+export interface BFFPresentationGroup extends BFFPresentationBase {
   presentationOf: string;
   presentationStyle?: string;
   children: BFFPresentationChildReference[];
@@ -182,11 +191,17 @@ export interface BFFSearch extends BFFBase {
 }
 
 export interface BFFGuiElement extends BFFBase {
-  url?: string;
-  elementText?: string;
-  presentAs?: 'link' | 'image';
+  url: string;
+  elementText: string;
+  presentAs: 'link' | 'image';
   type: string;
 }
+
+export type BFFPresentation =
+  | BFFPresentationBase
+  | BFFPresentationGroup
+  | BFFPresentationSurroundingContainer
+  | BFFGuiElement;
 
 export interface BFFValidationType extends BFFBase {
   validatesRecordTypeId: string;
