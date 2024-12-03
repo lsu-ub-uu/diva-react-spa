@@ -17,62 +17,33 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { cleanJson, removeEmpty } from '../removeEmpty';
+import { removeEmpty } from '../removeEmpty';
 
-describe('RemoveEmpty', () => {
+describe('removeEmpty', () => {
   const data = {
     prop1: 'hello',
     prop2: undefined,
     prop3: null,
     prop4: {
       innerProp: undefined,
-      innerProp2: 'world'
+      innerProp2: 'world',
     },
     prop5: [],
     prop6: ['a'],
-    prop7: ''
+    prop7: '',
   };
 
   const cleaned = {
     prop1: 'hello',
     prop4: {
-      innerProp2: 'world'
+      innerProp2: 'world',
     },
     prop5: [],
     prop6: ['a'],
-    prop7: ''
+    prop7: '',
   };
 
   it('should return a data object with properties removed if null or undefined', () => {
     expect(removeEmpty(data)).toStrictEqual(cleaned);
-  });
-});
-
-describe('CleanJson', () => {
-  const data = {
-    prop1: 'hello',
-    prop2: undefined,
-    prop3: null,
-    prop4: {
-      innerProp: undefined,
-      innerProp2: 'world'
-    },
-    prop5: [],
-    prop6: ['a'],
-    prop7: { value: null },
-    prop8: { test: { value: null }, _attr: '2' }
-  };
-
-  const cleaned = {
-    prop1: 'hello',
-    prop4: {
-      innerProp2: 'world'
-    },
-    prop6: ['a'],
-    prop8: { _attr: '2' }
-  };
-
-  it('should return a data object with cleaned json ready to be converted to cora format', () => {
-    expect(cleanJson(data)).toStrictEqual(cleaned);
   });
 });

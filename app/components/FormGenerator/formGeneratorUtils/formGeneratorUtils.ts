@@ -19,7 +19,6 @@
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormComponent, FormComponentGroup, FormSchema } from '../types';
-import { cleanFormData } from '@/utils/cleanFormData';
 import {
   addAttributesToName,
   getChildNameInDataArray,
@@ -27,6 +26,7 @@ import {
   hasCurrentComponentSameNameInData,
 } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { DivaTypographyVariants } from '@/components/Typography/Typography';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 export const countStringCharOccurrences = (
   inputString: string,

@@ -26,6 +26,12 @@ import coraRecordManuscriptWithSameNameInDataWithOneGroup from '@/__mocks__/bff/
 
 import {
   addAttributesToArray,
+  addAttributesToNameForRecords,
+  findSearchPart,
+  getMetadataChildrenWithSiblings,
+  getNamesFromChildren,
+  getSameNameInDatas,
+  hasComponentAttributes,
   hasCoraAttributes,
   hasSameNameInDatas,
   isDataAtomic,
@@ -36,12 +42,6 @@ import {
   transformRecord,
   traverseDataGroup,
   updateGroupWithPossibleNewNameWithAttribute,
-  addAttributesToNameForRecords,
-  getNamesFromChildren,
-  getSameNameInDatas,
-  findSearchPart,
-  getMetadataChildrenWithSiblings,
-  hasComponentAttributes,
 } from '../transformRecord';
 import {
   Attributes,
@@ -55,6 +55,7 @@ import {
   BFFLoginWebRedirect,
   BFFMetadata,
   BFFPresentation,
+  BFFPresentationBase,
   BFFPresentationGroup,
   BFFPresentationSurroundingContainer,
   BFFRecordType,
@@ -65,37 +66,37 @@ import {
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { listToPool } from '@/utils/structs/listToPool';
 import {
-  someAlternativeTitleMetadataChildGroup,
-  someMainTitleTextVariable,
-  someManuscriptEditMetadataGroup,
-  someManuscriptValidationTypeData,
-  someSubTitleTextVariable,
   nationSubjectCategoryValidationTypeData,
-  someValidationTypeForRepeatingTitleInfoId,
-  someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
-  someNewMetadataGroupTitleInfoGroup,
-  someNewMetadataGroupTitleInfoAlternativeGroup,
-  newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
-  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
-  pSomeNewMetadataGroupTitleInfoPGroup,
-  pSomeNewMetadataGroupTitleInfoAlternativePGroup,
-  someMainTitleTitleInfoATextVariable,
-  pSomeMainTitleTitleInfoTextVariable,
-  typeCollVariable,
-  typeItemCollection,
-  typeCollectionItemAlternative,
   newLangCollVariable,
   newLangItemCollection,
   newLangItemCollectionItemEng,
   newLangItemCollectionItemSwe,
-  someValidationTypeNamePartId,
-  someNewMetadataGroupRepeatingNamePartGroup,
+  newNationSubjectCategoryMetadataSubjectEngLangCollVariable,
+  pSomeMainTitleTitleInfoTextVariable,
+  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+  pSomeNewMetadataGroupTitleInfoAlternativePGroup,
+  pSomeNewMetadataGroupTitleInfoPGroup,
+  someAlternativeTitleMetadataChildGroup,
+  someMainTitleTextVariable,
+  someMainTitleTitleInfoATextVariable,
+  someManuscriptEditMetadataGroup,
+  someManuscriptValidationTypeData,
   someNamePartTextVariable,
-  someOtherNamePartTextVariable,
-  someValidationTypeNamePartWithAttributesId,
-  someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
   someNamePartWithAttributesTextVariable,
+  someNewMetadataGroupRepeatingNamePartGroup,
+  someNewMetadataGroupRepeatingNamePartWithAttributesGroup,
+  someNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+  someNewMetadataGroupTitleInfoAlternativeGroup,
+  someNewMetadataGroupTitleInfoGroup,
+  someOtherNamePartTextVariable,
   someOtherNamePartWithAttributesTextVariable,
+  someSubTitleTextVariable,
+  someValidationTypeForRepeatingTitleInfoId,
+  someValidationTypeNamePartId,
+  someValidationTypeNamePartWithAttributesId,
+  typeCollectionItemAlternative,
+  typeCollVariable,
+  typeItemCollection,
 } from '@/__mocks__/bff/form/bffMock';
 import { FormMetaData } from '@/data/formDefinition/formDefinition';
 
@@ -104,7 +105,7 @@ describe('transformRecord', () => {
   let metadataPool: Lookup<string, BFFMetadata>;
   let presentationPool: Lookup<
     string,
-    | BFFPresentation
+    | BFFPresentationBase
     | BFFPresentationGroup
     | BFFPresentationSurroundingContainer
     | BFFGuiElement
@@ -143,12 +144,7 @@ describe('transformRecord', () => {
       someNamePartWithAttributesTextVariable,
       someOtherNamePartWithAttributesTextVariable,
     ]);
-    presentationPool = listToPool<
-      | BFFPresentation
-      | BFFPresentationGroup
-      | BFFPresentationSurroundingContainer
-      | BFFGuiElement
-    >([
+    presentationPool = listToPool<BFFPresentation>([
       pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
       pSomeNewMetadataGroupTitleInfoPGroup,
       pSomeNewMetadataGroupTitleInfoAlternativePGroup,

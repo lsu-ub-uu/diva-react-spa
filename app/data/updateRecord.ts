@@ -18,7 +18,6 @@
 
 import { BFFDataRecord } from '@/types/record';
 import { Auth } from '@/types/Auth';
-import { cleanJson } from '@/utils/structs/removeEmpty';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/cora/transform/transformToCora';
@@ -34,8 +33,6 @@ export const updateRecord = async (
   data: BFFDataRecord,
   auth: Auth,
 ) => {
-  const payload = cleanJson(data);
-
   const { validationTypePool } = dependencies;
   const recordType =
     validationTypePool.get(validationTypeId).validatesRecordTypeId;
@@ -52,7 +49,7 @@ export const updateRecord = async (
   );
   const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
 
-  const transformData = transformToCoraData(formMetaDataPathLookup, payload);
+  const transformData = transformToCoraData(formMetaDataPathLookup, data);
 
   const response = await updateRecordDataById<RecordWrapper>(
     recordId,

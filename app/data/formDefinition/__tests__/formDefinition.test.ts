@@ -19,101 +19,101 @@
 
 import { listToPool } from '@/utils/structs/listToPool';
 import {
-  BFFGuiElement,
-  BFFMetadata,
-  BFFMetadataItemCollection,
-  BFFPresentation,
-  BFFPresentationSurroundingContainer,
-  BFFPresentationGroup,
-  BFFValidationType,
   BFFAttributeReference,
-  BFFMetadataTextVariable,
-  BFFMetadataCollectionVariable,
-  BFFMetadataChildReference,
-  BFFRecordType,
-  BFFMetadataGroup,
-  BFFPresentationChildReference,
-  BFFText,
-  BFFPresentationRecordLink,
+  BFFGuiElement,
   BFFLinkedRecordPresentation,
-  BFFMetadataRecordLink,
-  BFFSearch,
   BFFLoginUnit,
   BFFLoginWebRedirect,
+  BFFMetadataBase,
+  BFFMetadataChildReference,
+  BFFMetadataCollectionVariable,
+  BFFMetadataGroup,
+  BFFMetadataItemCollection,
+  BFFMetadataRecordLink,
+  BFFMetadataTextVariable,
+  BFFPresentationBase,
+  BFFPresentationChildReference,
+  BFFPresentationGroup,
+  BFFPresentationRecordLink,
+  BFFPresentationSurroundingContainer,
+  BFFRecordType,
+  BFFSearch,
+  BFFText,
+  BFFValidationType,
 } from '@/cora/transform/bffTypes';
 import { Lookup } from '@/utils/structs/lookup';
 import {
-  someMetadataTextVariable,
-  someMetadataNumberVar,
-  someNewMetadataGroup,
-  someNewMetadataGroupFaultyChildReference,
-  someRecordInfo,
-  someValidationTypeData,
-  someValidationTypeDataFaultyChildReference,
-  someMetadataTextVariable2,
-  someMetadataCollectionVariable,
-  someMetadataItemCollection,
-  someMetadataCollectionItemBlue,
-  someMetadataCollectionItemPink,
-  someMetadataCollectionItemYellow,
-  someMetadataTextVariable3,
-  someMetadataTextVariable4,
-  someMetadataTextVariable5,
-  someMetadataTextVariable6,
-  someMetadataCollectionVariableWithAttribute,
-  someMetadataNumberVarWithAttribute,
-  someMetadataTextVariableWithAttributeVar,
-  someMetadataRecordLink,
-  someMetadataChildGroup,
-  someMetadataChildGroupWithSpecifiedHeadlineText,
-  someMetadataChildGroupWithShowHeadlineFalse,
-  pSomeMetadataTextVariable,
-  pSomeNewMetadataGroup,
-  pSomeMetadataNumberVar,
-  pSomeMetadataTextVariable2,
+  exampleOtherCollectionVarId,
+  pSomeArchiveNumberTextVar,
+  pSomeContainer,
+  pSomeEditMetadataGroup,
+  pSomeGuiElementLink,
+  pSomeLocalIdTextVar,
+  pSomeManuscriptContainer,
+  pSomeManuscriptGroup,
+  pSomeMetadataChildGroup,
+  pSomeMetadataChildGroupWithShowHeadlineFalse,
+  pSomeMetadataChildGroupWithSpecifiedHeadlineText,
   pSomeMetadataCollectionVariable,
+  pSomeMetadataCollectionVariableWithAttribute,
+  pSomeMetadataNumberVar,
+  pSomeMetadataNumberWithAttributeVar,
+  pSomeMetadataRecordLink,
+  pSomeMetadataTextVariable,
+  pSomeMetadataTextVariable2,
   pSomeMetadataTextVariable3,
   pSomeMetadataTextVariable4,
   pSomeMetadataTextVariable5,
   pSomeMetadataTextVariable6,
-  pSomeMetadataCollectionVariableWithAttribute,
-  pSomeMetadataNumberWithAttributeVar,
   pSomeMetadataTextVariableWithAttributeVar,
-  pSomeMetadataChildGroup,
-  pSomeMetadataRecordLink,
-  pSomeContainer,
-  pSomeGuiElementLink,
-  pSomeRepeatingContainer,
-  pSomeMetadataChildGroupWithSpecifiedHeadlineText,
-  pSomeMetadataChildGroupWithShowHeadlineFalse,
-  someNewSimpleMetadataGroup,
-  someSimpleValidationTypeData,
-  pSomeEditMetadataGroup,
-  someEditMetadataGroup,
-  someManuscriptGroup,
-  pSomeManuscriptGroup,
-  pSomeManuscriptContainer,
-  someArchiveNumberTextVar,
-  someLocalIdTextVar,
-  someScopusIdTextVar,
-  pSomeArchiveNumberTextVar,
-  pSomeLocalIdTextVar,
-  pSomeScopusIdTextVar,
-  someValidationTypeForMissingChildIdTypeData,
-  someNewMetadataGroupForMissingChildId,
+  pSomeNewMetadataGroup,
   pSomeNewMetadataGroupForMissingChildId,
+  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
+  pSomeNewRecordLink,
   pSomeOtherMetadataCollectionVariableWithMissingChildId,
-  exampleOtherCollectionVarId,
+  pSomeRepeatingContainer,
+  pSomeScopusIdTextVar,
+  someArchiveNumberTextVar,
+  someEditMetadataGroup,
+  someLocalIdTextVar,
   someMainTitleTextVariable,
-  someMetadataNumberVarWithoutAttribute,
+  someManuscriptGroup,
+  someMetadataChildGroup,
+  someMetadataChildGroupWithShowHeadlineFalse,
+  someMetadataChildGroupWithSpecifiedHeadlineText,
+  someMetadataCollectionItemBlue,
+  someMetadataCollectionItemPink,
+  someMetadataCollectionItemYellow,
+  someMetadataCollectionVariable,
+  someMetadataCollectionVariable2,
+  someMetadataCollectionVariableWithAttribute,
+  someMetadataCollectionWithOtherIdVariable,
+  someMetadataItemCollection,
+  someMetadataNumberVar,
+  someMetadataNumberVarWithAttribute,
   someMetadataNumberVarWithAttributeAndOtherId,
   someMetadataNumberVarWithOtherAttributeId,
-  someMetadataCollectionWithOtherIdVariable,
-  someMetadataCollectionVariable2,
+  someMetadataNumberVarWithoutAttribute,
+  someMetadataRecordLink,
+  someMetadataTextVariable,
+  someMetadataTextVariable2,
+  someMetadataTextVariable3,
+  someMetadataTextVariable4,
+  someMetadataTextVariable5,
+  someMetadataTextVariable6,
+  someMetadataTextVariableWithAttributeVar,
+  someNewMetadataGroup,
+  someNewMetadataGroupFaultyChildReference,
+  someNewMetadataGroupForMissingChildId,
   someNewRecordLink,
-  pSomeNewRecordLink,
+  someNewSimpleMetadataGroup,
+  someRecordInfo,
+  someScopusIdTextVar,
+  someSimpleValidationTypeData,
+  someValidationTypeData,
+  someValidationTypeDataFaultyChildReference,
+  someValidationTypeForMissingChildIdTypeData,
   someValidationTypeForRepeatingTitleInfoId,
-  pSomeNewMetadataGroupRepeatingTitleInfoNameInDataGroup,
 } from '@/__mocks__/bff/form/bffMock';
 import {
   createFormDefinition,
@@ -127,10 +127,10 @@ import { Dependencies } from '../formDefinitionsDep';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;
-  let metadataPool: Lookup<string, BFFMetadata | BFFMetadataItemCollection>;
+  let metadataPool: Lookup<string, BFFMetadataBase | BFFMetadataItemCollection>;
   let presentationPool: Lookup<
     string,
-    | BFFPresentation
+    | BFFPresentationBase
     | BFFPresentationGroup
     | BFFPresentationSurroundingContainer
     | BFFGuiElement
@@ -154,7 +154,7 @@ describe('formDefinition', () => {
       someValidationTypeForMissingChildIdTypeData,
       someValidationTypeForRepeatingTitleInfoId,
     ]);
-    metadataPool = listToPool<BFFMetadata | BFFMetadataGroup>([
+    metadataPool = listToPool<BFFMetadataBase | BFFMetadataGroup>([
       someMetadataTextVariable,
       someMetadataTextVariable2,
       someMetadataTextVariable3,
@@ -194,7 +194,7 @@ describe('formDefinition', () => {
       someNewRecordLink,
     ]);
     presentationPool = listToPool<
-      | BFFPresentation
+      | BFFPresentationBase
       | BFFPresentationGroup
       | BFFPresentationSurroundingContainer
       | BFFGuiElement
@@ -277,11 +277,19 @@ describe('formDefinition', () => {
   const createPresentationVar = (
     id: string,
     presentationOf: string,
-    type: string,
+    type:
+      | 'pGroup'
+      | 'pVar'
+      | 'pNumVar'
+      | 'pCollVar'
+      | 'container'
+      | 'pRecordLink'
+      | 'pResourceLink'
+      | 'presentation',
     mode: 'input' | 'output' = 'output',
     inputFormat?: 'password',
-  ): BFFPresentation => {
-    const pVar = {
+  ): BFFPresentationBase => {
+    const pVar: BFFPresentationBase = {
       id,
       presentationOf,
       type,
@@ -289,11 +297,11 @@ describe('formDefinition', () => {
       inputFormat,
     };
     presentationPool.set(id, pVar);
-    return pVar as BFFPresentation;
+    return pVar as BFFPresentationBase;
   };
 
-  const createCollItem = (nameInData: string): BFFMetadata => {
-    const metadata: BFFMetadata = {
+  const createCollItem = (nameInData: string): BFFMetadataBase => {
+    const metadata: BFFMetadataBase = {
       id: `${nameInData}Item`,
       nameInData,
       type: 'collectionItem',
@@ -391,7 +399,7 @@ describe('formDefinition', () => {
     return metadata;
   };
 
-  const addToPool = (metadata: BFFMetadata | BFFMetadataGroup) => {
+  const addToPool = (metadata: BFFMetadataBase | BFFMetadataGroup) => {
     metadataPool.set(metadata.id, metadata);
   };
 
@@ -587,7 +595,7 @@ describe('formDefinition', () => {
         validationTypeId,
         FORM_MODE_NEW,
       );
-      expect(formDefinition.form.components).toHaveLength(19);
+      expect(formDefinition.form!.components).toHaveLength(19);
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
@@ -1269,7 +1277,7 @@ describe('formDefinition', () => {
         validationTypeId,
         FORM_MODE_EDIT,
       );
-      expect(formDefinition.form.components).toHaveLength(16);
+      expect(formDefinition.form!.components).toHaveLength(16);
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
@@ -1824,7 +1832,7 @@ describe('formDefinition', () => {
         validationTypeId,
         FORM_MODE_NEW,
       );
-      expect(formDefinition.form.components).toHaveLength(1);
+      expect(formDefinition.form!.components).toHaveLength(1);
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
@@ -1901,7 +1909,7 @@ describe('formDefinition', () => {
         validationTypeId,
         FORM_MODE_VIEW,
       );
-      expect(formDefinition.form.components).toHaveLength(1);
+      expect(formDefinition.form!.components).toHaveLength(1);
       expect(formDefinition).toStrictEqual({
         validationTypeId,
         form: {
@@ -2000,11 +2008,13 @@ describe('formDefinition', () => {
       createPresentationVar(
         'personFirstNameOutputPVar',
         'personFirstNameTextVar',
+        'pVar',
         'output',
       );
       createPresentationVar(
         'personLastNameOutputPVar',
         'personLastNameTextVar',
+        'pVar',
         'output',
       );
       createTextVar('personFirstNameTextVar', 'givenName', []);
@@ -2026,7 +2036,7 @@ describe('formDefinition', () => {
         metadataGroup as BFFMetadataGroup,
         presentationGroup as BFFPresentationGroup,
       );
-      expect(linkedRecordDefinition.form.components).toHaveLength(1);
+      expect(linkedRecordDefinition.form!.components).toHaveLength(1);
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
           childStyle: [''],
@@ -2050,6 +2060,10 @@ describe('formDefinition', () => {
                     title: 'someTextId',
                   },
                   type: 'textVariable',
+                  validation: {
+                    pattern: '.*',
+                    type: 'regex',
+                  },
                 },
                 {
                   childStyle: [''],
@@ -2082,6 +2096,10 @@ describe('formDefinition', () => {
                         title: 'someTextId',
                       },
                       type: 'textVariable',
+                      validation: {
+                        pattern: '.*',
+                        type: 'regex',
+                      },
                     },
                   ],
                   containerType: 'surrounding',
@@ -2200,6 +2218,7 @@ describe('formDefinition', () => {
       createPresentationVar(
         'nationalSubjectCategoryNameOutputPVar',
         'nationalSubjectCategoryNameTextVar',
+        'pVar',
         'output',
       );
       createPresentationGroup(
@@ -2232,6 +2251,7 @@ describe('formDefinition', () => {
       createPresentationVar(
         'subjectCodeOutputPVar',
         'subjectCodeTextVar',
+        'pVar',
         'output',
       );
 
@@ -2248,7 +2268,7 @@ describe('formDefinition', () => {
         presentationGroup as BFFPresentationGroup,
       );
 
-      expect(linkedRecordDefinition.form.components).toHaveLength(8);
+      expect(linkedRecordDefinition.form!.components).toHaveLength(8);
       expect(linkedRecordDefinition).toStrictEqual({
         form: {
           childStyle: [''],
@@ -2272,6 +2292,10 @@ describe('formDefinition', () => {
                     title: 'someTextId',
                   },
                   type: 'textVariable',
+                  validation: {
+                    pattern: '.*',
+                    type: 'regex',
+                  },
                 },
               ],
               gridColSpan: 12,
@@ -2321,6 +2345,10 @@ describe('formDefinition', () => {
                     title: 'someTextId',
                   },
                   type: 'textVariable',
+                  validation: {
+                    pattern: '.*',
+                    type: 'regex',
+                  },
                 },
               ],
               gridColSpan: 12,
@@ -2367,6 +2395,10 @@ describe('formDefinition', () => {
                 title: 'someTextId',
               },
               type: 'textVariable',
+              validation: {
+                pattern: '.*',
+                type: 'regex',
+              },
             },
             {
               gridColSpan: 12,
@@ -2470,7 +2502,7 @@ describe('formDefinition', () => {
         type: 'pGroup',
       },
     );
-    expect(passwordGroup.form.components).toHaveLength(2);
+    expect(passwordGroup.form!.components).toHaveLength(2);
     expect(passwordGroup).toStrictEqual({
       form: {
         childStyle: [''],

@@ -28,6 +28,7 @@ import {
   BFFLoginWebRedirect,
   BFFMetadata,
   BFFPresentation,
+  BFFPresentationBase,
   BFFPresentationGroup,
   BFFRecordType,
   BFFSearch,
@@ -83,7 +84,7 @@ const loadStuffOnServerStart = async () => {
   const guiElements = transformCoraPresentations(result[3].data);
 
   const presentationPool = listToPool<
-    BFFPresentation | BFFPresentationGroup | BFFGuiElement
+    BFFPresentationBase | BFFPresentationGroup | BFFGuiElement
   >([...presentation, ...guiElements]);
 
   const validationTypes = transformCoraValidationTypes(result[2].data);

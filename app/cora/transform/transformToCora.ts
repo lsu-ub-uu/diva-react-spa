@@ -25,95 +25,137 @@ import {
 } from '@/cora/cora-data/CoraData';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { FormMetaData } from '@/data/formDefinition/formDefinition';
-import {
-  containsChildWithNameInData,
-  getFirstDataGroupWithNameInData,
-} from '@/cora/cora-data/CoraDataUtils';
+import { containsChildWithNameInData } from '@/cora/cora-data/CoraDataUtils';
+import { isEmpty } from 'lodash-es';
 
 export const transformToCoraData = (
+  lookup: Record<string, FormMetaData>,
+  payload: any,
+): (DataGroup | DataAtomic)[] => {
+  const [result] = transformToCoraDataRecursively(lookup, payload);
+  return result;
+};
+
+const transformToCoraDataRecursively = (
   lookup: Record<string, FormMetaData>,
   payload: any,
   path?: string,
   repeatId?: string,
   hasSiblings?: boolean,
-): (DataGroup | DataAtomic | RecordLink)[] => {
+): [(DataGroup | DataAtomic)[], boolean] => {
+  let hasValuableData = false;
   const result: (DataGroup | DataAtomic)[] = [];
   Object.keys(payload).forEach((fieldKey) => {
     const value = payload[fieldKey];
     const currentPath = path ? `${path}.${fieldKey}` : fieldKey;
-    const checkIfHasSiblings = siblingWithSameNameInData(value) || hasSiblings;
+    const siblingsWithSameNameInData =
+      hasSiblingsWithSameNameInData(value) || hasSiblings;
 
     if (isNotAttribute(fieldKey)) {
-      const currentMetadataLookup = lookup[currentPath];
-      if (currentMetadataLookup === undefined) {
+      const fieldMetadata = lookup[currentPath];
+      if (fieldMetadata === undefined) {
         throw new Error(`Failed to find path ${currentPath} in lookup`);
       }
-      const shouldDataHaveRepeatId = currentMetadataLookup.repeat.repeatMax > 1;
+      const shouldDataHaveRepeatId = fieldMetadata.repeat.repeatMax > 1;
+
       if (isRepeatingVariable(value)) {
-        value.forEach((item: DataGroup | DataAtomic, index: number) => {
-          if (isVariable(item)) {
-            const atomic = item as DataAtomic;
-            const attributes = findChildrenAttributes(atomic);
-            result.push(
-              createLeaf(
-                currentMetadataLookup,
-                removeAttributeFromName(fieldKey, attributes),
-                atomic.value,
-                shouldDataHaveRepeatId ? index.toString() : undefined,
-                attributes,
-              ),
-            );
-          } else {
-            const group = item as DataGroup;
-            const attributes = findChildrenAttributes(group);
-            result.push(
-              removeEmpty({
-                name: removeAttributeFromName(fieldKey, attributes),
-                attributes,
-                repeatId: shouldDataHaveRepeatId ? index.toString() : undefined,
-                children: transformToCoraData(
+        const transformedItems = value
+          .map((item: DataGroup | DataAtomic, index: number) => {
+            if (isVariable(item)) {
+              const atomic = item as DataAtomic;
+              const attributes = findChildrenAttributes(atomic);
+
+              if (!isEmpty(atomic.value)) {
+                hasValuableData = !isFinalValue(fieldMetadata);
+                return createLeaf(
+                  fieldMetadata,
+                  removeAttributeFromName(fieldKey, attributes),
+                  atomic.value,
+                  shouldDataHaveRepeatId ? index.toString() : undefined,
+                  attributes,
+                );
+              }
+            } else {
+              const group = item as DataGroup;
+              const attributes = findChildrenAttributes(group);
+
+              const [childData, childrenHasValuableData] =
+                transformToCoraDataRecursively(
                   lookup,
                   group,
                   currentPath,
                   repeatId,
-                ),
-              } as DataGroup),
-            );
-          }
-        });
+                );
+
+              const canBeRemoved =
+                isOptional(fieldMetadata) && !childrenHasValuableData;
+
+              if (!canBeRemoved) {
+                return removeEmpty({
+                  name: removeAttributeFromName(fieldKey, attributes),
+                  attributes,
+                  repeatId: shouldDataHaveRepeatId
+                    ? index.toString()
+                    : undefined,
+                  children: childData,
+                } as DataGroup);
+              }
+            }
+          })
+          .filter((value) => value !== undefined);
+        result.push(...transformedItems);
+        // Remove items that do not hold valuable data
       } else if (isNonRepeatingVariable(value)) {
         const attributes = findChildrenAttributes(value);
-        result.push(
-          createLeaf(
-            currentMetadataLookup,
-            removeAttributeFromName(fieldKey, attributes),
-            value.value,
-            undefined,
-            attributes,
-          ),
-        );
+        if (!isEmpty(value.value)) {
+          hasValuableData = !isFinalValue(fieldMetadata);
+          result.push(
+            createLeaf(
+              fieldMetadata,
+              removeAttributeFromName(fieldKey, attributes),
+              value.value,
+              undefined,
+              attributes,
+            ),
+          );
+        }
       } else {
         const attributes = findChildrenAttributes(value);
-        result.push(
-          removeEmpty({
-            name: removeAttributeFromName(fieldKey, attributes),
-            attributes,
-            children: transformToCoraData(
-              lookup,
-              value,
-              currentPath,
-              repeatId,
-              checkIfHasSiblings,
-            ),
-          } as DataGroup),
-        );
+        const [childData, childrenHasValuableData] =
+          transformToCoraDataRecursively(
+            lookup,
+            value,
+            currentPath,
+            repeatId,
+            siblingsWithSameNameInData,
+          );
+
+        const canBeRemoved =
+          isOptional(fieldMetadata) && !childrenHasValuableData;
+        // TODO Remove group if repeat 1-X and at least one sibling has valuableData
+        if (!canBeRemoved) {
+          result.push(
+            removeEmpty({
+              name: removeAttributeFromName(fieldKey, attributes),
+              attributes,
+              children: childData,
+            }),
+          );
+        }
       }
     }
   });
-  return result;
+  return [result, hasValuableData];
 };
 
-export const siblingWithSameNameInData = (value: any) => {
+const isFinalValue = (currentMetadataLookup: FormMetaData) => {
+  return currentMetadataLookup.finalValue !== undefined;
+};
+const isOptional = (fieldMetadata: FormMetaData) => {
+  return fieldMetadata.repeat.repeatMin === 0;
+};
+
+export const hasSiblingsWithSameNameInData = (value: any) => {
   const stripedNames = Object.keys(value).map((names) => {
     return names.split('_')[0];
   });
@@ -214,102 +256,8 @@ export const removeAttributeFromName = (
   return name.split('_')[0];
 };
 
-export const injectRecordInfoIntoDataGroup = (
-  dataGroup: DataGroup,
-  validationTypeId: string,
-  dataDivider: string,
-  recordId?: string,
-  recordType?: string,
-  userId?: string,
-  lastUpdate?: string,
-  createdBy?: string,
-  tsCreated?: string,
-): DataGroup => {
-  if (!doesRecordInfoExist(dataGroup)) {
-    dataGroup.children = [
-      generateRecordInfo(
-        validationTypeId,
-        dataDivider,
-        recordId,
-        recordType,
-        userId,
-        lastUpdate,
-        createdBy,
-        tsCreated,
-      ),
-      ...dataGroup.children,
-    ];
-  } else {
-    const recordInfo = getFirstDataGroupWithNameInData(dataGroup, 'recordInfo');
-    const children = generateRecordInfoChildren(
-      recordId,
-      dataDivider,
-      validationTypeId,
-      recordType,
-      userId,
-      lastUpdate,
-      tsCreated,
-      createdBy,
-    );
-
-    recordInfo.children.push(
-      ...(removeEmpty(children) as (DataGroup | DataAtomic | RecordLink)[]),
-    );
-  }
-  return dataGroup;
-};
-
 export const doesRecordInfoExist = (dataGroup: DataGroup) => {
   return containsChildWithNameInData(dataGroup, 'recordInfo');
-};
-
-export const generateRecordInfo = (
-  validationType: string,
-  dataDivider: string,
-  recordId?: string,
-  recordType?: string,
-  userId?: string,
-  lastUpdate?: string,
-  createdBy?: string,
-  tsCreated?: string,
-): DataGroup => {
-  const name = 'recordInfo';
-  const children = generateRecordInfoChildren(
-    recordId,
-    dataDivider,
-    validationType,
-    recordType,
-    userId,
-    lastUpdate,
-    tsCreated,
-    createdBy,
-  );
-  return removeEmpty({ name, children }) as DataGroup;
-};
-
-const generateRecordInfoChildren = (
-  recordId: string | undefined,
-  dataDivider: string,
-  validationType: string,
-  recordType: string | undefined,
-  userId: string | undefined,
-  lastUpdate: string | undefined,
-  tsCreated: string | undefined,
-  createdBy: string | undefined,
-) => {
-  return [
-    recordId ? generateAtomicValue('id', recordId) : undefined,
-    generateRecordLink('dataDivider', 'system', dataDivider),
-    generateRecordLink('validationType', 'validationType', validationType),
-    recordType
-      ? generateRecordLink('type', 'recordType', recordType)
-      : undefined,
-    userId && lastUpdate
-      ? generateLastUpdateInfo(userId, lastUpdate)
-      : undefined,
-    tsCreated ? generateAtomicValue('tsCreated', tsCreated) : undefined,
-    createdBy ? generateRecordLink('createdBy', 'user', createdBy) : undefined,
-  ];
 };
 
 export const generateLastUpdateInfo = (userId: string, updatedAt: string) => {

@@ -29,12 +29,12 @@ import {
 } from '@/cora/cora-data/CoraDataTransforms';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers';
 import {
-  BFFPresentationSurroundingContainer,
-  BFFPresentation,
-  BFFPresentationGroup,
   BFFGuiElement,
   BFFLinkedRecordPresentation,
+  BFFPresentationBase,
+  BFFPresentationGroup,
   BFFPresentationRecordLink,
+  BFFPresentationSurroundingContainer,
 } from './bffTypes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { getChildReferencesListFromGroup } from './transformMetadata';
@@ -48,7 +48,7 @@ import {
 
 export const transformCoraPresentations = (
   dataListWrapper: DataListWrapper,
-): (BFFPresentation | BFFPresentationGroup)[] => {
+): (BFFPresentationBase | BFFPresentationGroup)[] => {
   if (dataListWrapper.dataList.data.length === 0) {
     return [];
   }
@@ -58,7 +58,7 @@ export const transformCoraPresentations = (
     transformCoraPresentationToBFFPresentation,
   );
   return presentations.filter((item) => item !== undefined) as (
-    | BFFPresentation
+    | BFFPresentationBase
     | BFFPresentationGroup
   )[];
 };
@@ -66,7 +66,7 @@ export const transformCoraPresentations = (
 const transformCoraPresentationToBFFPresentation = (
   coraRecordWrapper: RecordWrapper,
 ):
-  | BFFPresentation
+  | BFFPresentationBase
   | BFFPresentationGroup
   | BFFPresentationSurroundingContainer
   | BFFGuiElement
@@ -117,7 +117,7 @@ const transformCoraPresentationToBFFPresentation = (
 // Handle pNumVar
 const transformBasicCoraPresentationVariableToBFFPresentation = (
   coraRecordWrapper: RecordWrapper,
-): BFFPresentation => {
+): BFFPresentationBase => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
@@ -178,13 +178,13 @@ const transformBasicCoraPresentationVariableToBFFPresentation = (
     showLabel,
     inputFormat,
     attributesToShow,
-  } as BFFPresentation);
+  } as BFFPresentationBase);
 };
 
 // Handle pRecordLink
 const transformCoraPresentationPLinkToBFFPresentation = (
   coraRecordWrapper: RecordWrapper,
-): BFFPresentation => {
+): BFFPresentationBase => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const basic =
     transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
@@ -235,7 +235,7 @@ const transformCoraPresentationPLinkToBFFPresentation = (
 // Handle pVar
 const transformCoraPresentationPVarToBFFPresentation = (
   coraRecordWrapper: RecordWrapper,
-): BFFPresentation => {
+): BFFPresentationBase => {
   const dataRecordGroup = coraRecordWrapper.record.data;
   const basic =
     transformBasicCoraPresentationVariableToBFFPresentation(coraRecordWrapper);
@@ -244,7 +244,7 @@ const transformCoraPresentationPVarToBFFPresentation = (
     'inputType',
   );
 
-  return removeEmpty({ ...basic, inputType } as BFFPresentation);
+  return removeEmpty({ ...basic, inputType } as BFFPresentationBase);
 };
 
 const transformCoraPresentationGroupToBFFPresentationGroup = (
@@ -410,14 +410,17 @@ const transformCoraPresentationGuiElementLinkToBFFGuiElement = (
   const dataRecordGroup = coraRecordWrapper.record.data;
   const id = extractIdFromRecordInfo(dataRecordGroup);
   const type = extractAttributeValueByName(dataRecordGroup, 'type');
-  const url = extractAtomicValueByName(dataRecordGroup, 'url');
-  const presentAs = extractAtomicValueByName(dataRecordGroup, 'presentAs');
+  const url = getFirstDataAtomicValueWithNameInData(dataRecordGroup, 'url');
+  const presentAs = getFirstDataAtomicValueWithNameInData(
+    dataRecordGroup,
+    'presentAs',
+  ) as BFFGuiElement['presentAs'];
   const elementText = extractLinkedRecordIdFromNamedRecordLink(
     dataRecordGroup,
     'elementText',
   );
 
-  return removeEmpty({ id, type, url, presentAs, elementText });
+  return { id, type, url, presentAs, elementText };
 };
 
 const extractAtomicValueByName = (
