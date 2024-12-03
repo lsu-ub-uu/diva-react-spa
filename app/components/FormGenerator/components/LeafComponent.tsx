@@ -74,7 +74,10 @@ export const LeafComponent = ({
         );
       }
 
-      if (component.linkedRecordPresentation !== undefined) {
+      if (
+        'linkedRecordPresentation' in component &&
+        component.linkedRecordPresentation !== undefined
+      ) {
         return (
           <RecordLinkWithLinkedPresentation
             reactKey={reactKey}
@@ -129,5 +132,5 @@ export const LeafComponent = ({
 };
 
 const checkIfComponentContainsSearchId = (component: FormComponent) => {
-  return component.search !== undefined;
+  return 'search' in component ? component.search !== undefined : undefined;
 };

@@ -16,15 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import React, { Suspense, useState } from 'react';
-import { Tabs, Tab, Box, styled, Skeleton } from '@mui/material';
-import {
-  CreatePublicationCard,
-  ListPublicationsCard,
-  SearchPublicationCard,
-} from '@/partials';
-import { Await, useLoaderData } from 'react-router';
-import { loader } from '@/routes/_index';
+import React, { useState } from 'react';
+import { Box, styled, Tab, Tabs } from '@mui/material';
+import { CreatePublicationCard, ListPublicationsCard, SearchPublicationCard } from '@/partials';
 
 interface TabsMenuProps {
   children: React.ReactNode;

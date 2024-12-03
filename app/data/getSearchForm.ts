@@ -42,7 +42,7 @@ export const getSearchForm = (dependencies: Dependencies, searchId: string) => {
   return {
     form,
     recordTypeToSearchIn: searchFromPool.recordTypeToSearchIn,
-  } as SearchFormSchema;
+  } as unknown as SearchFormSchema;
 };
 
 export interface Search {

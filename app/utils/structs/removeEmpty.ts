@@ -17,48 +17,22 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const removeEmpty = (data: any): any => {
+export const removeEmpty = <T>(data: T): T => {
   if (Array.isArray(data)) {
     return data
       .filter((value) => value != null)
-      .map((value) => (typeof value === 'object' ? removeEmpty(value) : value));
+      .map((value) =>
+        typeof value === 'object' ? removeEmpty(value) : value,
+      ) as T;
   }
   if (typeof data === 'object' && data !== null) {
     const entries = Object.entries(data).filter(([, value]) => value != null);
     const clean = entries.map(([key, value]) => {
-      const cleanedValue = typeof value === 'object' ? removeEmpty(value) : value;
+      const cleanedValue =
+        typeof value === 'object' ? removeEmpty(value) : value;
       return [key, cleanedValue];
     });
     return Object.fromEntries(clean);
   }
-  return data;
-};
-
-export const cleanJson = (data: any): any => {
-  if (Array.isArray(data)) {
-    return data
-      .filter((value) => value != null)
-      .map((value) => (typeof value === 'object' ? cleanJson(value) : value))
-      .filter((value) => {
-        if (typeof value === 'object') {
-          return Object.keys(value).length > 0; // Filter out empty objects
-        }
-        return true;
-      });
-  }
-  if (typeof data === 'object' && data !== null) {
-    const entries = Object.entries(data).filter(([, value]) => value != null);
-    const clean = entries.map(([key, value]) => {
-      const cleanedValue = typeof value === 'object' ? cleanJson(value) : value;
-      return [key, cleanedValue];
-    });
-    const filteredClean = clean.filter(([, value]) => {
-      if (typeof value === 'object') {
-        return Object.keys(value).length > 0; // Filter out empty objects
-      }
-      return true;
-    });
-    return Object.fromEntries(filteredClean);
-  }
-  return data;
+  return data as T;
 };

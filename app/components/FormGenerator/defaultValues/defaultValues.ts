@@ -17,7 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FormAttributeCollection, FormComponent, FormSchema } from '../types';
+import {
+  FormAttributeCollection,
+  FormComponent,
+  FormComponentGroup,
+  FormComponentWithData,
+  FormSchema,
+} from '../types';
 import {
   isComponentContainer,
   isComponentRepeating,
@@ -38,9 +44,11 @@ export const removeRootObject = (obj: Record<string, any>) => {
 };
 
 export const createDefaultValueFromFinalValue = (
-  component: FormComponent | FormAttributeCollection,
+  component: FormComponentWithData | FormAttributeCollection,
 ) => (component.finalValue ? component.finalValue : '');
-export const generateComponentAttributes = (component: FormComponent) => {
+export const generateComponentAttributes = (
+  component: FormComponentWithData,
+) => {
   const attributeValues =
     component.attributes?.map(
       (attributeCollection: FormAttributeCollection) => ({
@@ -162,7 +170,7 @@ export const createDefaultValuesFromComponent = (
   return defaultValues;
 };
 
-export const getChildNameInDataArray = (component: FormComponent) => {
+export const getChildNameInDataArray = (component: FormComponentGroup) => {
   const nameArray: any[] = [];
   (component.components ?? []).forEach((childComponent) => {
     nameArray.push(childComponent.name);
@@ -186,7 +194,7 @@ function createDefaultValuesForVariable(component: FormComponent) {
 }
 
 function createDefaultValuesForGroup(
-  component: FormComponent,
+  component: FormComponentGroup,
   childrenWithSameNameInData: string[],
 ) {
   return {
@@ -285,7 +293,10 @@ export const mergeArrays = (target: any[], overlay: any[]): any[] => {
   return result;
 };
 
-export const addAttributesToName = (component: FormComponent, name: string) => {
+export const addAttributesToName = (
+  component: FormComponentWithData,
+  name: string,
+) => {
   const nameArray: any[] = [];
   if (component.attributes === undefined) {
     return component.name;

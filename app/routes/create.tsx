@@ -25,12 +25,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord';
-import { cleanFormData } from '@/utils/cleanFormData';
 import { BFFDataRecord } from '@/types/record';
-import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
+import {  getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
-import { redirectAndCommitSession } from '@/utils/redirectAndCommitSession';
+import {
+  getResponseInitWithSession,
+  redirectAndCommitSession,
+} from '@/utils/redirectAndCommitSession';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { invariant } from '@/utils/invariant';
 
@@ -65,7 +67,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
     const { recordType, id } = await createRecord(
       context.dependencies,
       formDefinition,
-      cleanFormData(data) as BFFDataRecord,
+      data as unknown as BFFDataRecord,
       auth,
     );
     session.flash('success', `Record was successfully created ${id}`);
@@ -73,7 +75,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   } catch (error) {
     console.error(error);
     session.flash('error', 'Failed to create record');
-    return redirectAndCommitSession(url.pathname + url.search, session);
+    return data(null, await getResponseInitWithSession(session));
   }
 };
 
@@ -95,11 +97,7 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
   );
   return data(
     { record, formDefinition, errorMessage },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
+    await getResponseInitWithSession(session),
   );
 };
 

@@ -27,7 +27,12 @@ import {
 import {
   FormAttributeCollection,
   FormComponent,
+  FormComponentContainer,
+  FormComponentGroup,
+  FormComponentNumVar,
   FormComponentRepeat,
+  FormComponentVar,
+  FormComponentWithData,
   FormNumberValidation,
   FormRegexValidation,
   FormSchema,
@@ -100,7 +105,7 @@ export const createYupValidationsFromComponent = (
 };
 
 function removeSurroundingContainer(
-  component: FormComponent,
+  component: FormComponentContainer,
   validationRule: { [p: string]: any },
 ) {
   const validationsRules = (component.components ?? [])
@@ -111,7 +116,7 @@ function removeSurroundingContainer(
 }
 
 function createSchemaForRepeatingGroup(
-  component: FormComponent,
+  component: FormComponentGroup,
   parentGroupOptional: boolean,
 ) {
   const childrenWithSameNameInData = getChildrenWithSameNameInData(
@@ -153,7 +158,7 @@ function createSchemaForRepeatingVariable(
 }
 
 function createSchemaForNonRepeatingGroup(
-  component: FormComponent,
+  component: FormComponentGroup,
   parentGroupOptional: boolean,
   parentGroupRepeating: boolean,
 ) {
@@ -217,7 +222,7 @@ export const generateYupSchema = (
 };
 
 export const createValidationForAttributesFromComponent = (
-  component: FormComponent,
+  component: FormComponentWithData,
   siblingRepeat?: boolean,
   siblingRequired?: boolean,
   parentGroupRequired?: boolean,
@@ -291,7 +296,7 @@ export const createValidationFromComponentType = (
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 const createYupStringRegexpSchema = (
-  component: FormComponent,
+  component: FormComponentVar,
   isParentGroupOptional: boolean = false,
   isSiblingRequired: boolean = false,
 ) => {
@@ -360,7 +365,7 @@ const createYupStringRegexpSchema = (
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 export const createYupNumberSchema = (
-  component: FormComponent,
+  component: FormComponentNumVar,
   isParentGroupOptional: boolean = false,
   isSiblingRequired: boolean = false,
 ) => {

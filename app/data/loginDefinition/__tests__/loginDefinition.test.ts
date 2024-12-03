@@ -25,7 +25,7 @@ import {
   BFFLoginWebRedirect,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
-  BFFPresentation,
+  BFFPresentationBase,
   BFFPresentationGroup,
   BFFRecordType,
   BFFSearch,
@@ -108,44 +108,44 @@ describe('loginDefinition', () => {
         },
       ],
     );
-    const presentationPool = listToPool<BFFPresentationGroup | BFFPresentation>(
-      [
-        {
-          id: 'viewDefinitionPasswordPGroup',
-          presentationOf: 'viewDefinitionPasswordGroup',
-          mode: 'input',
-          children: [
-            {
-              childId: 'loginIdPVar',
-              type: 'presentation',
-              minNumberOfRepeatingToShow: '1',
-              childStyle: [],
-            },
-            {
-              childId: 'loginPasswordPVar',
-              type: 'presentation',
-              minNumberOfRepeatingToShow: '1',
-              childStyle: [],
-            },
-          ],
-          type: 'pGroup',
-        },
-        {
-          id: 'loginIdPVar',
-          presentationOf: 'loginIdTextVar',
-          mode: 'input',
-          type: 'pVar',
-          inputType: 'input',
-        },
-        {
-          id: 'loginPasswordPVar',
-          presentationOf: 'loginPasswordTextVar',
-          mode: 'input',
-          type: 'pVar',
-          inputType: 'input',
-        },
-      ],
-    );
+    const presentationPool = listToPool<
+      BFFPresentationGroup | BFFPresentationBase
+    >([
+      {
+        id: 'viewDefinitionPasswordPGroup',
+        presentationOf: 'viewDefinitionPasswordGroup',
+        mode: 'input',
+        children: [
+          {
+            childId: 'loginIdPVar',
+            type: 'presentation',
+            minNumberOfRepeatingToShow: '1',
+            childStyle: [],
+          },
+          {
+            childId: 'loginPasswordPVar',
+            type: 'presentation',
+            minNumberOfRepeatingToShow: '1',
+            childStyle: [],
+          },
+        ],
+        type: 'pGroup',
+      },
+      {
+        id: 'loginIdPVar',
+        presentationOf: 'loginIdTextVar',
+        mode: 'input',
+        type: 'pVar',
+        inputType: 'input',
+      },
+      {
+        id: 'loginPasswordPVar',
+        presentationOf: 'loginPasswordTextVar',
+        mode: 'input',
+        type: 'pVar',
+        inputType: 'input',
+      },
+    ]);
 
     dependencies = {
       textPool: listToPool<BFFText>([]),

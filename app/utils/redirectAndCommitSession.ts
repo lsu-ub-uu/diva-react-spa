@@ -23,9 +23,15 @@ export const redirectAndCommitSession = async (
   url: string,
   session: Session,
 ) => {
-  return redirect(url, {
+  return redirect(url, await getResponseInitWithSession(session));
+};
+
+export const getResponseInitWithSession = async (
+  session: Session,
+): Promise<ResponseInit> => {
+  return {
     headers: {
       'Set-Cookie': await commitSession(session),
     },
-  });
+  };
 };

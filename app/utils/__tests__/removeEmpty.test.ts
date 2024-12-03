@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { cleanFormData } from '../cleanFormData';
+import { cleanFormData } from '@/utils/cleanFormData';
 
 describe('removeEmpty', () => {
   it('clear objects', () => {

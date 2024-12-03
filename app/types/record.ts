@@ -24,9 +24,7 @@ export interface BFFDataRecord {
   createdAt?: string;
   createdBy?: string;
   updated?: BFFUpdate[];
-  userRights?: Array<
-    'read' | 'read_incoming_links' | 'update' | 'index' | 'delete'
-  >;
+  userRights?: BFFUserRight[];
   data: {
     [key: string]: Metadata;
   };
@@ -34,8 +32,14 @@ export interface BFFDataRecord {
   listPresentation?: unknown;
   autoCompletePresentation?: unknown;
 }
+export type BFFUserRight =
+  | 'read'
+  | 'read_incoming_links'
+  | 'update'
+  | 'index'
+  | 'delete';
 
-interface BFFUpdate {
+export interface BFFUpdate {
   updateAt: string;
   updatedBy: string;
 }

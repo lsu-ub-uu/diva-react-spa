@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledAutocomplete } from '@/components';
@@ -25,7 +25,7 @@ import { useRemixFormContext } from 'remix-hook-form';
 interface RecordLinkWithSearchProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
-  component: FormComponent;
+  component: FormComponentRecordLink;
   name: string;
 }
 

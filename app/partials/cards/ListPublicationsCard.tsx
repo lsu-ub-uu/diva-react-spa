@@ -20,7 +20,7 @@
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
+import { Alert, IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -117,7 +117,14 @@ export const ListPublicationsCard = () => {
 
   return (
     <Suspense fallback={<Skeleton height={500} />}>
-      <Await resolve={recordList}>
+      <Await
+        resolve={recordList}
+        errorElement={
+          <Alert severity={'error'}>
+            Just nu kan vi inte visa publikationer
+          </Alert>
+        }
+      >
         {(recordList) => (
           <Card
             title={t('divaClient_listPublicationsText') as string}

@@ -41,9 +41,6 @@ export default function CreateRecordPage({
 
   return (
     <>
-      {/* <Helmet>
-        <title></title>
-      </Helmet>*/}
       <AsidePortal>
         <NavigationPanel
           links={

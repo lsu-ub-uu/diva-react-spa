@@ -19,14 +19,12 @@
 import { BFFDataRecord } from '@/types/record';
 
 import { RecordFormSchema } from '@/components/FormGenerator/types';
-import { getRecordInfo, getValueFromRecordInfo } from '@/utils/getRecordInfo';
 import { Auth } from '@/types/Auth';
 import { createFormMetaData } from '@/data/formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/cora/transform/transformToCora';
-import { cleanJson } from '@/utils/structs/removeEmpty';
 import { transformRecord } from '@/cora/transform/transformRecord';
-import { RecordWrapper, DataGroup } from '@/cora/cora-data/CoraData';
+import { DataGroup, RecordWrapper } from '@/cora/cora-data/CoraData';
 import { postRecordData } from '@/cora/postRecordData';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 
@@ -54,8 +52,8 @@ export const createRecord = async (
     FORM_MODE_NEW,
   );
   const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
-  const payload = cleanJson(record);
-  const transformData = transformToCoraData(formMetaDataPathLookup, payload);
+
+  const transformData = transformToCoraData(formMetaDataPathLookup, record);
 
   const response = await postRecordData<RecordWrapper>(
     transformData[0] as DataGroup,
@@ -63,10 +61,5 @@ export const createRecord = async (
     auth.data.token,
   );
 
-  const createdRecord = transformRecord(dependencies, response.data);
-
-  const recordInfo = getRecordInfo(createdRecord);
-  const id = getValueFromRecordInfo(recordInfo, 'id')[0].value;
-
-  return { id, recordType, data: createdRecord };
+  return transformRecord(dependencies, response.data);
 };
