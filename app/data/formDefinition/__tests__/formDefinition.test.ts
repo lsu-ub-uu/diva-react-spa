@@ -2060,6 +2060,10 @@ describe('formDefinition', () => {
                     title: 'someTextId',
                   },
                   type: 'textVariable',
+                  validation: {
+                    pattern: '.*',
+                    type: 'regex',
+                  },
                 },
                 {
                   childStyle: [''],
@@ -2092,6 +2096,10 @@ describe('formDefinition', () => {
                         title: 'someTextId',
                       },
                       type: 'textVariable',
+                      validation: {
+                        pattern: '.*',
+                        type: 'regex',
+                      },
                     },
                   ],
                   containerType: 'surrounding',
@@ -2284,6 +2292,10 @@ describe('formDefinition', () => {
                     title: 'someTextId',
                   },
                   type: 'textVariable',
+                  validation: {
+                    pattern: '.*',
+                    type: 'regex',
+                  },
                 },
               ],
               gridColSpan: 12,
@@ -2333,6 +2345,10 @@ describe('formDefinition', () => {
                     title: 'someTextId',
                   },
                   type: 'textVariable',
+                  validation: {
+                    pattern: '.*',
+                    type: 'regex',
+                  },
                 },
               ],
               gridColSpan: 12,
@@ -2379,6 +2395,10 @@ describe('formDefinition', () => {
                 title: 'someTextId',
               },
               type: 'textVariable',
+              validation: {
+                pattern: '.*',
+                type: 'regex',
+              },
             },
             {
               gridColSpan: 12,
