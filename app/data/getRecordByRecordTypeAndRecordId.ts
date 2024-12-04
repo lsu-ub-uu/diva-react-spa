@@ -24,13 +24,21 @@ import { getRecordDataById } from '@/cora/getRecordDataById';
 import * as TYPES from '@/cora/transform/bffTypes';
 import { BFFPresentationGroup } from '@/cora/transform/bffTypes';
 
-export const getRecordByRecordTypeAndRecordId = async (
-  dependencies: Dependencies,
-  recordType: string,
-  recordId: string,
-  authToken: string,
-  presentationRecordLinkId?: string,
-) => {
+interface GetRecordByRecordTypeAndRecordIdArgs {
+  dependencies: Dependencies;
+  recordType: string;
+  recordId: string;
+  authToken: string;
+  presentationRecordLinkId?: string;
+}
+
+export const getRecordByRecordTypeAndRecordId = async ({
+  dependencies,
+  recordType,
+  recordId,
+  authToken,
+  presentationRecordLinkId,
+}: GetRecordByRecordTypeAndRecordIdArgs) => {
   const response = await getRecordDataById<RecordWrapper>(
     recordType,
     recordId,
@@ -50,6 +58,7 @@ export const getRecordByRecordTypeAndRecordId = async (
     const listPresentationGroup = dependencies.presentationPool.get(
       dependencies.recordTypePool.get(recordType).listPresentationViewId,
     ) as BFFPresentationGroup;
+
     record.listPresentation = createLinkedRecordDefinition(
       dependencies,
       metadataGroup,

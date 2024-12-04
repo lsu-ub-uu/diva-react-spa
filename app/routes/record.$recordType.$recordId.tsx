@@ -16,18 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ViewRecordPage } from '@/pages';
-import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { getSessionFromCookie, requireAuthentication } from '@/sessions';
+import { LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
-import { useLoaderData } from '@remix-run/react';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
-import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
-
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+import { getSessionFromCookie, requireAuthentication } from '@/sessions';
 
 export const loader = async ({
   request,
@@ -40,34 +32,21 @@ export const loader = async ({
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
+
+  const url = new URL(request.url);
+
+  const presentationRecordLinkId = url.searchParams.get(
+    'presentationRecordLinkId',
+  );
+  invariant(presentationRecordLinkId, 'Missing presentationRecordLinkId param');
+
   const record = await getRecordByRecordTypeAndRecordId({
     dependencies: context.dependencies,
     recordType,
     recordId,
     authToken: auth.data.token,
+    presentationRecordLinkId,
   });
-  const title = `${getCorrectTitle(record)} | DiVA`;
 
-  invariant(record.validationType, 'Record has no validation type');
-  const formDefinition = await getFormDefinitionByValidationTypeId(
-    context.dependencies,
-    record.validationType,
-    'view',
-  );
-
-  return json({ record, formDefinition, title });
+  return Response.json(record);
 };
-
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return [{ title: data?.title }];
-};
-
-export default function ViewRecordRoute() {
-  const { record, formDefinition } = useLoaderData<typeof loader>();
-  return (
-    <ViewRecordPage
-      record={record}
-      formDefinition={formDefinition}
-    />
-  );
-}

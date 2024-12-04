@@ -107,12 +107,12 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
 
-  const record = await getRecordByRecordTypeAndRecordId(
-    context.dependencies,
+  const record = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
     recordType,
     recordId,
-    auth.data.token,
-  );
+    authToken: auth.data.token,
+  });
 
   const title = `${t('divaClient_UpdatingPageTitleText')} ${getCorrectTitle(record)} | DiVA`;
 

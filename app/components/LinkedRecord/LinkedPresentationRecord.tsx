@@ -44,7 +44,7 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `/record/${props.recordType}/${props.id}?presentationRecordLinkId=${props.presentationRecordLinkId}`,
+          `${import.meta.env.BASE_URL}record/${props.recordType}/${props.id}?presentationRecordLinkId=${props.presentationRecordLinkId}`,
         );
         if (isMounted) {
           setError(null);
