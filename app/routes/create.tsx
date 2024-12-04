@@ -16,8 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { type ActionFunctionArgs, data } from 'react-router';
-import { useLoaderData } from 'react-router';
+import { data } from 'react-router';
 import CreateRecordPage from '@/pages/CreateRecordPage';
 import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
@@ -26,7 +25,7 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/data/createRecord';
 import { BFFDataRecord } from '@/types/record';
-import {  getSessionFromCookie, requireAuthentication } from '@/sessions';
+import { getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import {
@@ -35,10 +34,11 @@ import {
 } from '@/utils/redirectAndCommitSession';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { invariant } from '@/utils/invariant';
+import { Route } from '../../.react-router/types/app/routes/+types/create';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 
-export const action = async ({ context, request }: ActionFunctionArgs) => {
+export const action = async ({ context, request }: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
 
@@ -79,7 +79,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   }
 };
 
-export const loader = async ({ request, context }: ActionFunctionArgs) => {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
   const errorMessage = session.get('error');
 
@@ -101,9 +101,10 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
   );
 };
 
-export default function CreateRecordRoute() {
-  const { record, formDefinition, errorMessage } =
-    useLoaderData<typeof loader>();
+export default function CreateRecordRoute({
+  loaderData,
+}: Route.ComponentProps) {
+  const { record, formDefinition, errorMessage } = loaderData;
 
   useEffect(() => {
     if (errorMessage) {

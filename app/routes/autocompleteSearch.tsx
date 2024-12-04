@@ -16,14 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { LoaderFunctionArgs } from 'react-router';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
 import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
 import { searchRecords } from '@/data/searchRecords';
 import { invariant } from '@/utils/invariant';
+import { Route } from '../../.react-router/types/app/routes/+types/autocompleteSearch';
 
-export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const url = new URL(request.url);
 
   const searchType = url.searchParams.get('searchType');

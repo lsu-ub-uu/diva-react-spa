@@ -23,15 +23,9 @@ import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/sessions';
-import {
-  ActionFunctionArgs,
-  data,
-  LoaderFunctionArgs,
-  MetaFunction,
-} from 'react-router';
+import { data, useNavigation } from 'react-router';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
-import { useLoaderData, useNavigation } from 'react-router';
 import { enqueueSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
@@ -44,6 +38,7 @@ import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/de
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 import { invariant } from '@/utils/invariant';
+import { Route } from '../../.react-router/types/app/routes/+types/update.$recordType.$recordId';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 
@@ -51,7 +46,7 @@ export const action = async ({
   request,
   params,
   context,
-}: ActionFunctionArgs) => {
+}: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
   const { recordType, recordId } = params;
@@ -95,7 +90,7 @@ export const action = async ({
   return data(null, await getResponseInitWithSession(session));
 };
 
-export async function loader({ request, params, context }: LoaderFunctionArgs) {
+export async function loader({ request, params, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
   const { t } = context.i18n;
@@ -139,13 +134,14 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   );
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export default function UpdateRecordRoute() {
-  const { record, formDefinition, successMessage } =
-    useLoaderData<typeof loader>();
+export default function UpdateRecordRoute({
+  loaderData,
+}: Route.ComponentProps) {
+  const { record, formDefinition, successMessage } = loaderData;
 
   const navigation = useNavigation();
 

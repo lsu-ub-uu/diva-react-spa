@@ -20,13 +20,13 @@ import { getSearchForm } from '@/data/getSearchForm';
 import { getValidationTypes } from '@/data/getValidationTypes';
 import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { searchRecords } from '@/data/searchRecords';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { Route } from '../../.react-router/types/app/routes/+types/_index';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
   const { t } = context.i18n;
@@ -63,7 +63,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return { validationTypes, searchForm, recordList, title };
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 

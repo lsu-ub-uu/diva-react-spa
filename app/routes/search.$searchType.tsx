@@ -25,6 +25,7 @@ import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchPa
 import {  LoaderFunctionArgs } from 'react-router';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { invariant } from '@/utils/invariant';
+import { Route } from '../../.react-router/types/app/routes/+types/search.$searchType';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 
@@ -32,7 +33,7 @@ export const loader = async ({
   request,
   params,
   context,
-}: LoaderFunctionArgs) => {
+}: Route.LoaderArgs) => {
   const { searchType } = params;
   invariant(searchType, 'Missing searchType param');
   const session = await getSessionFromCookie(request);

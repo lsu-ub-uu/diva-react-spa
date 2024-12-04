@@ -17,14 +17,13 @@
  */
 
 import { ViewRecordPage } from '@/pages';
-import {  LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
-import { useLoaderData } from 'react-router';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 import { invariant } from '@/utils/invariant';
+import { Route } from '../../.react-router/types/app/routes/+types/view.$recordType.$recordId';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 
@@ -32,7 +31,7 @@ export const loader = async ({
   request,
   params,
   context,
-}: LoaderFunctionArgs) => {
+}: Route.LoaderArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
 
@@ -57,12 +56,12 @@ export const loader = async ({
   return { record, formDefinition, title };
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export default function ViewRecordRoute() {
-  const { record, formDefinition } = useLoaderData<typeof loader>();
+export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
+  const { record, formDefinition } = loaderData;
   return (
     <ViewRecordPage
       record={record}

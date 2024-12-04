@@ -1,5 +1,4 @@
-import { ActionFunction, data, LoaderFunctionArgs, redirect } from 'react-router'; // or cloudflare/deno // or cloudflare/deno
-import { Form, useLoaderData, useSubmit } from 'react-router';
+import { data, Form, redirect, useSubmit } from 'react-router'; // or cloudflare/deno // or cloudflare/deno
 import { commitSession, getSession } from '@/sessions';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormGenerator } from '@/components';
@@ -13,6 +12,7 @@ import { loginWithAppToken } from '@/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
 import { Auth } from '@/types/Auth';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { Route } from '../../.react-router/types/app/routes/+types/login';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {
@@ -28,7 +28,7 @@ const parsePresentation = (searchParam: string | null) => {
 
 export const ErrorBoundary = DefaultErrorBoundary;
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const presentation = parsePresentation(url.searchParams.get('presentation'));
@@ -69,7 +69,7 @@ const authenticate = async (form: FormData) => {
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
   const form = await request.formData();
   const returnToEncoded = form.get('returnTo');
@@ -104,8 +104,8 @@ export const action: ActionFunction = async ({ request }) => {
   });
 };
 
-export default function Login() {
-  const { error, presentation, returnTo } = useLoaderData<typeof loader>();
+export default function Login({ loaderData }: Route.ComponentProps) {
+  const { error, presentation, returnTo } = loaderData;
   const submit = useSubmit();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();

@@ -16,8 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteLoaderData } from 'react-router';
-import { ActionFunctionArgs, data, LinksFunction, LoaderFunctionArgs } from 'react-router';
+import { data, Links, LinksFunction, Meta, Outlet, Scripts, ScrollRestoration, useRouteLoaderData } from 'react-router';
 import { ReactNode } from 'react';
 import { PageLayout, SnackbarProvider } from '@/components';
 import { CssBaseline } from '@mui/material';
@@ -28,6 +27,7 @@ import favicon from '@/images/favicon.svg';
 import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
+import { Route } from '../.react-router/types/app/+types/root';
 
 const { MODE } = import.meta.env;
 
@@ -43,7 +43,7 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
 
@@ -52,7 +52,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return { auth, locale, loginUnits };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const language = formData.get('language');
   if (typeof language === 'string') {

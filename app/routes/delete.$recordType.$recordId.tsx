@@ -16,16 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ActionFunctionArgs, data } from 'react-router';
+import { data } from 'react-router';
 import { deleteRecord } from '@/data/deleteRecord';
 import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { invariant } from '@/utils/invariant';
+import { Route } from '../../.react-router/types/app/routes/+types/delete.$recordType.$recordId';
 
 export const action = async ({
   request,
   params,
   context,
-}: ActionFunctionArgs) => {
+}: Route.ActionArgs) => {
   const { recordType, recordId } = params;
 
   invariant(recordType, 'Missing recordType param');
