@@ -470,7 +470,6 @@ describe('<Form />', () => {
         />,
       );
 
-      screen.logTestingPlaygroundURL();
       const thesisElement = screen.getByDisplayValue(
         'artistic-work_artistic-thesis',
       );
