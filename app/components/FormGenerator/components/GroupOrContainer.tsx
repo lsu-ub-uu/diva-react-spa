@@ -35,6 +35,7 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { BFFDataRecord } from '@/types/record';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
@@ -186,7 +187,7 @@ export const GroupOrContainer = ({
 
 const isComponentFirstLevelAndNOTLinkedData = (
   currentComponentNamePath: string,
-  linkedData: boolean | undefined,
+  linkedData: BFFDataRecord | undefined,
 ) => {
   return isFirstLevelGroup(currentComponentNamePath) && !linkedData;
 };

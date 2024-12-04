@@ -91,6 +91,7 @@ const transformToCoraDataRecursively = (
                 isOptional(fieldMetadata) && !childrenHasValuableData;
 
               if (!canBeRemoved) {
+                //       hasValuableData = childrenHasValuableData;
                 return removeEmpty({
                   name: removeAttributeFromName(fieldKey, attributes),
                   attributes,
@@ -104,7 +105,6 @@ const transformToCoraDataRecursively = (
           })
           .filter((value) => value !== undefined);
         result.push(...transformedItems);
-        // Remove items that do not hold valuable data
       } else if (isNonRepeatingVariable(value)) {
         const attributes = findChildrenAttributes(value);
         if (!isEmpty(value.value)) {
@@ -134,6 +134,7 @@ const transformToCoraDataRecursively = (
           isOptional(fieldMetadata) && !childrenHasValuableData;
         // TODO Remove group if repeat 1-X and at least one sibling has valuableData
         if (!canBeRemoved) {
+          //  hasValuableData = childrenHasValuableData;
           result.push(
             removeEmpty({
               name: removeAttributeFromName(fieldKey, attributes),

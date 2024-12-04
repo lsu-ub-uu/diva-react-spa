@@ -1098,6 +1098,138 @@ describe('transformToCora', () => {
         expect(transformData[0]).toStrictEqual(expected);
       });
 
+      it('should keep optional group when one sibling has value, one without value', () => {
+        const payload = {
+          output: {
+            originInfo: [
+              {
+                agent: [
+                  {
+                    role: {
+                      roleTerm: {
+                        value: 'pbl',
+                      },
+                    },
+                    namePart: [
+                      {
+                        value: null,
+                      },
+                    ],
+                    publisher: [
+                      {
+                        value: 'frontendpub',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        };
+
+        const expected: DataGroup = {
+          name: 'output',
+          children: [
+            {
+              name: 'originInfo',
+              children: [
+                {
+                  name: 'agent',
+                  children: [
+                    {
+                      name: 'role',
+                      children: [{ name: 'roleTerm', value: 'pbl' }],
+                    },
+                    {
+                      name: 'publisher',
+                      repeatId: '0',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'diva-publisher',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'frontendpub',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        };
+
+        const formMetaDataPathLookup = {
+          'output.originInfo.agent.publisher': {
+            name: 'publisher',
+            type: 'recordLink',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+            linkedRecordType: 'diva-publisher',
+          },
+          'output.originInfo.agent.namePart': {
+            name: 'namePart',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+          },
+          'output.originInfo.agent.role.roleTerm': {
+            name: 'roleTerm',
+            type: 'collectionVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            finalValue: 'pbl',
+          },
+          'output.originInfo.agent.role': {
+            name: 'role',
+            type: 'group',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          'output.originInfo.agent': {
+            name: 'agent',
+            type: 'group',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+          },
+          'output.originInfo': {
+            name: 'originInfo',
+            type: 'group',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+          },
+
+          output: {
+            name: 'output',
+            type: 'group',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        } satisfies Record<string, FormMetaData>;
+
+        const transformData = transformToCoraData(
+          formMetaDataPathLookup,
+          payload,
+        );
+        expect(transformData[0]).toStrictEqual(expected);
+      });
+
       // TODO implement this case
       it.todo(
         'should remove groups without valuable data in 1-X groups if at least one child has valuable data',

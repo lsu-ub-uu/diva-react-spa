@@ -20,16 +20,14 @@
 import { FormSchema } from './types';
 import { Component } from '@/components/FormGenerator/Component';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { BFFDataRecord } from '@/types/record';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;
-  linkedData?: boolean;
+  linkedData?: BFFDataRecord['data'];
 }
 
-export const FormGenerator = ({
-  linkedData = false,
-  ...props
-}: FormGeneratorProps) => {
+export const FormGenerator = ({ linkedData, ...props }: FormGeneratorProps) => {
   return (
     <FormGeneratorContext.Provider value={{ linkedData }}>
       <Component

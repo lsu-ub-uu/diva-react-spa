@@ -25,6 +25,8 @@ import { CollectionVariable } from '@/components/FormGenerator/components/Collec
 import { Text } from '@/components/FormGenerator/components/Text';
 import { GuiElementLink } from '@/components/FormGenerator/components/GuiElementLink';
 import { useRemixFormContext } from 'remix-hook-form';
+import { useContext } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface LeafComponentProps {
   component: FormComponent;
@@ -42,6 +44,7 @@ export const LeafComponent = ({
   parentPresentationStyle,
 }: LeafComponentProps): JSX.Element | null => {
   const { getValues } = useRemixFormContext();
+  const { linkedData } = useContext(FormGeneratorContext);
 
   switch (component.type) {
     case 'textVariable':
@@ -58,12 +61,15 @@ export const LeafComponent = ({
     }
     case 'recordLink': {
       const hasValue = checkIfComponentHasValue(getValues, name);
+      console.log('LeafComponent recordLink', { name, component });
 
       if (
         checkIfComponentContainsSearchId(component) &&
         component.mode === 'input' &&
-        !hasValue
+        !hasValue &&
+        !linkedData
       ) {
+        console.log('Rendering RecordLinkWithSearch', component, linkedData);
         return (
           <RecordLinkWithSearch
             reactKey={reactKey}
@@ -84,6 +90,18 @@ export const LeafComponent = ({
             renderElementGridWrapper={renderElementGridWrapper}
             component={component}
             name={name}
+          />
+        );
+      }
+
+      if (!hasValue) {
+        return (
+          <TextOrNumberVariable
+            reactKey={reactKey}
+            renderElementGridWrapper={renderElementGridWrapper}
+            component={component}
+            name='output.originInfo.agent.role.publisher.value'
+            parentPresentationStyle={parentPresentationStyle}
           />
         );
       }
