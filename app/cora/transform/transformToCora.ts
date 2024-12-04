@@ -91,7 +91,7 @@ const transformToCoraDataRecursively = (
                 isOptional(fieldMetadata) && !childrenHasValuableData;
 
               if (!canBeRemoved) {
-                //       hasValuableData = childrenHasValuableData;
+                hasValuableData = childrenHasValuableData;
                 return removeEmpty({
                   name: removeAttributeFromName(fieldKey, attributes),
                   attributes,
@@ -134,7 +134,7 @@ const transformToCoraDataRecursively = (
           isOptional(fieldMetadata) && !childrenHasValuableData;
         // TODO Remove group if repeat 1-X and at least one sibling has valuableData
         if (!canBeRemoved) {
-          //  hasValuableData = childrenHasValuableData;
+          hasValuableData = childrenHasValuableData;
           result.push(
             removeEmpty({
               name: removeAttributeFromName(fieldKey, attributes),
