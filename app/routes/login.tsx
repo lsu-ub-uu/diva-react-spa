@@ -1,7 +1,7 @@
 import { data, Form, redirect, useSubmit } from 'react-router'; // or cloudflare/deno // or cloudflare/deno
 import { commitSession, getSession } from '@/sessions';
 import { Alert, Button, Stack } from '@mui/material';
-import { FormGenerator } from '@/components';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';

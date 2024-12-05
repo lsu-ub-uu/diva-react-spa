@@ -20,30 +20,30 @@ import { Alert, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-
-import { AsidePortal, TabsMenu } from '../components';
+import { AsidePortal } from '@/components/AsidePortal/AsidePortal';
+import { TabsMenu } from '@/components/TabsMenu/TabsMenu';
 
 export const HomePage = () => {
   const { t } = useTranslation();
 
   return (
-      <div>
-        <AsidePortal>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac
-            mattis metus. Quisque condimentum cursus egestas. Suspendisse tellus
-            dolor, euismod at dui a, ultrices tempor erat.
-          </p>
-        </AsidePortal>
-        <Stack spacing={2}>
-          <Alert
-            icon={<PriorityHighIcon fontSize='inherit' />}
-            severity='warning'
-          >
-            {t('divaClient_metadataWarningText')}
-          </Alert>
-          <TabsMenu />
-        </Stack>
-      </div>
+    <div>
+      <AsidePortal>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac
+          mattis metus. Quisque condimentum cursus egestas. Suspendisse tellus
+          dolor, euismod at dui a, ultrices tempor erat.
+        </p>
+      </AsidePortal>
+      <Stack spacing={2}>
+        <Alert
+          icon={<PriorityHighIcon fontSize='inherit' />}
+          severity='warning'
+        >
+          {t('divaClient_metadataWarningText')}
+        </Alert>
+        <TabsMenu />
+      </Stack>
+    </div>
   );
 };

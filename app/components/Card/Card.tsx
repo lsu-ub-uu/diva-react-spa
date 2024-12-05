@@ -17,21 +17,21 @@
  */
 
 import {
-  CardContent,
   Card as MuiCard,
-  Collapse,
+  CardContent,
   CardHeader,
+  Collapse,
   Grid,
   IconButton,
+  IconButtonProps,
   styled,
   SxProps,
   Theme,
-  IconButtonProps,
 } from '@mui/material';
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Tooltip } from '../index';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 const StyledCardHeader = styled(CardHeader)((props) => ({
   borderTopLeftRadius: 8,

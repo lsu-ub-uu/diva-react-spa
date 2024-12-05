@@ -24,9 +24,9 @@ import {
   RecordData,
 } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { FormGenerator } from '@/components';
 import { FormSchema } from '../FormGenerator/types';
 import { BFFDataRecord } from '@/types/record';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface AutocompleteFormProps {
   record?: BFFDataRecord;

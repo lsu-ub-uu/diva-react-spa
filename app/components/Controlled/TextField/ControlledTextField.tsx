@@ -21,7 +21,7 @@ import { Control, Controller } from 'react-hook-form';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
-import { Tooltip } from '../../index';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 interface ControlledTextFieldProps {
   name: string;

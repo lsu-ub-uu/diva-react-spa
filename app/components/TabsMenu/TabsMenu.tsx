@@ -18,7 +18,9 @@
 
 import React, { useState } from 'react';
 import { Box, styled, Tab, Tabs } from '@mui/material';
-import { CreatePublicationCard, ListPublicationsCard, SearchPublicationCard } from '@/partials';
+import { CreatePublicationCard } from '@/partials/cards/CreatePublicationCard';
+import { SearchPublicationCard } from '@/partials/cards/SearchPublicationCard';
+import { ListPublicationsCard } from '@/partials/cards/ListPublicationsCard';
 
 interface TabsMenuProps {
   children: React.ReactNode;

@@ -16,9 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data, Links, LinksFunction, Meta, Outlet, Scripts, ScrollRestoration, useRouteLoaderData } from 'react-router';
+import {
+  data,
+  Links,
+  LinksFunction,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useRouteLoaderData,
+} from 'react-router';
 import { ReactNode } from 'react';
-import { PageLayout, SnackbarProvider } from '@/components';
+import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
+
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/themes/diva';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
@@ -28,6 +38,7 @@ import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import { Route } from '../.react-router/types/app/+types/root';
+import { PageLayout } from '@/components/Layout';
 
 const { MODE } = import.meta.env;
 

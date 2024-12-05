@@ -18,7 +18,7 @@
  */
 
 import { Control, Controller, useFieldArray } from 'react-hook-form';
-import { Button, Box, Grid, IconButton } from '@mui/material';
+import { Box, Button, Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import { useTranslation } from 'react-i18next';
@@ -34,7 +34,8 @@ import {
   isComponentGroup,
   isComponentSingularAndOptional,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Typography, Tooltip } from '@/components';
+import { Typography } from '@/components/Typography/Typography';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;

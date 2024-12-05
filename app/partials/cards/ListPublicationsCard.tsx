@@ -30,7 +30,7 @@ import {
   useFetcher,
   useLoaderData,
 } from 'react-router';
-import { Card } from '@/components';
+import { Card } from '@/components/Card/Card';
 import { loader } from '@/routes/home';
 import { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';

@@ -19,12 +19,12 @@
 import { getSearchForm } from '@/data/getSearchForm';
 import { searchRecords } from '@/data/searchRecords';
 import { BFFSearchResult } from '@/types/record';
-import { SearchPage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/searchRecord';
+import { SearchPage } from '@/pages/SearchPage';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 

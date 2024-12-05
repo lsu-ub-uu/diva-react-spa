@@ -22,7 +22,6 @@ import {
 } from '@/components/FormGenerator/types';
 import { Box, Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { Tooltip, Typography } from '@/components';
 import InfoIcon from '@mui/icons-material/Info';
 import {
   checkIfPresentationStyleIsInline,
@@ -35,6 +34,8 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { Typography } from '@/components/Typography/Typography';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;

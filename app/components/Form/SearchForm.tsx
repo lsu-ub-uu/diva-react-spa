@@ -19,7 +19,6 @@
 
 import { Button } from '@mui/material';
 
-import { FormGenerator } from '@/components';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { BFFDataRecord } from '@/types/record';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -31,6 +30,7 @@ import {
   RecordData,
 } from '../FormGenerator/defaultValues/defaultValues';
 import { SearchFormSchema } from '../FormGenerator/types';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface SearchFormProps {
   searchType: string;

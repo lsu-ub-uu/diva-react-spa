@@ -18,7 +18,7 @@
 
 import { IconButton } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import { Tooltip } from '../index';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 interface TooltipHelpButtonProps {
   title: string;

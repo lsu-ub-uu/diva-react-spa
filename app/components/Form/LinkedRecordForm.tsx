@@ -23,9 +23,9 @@ import {
 } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { FormGenerator } from '@/components';
 import { FormSchema } from '@/components/FormGenerator/types';
 import { BFFDataRecord } from '@/types/record';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface LinkedRecordFormProps {
   record: BFFDataRecord;

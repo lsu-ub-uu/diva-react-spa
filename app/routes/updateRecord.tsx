@@ -16,8 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { UpdateRecordPage } from '@/pages';
-
 import {
   commitSession,
   getSessionFromCookie,
@@ -39,6 +37,7 @@ import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultE
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/updateRecord';
+import { UpdateRecordPage } from '@/pages/UpdateRecordPage';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 

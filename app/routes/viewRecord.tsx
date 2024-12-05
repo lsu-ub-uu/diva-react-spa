@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ViewRecordPage } from '@/pages';
 import { getSessionFromCookie, requireAuthentication } from '@/sessions';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
@@ -24,6 +23,7 @@ import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultE
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/viewRecord';
+import { ViewRecordPage } from '@/pages/ViewRecordPage';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 

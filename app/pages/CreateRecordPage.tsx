@@ -18,15 +18,15 @@
  */
 
 import { Stack } from '@mui/material';
-import {
-  AsidePortal,
-  linksFromFormSchema,
-  NavigationPanel,
-  useSectionScroller,
-} from '@/components';
 import { RecordFormSchema } from '@/components/FormGenerator/types';
 import { RecordForm } from '@/components/Form/RecordForm';
 import { BFFDataRecord } from '@/types/record';
+import {
+  linksFromFormSchema,
+  useSectionScroller,
+} from '@/components/NavigationPanel/utils';
+import { AsidePortal } from '@/components/AsidePortal/AsidePortal';
+import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 
 interface CreateRecordPageProps {
   record: BFFDataRecord;

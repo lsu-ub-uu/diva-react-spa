@@ -18,11 +18,11 @@
 
 import { getSearchForm } from '@/data/getSearchForm';
 import { getValidationTypes } from '@/data/getValidationTypes';
-import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { searchRecords } from '@/data/searchRecords';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import type { Route } from '../../.react-router/types/app/routes/+types/home';
+import { HomePage } from '@/pages/HomePage';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 

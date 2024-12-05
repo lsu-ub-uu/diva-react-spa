@@ -26,7 +26,9 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
-import { Option, Tooltip, Select } from '@/components';
+import { Option } from '@/components';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { Select } from '@/components/FormComponents/Select/Select';
 
 interface ControlledSelectFieldProps {
   name: string;
