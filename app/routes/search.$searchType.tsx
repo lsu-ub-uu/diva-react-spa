@@ -22,7 +22,6 @@ import { BFFSearchResult } from '@/types/record';
 import { SearchPage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import {  LoaderFunctionArgs } from 'react-router';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { invariant } from '@/utils/invariant';
 import { Route } from '../../.react-router/types/app/routes/+types/search.$searchType';
