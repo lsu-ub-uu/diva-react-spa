@@ -36,7 +36,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get('Cookie'));
 
   if (session.has('auth')) {
-    return redirect(returnTo ?? '/');
+    throw redirect(returnTo ?? '/');
   }
 
   return data(
