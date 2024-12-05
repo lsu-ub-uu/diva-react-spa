@@ -142,7 +142,7 @@ export default function User() {
     >
       <Box style={{ fontSize: '14px' }}>{printUserNameOnPage(auth)}</Box>
       <Form
-        action='/app/routes/logout'
+        action='/logout'
         method='post'
       >
         <input

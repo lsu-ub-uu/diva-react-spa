@@ -58,7 +58,7 @@ export const Header = () => {
           />
           <Grid item>
             <Form
-              action='/app/routes/refreshDefinitions'
+              action='/refreshDefinitions'
               method='POST'
             >
               <input
