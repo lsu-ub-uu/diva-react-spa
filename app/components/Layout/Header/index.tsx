@@ -18,7 +18,7 @@
 
 import { Box, Button, Container, Grid, Link } from '@mui/material';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Form, Link as RouterLink,  useLocation } from 'react-router';
+import { Form, Link as RouterLink, useLocation } from 'react-router';
 import divaLogo from '../../../assets/divaLogo.svg';
 import Login from '@/components/Layout/Header/Login/Login';
 import { LanguageSwitcher } from '@/components/Layout/Header/LanguageSwitcher';
@@ -58,7 +58,7 @@ export const Header = () => {
           />
           <Grid item>
             <Form
-              action='/refreshDefinitions'
+              action='/app/routes/refreshDefinitions'
               method='POST'
             >
               <input

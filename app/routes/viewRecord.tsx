@@ -23,7 +23,7 @@ import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByV
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 import { invariant } from '@/utils/invariant';
-import { Route } from '../../.react-router/types/app/routes/+types/view.$recordType.$recordId';
+import type { Route } from '../../.react-router/types/app/routes/+types/viewRecord';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 
@@ -60,7 +60,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export default function ViewRecordRoute({ loaderData }: Route.ComponentProps) {
+export default function ViewRecord({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition } = loaderData;
   return (
     <ViewRecordPage

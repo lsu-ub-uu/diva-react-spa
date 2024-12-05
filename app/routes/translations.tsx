@@ -18,7 +18,7 @@
 
 import { createTextDefinition } from '@/data/textDefinition/textDefinition';
 import { invariant } from '@/utils/invariant';
-import { Route } from '../../.react-router/types/app/routes/+types/translations.$lang';
+import type { Route } from '../../.react-router/types/app/routes/+types/translations';
 
 export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { lang } = params;

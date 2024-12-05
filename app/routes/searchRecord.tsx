@@ -24,7 +24,7 @@ import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { invariant } from '@/utils/invariant';
-import { Route } from '../../.react-router/types/app/routes/+types/search.$searchType';
+import type { Route } from '../../.react-router/types/app/routes/+types/searchRecord';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 

@@ -12,7 +12,7 @@ import { loginWithAppToken } from '@/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
 import { Auth } from '@/types/Auth';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
-import { Route } from '../../.react-router/types/app/routes/+types/login';
+import type { Route } from '../../.react-router/types/app/routes/+types/login';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {

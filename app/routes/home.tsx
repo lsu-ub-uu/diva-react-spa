@@ -22,7 +22,7 @@ import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
 import { searchRecords } from '@/data/searchRecords';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
-import { Route } from '../../.react-router/types/app/routes/+types/_index';
+import type { Route } from '../../.react-router/types/app/routes/+types/home';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 

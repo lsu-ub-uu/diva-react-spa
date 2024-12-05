@@ -38,7 +38,7 @@ import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/de
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 import { invariant } from '@/utils/invariant';
-import { Route } from '../../.react-router/types/app/routes/+types/update.$recordType.$recordId';
+import type { Route } from '../../.react-router/types/app/routes/+types/updateRecord';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 
@@ -138,9 +138,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
   return [{ title: data?.title }];
 };
 
-export default function UpdateRecordRoute({
-  loaderData,
-}: Route.ComponentProps) {
+export default function UpdateRecord({ loaderData }: Route.ComponentProps) {
   const { record, formDefinition, successMessage } = loaderData;
 
   const navigation = useNavigation();

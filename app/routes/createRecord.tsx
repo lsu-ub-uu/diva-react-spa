@@ -34,7 +34,7 @@ import {
 } from '@/utils/redirectAndCommitSession';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 import { invariant } from '@/utils/invariant';
-import { Route } from '../../.react-router/types/app/routes/+types/create';
+import type { Route } from '../../.react-router/types/app/routes/+types/createRecord';
 
 export const ErrorBoundary = DefaultErrorBoundary;
 

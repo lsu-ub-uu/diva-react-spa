@@ -22,7 +22,7 @@ import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';
 import { RecordActionButtons } from '@/components';
 import { useTranslation } from 'react-i18next';
-import { loader } from '@/routes/search.$searchType';
+import { loader } from '@/routes/searchRecord';
 import { SearchPublicationCard } from '@/partials';
 
 const SearchResultList = styled('ol')`

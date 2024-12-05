@@ -18,9 +18,13 @@
 
 import { data } from 'react-router';
 import { deleteRecord } from '@/data/deleteRecord';
-import { commitSession, getSessionFromCookie, requireAuthentication } from '@/sessions';
+import {
+  commitSession,
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/sessions';
 import { invariant } from '@/utils/invariant';
-import { Route } from '../../.react-router/types/app/routes/+types/delete.$recordType.$recordId';
+import type { Route } from '../../.react-router/types/app/routes/+types/deleteRecord';
 
 export const action = async ({
   request,

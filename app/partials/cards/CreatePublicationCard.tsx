@@ -29,7 +29,7 @@ import {
 import { Await, Form, useLoaderData, useNavigation } from 'react-router';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card } from '@/components';
-import { loader } from '@/routes/_index';
+import { loader } from '@/routes/home';
 import { Suspense } from 'react';
 
 const formAction = '/create';

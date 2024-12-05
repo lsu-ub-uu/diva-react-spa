@@ -23,7 +23,7 @@ import { Card } from '@/components';
 import { SearchForm } from '@/components/Form/SearchForm';
 import { Suspense } from 'react';
 import { Await, useLoaderData } from 'react-router';
-import { loader } from '@/routes/_index';
+import { loader } from '@/routes/home';
 
 const searchType = 'diva-outputSimpleSearch';
 

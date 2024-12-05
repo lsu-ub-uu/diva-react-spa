@@ -24,9 +24,14 @@ import { Alert, IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Await, Link as RouterLink, useFetcher, useLoaderData } from 'react-router';
+import {
+  Await,
+  Link as RouterLink,
+  useFetcher,
+  useLoaderData,
+} from 'react-router';
 import { Card } from '@/components';
-import { loader } from '@/routes/_index';
+import { loader } from '@/routes/home';
 import { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 
