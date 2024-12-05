@@ -19,11 +19,11 @@
 
 import {
   createLeaf,
+  createRecordLink,
   doesRecordInfoExist,
   findChildrenAttributes,
   generateAtomicValue,
   generateLastUpdateInfo,
-  generateRecordLink,
   hasSiblingsWithSameNameInData,
   isNonRepeatingVariable,
   isNotAttribute,
@@ -34,7 +34,6 @@ import {
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import testFormPayloadWithGroupWithAttributesAndTextVar from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
-import testFormPayloadWithGroupWithGroupWithRepeatingGroups from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithGroupWithRepeatingGroups.json';
 import { DataGroup } from '@/cora/cora-data/CoraData';
 import { Lookup } from '@/utils/structs/lookup';
 import {
@@ -315,7 +314,7 @@ describe('transformToCora', () => {
         ],
         name: 'name',
       };
-      const actual = generateRecordLink(
+      const actual = createRecordLink(
         'name',
         'linkedRecordType',
         'linkedRecordId',
@@ -340,7 +339,7 @@ describe('transformToCora', () => {
         },
         name: 'name',
       };
-      const actual = generateRecordLink(
+      const actual = createRecordLink(
         'name',
         'linkedRecordType',
         'linkedRecordId',
@@ -366,7 +365,7 @@ describe('transformToCora', () => {
         repeatId: '1',
         name: 'name',
       };
-      const actual = generateRecordLink(
+      const actual = createRecordLink(
         'name',
         'linkedRecordType',
         'linkedRecordId',
@@ -394,7 +393,7 @@ describe('transformToCora', () => {
         repeatId: '1',
         name: 'name',
       };
-      const actual = generateRecordLink(
+      const actual = createRecordLink(
         'name',
         'linkedRecordType',
         'linkedRecordId',
@@ -907,6 +906,7 @@ describe('transformToCora', () => {
         FORM_MODE_NEW,
       );
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
+
       const transformData = transformToCoraData(formMetaDataPathLookup, {
         someRootNameInData: {
           author_language_swe: {
@@ -933,6 +933,22 @@ describe('transformToCora', () => {
     });
 
     it('should take a form payload with repeating groups', () => {
+      const payload = {
+        someNewMetadataGroupRepeatingGroupsNameInData: {
+          someChildGroupNameInData: [
+            {
+              someNameInData: {
+                value: 'Erik',
+              },
+            },
+            {
+              someNameInData: {
+                value: 'Egil',
+              },
+            },
+          ],
+        },
+      };
       const expected: DataGroup = {
         name: 'someNewMetadataGroupRepeatingGroupsNameInData',
         children: [
@@ -958,6 +974,31 @@ describe('transformToCora', () => {
           },
         ],
       };
+
+      /**
+       * Actual
+       * {
+       *   "children": [
+       *     {
+       *       "children": [
+       *         {
+       *           "name": "someNameInData",
+       *           "repeatId": "0",
+       *           "value": "Erik",
+       *         },
+       *         {
+       *           "name": "someNameInData",
+       *           "repeatId": "1",
+       *           "value": "Egil",
+       *         },
+       *       ],
+       *       "name": "someChildGroupNameInData",
+       *     },
+       *   ],
+       *   "name": "someNewMetadataGroupRepeatingGroupsNameInData",
+       * }
+       *
+       */
       const validationTypeId = 'someSimpleValidationTypeWithRepeatingGroupsId';
       const formMetaData = createFormMetaData(
         dependencies,
@@ -967,9 +1008,94 @@ describe('transformToCora', () => {
       const formMetaDataPathLookup = createFormMetaDataPathLookup(formMetaData);
       const transformData = transformToCoraData(
         formMetaDataPathLookup,
-        testFormPayloadWithGroupWithGroupWithRepeatingGroups,
+        payload,
       );
       expect(transformData[0]).toStrictEqual(expected);
+    });
+    describe('remove empty values', () => {
+      it('should remove empty variables', () => {
+        const payload = {
+          someParentGroupNameInData: {
+            someNameInData1: {
+              value: '',
+            },
+            someNameInData2: {
+              value: null,
+            },
+          },
+        };
+
+        const expected: DataGroup = {
+          name: 'someParentGroupNameInData',
+          children: [],
+        };
+
+        const formMetaDataPathLookup = {
+          someParentGroupNameInData: {
+            name: 'someParentGroupNameInData',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+          'someParentGroupNameInData.someNameInData1': {
+            name: 'someNameInData',
+            type: 'textVariable',
+            repeat: { repeatMin: 0, repeatMax: 1 },
+          },
+          'someParentGroupNameInData.someNameInData2': {
+            name: 'someNameInData',
+            type: 'textVariable',
+            repeat: { repeatMin: 0, repeatMax: 1 },
+          },
+        } satisfies Record<string, FormMetaData>;
+
+        const transformData = transformToCoraData(
+          formMetaDataPathLookup,
+          payload,
+        );
+        expect(transformData[0]).toStrictEqual(expected);
+      });
+
+      it('should remove empty optional groups', () => {
+        const payload = {
+          someParentGroupNameInData: {
+            someChildGroupNameInData: {
+              someNameInData1: {
+                value: '',
+              },
+            },
+          },
+        };
+
+        const expected: DataGroup = {
+          name: 'someParentGroupNameInData',
+          children: [],
+        };
+
+        const formMetaDataPathLookup = {
+          someParentGroupNameInData: {
+            name: 'someParentGroupNameInData',
+            type: 'group',
+            repeat: { repeatMin: 1, repeatMax: 1 },
+          },
+          'someParentGroupNameInData.someChildGroupNameInData': {
+            name: 'someChildGroupNameInData',
+            type: 'group',
+            repeat: { repeatMin: 0, repeatMax: 1 },
+          },
+          'someParentGroupNameInData.someChildGroupNameInData.someNameInData1':
+            {
+              name: 'someNameInData',
+              type: 'textVariable',
+              repeat: { repeatMin: 0, repeatMax: 1 },
+            },
+        } satisfies Record<string, FormMetaData>;
+
+        const transformData = transformToCoraData(
+          formMetaDataPathLookup,
+          payload,
+        );
+        expect(transformData[0]).toStrictEqual(expected);
+      });
     });
     describe('hasValuableData', () => {
       it('should remove optional group when it only contains a finalValue', () => {
@@ -1089,6 +1215,138 @@ describe('transformToCora', () => {
               type: 'textVariable',
               repeat: { repeatMin: 1, repeatMax: 1 },
             },
+        } satisfies Record<string, FormMetaData>;
+
+        const transformData = transformToCoraData(
+          formMetaDataPathLookup,
+          payload,
+        );
+        expect(transformData[0]).toStrictEqual(expected);
+      });
+
+      it('should keep optional group when one sibling has value, one without value', () => {
+        const payload = {
+          output: {
+            originInfo: [
+              {
+                agent: [
+                  {
+                    role: {
+                      roleTerm: {
+                        value: 'pbl',
+                      },
+                    },
+                    namePart: [
+                      {
+                        value: null,
+                      },
+                    ],
+                    publisher: [
+                      {
+                        value: 'frontendpub',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        };
+
+        const expected: DataGroup = {
+          name: 'output',
+          children: [
+            {
+              name: 'originInfo',
+              children: [
+                {
+                  name: 'agent',
+                  children: [
+                    {
+                      name: 'role',
+                      children: [{ name: 'roleTerm', value: 'pbl' }],
+                    },
+                    {
+                      name: 'publisher',
+                      repeatId: '0',
+                      children: [
+                        {
+                          name: 'linkedRecordType',
+                          value: 'diva-publisher',
+                        },
+                        {
+                          name: 'linkedRecordId',
+                          value: 'frontendpub',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        };
+
+        const formMetaDataPathLookup = {
+          'output.originInfo.agent.publisher': {
+            name: 'publisher',
+            type: 'recordLink',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+            linkedRecordType: 'diva-publisher',
+          },
+          'output.originInfo.agent.namePart': {
+            name: 'namePart',
+            type: 'textVariable',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1.7976931348623157e308,
+            },
+          },
+          'output.originInfo.agent.role.roleTerm': {
+            name: 'roleTerm',
+            type: 'collectionVariable',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            finalValue: 'pbl',
+          },
+          'output.originInfo.agent.role': {
+            name: 'role',
+            type: 'group',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+          'output.originInfo.agent': {
+            name: 'agent',
+            type: 'group',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+          },
+          'output.originInfo': {
+            name: 'originInfo',
+            type: 'group',
+            repeat: {
+              repeatMin: 0,
+              repeatMax: 1,
+            },
+          },
+
+          output: {
+            name: 'output',
+            type: 'group',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
         } satisfies Record<string, FormMetaData>;
 
         const transformData = transformToCoraData(
