@@ -23,16 +23,28 @@ import {
   DataGroup,
   RecordLink,
 } from '@/cora/cora-data/CoraData';
-import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { FormMetaData } from '@/data/formDefinition/formDefinition';
-import { containsChildWithNameInData } from '@/cora/cora-data/CoraDataUtils';
 import { isEmpty } from 'lodash-es';
 
-type Data = DataGroup | DataAtomic | RecordLink | undefined;
+type Data = DataGroup | DataAtomic | RecordLink;
+
+interface TransformEntryArgs {
+  lookup: Record<string, FormMetaData>;
+  key: string;
+  value: any;
+  path: string;
+  repeatId?: string;
+}
+
+interface ValuableDataWrapper<T> {
+  data: T;
+  hasValuableData: boolean;
+}
+
 export const transformToCoraData = (
   lookup: Record<string, FormMetaData>,
   payload: any,
-): (DataGroup | DataAtomic | RecordLink)[] => {
+): Data[] => {
   return transformToCoraDataRecursively(lookup, payload).data;
 };
 
@@ -41,101 +53,56 @@ const transformToCoraDataRecursively = (
   payload: any,
   path?: string,
   repeatId?: string,
-): {
-  data: (DataGroup | DataAtomic | RecordLink)[];
-  hasValuableData: boolean;
-} => {
-  const transformedEntries = Object.entries(payload).map(([key, value]) => {
-    if (isAttribute(key)) {
-      return { entry: undefined, hasValuableData: false };
-    }
-
-    const currentPath = path ? `${path}.${key}` : key;
-
-    return transformEntry(
-      lookup,
-      getFieldMetadata(lookup, currentPath),
-      key,
-      value,
-      currentPath,
-      repeatId,
+): ValuableDataWrapper<Data[]> => {
+  const transformedEntries = Object.entries(payload)
+    .filter(([key]) => !isAttribute(key))
+    .map(([key, value]) =>
+      transformEntry({
+        lookup,
+        key,
+        value,
+        path: path ? `${path}.${key}` : key,
+        repeatId,
+      }),
     );
-  });
 
   return {
     data: transformedEntries
-      .flatMap((entry) => entry.entry)
+      .flatMap((entry) => entry.data)
       .filter((entry) => entry !== undefined),
     hasValuableData: transformedEntries.some((entry) => entry.hasValuableData),
   };
 };
 
-/**
- * Takes a key and a value and returns an object with  the format { name, attributes, children: [] }
- */
-export const transformEntry = (
-  lookup: Record<string, FormMetaData>,
-  fieldMetadata: FormMetaData,
-  key: string,
-  value: any,
-  path?: string,
-  repeatId?: string,
-): { entry: Data | Data[]; hasValuableData: boolean } => {
+export const transformEntry = ({
+  lookup,
+  key,
+  value,
+  path,
+  repeatId,
+}: TransformEntryArgs): ValuableDataWrapper<
+  Data | undefined | (Data | undefined)[]
+> => {
+  const fieldMetadata = getFieldMetadata(lookup, path);
   const attributes = findChildrenAttributes(value);
-  const shouldDataHaveRepeatId = fieldMetadata.repeat.repeatMax > 1;
 
   if (isRepeatingVariable(value)) {
-    const entries = value.map((item, index) =>
-      transformEntry(
-        lookup,
-        fieldMetadata,
-        key,
-        item,
-        path,
-        shouldDataHaveRepeatId ? index.toString() : undefined,
-      ),
-    );
-
-    return {
-      entry: entries.flatMap((entry) => entry.entry),
-      hasValuableData: entries.some((entry) => entry.hasValuableData),
-    };
+    return transformRepeatingVariable(fieldMetadata, value, lookup, key, path);
   }
 
   if (isVariable(value)) {
-    const leaf = createLeaf(
-      fieldMetadata,
-      removeAttributeFromName(key, attributes),
-      value.value,
-      repeatId,
-      attributes,
-    );
-    return {
-      entry: leaf,
-      hasValuableData: isValuable(value.value, fieldMetadata),
-    };
+    return transformLeaf(fieldMetadata, key, attributes, value, repeatId);
   }
 
-  const childData = transformToCoraDataRecursively(lookup, value, path);
-
-  if (isOptional(fieldMetadata) && !childData.hasValuableData) {
-    return { entry: undefined, hasValuableData: false };
-  }
-
-  return {
-    entry: createGroup(
-      fieldMetadata,
-      key,
-      attributes,
-      repeatId,
-      childData.data,
-    ),
-    hasValuableData: childData.hasValuableData,
-  };
-};
-
-const isValuable = (value: string, fieldMetadata: FormMetaData) => {
-  return !isEmpty(value) && !isFinalValue(fieldMetadata);
+  return transformGroup(
+    fieldMetadata,
+    lookup,
+    value,
+    path,
+    key,
+    attributes,
+    repeatId,
+  );
 };
 
 const getFieldMetadata = (
@@ -147,44 +114,6 @@ const getFieldMetadata = (
     throw new Error(`Failed to find path ${currentPath} in lookup`);
   }
   return fieldMetadata;
-};
-
-const isFinalValue = (currentMetadataLookup: FormMetaData) => {
-  return currentMetadataLookup.finalValue !== undefined;
-};
-const isOptional = (fieldMetadata: FormMetaData) => {
-  return fieldMetadata.repeat.repeatMin === 0;
-};
-
-export const hasSiblingsWithSameNameInData = (value: any) => {
-  const stripedNames = Object.keys(value).map((names) => {
-    return names.split('_')[0];
-  });
-  return (
-    stripedNames.filter(
-      (item, index) => !(stripedNames.indexOf(item) === index),
-    ).length > 0
-  );
-};
-
-export const isNotAttribute = (fieldKey: string) => {
-  return !fieldKey.startsWith('_');
-};
-
-export const isAttribute = (fieldKey: string) => {
-  return fieldKey.startsWith('_');
-};
-
-export const isRepeatingVariable = (value: any) => {
-  return Array.isArray(value);
-};
-
-export const isVariable = (item: DataGroup | DataAtomic) => {
-  return 'value' in item;
-};
-
-export const isNonRepeatingVariable = (value: any) => {
-  return typeof value === 'object' && value !== null && 'value' in value;
 };
 
 export const findChildrenAttributes = (obj: any) => {
@@ -199,6 +128,88 @@ export const findChildrenAttributes = (obj: any) => {
     return undefined;
   }
   return Object.assign({}, ...attributesArray);
+};
+
+const transformRepeatingVariable = (
+  fieldMetadata: FormMetaData,
+  values: any[],
+  lookup: Record<string, FormMetaData>,
+  key: string,
+  path: string,
+) => {
+  const shouldDataHaveRepeatId = fieldMetadata.repeat.repeatMax > 1;
+  const entries = values.map((item, index) =>
+    transformEntry({
+      lookup,
+      key,
+      value: item,
+      path,
+      repeatId: shouldDataHaveRepeatId ? index.toString() : undefined,
+    }),
+  );
+
+  return {
+    data: entries.flatMap((entry) => entry.data),
+    hasValuableData: entries.some((entry) => entry.hasValuableData),
+  };
+};
+
+const transformLeaf = (
+  fieldMetadata: FormMetaData,
+  key: string,
+  attributes: undefined | Record<string, string>,
+  value: any,
+  repeatId: string | undefined,
+) => {
+  return {
+    data: createLeaf(
+      fieldMetadata,
+      removeAttributeFromName(key, attributes),
+      value.value,
+      repeatId,
+      attributes,
+    ),
+    hasValuableData: isValuable(value.value, fieldMetadata),
+  };
+};
+
+const transformGroup = (
+  fieldMetadata: FormMetaData,
+  lookup: Record<string, FormMetaData>,
+  value: any,
+  path: string,
+  key: string,
+  attributes: Record<string, string> | undefined,
+  repeatId: string | undefined,
+) => {
+  const childData = transformToCoraDataRecursively(lookup, value, path);
+  return {
+    data: createGroup(fieldMetadata, key, attributes, repeatId, childData),
+    hasValuableData: childData.hasValuableData,
+  };
+};
+
+export const isAttribute = (fieldKey: string) => {
+  return fieldKey.startsWith('_');
+};
+
+const isValuable = (value: string, fieldMetadata: FormMetaData) => {
+  return !isEmpty(value) && !isFinalValue(fieldMetadata);
+};
+
+const isFinalValue = (currentMetadataLookup: FormMetaData) => {
+  return currentMetadataLookup.finalValue !== undefined;
+};
+const isOptional = (fieldMetadata: FormMetaData) => {
+  return fieldMetadata.repeat.repeatMin === 0;
+};
+
+export const isRepeatingVariable = (value: any) => {
+  return Array.isArray(value);
+};
+
+export const isVariable = (item: DataGroup | DataAtomic) => {
+  return 'value' in item;
 };
 
 export const createLeaf = (
@@ -244,13 +255,17 @@ export const createLeaf = (
 const createGroup = (
   metaData: FormMetaData,
   key: string,
-  attributes: undefined | ({} & Record<string, string>),
+  attributes: undefined | Record<string, string>,
   repeatId: string | undefined,
-  childData: any,
+  childData: ValuableDataWrapper<Data[]>,
 ) => {
+  if (isOptional(metaData) && !childData.hasValuableData) {
+    return undefined;
+  }
+
   const group: DataGroup = {
     name: removeAttributeFromName(key, attributes),
-    children: childData,
+    children: childData.data,
   };
 
   if (attributes) {
@@ -302,17 +317,4 @@ export const removeAttributeFromName = (
     return name;
   }
   return name.split('_')[0];
-};
-
-export const doesRecordInfoExist = (dataGroup: DataGroup) => {
-  return containsChildWithNameInData(dataGroup, 'recordInfo');
-};
-
-export const generateLastUpdateInfo = (userId: string, updatedAt: string) => {
-  const name = 'updated';
-  const children = [
-    createRecordLink('updatedBy', 'user', userId),
-    generateAtomicValue('tsUpdated', updatedAt),
-  ];
-  return removeEmpty({ name, children, repeatId: '0' }) as DataGroup;
 };

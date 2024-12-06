@@ -20,13 +20,8 @@
 import {
   createLeaf,
   createRecordLink,
-  doesRecordInfoExist,
   findChildrenAttributes,
   generateAtomicValue,
-  generateLastUpdateInfo,
-  hasSiblingsWithSameNameInData,
-  isNonRepeatingVariable,
-  isNotAttribute,
   isRepeatingVariable,
   isVariable,
   removeAttributeFromName,
@@ -207,41 +202,6 @@ describe('transformToCora', () => {
       loginUnitPool: listToPool<BFFLoginUnit>([]),
       loginPool: listToPool<BFFLoginWebRedirect>([]),
     };
-  });
-
-  describe('generateLastUpdateInfo', () => {
-    it('creates last update info group from data', () => {
-      const expected = {
-        children: [
-          {
-            children: [
-              {
-                name: 'linkedRecordType',
-                value: 'user',
-              },
-              {
-                name: 'linkedRecordId',
-                value: '161616',
-              },
-            ],
-            name: 'updatedBy',
-          },
-          {
-            name: 'tsUpdated',
-            value: '2024-05-08T09:40:42.769008Z',
-          },
-        ],
-        name: 'updated',
-        repeatId: '0',
-      };
-
-      const updateGroup = generateLastUpdateInfo(
-        '161616',
-        '2024-05-08T09:40:42.769008Z',
-      );
-
-      expect(updateGroup).toStrictEqual(expected);
-    });
   });
 
   describe('findChildrenAttributes', () => {
@@ -1552,51 +1512,6 @@ describe('transformToCora', () => {
     });
   });
 
-  describe('siblingWithSameNameInData', () => {
-    it('returns false with no matching siblings', () => {
-      const actual = hasSiblingsWithSameNameInData({
-        someNameInData: [{ value: 'firstValue' }],
-      });
-      expect(actual).toBe(false);
-    });
-
-    it('returns true with matching siblings', () => {
-      const actual = hasSiblingsWithSameNameInData({
-        someNameInData: [{ value: 'firstValue' }],
-        someNameInData_attribute_hej: [{ value: 'firstValue' }],
-      });
-      expect(actual).toBe(true);
-    });
-
-    it('returns false with no matching siblings', () => {
-      const actual = hasSiblingsWithSameNameInData({
-        someNameInData: [{ value: 'firstValue' }],
-        someOtherNameInData: [{ value: 'firstValue' }],
-      });
-      expect(actual).toBe(false);
-    });
-
-    it('returns false with no matching siblings containing attribute', () => {
-      const actual = hasSiblingsWithSameNameInData({
-        someNameInData: [{ value: 'firstValue' }],
-        someOtherNameInData_attribute_hej: [{ value: 'firstValue' }],
-      });
-      expect(actual).toBe(false);
-    });
-  });
-
-  describe('isNotAttribute', () => {
-    it('returns false with no matching siblings', () => {
-      const actual = isNotAttribute('someNameInData');
-      expect(actual).toBe(true);
-    });
-
-    it('returns true with matching siblings', () => {
-      const actual = isNotAttribute('_someNameInData');
-      expect(actual).toBe(false);
-    });
-  });
-
   describe('isRepeatingVariable', () => {
     it('returns true if repeating', () => {
       const actual = isRepeatingVariable([
@@ -1627,103 +1542,6 @@ describe('transformToCora', () => {
           {
             name: 'someName',
             value: 'firstValue',
-          },
-        ],
-      });
-      expect(actual).toBe(false);
-    });
-  });
-
-  describe('isNonRepeatingVariable', () => {
-    it('returns true if non-variable', () => {
-      const actual = isNonRepeatingVariable({
-        value: 'firstValue',
-        name: 'someVariable',
-      });
-      expect(actual).toBe(true);
-    });
-
-    it('returns false if repeating variable', () => {
-      const actual = isNonRepeatingVariable([
-        { value: 'firstValue', name: 'someNameInData' },
-      ]);
-      expect(actual).toBe(false);
-    });
-  });
-
-  describe('doesRecordInfoExist', () => {
-    it('finds recordInfo', () => {
-      const actual = doesRecordInfoExist({
-        name: 'divaOutput',
-        children: [
-          {
-            name: 'recordInfo',
-            children: [
-              {
-                name: 'id',
-                value: '1234',
-              },
-            ],
-          },
-          {
-            name: 'title',
-            children: [
-              {
-                name: 'mainTitle',
-                value: 'aaaaaaaaa',
-              },
-            ],
-          },
-          {
-            name: 'contentType',
-            value: 'otherAcademic',
-          },
-          {
-            name: 'outputType',
-            children: [
-              {
-                name: 'outputType',
-                value: 'artisticOutput',
-              },
-            ],
-          },
-          {
-            name: 'domain',
-            value: 'havochvatten',
-          },
-        ],
-      });
-      expect(actual).toBe(true);
-    });
-    it('does not find recordInfo', () => {
-      const actual = doesRecordInfoExist({
-        name: 'divaOutput',
-        children: [
-          {
-            name: 'title',
-            children: [
-              {
-                name: 'mainTitle',
-                value: 'aaaaaaaaa',
-              },
-            ],
-          },
-          {
-            name: 'contentType',
-            value: 'otherAcademic',
-          },
-          {
-            name: 'outputType',
-            children: [
-              {
-                name: 'outputType',
-                value: 'artisticOutput',
-              },
-            ],
-          },
-          {
-            name: 'domain',
-            value: 'havochvatten',
           },
         ],
       });
