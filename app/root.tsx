@@ -33,7 +33,7 @@ import {
 import { ReactNode } from 'react';
 import { PageLayout, SnackbarProvider } from '@/components';
 import { CssBaseline } from '@mui/material';
-import { divaTheme } from '@/themes/diva';
+import { divaTheme } from '@/mui/theme';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import dev_favicon from '@/images/dev_favicon.svg';
 import favicon from '@/images/favicon.svg';
