@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSearchForm } from '@/data/getSearchForm';
-import { searchRecords } from '@/data/searchRecords';
+import { getSearchForm } from '@/.server/data/getSearchForm';
+import { searchRecords } from '@/.server/data/searchRecords';
 import { BFFSearchResult } from '@/types/record';
 import { SearchPage } from '@/pages';
-import { getAuthentication, getSessionFromCookie } from '@/sessions';
+import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';

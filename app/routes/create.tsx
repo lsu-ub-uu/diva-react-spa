@@ -20,14 +20,17 @@ import { invariant } from '@remix-run/router/history';
 import { type ActionFunctionArgs, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/pages/CreateRecordPage';
-import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
+import { getRecordByValidationTypeId } from '@/.server/data/getRecordByValidationTypeId';
+import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
-import { createRecord } from '@/data/createRecord';
+import { createRecord } from '@/.server/data/createRecord';
 import { BFFDataRecord } from '@/types/record';
-import { getSessionFromCookie, requireAuthentication } from '@/sessions';
+import {
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/.server/sessions';
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import {
