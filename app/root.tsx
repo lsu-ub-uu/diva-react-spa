@@ -32,8 +32,6 @@ import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/themes/diva';
 import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import dev_favicon from '@/images/dev_favicon.svg';
-import favicon from '@/images/favicon.svg';
 import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
@@ -47,11 +45,11 @@ interface DocumentProps {
 }
 
 export const links: LinksFunction = () => [
-  {
+  /* {
     rel: 'icon',
     type: 'image/svg+xml',
     href: MODE === 'development' ? dev_favicon : favicon,
-  },
+  },*/
 ];
 
 export async function loader({ request, context }: Route.LoaderArgs) {

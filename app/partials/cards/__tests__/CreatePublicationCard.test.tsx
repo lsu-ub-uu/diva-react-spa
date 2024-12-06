@@ -17,8 +17,8 @@
  */
 
 import { render, screen, waitFor } from '@testing-library/react';
-import { CreatePublicationCard } from '@/partials';
 import { createRoutesStub } from 'react-router';
+import { CreatePublicationCard } from '@/partials/cards/CreatePublicationCard';
 
 const validationTypes = [
   { value: 'thesisManuscript', label: 'thesisManuscriptText' },
