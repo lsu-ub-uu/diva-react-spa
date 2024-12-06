@@ -17,18 +17,18 @@
  */
 
 import {
-  CardContent,
   Card as MuiCard,
-  Collapse,
+  CardContent,
   CardHeader,
-  Grid,
+  Collapse,
+  Grid2 as Grid,
   IconButton,
+  IconButtonProps,
   styled,
   SxProps,
   Theme,
-  IconButtonProps,
 } from '@mui/material';
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Tooltip } from '../index';
@@ -170,7 +170,7 @@ export const Card = (props: CardProps) => {
             justifyContent='flex-start'
             alignItems='center'
           >
-            <Grid item>
+            <Grid>
               <ExpandMore
                 disableRipple
                 expand={expand}
@@ -181,8 +181,8 @@ export const Card = (props: CardProps) => {
                 <ExpandMoreIcon />
               </ExpandMore>
             </Grid>
-            <Grid item>{props.title}</Grid>
-            <Grid item>
+            <Grid>{props.title}</Grid>
+            <Grid>
               <InfoButton
                 title={props.tooltipTitle}
                 body={props.tooltipBody}

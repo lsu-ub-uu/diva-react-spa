@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Button,
   CircularProgress,
-  Grid,
+  Grid2 as Grid,
   NativeSelect,
   OutlinedInput,
   Skeleton,
@@ -62,11 +62,7 @@ export const CreatePublicationCard = () => {
                 justifyContent='space-between'
                 alignItems='flex-start'
               >
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                >
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <NativeSelect
                     defaultValue=''
                     name='validationType'
@@ -91,11 +87,7 @@ export const CreatePublicationCard = () => {
                     ))}
                   </NativeSelect>
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                >
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Button
                     disabled={loading}
                     type='submit'

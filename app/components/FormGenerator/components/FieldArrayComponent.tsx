@@ -18,7 +18,7 @@
  */
 
 import { Control, Controller, useFieldArray } from 'react-hook-form';
-import { Button, Box, Grid, IconButton } from '@mui/material';
+import { Box, Button, Grid2 as Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import { useTranslation } from 'react-i18next';
@@ -34,7 +34,7 @@ import {
   isComponentGroup,
   isComponentSingularAndOptional,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Typography, Tooltip } from '@/components';
+import { Tooltip, Typography } from '@/components';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -76,9 +76,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   return (
     <Grid
       key={`${props.name}_grid`}
-      item
-      xs={12}
-      sm={props.component.gridColSpan}
+      size={{ xs: 12, sm: props.component.gridColSpan }}
       id={`anchor_${addAttributesToName(props.component, props.component.name)}`}
       flexDirection='column'
     >

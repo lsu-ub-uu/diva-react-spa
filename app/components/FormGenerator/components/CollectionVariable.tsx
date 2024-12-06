@@ -18,7 +18,7 @@
 
 import { FormComponentCollVar } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -42,10 +42,11 @@ export const CollectionVariable = ({
   return (
     <Grid
       key={reactKey}
-      item
-      xs={12}
-      sm={renderElementGridWrapper ? component.gridColSpan : 12}
       id={`anchor_${addAttributesToName(component, component.name)}`}
+      size={{
+        xs: 12,
+        sm: renderElementGridWrapper ? component.gridColSpan : 12,
+      }}
     >
       <ControlledSelectField
         name={name}
