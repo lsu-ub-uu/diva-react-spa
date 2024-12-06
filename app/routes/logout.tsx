@@ -32,10 +32,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (auth) {
     try {
-      // No need to wait for CORA delete
-      // noinspection ES6MissingAwait
-
-      deleteSession(auth);
+      await deleteSession(auth);
     } catch (error) {
       console.error('Failed to delete session', error);
     }

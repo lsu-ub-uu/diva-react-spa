@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box, Button, Container, Grid, Link } from '@mui/material';
+import { Box, Button, Container, Link } from '@mui/material';
 import CachedIcon from '@mui/icons-material/Cached';
 import { Form, Link as RouterLink, useLocation } from '@remix-run/react';
 import divaLogo from '../../../assets/divaLogo.svg';
@@ -32,52 +32,44 @@ export const Header = () => {
       sx={{ py: 2, borderBottom: '1px solid #eee', backgroundColor: '#fff' }}
     >
       <Container maxWidth='lg'>
-        <Grid
-          container
-          spacing={2}
-          direction='row'
-          justifyContent='space-between'
-          alignItems='flex-start'
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+
+            gap: 2,
+          }}
         >
-          <Grid item>
-            <Link
-              component={RouterLink}
-              to='/'
-            >
-              <img
-                src={divaLogo}
-                className='logo'
-                alt='logo'
-                style={{ width: 160 }}
-              />
-            </Link>
-          </Grid>
-          <Grid
-            item
-            xs
-          />
-          <Grid item>
-            <Form
-              action='/refreshDefinitions'
-              method='POST'
-            >
-              <input
-                type='hidden'
-                name='returnTo'
-                value={returnTo}
-              />
-              <Button type='submit'>
-                Refresh Def <CachedIcon />
-              </Button>
-            </Form>
-          </Grid>
-          <Grid item>
-            <LanguageSwitcher />
-          </Grid>
-          <Grid item>
-            <Login />
-          </Grid>
-        </Grid>
+          <Link
+            component={RouterLink}
+            to='/'
+            sx={{ mr: 'auto' }}
+          >
+            <img
+              src={divaLogo}
+              className='logo'
+              alt='logo'
+              style={{ width: 160 }}
+            />
+          </Link>
+          <Form
+            action='/refreshDefinitions'
+            method='POST'
+          >
+            <input
+              type='hidden'
+              name='returnTo'
+              value={returnTo}
+            />
+            <Button type='submit'>
+              Refresh Def <CachedIcon />
+            </Button>
+          </Form>
+
+          <LanguageSwitcher />
+
+          <Login />
+        </Box>
       </Container>
     </Box>
   );

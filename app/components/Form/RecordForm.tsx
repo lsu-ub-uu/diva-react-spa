@@ -17,7 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppBar, Box, Button, Container, Grid, Toolbar } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Grid2 as Grid,
+  Toolbar,
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -79,14 +86,8 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
       >
         <Container maxWidth='lg'>
           <Grid container>
-            <Grid
-              item
-              xs={3}
-            />
-            <Grid
-              item
-              xs={9}
-            >
+            <Grid size={3} />
+            <Grid size={9}>
               <Toolbar>
                 <Box
                   component='div'

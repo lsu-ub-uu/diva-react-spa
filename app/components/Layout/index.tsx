@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Container, Grid, AppBar } from '@mui/material';
+import { AppBar, Container, Grid2 as Grid } from '@mui/material';
 import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
@@ -46,8 +46,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
       >
         <Grid container>
           <Grid
-            item
-            xs={12}
+            size={12}
             sx={{ pt: 2, pb: 4 }}
           >
             <Breadcrumbs />
@@ -58,16 +57,14 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
           columnSpacing={{ md: 4 }}
         >
           <Grid
-            item
-            style={{ width: '300px' }}
+            size={3}
             display={{ xs: 'none', sm: 'none', md: 'block' }}
           >
             <aside id='sidebar-content' />
           </Grid>
           <Grid
-            item
-            xs
             sx={{ paddingBottom: '64px' }}
+            size={9}
           >
             <main>{children}</main>
           </Grid>
