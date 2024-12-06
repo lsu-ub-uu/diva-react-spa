@@ -18,10 +18,10 @@
 
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
-import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
-import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
-import { searchRecords } from '@/data/searchRecords';
+import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import { BFFMetadataGroup } from '@/.server/cora/transform/bffTypes';
+import { searchRecords } from '@/.server/data/searchRecords';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const url = new URL(request.url);

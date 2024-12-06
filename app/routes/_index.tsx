@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSearchForm } from '@/data/getSearchForm';
-import { getValidationTypes } from '@/data/getValidationTypes';
+import { getSearchForm } from '@/.server/data/getSearchForm';
+import { getValidationTypes } from '@/.server/data/getValidationTypes';
 import { HomePage } from '@/pages';
-import { getAuthentication, getSessionFromCookie } from '@/sessions';
+import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import { defer, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { searchRecords } from '@/data/searchRecords';
+import { searchRecords } from '@/.server/data/searchRecords';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
 

@@ -22,23 +22,23 @@ import {
   commitSession,
   getSessionFromCookie,
   requireAuthentication,
-} from '@/sessions';
+} from '@/.server/sessions';
 import {
   ActionFunctionArgs,
   json,
   LoaderFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
+import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
+import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
 import { useLoaderData, useNavigation } from '@remix-run/react';
 import { enqueueSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { updateRecord } from '@/data/updateRecord';
+import { updateRecord } from '@/.server/data/updateRecord';
 import { BFFDataRecord } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';

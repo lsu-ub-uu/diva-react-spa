@@ -13,7 +13,7 @@ import {
   BFFPresentationRecordLink,
   BFFPresentationSurroundingContainer,
   BFFValidationType,
-} from '@/cora/transform/bffTypes';
+} from '@/.server/cora/transform/bffTypes';
 
 export const someValidationTypeData: BFFValidationType = {
   id: 'someValidationTypeId',

@@ -18,10 +18,13 @@
 
 import { ViewRecordPage } from '@/pages';
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { getSessionFromCookie, requireAuthentication } from '@/sessions';
+import {
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/.server/sessions';
 import { invariant } from '@remix-run/router/history';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
+import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
+import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
 import { useLoaderData } from '@remix-run/react';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
