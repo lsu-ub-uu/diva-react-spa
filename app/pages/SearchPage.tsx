@@ -45,7 +45,6 @@ export const SearchPage = () => {
   const { searchResults } = useLoaderData<typeof loader>();
 
   const { t } = useTranslation();
-  console.log({ searchResults });
   return (
     <div>
       <h1>{t('divaClient_searchPageHeaderText')}</h1>

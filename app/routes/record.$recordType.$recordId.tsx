@@ -18,8 +18,11 @@
 
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
-import { getSessionFromCookie, requireAuthentication } from '@/sessions';
+import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
+import {
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/.server/sessions';
 
 export const loader = async ({
   request,

@@ -68,7 +68,7 @@ export const ControlledAutocomplete = (
 
     const fetchData = async () => {
       try {
-        if (inputValue === '') {
+        if (inputValue === '' || inputValue.length < 2) {
           return undefined;
         }
         if (inputValue === presentationValue?.id) {
