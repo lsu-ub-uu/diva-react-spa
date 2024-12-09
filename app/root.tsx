@@ -30,7 +30,7 @@ import {
   LinksFunction,
   LoaderFunctionArgs,
 } from '@remix-run/node';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { PageLayout, SnackbarProvider } from '@/components';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
@@ -40,6 +40,7 @@ import favicon from '@/images/favicon.svg';
 import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/.server/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
+import { withEmotionCache } from '@emotion/react';
 
 const { MODE } = import.meta.env;
 
@@ -79,39 +80,59 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 }
 
-const Document = ({ children }: DocumentProps) => {
-  const data = useRouteLoaderData<typeof loader>('root');
-  const locale = data?.locale ?? 'sv';
+const Document = withEmotionCache(
+  ({ children }: DocumentProps, emotionCache) => {
+    const data = useRouteLoaderData<typeof loader>('root');
+    const locale = data?.locale ?? 'sv';
+    const emotionInsertionPointRef = useRef<HTMLMetaElement>(null);
 
-  useChangeLanguage(locale);
+    useChangeLanguage(locale);
 
-  return (
-    <html lang={locale}>
-      <head>
-        <meta charSet='utf-8' />
-        <meta
-          name='viewport'
-          content='width=device-width,initial-scale=1'
-        />
-        <meta
-          name='theme-color'
-          content={divaTheme.palette.primary.main}
-        />
-        <Meta />
-        <Links />
-        <meta
-          name='emotion-insertion-point'
-          content='emotion-insertion-point'
-        />
-      </head>
-      <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
-  );
-};
+    /**
+     * When a top level ErrorBoundary or CatchBoundary are rendered, the document head gets removed,
+     * so we have to create the style tags.
+     */
+    useEffect(() => {
+      const stylesLoaded =
+        emotionInsertionPointRef.current?.nextSibling?.nodeName === 'STYLE';
+
+      if (stylesLoaded) {
+        return;
+      }
+
+      emotionCache.sheet.container = document.head;
+      emotionCache.sheet.hydrate(emotionCache.sheet.tags);
+    }, [emotionCache.sheet]);
+
+    return (
+      <html lang={locale}>
+        <head>
+          <meta charSet='utf-8' />
+          <meta
+            name='viewport'
+            content='width=device-width,initial-scale=1'
+          />
+          <meta
+            name='theme-color'
+            content={divaTheme.palette.primary.main}
+          />
+          <Meta />
+          <Links />
+          <meta
+            ref={emotionInsertionPointRef}
+            name='emotion-insertion-point'
+            content='emotion-insertion-point'
+          />
+        </head>
+        <body>
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </body>
+      </html>
+    );
+  },
+);
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (

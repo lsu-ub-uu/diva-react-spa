@@ -16,12 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { isRouteErrorResponse, useRouteError } from '@remix-run/react';
+import { isRouteErrorResponse } from '@remix-run/react';
 import { Alert, AlertTitle } from '@mui/material';
 
-export const DefaultErrorBoundary = () => {
-  const error = useRouteError();
+interface ErrorAlertProps {
+  error: unknown;
+}
 
+export const ErrorAlert = ({ error }: ErrorAlertProps) => {
   if (isRouteErrorResponse(error)) {
     return (
       <Alert severity='error'>
