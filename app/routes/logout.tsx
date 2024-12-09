@@ -29,7 +29,6 @@ export async function action({ request }: ActionFunctionArgs) {
   const auth = getAuthentication(session);
   const form = await request.formData();
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
-
   if (auth) {
     try {
       await deleteSession(auth);

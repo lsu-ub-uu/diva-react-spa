@@ -23,9 +23,9 @@ import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import { defer, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { searchRecords } from '@/.server/data/searchRecords';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);

@@ -27,10 +27,10 @@ import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByReco
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
 import { useLoaderData } from '@remix-run/react';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export const loader = async ({
   request,

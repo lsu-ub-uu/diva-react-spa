@@ -20,7 +20,7 @@
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
+import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -34,6 +34,7 @@ import { Card } from '@/components';
 import { loader } from '@/routes/_index';
 import { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
+import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
@@ -121,27 +122,19 @@ export const ListPublicationsCard = () => {
   ];
 
   return (
-    <Suspense fallback={<Skeleton height={500} />}>
-      <Await
-        resolve={recordList}
-        errorElement={
-          <Alert severity={'error'}>
-            Just nu kan vi inte visa publikationer
-          </Alert>
-        }
-      >
-        {(recordList) => (
-          <Card
-            title={t('divaClient_listPublicationsText') as string}
-            variant='variant5'
-            tooltipTitle={
-              t('divaClient_listPublicationsTooltipTitleText') as string
-            }
-            tooltipBody={
-              t('divaClient_listPublicationsTooltipBodyText') as string
-            }
+    <Card
+      title={t('divaClient_listPublicationsText') as string}
+      variant='variant5'
+      tooltipTitle={t('divaClient_listPublicationsTooltipTitleText') as string}
+      tooltipBody={t('divaClient_listPublicationsTooltipBodyText') as string}
+    >
+      <div style={{ height: 600, width: '100%' }}>
+        <Suspense fallback={<Skeleton height={500} />}>
+          <Await
+            resolve={recordList}
+            errorElement={<AsyncErrorBoundary />}
           >
-            <div style={{ height: 600, width: '100%' }}>
+            {(recordList) => (
               <DataGrid<BFFDataRecord>
                 sx={{
                   '& .MuiDataGrid-cell:focus': {
@@ -165,11 +158,11 @@ export const ListPublicationsCard = () => {
                 }} */
                 hideFooter
               />
-            </div>
-          </Card>
-        )}
-      </Await>
-    </Suspense>
+            )}
+          </Await>
+        </Suspense>
+      </div>
+    </Card>
   );
 };
 

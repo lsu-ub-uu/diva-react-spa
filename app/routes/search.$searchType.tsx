@@ -25,9 +25,9 @@ import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchPa
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export const loader = async ({
   request,
