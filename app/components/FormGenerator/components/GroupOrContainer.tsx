@@ -64,19 +64,23 @@ export const GroupOrContainer = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <Box
-        sx={(theme) => ({
+        sx={{
           mb: 2,
-          backgroundColor: 'blue.light',
-          padding: 2,
+          backgroundColor: '#f7fafd',
           borderRadius: 2,
-          border: `1px solid ${theme.palette.blue.main}`,
-        })}
+          position: 'relative',
+          overflow: 'hidden',
+        }}
       >
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            backgroundColor: '#d6e7f3',
+            width: '100%',
+            justifyContent: 'space-between',
+            px: 2,
           }}
         >
           {component.showLabel === true ? (
@@ -107,6 +111,7 @@ export const GroupOrContainer = ({
           spacing={2}
           justifyContent='space-between'
           alignItems='flex-start'
+          sx={{ px: 2 }}
           id={`anchor_${addAttributesToName(component, component.name)}`}
         >
           <Attributes

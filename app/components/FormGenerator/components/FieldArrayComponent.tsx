@@ -44,17 +44,6 @@ interface FieldArrayComponentProps {
   hasValue?: boolean;
 }
 
-function addSpaceForActionButtons(props: FieldArrayComponentProps) {
-  return (
-    <>
-      {!props.component.showLabel && props.component.mode === 'input' && (
-        /* Leave space for action buttons when no label */
-        <Box sx={{ paddingBlock: 4 }} />
-      )}
-    </>
-  );
-}
-
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   const { t } = useTranslation();
   const { fields, append, move, remove } = useFieldArray({
@@ -72,7 +61,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   const handleRemove = async (index: number) => {
     remove(index);
   };
-
   return (
     <Grid
       key={`${props.name}_grid`}
@@ -89,11 +77,15 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       />
       {fields.map((field, index) => {
         return (
-          <div
+          <Box
             key={`${field.id}_${index}_a`}
-            style={{
+            sx={{
+              mb: 2,
+
+              backgroundColor: '#f7fafd',
+              borderRadius: 2,
               position: 'relative',
-              marginTop: '10px',
+              overflow: 'hidden',
             }}
           >
             {isComponentGroup(props.component) && (
@@ -103,6 +95,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   display: 'flex',
                   alignItems: 'center',
                   mb: 2,
+
+                  backgroundColor: '#d6e7f3',
+                  px: 2,
                 }}
               >
                 {props.component.showLabel && (
@@ -151,12 +146,14 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               </Box>
             )}
 
-            {
-              props.renderCallback(
-                `${props.name}[${index}]` as const,
-              ) as JSX.Element
-            }
-          </div>
+            <Box sx={{ px: 2 }}>
+              {
+                props.renderCallback(
+                  `${props.name}[${index}]` as const,
+                ) as JSX.Element
+              }
+            </Box>
+          </Box>
         );
       })}
       {props.component.mode === 'input' &&

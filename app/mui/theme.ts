@@ -92,23 +92,29 @@ export const divaTheme = createTheme({
     h1TextStyle: {
       fontSize: '2rem',
       fontWeight: '600',
+      margin: '0 0 0 0',
     },
     h2TextStyle: {
       fontSize: '1.5rem',
       fontWeight: '400',
+      margin: '0 0 0 0',
     },
     h3TextStyle: {
       fontSize: '1.4rem',
       fontWeight: '400',
+      margin: '0 0 0 0',
     },
     h4TextStyle: {
       fontSize: '2rem',
+      margin: '0 0 0 0',
     },
     h5TextStyle: {
       fontSize: '2rem',
+      margin: '0 0 0 0',
     },
     h6TextStyle: {
       fontSize: '2rem',
+      margin: '0 0 0 0',
     },
     bodyTextStyle: {
       fontSize: '1rem',

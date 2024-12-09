@@ -21,8 +21,6 @@ import { FieldArrayComponent } from '@/components/FormGenerator/components/Field
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useRemixFormContext } from 'remix-hook-form';
-import { Box } from '@mui/material';
-import { isFirstLevelGroup } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -48,19 +46,7 @@ export const RepeatingGroup = ({
       name={currentComponentNamePath}
       renderCallback={(arrayPath: string) => {
         return (
-          <Box
-            sx={(theme) =>
-              isFirstLevelGroup(currentComponentNamePath)
-                ? {
-                    mb: 2,
-                    backgroundColor: 'blue.light',
-                    padding: 2,
-                    borderRadius: 2,
-                    border: `1px solid ${theme.palette.blue.main}`,
-                  }
-                : {}
-            }
-          >
+          <>
             <Attributes
               component={component}
               path={arrayPath}
@@ -73,7 +59,7 @@ export const RepeatingGroup = ({
               }
               path={arrayPath}
             />
-          </Box>
+          </>
         );
       }}
     />
