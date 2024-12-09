@@ -80,14 +80,6 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 }
 
-const stylesAreLoaded = () => {
-  const emotionInsertionPoint = document.querySelector(
-    "meta[name='emotion-insertion-point']",
-  );
-  const nextSibling = emotionInsertionPoint?.nextSibling;
-  return nextSibling != null && nextSibling.nodeName === 'STYLE';
-};
-
 const Document = withEmotionCache(
   ({ children }: DocumentProps, emotionCache) => {
     const data = useRouteLoaderData<typeof loader>('root');
