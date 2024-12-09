@@ -19,7 +19,7 @@
 import { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { ControlledLinkedRecord } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
 
@@ -43,9 +43,10 @@ export const RecordLinkWithLinkedPresentation = ({
       {hasValue ? (
         <Grid
           key={reactKey}
-          item
-          xs={12}
-          sm={renderElementGridWrapper ? component.gridColSpan : 12}
+          size={{
+            xs: 12,
+            sm: renderElementGridWrapper ? component.gridColSpan : 12,
+          }}
         >
           <ControlledLinkedRecord
             control={control}

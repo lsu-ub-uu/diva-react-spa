@@ -27,12 +27,14 @@
     </parent>
 
     <artifactId>diva-client</artifactId>
-    <version>1.11-SNAPSHOT</version>
+    <version>1.12-SNAPSHOT</version>
     <name>DiVA Client</name>
 
     <properties>
         <exec-maven-plugin.version>3.5.0</exec-maven-plugin.version>
         <basename>/divaclient</basename>
+        <docker-repo-url>dev-maven-repo:19003</docker-repo-url>
+        <docker-image-tag>${project.artifactId}:${project.version}</docker-image-tag>
     </properties>
 
 
@@ -61,10 +63,40 @@
                             <arguments>
                                 <argument>build</argument>
                                 <argument>-t</argument>
-                                <argument>${project.artifactId}:${project.version}</argument>
+                                <argument>${docker-image-tag}</argument>
                                 <argument>--build-arg</argument>
                                 <argument>BASE_PATH=${basename}</argument>
                                 <argument>.</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>docker-tag</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker</executable>
+                            <arguments>
+                                <argument>tag</argument>
+                                <argument>${docker-image-tag}</argument>
+                                <argument>${docker-repo-url}/${docker-image-tag}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>docker-push</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker</executable>
+                            <arguments>
+                                <argument>image</argument>
+                                <argument>push</argument>
+                                <argument>${docker-repo-url}/${docker-image-tag}</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -73,3 +105,4 @@
         </plugins>
     </build>
 </project>
+

@@ -17,12 +17,12 @@
  */
 
 import { ActionFunctionArgs, json } from '@remix-run/node';
-import { deleteRecord } from '@/data/deleteRecord';
+import { deleteRecord } from '@/.server/data/deleteRecord';
 import {
   commitSession,
   getSessionFromCookie,
   requireAuthentication,
-} from '@/sessions';
+} from '@/.server/sessions';
 import { invariant } from '@remix-run/router/history';
 
 export const action = async ({

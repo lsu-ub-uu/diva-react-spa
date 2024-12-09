@@ -21,16 +21,16 @@ import { useTranslation } from 'react-i18next';
 import {
   Button,
   CircularProgress,
-  Grid,
+  Grid2 as Grid,
   NativeSelect,
   OutlinedInput,
-  Skeleton,
 } from '@mui/material';
 import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card } from '@/components';
 import { loader } from '@/routes/_index';
 import { Suspense } from 'react';
+import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 
 const formAction = '/create';
 
@@ -42,19 +42,22 @@ export const CreatePublicationCard = () => {
   const loading = navigation.formAction === formAction;
 
   return (
-    <Suspense fallback={<Skeleton height={164} />}>
-      <Await resolve={validationTypes}>
-        {(validationTypes) => (
-          <Card
-            title={t('divaClient_createPublicationTypeText')}
-            variant='variant1'
-            tooltipTitle={
-              t('divaClient_createPublicationTypeTooltipTitleText') as string
-            }
-            tooltipBody={
-              t('divaClient_createPublicationTypeTooltipBodyText') as string
-            }
-          >
+    <Card
+      title={t('divaClient_createPublicationTypeText')}
+      variant='variant1'
+      tooltipTitle={
+        t('divaClient_createPublicationTypeTooltipTitleText') as string
+      }
+      tooltipBody={
+        t('divaClient_createPublicationTypeTooltipBodyText') as string
+      }
+    >
+      <Suspense fallback={<CircularProgress />}>
+        <Await
+          resolve={validationTypes}
+          errorElement={<AsyncErrorBoundary />}
+        >
+          {(validationTypes) => (
             <Form action={formAction}>
               <Grid
                 container
@@ -62,11 +65,7 @@ export const CreatePublicationCard = () => {
                 justifyContent='space-between'
                 alignItems='flex-start'
               >
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                >
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <NativeSelect
                     defaultValue=''
                     name='validationType'
@@ -91,11 +90,7 @@ export const CreatePublicationCard = () => {
                     ))}
                   </NativeSelect>
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                >
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Button
                     disabled={loading}
                     type='submit'
@@ -114,9 +109,9 @@ export const CreatePublicationCard = () => {
                 </Grid>
               </Grid>
             </Form>
-          </Card>
-        )}
-      </Await>
-    </Suspense>
+          )}
+        </Await>
+      </Suspense>
+    </Card>
   );
 };

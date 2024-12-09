@@ -20,14 +20,17 @@ import { invariant } from '@remix-run/router/history';
 import { type ActionFunctionArgs, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/pages/CreateRecordPage';
-import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
+import { getRecordByValidationTypeId } from '@/.server/data/getRecordByValidationTypeId';
+import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
-import { createRecord } from '@/data/createRecord';
+import { createRecord } from '@/.server/data/createRecord';
 import { BFFDataRecord } from '@/types/record';
-import { getSessionFromCookie, requireAuthentication } from '@/sessions';
+import {
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/.server/sessions';
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import {
@@ -35,9 +38,9 @@ import {
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);

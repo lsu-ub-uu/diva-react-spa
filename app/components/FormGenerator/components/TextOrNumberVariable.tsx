@@ -24,7 +24,7 @@ import {
   checkIfComponentHasValue,
   convertChildStyleToString,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledTextField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -61,9 +61,10 @@ export const TextOrNumberVariable = ({
   return (
     <Grid
       key={reactKey}
-      item
-      xs={12}
-      sm={renderElementGridWrapper ? component.gridColSpan : 12}
+      size={{
+        xs: 12,
+        sm: renderElementGridWrapper ? component.gridColSpan : 12,
+      }}
       style={{
         flexBasis:
           convertChildStyleToString(component.childStyle) === 'compact'

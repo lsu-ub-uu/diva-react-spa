@@ -21,7 +21,7 @@ import {
   FormComponentCollVar,
 } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -42,8 +42,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
       return (
         <Grid
           key={attribute.name}
-          item
-          xs={6}
+          size={6}
           id={`anchor_${addAttributesToName(component, component.name)}`}
         >
           <ControlledSelectField
@@ -69,8 +68,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
       return (
         <Grid
           key={attribute.name}
-          item
-          xs={6}
+          size={6}
           id={`anchor_${addAttributesToName(component, component.name)}`}
         >
           <ControlledSelectField

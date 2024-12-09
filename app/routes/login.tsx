@@ -1,7 +1,7 @@
 import type { ActionFunction, LoaderFunctionArgs } from '@remix-run/node'; // or cloudflare/deno
 import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
-import { commitSession, getSession } from '@/sessions';
+import { commitSession, getSession } from '@/.server/sessions';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormGenerator } from '@/components';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -10,11 +10,11 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useSnackbar, VariantType } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { loginWithAppToken } from '@/data/loginWithAppToken';
-import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
+import { loginWithAppToken } from '@/.server/data/loginWithAppToken';
+import { loginWithUsernameAndPassword } from '@/.server/data/loginWithUsernameAndPassword';
 import { Auth } from '@/types/Auth';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {
@@ -28,7 +28,7 @@ const parsePresentation = (searchParam: string | null) => {
   }
 };
 
-export const ErrorBoundary: ErrorBoundaryComponent = DefaultErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);

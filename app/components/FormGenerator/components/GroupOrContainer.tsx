@@ -20,7 +20,7 @@ import {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Box, Grid2 as Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { Tooltip, Typography } from '@/components';
 import InfoIcon from '@mui/icons-material/Info';
@@ -59,8 +59,7 @@ export const GroupOrContainer = ({
     linkedData,
   ) ? (
     <Grid
-      item
-      xs={12}
+      size={12}
       key={reactKey}
       className='anchorLink'
       id={`anchor_${addAttributesToName(component, component.name)}`}
@@ -123,10 +122,9 @@ export const GroupOrContainer = ({
     </Grid>
   ) : (
     <Grid
-      item
       key={reactKey}
       id={`anchor_${addAttributesToName(component, component.name)}`}
-      xs={12}
+      size={12}
       sx={{
         display: 'flex',
         flexDirection:
