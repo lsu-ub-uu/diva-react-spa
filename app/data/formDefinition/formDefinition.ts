@@ -699,6 +699,16 @@ const createDetailedPresentationBasedOnPresentationType = (
       undefined,
       presentation,
     );
+    return removeEmpty({
+      ...commonParameters,
+      validation,
+      repeat,
+      finalValue,
+      attributes,
+      childStyle,
+      gridColSpan,
+      inputFormat,
+    });
   }
 
   if (presentation.type === 'pNumVar') {
@@ -711,6 +721,15 @@ const createDetailedPresentationBasedOnPresentationType = (
       undefined,
       presentation,
     );
+    return removeEmpty({
+      ...commonParameters,
+      validation,
+      repeat,
+      finalValue,
+      attributes,
+      childStyle,
+      gridColSpan,
+    });
   }
 
   if (presentation.type === 'pCollVar') {
@@ -723,6 +742,15 @@ const createDetailedPresentationBasedOnPresentationType = (
       options,
       presentation,
     );
+    return removeEmpty({
+      ...commonParameters,
+      repeat,
+      options,
+      finalValue,
+      attributes,
+      childStyle,
+      gridColSpan,
+    });
   }
 
   if (presentation.type === 'pRecordLink') {
@@ -744,6 +772,17 @@ const createDetailedPresentationBasedOnPresentationType = (
       options,
       presentation,
     );
+    return removeEmpty({
+      ...commonParameters,
+      repeat,
+      attributes,
+      childStyle,
+      gridColSpan,
+      recordLinkType,
+      presentationRecordLinkId,
+      search,
+      linkedRecordPresentation,
+    });
   }
 
   if (presentation.type === 'container') {
@@ -794,6 +833,15 @@ const createDetailedPresentationBasedOnPresentationType = (
       definitionFilteredChildRefs,
       presentationContainer.children,
     );
+    return removeEmpty({
+      ...commonParameters,
+      repeat,
+      components,
+      presentationStyle,
+      containerType,
+      childStyle,
+      gridColSpan,
+    });
   }
 
   if (presentation.type === 'pGroup') {
@@ -811,6 +859,15 @@ const createDetailedPresentationBasedOnPresentationType = (
       group.children,
       presentationGroup.children,
     );
+    return removeEmpty({
+      ...commonParameters,
+      repeat,
+      attributes,
+      components,
+      presentationStyle,
+      childStyle,
+      gridColSpan,
+    });
   }
 
   return removeEmpty({
