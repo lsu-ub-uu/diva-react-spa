@@ -38,7 +38,6 @@ export const ErrorAlert = ({ error }: ErrorAlertProps) => {
       <Alert severity='error'>
         <AlertTitle>Error</AlertTitle>
         <p>{error.message}</p>
-        <p>The stack trace is:</p>
         <pre>{error.stack}</pre>
       </Alert>
     );
