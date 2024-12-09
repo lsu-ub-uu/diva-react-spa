@@ -63,7 +63,15 @@ export const GroupOrContainer = ({
       className='anchorLink'
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <Box sx={{ mb: 2 }}>
+      <Box
+        sx={(theme) => ({
+          mb: 2,
+          backgroundColor: 'blue.light',
+          padding: 2,
+          borderRadius: 2,
+          border: `1px solid ${theme.palette.blue.main}`,
+        })}
+      >
         <Box
           sx={{
             display: 'flex',

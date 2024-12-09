@@ -130,26 +130,25 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   </>
                 )}
 
-                {addSpaceForActionButtons(props)}
-              </Box>
-            )}
-            {props.component.mode === 'input' && (
-              <ActionButtonGroup
-                entityName={`${t(props.component.label ?? '')}`}
-                hideMoveButtons={isComponentSingularAndOptional(
-                  props.component,
+                {props.component.mode === 'input' && (
+                  <ActionButtonGroup
+                    entityName={`${t(props.component.label ?? '')}`}
+                    hideMoveButtons={isComponentSingularAndOptional(
+                      props.component,
+                    )}
+                    moveUpButtonDisabled={index === 0}
+                    moveUpButtonAction={() => handleMove(index, index - 1)}
+                    moveDownButtonDisabled={index === fields.length - 1}
+                    moveDownButtonAction={() => handleMove(index, index + 1)}
+                    deleteButtonDisabled={
+                      fields.length <= (props.component.repeat?.repeatMin ?? 1)
+                    }
+                    deleteButtonAction={() => handleRemove(index)}
+                    entityType={props.component.type}
+                    key={`${field.id}_${index}_f`}
+                  />
                 )}
-                moveUpButtonDisabled={index === 0}
-                moveUpButtonAction={() => handleMove(index, index - 1)}
-                moveDownButtonDisabled={index === fields.length - 1}
-                moveDownButtonAction={() => handleMove(index, index + 1)}
-                deleteButtonDisabled={
-                  fields.length <= (props.component.repeat?.repeatMin ?? 1)
-                }
-                deleteButtonAction={() => handleRemove(index)}
-                entityType={props.component.type}
-                key={`${field.id}_${index}_f`}
-              />
+              </Box>
             )}
 
             {

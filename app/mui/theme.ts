@@ -22,6 +22,7 @@ import {
   Shadows,
 } from '@mui/material/styles';
 import { CSSProperties } from 'react';
+import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -47,11 +48,11 @@ declare module '@mui/material/styles' {
   }
 
   interface Palette {
-    blue: PaletteColorOptions;
-    purple: PaletteColorOptions;
-    green: PaletteColorOptions;
-    red: PaletteColorOptions;
-    yellow: PaletteColorOptions;
+    blue: SimplePaletteColorOptions;
+    purple: SimplePaletteColorOptions;
+    green: SimplePaletteColorOptions;
+    red: SimplePaletteColorOptions;
+    yellow: SimplePaletteColorOptions;
     gray: PaletteColorOptions;
   }
   interface PaletteOptions {

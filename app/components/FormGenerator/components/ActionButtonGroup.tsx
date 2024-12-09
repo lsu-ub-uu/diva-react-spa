@@ -44,11 +44,9 @@ export const ActionButtonGroup = (
     <ButtonGroup
       size='small'
       sx={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
+        ml: 'auto',
         zIndex: 1,
-        border: ' solid 1px',
+        border: 'solid 1px',
         borderRadius: '25px',
         backgroundColor: '#00000',
       }}
