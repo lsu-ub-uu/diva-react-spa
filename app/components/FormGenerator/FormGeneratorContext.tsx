@@ -17,11 +17,12 @@
  */
 
 import { createContext } from 'react';
+import { BFFDataRecord } from '@/types/record';
 
 export interface FormGeneratorContextType {
-  linkedData: boolean;
+  linkedData?: BFFDataRecord['data'];
 }
 
 export const FormGeneratorContext = createContext<FormGeneratorContextType>({
-  linkedData: false,
+  linkedData: undefined,
 });

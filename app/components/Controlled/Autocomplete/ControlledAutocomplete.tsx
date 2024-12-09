@@ -19,7 +19,13 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { Autocomplete as MuiAutocomplete, FormControl, FormLabel, IconButton, TextField } from '@mui/material';
+import {
+  Autocomplete as MuiAutocomplete,
+  FormControl,
+  FormLabel,
+  IconButton,
+  TextField,
+} from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -62,14 +68,14 @@ export const ControlledAutocomplete = (
 
     const fetchData = async () => {
       try {
-        if (inputValue === '') {
+        if (inputValue === '' || inputValue.length < 2) {
           return undefined;
         }
         if (inputValue === presentationValue?.id) {
           return undefined;
         }
         const response = await axios.get(
-          `/autocompleteSearch?searchType=${props.searchLink}&searchTermValue=${inputValue}`,
+          `${import.meta.env.BASE_URL}autocompleteSearch?searchType=${props.searchLink}&searchTermValue=${inputValue}`,
         );
 
         if (isMounted) {
