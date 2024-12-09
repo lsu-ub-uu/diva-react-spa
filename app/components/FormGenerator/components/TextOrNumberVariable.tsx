@@ -49,14 +49,6 @@ export const TextOrNumberVariable = ({
   const { getValues, control } = useRemixFormContext();
   const { linkedData } = useContext(FormGeneratorContext);
   const hasValue = checkIfComponentHasValue(getValues, name);
-  console.log('TextOrNumberVariable', {
-    component,
-    name,
-    linkedData,
-    hasValue,
-    value: getValues(name),
-    values: getValues(),
-  });
 
   return (
     <Grid
