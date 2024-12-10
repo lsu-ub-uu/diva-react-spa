@@ -17,10 +17,12 @@
  */
 
 import { Box, SxProps } from '@mui/material';
-import { ReactNode, useContext } from 'react';
+import { HTMLProps, ReactNode, useContext } from 'react';
+
+import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 
-interface CardHeaderProps {
+interface CardHeaderProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
   sx?: SxProps;
 }
@@ -30,12 +32,9 @@ export const CardHeader = ({ children, sx = {} }: CardHeaderProps) => {
 
   return (
     <Box
-      sx={{
-        backgroundColor: boxed ? 'rgb(5 85 164 / 8%)' : undefined,
-        px: boxed ? 2 : undefined,
-        py: boxed ? 1 : undefined,
-        ...sx,
-      }}
+      className={styles.cardHeader}
+      data-boxed={boxed}
+      sx={sx}
     >
       {children}
     </Box>

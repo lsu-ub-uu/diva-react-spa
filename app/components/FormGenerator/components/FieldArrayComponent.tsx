@@ -29,7 +29,6 @@ import {
   createDefaultValuesFromComponent,
 } from '../defaultValues/defaultValues';
 import {
-  getGroupLevel,
   headlineLevelToTypographyVariant,
   isComponentGroup,
   isComponentSingularAndOptional,
@@ -91,14 +90,16 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
             size={12}
             key={`${field.id}_${index}_a`}
           >
-            <Card boxed={isBoxed}>
+            <Card
+              boxed={isBoxed}
+              sx={{ position: 'relative' }}
+            >
               {isComponentGroup(props.component) && (
                 <CardHeader
                   key={`${field.id}_${index}_b`}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    mb: 2,
                   }}
                 >
                   {props.component.showLabel && (

@@ -49,7 +49,7 @@ export const AutocompleteForm = ({ ...props }: AutocompleteFormProps) => {
     <FormProvider {...methods}>
       <FormGenerator
         formSchema={props.formSchema}
-        linkedData={props.record?.data}
+        linkedData={props.record?.data !== undefined}
       />
     </FormProvider>
   );

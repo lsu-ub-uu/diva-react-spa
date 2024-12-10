@@ -129,32 +129,32 @@ export const GroupOrContainer = ({
       </Card>
     </Grid>
   ) : (
-    <Card boxed={groupLevel !== 0}>
-      <Grid
-        key={reactKey}
-        id={`anchor_${addAttributesToName(component, component.name)}`}
-        size={12}
-        sx={{
-          display: 'flex',
-          flexDirection:
-            checkIfPresentationStyleIsInline(component) || linkedData
-              ? 'row'
-              : 'column',
-          flexWrap: 'wrap',
-          alignItems: checkIfPresentationStyleOrParentIsInline(
-            component,
-            parentPresentationStyle,
-          )
-            ? 'center'
-            : null,
-          gap: checkIfPresentationStyleOrParentIsInline(
-            component,
-            parentPresentationStyle,
-          )
-            ? '0.2em'
-            : null,
-        }}
-      >
+    <Grid
+      key={reactKey}
+      id={`anchor_${addAttributesToName(component, component.name)}`}
+      size={12}
+      sx={{
+        display: 'flex',
+        flexDirection:
+          checkIfPresentationStyleIsInline(component) || linkedData
+            ? 'row'
+            : 'column',
+        flexWrap: 'wrap',
+        alignItems: checkIfPresentationStyleOrParentIsInline(
+          component,
+          parentPresentationStyle,
+        )
+          ? 'center'
+          : null,
+        gap: checkIfPresentationStyleOrParentIsInline(
+          component,
+          parentPresentationStyle,
+        )
+          ? '0.2em'
+          : null,
+      }}
+    >
+      <Card boxed={groupLevel !== 0}>
         {component?.showLabel &&
           (!linkedData ? (
             <CardHeader>
@@ -198,8 +198,8 @@ export const GroupOrContainer = ({
             )}
           </Box>
         </CardContent>
-      </Grid>
-    </Card>
+      </Card>
+    </Grid>
   );
 };
 
