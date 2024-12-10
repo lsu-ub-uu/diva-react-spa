@@ -24,7 +24,7 @@ export { Tooltip } from './Tooltip/Tooltip';
 
 export { Dialog } from './Dialog/Dialog';
 
-export { Card } from './Card/Card';
+export { LegacyCard } from '@/components/LegacyCard/LegacyCard';
 export { FileUpload } from './FileUpload/FileUpload';
 export {
   HorizontalStepper,

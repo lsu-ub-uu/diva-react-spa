@@ -17,27 +17,26 @@
  */
 
 import { Box, SxProps } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import { CardContext } from '@/components/Card/CardContext';
 
-export interface CardProps {
+interface CardContentProps {
   children: ReactNode;
-  boxed?: boolean;
   sx?: SxProps;
 }
 
-export const Card = ({ children, boxed = false, sx = {} }: CardProps) => {
+export const CardContent = ({ children, sx = {} }: CardContentProps) => {
+  const { boxed } = useContext(CardContext);
+
   return (
     <Box
       sx={{
-        backgroundColor: boxed ? 'rgb(5 85 164 / 5%)' : undefined,
-        borderRadius: 2,
-        overflow: 'hidden',
-        position: 'relative',
+        px: boxed ? 2 : undefined,
+        py: boxed ? 1 : undefined,
         ...sx,
       }}
     >
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
+      {children}
     </Box>
   );
 };

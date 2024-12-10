@@ -30,7 +30,7 @@ import {
   useFetcher,
   useLoaderData,
 } from '@remix-run/react';
-import { Card } from '@/components';
+import { LegacyCard } from '@/components';
 import { loader } from '@/routes/_index';
 import { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
@@ -122,7 +122,7 @@ export const ListPublicationsCard = () => {
   ];
 
   return (
-    <Card
+    <LegacyCard
       title={t('divaClient_listPublicationsText') as string}
       variant='variant5'
       tooltipTitle={t('divaClient_listPublicationsTooltipTitleText') as string}
@@ -162,7 +162,7 @@ export const ListPublicationsCard = () => {
           </Await>
         </Suspense>
       </div>
-    </Card>
+    </LegacyCard>
   );
 };
 
