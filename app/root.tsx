@@ -41,6 +41,7 @@ import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/.server/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import { withEmotionCache } from '@emotion/react';
+import './root.css';
 
 const { MODE } = import.meta.env;
 

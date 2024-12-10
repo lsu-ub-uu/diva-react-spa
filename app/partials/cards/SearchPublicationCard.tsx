@@ -19,7 +19,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
-import { Card } from '@/components';
+import { LegacyCard } from '@/components';
 import { SearchForm } from '@/components/Form/SearchForm';
 import { Suspense } from 'react';
 import { Await, useLoaderData } from '@remix-run/react';
@@ -33,7 +33,7 @@ export const SearchPublicationCard = () => {
   const { searchForm } = useLoaderData<typeof loader>();
 
   return (
-    <Card
+    <LegacyCard
       title={t('divaClient_searchPublicationText') as string}
       variant='variant2'
       tooltipTitle={
@@ -56,6 +56,6 @@ export const SearchPublicationCard = () => {
           )}
         </Await>
       </Suspense>
-    </Card>
+    </LegacyCard>
   );
 };

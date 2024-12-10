@@ -17,26 +17,26 @@
  */
 
 import { render, screen } from '@testing-library/react';
-import { Card } from '../Card';
+import { LegacyCard } from '../LegacyCard';
 
 export const TestableCard = () => {
   return (
-    <Card
-      title='Card title'
+    <LegacyCard
+      title='LegacyCard title'
       variant='variant1'
       tooltipTitle='Title'
       tooltipBody='Body'
     >
       test content
-    </Card>
+    </LegacyCard>
   );
 };
 
-describe('<Card />', () => {
+describe('<LegacyCard />', () => {
   it('Renders', () => {
     render(<TestableCard />);
 
-    const testTitle = 'Card title';
+    const testTitle = 'LegacyCard title';
     const titleText = screen.getByText(testTitle);
     expect(titleText).toHaveTextContent(testTitle);
 

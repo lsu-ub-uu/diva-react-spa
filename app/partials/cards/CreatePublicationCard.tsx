@@ -27,7 +27,7 @@ import {
 } from '@mui/material';
 import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Card } from '@/components';
+import { LegacyCard } from '@/components';
 import { loader } from '@/routes/_index';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
@@ -42,7 +42,7 @@ export const CreatePublicationCard = () => {
   const loading = navigation.formAction === formAction;
 
   return (
-    <Card
+    <LegacyCard
       title={t('divaClient_createPublicationTypeText')}
       variant='variant1'
       tooltipTitle={
@@ -112,6 +112,6 @@ export const CreatePublicationCard = () => {
           )}
         </Await>
       </Suspense>
-    </Card>
+    </LegacyCard>
   );
 };
