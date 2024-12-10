@@ -56,19 +56,13 @@ export const RepeatingVariable = ({
       name={currentComponentNamePath}
       renderCallback={(variableArrayPath: string) => {
         return (
-          <>
-            <Attributes
-              component={component}
-              path={variableArrayPath}
-            />
-            <LeafComponent
-              component={component}
-              reactKey={variableArrayPath}
-              name={`${variableArrayPath}.value`}
-              renderElementGridWrapper={false}
-              parentPresentationStyle={parentPresentationStyle}
-            />
-          </>
+          <LeafComponent
+            component={component}
+            reactKey={variableArrayPath}
+            name={`${variableArrayPath}.value`}
+            renderElementGridWrapper={false}
+            parentPresentationStyle={parentPresentationStyle}
+          />
         );
       }}
       hasValue={hasValue}

@@ -99,6 +99,10 @@ export const GroupOrContainer = ({
                   <InfoIcon />
                 </IconButton>
               </Tooltip>
+              <Attributes
+                component={component}
+                path={currentComponentNamePath}
+              />
             </>
           </CardHeader>
         ) : null}
@@ -109,11 +113,6 @@ export const GroupOrContainer = ({
             alignItems='flex-start'
             id={`anchor_${addAttributesToName(component, component.name)}`}
           >
-            <Attributes
-              component={component}
-              path={currentComponentNamePath}
-            />
-
             {component.components && (
               <ComponentList
                 components={component.components}
@@ -165,6 +164,10 @@ export const GroupOrContainer = ({
                   component.headlineLevel,
                 )}
               />
+              <Attributes
+                component={component}
+                path={currentComponentNamePath}
+              />
             </CardHeader>
           ) : (
             <span style={{ width: '100%' }}>
@@ -178,11 +181,6 @@ export const GroupOrContainer = ({
             </span>
           ))}
         <CardContent>
-          <Attributes
-            component={component}
-            path={currentComponentNamePath}
-          />
-
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {component.components && (
               <ComponentList

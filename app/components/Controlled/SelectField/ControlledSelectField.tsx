@@ -18,6 +18,7 @@
 
 import { Control, Controller } from 'react-hook-form';
 import {
+  Box,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -51,7 +52,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
     props.hasValue === true && displayMode === 'output';
   const showLabelAndIsInput =
     props.showLabel === true && displayMode === 'input';
-  const isAttribute = props.name.split('_')[1] !== undefined;
+  const isAttribute = isAttributeName(props.name);
   const findOptionLabelByValue = (
     array: Option[] | undefined,
     value: string,
@@ -69,7 +70,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
         fieldState: { error },
       }) => (
         <FormControl fullWidth>
-          <>
+          <Box sx={{ display: isAttribute ? 'flex' : undefined }}>
             {hasValueAndIsOutput || showLabelAndIsInput ? (
               <FormLabel
                 htmlFor={name}
@@ -104,6 +105,9 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             {displayMode === 'input' ? (
               <Select
                 sx={{
+                  '& .MuiSelect-select': {
+                    py: isAttribute ? 0.5 : undefined,
+                  },
                   '& .MuiSelect-select .notranslate::after': props.placeholder
                     ? {
                         content: `"${t(props.placeholder)}"`,
@@ -168,9 +172,14 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             <FormHelperText error={error !== undefined}>
               {error !== undefined ? error.message : ' '}
             </FormHelperText>
-          </>
+          </Box>
         </FormControl>
       )}
     />
   );
+};
+
+const isAttributeName = (name: string) => {
+  const parts = name.split('.');
+  return parts[parts.length - 1].startsWith('_');
 };

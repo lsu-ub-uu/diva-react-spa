@@ -16,12 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormControl, FormLabel, IconButton, TextField } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  IconButton,
+  TextField,
+} from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
 import { Tooltip } from '../../index';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import React, { ReactNode } from 'react';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -37,6 +45,7 @@ interface ControlledTextFieldProps {
   showLabel?: boolean;
   hasValue?: boolean;
   inputFormat?: 'password';
+  attributes?: ReactNode;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
@@ -62,36 +71,45 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
             }}
           >
             <>
-              {hasValueAndIsOutput || showLabelAndIsInput ? (
-                <FormLabel
-                  htmlFor={field.name}
-                  aria-label={props.label}
-                  required={props.required}
-                  error={error !== undefined}
-                  sx={{
-                    p: '2px 4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  {props.showLabel === true ? t(props.label) : null}
-                  {props.tooltip && (
-                    <Tooltip
-                      title={t(props.tooltip.title)}
-                      body={t(props.tooltip.body)}
-                    >
-                      <IconButton
-                        edge='end'
-                        aria-label='Help'
-                        disableRipple
-                        color='default'
+              <Box
+                sx={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                }}
+              >
+                {hasValueAndIsOutput || showLabelAndIsInput ? (
+                  <FormLabel
+                    htmlFor={field.name}
+                    aria-label={props.label}
+                    required={props.required}
+                    error={error !== undefined}
+                    sx={{
+                      p: '2px 4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {props.showLabel === true ? t(props.label) : null}
+                    {props.tooltip && (
+                      <Tooltip
+                        title={t(props.tooltip.title)}
+                        body={t(props.tooltip.body)}
                       >
-                        <InfoIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </FormLabel>
-              ) : null}
+                        <IconButton
+                          edge='end'
+                          aria-label='Help'
+                          disableRipple
+                          color='default'
+                        >
+                          <InfoIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                  </FormLabel>
+                ) : null}
+                {props.attributes}
+              </Box>
 
               {displayMode === 'input' ? (
                 <TextField

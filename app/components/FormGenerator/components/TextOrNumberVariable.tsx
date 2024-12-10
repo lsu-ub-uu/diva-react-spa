@@ -28,6 +28,8 @@ import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledTextField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import path from 'node:path';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -76,6 +78,12 @@ export const TextOrNumberVariable = ({
         control={control}
         readOnly={!!component.finalValue}
         displayMode={component.mode}
+        attributes={
+          <Attributes
+            component={component}
+            path={name}
+          />
+        }
         parentPresentationStyle={parentPresentationStyle}
         hasValue={hasValue}
         inputFormat={

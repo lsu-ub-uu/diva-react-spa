@@ -37,6 +37,7 @@ import { Tooltip, Typography } from '@/components';
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -103,7 +104,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   }}
                 >
                   {props.component.showLabel && (
-                    <>
+                    <Box
+                      sx={{ mr: 'auto', display: 'flex', alignItems: 'center' }}
+                    >
                       <Typography
                         variant={
                           headlineLevelToTypographyVariant(
@@ -124,8 +127,13 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                           <InfoIcon />
                         </IconButton>
                       </Tooltip>
-                    </>
+                    </Box>
                   )}
+
+                  <Attributes
+                    component={props.component}
+                    path={props.name}
+                  />
 
                   {props.component.mode === 'input' && (
                     <ActionButtonGroup

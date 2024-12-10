@@ -47,22 +47,16 @@ export const RepeatingGroup = ({
       name={currentComponentNamePath}
       renderCallback={(arrayPath: string) => {
         return (
-          <>
-            <Attributes
-              component={component}
+          <Stack spacing={2}>
+            <ComponentList
+              components={component.components ?? []}
+              childWithNameInDataArray={childWithNameInDataArray}
+              parentPresentationStyle={
+                component.presentationStyle ?? parentPresentationStyle
+              }
               path={arrayPath}
             />
-            <Stack spacing={2}>
-              <ComponentList
-                components={component.components ?? []}
-                childWithNameInDataArray={childWithNameInDataArray}
-                parentPresentationStyle={
-                  component.presentationStyle ?? parentPresentationStyle
-                }
-                path={arrayPath}
-              />
-            </Stack>
-          </>
+          </Stack>
         );
       }}
     />

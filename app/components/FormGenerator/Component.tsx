@@ -112,19 +112,13 @@ export const Component = ({
   }
 
   return (
-    <React.Fragment key={reactKey}>
-      <Attributes
-        component={component}
-        path={currentComponentNamePath}
-      />
-      <LeafComponent
-        component={component}
-        reactKey={reactKey}
-        name={`${currentComponentNamePath}.value`}
-        renderElementGridWrapper={true}
-        parentPresentationStyle={parentPresentationStyle}
-      />
-    </React.Fragment>
+    <LeafComponent
+      component={component}
+      reactKey={reactKey}
+      name={`${currentComponentNamePath}.value`}
+      renderElementGridWrapper={true}
+      parentPresentationStyle={parentPresentationStyle}
+    />
   );
 };
 
