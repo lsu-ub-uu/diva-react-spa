@@ -27,6 +27,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import {
   checkIfPresentationStyleIsInline,
   checkIfPresentationStyleOrParentIsInline,
+  getGroupLevel,
   headlineLevelToTypographyVariant,
   isFirstLevelGroup,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -53,6 +54,9 @@ export const GroupOrContainer = ({
 }: GroupOrContainerProps) => {
   const { t } = useTranslation();
   const { linkedData } = useContext(FormGeneratorContext);
+  const groupLevel = getGroupLevel(currentComponentNamePath);
+  const isBoxed = groupLevel > 1;
+
   return isComponentFirstLevelAndNOTLinkedData(
     currentComponentNamePath,
     linkedData,
@@ -72,18 +76,19 @@ export const GroupOrContainer = ({
           overflow: 'hidden',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: '#d6e7f3',
-            width: '100%',
-            justifyContent: 'space-between',
-            px: 2,
-          }}
-        >
-          {component.showLabel === true ? (
+        {component.showLabel === true ? (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: '#d6e7f3',
+              width: '100%',
+              justifyContent: 'space-between',
+              px: 2,
+              py: 1,
+            }}
+          >
             <>
               <Typography
                 text={component?.label ?? ''}
@@ -104,8 +109,8 @@ export const GroupOrContainer = ({
                 </IconButton>
               </Tooltip>
             </>
-          ) : null}
-        </Box>
+          </Box>
+        ) : null}
         <Grid
           container
           spacing={2}
@@ -156,41 +161,61 @@ export const GroupOrContainer = ({
         )
           ? '0.2em'
           : null,
+        borderRadius: 2,
+        overflow: 'hidden',
+        backgroundColor: isBoxed
+          ? groupLevel === 1
+            ? '#f7fafd'
+            : 'rgb(5 85 164 / 5%)'
+          : undefined,
       }}
     >
       {component?.showLabel &&
         (!linkedData ? (
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
+          <Box
+            sx={{
+              backgroundColor: isBoxed ? '#d6e7f3' : undefined,
+              px: isBoxed ? 2 : undefined,
+              py: isBoxed ? 1 : undefined,
+            }}
+          >
+            <Typography
+              text={component?.label ?? ''}
+              sx={{ mb: groupLevel === 0 ? 2 : undefined }}
+              variant={headlineLevelToTypographyVariant(
+                component.headlineLevel,
+              )}
+            />
+          </Box>
         ) : (
           <span style={{ width: '100%' }}>
             <Typography
               text={component?.label ?? ''}
+              sx={{ mb: 2 }}
               variant={headlineLevelToTypographyVariant(
                 component.headlineLevel,
               )}
             />
           </span>
         ))}
-
-      <Attributes
-        component={component}
-        path={currentComponentNamePath}
-      />
-      {component.components && (
-        <ComponentList
-          components={component.components}
-          childWithNameInDataArray={childWithNameInDataArray}
-          parentPresentationStyle={
-            checkIfPresentationStyleIsUndefinedOrEmpty(component)
-              ? parentPresentationStyle
-              : component.presentationStyle
-          }
+      <Box sx={{ padding: isBoxed ? 2 : undefined }}>
+        <Attributes
+          component={component}
           path={currentComponentNamePath}
         />
-      )}
+        {component.components && (
+          <ComponentList
+            components={component.components}
+            childWithNameInDataArray={childWithNameInDataArray}
+            parentPresentationStyle={
+              checkIfPresentationStyleIsUndefinedOrEmpty(component)
+                ? parentPresentationStyle
+                : component.presentationStyle
+            }
+            path={currentComponentNamePath}
+          />
+        )}
+      </Box>
     </Grid>
   );
 };

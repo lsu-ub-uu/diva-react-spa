@@ -20,7 +20,6 @@
 import { Control, Controller, useFieldArray } from 'react-hook-form';
 import { Box, Button, Grid2 as Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
@@ -30,11 +29,13 @@ import {
   createDefaultValuesFromComponent,
 } from '../defaultValues/defaultValues';
 import {
+  getGroupLevel,
   headlineLevelToTypographyVariant,
   isComponentGroup,
   isComponentSingularAndOptional,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Tooltip, Typography } from '@/components';
+import { emphasize } from '@mui/system/colorManipulator';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -61,12 +62,17 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   const handleRemove = async (index: number) => {
     remove(index);
   };
+  const isBoxed = isComponentGroup(props.component);
+
+  const groupLevel = getGroupLevel(props.name);
+
   return (
     <Grid
       key={`${props.name}_grid`}
       size={{ xs: 12, sm: props.component.gridColSpan }}
       id={`anchor_${addAttributesToName(props.component, props.component.name)}`}
-      flexDirection='column'
+      container
+      spacing={1}
     >
       <Controller
         control={props.control}
@@ -77,15 +83,18 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
       />
       {fields.map((field, index) => {
         return (
-          <Box
+          <Grid
+            size={12}
             key={`${field.id}_${index}_a`}
             sx={{
-              mb: 2,
-
-              backgroundColor: '#f7fafd',
+              backgroundColor: isBoxed
+                ? groupLevel === 1
+                  ? '#f7fafd'
+                  : 'rgb(5 85 164 / 5%)'
+                : undefined,
               borderRadius: 2,
-              position: 'relative',
               overflow: 'hidden',
+              position: 'relative',
             }}
           >
             {isComponentGroup(props.component) && (
@@ -96,8 +105,9 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   alignItems: 'center',
                   mb: 2,
 
-                  backgroundColor: '#d6e7f3',
-                  px: 2,
+                  backgroundColor: isBoxed ? '#d6e7f3' : undefined,
+                  px: isBoxed ? 2 : undefined,
+                  py: isBoxed ? 1 : undefined,
                 }}
               >
                 {props.component.showLabel && (
@@ -146,29 +156,54 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               </Box>
             )}
 
-            <Box sx={{ px: 2 }}>
+            {!isComponentGroup(props.component) &&
+              props.component.mode === 'input' && (
+                <Box sx={{ position: 'absolute', top: 4, right: 0, zIndex: 1 }}>
+                  <ActionButtonGroup
+                    entityName={`${t(props.component.label ?? '')}`}
+                    hideMoveButtons={isComponentSingularAndOptional(
+                      props.component,
+                    )}
+                    moveUpButtonDisabled={index === 0}
+                    moveUpButtonAction={() => handleMove(index, index - 1)}
+                    moveDownButtonDisabled={index === fields.length - 1}
+                    moveDownButtonAction={() => handleMove(index, index + 1)}
+                    deleteButtonDisabled={
+                      fields.length <= (props.component.repeat?.repeatMin ?? 1)
+                    }
+                    deleteButtonAction={() => handleRemove(index)}
+                    entityType={props.component.type}
+                    key={`${field.id}_${index}_f`}
+                  />
+                </Box>
+              )}
+            <Box sx={{ p: isBoxed ? 2 : undefined }}>
               {
                 props.renderCallback(
                   `${props.name}[${index}]` as const,
                 ) as JSX.Element
               }
             </Box>
-          </Box>
+          </Grid>
         );
       })}
+
       {props.component.mode === 'input' &&
         fields.length < (props.component.repeat?.repeatMax ?? 1) && (
-          <Button
-            sx={{ mt: 1, mb: 1 }}
-            fullWidth
-            variant='outlined'
-            disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
-            onClick={handleAppend}
-            disableRipple
-            endIcon={<AddCircleOutlineIcon />}
-          >
-            {t(props.component.label as string)}
-          </Button>
+          <Grid size={12}>
+            <Button
+              fullWidth
+              variant='outlined'
+              disabled={
+                fields.length >= (props.component.repeat?.repeatMax ?? 1)
+              }
+              onClick={handleAppend}
+              disableRipple
+              endIcon={<AddCircleOutlineIcon />}
+            >
+              {t(props.component.label as string)}
+            </Button>
+          </Grid>
         )}
     </Grid>
   );
