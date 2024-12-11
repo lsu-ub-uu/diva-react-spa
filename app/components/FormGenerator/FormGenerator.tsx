@@ -31,12 +31,12 @@ export const FormGenerator = ({
   ...props
 }: FormGeneratorProps) => {
   return (
-    <FormGeneratorContext.Provider value={{ linkedData }}>
+    <FormGeneratorContext value={{ linkedData }}>
       <Component
         component={props.formSchema.form}
         idx={0}
         path={''}
       />
-    </FormGeneratorContext.Provider>
+    </FormGeneratorContext>
   );
 };

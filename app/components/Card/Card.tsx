@@ -34,7 +34,7 @@ export const Card = ({ children, boxed = false, sx = {} }: CardProps) => {
       sx={sx}
       data-boxed={boxed}
     >
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
+      <CardContext value={{ boxed }}>{children}</CardContext>
     </Box>
   );
 };

@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import React, { ForwardedRef } from 'react';
+import React from 'react';
 import {
-  CircularProgress,
   Alert,
   BaseSelectProps,
+  CircularProgress,
   OutlinedInput,
   Select as MuiSelect,
 } from '@mui/material';
@@ -33,10 +33,7 @@ interface ExtendedSelectProps extends BaseSelectProps {
   loadingError?: boolean;
 }
 
-export const Select = React.forwardRef(function Select(
-  props: ExtendedSelectProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export const Select = function Select(props: ExtendedSelectProps) {
   const { t } = useTranslation();
   const { loading, role, loadingError, ...remainingProps } = props;
 
@@ -65,9 +62,9 @@ export const Select = React.forwardRef(function Select(
   ) : (
     <MuiSelect
       role={role}
-      ref={ref}
+      ref={props.ref}
       {...remainingProps}
       IconComponent={ExpandMoreIcon}
     />
   );
-});
+};
