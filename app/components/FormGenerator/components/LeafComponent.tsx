@@ -25,6 +25,7 @@ import { CollectionVariable } from '@/components/FormGenerator/components/Collec
 import { Text } from '@/components/FormGenerator/components/Text';
 import { GuiElementLink } from '@/components/FormGenerator/components/GuiElementLink';
 import { useRemixFormContext } from 'remix-hook-form';
+import { ReactNode } from 'react';
 
 interface LeafComponentProps {
   component: FormComponent;
@@ -32,6 +33,7 @@ interface LeafComponentProps {
   name: string;
   renderElementGridWrapper: boolean;
   parentPresentationStyle?: string;
+  actionButtonGroup?: ReactNode;
 }
 
 export const LeafComponent = ({
@@ -40,6 +42,7 @@ export const LeafComponent = ({
   name,
   renderElementGridWrapper,
   parentPresentationStyle,
+  actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
   const { getValues } = useRemixFormContext();
 
@@ -53,6 +56,7 @@ export const LeafComponent = ({
           component={component}
           name={name}
           parentPresentationStyle={parentPresentationStyle}
+          actionButtonGroup={actionButtonGroup}
         />
       );
     }
@@ -95,6 +99,7 @@ export const LeafComponent = ({
           component={component}
           name={name}
           parentPresentationStyle={parentPresentationStyle}
+          actionButtonGroup={actionButtonGroup}
         />
       );
     }

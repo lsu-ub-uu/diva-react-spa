@@ -40,6 +40,7 @@ import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
 import { Typography } from '@/components/Typography/Typography';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { CardTitle } from '@/components/Card/CardTitle';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
@@ -81,7 +82,7 @@ export const GroupOrContainer = ({
               justifyContent: 'space-between',
             }}
           >
-            <>
+            <CardTitle>
               <Typography
                 text={component?.label ?? ''}
                 variant={headlineLevelToTypographyVariant(
@@ -100,11 +101,11 @@ export const GroupOrContainer = ({
                   <InfoIcon />
                 </IconButton>
               </Tooltip>
-              <Attributes
-                component={component}
-                path={currentComponentNamePath}
-              />
-            </>
+            </CardTitle>
+            <Attributes
+              component={component}
+              path={currentComponentNamePath}
+            />
           </CardHeader>
         ) : null}
         <CardContent>
@@ -158,13 +159,15 @@ export const GroupOrContainer = ({
         {component?.showLabel &&
           (!linkedData ? (
             <CardHeader>
-              <Typography
-                text={component?.label ?? ''}
-                sx={{ mb: groupLevel === 0 ? 2 : undefined }}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
+              <CardTitle>
+                <Typography
+                  text={component?.label ?? ''}
+                  sx={{ mb: groupLevel === 0 ? 2 : undefined }}
+                  variant={headlineLevelToTypographyVariant(
+                    component.headlineLevel,
+                  )}
+                />
+              </CardTitle>
               <Attributes
                 component={component}
                 path={currentComponentNamePath}

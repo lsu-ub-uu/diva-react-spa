@@ -29,7 +29,7 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import { ControlledTextField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import path from 'node:path';
+import { ReactNode } from 'react';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -37,6 +37,7 @@ interface TextOrNumberVariableProps {
   component: FormComponentVar | FormComponentNumVar;
   name: string;
   parentPresentationStyle: string | undefined;
+  actionButtonGroup?: ReactNode;
 }
 
 export const TextOrNumberVariable = ({
@@ -45,6 +46,7 @@ export const TextOrNumberVariable = ({
   component,
   name,
   parentPresentationStyle,
+  actionButtonGroup,
 }: TextOrNumberVariableProps) => {
   const { getValues, control } = useRemixFormContext();
 
@@ -89,6 +91,7 @@ export const TextOrNumberVariable = ({
         inputFormat={
           'inputFormat' in component ? component.inputFormat : undefined
         }
+        actionButtonGroup={actionButtonGroup}
       />
     </Grid>
   );

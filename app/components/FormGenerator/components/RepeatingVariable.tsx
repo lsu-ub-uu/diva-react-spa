@@ -24,7 +24,7 @@ import {
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useRemixFormContext } from 'remix-hook-form';
 
@@ -54,7 +54,10 @@ export const RepeatingVariable = ({
       control={control}
       component={component}
       name={currentComponentNamePath}
-      renderCallback={(variableArrayPath: string) => {
+      renderCallback={(
+        variableArrayPath: string,
+        actionButtonGroup: ReactNode,
+      ) => {
         return (
           <LeafComponent
             component={component}
@@ -62,6 +65,7 @@ export const RepeatingVariable = ({
             name={`${variableArrayPath}.value`}
             renderElementGridWrapper={false}
             parentPresentationStyle={parentPresentationStyle}
+            actionButtonGroup={actionButtonGroup}
           />
         );
       }}

@@ -16,21 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-.attributeSelect {
-  font-size: 0.9rem;
-  font-style: italic;
-  color: rgb(var(--labelColor));
-  margin: 0 var(--gap);
+import styles from './Card.module.css';
+import { ReactNode } from 'react';
 
-  select {
-    field-sizing: content;
-    width: auto;
-    max-width: 100%;
-    padding: calc(var(--gap) / 2);
-    font-size: inherit;
-    margin-left: calc(var(--gap) / 2);
-    background: white;
-    border: 1px solid rgb(var(--grayDark));
-    border-radius: calc(var(--border-radius) / 2);
-  }
+interface CardTitleProps {
+  children: ReactNode;
 }
+
+export const CardTitle = ({ children }: CardTitleProps) => {
+  return <div className={styles.cardTitle}>{children}</div>;
+};

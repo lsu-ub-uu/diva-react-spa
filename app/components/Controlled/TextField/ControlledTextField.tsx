@@ -45,15 +45,17 @@ interface ControlledTextFieldProps {
   hasValue?: boolean;
   inputFormat?: 'password';
   attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode = props.displayMode ?? 'input';
-  const hasValueAndIsOutput =
-    props.hasValue === true && displayMode === 'output';
-  const showLabelAndIsInput =
-    props.showLabel === true && displayMode === 'input';
+
+  if (displayMode === 'output' && !props.hasValue) {
+    return null;
+  }
+
   return (
     <Controller
       control={props.control}
@@ -75,9 +77,10 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                   display: 'flex',
                   width: '100%',
                   justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
               >
-                {hasValueAndIsOutput || showLabelAndIsInput ? (
+                {props.showLabel ? (
                   <FormLabel
                     htmlFor={field.name}
                     aria-label={props.label}
@@ -87,9 +90,10 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                       p: '2px 4px',
                       display: 'flex',
                       alignItems: 'center',
+                      mr: 'auto',
                     }}
                   >
-                    {props.showLabel === true ? t(props.label) : null}
+                    {t(props.label)}
                     {props.tooltip && (
                       <Tooltip
                         title={t(props.tooltip.title)}
@@ -108,6 +112,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                   </FormLabel>
                 ) : null}
                 {props.attributes}
+                {props.actionButtonGroup}
               </Box>
 
               {displayMode === 'input' ? (
@@ -145,16 +150,12 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 />
               ) : (
                 <>
-                  {props.hasValue === true ? (
-                    <>
-                      <span>{field.value}</span>
-                      <input
-                        type='hidden'
-                        value={field.value}
-                        name={field.name}
-                      />
-                    </>
-                  ) : null}
+                  <span>{field.value}</span>
+                  <input
+                    type='hidden'
+                    value={field.value}
+                    name={field.name}
+                  />
                 </>
               )}
             </>

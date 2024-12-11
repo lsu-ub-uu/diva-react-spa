@@ -59,7 +59,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
   const { handleSubmit, reset } = methods;
-
+  console.log('errors', methods.formState.errors);
   return (
     <Box
       component={Form}

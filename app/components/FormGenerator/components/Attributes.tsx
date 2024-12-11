@@ -33,7 +33,7 @@ interface AttributesProps {
 }
 
 export const Attributes = ({ component, path }: AttributesProps) => {
-  const { getValues, control } = useRemixFormContext();
+  const { getValues } = useRemixFormContext();
 
   return (component.attributes ?? []).map((attribute, index) => {
     const hasValue = checkIfComponentHasValue(getValues, attribute.name);

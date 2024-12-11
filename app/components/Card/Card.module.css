@@ -33,3 +33,10 @@
   background-color: rgb(var(--blueDark) / 8%);
   padding: var(--gap) calc(var(--gap) * 2);
 }
+
+.cardTitle {
+  max-width: 400px;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+}
