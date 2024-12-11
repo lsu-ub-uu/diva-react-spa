@@ -21,6 +21,7 @@ import { FieldArrayComponent } from '@/components/FormGenerator/components/Field
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useRemixFormContext } from 'remix-hook-form';
+import { Stack } from '@mui/material';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -51,14 +52,16 @@ export const RepeatingGroup = ({
               component={component}
               path={arrayPath}
             />
-            <ComponentList
-              components={component.components ?? []}
-              childWithNameInDataArray={childWithNameInDataArray}
-              parentPresentationStyle={
-                component.presentationStyle ?? parentPresentationStyle
-              }
-              path={arrayPath}
-            />
+            <Stack spacing={2}>
+              <ComponentList
+                components={component.components ?? []}
+                childWithNameInDataArray={childWithNameInDataArray}
+                parentPresentationStyle={
+                  component.presentationStyle ?? parentPresentationStyle
+                }
+                path={arrayPath}
+              />
+            </Stack>
           </>
         );
       }}

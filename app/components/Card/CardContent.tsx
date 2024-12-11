@@ -17,24 +17,24 @@
  */
 
 import { Box, SxProps } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 
-export interface CardProps {
+interface CardContentProps {
   children: ReactNode;
-  boxed?: boolean;
   sx?: SxProps;
 }
 
-export const Card = ({ children, boxed = false, sx = {} }: CardProps) => {
+export const CardContent = ({ children, sx = {} }: CardContentProps) => {
+  const { boxed } = useContext(CardContext);
   return (
     <Box
-      className={styles.card}
-      sx={sx}
+      className={styles.cardContent}
       data-boxed={boxed}
+      sx={sx}
     >
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
+      {children}
     </Box>
   );
 };

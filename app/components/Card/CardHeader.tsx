@@ -17,24 +17,26 @@
  */
 
 import { Box, SxProps } from '@mui/material';
-import { ReactNode } from 'react';
+import { HTMLProps, ReactNode, useContext } from 'react';
+
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 
-export interface CardProps {
+interface CardHeaderProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
-  boxed?: boolean;
   sx?: SxProps;
 }
 
-export const Card = ({ children, boxed = false, sx = {} }: CardProps) => {
+export const CardHeader = ({ children, sx = {} }: CardHeaderProps) => {
+  const { boxed } = useContext(CardContext);
+
   return (
     <Box
-      className={styles.card}
-      sx={sx}
+      className={styles.cardHeader}
       data-boxed={boxed}
+      sx={sx}
     >
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
+      {children}
     </Box>
   );
 };

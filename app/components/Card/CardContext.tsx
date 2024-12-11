@@ -16,25 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box, SxProps } from '@mui/material';
-import { ReactNode } from 'react';
-import styles from './Card.module.css';
-import { CardContext } from '@/components/Card/CardContext';
+import { createContext } from 'react';
 
-export interface CardProps {
-  children: ReactNode;
-  boxed?: boolean;
-  sx?: SxProps;
+interface CardContextType {
+  boxed: boolean;
 }
 
-export const Card = ({ children, boxed = false, sx = {} }: CardProps) => {
-  return (
-    <Box
-      className={styles.card}
-      sx={sx}
-      data-boxed={boxed}
-    >
-      <CardContext.Provider value={{ boxed }}>{children}</CardContext.Provider>
-    </Box>
-  );
-};
+export const CardContext = createContext<CardContextType>({ boxed: true });

@@ -27,6 +27,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import {
   checkIfPresentationStyleIsInline,
   checkIfPresentationStyleOrParentIsInline,
+  getGroupLevel,
   headlineLevelToTypographyVariant,
   isFirstLevelGroup,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -35,6 +36,9 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { Card } from '@/components/Card/Card';
+import { CardHeader } from '@/components/Card/CardHeader';
+import { CardContent } from '@/components/Card/CardContent';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
@@ -53,6 +57,8 @@ export const GroupOrContainer = ({
 }: GroupOrContainerProps) => {
   const { t } = useTranslation();
   const { linkedData } = useContext(FormGeneratorContext);
+  const groupLevel = getGroupLevel(currentComponentNamePath);
+
   return isComponentFirstLevelAndNOTLinkedData(
     currentComponentNamePath,
     linkedData,
@@ -63,15 +69,17 @@ export const GroupOrContainer = ({
       className='anchorLink'
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <Box sx={{ mb: 2 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          {component.showLabel === true ? (
+      <Card boxed>
+        {component.showLabel === true ? (
+          <CardHeader
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}
+          >
             <>
               <Typography
                 text={component?.label ?? ''}
@@ -92,32 +100,33 @@ export const GroupOrContainer = ({
                 </IconButton>
               </Tooltip>
             </>
-          ) : null}
-        </Box>
-        <Grid
-          container
-          spacing={2}
-          justifyContent='space-between'
-          alignItems='flex-start'
-          id={`anchor_${addAttributesToName(component, component.name)}`}
-        >
-          <Attributes
-            component={component}
-            path={currentComponentNamePath}
-          />
-
-          {component.components && (
-            <ComponentList
-              components={component.components}
-              childWithNameInDataArray={childWithNameInDataArray}
-              parentPresentationStyle={
-                component.presentationStyle ?? parentPresentationStyle
-              }
+          </CardHeader>
+        ) : null}
+        <CardContent>
+          <Grid
+            container
+            justifyContent='space-between'
+            alignItems='flex-start'
+            id={`anchor_${addAttributesToName(component, component.name)}`}
+          >
+            <Attributes
+              component={component}
               path={currentComponentNamePath}
             />
-          )}
-        </Grid>
-      </Box>
+
+            {component.components && (
+              <ComponentList
+                components={component.components}
+                childWithNameInDataArray={childWithNameInDataArray}
+                parentPresentationStyle={
+                  component.presentationStyle ?? parentPresentationStyle
+                }
+                path={currentComponentNamePath}
+              />
+            )}
+          </Grid>
+        </CardContent>
+      </Card>
     </Grid>
   ) : (
     <Grid
@@ -145,39 +154,51 @@ export const GroupOrContainer = ({
           : null,
       }}
     >
-      {component?.showLabel &&
-        (!linkedData ? (
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
+      <Card boxed={groupLevel !== 0}>
+        {component?.showLabel &&
+          (!linkedData ? (
+            <CardHeader>
+              <Typography
+                text={component?.label ?? ''}
+                sx={{ mb: groupLevel === 0 ? 2 : undefined }}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
+            </CardHeader>
+          ) : (
+            <span style={{ width: '100%' }}>
+              <Typography
+                text={component?.label ?? ''}
+                sx={{ mb: 2 }}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
+            </span>
+          ))}
+        <CardContent>
+          <Attributes
+            component={component}
+            path={currentComponentNamePath}
           />
-        ) : (
-          <span style={{ width: '100%' }}>
-            <Typography
-              text={component?.label ?? ''}
-              variant={headlineLevelToTypographyVariant(
-                component.headlineLevel,
-              )}
-            />
-          </span>
-        ))}
 
-      <Attributes
-        component={component}
-        path={currentComponentNamePath}
-      />
-      {component.components && (
-        <ComponentList
-          components={component.components}
-          childWithNameInDataArray={childWithNameInDataArray}
-          parentPresentationStyle={
-            checkIfPresentationStyleIsUndefinedOrEmpty(component)
-              ? parentPresentationStyle
-              : component.presentationStyle
-          }
-          path={currentComponentNamePath}
-        />
-      )}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {component.components && (
+              <ComponentList
+                components={component.components}
+                childWithNameInDataArray={childWithNameInDataArray}
+                parentPresentationStyle={
+                  checkIfPresentationStyleIsUndefinedOrEmpty(component)
+                    ? parentPresentationStyle
+                    : component.presentationStyle
+                }
+                path={currentComponentNamePath}
+              />
+            )}
+          </Box>
+        </CardContent>
+      </Card>
     </Grid>
   );
 };

@@ -20,7 +20,6 @@
 import { Control, Controller, useFieldArray } from 'react-hook-form';
 import { Box, Button, Grid2 as Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
@@ -35,6 +34,9 @@ import {
   isComponentSingularAndOptional,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Tooltip, Typography } from '@/components';
+import { Card } from '@/components/Card/Card';
+import { CardHeader } from '@/components/Card/CardHeader';
+import { CardContent } from '@/components/Card/CardContent';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -42,17 +44,6 @@ interface FieldArrayComponentProps {
   component: FormComponent;
   renderCallback: (path: string) => unknown;
   hasValue?: boolean;
-}
-
-function addSpaceForActionButtons(props: FieldArrayComponentProps) {
-  return (
-    <>
-      {!props.component.showLabel && props.component.mode === 'input' && (
-        /* Leave space for action buttons when no label */
-        <Box sx={{ paddingBlock: 4 }} />
-      )}
-    </>
-  );
 }
 
 export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
@@ -72,107 +63,143 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   const handleRemove = async (index: number) => {
     remove(index);
   };
+  const isBoxed = isComponentGroup(props.component);
 
   return (
     <Grid
       key={`${props.name}_grid`}
       size={{ xs: 12, sm: props.component.gridColSpan }}
       id={`anchor_${addAttributesToName(props.component, props.component.name)}`}
-      flexDirection='column'
+      container
+      spacing={1}
     >
       <Controller
         control={props.control}
         name={props.name}
         render={({ fieldState }) => (
-          <span style={{ color: 'red' }}>{fieldState.error?.message}</span>
+          <>
+            {fieldState.error && (
+              <span style={{ color: 'red' }}>{fieldState.error?.message}</span>
+            )}
+          </>
         )}
       />
       {fields.map((field, index) => {
         return (
-          <div
+          <Grid
+            size={12}
             key={`${field.id}_${index}_a`}
-            style={{
-              position: 'relative',
-              marginTop: '10px',
-            }}
           >
-            {isComponentGroup(props.component) && (
-              <Box
-                key={`${field.id}_${index}_b`}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  mb: 2,
-                }}
-              >
-                {props.component.showLabel && (
-                  <>
-                    <Typography
-                      variant={
-                        headlineLevelToTypographyVariant(
-                          props.component.headlineLevel,
-                        ) ?? 'bodyTextStyle'
-                      }
-                      text={props.component.label!}
-                    />
-                    <Tooltip
-                      title={t(props.component.tooltip?.title as string)}
-                      body={t(props.component.tooltip?.body as string)}
-                    >
-                      <IconButton
-                        disableRipple
-                        color='info'
-                        aria-label='info'
+            <Card
+              boxed={isBoxed}
+              sx={{ position: 'relative' }}
+            >
+              {isComponentGroup(props.component) && (
+                <CardHeader
+                  key={`${field.id}_${index}_b`}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  {props.component.showLabel && (
+                    <>
+                      <Typography
+                        variant={
+                          headlineLevelToTypographyVariant(
+                            props.component.headlineLevel,
+                          ) ?? 'bodyTextStyle'
+                        }
+                        text={props.component.label!}
+                      />
+                      <Tooltip
+                        title={t(props.component.tooltip?.title as string)}
+                        body={t(props.component.tooltip?.body as string)}
                       >
-                        <InfoIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </>
-                )}
+                        <IconButton
+                          disableRipple
+                          color='info'
+                          aria-label='info'
+                        >
+                          <InfoIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </>
+                  )}
 
-                {addSpaceForActionButtons(props)}
-              </Box>
-            )}
-            {props.component.mode === 'input' && (
-              <ActionButtonGroup
-                entityName={`${t(props.component.label ?? '')}`}
-                hideMoveButtons={isComponentSingularAndOptional(
-                  props.component,
+                  {props.component.mode === 'input' && (
+                    <ActionButtonGroup
+                      entityName={`${t(props.component.label ?? '')}`}
+                      hideMoveButtons={isComponentSingularAndOptional(
+                        props.component,
+                      )}
+                      moveUpButtonDisabled={index === 0}
+                      moveUpButtonAction={() => handleMove(index, index - 1)}
+                      moveDownButtonDisabled={index === fields.length - 1}
+                      moveDownButtonAction={() => handleMove(index, index + 1)}
+                      deleteButtonDisabled={
+                        fields.length <=
+                        (props.component.repeat?.repeatMin ?? 1)
+                      }
+                      deleteButtonAction={() => handleRemove(index)}
+                      entityType={props.component.type}
+                      key={`${field.id}_${index}_f`}
+                    />
+                  )}
+                </CardHeader>
+              )}
+              {!isComponentGroup(props.component) &&
+                props.component.mode === 'input' && (
+                  <Box
+                    sx={{ position: 'absolute', top: 4, right: 0, zIndex: 1 }}
+                  >
+                    <ActionButtonGroup
+                      entityName={`${t(props.component.label ?? '')}`}
+                      hideMoveButtons={isComponentSingularAndOptional(
+                        props.component,
+                      )}
+                      moveUpButtonDisabled={index === 0}
+                      moveUpButtonAction={() => handleMove(index, index - 1)}
+                      moveDownButtonDisabled={index === fields.length - 1}
+                      moveDownButtonAction={() => handleMove(index, index + 1)}
+                      deleteButtonDisabled={
+                        fields.length <=
+                        (props.component.repeat?.repeatMin ?? 1)
+                      }
+                      deleteButtonAction={() => handleRemove(index)}
+                      entityType={props.component.type}
+                      key={`${field.id}_${index}_f`}
+                    />
+                  </Box>
                 )}
-                moveUpButtonDisabled={index === 0}
-                moveUpButtonAction={() => handleMove(index, index - 1)}
-                moveDownButtonDisabled={index === fields.length - 1}
-                moveDownButtonAction={() => handleMove(index, index + 1)}
-                deleteButtonDisabled={
-                  fields.length <= (props.component.repeat?.repeatMin ?? 1)
+              <CardContent sx={{ p: isBoxed ? 2 : undefined }}>
+                {
+                  props.renderCallback(
+                    `${props.name}[${index}]` as const,
+                  ) as JSX.Element
                 }
-                deleteButtonAction={() => handleRemove(index)}
-                entityType={props.component.type}
-                key={`${field.id}_${index}_f`}
-              />
-            )}
-
-            {
-              props.renderCallback(
-                `${props.name}[${index}]` as const,
-              ) as JSX.Element
-            }
-          </div>
+              </CardContent>
+            </Card>
+          </Grid>
         );
       })}
+
       {props.component.mode === 'input' &&
         fields.length < (props.component.repeat?.repeatMax ?? 1) && (
-          <Button
-            sx={{ mt: 1, mb: 1 }}
-            fullWidth
-            variant='outlined'
-            disabled={fields.length >= (props.component.repeat?.repeatMax ?? 1)}
-            onClick={handleAppend}
-            disableRipple
-            endIcon={<AddCircleOutlineIcon />}
-          >
-            {t(props.component.label as string)}
-          </Button>
+          <Grid size={12}>
+            <Button
+              fullWidth
+              variant='outlined'
+              disabled={
+                fields.length >= (props.component.repeat?.repeatMax ?? 1)
+              }
+              onClick={handleAppend}
+              disableRipple
+              endIcon={<AddCircleOutlineIcon />}
+            >
+              {t(props.component.label as string)}
+            </Button>
+          </Grid>
         )}
     </Grid>
   );
