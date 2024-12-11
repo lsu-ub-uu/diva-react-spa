@@ -33,6 +33,7 @@ interface LeafComponentProps {
   name: string;
   renderElementGridWrapper: boolean;
   parentPresentationStyle?: string;
+  attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
 }
 
@@ -42,6 +43,7 @@ export const LeafComponent = ({
   name,
   renderElementGridWrapper,
   parentPresentationStyle,
+  attributes,
   actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
   const { getValues } = useRemixFormContext();
@@ -56,6 +58,7 @@ export const LeafComponent = ({
           component={component}
           name={name}
           parentPresentationStyle={parentPresentationStyle}
+          attributes={attributes}
           actionButtonGroup={actionButtonGroup}
         />
       );

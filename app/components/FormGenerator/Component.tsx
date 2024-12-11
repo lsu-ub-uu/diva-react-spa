@@ -118,6 +118,12 @@ export const Component = ({
       name={`${currentComponentNamePath}.value`}
       renderElementGridWrapper={true}
       parentPresentationStyle={parentPresentationStyle}
+      attributes={
+        <Attributes
+          component={component}
+          path={currentComponentNamePath}
+        />
+      }
     />
   );
 };

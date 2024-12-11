@@ -28,7 +28,6 @@ import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledTextField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
-import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { ReactNode } from 'react';
 
 interface TextOrNumberVariableProps {
@@ -37,6 +36,7 @@ interface TextOrNumberVariableProps {
   component: FormComponentVar | FormComponentNumVar;
   name: string;
   parentPresentationStyle: string | undefined;
+  attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
 }
 
@@ -46,6 +46,7 @@ export const TextOrNumberVariable = ({
   component,
   name,
   parentPresentationStyle,
+  attributes,
   actionButtonGroup,
 }: TextOrNumberVariableProps) => {
   const { getValues, control } = useRemixFormContext();
@@ -80,17 +81,12 @@ export const TextOrNumberVariable = ({
         control={control}
         readOnly={!!component.finalValue}
         displayMode={component.mode}
-        attributes={
-          <Attributes
-            component={component}
-            path={name}
-          />
-        }
         parentPresentationStyle={parentPresentationStyle}
         hasValue={hasValue}
         inputFormat={
           'inputFormat' in component ? component.inputFormat : undefined
         }
+        attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
     </Grid>
