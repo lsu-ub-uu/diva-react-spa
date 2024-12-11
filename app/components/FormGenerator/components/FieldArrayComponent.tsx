@@ -33,11 +33,12 @@ import {
   isComponentGroup,
   isComponentSingularAndOptional,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Tooltip, Typography } from '@/components';
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import { Typography } from '@/components/Typography/Typography';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;

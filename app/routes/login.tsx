@@ -3,7 +3,6 @@ import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { commitSession, getSession } from '@/.server/sessions';
 import { Alert, Button, Stack } from '@mui/material';
-import { FormGenerator } from '@/components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -15,6 +14,7 @@ import { loginWithUsernameAndPassword } from '@/.server/data/loginWithUsernameAn
 import { Auth } from '@/types/Auth';
 import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {

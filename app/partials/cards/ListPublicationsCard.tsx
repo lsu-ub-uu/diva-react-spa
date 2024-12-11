@@ -30,11 +30,11 @@ import {
   useFetcher,
   useLoaderData,
 } from '@remix-run/react';
-import { LegacyCard } from '@/components';
 import { loader } from '@/routes/_index';
 import { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
+import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();

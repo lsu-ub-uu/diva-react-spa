@@ -31,7 +31,6 @@ import {
   LoaderFunctionArgs,
 } from '@remix-run/node';
 import { ReactNode, useEffect, useRef } from 'react';
-import { PageLayout, SnackbarProvider } from '@/components';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
@@ -42,6 +41,8 @@ import { getLoginUnits } from '@/.server/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import { withEmotionCache } from '@emotion/react';
 import './root.css';
+import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
+import { PageLayout } from '@/components/Layout';
 
 const { MODE } = import.meta.env;
 

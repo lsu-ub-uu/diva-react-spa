@@ -31,7 +31,7 @@ import {
 import { ReactNode, useEffect, useState } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Tooltip } from '../index';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 const StyledCardHeader = styled(CardHeader)((props) => ({
   borderTopLeftRadius: 8,

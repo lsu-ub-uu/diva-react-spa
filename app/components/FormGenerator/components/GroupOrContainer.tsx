@@ -22,7 +22,6 @@ import {
 } from '@/components/FormGenerator/types';
 import { Box, Grid2 as Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { Tooltip, Typography } from '@/components';
 import InfoIcon from '@mui/icons-material/Info';
 import {
   checkIfPresentationStyleIsInline,
@@ -39,6 +38,8 @@ import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorCo
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
+import { Typography } from '@/components/Typography/Typography';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;

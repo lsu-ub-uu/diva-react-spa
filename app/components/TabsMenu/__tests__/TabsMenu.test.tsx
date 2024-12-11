@@ -20,9 +20,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { TabsMenu } from '../../index';
 import { createRemixStub } from '@remix-run/testing';
 import { formDefWithTextVar } from '@/__mocks__/data/formDef';
+import { TabsMenu } from '@/components/TabsMenu/TabsMenu';
 
 const RemixStub = createRemixStub([
   {

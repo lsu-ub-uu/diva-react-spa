@@ -17,7 +17,7 @@
  */
 
 import { FormComponentGuiElement } from '@/components/FormGenerator/types';
-import { LinkButton } from '@/components';
+import { LinkButton } from '@/components/LinkButton/LinkButton';
 
 interface GuiElementLinkProps {
   reactKey: string;

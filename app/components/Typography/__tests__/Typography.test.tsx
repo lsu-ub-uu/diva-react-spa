@@ -19,7 +19,7 @@
 
 import { expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Typography } from '../../index';
+import { Typography } from '@/components/Typography/Typography';
 
 describe('<Typography>', () => {
   vi.mock('react-i18next', () => ({

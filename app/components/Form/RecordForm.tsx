@@ -32,11 +32,11 @@ import {
   RecordData,
 } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { FormGenerator } from '@/components';
 import { RecordFormSchema } from '../FormGenerator/types';
 import { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from '@remix-run/react';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;
