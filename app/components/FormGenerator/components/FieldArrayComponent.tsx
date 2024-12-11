@@ -39,6 +39,8 @@ import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
 
+import type { JSX } from "react";
+
 interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;

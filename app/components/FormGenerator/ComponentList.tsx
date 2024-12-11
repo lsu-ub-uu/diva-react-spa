@@ -20,6 +20,8 @@ import { FormComponent } from '@/components/FormGenerator/types';
 import { Component } from '@/components/FormGenerator/Component';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
+import type { JSX } from "react";
+
 interface FormComponentListGeneratorProps {
   components: FormComponent[];
   childWithNameInDataArray: string[];

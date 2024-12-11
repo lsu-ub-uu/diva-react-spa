@@ -19,6 +19,7 @@
 import { render } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import { ControlledSelectField } from '../../index';
+import { JSX } from 'react';
 
 const options = [
   { label: 'Option 1', value: 'option1' },
