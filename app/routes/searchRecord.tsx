@@ -16,17 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSearchForm } from '@/data/getSearchForm';
-import { searchRecords } from '@/data/searchRecords';
+import { getSearchForm } from '@/.server/data/getSearchForm';
+import { searchRecords } from '@/.server/data/searchRecords';
 import { BFFSearchResult } from '@/types/record';
-import { getAuthentication, getSessionFromCookie } from '@/sessions';
+import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
-import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/searchRecord';
 import { SearchPage } from '@/pages/SearchPage';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary = DefaultErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const loader = async ({
   request,

@@ -1,5 +1,5 @@
 import { data, Form, redirect, useSubmit } from 'react-router'; // or cloudflare/deno // or cloudflare/deno
-import { commitSession, getSession } from '@/sessions';
+import { commitSession, getSession } from '@/.server/sessions';
 import { Alert, Button, Stack } from '@mui/material';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -8,10 +8,10 @@ import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/vali
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useSnackbar, VariantType } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { loginWithAppToken } from '@/data/loginWithAppToken';
-import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword';
+import { loginWithAppToken } from '@/.server/data/loginWithAppToken';
+import { loginWithUsernameAndPassword } from '@/.server/data/loginWithUsernameAndPassword';
 import { Auth } from '@/types/Auth';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import type { Route } from '../../.react-router/types/app/routes/+types/login';
 
 const parsePresentation = (searchParam: string | null) => {
@@ -26,7 +26,7 @@ const parsePresentation = (searchParam: string | null) => {
   }
 };
 
-export const ErrorBoundary = DefaultErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);

@@ -16,15 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSearchForm } from '@/data/getSearchForm';
-import { getValidationTypes } from '@/data/getValidationTypes';
-import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import { searchRecords } from '@/data/searchRecords';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { getSearchForm } from '@/.server/data/getSearchForm';
+import { getValidationTypes } from '@/.server/data/getValidationTypes';
+import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import { searchRecords } from '@/.server/data/searchRecords';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import type { Route } from '../../.react-router/types/app/routes/+types/home';
 import { HomePage } from '@/pages/HomePage';
 
-export const ErrorBoundary = DefaultErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);

@@ -20,26 +20,26 @@ import {
   commitSession,
   getSessionFromCookie,
   requireAuthentication,
-} from '@/sessions';
+} from '@/.server/sessions';
 import { data, useNavigation } from 'react-router';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
+import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
+import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
 import { enqueueSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { updateRecord } from '@/data/updateRecord';
+import { updateRecord } from '@/.server/data/updateRecord';
 import { BFFDataRecord } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/updateRecord';
 import { UpdateRecordPage } from '@/pages/UpdateRecordPage';
 
-export const ErrorBoundary = DefaultErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const action = async ({
   request,

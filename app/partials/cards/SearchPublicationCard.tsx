@@ -19,11 +19,12 @@
 
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
+import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
 import { SearchForm } from '@/components/Form/SearchForm';
 import { Suspense } from 'react';
 import { Await, useLoaderData } from 'react-router';
 import { loader } from '@/routes/home';
-import { Card } from '@/components/Card/Card';
+import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 
 const searchType = 'diva-outputSimpleSearch';
 
@@ -32,26 +33,29 @@ export const SearchPublicationCard = () => {
   const { searchForm } = useLoaderData<typeof loader>();
 
   return (
-    <Suspense fallback={<Skeleton height={296} />}>
-      <Await resolve={searchForm}>
-        {(searchForm) => (
-          <Card
-            title={t('divaClient_searchPublicationText') as string}
-            variant='variant2'
-            tooltipTitle={
-              t('divaClient_searchPublicationTypeTooltipTitleText') as string
-            }
-            tooltipBody={
-              t('divaClient_searchPublicationTypeTooltipBodyText') as string
-            }
-          >
+    <LegacyCard
+      title={t('divaClient_searchPublicationText') as string}
+      variant='variant2'
+      tooltipTitle={
+        t('divaClient_searchPublicationTypeTooltipTitleText') as string
+      }
+      tooltipBody={
+        t('divaClient_searchPublicationTypeTooltipBodyText') as string
+      }
+    >
+      <Suspense fallback={<Skeleton height={296} />}>
+        <Await
+          resolve={searchForm}
+          errorElement={<AsyncErrorBoundary />}
+        >
+          {(searchForm) => (
             <SearchForm
               formSchema={searchForm}
               searchType={searchType}
             />
-          </Card>
-        )}
-      </Await>
-    </Suspense>
+          )}
+        </Await>
+      </Suspense>
+    </LegacyCard>
   );
 };

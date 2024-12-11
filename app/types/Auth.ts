@@ -1,4 +1,4 @@
-import { ActionLinks } from '@/cora/cora-data/CoraData';
+import { ActionLinks } from '@/.server/cora/cora-data/CoraData';
 
 export interface Auth {
   data: {

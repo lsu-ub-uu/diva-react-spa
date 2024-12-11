@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getAuthentication, getSessionFromCookie } from '@/sessions';
-import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
-import { BFFMetadataGroup } from '@/cora/transform/bffTypes';
-import { searchRecords } from '@/data/searchRecords';
+import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import { BFFMetadataGroup } from '@/.server/cora/transform/bffTypes';
+import { searchRecords } from '@/.server/data/searchRecords';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/autocompleteSearch';
 

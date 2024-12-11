@@ -17,7 +17,7 @@
  */
 
 import { FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useRemixFormContext } from 'remix-hook-form';
 import { ControlledAutocomplete } from '@/components/Controlled/Autocomplete/ControlledAutocomplete';
@@ -39,10 +39,11 @@ export const RecordLinkWithSearch = ({
   return (
     <Grid
       key={reactKey}
-      item
-      xs={12}
+      size={{
+        xs: 12,
+        sm: renderElementGridWrapper ? component.gridColSpan : 12,
+      }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
-      sm={renderElementGridWrapper ? component.gridColSpan : 12}
     >
       <ControlledAutocomplete
         label={component.label ?? ''}

@@ -24,12 +24,15 @@ import morgan from 'morgan';
 import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { dependencies, loadStuffOnServerStart } from '@/data/pool.server';
+import {
+  dependencies,
+  loadStuffOnServerStart,
+} from '@/.server/data/pool.server';
 import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import I18NextHttpBackend from 'i18next-http-backend';
 import { i18nConfig } from '@/i18n/i18nConfig';
-import { createTextDefinition } from '@/data/textDefinition/textDefinition';
+import { createTextDefinition } from '@/.server/data/textDefinition/textDefinition';
 import { i18nCookie } from '@/i18n/i18nCookie';
 
 const __filename = fileURLToPath(import.meta.url);

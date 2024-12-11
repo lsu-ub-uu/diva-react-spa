@@ -17,8 +17,12 @@
  */
 
 import { redirect } from 'react-router';
-import { destroySession, getAuthentication, getSession } from '@/sessions';
-import { deleteSession } from '@/data/deleteSession';
+import {
+  destroySession,
+  getAuthentication,
+  getSession,
+} from '@/.server/sessions';
+import { deleteSession } from '@/.server/data/deleteSession';
 import type { Route } from '../../.react-router/types/app/routes/+types/logout';
 
 export async function action({ request }: Route.ActionArgs) {
@@ -26,13 +30,9 @@ export async function action({ request }: Route.ActionArgs) {
   const auth = getAuthentication(session);
   const form = await request.formData();
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());
-
   if (auth) {
     try {
-      // No need to wait for CORA delete
-      // noinspection ES6MissingAwait
-
-      deleteSession(auth);
+      await deleteSession(auth);
     } catch (error) {
       console.error('Failed to delete session', error);
     }

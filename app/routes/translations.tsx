@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createTextDefinition } from '@/data/textDefinition/textDefinition';
+import { createTextDefinition } from '@/.server/data/textDefinition/textDefinition';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/translations';
 

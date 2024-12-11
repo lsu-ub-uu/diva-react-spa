@@ -18,7 +18,7 @@
  */
 
 import { Lookup } from './lookup';
-import { BFFBase } from '@/cora/transform/bffTypes';
+import { BFFBase } from '@/.server/cora/transform/bffTypes';
 
 export const listToPool = <T>(list: T[]): Lookup<string, T> => {
   const pool = new Lookup<string, T>();

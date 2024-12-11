@@ -1,0 +1,17 @@
+.card {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  position: relative;
+  &[data-boxed='true'] {
+    background-color: rgb(var(--blueDark) / 5%);
+  }
+}
+
+.cardContent[data-boxed='true'] {
+  padding: var(--gap) calc(var(--gap) * 2);
+}
+
+.cardHeader[data-boxed='true'] {
+  background-color: rgb(var(--blueDark) / 8%);
+  padding: var(--gap) calc(var(--gap) * 2);
+}

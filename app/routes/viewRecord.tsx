@@ -16,16 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { getSessionFromCookie, requireAuthentication } from '@/sessions';
-import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import {
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/.server/sessions';
+import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
+import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/viewRecord';
 import { ViewRecordPage } from '@/pages/ViewRecordPage';
 
-export const ErrorBoundary = DefaultErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const loader = async ({
   request,

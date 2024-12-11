@@ -17,7 +17,7 @@
  */
 
 import { FormComponentText } from '@/components/FormGenerator/types';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 
 import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -37,9 +37,10 @@ export const Text = ({
   return (
     <Grid
       key={reactKey}
-      item
-      xs={12}
-      sm={renderElementGridWrapper ? component.gridColSpan : 12}
+      size={{
+        xs: 12,
+        sm: renderElementGridWrapper ? component.gridColSpan : 12,
+      }}
       style={{
         flexBasis:
           convertChildStyleToString(component.childStyle) === 'compact'

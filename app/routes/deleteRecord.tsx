@@ -17,12 +17,12 @@
  */
 
 import { data } from 'react-router';
-import { deleteRecord } from '@/data/deleteRecord';
+import { deleteRecord } from '@/.server/data/deleteRecord';
 import {
   commitSession,
   getSessionFromCookie,
   requireAuthentication,
-} from '@/sessions';
+} from '@/.server/sessions';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/deleteRecord';
 

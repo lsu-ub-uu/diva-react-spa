@@ -35,6 +35,10 @@ export const countStringCharOccurrences = (
   return inputString.split('').filter((char) => char === targetChar).length;
 };
 
+export const getGroupLevel = (pathName: string) => {
+  return countStringCharOccurrences(pathName, '.');
+};
+
 export const isFirstLevelGroup = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.') === 1;
 };

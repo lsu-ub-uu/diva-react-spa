@@ -1,4 +1,4 @@
-import { Dependencies } from '@/data/formDefinition/formDefinitionsDep';
+import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { i18n } from 'i18next';
 
 declare module "react-router" {

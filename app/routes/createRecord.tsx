@@ -18,25 +18,28 @@
 
 import { data } from 'react-router';
 import CreateRecordPage from '@/pages/CreateRecordPage';
-import { getRecordByValidationTypeId } from '@/data/getRecordByValidationTypeId';
-import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId';
+import { getRecordByValidationTypeId } from '@/.server/data/getRecordByValidationTypeId';
+import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
-import { createRecord } from '@/data/createRecord';
+import { createRecord } from '@/.server/data/createRecord';
 import { BFFDataRecord } from '@/types/record';
-import { getSessionFromCookie, requireAuthentication } from '@/sessions';
+import {
+  getSessionFromCookie,
+  requireAuthentication,
+} from '@/.server/sessions';
 import { useEffect } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
-import { DefaultErrorBoundary } from '@/components/DefaultErrorBoundary/DefaultErrorBoundary';
+import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { invariant } from '@/utils/invariant';
 import type { Route } from '../../.react-router/types/app/routes/+types/createRecord';
 
-export const ErrorBoundary = DefaultErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
   const session = await getSessionFromCookie(request);
