@@ -38,7 +38,11 @@ import {
   isFirstLevelVariable,
   isRootLevel,
 } from '../formGeneratorUtils';
-import type { FormComponent } from '@/components/FormGenerator/types';
+import type {
+  FormComponent,
+  FormComponentGroup,
+  FormComponentVar,
+} from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, vi } from 'vitest';
 import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/formDef';
@@ -1524,6 +1528,7 @@ describe('helper methods', () => {
         label: 'someTextId',
         childStyle: [],
         placeholder: 'someEmptyTextId',
+        showLabel: true,
         repeat: {
           repeatMin: 0,
           repeatMax: 1,
@@ -1549,6 +1554,7 @@ describe('helper methods', () => {
         label: 'someTextId',
         childStyle: [],
         placeholder: 'someEmptyTextId',
+        showLabel: true,
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
@@ -1712,7 +1718,7 @@ describe('helper methods', () => {
 
   describe('hasComponentSameNameInData', () => {
     it('when component does not exist', () => {
-      const formGroup = {
+      const formGroup: FormComponentGroup = {
         name: 'nationalSubjectCategory',
         type: 'group',
         mode: 'input',
@@ -1731,11 +1737,11 @@ describe('helper methods', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = hasComponentSameNameInData(formGroup as FormComponent);
-      expect(actual).toBeFalsy();
+      const actual = hasComponentSameNameInData(formGroup);
+      expect(actual).toEqual(false);
     });
     it('when component is single', () => {
-      const formGroup = {
+      const formGroup: FormComponentGroup = {
         name: 'nationalSubjectCategory',
         type: 'group',
         mode: 'input',
@@ -1803,12 +1809,12 @@ describe('helper methods', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = hasComponentSameNameInData(formGroup as FormComponent);
-      expect(actual).toBeFalsy();
+      const actual = hasComponentSameNameInData(formGroup);
+      expect(actual).toEqual(false);
     });
 
     it('when component has same nameInData', () => {
-      const formGroup = {
+      const formGroup: FormComponentGroup = {
         name: 'nationalSubjectCategory',
         type: 'group',
         mode: 'input',
@@ -1924,11 +1930,11 @@ describe('helper methods', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      const actual = hasComponentSameNameInData(formGroup);
       expect(actual).toBeTruthy();
     });
     it('when component has same nameInData and not', () => {
-      const formGroup = {
+      const formGroup: FormComponentGroup = {
         name: 'nationalSubjectCategory',
         type: 'group',
         mode: 'input',
@@ -2092,12 +2098,12 @@ describe('helper methods', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      const actual = hasComponentSameNameInData(formGroup);
       expect(actual).toBeTruthy();
     });
 
     it('when component has multiple children with same nameInData', () => {
-      const formGroup = {
+      const formGroup: FormComponentGroup = {
         name: 'nationalSubjectCategory',
         type: 'group',
         mode: 'input',
@@ -2309,12 +2315,12 @@ describe('helper methods', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = hasComponentSameNameInData(formGroup as FormComponent);
+      const actual = hasComponentSameNameInData(formGroup);
       expect(actual).toBeTruthy();
     });
 
     it('when component has sibling with different nameInData', () => {
-      const formGroup = {
+      const formGroup: FormComponentGroup = {
         name: 'nationalSubjectCategory',
         type: 'group',
         mode: 'input',
@@ -2430,11 +2436,11 @@ describe('helper methods', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = hasComponentSameNameInData(formGroup as FormComponent);
-      expect(actual).toBeFalsy();
+      const actual = hasComponentSameNameInData(formGroup);
+      expect(actual).toEqual(false);
     });
     it('when component has is not a group', () => {
-      const formVariable = {
+      const formVariable: FormComponentVar = {
         name: 'subject',
         type: 'textVariable',
         mode: 'output',
@@ -2458,14 +2464,16 @@ describe('helper methods', () => {
         childStyle: ['fiveChildStyle'],
         gridColSpan: 5,
       };
-      const actual = hasComponentSameNameInData(formVariable as FormComponent);
-      expect(actual).toBeFalsy();
+      const actual = hasComponentSameNameInData(
+        formVariable as FormComponentGroup,
+      );
+      expect(actual).toEqual(false);
     });
   });
 
   describe('getChildrenWithSameNameInData', () => {
     it('when component has same nameInData', () => {
-      const formGroup = {
+      const formGroup: FormComponentGroup = {
         name: 'nationalSubjectCategory',
         type: 'group',
         mode: 'input',
@@ -2581,12 +2589,12 @@ describe('helper methods', () => {
         childStyle: [''],
         gridColSpan: 12,
       };
-      const actual = getChildNameInDataArray(formGroup as FormComponent);
+      const actual = getChildNameInDataArray(formGroup as FormComponentGroup);
       expect(actual).toStrictEqual(['subject', 'subject']);
     });
 
     it('when component has is not a group', () => {
-      const formVariable = {
+      const formVariable: FormComponentVar = {
         name: 'subject',
         type: 'textVariable',
         mode: 'output',
@@ -2610,7 +2618,9 @@ describe('helper methods', () => {
         childStyle: ['fiveChildStyle'],
         gridColSpan: 5,
       };
-      const actual = getChildNameInDataArray(formVariable as FormComponent);
+      const actual = getChildNameInDataArray(
+        formVariable as FormComponentGroup,
+      );
       expect(actual).toStrictEqual([]);
     });
   });

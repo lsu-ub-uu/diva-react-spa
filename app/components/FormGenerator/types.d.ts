@@ -57,6 +57,8 @@ export interface FormComponentBase {
     | 'container'
     | 'guiElementLink';
   name: string;
+}
+export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;
   mode: FormComponentMode;
   tooltip?: FormComponentTooltip;
@@ -71,18 +73,18 @@ export interface FormComponentBase {
   presentationStyle?: string; // frame etc
 }
 
-export interface FormComponentVar extends FormComponentBase {
+export interface FormComponentVar extends FormComponentMetadata {
   inputType?: 'input' | 'textarea'; // really be optional?
   inputFormat?: 'password';
   validation?: FormRegexValidation | FormNumberValidation;
   attributes?: FormAttributeCollection[];
 }
 
-export interface FormComponentNumVar extends FormComponentBase {
+export interface FormComponentNumVar extends FormComponentMetadata {
   validation?: FormRegexValidation | FormNumberValidation;
   attributes?: FormAttributeCollection[];
 }
-export interface FormComponentCollVar extends FormComponentBase {
+export interface FormComponentCollVar extends FormComponentMetadata {
   options?: FormComponentCollItem[];
   attributes?: FormAttributeCollection[];
 }
@@ -92,7 +94,7 @@ interface FormComponentCollItem {
   label: string;
 }
 
-export interface FormComponentRecordLink extends FormComponentBase {
+export interface FormComponentRecordLink extends FormComponentMetadata {
   attributes?: FormAttributeCollection[];
   recordLinkType?: string;
   presentationRecordLinkId?: string;
@@ -100,19 +102,17 @@ export interface FormComponentRecordLink extends FormComponentBase {
   linkedRecordPresentation?: LinkedPresentation;
 }
 
-export interface FormComponentContainer extends FormComponentBase {
+export interface FormComponentContainer extends FormComponentMetadata {
   containerType?: 'repeating' | 'surrounding';
-  // presentationStyle?: string; // frame etc
-  components?: FormComponent[]; // for groups
+  components?: FormComponent[];
 }
 
-export interface FormComponentGroup extends FormComponentBase {
+export interface FormComponentGroup extends FormComponentMetadata {
   attributes?: FormAttributeCollection[];
-  // presentationStyle?: string; // frame etc
-  components?: FormComponent[]; // for groups
+  components?: FormComponent[];
 }
 
-export interface FormComponentText extends FormComponentBase {
+export interface FormComponentText extends FormComponentMetadata {
   textStyle?:
     | 'h1TextStyle'
     | 'h2TextStyle'
