@@ -19,6 +19,8 @@
 :root {
   --border-radius: 8px;
 
+  --background-color: 255 255 255;
+
   --primaryMain: 51 51 51;
   --secondaryMain: 1 1 1;
   --errorMain: 255 23 68;

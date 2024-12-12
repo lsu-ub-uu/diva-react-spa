@@ -3,7 +3,7 @@
  *
  * This file is part of DiVA Client.
  *
- *     DiVA Client is free software: you can redistribute it and/or modify
+ *     DiVA Client is free software: you can rgb(var(--errorMain))istribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
@@ -17,20 +17,53 @@
  */
 
 .attributeSelect {
+  position: relative;
   font-size: 0.9rem;
-  font-style: italic;
-  color: rgb(var(--labelColor));
-  margin: 0 var(--gap);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: var(--gap);
+
+  .inputWrapper {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--gap) / 2);
+  }
+  label {
+    color: rgb(var(--labelColor));
+    font-style: italic;
+  }
 
   select {
     field-sizing: content;
     width: auto;
-    max-width: 100%;
+    max-width: 25ch;
     padding: calc(var(--gap) / 2);
     font-size: inherit;
-    margin-left: calc(var(--gap) / 2);
-    background: white;
+    background: rgb(var(--background-color));
     border: 1px solid rgb(var(--grayDark));
     border-radius: calc(var(--border-radius) / 2);
+    &:focus {
+      border-color: black;
+    }
+  }
+
+  .errorMessage {
+    color: rgb(var(--errorMain));
+    visibility: hidden;
+    font-size: 0.75rem;
+    margin: 0;
+  }
+
+  &[data-error='true'] {
+    label {
+      color: rgb(var(--errorMain));
+    }
+    select {
+      border-color: rgb(var(--errorMain));
+    }
+    .errorMessage {
+      visibility: visible;
+    }
   }
 }

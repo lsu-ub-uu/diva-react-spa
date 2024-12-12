@@ -21,43 +21,102 @@ import { useTranslation } from 'react-i18next';
 import styles from './AttributeSelect.module.css';
 import { useRemixFormContext } from 'remix-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import type {
+  FormComponentMode,
+  FormComponentTooltip,
+} from '@/components/FormGenerator/types';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { IconButton } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import { type FieldError, useFormState, useWatch } from 'react-hook-form';
+import { get } from 'lodash-es';
 
 interface AttributeSelectProps {
   name: string;
   label: string;
   options: Option[] | undefined;
+  showLabel: boolean | undefined;
+  placeholder: string | undefined;
+  tooltip: FormComponentTooltip | undefined;
+  disabled: boolean;
+  displayMode: FormComponentMode;
 }
 
 export const AttributeSelect = ({
   name,
   label,
   options = [],
+  showLabel = true,
+  tooltip,
+  disabled,
+  displayMode,
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
-  const {
-    register,
-    formState: { errors },
-  } = useRemixFormContext();
+  const { register, getValues } = useRemixFormContext();
+
+  const { errors } = useFormState({ name });
+  const error = get(errors, name) as FieldError | undefined;
+  const value = getValues(name);
+
+  if (displayMode === 'output' && !value) {
+    return null;
+  }
 
   return (
-    <label className={styles.attributeSelect}>
-      {t(label)}:
-      <select {...register(name)}>
-        <option value=''>{t('divaClient_optionNoneText')}</option>
-        {options.map((option) => (
-          <option
-            key={option.value}
-            value={option.value}
+    <div
+      className={styles.attributeSelect}
+      data-error={error !== undefined}
+    >
+      <div className={styles.inputWrapper}>
+        {showLabel && <label htmlFor={name}>{t(label)}</label>}
+        {tooltip && (
+          <Tooltip
+            title={t(tooltip.title)}
+            body={t(tooltip.body)}
           >
-            {t(option.label)}
-          </option>
-        ))}
-      </select>
-      <ErrorMessage
-        errors={errors}
-        name={name}
-        render={({ message }) => <p style={{ color: 'red' }}>{message}</p>}
-      />
-    </label>
+            <IconButton
+              sx={{ m: -1 }}
+              aria-label='Help'
+              disableRipple
+              color='default'
+            >
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+        {displayMode === 'input' && (
+          <select
+            {...register(name)}
+            disabled={disabled}
+            id={name}
+          >
+            {options.map((option) => (
+              <option
+                key={option.value}
+                value={option.value}
+              >
+                {t(option.label)}
+              </option>
+            ))}
+          </select>
+        )}
+        {displayMode === 'output' && (
+          <>
+            <span>
+              {t(
+                options.find((option) => option.value === value)?.label ??
+                  'unknown',
+              )}
+            </span>
+            <input
+              type='hidden'
+              value={value}
+              name={name}
+            />
+          </>
+        )}
+      </div>
+      <p className={styles.errorMessage}>{error?.message}</p>
+    </div>
   );
 };

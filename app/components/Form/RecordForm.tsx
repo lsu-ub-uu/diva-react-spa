@@ -27,11 +27,8 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import type {
-  RecordData} from '../FormGenerator/defaultValues/defaultValues';
-import {
-  createDefaultValuesFromFormSchema
-} from '../FormGenerator/defaultValues/defaultValues';
+import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
+import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import type { RecordFormSchema } from '../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
@@ -60,7 +57,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
     resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
   const { handleSubmit, reset } = methods;
-  console.log('errors', methods.formState.errors);
+
   return (
     <Box
       component={Form}
