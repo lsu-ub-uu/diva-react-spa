@@ -43,7 +43,16 @@
     background: rgb(var(--background-color));
     border: 1px solid rgb(var(--grayDark));
     border-radius: calc(var(--border-radius) / 2);
+    cursor: pointer;
     &:focus {
+      border-color: black;
+    }
+  }
+
+  &[data-readonly='true'] {
+    select {
+      background: transparent;
+      pointer-events: none;
       border-color: black;
     }
   }

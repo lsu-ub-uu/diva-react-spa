@@ -38,8 +38,9 @@ interface AttributeSelectProps {
   showLabel: boolean | undefined;
   placeholder: string | undefined;
   tooltip: FormComponentTooltip | undefined;
-  disabled: boolean;
+  disabled?: boolean;
   displayMode: FormComponentMode;
+  readonly?: boolean;
 }
 
 export const AttributeSelect = ({
@@ -50,6 +51,7 @@ export const AttributeSelect = ({
   tooltip,
   disabled,
   displayMode,
+  readonly,
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
   const { register, getValues } = useRemixFormContext();
@@ -66,6 +68,7 @@ export const AttributeSelect = ({
     <div
       className={styles.attributeSelect}
       data-error={error !== undefined}
+      data-readonly={readonly}
     >
       <div className={styles.inputWrapper}>
         {showLabel && <label htmlFor={name}>{t(label)}</label>}

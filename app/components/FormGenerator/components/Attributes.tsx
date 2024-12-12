@@ -52,7 +52,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
         showLabel={attribute.showLabel}
         placeholder={attribute.placeholder}
         tooltip={attribute.tooltip}
-        disabled={!!attribute.finalValue}
+        readonly={attribute.finalValue !== undefined}
         displayMode={attribute.mode}
       />
     );
