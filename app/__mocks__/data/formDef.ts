@@ -3416,6 +3416,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: false,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -3502,6 +3503,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                       type: 'collectionVariable',
                       name: 'colourAttribute',
                       placeholder: 'emptyTextId',
+                      showLabel: true,
                       tooltip: {
                         title: 'exampleCollectionVarText',
                         body: 'exampleCollectionVarDefText',
