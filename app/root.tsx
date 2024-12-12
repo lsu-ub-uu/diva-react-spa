@@ -24,13 +24,15 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from '@remix-run/react';
-import {
+import type {
   ActionFunctionArgs,
-  json,
   LinksFunction,
-  LoaderFunctionArgs,
+  LoaderFunctionArgs} from '@remix-run/node';
+import {
+  json
 } from '@remix-run/node';
-import { ReactNode, useEffect, useRef } from 'react';
+import type { ReactNode} from 'react';
+import { useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';

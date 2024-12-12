@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Option } from '@/components';
+import type { Option } from '@/components';
 import { useTranslation } from 'react-i18next';
 import styles from './AttributeSelect.module.css';
 import { useRemixFormContext } from 'remix-hook-form';

@@ -17,13 +17,14 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Control, Controller, useFieldArray } from 'react-hook-form';
+import type { Control} from 'react-hook-form';
+import { Controller, useFieldArray } from 'react-hook-form';
 import { Box, Button, Grid2 as Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import { FormComponent } from '../types';
+import type { FormComponent } from '../types';
 import {
   addAttributesToName,
   createDefaultValuesFromComponent,
@@ -40,7 +41,7 @@ import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { Typography } from '@/components/Typography/Typography';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { CardTitle } from '@/components/Card/CardTitle';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;

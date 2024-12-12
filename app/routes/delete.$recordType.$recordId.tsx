@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ActionFunctionArgs, json } from '@remix-run/node';
+import type { ActionFunctionArgs} from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { deleteRecord } from '@/.server/data/deleteRecord';
 import {
   commitSession,

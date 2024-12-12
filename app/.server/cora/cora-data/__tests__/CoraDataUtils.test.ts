@@ -18,7 +18,7 @@
  */
 
 import * as cdu from '../CoraDataUtils';
-import { DataGroup, DataElement, DataAtomic } from '../CoraData';
+import type { DataGroup, DataElement, DataAtomic } from '../CoraData';
 import { getAllDataAtomicValueFromDataGroup } from '../CoraDataUtils';
 
 const dataGroupWithOneRecordLink: DataGroup = {

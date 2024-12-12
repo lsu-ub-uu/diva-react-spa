@@ -31,14 +31,14 @@ import {
   Menu,
   Stack,
 } from '@mui/material';
-import { loader } from '@/root';
+import type { loader } from '@/root';
 import {
   convertWebRedirectToUserSession,
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
 } from '@/components/Layout/Header/Login/utils/utils';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Account } from '@/components/Layout/Header/Login/devAccounts';
+import type { Account } from '@/components/Layout/Header/Login/devAccounts';
 import { useTranslation } from 'react-i18next';
 import { useRef, useState } from 'react';
 import { DevAccountLoginOptions } from '@/components/Layout/Header/Login/DevAccountLoginOptions';

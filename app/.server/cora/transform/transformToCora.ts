@@ -17,13 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   Attributes,
   DataAtomic,
   DataGroup,
   RecordLink,
 } from '@/.server/cora/cora-data/CoraData';
-import { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
+import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
 import { isEmpty } from 'lodash-es';
 
 type Data = DataGroup | DataAtomic | RecordLink;

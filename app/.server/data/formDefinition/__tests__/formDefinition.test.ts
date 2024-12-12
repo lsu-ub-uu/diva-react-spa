@@ -18,7 +18,7 @@
  */
 
 import { listToPool } from '@/utils/structs/listToPool';
-import {
+import type {
   BFFAttributeReference,
   BFFGuiElement,
   BFFLinkedRecordPresentation,
@@ -41,7 +41,7 @@ import {
   BFFText,
   BFFValidationType,
 } from '@/.server/cora/transform/bffTypes';
-import { Lookup } from '@/utils/structs/lookup';
+import type { Lookup } from '@/utils/structs/lookup';
 import {
   exampleOtherCollectionVarId,
   pSomeArchiveNumberTextVar,
@@ -123,7 +123,7 @@ import {
   getAttributesByAttributeReferences,
   hasLinkedPresentation,
 } from '../formDefinition';
-import { Dependencies } from '../formDefinitionsDep';
+import type { Dependencies } from '../formDefinitionsDep';
 
 describe('formDefinition', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

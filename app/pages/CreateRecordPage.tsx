@@ -18,9 +18,9 @@
  */
 
 import { Stack } from '@mui/material';
-import { RecordFormSchema } from '@/components/FormGenerator/types';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 import { AsidePortal } from '@/components/AsidePortal/AsidePortal';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import {

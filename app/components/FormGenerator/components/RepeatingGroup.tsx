@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponentGroup } from '@/components/FormGenerator/types';
+import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
+import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';

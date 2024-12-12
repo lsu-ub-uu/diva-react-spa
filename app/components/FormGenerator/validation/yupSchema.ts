@@ -17,14 +17,14 @@
  */
 
 import * as yup from 'yup';
-import {
+import type {
   AnyObject,
   ObjectSchema,
   ObjectShape,
   TestConfig,
   TestContext,
 } from 'yup';
-import {
+import type {
   FormAttributeCollection,
   FormComponent,
   FormComponentContainer,

@@ -24,9 +24,9 @@ import {
   removeComponentsWithoutValuesFromSchema,
   useSectionScroller,
 } from '@/components/NavigationPanel/utils';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { RecordFormSchema } from '@/components/FormGenerator/types';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { AsidePortal } from '@/components/AsidePortal/AsidePortal';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 

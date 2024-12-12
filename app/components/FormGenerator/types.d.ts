@@ -44,6 +44,8 @@ export interface LinkedPresentation {
   presentationId: string;
   presentedRecordType: string;
 }
+type FormComponentMode = 'input' | 'output' | undefined;
+
 export interface FormComponentBase {
   type:
     | 'recordLink'
@@ -56,10 +58,10 @@ export interface FormComponentBase {
     | 'guiElementLink';
   name: string;
   placeholder?: string;
-  mode?: string;
+  mode: FormComponentMode;
   tooltip?: FormComponentTooltip;
   label?: string;
-  showLabel?: boolean;
+  showLabel: boolean;
   headlineLevel?: string;
   attributesToShow?: 'all' | 'selectable' | 'none';
   repeat?: FormComponentRepeat;

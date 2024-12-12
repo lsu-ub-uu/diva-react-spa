@@ -82,9 +82,10 @@ import {
   formDefWithTwoTextVariableHavingFinalValue,
   formDefWithWithOptionalGroupWithRequiredVar,
 } from '@/__mocks__/data/formDef';
-import { RecordForm, RecordFormProps } from '@/components/Form/RecordForm';
+import type { RecordFormProps } from '@/components/Form/RecordForm';
+import { RecordForm } from '@/components/Form/RecordForm';
 import { createRemixStub } from '@remix-run/testing';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 
 const actionSpy = vi.fn();
 

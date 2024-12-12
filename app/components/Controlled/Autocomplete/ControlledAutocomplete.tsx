@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import * as React from 'react';
+import type * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import {
@@ -31,10 +31,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import axios from 'axios';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { Control, Controller } from 'react-hook-form';
+import type { Control} from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { FormSchema } from '../../FormGenerator/types';
-import { BFFDataRecord } from '@/types/record';
+import type { FormSchema } from '../../FormGenerator/types';
+import type { BFFDataRecord } from '@/types/record';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
 import { Tooltip } from '@/components/Tooltip/Tooltip';

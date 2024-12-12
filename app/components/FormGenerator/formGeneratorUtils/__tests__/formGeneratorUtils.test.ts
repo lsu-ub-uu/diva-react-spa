@@ -38,8 +38,8 @@ import {
   isFirstLevelVariable,
   isRootLevel,
 } from '../formGeneratorUtils';
-import { FormComponent } from '@/components/FormGenerator/types';
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
+import type { FormComponent } from '@/components/FormGenerator/types';
+import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, vi } from 'vitest';
 import { formDefTextVarsWithSameNameInData } from '@/__mocks__/data/formDef';
 import { getChildNameInDataArray } from '@/components/FormGenerator/defaultValues/defaultValues';

@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   DataGroup,
   DataListWrapper,
   RecordWrapper,
@@ -28,7 +28,7 @@ import {
   extractLinkedRecordIdFromNamedRecordLink,
 } from '@/.server/cora/cora-data/CoraDataTransforms';
 import { getFirstDataAtomicValueWithNameInData } from '@/.server/cora/cora-data/CoraDataUtilsWrappers';
-import {
+import type {
   BFFGuiElement,
   BFFLinkedRecordPresentation,
   BFFPresentationBase,

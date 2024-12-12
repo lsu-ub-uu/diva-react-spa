@@ -20,16 +20,17 @@
 import { Button } from '@mui/material';
 
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
+import type {
+  RecordData} from '../FormGenerator/defaultValues/defaultValues';
 import {
-  createDefaultValuesFromFormSchema,
-  RecordData,
+  createDefaultValuesFromFormSchema
 } from '../FormGenerator/defaultValues/defaultValues';
-import { SearchFormSchema } from '../FormGenerator/types';
+import type { SearchFormSchema } from '../FormGenerator/types';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface SearchFormProps {

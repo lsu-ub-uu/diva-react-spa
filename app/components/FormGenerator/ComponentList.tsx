@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import type { FormComponent } from '@/components/FormGenerator/types';
 import { Component } from '@/components/FormGenerator/Component';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 

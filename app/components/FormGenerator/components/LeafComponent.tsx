@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponent } from '@/components/FormGenerator/types';
+import type { FormComponent } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
@@ -25,7 +25,7 @@ import { CollectionVariable } from '@/components/FormGenerator/components/Collec
 import { Text } from '@/components/FormGenerator/components/Text';
 import { GuiElementLink } from '@/components/FormGenerator/components/GuiElementLink';
 import { useRemixFormContext } from 'remix-hook-form';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface LeafComponentProps {
   component: FormComponent;

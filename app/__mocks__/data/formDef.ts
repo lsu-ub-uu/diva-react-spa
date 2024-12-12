@@ -1,4 +1,4 @@
-import {
+import type {
   FormComponent,
   RecordFormSchema,
 } from '@/components/FormGenerator/types';

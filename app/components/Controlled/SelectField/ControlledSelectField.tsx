@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Control, Controller } from 'react-hook-form';
+import type { Control} from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import {
   Box,
   FormControl,
@@ -27,7 +28,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
-import { Option } from '@/components';
+import type { Option } from '@/components';
 import { Select } from '@/components/FormComponents/Select/Select';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 

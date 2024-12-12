@@ -18,7 +18,7 @@
  */
 
 import { listToPool } from '@/utils/structs/listToPool';
-import {
+import type {
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadata,
@@ -31,9 +31,9 @@ import {
   BFFText,
   BFFValidationType,
 } from '@/.server/cora/transform/bffTypes';
-import { Lookup } from '@/utils/structs/lookup';
+import type { Lookup } from '@/utils/structs/lookup';
 
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { getSearchTermNameFromSearchLink } from '@/routes/autocompleteSearch';
 
 describe('getSearchTermNameFromSearchLink', () => {

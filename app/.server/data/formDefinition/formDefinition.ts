@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   BFFAttributeReference,
   BFFCollectionItemReference,
   BFFGuiElement,
@@ -39,7 +39,7 @@ import {
   BFFValidationType,
 } from '@/.server/cora/transform/bffTypes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { Dependencies } from './formDefinitionsDep';
+import type { Dependencies } from './formDefinitionsDep';
 import {
   convertChildStylesToGridColSpan,
   convertChildStylesToShortName,
@@ -47,7 +47,7 @@ import {
 } from '@/.server/cora/cora-data/CoraDataUtilsPresentations';
 import { createBFFMetadataReference } from './formMetadata';
 import { createBFFPresentationReference } from './formPresentation';
-import { Lookup } from '@/utils/structs/lookup';
+import type { Lookup } from '@/utils/structs/lookup';
 import {
   createNumberVariableValidation,
   createTextVariableValidation,

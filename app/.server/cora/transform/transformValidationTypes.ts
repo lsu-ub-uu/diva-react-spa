@@ -1,4 +1,4 @@
-import {
+import type {
   DataGroup,
   DataListWrapper,
   RecordWrapper,
@@ -7,7 +7,7 @@ import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
 } from '@/.server/cora/cora-data/CoraDataTransforms';
-import { BFFValidationType } from './bffTypes';
+import type { BFFValidationType } from './bffTypes';
 
 export const transformCoraValidationTypes = (
   dataListWrapper: DataListWrapper,

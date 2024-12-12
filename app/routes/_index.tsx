@@ -20,9 +20,10 @@ import { getSearchForm } from '@/.server/data/getSearchForm';
 import { getValidationTypes } from '@/.server/data/getValidationTypes';
 import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
-import { defer, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import { defer } from '@remix-run/node';
 import { searchRecords } from '@/.server/data/searchRecords';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponentContainer } from '@/components/FormGenerator/types';
+import type { FormComponentContainer } from '@/components/FormGenerator/types';
 import React from 'react';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { checkIfPresentationStyleIsInline } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';

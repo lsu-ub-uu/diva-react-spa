@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponentCollVar } from '@/components/FormGenerator/types';
+import type { FormComponentCollVar } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';

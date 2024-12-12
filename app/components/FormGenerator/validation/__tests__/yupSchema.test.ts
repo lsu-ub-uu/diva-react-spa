@@ -18,7 +18,7 @@
  */
 
 import * as yup from 'yup';
-import { AnyObject, ArraySchema, ObjectSchema, StringSchema } from 'yup';
+import type { AnyObject, ArraySchema, ObjectSchema, StringSchema } from 'yup';
 import {
   createValidationForAttributesFromComponent,
   createValidationFromComponentType,
@@ -37,7 +37,7 @@ import {
   formDefWithSurroundingContainerAroundTextVariable,
   formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '../../../../__mocks__/data/formDef';
-import { FormComponent, FormSchema } from '../../types';
+import type { FormComponent, FormSchema } from '../../types';
 import { cleanFormData } from '../../../../utils/cleanFormData';
 
 const numberValidationTests = (

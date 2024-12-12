@@ -26,7 +26,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { getValidatedFormData } from 'remix-hook-form';
 import { createRecord } from '@/.server/data/createRecord';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 import {
   getSessionFromCookie,
   requireAuthentication,
@@ -37,7 +37,7 @@ import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;

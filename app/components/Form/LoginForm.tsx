@@ -18,21 +18,23 @@
  */
 
 import { Box, Button } from '@mui/material';
-import {
+import type {
   FieldErrors,
-  FieldValues,
+  FieldValues} from 'react-hook-form';
+import {
   FormProvider,
   useForm,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
+import type {
+  RecordData} from '../FormGenerator/defaultValues/defaultValues';
 import {
-  createDefaultValuesFromFormSchema,
-  RecordData,
+  createDefaultValuesFromFormSchema
 } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { RecordFormSchema } from '../FormGenerator/types';
-import { BFFDataRecord } from '@/types/record';
+import type { RecordFormSchema } from '../FormGenerator/types';
+import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface RecordFormProps {

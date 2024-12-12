@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FieldErrors } from 'react-hook-form';
+import type { FieldErrors } from 'react-hook-form';
 import { Alert } from '@mui/material';
 
 interface ErrorMessageProp {

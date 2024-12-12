@@ -17,11 +17,11 @@
  */
 
 import { useLoaderData } from '@remix-run/react';
-import { FormSchema } from '@/components/FormGenerator/types';
+import type { FormSchema } from '@/components/FormGenerator/types';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { loader } from '@/routes/search.$searchType';
+import type { loader } from '@/routes/search.$searchType';
 import { SearchPublicationCard } from '@/partials';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 

@@ -16,11 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
-import { BFFMetadataGroup } from '@/.server/cora/transform/bffTypes';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { BFFMetadataGroup } from '@/.server/cora/transform/bffTypes';
 import { searchRecords } from '@/.server/data/searchRecords';
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {

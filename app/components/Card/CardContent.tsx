@@ -16,8 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Box, SxProps } from '@mui/material';
-import { ReactNode, useContext } from 'react';
+import type { SxProps } from '@mui/material';
+import { Box } from '@mui/material';
+import type { ReactNode} from 'react';
+import { useContext } from 'react';
 import styles from './Card.module.css';
 import { CardContext } from '@/components/Card/CardContext';
 

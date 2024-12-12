@@ -18,9 +18,9 @@
  */
 
 import { useEffect, useState } from 'react';
-import { RecordFormSchema } from '../FormGenerator/types';
-import { NavigationPanelLink } from '../index';
-import { BFFDataRecord } from '@/types/record';
+import type { RecordFormSchema } from '../FormGenerator/types';
+import type { NavigationPanelLink } from '../index';
+import type { BFFDataRecord } from '@/types/record';
 import {
   addAttributesToName,
   hasCurrentComponentSameNameInData,

@@ -17,15 +17,15 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { FormComponent, FormComponentGroup, FormSchema } from '../types';
+import type { FieldValues, UseFormGetValues } from 'react-hook-form';
+import type { FormComponent, FormComponentGroup, FormSchema } from '../types';
 import {
   addAttributesToName,
   getChildNameInDataArray,
   getChildrenWithSameNameInData,
   hasCurrentComponentSameNameInData,
 } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { DivaTypographyVariants } from '@/components/Typography/Typography';
+import type { DivaTypographyVariants } from '@/components/Typography/Typography';
 import { cleanFormData } from '@/utils/cleanFormData';
 
 export const countStringCharOccurrences = (

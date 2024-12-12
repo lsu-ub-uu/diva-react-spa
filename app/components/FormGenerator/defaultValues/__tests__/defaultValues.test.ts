@@ -52,7 +52,7 @@ import {
   formDefRealDemoWithAttributesButWithoutFinalValue,
   formComponentTitleInfoGroup,
 } from '@/__mocks__/data/formDef';
-import { FormComponent, FormSchema } from '../../types';
+import type { FormComponent, FormSchema } from '../../types';
 import { cleanFormData } from '@/utils/cleanFormData';
 
 describe('FormGenerator Utils', () => {

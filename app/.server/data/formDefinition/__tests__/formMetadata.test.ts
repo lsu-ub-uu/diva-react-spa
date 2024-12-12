@@ -21,10 +21,10 @@ import {
   createFormMetaData,
   createMetaDataFromChildReference,
 } from '../formMetadata';
-import { FormMetaData } from '../formDefinition';
+import type { FormMetaData } from '../formDefinition';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { listToPool } from '@/utils/structs/listToPool';
-import {
+import type {
   BFFGuiElement,
   BFFLoginUnit,
   BFFLoginWebRedirect,
@@ -94,8 +94,8 @@ import {
   typeItemCollection,
   typeOutputTypeCollectionVar,
 } from '@/__mocks__/bff/form/bffMock';
-import { Lookup } from '@/utils/structs/lookup';
-import { Dependencies } from '../formDefinitionsDep';
+import type { Lookup } from '@/utils/structs/lookup';
+import type { Dependencies } from '../formDefinitionsDep';
 
 describe('formMetadata', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

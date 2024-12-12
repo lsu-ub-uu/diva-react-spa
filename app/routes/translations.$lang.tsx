@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { createTextDefinition } from '@/.server/data/textDefinition/textDefinition';
 import { invariant } from '@remix-run/router/history';
 

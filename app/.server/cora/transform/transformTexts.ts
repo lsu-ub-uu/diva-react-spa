@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   DataGroup,
   DataListWrapper,
   RecordWrapper,
@@ -29,7 +29,7 @@ import {
 import { getAllChildrenWithNameInData } from '@/.server/cora/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '@/.server/cora/cora-data/CoraDataUtilsWrappers';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { BFFText } from './bffTypes';
+import type { BFFText } from './bffTypes';
 
 export const transformCoraTexts = (
   dataListWrapper: DataListWrapper,
