@@ -17,10 +17,11 @@
  */
 
 import type * as React from 'react';
-import { useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
 import {
   Autocomplete as MuiAutocomplete,
+  Box,
   FormControl,
   FormLabel,
   IconButton,
@@ -31,7 +32,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import axios from 'axios';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import type { Control} from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import type { FormSchema } from '../../FormGenerator/types';
@@ -54,6 +55,8 @@ interface AutoCompleteProps {
   tooltip?: { title: string; body: string };
   presentationRecordLinkId?: string;
   recordType?: string;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const ControlledAutocomplete = (
@@ -109,33 +112,44 @@ export const ControlledAutocomplete = (
               alignItems: 'baseline',
             }}
           >
-            <FormLabel
-              htmlFor={field.name}
-              aria-label={props.label}
-              error={error !== undefined}
+            <Box
               sx={{
-                p: '2px 4px',
                 display: 'flex',
+                width: '100%',
+                justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
-              {props.showLabel === true ? t(props.label) : null}
-              {props.tooltip && (
-                <Tooltip
-                  title={t(props.tooltip.title)}
-                  body={t(props.tooltip.body)}
-                >
-                  <IconButton
-                    edge='end'
-                    aria-label='Help'
-                    disableRipple
-                    color='default'
+              <FormLabel
+                htmlFor={field.name}
+                aria-label={props.label}
+                error={error !== undefined}
+                sx={{
+                  p: '2px 4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                {props.showLabel === true ? t(props.label) : null}
+                {props.tooltip && (
+                  <Tooltip
+                    title={t(props.tooltip.title)}
+                    body={t(props.tooltip.body)}
                   >
-                    <HelpOutlineIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
-            </FormLabel>
+                    <IconButton
+                      edge='end'
+                      aria-label='Help'
+                      disableRipple
+                      color='default'
+                    >
+                      <HelpOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </FormLabel>
+              {props.attributes}
+              {props.actionButtonGroup}
+            </Box>
             <MuiAutocomplete
               size='small'
               noOptionsText={t('divaClient_NoOptionsText' as string)}
