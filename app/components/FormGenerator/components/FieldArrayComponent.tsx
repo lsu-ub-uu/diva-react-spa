@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { Control} from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import { Controller, useFieldArray } from 'react-hook-form';
 import { Box, Button, Grid2 as Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -151,7 +151,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
 
                   <Attributes
                     component={props.component}
-                    path={props.name}
+                    path={`${props.name}[${index}]`}
                   />
 
                   {actionButtonGroup}

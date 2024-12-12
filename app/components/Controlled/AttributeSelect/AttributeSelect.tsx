@@ -28,7 +28,7 @@ import type {
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { IconButton } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import { type FieldError, useFormState, useWatch } from 'react-hook-form';
+import { useFormState } from 'react-hook-form';
 import { get } from 'lodash-es';
 
 interface AttributeSelectProps {
@@ -57,7 +57,7 @@ export const AttributeSelect = ({
   const { register, getValues } = useRemixFormContext();
 
   const { errors } = useFormState({ name });
-  const error = get(errors, name) as FieldError | undefined;
+  const error = get(errors, name);
   const value = getValues(name);
 
   if (displayMode === 'output' && !value) {
@@ -119,7 +119,13 @@ export const AttributeSelect = ({
           </>
         )}
       </div>
-      <p className={styles.errorMessage}>{error?.message}</p>
+      <ErrorMessage
+        name={name}
+        errors={errors}
+        render={({ message }) => (
+          <p className={styles.errorMessage}>{message}</p>
+        )}
+      />
     </div>
   );
 };
