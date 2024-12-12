@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Control} from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import {
   Box,
@@ -31,6 +31,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import type { Option } from '@/components';
 import { Select } from '@/components/FormComponents/Select/Select';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
+import type { ReactNode } from 'react';
 
 interface ControlledSelectFieldProps {
   name: string;
@@ -46,6 +47,8 @@ interface ControlledSelectFieldProps {
   displayMode?: string;
   showLabel?: boolean;
   hasValue?: boolean;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
@@ -55,7 +58,6 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
     props.hasValue === true && displayMode === 'output';
   const showLabelAndIsInput =
     props.showLabel === true && displayMode === 'input';
-  const isAttribute = isAttributeName(props.name);
   const findOptionLabelByValue = (
     array: Option[] | undefined,
     value: string,
@@ -73,7 +75,14 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
         fieldState: { error },
       }) => (
         <FormControl fullWidth>
-          <Box sx={{ display: isAttribute ? 'flex' : undefined }}>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             {hasValueAndIsOutput || showLabelAndIsInput ? (
               <FormLabel
                 htmlFor={name}
@@ -84,7 +93,6 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                   p: '2px 4px',
                   display: 'flex',
                   alignItems: 'center',
-                  fontStyle: isAttribute ? 'italic' : null,
                 }}
               >
                 {props.showLabel === true ? t(props.label) : null}
@@ -105,84 +113,74 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 )}
               </FormLabel>
             ) : null}
-            {displayMode === 'input' ? (
-              <Select
-                sx={{
-                  '& .MuiSelect-select': {
-                    py: isAttribute ? 0.5 : undefined,
-                  },
-                  '& .MuiSelect-select .notranslate::after': props.placeholder
-                    ? {
-                        content: `"${t(props.placeholder)}"`,
-                        opacity: 0.42,
-                      }
-                    : {},
-                }}
-                inputProps={{
-                  id: props.name,
-                  inputRef: ref,
-                  readOnly: props.readOnly,
-                }}
-                labelId={name}
-                onBlur={onBlur}
-                size='small'
-                // defaultValue=''
-                value={
-                  props.options?.length || value === undefined ? value : ''
-                }
-                onChange={onChange}
-                fullWidth
-                loadingError={props.loadingError}
-                error={error !== undefined}
-                loading={props.isLoading}
-              >
-                <MenuItem
-                  value=''
-                  disableRipple
-                >
-                  <em>{t('divaClient_optionNoneText')}</em>
-                </MenuItem>
-                {props.options &&
-                  props.options.map((item, index) => {
-                    return (
-                      <MenuItem
-                        disabled={item.disabled}
-                        key={`${props.name}_$option-${index}`}
-                        disableRipple
-                        value={item.value}
-                      >
-                        {t(item.label)}
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-            ) : (
-              <>
-                {props.hasValue === true ? (
-                  <>
-                    <span>
-                      {t(findOptionLabelByValue(props.options, value))}
-                    </span>
-                    <input
-                      type='hidden'
-                      value={value}
-                      name={name}
-                    />
-                  </>
-                ) : null}
-              </>
-            )}
-            <FormHelperText error={error !== undefined}>
-              {error !== undefined ? error.message : ' '}
-            </FormHelperText>
+            {props.attributes}
+            {props.actionButtonGroup}
           </Box>
+          {displayMode === 'input' ? (
+            <Select
+              sx={{
+                '& .MuiSelect-select .notranslate::after': props.placeholder
+                  ? {
+                      content: `"${t(props.placeholder)}"`,
+                      opacity: 0.42,
+                    }
+                  : {},
+              }}
+              inputProps={{
+                id: props.name,
+                inputRef: ref,
+                readOnly: props.readOnly,
+              }}
+              labelId={name}
+              onBlur={onBlur}
+              size='small'
+              // defaultValue=''
+              value={props.options?.length || value === undefined ? value : ''}
+              onChange={onChange}
+              fullWidth
+              loadingError={props.loadingError}
+              error={error !== undefined}
+              loading={props.isLoading}
+            >
+              <MenuItem
+                value=''
+                disableRipple
+              >
+                <em>{t('divaClient_optionNoneText')}</em>
+              </MenuItem>
+              {props.options &&
+                props.options.map((item, index) => {
+                  return (
+                    <MenuItem
+                      disabled={item.disabled}
+                      key={`${props.name}_$option-${index}`}
+                      disableRipple
+                      value={item.value}
+                    >
+                      {t(item.label)}
+                    </MenuItem>
+                  );
+                })}
+            </Select>
+          ) : (
+            <>
+              {props.hasValue === true ? (
+                <>
+                  <span>{t(findOptionLabelByValue(props.options, value))}</span>
+                  <input
+                    type='hidden'
+                    value={value}
+                    name={name}
+                  />
+                </>
+              ) : null}
+            </>
+          )}
+          <FormHelperText error={error !== undefined}>
+            {error !== undefined ? error.message : ' '}
+          </FormHelperText>
         </FormControl>
       )}
     />
   );
-};
-
-const isAttributeName = (name: string) => {
-  const parts = name.split('.');
-  return parts[parts.length - 1].startsWith('_');
 };

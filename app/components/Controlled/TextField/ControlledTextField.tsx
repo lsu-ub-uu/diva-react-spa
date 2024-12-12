@@ -23,7 +23,7 @@ import {
   IconButton,
   TextField,
 } from '@mui/material';
-import type { Control} from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
@@ -72,94 +72,91 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               alignItems: 'baseline',
             }}
           >
-            <>
-              <Box
-                sx={{
-                  display: 'flex',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                {props.showLabel ? (
-                  <FormLabel
-                    htmlFor={field.name}
-                    aria-label={props.label}
-                    required={props.required}
-                    error={error !== undefined}
-                    sx={{
-                      p: '2px 4px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      mr: 'auto',
-                    }}
-                  >
-                    {t(props.label)}
-                    {props.tooltip && (
-                      <Tooltip
-                        title={t(props.tooltip.title)}
-                        body={t(props.tooltip.body)}
-                      >
-                        <IconButton
-                          edge='end'
-                          aria-label='Help'
-                          disableRipple
-                          color='default'
-                        >
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                  </FormLabel>
-                ) : null}
-                {props.attributes}
-                {props.actionButtonGroup}
-              </Box>
-
-              {displayMode === 'input' ? (
-                <TextField
-                  multiline={props.multiline ?? false}
-                  rows={props.multiline ? 3 : 1}
-                  id={field.name}
-                  size='small'
+            <Box
+              sx={{
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              {props.showLabel ? (
+                <FormLabel
+                  htmlFor={field.name}
+                  aria-label={props.label}
+                  required={props.required}
                   error={error !== undefined}
-                  {...fieldWithoutRef}
-                  inputRef={field.ref}
-                  onBlur={field.onBlur}
-                  autoComplete='off'
-                  placeholder={
-                    props.placeholder !== undefined
-                      ? (t(props.placeholder) as string)
-                      : ''
-                  }
-                  fullWidth
-                  variant='outlined'
-                  helperText={error !== undefined ? error.message : ' '}
-                  InputProps={{
-                    readOnly: props.readOnly,
-                    endAdornment: (
-                      <ErrorIcon
-                        sx={{
-                          color: '#ff0000',
-                          visibility:
-                            error !== undefined ? 'visible' : 'hidden',
-                        }}
-                      />
-                    ),
+                  sx={{
+                    p: '2px 4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    mr: 'auto',
                   }}
-                  type={props.inputFormat}
+                >
+                  {t(props.label)}
+                  {props.tooltip && (
+                    <Tooltip
+                      title={t(props.tooltip.title)}
+                      body={t(props.tooltip.body)}
+                    >
+                      <IconButton
+                        edge='end'
+                        aria-label='Help'
+                        disableRipple
+                        color='default'
+                      >
+                        <InfoIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </FormLabel>
+              ) : null}
+              {props.attributes}
+              {props.actionButtonGroup}
+            </Box>
+
+            {displayMode === 'input' ? (
+              <TextField
+                multiline={props.multiline ?? false}
+                rows={props.multiline ? 3 : 1}
+                id={field.name}
+                size='small'
+                error={error !== undefined}
+                {...fieldWithoutRef}
+                inputRef={field.ref}
+                onBlur={field.onBlur}
+                autoComplete='off'
+                placeholder={
+                  props.placeholder !== undefined
+                    ? (t(props.placeholder) as string)
+                    : ''
+                }
+                fullWidth
+                variant='outlined'
+                helperText={error !== undefined ? error.message : ' '}
+                InputProps={{
+                  readOnly: props.readOnly,
+                  endAdornment: (
+                    <ErrorIcon
+                      sx={{
+                        color: '#ff0000',
+                        visibility: error !== undefined ? 'visible' : 'hidden',
+                      }}
+                    />
+                  ),
+                }}
+                type={props.inputFormat}
+              />
+            ) : (
+              <>
+                <span>{field.value}</span>
+                <input
+                  type='hidden'
+                  value={field.value}
+                  name={field.name}
                 />
-              ) : (
-                <>
-                  <span>{field.value}</span>
-                  <input
-                    type='hidden'
-                    value={field.value}
-                    name={field.name}
-                  />
-                </>
-              )}
-            </>
+              </>
+            )}
           </FormControl>
         );
       }}

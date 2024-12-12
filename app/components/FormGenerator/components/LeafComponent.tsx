@@ -77,6 +77,8 @@ export const LeafComponent = ({
             renderElementGridWrapper={renderElementGridWrapper}
             component={component}
             name={name}
+            attributes={attributes}
+            actionButtonGroup={actionButtonGroup}
           />
         );
       }
@@ -102,6 +104,7 @@ export const LeafComponent = ({
           component={component}
           name={name}
           parentPresentationStyle={parentPresentationStyle}
+          attributes={attributes}
           actionButtonGroup={actionButtonGroup}
         />
       );
@@ -114,6 +117,8 @@ export const LeafComponent = ({
           renderElementGridWrapper={renderElementGridWrapper}
           component={component}
           name={name}
+          attributes={attributes}
+          actionButtonGroup={actionButtonGroup}
         />
       );
     }
