@@ -2838,7 +2838,9 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByLabelText('someMetadataTextVarText');
+      const text = screen.getByText('aaaaa');
       expect(inputElement).toBeInTheDocument();
+      expect(text).toBeInTheDocument();
     });
 
     it('checkIfComponentHasValue hides variable in output with no value', () => {

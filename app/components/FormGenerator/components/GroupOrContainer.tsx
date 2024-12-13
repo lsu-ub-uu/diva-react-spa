@@ -158,7 +158,15 @@ export const GroupOrContainer = ({
       <Card boxed={groupLevel !== 0}>
         {component?.showLabel &&
           (!linkedData ? (
-            <CardHeader>
+            <CardHeader
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '100%',
+                justifyContent: 'flex-end',
+              }}
+            >
               <CardTitle>
                 <Typography
                   text={component?.label ?? ''}

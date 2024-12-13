@@ -640,6 +640,7 @@ export const formDefForCheckTextValue: RecordFormSchema = {
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
+      minNumberOfRepeatingToShow: 1,
     },
     tooltip: {
       title: 'textId345',
@@ -651,6 +652,7 @@ export const formDefForCheckTextValue: RecordFormSchema = {
         type: 'textVariable',
         mode: 'output',
         inputType: 'input',
+        showLabel: true,
         tooltip: {
           title: 'exampleMetadataTextVarText',
           body: 'exampleMetadataTextVarDefText',
@@ -663,12 +665,14 @@ export const formDefForCheckTextValue: RecordFormSchema = {
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
         },
       },
       {
         name: 'someOtherTextVar',
         type: 'textVariable',
         mode: 'output',
+        showLabel: true,
         inputType: 'input',
         tooltip: {
           title: 'exampleMetadataTextVarText',
@@ -682,6 +686,7 @@ export const formDefForCheckTextValue: RecordFormSchema = {
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
         },
       },
     ],
@@ -710,6 +715,7 @@ export const formDefForCheckNumberValue: RecordFormSchema = {
         type: 'textVariable',
         mode: 'output',
         inputType: 'input',
+        showLabel: true,
         tooltip: {
           title: 'exampleMetadataTextVarText',
           body: 'exampleMetadataTextVarDefText',
@@ -729,6 +735,7 @@ export const formDefForCheckNumberValue: RecordFormSchema = {
         type: 'numberVariable',
         mode: 'output',
         inputType: 'input',
+        showLabel: true,
         tooltip: {
           title: 'exampleMetadataTextVarText',
           body: 'exampleMetadataTextVarDefText',
