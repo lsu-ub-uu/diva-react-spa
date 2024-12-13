@@ -46,4 +46,32 @@ describe('removeEmpty', () => {
   it('should return a data object with properties removed if null or undefined', () => {
     expect(removeEmpty(data)).toStrictEqual(cleaned);
   });
+
+  it('should return non-object, non-array values as is', () => {
+    // Test with various primitive types
+    expect(removeEmpty(42)).toBe(42);
+    expect(removeEmpty('hello')).toBe('hello');
+    expect(removeEmpty(true)).toBe(true);
+    expect(removeEmpty(false)).toBe(false);
+    expect(removeEmpty(null)).toBe(null);
+    expect(removeEmpty(undefined)).toBe(undefined);
+    expect(removeEmpty({
+      prop1: 'hello',
+      prop4: {
+        innerProp2: 'world',
+      },
+      prop5: [],
+      prop6: ['a'],
+      prop7: '',
+    })).toStrictEqual({
+      prop1: 'hello',
+      prop4: {
+        innerProp2: 'world',
+      },
+      prop5: [],
+      prop6: ['a'],
+      prop7: '',
+    });
+
+  });
 });
