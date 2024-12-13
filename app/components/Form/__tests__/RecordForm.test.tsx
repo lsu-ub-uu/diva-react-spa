@@ -1879,9 +1879,7 @@ describe('<Form />', () => {
         />,
       );
 
-      const numberInput = screen.getByPlaceholderText(
-        'someNumberVar2IdPlaceholder',
-      );
+      screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
 
       const attributeSelect = screen.getByRole('combobox', {
         name: 'someNumberVar2AttributeLabel',
