@@ -26,8 +26,6 @@ import { expect } from 'vitest';
 import type { BFFDataRecord } from '@/types/record';
 import { ControlledAutocomplete } from '@/components/Controlled/Autocomplete/ControlledAutocomplete';
 
-import type { JSX } from "react";
-
 const mockOptions: BFFDataRecord[] = [
   {
     id: 'nationalSubjectCategory:6325356888554468',

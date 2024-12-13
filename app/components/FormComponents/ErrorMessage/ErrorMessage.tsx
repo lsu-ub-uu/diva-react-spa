@@ -19,8 +19,6 @@
 import type { FieldErrors } from 'react-hook-form';
 import { Alert } from '@mui/material';
 
-import type { JSX } from "react";
-
 interface ErrorMessageProp {
   title?: string;
   errors: FieldErrors;

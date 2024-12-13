@@ -35,8 +35,6 @@ import { GuiElementLink } from '@/components/FormGenerator/components/GuiElement
 import { useRemixFormContext } from 'remix-hook-form';
 import type { ReactNode } from 'react';
 
-import type { JSX } from "react";
-
 interface LeafComponentProps {
   component: FormComponent;
   reactKey: string;

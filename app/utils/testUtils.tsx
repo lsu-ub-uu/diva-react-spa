@@ -19,8 +19,6 @@
 import { render } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
 
-import type { JSX } from "react";
-
 const renderWithSnackbarProvider = (ui: JSX.Element) =>
   render(ui, { wrapper: SnackbarProvider });
 

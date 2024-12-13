@@ -23,8 +23,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useTranslation } from 'react-i18next';
 
-import type { JSX } from "react";
-
 interface ActionButtonGroupProps {
   entityName?: string;
   hideMoveButtons: boolean;

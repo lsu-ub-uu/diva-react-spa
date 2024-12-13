@@ -17,7 +17,7 @@
  */
 
 import type * as React from 'react';
-import { type ReactNode, useEffect, useState, type JSX } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
 import {
   Autocomplete as MuiAutocomplete,

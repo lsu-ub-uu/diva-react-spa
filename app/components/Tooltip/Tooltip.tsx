@@ -64,7 +64,7 @@ const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (
 interface TooltipProps {
   title: string;
   body: string;
-  children: ReactElement<any>;
+  children: ReactElement;
 }
 
 interface ContentProps {
