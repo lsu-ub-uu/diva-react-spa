@@ -72,16 +72,16 @@ export const GroupOrContainer = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <Card boxed>
-        {component.showLabel === true ? (
-          <CardHeader
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '100%',
-              justifyContent: 'space-between',
-            }}
-          >
+        <CardHeader
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: 'flex-end',
+          }}
+        >
+          {component.showLabel === true ? (
             <CardTitle>
               <Typography
                 text={component?.label ?? ''}
@@ -102,12 +102,12 @@ export const GroupOrContainer = ({
                 </IconButton>
               </Tooltip>
             </CardTitle>
-            <Attributes
-              component={component}
-              path={currentComponentNamePath}
-            />
-          </CardHeader>
-        ) : null}
+          ) : null}
+          <Attributes
+            component={component}
+            path={currentComponentNamePath}
+          />
+        </CardHeader>
         <CardContent>
           <Grid
             container

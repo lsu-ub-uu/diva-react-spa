@@ -122,6 +122,7 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'flex-end',
                   }}
                 >
                   {props.component.showLabel && (

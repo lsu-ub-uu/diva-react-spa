@@ -79,7 +79,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             sx={{
               display: 'flex',
               width: '100%',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-end',
               alignItems: 'center',
             }}
           >
@@ -93,6 +93,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                   p: '2px 4px',
                   display: 'flex',
                   alignItems: 'center',
+                  mr: 'auto',
                 }}
               >
                 {props.showLabel === true ? t(props.label) : null}
