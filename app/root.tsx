@@ -17,34 +17,29 @@
  */
 
 import {
+  data,
   Links,
+  type LinksFunction,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
-} from '@remix-run/react';
-import type {
-  ActionFunctionArgs,
-  LinksFunction,
-  LoaderFunctionArgs} from '@remix-run/node';
-import {
-  json
-} from '@remix-run/node';
-import type { ReactNode} from 'react';
-import { useEffect, useRef } from 'react';
+} from 'react-router';
+import { type ReactNode, useEffect, useRef } from 'react';
+import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
-import dev_favicon from '@/images/dev_favicon.svg';
-import favicon from '@/images/favicon.svg';
 import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/.server/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
+import type { Route } from '../.react-router/types/app/+types/root';
+import { PageLayout } from '@/components/Layout';
 import { withEmotionCache } from '@emotion/react';
 import './root.css';
-import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
-import { PageLayout } from '@/components/Layout';
+import dev_favicon from './images/dev_favicon.svg';
+import favicon from './images/favicon.svg';
 
 const { MODE } = import.meta.env;
 
@@ -60,20 +55,20 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
 
   const loginUnits = getLoginUnits(context.dependencies);
   const locale = context.i18n.language;
-  return json({ auth, locale, loginUnits });
+  return { auth, locale, loginUnits };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const language = formData.get('language');
   if (typeof language === 'string') {
-    return json(
+    return data(
       {},
       {
         headers: {

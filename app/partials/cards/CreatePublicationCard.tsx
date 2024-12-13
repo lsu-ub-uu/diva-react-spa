@@ -25,12 +25,12 @@ import {
   NativeSelect,
   OutlinedInput,
 } from '@mui/material';
-import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
+import { Await, Form, useLoaderData, useNavigation } from 'react-router';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import type { loader } from '@/routes/_index';
+import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
+import type { loader } from '@/routes/home';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
-import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
 
 const formAction = '/create';
 

@@ -16,14 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { LoaderFunctionArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
 import { createTextDefinition } from '@/.server/data/textDefinition/textDefinition';
-import { invariant } from '@remix-run/router/history';
+import { invariant } from '@/utils/invariant';
+import type { Route } from '../../.react-router/types/app/routes/+types/translations';
 
-export const loader = async ({ context, params }: LoaderFunctionArgs) => {
+export const loader = async ({ context, params }: Route.LoaderArgs) => {
   const { lang } = params;
   invariant(lang, 'Missing param lang');
 
-  return json(createTextDefinition(context.dependencies, lang));
+  return Response.json(createTextDefinition(context.dependencies, lang));
 };

@@ -35,11 +35,11 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { Typography } from '@/components/Typography/Typography';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
-import { Typography } from '@/components/Typography/Typography';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { CardTitle } from '@/components/Card/CardTitle';
 
 interface GroupOrContainerProps {

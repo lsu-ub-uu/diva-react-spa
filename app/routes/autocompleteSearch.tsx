@@ -16,15 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { LoaderFunctionArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { invariant } from '@remix-run/router/history';
+
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import type { BFFMetadataGroup } from '@/.server/cora/transform/bffTypes';
 import { searchRecords } from '@/.server/data/searchRecords';
+import { invariant } from '@/utils/invariant';
+import type { Route } from '../../.react-router/types/app/routes/+types/autocompleteSearch';
 
-export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const url = new URL(request.url);
 
   const searchType = url.searchParams.get('searchType');
@@ -62,7 +62,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     auth,
   );
 
-  return json(result.data);
+  return Response.json(result.data);
 };
 
 export const getSearchTermNameFromSearchLink = (

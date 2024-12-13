@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ActionFunctionArgs} from '@remix-run/node';
-import { redirect } from '@remix-run/node';
+import { redirect } from 'react-router';
+import type { Route } from '../../.react-router/types/app/routes/+types/refreshDefinitions';
 
-export const action = async ({ request, context }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: Route.ActionArgs) => {
   const form = await request.formData();
 
   const returnTo = decodeURIComponent(form.get('returnTo')!.toString());

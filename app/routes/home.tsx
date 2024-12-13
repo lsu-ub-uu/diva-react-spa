@@ -17,51 +17,56 @@
  */
 
 import { getSearchForm } from '@/.server/data/getSearchForm';
-import { searchRecords } from '@/.server/data/searchRecords';
-import type { BFFSearchResult } from '@/types/record';
-import { SearchPage } from '@/pages';
+import { getValidationTypes } from '@/.server/data/getValidationTypes';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
-import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import type { LoaderFunctionArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { invariant } from '@remix-run/router/history';
-import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import { searchRecords } from '@/.server/data/searchRecords';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import type { Route } from '../../.react-router/types/app/routes/+types/home';
+import { HomePage } from '@/pages/HomePage';
 
-export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
+export const ErrorBoundary = RouteErrorBoundary;
 
-export const loader = async ({
-  request,
-  params,
-  context,
-}: LoaderFunctionArgs) => {
-  const { searchType } = params;
-  invariant(searchType, 'Missing searchType param');
+export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
+  const { t } = context.i18n;
+  const title = `DiVA | ${t('divaClient_HomePageTitleText')}`;
+  const validationTypes = auth
+    ? getValidationTypes(auth.data.token)
+    : Promise.resolve(null);
 
   const searchForm = getSearchForm(
     context.dependencies,
     'diva-outputSimpleSearch',
   );
 
-  const query = parseFormDataFromSearchParams(request);
+  const query = {
+    search: {
+      include: {
+        includePart: {
+          genericSearchTerm: [
+            {
+              value: '**',
+            },
+          ],
+        },
+      },
+    },
+  };
+  const recordList = searchRecords(
+    context.dependencies,
+    'diva-outputSearch',
+    query,
+    auth,
+  );
 
-  let searchResults: BFFSearchResult | null = null;
-  try {
-    searchResults = await searchRecords(
-      context.dependencies,
-      searchType,
-      query,
-      auth,
-    );
-  } catch (e) {
-    console.error(e);
-  }
+  return { validationTypes, searchForm, recordList, title };
+}
 
-  return json({ searchForm, searchResults });
+export const meta = ({ data }: Route.MetaArgs) => {
+  return [{ title: data?.title }];
 };
 
-export default function SearchRoute() {
-  return <SearchPage />;
+export default function IndexRoute() {
+  return <HomePage />;
 }

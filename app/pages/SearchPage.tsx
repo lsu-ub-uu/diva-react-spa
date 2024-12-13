@@ -16,14 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData } from 'react-router';
 import type { FormSchema } from '@/components/FormGenerator/types';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { loader } from '@/routes/search.$searchType';
-import { SearchPublicationCard } from '@/partials';
+import type { loader } from '@/routes/searchRecord';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
+import { SearchPublicationCard } from '@/partials/cards/SearchPublicationCard';
 
 const SearchResultList = styled('ol')`
   list-style: none;
@@ -63,7 +63,7 @@ export const SearchPage = () => {
               <SearchResultListItem key={record.id}>
                 <AutocompleteForm
                   record={record}
-                  formSchema={record.presentation as FormSchema}
+                  formSchema={record.presentation as unknown as FormSchema}
                 />
                 <Box
                   sx={(theme) => ({

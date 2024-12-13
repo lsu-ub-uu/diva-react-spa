@@ -30,8 +30,8 @@ import {
   Link as RouterLink,
   useFetcher,
   useLoaderData,
-} from '@remix-run/react';
-import type { loader } from '@/routes/_index';
+} from 'react-router';
+import type { loader } from '@/routes/home';
 import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';

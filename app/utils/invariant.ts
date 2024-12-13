@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,9 +14,10 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export { CreatePublicationCard } from './cards/CreatePublicationCard';
-export { ListPublicationsCard } from './cards/ListPublicationsCard';
-export { SearchPublicationCard } from './cards/SearchPublicationCard';
+export const invariant: <T>(data: T, message?: string) => asserts data is NonNullable<T> = (data, message?) => {
+  if (!data) {
+    throw new Error(message ?? "Invariant. Value is not defined.");
+  }
+};

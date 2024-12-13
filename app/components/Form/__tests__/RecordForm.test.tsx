@@ -84,13 +84,13 @@ import {
 } from '@/__mocks__/data/formDef';
 import type { RecordFormProps } from '@/components/Form/RecordForm';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { createRemixStub } from '@remix-run/testing';
+import { createRoutesStub } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 
 const actionSpy = vi.fn();
 
 const RecordFormWithRemixStub = ({ formSchema, record }: RecordFormProps) => {
-  const RemixStub = createRemixStub([
+  const RemixStub = createRoutesStub([
     {
       path: '/',
       Component: () => (
@@ -471,7 +471,6 @@ describe('<Form />', () => {
         />,
       );
 
-      screen.logTestingPlaygroundURL();
       const thesisElement = screen.getByDisplayValue(
         'artistic-work_artistic-thesis',
       );
