@@ -15,7 +15,11 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import type { FormComponent } from '@/components/FormGenerator/types';
+import type {
+  FormComponent,
+  FormComponentContainer,
+  FormComponentGroup,
+} from '@/components/FormGenerator/types';
 import {
   addAttributesToName,
   getChildNameInDataArray,
@@ -29,8 +33,8 @@ import {
   isComponentRepeatingContainer,
   isComponentSurroundingContainer,
   isComponentVariable,
+  isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import React from 'react';
 import { SurroundingContainer } from '@/components/FormGenerator/components/SurroundingContainer';
 import { GroupOrContainer } from '@/components/FormGenerator/components/GroupOrContainer';
 import { RepeatingGroup } from '@/components/FormGenerator/components/RepeatingGroup';
@@ -119,10 +123,12 @@ export const Component = ({
       renderElementGridWrapper={true}
       parentPresentationStyle={parentPresentationStyle}
       attributes={
-        <Attributes
-          component={component}
-          path={currentComponentNamePath}
-        />
+        isComponentWithData(component) && (
+          <Attributes
+            component={component}
+            path={currentComponentNamePath}
+          />
+        )
       }
     />
   );
@@ -133,6 +139,10 @@ const getCurrentComponentNamePath = (
   component: FormComponent,
   path: string,
 ) => {
+  if (!isComponentWithData(component)) {
+    return '';
+  }
+
   const currentComponentSameNameInData = hasCurrentComponentSameNameInData(
     childWithNameInDataArray,
     component.name,
@@ -158,7 +168,7 @@ const getCurrentComponentNamePath = (
 
 const isComponentSurroundingContainerAndNOTRepeating = (
   component: FormComponent,
-) => {
+): component is FormComponentContainer => {
   return (
     isComponentSurroundingContainer(component) &&
     !isComponentRepeating(component)
@@ -167,14 +177,16 @@ const isComponentSurroundingContainerAndNOTRepeating = (
 
 const isComponentGroupOrRepeatingContainerAndNOTRepeating = (
   component: FormComponent,
-) => {
+): component is FormComponentGroup | FormComponentContainer => {
   return (
     (isComponentGroup(component) || isComponentRepeatingContainer(component)) &&
     !isComponentRepeating(component)
   );
 };
 
-const isComponentGroupAndRepeating = (component: FormComponent) => {
+const isComponentGroupAndRepeating = (
+  component: FormComponent,
+): component is FormComponentGroup => {
   return isComponentGroup(component) && isComponentRepeating(component);
 };
 

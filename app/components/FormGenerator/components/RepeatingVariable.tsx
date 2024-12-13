@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { FormComponent } from '@/components/FormGenerator/types';
+import type { FormComponentWithData } from '@/components/FormGenerator/types';
 import {
   checkIfComponentHasValue,
   checkIfSingularComponentHasValue,
@@ -24,14 +24,14 @@ import {
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { LeafComponent } from '@/components/FormGenerator/components/LeafComponent';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import type { ReactNode} from 'react';
-import React, { useContext } from 'react';
+import type { ReactNode } from 'react';
+import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { useRemixFormContext } from 'remix-hook-form';
 
 interface RepeatingVariableProps {
   reactKey: string;
-  component: FormComponent;
+  component: FormComponentWithData;
   currentComponentNamePath: string;
   parentPresentationStyle: string | undefined;
 }

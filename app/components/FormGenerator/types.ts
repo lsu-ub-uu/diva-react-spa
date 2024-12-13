@@ -44,23 +44,30 @@ export interface LinkedPresentation {
   presentationId: string;
   presentedRecordType: string;
 }
-type FormComponentMode = 'input' | 'output' | undefined;
+export type FormComponentMode = 'input' | 'output' | undefined;
+
+export type FormComponentType =
+  | 'recordLink'
+  | 'collectionVariable'
+  | 'numberVariable'
+  | 'textVariable'
+  | 'group'
+  | 'text'
+  | 'container'
+  | 'guiElementLink';
+
+export type FormComponentWithDataType = Omit<
+  FormComponentType,
+  'guiElementLink' | 'text'
+>;
 
 export interface FormComponentBase {
-  type:
-    | 'recordLink'
-    | 'collectionVariable'
-    | 'numberVariable'
-    | 'textVariable'
-    | 'group'
-    | 'text'
-    | 'container'
-    | 'guiElementLink';
+  type: FormComponentType;
   name: string;
 }
 export interface FormComponentMetadata extends FormComponentBase {
   placeholder?: string;
-  mode: FormComponentMode;
+  mode?: FormComponentMode;
   tooltip?: FormComponentTooltip;
   label?: string;
   showLabel: boolean;
@@ -73,7 +80,7 @@ export interface FormComponentMetadata extends FormComponentBase {
   presentationStyle?: string; // frame etc
 }
 
-export interface FormComponentVar extends FormComponentMetadata {
+export interface FormComponentTextVar extends FormComponentMetadata {
   inputType?: 'input' | 'textarea'; // really be optional?
   inputFormat?: 'password';
   validation?: FormRegexValidation | FormNumberValidation;
@@ -131,7 +138,7 @@ export interface FormComponentGuiElement extends FormComponentBase {
 }
 
 export type FormComponent =
-  | FormComponentVar
+  | FormComponentTextVar
   | FormComponentNumVar
   | FormComponentCollVar
   | FormComponentRecordLink
@@ -141,23 +148,28 @@ export type FormComponent =
   | FormComponentGuiElement;
 
 export type FormComponentWithData =
-  | FormComponentVar
+  | FormComponentTextVar
   | FormComponentNumVar
   | FormComponentCollVar
   | FormComponentRecordLink
   | FormComponentGroup;
 
-type FormAttributeCollection = Omit<
+export type FormComponentLeaf = Exclude<
+  FormComponentWithData,
+  FormComponentGroup
+>;
+
+export type FormAttributeCollection = Omit<
   FormComponentCollVar,
   'repeat' | 'inputType' | 'attributes'
 >;
 
-interface FormRegexValidation {
+export interface FormRegexValidation {
   type: 'regex';
   pattern: string;
 }
 
-interface FormNumberValidation {
+export interface FormNumberValidation {
   type: 'number';
   min: number;
   max: number;

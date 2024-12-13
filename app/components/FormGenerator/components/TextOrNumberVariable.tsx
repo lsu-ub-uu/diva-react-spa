@@ -18,7 +18,7 @@
 
 import type {
   FormComponentNumVar,
-  FormComponentVar,
+  FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import {
   checkIfComponentHasValue,
@@ -33,7 +33,7 @@ import type { ReactNode } from 'react';
 interface TextOrNumberVariableProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
-  component: FormComponentVar | FormComponentNumVar;
+  component: FormComponentTextVar | FormComponentNumVar;
   name: string;
   parentPresentationStyle: string | undefined;
   attributes?: ReactNode;

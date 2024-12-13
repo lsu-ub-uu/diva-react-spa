@@ -18,7 +18,20 @@
  */
 
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
-import type { FormComponent, FormComponentGroup, FormSchema } from '../types';
+import type {
+  FormComponent,
+  FormComponentCollVar,
+  FormComponentContainer,
+  FormComponentGroup,
+  FormComponentGuiElement,
+  FormComponentLeaf,
+  FormComponentNumVar,
+  FormComponentRecordLink,
+  FormComponentText,
+  FormComponentTextVar,
+  FormComponentWithData,
+  FormSchema,
+} from '../types';
 import {
   addAttributesToName,
   getChildNameInDataArray,
@@ -51,7 +64,33 @@ export const isRootLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.') === 0;
 };
 
-export const isComponentVariable = (component: FormComponent) =>
+export const isComponentTextVariable = (
+  component: FormComponent,
+): component is FormComponentTextVar => component.type === 'textVariable';
+
+export const isComponentNumVar = (
+  component: FormComponent,
+): component is FormComponentNumVar => component.type === 'numberVariable';
+
+export const isComponentCollVar = (
+  component: FormComponent,
+): component is FormComponentCollVar => component.type === 'collectionVariable';
+
+export const isComponentRecordLink = (
+  component: FormComponent,
+): component is FormComponentRecordLink => component.type === 'recordLink';
+
+export const isComponentText = (
+  component: FormComponent,
+): component is FormComponentText => component.type === 'text';
+
+export const isComponentGuiElement = (
+  component: FormComponent,
+): component is FormComponentGuiElement => component.type === 'guiElementLink';
+
+export const isComponentVariable = (
+  component: FormComponent,
+): component is FormComponentLeaf =>
   [
     'numberVariable',
     'textVariable',
@@ -59,13 +98,22 @@ export const isComponentVariable = (component: FormComponent) =>
     'recordLink',
   ].includes(component.type);
 
-export const isComponentGroup = (component: FormComponent) =>
-  component.type === 'group';
+export const isComponentWithData = (
+  component: FormComponent,
+): component is FormComponentWithData =>
+  component.type !== 'guiElementLink' && component.type !== 'text';
 
-export const isComponentContainer = (component: FormComponent) =>
-  component.type === 'container';
+export const isComponentGroup = (
+  component: FormComponent,
+): component is FormComponentGroup => component.type === 'group';
 
-export const isComponentSurroundingContainer = (component: FormComponent) => {
+export const isComponentContainer = (
+  component: FormComponent,
+): component is FormComponentContainer => component.type === 'container';
+
+export const isComponentSurroundingContainer = (
+  component: FormComponent,
+): component is FormComponentContainer => {
   return isComponentContainer(component) && 'containerType' in component
     ? component.containerType === 'surrounding'
     : false;
@@ -83,26 +131,39 @@ export const isComponentValidForDataCarrying = (component: FormComponent) =>
   isComponentContainer(component); // a container can have children that are data carriers
 
 export const isComponentRepeating = (component: FormComponent) => {
+  if (!isComponentWithData(component)) {
+    return false;
+  }
   const rMax = component.repeat?.repeatMax ?? 1;
   const rMin = component.repeat?.repeatMin ?? 1;
   return !(rMax === 1 && rMin === 1);
 };
 
 export const isComponentRequired = (component: FormComponent) => {
+  if (!isComponentWithData(component)) {
+    return false;
+  }
   const rMin = component.repeat?.repeatMin ?? 1;
   return rMin > 0;
 };
 
 export const isComponentSingularAndOptional = (component: FormComponent) => {
+  if (!isComponentWithData(component)) {
+    return false;
+  }
+
   const rMax = component.repeat?.repeatMax ?? 1;
   const rMin = component.repeat?.repeatMin ?? 1;
   return rMax === 1 && rMin === 0;
 };
 
 export const isComponentGroupAndOptional = (component: FormComponent) => {
-  const componentGroup = component.type === 'group';
+  if (!isComponentGroup(component)) {
+    return false;
+  }
+
   const rMin = component.repeat?.repeatMin ?? 0;
-  return componentGroup && rMin === 0;
+  return rMin === 0;
 };
 
 export const checkIfComponentHasValue = (
@@ -190,17 +251,19 @@ export function getNameInData(
   return hasCurrentComponentSameNameInData(
     childWithSameNameInData,
     component.name,
-  )
+  ) && isComponentWithData(component)
     ? addAttributesToName(component, component.name)
     : component.name;
 }
 
-export const checkIfPresentationStyleIsInline = (component: FormComponent) => {
+export const checkIfPresentationStyleIsInline = (
+  component: FormComponentWithData,
+) => {
   return component.presentationStyle === 'inline';
 };
 
 export const checkIfPresentationStyleOrParentIsInline = (
-  component: FormComponent,
+  component: FormComponentWithData,
   parentPresentationStyle: string | undefined,
 ) => {
   return (

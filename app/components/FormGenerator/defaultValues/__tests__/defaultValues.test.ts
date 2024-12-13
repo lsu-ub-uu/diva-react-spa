@@ -39,18 +39,18 @@ import {
   formComponentGroupWithChildren,
   formComponentGroupWithinGroupWithAttributes,
   formComponentRepeatingTextVariable,
-  formDefWithTextVar,
+  formComponentTitleInfoGroup,
   formDefRealDemo,
   formDefRealDemoWithAttributes,
+  formDefRealDemoWithAttributesButWithoutFinalValue,
   formDefRealDemoWithFinalValues,
   formDefRealDemoWithRepeatingGroups,
   formDefRealDemoWithRepeatingVars,
-  formDefWithOneGroupHavingTextVariableAsChild,
-  formDefWithSurroundingContainerAroundTextVariable,
   formDefWithARepeatingContainer,
+  formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithOneRepeatingTextVariable,
-  formDefRealDemoWithAttributesButWithoutFinalValue,
-  formComponentTitleInfoGroup,
+  formDefWithSurroundingContainerAroundTextVariable,
+  formDefWithTextVar,
 } from '@/__mocks__/data/formDef';
 import type { FormComponent, FormSchema } from '../../types';
 import { cleanFormData } from '@/utils/cleanFormData';
@@ -543,6 +543,7 @@ describe('FormGenerator Utils', () => {
         const actualDefaultValues = createDefaultValuesFromComponent(
           {
             type: 'group',
+            showLabel: true,
             label: 'someRootFormGroupText',
             name: 'someRootNameInData',
             repeat: {
@@ -939,7 +940,7 @@ describe('FormGenerator Utils', () => {
         };
 
         const actualDefaultValues = createDefaultValuesFromFormSchema(
-          formDefWithOneRepeatingTextVariable as FormSchema,
+          formDefWithOneRepeatingTextVariable,
           existingRecordData,
         );
 

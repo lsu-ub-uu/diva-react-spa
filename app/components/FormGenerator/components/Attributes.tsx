@@ -18,10 +18,13 @@
 
 import { AttributeSelect } from '@/components/Controlled/AttributeSelect/AttributeSelect';
 import { useTranslation } from 'react-i18next';
-import type { FormComponentCollVar } from '@/components/FormGenerator/types';
+import type {
+  FormComponentCollVar,
+  FormComponentWithData,
+} from '@/components/FormGenerator/types';
 
 interface AttributesProps {
-  component: FormComponentCollVar;
+  component: FormComponentWithData;
   path: string;
 }
 

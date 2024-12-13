@@ -19,12 +19,11 @@
 
 import type { Control } from 'react-hook-form';
 import { Controller, useFieldArray } from 'react-hook-form';
-import { Box, Button, Grid2 as Grid, IconButton } from '@mui/material';
+import { Button, Grid2 as Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import type { FormComponent } from '../types';
 import {
   addAttributesToName,
   createDefaultValuesFromComponent,
@@ -42,11 +41,12 @@ import { Typography } from '@/components/Typography/Typography';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { CardTitle } from '@/components/Card/CardTitle';
 import type { ReactNode } from 'react';
+import type { FormComponentWithData } from '@/components/FormGenerator/types';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
-  component: FormComponent;
+  component: FormComponentWithData;
   renderCallback: (path: string, actionButtonGroup: ReactNode) => ReactNode;
   hasValue?: boolean;
 }

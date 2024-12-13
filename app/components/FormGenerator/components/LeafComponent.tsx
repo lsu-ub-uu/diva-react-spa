@@ -17,7 +17,15 @@
  */
 
 import type { FormComponent } from '@/components/FormGenerator/types';
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import {
+  checkIfComponentHasValue,
+  isComponentCollVar,
+  isComponentGuiElement,
+  isComponentNumVar,
+  isComponentRecordLink,
+  isComponentText,
+  isComponentTextVariable,
+} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
@@ -47,101 +55,100 @@ export const LeafComponent = ({
   actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
   const { getValues } = useRemixFormContext();
-
-  switch (component.type) {
-    case 'textVariable':
-    case 'numberVariable': {
-      return (
-        <TextOrNumberVariable
-          reactKey={reactKey}
-          renderElementGridWrapper={renderElementGridWrapper}
-          component={component}
-          name={name}
-          parentPresentationStyle={parentPresentationStyle}
-          attributes={attributes}
-          actionButtonGroup={actionButtonGroup}
-        />
-      );
-    }
-    case 'recordLink': {
-      const hasValue = checkIfComponentHasValue(getValues, name);
-
-      if (
-        checkIfComponentContainsSearchId(component) &&
-        component.mode === 'input' &&
-        !hasValue
-      ) {
-        return (
-          <RecordLinkWithSearch
-            reactKey={reactKey}
-            renderElementGridWrapper={renderElementGridWrapper}
-            component={component}
-            name={name}
-            attributes={attributes}
-            actionButtonGroup={actionButtonGroup}
-          />
-        );
-      }
-
-      if (
-        'linkedRecordPresentation' in component &&
-        component.linkedRecordPresentation !== undefined
-      ) {
-        return (
-          <RecordLinkWithLinkedPresentation
-            reactKey={reactKey}
-            renderElementGridWrapper={renderElementGridWrapper}
-            component={component}
-            name={name}
-          />
-        );
-      }
-
-      return (
-        <TextOrNumberVariable
-          reactKey={reactKey}
-          renderElementGridWrapper={renderElementGridWrapper}
-          component={component}
-          name={name}
-          parentPresentationStyle={parentPresentationStyle}
-          attributes={attributes}
-          actionButtonGroup={actionButtonGroup}
-        />
-      );
-    }
-
-    case 'collectionVariable': {
-      return (
-        <CollectionVariable
-          reactKey={reactKey}
-          renderElementGridWrapper={renderElementGridWrapper}
-          component={component}
-          name={name}
-          attributes={attributes}
-          actionButtonGroup={actionButtonGroup}
-        />
-      );
-    }
-    case 'text': {
-      return (
-        <Text
-          reactKey={reactKey}
-          renderElementGridWrapper={renderElementGridWrapper}
-          component={component}
-        />
-      );
-    }
-    case 'guiElementLink': {
-      return (
-        <GuiElementLink
-          reactKey={reactKey}
-          component={component}
-        />
-      );
-    }
-    default:
-      return null;
+  if (isComponentTextVariable(component) || isComponentNumVar(component)) {
+    return (
+      <TextOrNumberVariable
+        reactKey={reactKey}
+        renderElementGridWrapper={renderElementGridWrapper}
+        component={component}
+        name={name}
+        parentPresentationStyle={parentPresentationStyle}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
+      />
+    );
   }
+
+  if (isComponentRecordLink(component)) {
+    const hasValue = checkIfComponentHasValue(getValues, name);
+
+    if (
+      checkIfComponentContainsSearchId(component) &&
+      component.mode === 'input' &&
+      !hasValue
+    ) {
+      return (
+        <RecordLinkWithSearch
+          reactKey={reactKey}
+          renderElementGridWrapper={renderElementGridWrapper}
+          component={component}
+          name={name}
+          attributes={attributes}
+          actionButtonGroup={actionButtonGroup}
+        />
+      );
+    }
+
+    if (
+      'linkedRecordPresentation' in component &&
+      component.linkedRecordPresentation !== undefined
+    ) {
+      return (
+        <RecordLinkWithLinkedPresentation
+          reactKey={reactKey}
+          renderElementGridWrapper={renderElementGridWrapper}
+          component={component}
+          name={name}
+        />
+      );
+    }
+
+    return (
+      <TextOrNumberVariable
+        reactKey={reactKey}
+        renderElementGridWrapper={renderElementGridWrapper}
+        component={component}
+        name={name}
+        parentPresentationStyle={parentPresentationStyle}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
+      />
+    );
+  }
+
+  if (isComponentCollVar(component)) {
+    return (
+      <CollectionVariable
+        reactKey={reactKey}
+        renderElementGridWrapper={renderElementGridWrapper}
+        component={component}
+        name={name}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
+      />
+    );
+  }
+
+  if (isComponentText(component)) {
+    return (
+      <Text
+        reactKey={reactKey}
+        renderElementGridWrapper={renderElementGridWrapper}
+        component={component}
+      />
+    );
+  }
+
+  if (isComponentGuiElement(component)) {
+    return (
+      <GuiElementLink
+        reactKey={reactKey}
+        component={component}
+      />
+    );
+  }
+
+  return null;
 };
 
 const checkIfComponentContainsSearchId = (component: FormComponent) => {

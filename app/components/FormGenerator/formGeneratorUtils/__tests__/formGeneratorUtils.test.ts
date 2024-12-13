@@ -41,7 +41,7 @@ import {
 import type {
   FormComponent,
   FormComponentGroup,
-  FormComponentVar,
+  FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import type { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { describe, expect, vi } from 'vitest';
@@ -2440,7 +2440,7 @@ describe('helper methods', () => {
       expect(actual).toEqual(false);
     });
     it('when component has is not a group', () => {
-      const formVariable: FormComponentVar = {
+      const formVariable: FormComponentTextVar = {
         name: 'subject',
         type: 'textVariable',
         mode: 'output',
@@ -2594,7 +2594,7 @@ describe('helper methods', () => {
     });
 
     it('when component has is not a group', () => {
-      const formVariable: FormComponentVar = {
+      const formVariable: FormComponentTextVar = {
         name: 'subject',
         type: 'textVariable',
         mode: 'output',
