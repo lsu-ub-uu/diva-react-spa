@@ -35,9 +35,11 @@ import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/.server/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
 import type { Route } from '../.react-router/types/app/+types/root';
-import  { PageLayout } from '@/components/Layout';
+import { PageLayout } from '@/components/Layout';
 import { withEmotionCache } from '@emotion/react';
 import './root.css';
+import dev_favicon from './images/dev_favicon.svg';
+import favicon from './images/favicon.svg';
 
 const { MODE } = import.meta.env;
 
@@ -46,11 +48,11 @@ interface DocumentProps {
 }
 
 export const links: LinksFunction = () => [
-  /*  {
+  {
     rel: 'icon',
     type: 'image/svg+xml',
     href: MODE === 'development' ? dev_favicon : favicon,
-  },*/
+  },
 ];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
