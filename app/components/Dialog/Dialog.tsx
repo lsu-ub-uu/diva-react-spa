@@ -16,8 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useEffect, useState, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
+import type {
+  Theme} from '@mui/material';
 import {
   DialogContent,
   DialogActions,
@@ -26,7 +29,6 @@ import {
   DialogTitle as MuiDialogTitle,
   Paper,
   Stack,
-  Theme,
   IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';

@@ -19,7 +19,7 @@
 import { render, screen } from '@testing-library/react';
 import { FormControlLabel } from '@mui/material';
 import userEvent from '@testing-library/user-event';
-import { Radio } from '../../../index';
+import { Radio } from '@/components/FormComponents/Radio/Radio';
 
 describe('<Radio />', () => {
   it('Renders', () => {

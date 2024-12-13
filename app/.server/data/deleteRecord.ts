@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Auth } from '@/types/Auth';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Auth } from '@/types/Auth';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { deleteRecordDataById } from '@/.server/cora/deleteRecordDataById';
 
 export const deleteRecord = async (

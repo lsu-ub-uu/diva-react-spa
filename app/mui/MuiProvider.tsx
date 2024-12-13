@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material';
 
 import createCache from '@emotion/cache';
 import { divaTheme } from '@/mui/theme';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 function createEmotionCache() {
   return createCache({ key: 'css' });

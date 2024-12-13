@@ -19,12 +19,12 @@
 
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@mui/material';
-import { LegacyCard } from '@/components';
 import { SearchForm } from '@/components/Form/SearchForm';
 import { Suspense } from 'react';
 import { Await, useLoaderData } from '@remix-run/react';
-import { loader } from '@/routes/_index';
+import type { loader } from '@/routes/_index';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
+import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
 
 const searchType = 'diva-outputSimpleSearch';
 

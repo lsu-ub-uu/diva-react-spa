@@ -43,13 +43,13 @@ import {
   traverseDataGroup,
   updateGroupWithPossibleNewNameWithAttribute,
 } from '../transformRecord';
-import {
+import type {
   Attributes,
   DataGroup,
   RecordWrapper,
 } from '@/.server/cora/cora-data/CoraData';
-import { Lookup } from '@/utils/structs/lookup';
-import {
+import type { Lookup } from '@/utils/structs/lookup';
+import type {
   BFFGuiElement,
   BFFLoginUnit,
   BFFLoginWebRedirect,
@@ -63,7 +63,7 @@ import {
   BFFText,
   BFFValidationType,
 } from '../bffTypes';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { listToPool } from '@/utils/structs/listToPool';
 import {
   nationSubjectCategoryValidationTypeData,
@@ -98,7 +98,7 @@ import {
   typeCollVariable,
   typeItemCollection,
 } from '@/__mocks__/bff/form/bffMock';
-import { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
+import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
 
 describe('transformRecord', () => {
   let validationTypePool: Lookup<string, BFFValidationType>;

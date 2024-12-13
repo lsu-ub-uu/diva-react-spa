@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Option } from '@/components';
-import { DataGroup, DataListWrapper } from '@/.server/cora/cora-data/CoraData';
+import type { Option } from '@/components';
+import type { DataGroup, DataListWrapper } from '@/.server/cora/cora-data/CoraData';
 import { transformCoraValidationTypes } from '@/.server/cora/transform/transformValidationTypes';
 import { getSearchResultDataListBySearchType } from '@/.server/cora/getSearchResultDataListBySearchType';
 

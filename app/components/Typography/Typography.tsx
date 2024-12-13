@@ -18,8 +18,9 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { SxProps, Typography as MuiTypography } from '@mui/material';
-import { ElementType } from 'react';
+import type { SxProps} from '@mui/material';
+import { Typography as MuiTypography } from '@mui/material';
+import type { ElementType } from 'react';
 
 export interface DivaTypographyVariants {
   variant:

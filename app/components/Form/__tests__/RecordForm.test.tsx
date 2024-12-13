@@ -18,7 +18,7 @@
  */
 
 import { describe, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   formDefCollVarsWithSameNameInData,
@@ -82,9 +82,10 @@ import {
   formDefWithTwoTextVariableHavingFinalValue,
   formDefWithWithOptionalGroupWithRequiredVar,
 } from '@/__mocks__/data/formDef';
-import { RecordForm, RecordFormProps } from '@/components/Form/RecordForm';
+import type { RecordFormProps } from '@/components/Form/RecordForm';
+import { RecordForm } from '@/components/Form/RecordForm';
 import { createRemixStub } from '@remix-run/testing';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 
 const actionSpy = vi.fn();
 
@@ -483,19 +484,18 @@ describe('<Form />', () => {
     });
 
     it('renders a form from a given definition does validate it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub formSchema={formDefWithOneTextVariable} />,
       );
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      expect(submitButton).toBeInTheDocument();
 
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
 
       expect(inputElement).toBeInTheDocument();
 
-      const user = userEvent.setup();
       await user.type(inputElement, 'a');
       await user.click(submitButton);
 
@@ -509,7 +509,6 @@ describe('<Form />', () => {
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      expect(submitButton).toBeInTheDocument();
 
       const inputElement = screen.getByPlaceholderText('someEmptyTextId');
 
@@ -531,7 +530,6 @@ describe('<Form />', () => {
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      expect(submitButton).toBeInTheDocument();
 
       const inputElement = screen.getByPlaceholderText('titleInfoVarText1');
 
@@ -557,7 +555,6 @@ describe('<Form />', () => {
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      expect(submitButton).toBeInTheDocument();
 
       const sweElement = screen.getByPlaceholderText('subjectSweTextVarText');
       expect(sweElement).toBeInTheDocument();
@@ -582,9 +579,8 @@ describe('<Form />', () => {
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      expect(submitButton).toBeInTheDocument();
 
-      const collections = screen.getAllByRole('combobox', { expanded: false });
+      const collections = screen.getAllByRole('combobox');
       expect(collections).toHaveLength(4);
       const firstCollection = collections[3];
       await user.click(firstCollection);
@@ -1785,6 +1781,7 @@ describe('<Form />', () => {
 
   describe('attribute collection', () => {
     it('renders a numberVariable 1-1 with attribute and does NOT validate it when skipped', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableWithAttributeCollection}
@@ -1792,54 +1789,27 @@ describe('<Form />', () => {
       );
 
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
-      expect(numberInput).toBeInTheDocument();
 
-      const expandButton = screen.getByRole('combobox', { expanded: false });
-      expect(expandButton).toBeInTheDocument();
+      const attributeSelect = screen.getByRole('combobox', {
+        name: 'attribute colour',
+      });
+      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
-      const user = userEvent.setup();
       await user.type(numberInput, '12');
-      await user.click(expandButton);
-      const listBoxElement = screen.getByRole('listbox');
 
-      expect(listBoxElement.children).toHaveLength(4);
-
-      await user.selectOptions(
-        listBoxElement,
-        '<em>divaClient_optionNoneText</em>',
-      );
+      await user.selectOptions(attributeSelect, 'emptyTextId');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('renders a numberVariable 1-1 with attribute has styling for attribute', async () => {
-      render(
-        <RecordFormWithRemixStub
-          formSchema={formDefWithOneOptionalGroupWithAttributeCollection}
-        />,
-      );
-      // const expandButton = screen.getByRole('combobox', { expanded: false });
-      const attribute = screen.getByText('languageCollectionVarText');
-      const attributeStyle = getComputedStyle(attribute);
-      const input = screen.getByPlaceholderText(
-        'mainTitleTextVarPlaceholderText',
-      );
-      const inputStyle = getComputedStyle(input);
-      expect(attribute).toBeInTheDocument();
-      expect(attributeStyle.fontStyle).toBe('italic');
-      expect(input).toBeInTheDocument();
-      expect(inputStyle.fontStyle).not.toBe('italic');
-    });
-
     it('renders a numberVariable 1-1 with attribute and validates it when filled', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneNumberVariableWithAttributeCollection}
@@ -1849,30 +1819,27 @@ describe('<Form />', () => {
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
       expect(numberInput).toBeInTheDocument();
 
-      const attributeButton = screen.getByRole('combobox', { expanded: false });
-      expect(attributeButton).toBeInTheDocument();
+      const attributeSelect = screen.getByRole('combobox', {
+        name: 'attribute colour',
+      });
+      expect(attributeSelect).toBeInTheDocument();
 
-      const user = userEvent.setup();
       await user.type(numberInput, '12');
 
-      await user.click(attributeButton);
-      const listBoxElement = screen.getByRole('listbox');
-
-      expect(listBoxElement.children).toHaveLength(4);
-      await user.selectOptions(listBoxElement, 'exampleBlueItemText');
+      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
+      await user.selectOptions(attributeSelect, 'exampleBlueItemText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a numberVariable 0-1 with attribute and validates it when skipped', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -1885,28 +1852,25 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
       expect(numberInput).toBeInTheDocument();
-      const attributeButton = screen.getByRole('combobox', { expanded: false });
-      expect(attributeButton).toBeInTheDocument();
+      const attributeSelect = screen.getByRole('combobox', {
+        name: 'someNumberVar2AttributeLabel',
+      });
 
-      const user = userEvent.setup();
-      await user.click(attributeButton);
-      const listBoxElement = screen.getByRole('listbox');
+      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
-      expect(listBoxElement.children).toHaveLength(4);
-      await user.selectOptions(listBoxElement, 'exampleBlueItemText');
+      await user.selectOptions(attributeSelect, 'exampleBlueItemText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a numberVariable 1-1 and attribute and does NOT validate it when only attribute is picked', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -1915,32 +1879,27 @@ describe('<Form />', () => {
         />,
       );
 
-      const numberInput = screen.getByPlaceholderText(
-        'someNumberVar2IdPlaceholder',
-      );
-      expect(numberInput).toBeInTheDocument();
-      const attributeButton = screen.getByRole('combobox', { expanded: false });
-      expect(attributeButton).toBeInTheDocument();
+      screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
 
-      const user = userEvent.setup();
-      await user.click(attributeButton);
-      const listBoxElement = screen.getByRole('listbox');
+      const attributeSelect = screen.getByRole('combobox', {
+        name: 'someNumberVar2AttributeLabel',
+      });
 
-      expect(listBoxElement.children).toHaveLength(4);
-      await user.selectOptions(listBoxElement, 'exampleBlueItemText');
+      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
+
+      await user.selectOptions(attributeSelect, 'exampleBlueItemText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable 0-1 and attribute and does NOT validates it when variable is written in', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -1952,26 +1911,22 @@ describe('<Form />', () => {
       const numberInput = screen.getByPlaceholderText(
         'someNumberVar2IdPlaceholder',
       );
-      expect(numberInput).toBeInTheDocument();
 
-      const attributeButton = screen.getByRole('combobox', { expanded: false });
-      expect(attributeButton).toBeInTheDocument();
+      screen.getByRole('combobox', { name: 'someNumberVar2AttributeLabel' });
 
-      const user = userEvent.setup();
       await user.type(numberInput, '12');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a numberVariable 1-1 and a numberVariable 0-1 with attribute and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -1982,55 +1937,46 @@ describe('<Form />', () => {
       const numberInput = screen.getByPlaceholderText(
         'someNumberVarIdPlaceholder',
       );
-      expect(numberInput).toBeInTheDocument();
-      const numberInput2 = screen.getByPlaceholderText(
-        'someNumberVar2IdPlaceholder',
-      );
-      expect(numberInput2).toBeInTheDocument();
-      const attributeButton = screen.getByRole('combobox', { expanded: false });
-      expect(attributeButton).toBeInTheDocument();
+      screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
+      screen.getByRole('combobox', {
+        name: 'someNumberVar2AttributeLabel',
+      });
 
-      const user = userEvent.setup();
       await user.type(numberInput, '2');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 with attribute and textVariable 1-1 and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneOptionalGroupWithAttributeCollection}
         />,
       );
-      const textInput = screen.getByPlaceholderText(
-        'mainTitleTextVarPlaceholderText',
-      );
-      expect(textInput).toBeInTheDocument();
-      const attributeButton = screen.getByRole('combobox', { expanded: false });
-      expect(attributeButton).toBeInTheDocument();
+      screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
-      const user = userEvent.setup();
+      screen.getByRole('combobox', {
+        name: 'languageCollectionVarText',
+      });
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 1-1 with a textVariable 1-1 and attribute and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOneRequiredGroupWithAttributeCollection}
@@ -2039,27 +1985,20 @@ describe('<Form />', () => {
       const textInput = screen.getByPlaceholderText(
         'mainTitleTextVarPlaceholderText',
       );
-      expect(textInput).toBeInTheDocument();
-      // const attributeButton = screen.getByRole('combobox', { expanded: false });
-      // expect(attributeButton).toBeInTheDocument();
 
-      const user = userEvent.setup();
-      const expandButton = screen.getAllByRole('combobox', { expanded: false });
+      const attributeSelect = screen.getByRole('combobox', {
+        name: 'languageCollectionVarText',
+      });
 
-      await user.click(expandButton[0]);
-      const items = screen.getByRole('listbox');
+      expect(within(attributeSelect).getAllByRole('option')).toHaveLength(2); // includes None option
 
-      expect(items.children).toHaveLength(2); // includes None option
-
-      await user.selectOptions(items, 'aarLangItemText');
+      await user.selectOptions(attributeSelect, 'aarLangItemText');
       await user.type(textInput, 'aaaa');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
 
       await user.click(submitButton);
 
@@ -2067,6 +2006,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 0-1 with a group 1-1 having textVars 1-1 an validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
@@ -2086,14 +2026,14 @@ describe('<Form />', () => {
       expect(mainTitleElement).toBeInTheDocument();
       expect(subtitleElement).toBeInTheDocument();
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group having 0-1 with a group having 1-1 having textVars having 1-1 and does NOT validate it', async () => {
-      const { container } = render(
+      const user = userEvent.setup();
+      render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredGroupWithRequiredVars}
         />,
@@ -2105,24 +2045,20 @@ describe('<Form />', () => {
       const mainTitleElement = screen.getByPlaceholderText(
         'mainTitleTextVarText',
       );
-      const subtitleElement = screen.getByPlaceholderText(
-        'subtitleTextVarText',
-      );
+      screen.getByPlaceholderText('subtitleTextVarText');
 
-      expect(mainTitleElement).toBeInTheDocument();
-      expect(subtitleElement).toBeInTheDocument();
-
-      const user = userEvent.setup();
       await user.type(mainTitleElement, '1.25');
       await user.click(submitButton);
 
-      expect(
-        container.getElementsByClassName('Mui-error').length,
-      ).toBeGreaterThan(0);
+      const attributeSelect = screen.getByRole('combobox', {
+        name: 'languageCollectionVarText',
+      });
+      expect(attributeSelect).toBeInvalid();
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 0-1 with attribute and with a textVariable 0-1 and attribute and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2130,29 +2066,27 @@ describe('<Form />', () => {
           }
         />,
       );
-      const attributeButtons = screen.getAllByRole('combobox', {
-        expanded: false,
+      screen.getByRole('combobox', {
+        name: 'someTitleGroupText',
       });
-      expect(attributeButtons).toHaveLength(2);
-      const textInput = screen.getByPlaceholderText(
-        'mainTitleTextVarPlaceholderText',
-      );
-      expect(textInput).toBeInTheDocument();
 
-      const user = userEvent.setup();
+      screen.getByRole('combobox', {
+        name: 'Eye colour',
+      });
+
+      screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      await waitFor(() => {
-        expect(submitButton).toBeInTheDocument();
-      });
+      await waitFor(() => {});
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a optional group with multiple attributes and with a required textVariable and attribute and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2160,45 +2094,33 @@ describe('<Form />', () => {
           }
         />,
       );
-      const attributeButtons = screen.getAllByRole('combobox', {
-        expanded: false,
+
+      screen.getByRole('combobox', {
+        name: 'languageCollectionVarText',
       });
-      expect(attributeButtons).toHaveLength(2);
 
-      const textInput = screen.getByPlaceholderText('givenNameTextVarText');
-      expect(textInput).toBeInTheDocument();
-
-      const titleTypeAttribute = screen.getByRole('combobox', {
+      screen.getByRole('combobox', {
         name: 'titleTypeCollectionVarText',
       });
+
+      const textInput = screen.getByPlaceholderText('givenNameTextVarText');
       const languageAttribute = screen.getByRole('combobox', {
         name: 'languageCollectionVarText',
       });
-      expect(languageAttribute).toBeInTheDocument();
-      expect(titleTypeAttribute).toBeInTheDocument();
+      const titleTypeAttribute = screen.getByRole('combobox', {
+        name: 'titleTypeCollectionVarText',
+      });
 
-      const user = userEvent.setup();
       await user.click(textInput);
       await user.type(textInput, 'someAlternativeTitle');
 
-      await user.click(languageAttribute);
+      await user.selectOptions(languageAttribute, 'aarLangItemText');
 
-      await waitFor(async () => {
-        const languageElement = await screen.findByRole('listbox');
-        await user.selectOptions(languageElement, 'aarLangItemText');
-      });
-
-      await user.click(titleTypeAttribute);
-
-      await waitFor(async () => {
-        const titleTypeElement = await screen.findByRole('listbox');
-        await user.selectOptions(titleTypeElement, 'alternativeTitleItemText');
-      });
+      await user.selectOptions(titleTypeAttribute, 'alternativeTitleItemText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      expect(submitButton).toBeInTheDocument();
 
       await user.click(submitButton);
 
@@ -2206,6 +2128,7 @@ describe('<Form />', () => {
     });
 
     it('renders a optional group with attribute with a optional group and with a required textVariable and attribute and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2213,47 +2136,25 @@ describe('<Form />', () => {
           }
         />,
       );
-      const attributeButtons = screen.getAllByRole('combobox', {
-        expanded: false,
+      const languageAttribute = screen.getByRole('combobox', {
+        name: 'languageCollectionVarText',
       });
-      expect(attributeButtons).toHaveLength(2);
+      const titleTypeAttribute = screen.getByRole('combobox', {
+        name: 'titleTypeCollectionVarText',
+      });
 
       const textInput = screen.getByPlaceholderText(
         'mainTitleTextVarPlaceholderText',
       );
-      expect(textInput).toBeInTheDocument();
 
-      const titleTypeAttribute = screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText',
-      });
-      const languageAttribute = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText',
-      });
-      expect(languageAttribute).toBeInTheDocument();
-      expect(titleTypeAttribute).toBeInTheDocument();
-
-      const user = userEvent.setup();
-      await user.click(textInput);
       await user.type(textInput, 'someAlternativeTitle');
 
-      await user.click(languageAttribute);
-
-      await waitFor(async () => {
-        const languageElement = await screen.findByRole('listbox');
-        await user.selectOptions(languageElement, 'aarLangItemText');
-      });
-
-      await user.click(titleTypeAttribute);
-
-      await waitFor(async () => {
-        const titleTypeElement = await screen.findByRole('listbox');
-        await user.selectOptions(titleTypeElement, 'alternativeTitleItemText');
-      });
+      await user.selectOptions(languageAttribute, 'aarLangItemText');
+      await user.selectOptions(titleTypeAttribute, 'alternativeTitleItemText');
 
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-      expect(submitButton).toBeInTheDocument();
 
       await user.click(submitButton);
 
@@ -2316,6 +2217,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 0-1 and textVariable 1-1 and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredTextVar}
@@ -2325,13 +2227,13 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group group 0-1 and numberVariable being 1-1 and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredNumberVar}
@@ -2341,13 +2243,13 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 and recordLink being 1-1 and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithRequiredRecordLink}
@@ -2357,13 +2259,13 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 0-1 and namePart being 1-1 and shows a validation error', async () => {
+      const user = userEvent.setup();
       const { container } = render(
         <RecordFormWithRemixStub
           formSchema={formDefWithWithOptionalGroupWithRequiredVar}
@@ -2375,7 +2277,6 @@ describe('<Form />', () => {
 
       const givenName = screen.getByPlaceholderText('namePartGivenTextVarText');
 
-      const user = userEvent.setup();
       await user.type(givenName, 'someGivenName');
 
       await user.click(submitButton);
@@ -2387,6 +2288,7 @@ describe('<Form />', () => {
     });
 
     it('render a group 0-1 with a child group 1-X and textVar being 1-1 and validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2398,13 +2300,13 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('render a group 1-1 and some sub groups 0-1 and does NOT validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefContributorGroupWithAuthorGroupAuthor}
@@ -2414,13 +2316,13 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 and some textVars 0-1 and 1-1 and does NOT validates it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2438,7 +2340,6 @@ describe('<Form />', () => {
 
       expect(inputNumberElement).toBeInTheDocument();
 
-      const user = userEvent.setup();
       await user.type(inputNumberElement, '1.23');
       await user.click(submitButton);
 
@@ -2446,6 +2347,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 1-1 and textVars 1-1 being partially filled and does NOT validate it', async () => {
+      const user = userEvent.setup();
       const { container } = render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithLongitudeAndLatitudeTextVars}
@@ -2461,7 +2363,6 @@ describe('<Form />', () => {
 
       expect(inputNumberElement).toBeInTheDocument();
 
-      const user = userEvent.setup();
       await user.type(inputNumberElement, '1.23');
       await user.click(submitButton);
 
@@ -2472,6 +2373,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 1-1 and numberVars 1-1 being partially filled and does NOT validate it', async () => {
+      const user = userEvent.setup();
       const { container } = render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2489,7 +2391,6 @@ describe('<Form />', () => {
 
       expect(inputNumberElement).toBeInTheDocument();
 
-      const user = userEvent.setup();
       await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
@@ -2500,6 +2401,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 1-1 and collectionVars being partially filled and does NOT validate it', async () => {
+      const user = userEvent.setup();
       const { container } = render(
         <RecordFormWithRemixStub
           formSchema={formDefWithOptionalGroupWithTwoCollectionVars}
@@ -2508,8 +2410,6 @@ describe('<Form />', () => {
       const submitButton = screen.getByRole('button', {
         name: 'divaClient_SubmitButtonText',
       });
-
-      const user = userEvent.setup();
 
       const expandButton = screen.getAllByRole('combobox', { expanded: false });
       // expect(expandButton).toBeInTheDocument();
@@ -2529,6 +2429,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 0-1 with textVar having 1-1, a group having 1-1 with textVar 1-1 and does NOT validate it', async () => {
+      const user = userEvent.setup();
       const { container } = render(
         <RecordFormWithRemixStub
           formSchema={formDefWithTextVarAndNestedGroupsWithOneTextVar}
@@ -2544,7 +2445,6 @@ describe('<Form />', () => {
 
       expect(inputNumberElement).toBeInTheDocument();
 
-      const user = userEvent.setup();
       await user.type(inputNumberElement, '3');
       await user.click(submitButton);
 
@@ -2555,6 +2455,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 0-1 with nested textVars 1-1 and does validate it', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={formDefTwoOptionalGroupsWithRequiredTextVars}
@@ -2567,10 +2468,6 @@ describe('<Form />', () => {
       const longitudeElement = screen.getByPlaceholderText('longitude');
       const latitudeElement = screen.getByPlaceholderText('latitude');
 
-      expect(longitudeElement).toBeInTheDocument();
-      expect(latitudeElement).toBeInTheDocument();
-
-      const user = userEvent.setup();
       await user.type(longitudeElement, '1.25');
       await user.type(latitudeElement, '1.25');
       await user.click(submitButton);
@@ -2579,6 +2476,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 1-1 with same nameInData with nested textVars 1-1 and does validate it ', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2591,15 +2489,10 @@ describe('<Form />', () => {
       });
 
       const familyName1 = screen.getByPlaceholderText('familyNameTextVarText1');
-      expect(familyName1).toBeInTheDocument();
       const givenName1 = screen.getByPlaceholderText('givenNameTextVarText1');
-      expect(givenName1).toBeInTheDocument();
       const familyName2 = screen.getByPlaceholderText('familyNameTextVarText2');
-      expect(familyName2).toBeInTheDocument();
       const givenName2 = screen.getByPlaceholderText('givenNameTextVarText2');
-      expect(givenName2).toBeInTheDocument();
 
-      const user = userEvent.setup();
       await user.type(familyName1, 'Swenning');
       await user.type(givenName1, 'Egil');
       await user.type(familyName2, 'Flores');
@@ -2610,6 +2503,7 @@ describe('<Form />', () => {
     });
 
     it('renders a group 0-1 with with nested textVars  1-1 with attributes for both and does validate it ', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2621,13 +2515,13 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
     });
 
     it('renders a group 1-1 with with nested textVars 1-1 with attributes for both and does validate it ', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2639,13 +2533,13 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(0);
     });
 
     it('renders a group 1-1 with same nameInData with nested recordLinks 1-1 with attributes and does validate it ', async () => {
+      const user = userEvent.setup();
       render(
         <RecordFormWithRemixStub
           formSchema={
@@ -2657,7 +2551,6 @@ describe('<Form />', () => {
         name: 'divaClient_SubmitButtonText',
       });
 
-      const user = userEvent.setup();
       await user.click(submitButton);
 
       expect(actionSpy).toHaveBeenCalledTimes(1);
@@ -2763,6 +2656,7 @@ describe('<Form />', () => {
   describe('1-X', () => {
     describe('textVar', () => {
       it('renders a textVar 1-X with group 1-1 and does not validate it', async () => {
+        const user = userEvent.setup();
         const { container } = render(
           <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingTextVar}
@@ -2773,8 +2667,6 @@ describe('<Form />', () => {
           name: 'divaClient_SubmitButtonText',
         });
 
-        const user = userEvent.setup();
-
         await user.click(submitButton);
 
         expect(
@@ -2784,6 +2676,7 @@ describe('<Form />', () => {
       });
 
       it('renders a textVar 1-X with group 0-1 and does validate it', async () => {
+        const user = userEvent.setup();
         render(
           <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingText2Var}
@@ -2794,8 +2687,6 @@ describe('<Form />', () => {
           name: 'divaClient_SubmitButtonText',
         });
 
-        const user = userEvent.setup();
-
         await user.click(submitButton);
 
         expect(actionSpy).toHaveBeenCalledTimes(1);
@@ -2804,6 +2695,7 @@ describe('<Form />', () => {
 
     describe('numberVar', () => {
       it('renders a numberVar 1-X with group 1-1 and does not validate it', async () => {
+        const user = userEvent.setup();
         const { container } = render(
           <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingNumberVar}
@@ -2814,8 +2706,6 @@ describe('<Form />', () => {
           name: 'divaClient_SubmitButtonText',
         });
 
-        const user = userEvent.setup();
-
         await user.click(submitButton);
 
         expect(
@@ -2825,6 +2715,7 @@ describe('<Form />', () => {
       });
 
       it('renders a numberVar 1-X with group 0-1 and does validate it', async () => {
+        const user = userEvent.setup();
         render(
           <RecordFormWithRemixStub
             formSchema={formDefRequiredRepeatingNumber2Var}
@@ -2834,8 +2725,6 @@ describe('<Form />', () => {
         const submitButton = screen.getByRole('button', {
           name: 'divaClient_SubmitButtonText',
         });
-
-        const user = userEvent.setup();
 
         await user.click(submitButton);
 
@@ -2947,7 +2836,9 @@ describe('<Form />', () => {
         />,
       );
       const inputElement = screen.getByLabelText('someMetadataTextVarText');
+      const text = screen.getByText('aaaaa');
       expect(inputElement).toBeInTheDocument();
+      expect(text).toBeInTheDocument();
     });
 
     it('checkIfComponentHasValue hides variable in output with no value', () => {

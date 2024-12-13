@@ -18,8 +18,8 @@
  */
 
 import { removeEmpty } from './removeEmpty';
-import { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
-import {
+import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
+import type {
   DataAtomic,
   DataGroup,
   RecordLink,

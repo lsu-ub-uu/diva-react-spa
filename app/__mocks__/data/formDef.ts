@@ -1,12 +1,14 @@
-import {
-  FormComponent,
+import type {
+  FormComponentGroup,
+  FormComponentWithData,
   RecordFormSchema,
 } from '@/components/FormGenerator/types';
 
-export const formComponentGroup: FormComponent = {
+export const formComponentGroup: FormComponentGroup = {
   name: 'firstChildGroup',
   type: 'group',
   mode: 'input',
+  showLabel: true,
   tooltip: {
     title: 'exampleFirstChildGroupText',
     body: 'exampleFirstChildGroupDefText',
@@ -64,10 +66,11 @@ export const formComponentGroup: FormComponent = {
   ],
 };
 
-export const formComponentRepeatingTextVariable: FormComponent = {
+export const formComponentRepeatingTextVariable: FormComponentWithData = {
   name: 'exampleTextVar',
   type: 'textVariable',
   mode: 'input',
+  showLabel: true,
   inputType: 'input',
   tooltip: {
     title: 'exampleMetadataTextVarText',
@@ -84,10 +87,11 @@ export const formComponentRepeatingTextVariable: FormComponent = {
   },
 };
 
-export const formComponentGroupWithChildren: FormComponent = {
+export const formComponentGroupWithChildren: FormComponentWithData = {
   name: 'firstChildGroup',
   type: 'group',
   mode: 'input',
+  showLabel: true,
   tooltip: {
     title: 'exampleFirstChildGroupText',
     body: 'exampleFirstChildGroupDefText',
@@ -147,115 +151,118 @@ export const formComponentGroupWithChildren: FormComponent = {
   ],
 };
 
-export const formComponentGroupAndTextVariableWithinGroup: FormComponent = {
-  name: 'firstChildGroup',
-  type: 'group',
-  mode: 'input',
-  tooltip: {
-    title: 'exampleFirstChildGroupText',
-    body: 'exampleFirstChildGroupDefText',
-  },
-  label: 'exampleFirstChildGroupText',
-  repeat: {
-    minNumberOfRepeatingToShow: 0,
-    repeatMin: 0,
-    repeatMax: 2,
-  },
-  components: [
-    {
-      name: 'innerChildGroup',
-      type: 'group',
-      mode: 'input',
-      tooltip: {
-        title: 'exampleFirstChildGroupText',
-        body: 'exampleFirstChildGroupDefText',
-      },
-      label: 'exampleFirstChildGroupText',
-      repeat: {
-        minNumberOfRepeatingToShow: 2,
-        repeatMin: 0,
-        repeatMax: 2,
-      },
-      components: [
-        {
-          name: 'shouldBeSkippedComponent',
-          type: 'text',
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 2,
-          },
-        },
-        {
-          name: 'exampleNumberVar',
-          type: 'numberVariable',
-          mode: 'input',
-          tooltip: {
-            title: 'exampleMetadataNumberVarText',
-            body: 'exampleMetadataNumberVarDefText',
-          },
-          label: 'exampleMetadataNumberVarText',
-          finalValue: '12',
-          validation: {
-            type: 'number',
-            min: 0,
-            max: 100,
-            warningMin: 10,
-            warningMax: 90,
-            numberOfDecimals: 2,
-          },
-          repeat: {
-            minNumberOfRepeatingToShow: 10,
-            repeatMin: 0,
-            repeatMax: 10,
-          },
-        },
-        {
-          name: 'exampleTextVar',
-          type: 'textVariable',
-          mode: 'input',
-          inputType: 'input',
-          tooltip: {
-            title: 'exampleMetadataTextVarText',
-            body: 'exampleMetadataTextVarDefText',
-          },
-          label: 'exampleMetadataTextVarText',
-          validation: {
-            type: 'regex',
-            pattern: '.*',
-          },
-          repeat: {
-            repeatMin: 1,
-            repeatMax: 1,
-          },
-        },
-      ],
+export const formComponentGroupAndTextVariableWithinGroup: FormComponentGroup =
+  {
+    name: 'firstChildGroup',
+    type: 'group',
+    mode: 'input',
+    showLabel: true,
+    tooltip: {
+      title: 'exampleFirstChildGroupText',
+      body: 'exampleFirstChildGroupDefText',
     },
-    {
-      name: 'exampleTextVar',
-      type: 'textVariable',
-      mode: 'input',
-      inputType: 'input',
-      tooltip: {
-        title: 'exampleMetadataTextVarText',
-        body: 'exampleMetadataTextVarDefText',
-      },
-      label: 'exampleMetadataTextVarText',
-      validation: {
-        type: 'regex',
-        pattern: '.*',
-      },
-      repeat: {
-        repeatMin: 1,
-        repeatMax: 1,
-      },
+    label: 'exampleFirstChildGroupText',
+    repeat: {
+      minNumberOfRepeatingToShow: 0,
+      repeatMin: 0,
+      repeatMax: 2,
     },
-  ],
-};
+    components: [
+      {
+        name: 'innerChildGroup',
+        type: 'group',
+        mode: 'input',
+        tooltip: {
+          title: 'exampleFirstChildGroupText',
+          body: 'exampleFirstChildGroupDefText',
+        },
+        label: 'exampleFirstChildGroupText',
+        repeat: {
+          minNumberOfRepeatingToShow: 2,
+          repeatMin: 0,
+          repeatMax: 2,
+        },
+        components: [
+          {
+            name: 'shouldBeSkippedComponent',
+            type: 'text',
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 2,
+            },
+          },
+          {
+            name: 'exampleNumberVar',
+            type: 'numberVariable',
+            mode: 'input',
+            tooltip: {
+              title: 'exampleMetadataNumberVarText',
+              body: 'exampleMetadataNumberVarDefText',
+            },
+            label: 'exampleMetadataNumberVarText',
+            finalValue: '12',
+            validation: {
+              type: 'number',
+              min: 0,
+              max: 100,
+              warningMin: 10,
+              warningMax: 90,
+              numberOfDecimals: 2,
+            },
+            repeat: {
+              minNumberOfRepeatingToShow: 10,
+              repeatMin: 0,
+              repeatMax: 10,
+            },
+          },
+          {
+            name: 'exampleTextVar',
+            type: 'textVariable',
+            mode: 'input',
+            inputType: 'input',
+            tooltip: {
+              title: 'exampleMetadataTextVarText',
+              body: 'exampleMetadataTextVarDefText',
+            },
+            label: 'exampleMetadataTextVarText',
+            validation: {
+              type: 'regex',
+              pattern: '.*',
+            },
+            repeat: {
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+          },
+        ],
+      },
+      {
+        name: 'exampleTextVar',
+        type: 'textVariable',
+        mode: 'input',
+        inputType: 'input',
+        tooltip: {
+          title: 'exampleMetadataTextVarText',
+          body: 'exampleMetadataTextVarDefText',
+        },
+        label: 'exampleMetadataTextVarText',
+        validation: {
+          type: 'regex',
+          pattern: '.*',
+        },
+        repeat: {
+          repeatMin: 1,
+          repeatMax: 1,
+        },
+      },
+    ],
+  };
 
-export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
+export const formComponentGroupWithinGroupWithAttributes: FormComponentGroup = {
   name: 'firstChildGroup',
   type: 'group',
   mode: 'input',
+  showLabel: true,
   tooltip: {
     title: 'exampleFirstChildGroupText',
     body: 'exampleFirstChildGroupDefText',
@@ -272,6 +279,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
       name: 'firstChildGroupColor',
       finalValue: 'yellow',
       placeholder: 'emptyTextId',
+      showLabel: true,
       tooltip: {
         title: 'exampleCollectionVarText',
         body: 'exampleCollectionVarDefText',
@@ -287,6 +295,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
       type: 'collectionVariable',
       name: 'firstChildGroupSecondAttribute',
       placeholder: 'emptyTextId',
+      showLabel: true,
       tooltip: {
         title: 'exampleCollectionVarText',
         body: 'exampleCollectionVarDefText',
@@ -359,6 +368,7 @@ export const formComponentGroupWithinGroupWithAttributes: FormComponent = {
             {
               type: 'collectionVariable',
               name: 'colour',
+              showLabel: true,
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -382,6 +392,7 @@ export const formDefWithTextVar: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -446,6 +457,7 @@ export const formDefWithOneTextVariable: RecordFormSchema = {
   form: {
     type: 'group',
     label: 'someRootFormGroupText',
+    showLabel: true,
     name: 'someRootNameInData',
     repeat: {
       repeatMin: 1,
@@ -479,12 +491,14 @@ export const formDefWithOneTextVariable: RecordFormSchema = {
   },
 };
 
-export const formDefWithOneRepeatingTextVariable = {
+export const formDefWithOneRepeatingTextVariable: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
+    showLabel: true,
     type: 'group',
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -522,6 +536,7 @@ export const formDefWithOneRepeatingTextVariableWithModeOutput: RecordFormSchema
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -562,6 +577,7 @@ export const formDefWithTwoTextVariableWithModeOutput: RecordFormSchema = {
   form: {
     type: 'group',
     label: 'someRootFormGroupText',
+    showLabel: true,
     name: 'someRootNameInData',
     repeat: {
       repeatMin: 1,
@@ -619,10 +635,12 @@ export const formDefForCheckTextValue: RecordFormSchema = {
   form: {
     type: 'group',
     label: 'someRootFormGroupText',
+    showLabel: true,
     name: 'someRootNameInData',
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
+      minNumberOfRepeatingToShow: 1,
     },
     tooltip: {
       title: 'textId345',
@@ -634,6 +652,7 @@ export const formDefForCheckTextValue: RecordFormSchema = {
         type: 'textVariable',
         mode: 'output',
         inputType: 'input',
+        showLabel: true,
         tooltip: {
           title: 'exampleMetadataTextVarText',
           body: 'exampleMetadataTextVarDefText',
@@ -646,12 +665,14 @@ export const formDefForCheckTextValue: RecordFormSchema = {
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
         },
       },
       {
         name: 'someOtherTextVar',
         type: 'textVariable',
         mode: 'output',
+        showLabel: true,
         inputType: 'input',
         tooltip: {
           title: 'exampleMetadataTextVarText',
@@ -665,6 +686,7 @@ export const formDefForCheckTextValue: RecordFormSchema = {
         repeat: {
           repeatMin: 1,
           repeatMax: 1,
+          minNumberOfRepeatingToShow: 1,
         },
       },
     ],
@@ -676,6 +698,7 @@ export const formDefForCheckNumberValue: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -692,6 +715,7 @@ export const formDefForCheckNumberValue: RecordFormSchema = {
         type: 'textVariable',
         mode: 'output',
         inputType: 'input',
+        showLabel: true,
         tooltip: {
           title: 'exampleMetadataTextVarText',
           body: 'exampleMetadataTextVarDefText',
@@ -711,6 +735,7 @@ export const formDefForCheckNumberValue: RecordFormSchema = {
         type: 'numberVariable',
         mode: 'output',
         inputType: 'input',
+        showLabel: true,
         tooltip: {
           title: 'exampleMetadataTextVarText',
           body: 'exampleMetadataTextVarDefText',
@@ -738,6 +763,7 @@ export const formDefWithTwoTextVariableHavingFinalValue: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -791,6 +817,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShow: RecordFor
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -838,6 +865,7 @@ export const formDefWithOneTextVariableWithMinNumberOfRepeatingToShowAndRepeatMi
     form: {
       type: 'group',
       label: 'someRootFormGroupText',
+      showLabel: true,
       name: 'someRootNameInData',
       repeat: {
         minNumberOfRepeatingToShow: 1,
@@ -880,6 +908,7 @@ export const formDefWithOneNumberVariable: RecordFormSchema = {
     type: 'group',
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
+    showLabel: true,
     repeat: {
       repeatMin: 1,
       repeatMax: 1,
@@ -916,6 +945,7 @@ export const formDefWithOneNumberVariableModeOutput: RecordFormSchema = {
   form: {
     type: 'group',
     label: 'someRootFormGroupText',
+    showLabel: true,
     name: 'someRootNameInData',
     repeat: {
       repeatMin: 1,
@@ -953,6 +983,7 @@ export const formDefWithOneNumberVariableAndGuiElementLink: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -997,6 +1028,7 @@ export const formDefWithOneNumberVariableHavingDecimals: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -1034,6 +1066,7 @@ export const formDefWithOneCollectionVariable: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -1083,6 +1116,7 @@ export const formDefWithOneCollectionVariableWithModeOutput: RecordFormSchema =
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -1133,6 +1167,7 @@ export const formDefWithOneNumberVariableWithAttributeCollection: RecordFormSche
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -1149,6 +1184,7 @@ export const formDefWithOneNumberVariableWithAttributeCollection: RecordFormSche
           name: 'someNameInDataNumberWithAttributeVar',
           label: 'test',
           placeholder: 'someEmptyTextId',
+          showLabel: true,
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -1161,6 +1197,7 @@ export const formDefWithOneNumberVariableWithAttributeCollection: RecordFormSche
             {
               type: 'collectionVariable',
               name: 'colour',
+              showLabel: true,
               label: 'attribute colour',
               placeholder: 'emptyTextId',
               tooltip: {
@@ -1443,6 +1480,7 @@ export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeC
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -1495,6 +1533,7 @@ export const formDefWithOneNumberVariableAndOptionalNumberVariableWithAttributeC
             {
               type: 'collectionVariable',
               name: 'colour',
+              showLabel: true,
               label: 'someNumberVar2AttributeLabel',
               placeholder: 'someNumberVar2AttributeId',
               tooltip: {
@@ -1529,6 +1568,7 @@ export const formDefWithOneOptionalNumberVariableWithAttributeCollection: Record
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -1558,6 +1598,7 @@ export const formDefWithOneOptionalNumberVariableWithAttributeCollection: Record
             {
               type: 'collectionVariable',
               name: 'colour',
+              showLabel: true,
               label: 'someNumberVar2AttributeLabel',
               placeholder: 'someNumberVar2AttributeId',
               tooltip: {
@@ -1592,6 +1633,7 @@ export const formDefWithOneRequiredNumberVariableWithAttributeCollection: Record
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -1621,6 +1663,7 @@ export const formDefWithOneRequiredNumberVariableWithAttributeCollection: Record
             {
               type: 'collectionVariable',
               name: 'colour',
+              showLabel: true,
               label: 'someNumberVar2AttributeLabel',
               placeholder: 'someNumberVar2AttributeId',
               tooltip: {
@@ -1667,6 +1710,7 @@ export const formDefWithOneOptionalGroupWithAttributeCollection: RecordFormSchem
       repeat: {
         repeatMin: 1,
         repeatMax: 1,
+        minNumberOfRepeatingToShow: 1,
       },
       components: [
         {
@@ -1923,13 +1967,14 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
               attributes: [
                 {
                   type: 'collectionVariable',
-                  name: 'eyeColor',
-                  placeholder: 'Select eye color',
+                  name: 'eyeColour',
+                  placeholder: 'Select eye colour',
+                  showLabel: true,
                   tooltip: {
-                    title: 'Eye color',
-                    body: 'state the author eye color',
+                    title: 'Eye colour',
+                    body: 'state the author eye colour',
                   },
-                  label: 'Eye color',
+                  label: 'Eye colour',
                   options: [
                     { value: 'blue', label: 'exampleBlueItemText' },
                     { value: 'pink', label: 'examplePinkItemText' },
@@ -1968,6 +2013,7 @@ export const formDefWithOneGroupHavingTextVariableAsChild: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -2024,6 +2070,7 @@ export const formDefRealDemo: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -2157,6 +2204,7 @@ export const formDefRealDemoWithFinalValues: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -2295,6 +2343,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
     validationTypeId: 'demo',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -2344,6 +2393,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
             {
               type: 'collectionVariable',
               name: 'colour',
+              showLabel: true,
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -2383,6 +2433,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
           attributes: [
             {
               type: 'collectionVariable',
+              showLabel: true,
               name: 'colour',
               placeholder: 'emptyTextId',
               tooltip: {
@@ -2415,6 +2466,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
             {
               type: 'collectionVariable',
               name: 'groupColour',
+              showLabel: true,
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -2431,6 +2483,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
               type: 'collectionVariable',
               name: 'groupColourAgain',
               placeholder: 'emptyTextId',
+              showLabel: true,
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText',
@@ -2489,6 +2542,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
                   type: 'collectionVariable',
                   name: 'colour',
                   placeholder: 'emptyTextId',
+                  showLabel: true,
                   tooltip: {
                     title: 'exampleCollectionVarText',
                     body: 'exampleCollectionVarDefText',
@@ -2503,6 +2557,7 @@ export const formDefRealDemoWithAttributesButWithoutFinalValue: RecordFormSchema
                 {
                   type: 'collectionVariable',
                   name: 'colourAgain',
+                  showLabel: true,
                   placeholder: 'emptyTextId',
                   tooltip: {
                     title: 'exampleCollectionVarText',
@@ -2527,6 +2582,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -2576,6 +2632,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           {
             type: 'collectionVariable',
             name: 'colour',
+            showLabel: true,
             placeholder: 'emptyTextId',
             tooltip: {
               title: 'exampleCollectionVarText',
@@ -2616,6 +2673,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           {
             type: 'collectionVariable',
             name: 'colour',
+            showLabel: true,
             placeholder: 'emptyTextId',
             tooltip: {
               title: 'exampleCollectionVarText',
@@ -2648,6 +2706,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
             type: 'collectionVariable',
             name: 'groupColour',
             placeholder: 'emptyTextId',
+            showLabel: true,
             tooltip: {
               title: 'exampleCollectionVarText',
               body: 'exampleCollectionVarDefText',
@@ -2662,6 +2721,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
           {
             type: 'collectionVariable',
             name: 'groupColourAgain',
+            showLabel: true,
             finalValue: 'pink',
             placeholder: 'emptyTextId',
             tooltip: {
@@ -2723,6 +2783,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
                 type: 'collectionVariable',
                 name: 'colour',
                 placeholder: 'emptyTextId',
+                showLabel: true,
                 tooltip: {
                   title: 'exampleCollectionVarText',
                   body: 'exampleCollectionVarDefText',
@@ -2739,6 +2800,7 @@ export const formDefRealDemoWithAttributes: RecordFormSchema = {
                 name: 'colourAgain',
                 finalValue: 'pink',
                 placeholder: 'emptyTextId',
+                showLabel: true,
                 tooltip: {
                   title: 'exampleCollectionVarText',
                   body: 'exampleCollectionVarDefText',
@@ -2762,6 +2824,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -2835,6 +2898,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
             name: 'colour',
             placeholder: 'emptyTextId',
             finalValue: 'blue',
+            showLabel: true,
             tooltip: {
               title: 'exampleCollectionVarText',
               body: 'exampleCollectionVarDefText',
@@ -2890,6 +2954,7 @@ export const formDefRealDemoWithRepeatingVars: RecordFormSchema = {
                 name: 'colour',
                 placeholder: 'emptyTextId',
                 finalValue: 'pink',
+                showLabel: true,
                 tooltip: {
                   title: 'exampleCollectionVarText',
                   body: 'exampleCollectionVarDefText',
@@ -2932,6 +2997,7 @@ export const formDefRealDemoWithRepeatingGroups: RecordFormSchema = {
   validationTypeId: 'demo',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -3067,6 +3133,7 @@ export const formDefWithTwoRepeatingVarsAndCollectionVar: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -3142,6 +3209,7 @@ export const formDefWithRepeatingCollectionVar: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -3186,6 +3254,7 @@ export const formDefWithRepeatingGroup: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -3251,6 +3320,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroup: RecordFormSchema 
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -3364,6 +3434,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: false,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -3395,6 +3466,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
               type: 'collectionVariable',
               name: 'colourAttribute',
               placeholder: 'emptyTextId',
+              showLabel: true,
               tooltip: {
                 title: 'exampleCollectionVarText',
                 body: 'exampleCollectionVarDefText',
@@ -3449,6 +3521,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
                       type: 'collectionVariable',
                       name: 'colourAttribute',
                       placeholder: 'emptyTextId',
+                      showLabel: true,
                       tooltip: {
                         title: 'exampleCollectionVarText',
                         body: 'exampleCollectionVarDefText',
@@ -3518,6 +3591,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
             {
               type: 'collectionVariable',
               name: 'groupAttribute',
+              showLabel: true,
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -3550,6 +3624,7 @@ export const formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes: Rec
             {
               type: 'collectionVariable',
               name: 'gradeAttribute',
+              showLabel: true,
               placeholder: 'emptyTextId',
               tooltip: {
                 title: 'exampleCollectionVarText',
@@ -4467,6 +4542,7 @@ export const formDefWithSurroundingContainerAroundTextVariable: RecordFormSchema
     validationTypeId: 'book',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -4522,6 +4598,7 @@ export const formDefWithNestedSurroundingContainers: RecordFormSchema = {
   validationTypeId: 'book',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -4607,6 +4684,7 @@ export const formDefWithARepeatingContainer: RecordFormSchema = {
   validationTypeId: 'book',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -4692,6 +4770,7 @@ export const formDefWithGroupWithSpecifiedHeadlineLevel: RecordFormSchema = {
           {
             type: 'collectionVariable',
             name: 'eyeColor',
+            showLabel: true,
             placeholder: 'Select eye color',
             tooltip: {
               title: 'Eye color',
@@ -4737,6 +4816,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     headlineLevel: 'h1',
     name: 'someRootNameInData',
@@ -4768,6 +4848,7 @@ export const formDefWithGroupWithDefaultHeadlineLevel: RecordFormSchema = {
           {
             type: 'collectionVariable',
             name: 'eyeColor',
+            showLabel: true,
             placeholder: 'Select eye color',
             tooltip: {
               title: 'Eye color',
@@ -4813,6 +4894,7 @@ export const formDefWithOneNumberVariableBeingOptional: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -4854,6 +4936,7 @@ export const formDefWithOneNumberVariableBeingOptionalOutput: RecordFormSchema =
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -4894,6 +4977,7 @@ export const formDefWithOneTextVariableBeingOptional: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -4930,6 +5014,7 @@ export const formDefWithOneTextVariableBeingPassword: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -4966,6 +5051,7 @@ export const formDefWithOneRecordLinkBeingOptional: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -4996,6 +5082,7 @@ export const formDefWithOneRecordLinkBeingRequired: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -5025,6 +5112,7 @@ export const formDefWithOneTextVariableBeingRepeating: RecordFormSchema = {
   validationTypeId: 'someValidationTypeId',
   form: {
     type: 'group',
+    showLabel: true,
     label: 'someRootFormGroupText',
     name: 'someRootNameInData',
     repeat: {
@@ -5657,6 +5745,7 @@ export const formDefTwoOptionalGroupsSameNameInDataWithRequiredTextVars: RecordF
     validationTypeId: 'someValidationTypeId',
     form: {
       type: 'group',
+      showLabel: true,
       label: 'someRootFormGroupText',
       name: 'someRootNameInData',
       repeat: {
@@ -6735,10 +6824,11 @@ export const formDefNatSubGroupRequiredAndRecordLinksSameNameInDataWithAttribute
     },
   };
 
-export const formComponentTitleInfoGroup: FormComponent = {
+export const formComponentTitleInfoGroup: FormComponentWithData = {
   name: 'firstChildGroup',
   type: 'group',
   mode: 'input',
+  showLabel: true,
   tooltip: {
     title: 'exampleFirstChildGroupText',
     body: 'exampleFirstChildGroupDefText',

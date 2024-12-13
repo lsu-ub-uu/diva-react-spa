@@ -16,18 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponentCollVar } from '@/components/FormGenerator/types';
+import type { FormComponentCollVar } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
+import type { ReactNode } from 'react';
 
 interface CollectionVariableProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
   component: FormComponentCollVar;
   name: string;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const CollectionVariable = ({
@@ -35,6 +38,8 @@ export const CollectionVariable = ({
   renderElementGridWrapper,
   component,
   name,
+  attributes,
+  actionButtonGroup,
 }: CollectionVariableProps) => {
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
@@ -61,6 +66,8 @@ export const CollectionVariable = ({
         readOnly={!!component.finalValue}
         displayMode={component.mode}
         hasValue={hasValue}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
       />
     </Grid>
   );

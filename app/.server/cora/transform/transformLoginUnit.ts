@@ -17,12 +17,12 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   DataGroup,
   DataListWrapper,
   RecordWrapper,
 } from '@/.server/cora/cora-data/CoraData';
-import { BFFLoginUnit } from './bffTypes';
+import type { BFFLoginUnit } from './bffTypes';
 import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,

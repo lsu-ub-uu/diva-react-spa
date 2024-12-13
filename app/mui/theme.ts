@@ -16,13 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  createTheme,
+import type {
   PaletteColorOptions,
-  Shadows,
+  Shadows} from '@mui/material/styles';
+import {
+  createTheme
 } from '@mui/material/styles';
-import { CSSProperties } from 'react';
-import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
+import type { CSSProperties } from 'react';
+import type { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {

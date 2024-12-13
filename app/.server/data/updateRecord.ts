@@ -16,14 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { BFFDataRecord } from '@/types/record';
-import { Auth } from '@/types/Auth';
+import type { BFFDataRecord } from '@/types/record';
+import type { Auth } from '@/types/Auth';
 import { createFormMetaData } from '@/.server/data/formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/.server/cora/transform/transformToCora';
-import { DataGroup, RecordWrapper } from '@/.server/cora/cora-data/CoraData';
+import type { DataGroup, RecordWrapper } from '@/.server/cora/cora-data/CoraData';
 import { transformRecord } from '@/.server/cora/transform/transformRecord';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { updateRecordDataById } from '@/.server/cora/updateRecordDataById';
 
 export const updateRecord = async (

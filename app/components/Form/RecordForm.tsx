@@ -27,16 +27,14 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  createDefaultValuesFromFormSchema,
-  RecordData,
-} from '../FormGenerator/defaultValues/defaultValues';
+import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
+import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { FormGenerator } from '@/components';
-import { RecordFormSchema } from '../FormGenerator/types';
-import { BFFDataRecord } from '@/types/record';
+import type { RecordFormSchema } from '../FormGenerator/types';
+import type { BFFDataRecord } from '@/types/record';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
 import { Form, useNavigation } from '@remix-run/react';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 export interface RecordFormProps {
   record?: BFFDataRecord;

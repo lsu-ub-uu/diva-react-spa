@@ -3,18 +3,19 @@ import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { commitSession, getSession } from '@/.server/sessions';
 import { Alert, Button, Stack } from '@mui/material';
-import { FormGenerator } from '@/components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { useSnackbar, VariantType } from 'notistack';
+import type { VariantType } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/.server/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/.server/data/loginWithUsernameAndPassword';
-import { Auth } from '@/types/Auth';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import type { Auth } from '@/types/Auth';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {

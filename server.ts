@@ -19,7 +19,8 @@
 import 'dotenv/config';
 import { createRequestHandler } from '@remix-run/express';
 import compression from 'compression';
-import express, { Request } from 'express';
+import type { Request } from 'express';
+import express from 'express';
 import morgan from 'morgan';
 import process from 'node:process';
 import path from 'node:path';

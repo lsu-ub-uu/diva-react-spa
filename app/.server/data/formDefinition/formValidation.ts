@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
 } from '@/.server/cora/transform/bffTypes';

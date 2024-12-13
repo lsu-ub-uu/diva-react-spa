@@ -4,7 +4,7 @@ import {
   extractLinkedRecordIdFromNamedRecordLink,
   // extractLinkedRecordIdFromNamedRecordLink,
 } from '../CoraDataTransforms';
-import { DataGroup } from '../CoraData';
+import type { DataGroup } from '../CoraData';
 
 const someRecordGroup = {
   name: 'parent',

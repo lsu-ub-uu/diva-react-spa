@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   FormAttributeCollection,
   FormComponent,
   FormComponentGroup,
@@ -26,9 +26,11 @@ import {
 } from '../types';
 import {
   isComponentContainer,
+  isComponentGroup,
   isComponentRepeating,
   isComponentValidForDataCarrying,
   isComponentVariable,
+  isComponentWithData,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { uniq } from 'lodash-es';
 
@@ -68,13 +70,15 @@ export const generateRepeatingObject = (
   return Array.from({ length: size }, () => obj);
 };
 
-export const getMinNumberOfRepeatingToShow = (component: FormComponent) =>
+export const getMinNumberOfRepeatingToShow = (
+  component: FormComponentWithData,
+) =>
   component.repeat?.minNumberOfRepeatingToShow ??
   component.repeat?.repeatMin ??
   0;
 
 function createDefaultObjectForRepeating(
-  component: FormComponent,
+  component: FormComponentWithData,
   currentComponentSameNameInData: boolean,
   defaultValues: {
     [p: string]:
@@ -104,7 +108,7 @@ function createDefaultObjectForRepeating(
 function createDefaultValueForNonRepeating(
   currentComponentSameNameInData: boolean,
   defaultValues: any,
-  component: FormComponent,
+  component: FormComponentWithData,
   formDefaultObject:
     | { [p: string]: string; value: string }
     | { [p: string]: string },
@@ -118,7 +122,7 @@ function createDefaultValueForNonRepeating(
 }
 
 export const createDefaultValuesFromComponent = (
-  component: FormComponent,
+  component: FormComponentWithData,
   forceDefaultValuesForAppend = false,
   childWithSameNameInData: string[] = [],
 ) => {
@@ -170,7 +174,11 @@ export const createDefaultValuesFromComponent = (
   return defaultValues;
 };
 
-export const getChildNameInDataArray = (component: FormComponentGroup) => {
+export const getChildNameInDataArray = (component: FormComponent) => {
+  if (!isComponentGroup(component)) {
+    return [];
+  }
+
   const nameArray: any[] = [];
   (component.components ?? []).forEach((childComponent) => {
     nameArray.push(childComponent.name);
@@ -186,7 +194,7 @@ export const getChildrenWithSameNameInData = (childArray: string[]) => {
   return uniq(withoutSingles);
 };
 
-function createDefaultValuesForVariable(component: FormComponent) {
+function createDefaultValuesForVariable(component: FormComponentWithData) {
   return {
     value: createDefaultValueFromFinalValue(component),
     ...generateComponentAttributes(component),
@@ -293,10 +301,11 @@ export const mergeArrays = (target: any[], overlay: any[]): any[] => {
   return result;
 };
 
-export const addAttributesToName = (
-  component: FormComponentWithData,
-  name: string,
-) => {
+export const addAttributesToName = (component: FormComponent, name: string) => {
+  if (!isComponentWithData(component)) {
+    return name;
+  }
+
   const nameArray: any[] = [];
   if (component.attributes === undefined) {
     return component.name;

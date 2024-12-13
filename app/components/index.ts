@@ -16,39 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-export { PageLayout } from './Layout';
-
-export { AsidePortal } from './AsidePortal/AsidePortal';
-
-export { Tooltip } from './Tooltip/Tooltip';
-
-export { Dialog } from './Dialog/Dialog';
-
-export { LegacyCard } from '@/components/LegacyCard/LegacyCard';
-export { FileUpload } from './FileUpload/FileUpload';
-export {
-  HorizontalStepper,
-  StepIcon,
-} from './HorizontalStepper/HorizontalStepper';
-export { TabsMenu } from './TabsMenu/TabsMenu';
-export { Select } from '@/components/FormComponents/Select/Select';
-export { Checkbox } from '@/components/FormComponents/Checkbox/Checkbox';
-export { Radio } from '@/components/FormComponents/Radio/Radio';
-export { ControlledAutocomplete } from './Controlled/Autocomplete/ControlledAutocomplete';
-export { ErrorSummary } from '@/components/FormComponents/ErrorSummary/ErrorSummary';
-export { SnackbarProvider } from './Snackbar/SnackbarProvider';
-export { FormGenerator } from './FormGenerator/FormGenerator';
-export { Typography } from './Typography/Typography';
-export { LinkButton } from './LinkButton/LinkButton';
-export { NavigationPanel } from './NavigationPanel/NavigationPanel';
-export { LinkedRecord } from './LinkedRecord/LinkedPresentationRecord';
-export { RecordActionButtons } from './RecordActionButtons/RecordActionButtons';
-
-export {
-  useSectionScroller,
-  linksFromFormSchema,
-} from './NavigationPanel/utils';
-
 export interface SelectItem {
   id: string;
   name: string;

@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { RecordFormSchema } from '@/components/FormGenerator/types';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { createFormDefinition } from '@/.server/data/formDefinition/formDefinition';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 
 export const getFormDefinitionByValidationTypeId = async (
   dependencies: Dependencies,

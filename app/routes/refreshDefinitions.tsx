@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import type { ActionFunctionArgs} from '@remix-run/node';
+import { redirect } from '@remix-run/node';
 
 export const action = async ({ request, context }: ActionFunctionArgs) => {
   const form = await request.formData();

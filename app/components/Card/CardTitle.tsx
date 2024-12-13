@@ -16,23 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { Session } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
-import { commitSession } from '@/.server/sessions';
+import styles from './Card.module.css';
+import type { ReactNode } from 'react';
 
-export const redirectAndCommitSession = async (
-  url: string,
-  session: Session,
-) => {
-  return redirect(url, await getResponseInitWithSession(session));
-};
+interface CardTitleProps {
+  children: ReactNode;
+}
 
-export const getResponseInitWithSession = async (
-  session: Session,
-): Promise<ResponseInit> => {
-  return {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  };
+export const CardTitle = ({ children }: CardTitleProps) => {
+  return <div className={styles.cardTitle}>{children}</div>;
 };

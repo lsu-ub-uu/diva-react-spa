@@ -29,9 +29,9 @@ import {
 } from '../transformToCora';
 import testFormPayloadWithTextVarAndGroupWithTextVarAndRecordLink from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithTextVarAndGroupWithTextVarAndRecordLink.json';
 import testFormPayloadWithGroupWithAttributesAndTextVar from '@/__mocks__/bff/payloads/divaGuiPostPayloadWithGroupWithAttributesAndTextVar.json';
-import { DataGroup } from '@/.server/cora/cora-data/CoraData';
-import { Lookup } from '@/utils/structs/lookup';
-import {
+import type { DataGroup } from '@/.server/cora/cora-data/CoraData';
+import type { Lookup } from '@/utils/structs/lookup';
+import type {
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadataCollectionVariable,
@@ -46,7 +46,7 @@ import {
   BFFText,
   BFFValidationType,
 } from '../bffTypes';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { listToPool } from '@/utils/structs/listToPool';
 import {
   authorGroup,
@@ -105,7 +105,7 @@ import {
 } from '@/__mocks__/bff/form/bffMock';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { createFormMetaData } from '@/.server/data/formDefinition/formMetadata';
-import { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
+import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
 import { describe } from 'vitest';
 
 describe('transformToCora', () => {

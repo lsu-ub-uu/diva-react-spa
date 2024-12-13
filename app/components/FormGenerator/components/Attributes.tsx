@@ -16,93 +16,63 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  FormComponent,
+import { AttributeSelect } from '@/components/Controlled/AttributeSelect/AttributeSelect';
+import { useTranslation } from 'react-i18next';
+import type {
   FormComponentCollVar,
+  FormComponentWithData,
 } from '@/components/FormGenerator/types';
-import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Grid2 as Grid } from '@mui/material';
-import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ControlledSelectField } from '@/components/Controlled';
-import { useRemixFormContext } from 'remix-hook-form';
 
 interface AttributesProps {
-  component: FormComponentCollVar;
+  component: FormComponentWithData;
   path: string;
 }
 
 export const Attributes = ({ component, path }: AttributesProps) => {
-  const { getValues, control } = useRemixFormContext();
+  const { t } = useTranslation();
 
-  return (component.attributes ?? []).map((attribute, index) => {
-    const hasValue = checkIfComponentHasValue(getValues, attribute.name);
+  const attributesToShow = getAttributesToShow(component);
 
-    const attributesToShow = checkIfAttributesToShowIsAValue(component);
-    if (attributesToShow === 'all') {
-      return (
-        <Grid
-          key={attribute.name}
-          size={6}
-          id={`anchor_${addAttributesToName(component, component.name)}`}
-        >
-          <ControlledSelectField
-            key={`${attribute.name}_${index}`}
-            name={`${path}._${attribute.name}`}
-            isLoading={false}
-            loadingError={false}
-            label={attribute.label ?? ''}
-            showLabel={component.showLabel}
-            placeholder={attribute.placeholder}
-            tooltip={attribute.tooltip}
-            control={control}
-            options={attribute.options}
-            readOnly={!!attribute.finalValue}
-            displayMode={attribute.mode}
-            hasValue={hasValue}
-          />
-        </Grid>
-      );
-    }
-
-    if (attributesToShow === 'selectable' && !attribute.finalValue) {
-      return (
-        <Grid
-          key={attribute.name}
-          size={6}
-          id={`anchor_${addAttributesToName(component, component.name)}`}
-        >
-          <ControlledSelectField
-            key={`${attribute.name}_${index}`}
-            name={`${path}._${attribute.name}`}
-            isLoading={false}
-            loadingError={false}
-            label={attribute.label ?? ''}
-            showLabel={component.showLabel}
-            placeholder={attribute.placeholder}
-            tooltip={attribute.tooltip}
-            control={control}
-            options={attribute.options}
-            readOnly={!!attribute.finalValue}
-            displayMode={attribute.mode}
-            hasValue={hasValue}
-          />
-        </Grid>
-      );
-    }
-
-    return null;
+  return attributesToShow.map((attribute, index) => {
+    return (
+      <AttributeSelect
+        key={`${attribute.name}_${index}`}
+        name={`${path}._${attribute.name}`}
+        label={attribute.label ?? ''}
+        options={
+          attribute.finalValue
+            ? attribute.options
+            : [
+                {
+                  value: '',
+                  label: t(
+                    attribute.placeholder ?? 'divaClient_optionNoneText',
+                  ),
+                },
+                ...(attribute.options ?? []),
+              ]
+        }
+        showLabel={attribute.showLabel}
+        placeholder={attribute.placeholder}
+        tooltip={attribute.tooltip}
+        readonly={attribute.finalValue !== undefined}
+        displayMode={attribute.mode}
+      />
+    );
   });
 };
 
-const checkIfAttributesToShowIsAValue = (component: FormComponent) => {
-  if (
-    component.attributesToShow === 'all' ||
-    component.attributesToShow === undefined
-  ) {
-    return 'all';
-  }
+const getAttributesToShow = (component: FormComponentCollVar) => {
   if (component.attributesToShow === 'selectable') {
-    return 'selectable';
+    return (component.attributes ?? []).filter(
+      (attribute) => attribute.finalValue === undefined,
+    );
   }
-  return 'none';
+
+  if (component.attributesToShow === 'none') {
+    return [];
+  }
+
+  // attributesToShow === 'all'
+  return component.attributes ?? [];
 };
