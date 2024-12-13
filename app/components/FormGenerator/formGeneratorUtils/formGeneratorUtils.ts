@@ -41,12 +41,6 @@ import {
 import type { DivaTypographyVariants } from '@/components/Typography/Typography';
 import { cleanFormData } from '@/utils/cleanFormData';
 
-export const countStringCharOccurrences = (
-  inputString: string,
-  targetChar: string,
-) => {
-  return inputString.split('').filter((char) => char === targetChar).length;
-};
 
 export const getGroupLevel = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.');
@@ -56,13 +50,16 @@ export const isFirstLevelGroup = (pathName: string) => {
   return countStringCharOccurrences(pathName, '.') === 1;
 };
 
-export const isFirstLevelVariable = (pathName: string) => {
-  return countStringCharOccurrences(pathName, '.') === 2;
+const countStringCharOccurrences = (
+  inputString: string,
+  targetChar: string,
+) => {
+  return inputString.split('').filter((char) => char === targetChar).length;
 };
 
-export const isRootLevel = (pathName: string) => {
-  return countStringCharOccurrences(pathName, '.') === 0;
-};
+export const exportForTesting = {
+  countStringCharOccurrences
+}
 
 export const isComponentTextVariable = (
   component: FormComponent,
@@ -290,21 +287,6 @@ export const convertChildStyleToString = (
   return childStyle?.[0] === undefined ? '' : childStyle[0].toString();
 };
 
-export const hasComponentSameNameInData = (component: FormComponentGroup) => {
-  if (component.components === undefined) {
-    return false;
-  }
-
-  if (component.components.length === 1) {
-    return false;
-  }
-
-  if (!isComponentGroup(component)) {
-    return false;
-  }
-  const nameArray = getChildNameInDataArray(component);
-  return getChildrenWithSameNameInData(nameArray).length >= 1;
-};
 export const getChildrenWithSameNameInDataFromSchema = (
   formSchema: FormSchema,
 ) => {
