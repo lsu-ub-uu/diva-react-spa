@@ -64,7 +64,7 @@ export const action = async ({
   const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
   const {
     errors,
-    data,
+    data: validatedFormData,
     receivedValues: defaultValues,
   } = await getValidatedFormData(formData, resolver);
 
@@ -77,7 +77,7 @@ export const action = async ({
       context.dependencies,
       validationType,
       recordId,
-      data as unknown as BFFDataRecord,
+      validatedFormData as unknown as BFFDataRecord,
       auth,
     );
     session.flash('success', `Record was successfully updated`);
