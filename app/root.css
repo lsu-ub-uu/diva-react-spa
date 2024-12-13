@@ -1,5 +1,25 @@
+/*
+ * Copyright 2024 Uppsala University Library
+ *
+ * This file is part of DiVA Client.
+ *
+ *     DiVA Client is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     DiVA Client is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ */
+
 :root {
   --border-radius: 8px;
+
+  --background-color: 255 255 255;
 
   --primaryMain: 51 51 51;
   --secondaryMain: 1 1 1;
@@ -25,6 +45,8 @@
 
   --yellowLight: 253 243 209;
   --yellowMain: 246 194 68;
+
+  --labelColor: 0 0 0 / 60%;
 
   --gap: 0.5rem;
 }

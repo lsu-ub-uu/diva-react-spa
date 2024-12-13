@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataGroup,
@@ -25,9 +25,10 @@ import {
   BFFValidationType,
 } from '@/.server/cora/transform/bffTypes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
-import { Dependencies } from './formDefinitionsDep';
-import { determineRepeatMax, FormMetaData } from './formDefinition';
-import { dependencies } from '@/.server/data/pool.server';
+import type { Dependencies } from './formDefinitionsDep';
+import type { FormMetaData } from './formDefinition';
+import { determineRepeatMax } from './formDefinition';
+import type { dependencies } from '@/.server/data/pool.server';
 
 export const createFormMetaData = (
   dependencies: Dependencies,

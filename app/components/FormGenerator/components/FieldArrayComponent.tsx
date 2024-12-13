@@ -17,13 +17,13 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Control, Controller, useFieldArray } from 'react-hook-form';
-import { Box, Button, Grid2 as Grid, IconButton } from '@mui/material';
+import type { Control } from 'react-hook-form';
+import { Controller, useFieldArray } from 'react-hook-form';
+import { Button, Grid2 as Grid, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import { FormComponent } from '../types';
 import {
   addAttributesToName,
   createDefaultValuesFromComponent,
@@ -33,19 +33,21 @@ import {
   isComponentGroup,
   isComponentSingularAndOptional,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Typography } from '@/components/Typography/Typography';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
-
-import type { JSX } from "react";
+import { Attributes } from '@/components/FormGenerator/components/Attributes';
+import { Typography } from '@/components/Typography/Typography';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { CardTitle } from '@/components/Card/CardTitle';
+import type { ReactNode } from 'react';
+import type { FormComponentWithData } from '@/components/FormGenerator/types';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
   name: string;
-  component: FormComponent;
-  renderCallback: (path: string) => unknown;
+  component: FormComponentWithData;
+  renderCallback: (path: string, actionButtonGroup: ReactNode) => ReactNode;
   hasValue?: boolean;
 }
 
@@ -88,6 +90,23 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         )}
       />
       {fields.map((field, index) => {
+        const actionButtonGroup = props.component.mode === 'input' && (
+          <ActionButtonGroup
+            entityName={`${t(props.component.label ?? '')}`}
+            hideMoveButtons={isComponentSingularAndOptional(props.component)}
+            moveUpButtonDisabled={index === 0}
+            moveUpButtonAction={() => handleMove(index, index - 1)}
+            moveDownButtonDisabled={index === fields.length - 1}
+            moveDownButtonAction={() => handleMove(index, index + 1)}
+            deleteButtonDisabled={
+              fields.length <= (props.component.repeat?.repeatMin ?? 1)
+            }
+            deleteButtonAction={() => handleRemove(index)}
+            entityType={props.component.type}
+            key={`${field.id}_${index}_f`}
+          />
+        );
+
         return (
           <Grid
             size={12}
@@ -103,10 +122,11 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'flex-end',
                   }}
                 >
                   {props.component.showLabel && (
-                    <>
+                    <CardTitle>
                       <Typography
                         variant={
                           headlineLevelToTypographyVariant(
@@ -127,60 +147,22 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
                           <InfoIcon />
                         </IconButton>
                       </Tooltip>
-                    </>
+                    </CardTitle>
                   )}
 
-                  {props.component.mode === 'input' && (
-                    <ActionButtonGroup
-                      entityName={`${t(props.component.label ?? '')}`}
-                      hideMoveButtons={isComponentSingularAndOptional(
-                        props.component,
-                      )}
-                      moveUpButtonDisabled={index === 0}
-                      moveUpButtonAction={() => handleMove(index, index - 1)}
-                      moveDownButtonDisabled={index === fields.length - 1}
-                      moveDownButtonAction={() => handleMove(index, index + 1)}
-                      deleteButtonDisabled={
-                        fields.length <=
-                        (props.component.repeat?.repeatMin ?? 1)
-                      }
-                      deleteButtonAction={() => handleRemove(index)}
-                      entityType={props.component.type}
-                      key={`${field.id}_${index}_f`}
-                    />
-                  )}
+                  <Attributes
+                    component={props.component}
+                    path={`${props.name}[${index}]`}
+                  />
+
+                  {actionButtonGroup}
                 </CardHeader>
               )}
-              {!isComponentGroup(props.component) &&
-                props.component.mode === 'input' && (
-                  <Box
-                    sx={{ position: 'absolute', top: 4, right: 0, zIndex: 1 }}
-                  >
-                    <ActionButtonGroup
-                      entityName={`${t(props.component.label ?? '')}`}
-                      hideMoveButtons={isComponentSingularAndOptional(
-                        props.component,
-                      )}
-                      moveUpButtonDisabled={index === 0}
-                      moveUpButtonAction={() => handleMove(index, index - 1)}
-                      moveDownButtonDisabled={index === fields.length - 1}
-                      moveDownButtonAction={() => handleMove(index, index + 1)}
-                      deleteButtonDisabled={
-                        fields.length <=
-                        (props.component.repeat?.repeatMin ?? 1)
-                      }
-                      deleteButtonAction={() => handleRemove(index)}
-                      entityType={props.component.type}
-                      key={`${field.id}_${index}_f`}
-                    />
-                  </Box>
-                )}
               <CardContent sx={{ p: isBoxed ? 2 : undefined }}>
-                {
-                  props.renderCallback(
-                    `${props.name}[${index}]` as const,
-                  ) as JSX.Element
-                }
+                {props.renderCallback(
+                  `${props.name}[${index}]` as const,
+                  actionButtonGroup,
+                )}
               </CardContent>
             </Card>
           </Grid>

@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Radio as MuiRadio, RadioProps, styled } from '@mui/material';
+import type { RadioProps} from '@mui/material';
+import { Radio as MuiRadio, styled } from '@mui/material';
 
 const StyledRadioIcon = styled('span')(() => ({
   borderRadius: '50%',

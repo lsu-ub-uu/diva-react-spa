@@ -19,14 +19,14 @@
 import {
   data,
   Links,
-  LinksFunction,
+  type LinksFunction,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import { ReactNode, useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 import { SnackbarProvider } from '@/components/Snackbar/SnackbarProvider';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
@@ -34,8 +34,8 @@ import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import { i18nCookie } from '@/i18n/i18nCookie';
 import { getLoginUnits } from '@/.server/data/getLoginUnits';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
-import { Route } from '../.react-router/types/app/+types/root';
-import { PageLayout } from '@/components/Layout';
+import type { Route } from '../.react-router/types/app/+types/root';
+import  { PageLayout } from '@/components/Layout';
 import { withEmotionCache } from '@emotion/react';
 import './root.css';
 
@@ -46,7 +46,7 @@ interface DocumentProps {
 }
 
 export const links: LinksFunction = () => [
-  /* {
+  /*  {
     rel: 'icon',
     type: 'image/svg+xml',
     href: MODE === 'development' ? dev_favicon : favicon,

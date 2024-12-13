@@ -19,7 +19,7 @@
 import { MenuItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData } from 'react-router';
-import { loader } from '@/root';
+import type { loader } from '@/root';
 
 interface WebRedirectLoginOptionsProps {
   onSelect: (url: string) => void;

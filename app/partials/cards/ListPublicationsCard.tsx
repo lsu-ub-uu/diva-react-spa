@@ -19,7 +19,8 @@
 
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import type { GridColDef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -30,11 +31,11 @@ import {
   useFetcher,
   useLoaderData,
 } from 'react-router';
-import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
-import { loader } from '@/routes/home';
-import { BFFDataRecord, BFFSearchResult } from '@/types/record';
+import type { loader } from '@/routes/home';
+import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
+import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();

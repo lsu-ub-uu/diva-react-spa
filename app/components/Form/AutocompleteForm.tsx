@@ -19,13 +19,14 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import type {
+  RecordData} from '../FormGenerator/defaultValues/defaultValues';
 import {
-  createDefaultValuesFromFormSchema,
-  RecordData,
+  createDefaultValuesFromFormSchema
 } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { FormSchema } from '../FormGenerator/types';
-import { BFFDataRecord } from '@/types/record';
+import type { FormSchema } from '../FormGenerator/types';
+import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface AutocompleteFormProps {

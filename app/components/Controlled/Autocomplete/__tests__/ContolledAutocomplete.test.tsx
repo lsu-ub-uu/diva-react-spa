@@ -23,7 +23,7 @@ import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'vitest';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 import { ControlledAutocomplete } from '@/components/Controlled/Autocomplete/ControlledAutocomplete';
 
 import type { JSX } from "react";

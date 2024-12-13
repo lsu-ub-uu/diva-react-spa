@@ -17,7 +17,7 @@
  */
 
 import { createLoginDefinition } from '@/.server/data/loginDefinition/loginDefinition';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 
 export const getLoginUnits = (dependencies: Dependencies) => {
   return createLoginDefinition(dependencies);

@@ -16,6 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import type {
+  IconButtonProps,
+  SxProps,
+  Theme} from '@mui/material';
 import {
   Card as MuiCard,
   CardContent,
@@ -23,12 +27,10 @@ import {
   Collapse,
   Grid2 as Grid,
   IconButton,
-  IconButtonProps,
-  styled,
-  SxProps,
-  Theme,
+  styled
 } from '@mui/material';
-import { ReactNode, useEffect, useState } from 'react';
+import type { ReactNode} from 'react';
+import { useEffect, useState } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Tooltip } from '@/components/Tooltip/Tooltip';

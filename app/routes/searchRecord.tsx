@@ -18,7 +18,7 @@
 
 import { getSearchForm } from '@/.server/data/getSearchForm';
 import { searchRecords } from '@/.server/data/searchRecords';
-import { BFFSearchResult } from '@/types/record';
+import type { BFFSearchResult } from '@/types/record';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import type { Route } from '../../.react-router/types/app/routes/+types/searchRecord';

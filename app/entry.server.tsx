@@ -6,7 +6,7 @@ import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 import { MuiProvider } from '@/mui/MuiProvider';
-import { i18n } from 'i18next';
+import type { i18n } from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 
 const ABORT_DELAY = 5_000;

@@ -17,8 +17,8 @@
  */
 
 // i18n/sessions.ts
-import { createCookieSessionStorage, data, Session } from 'react-router';
-import { Auth } from '@/types/Auth';
+import { createCookieSessionStorage, data, type Session } from 'react-router';
+import type { Auth } from '@/types/Auth';
 
 type SessionData = {
   auth: Auth;

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
+import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
@@ -40,6 +40,7 @@ import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
+import { CardTitle } from '@/components/Card/CardTitle';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
@@ -71,17 +72,17 @@ export const GroupOrContainer = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <Card boxed>
-        {component.showLabel === true ? (
-          <CardHeader
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '100%',
-              justifyContent: 'space-between',
-            }}
-          >
-            <>
+        <CardHeader
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: 'flex-end',
+          }}
+        >
+          {component.showLabel === true ? (
+            <CardTitle>
               <Typography
                 text={component?.label ?? ''}
                 variant={headlineLevelToTypographyVariant(
@@ -100,9 +101,13 @@ export const GroupOrContainer = ({
                   <InfoIcon />
                 </IconButton>
               </Tooltip>
-            </>
-          </CardHeader>
-        ) : null}
+            </CardTitle>
+          ) : null}
+          <Attributes
+            component={component}
+            path={currentComponentNamePath}
+          />
+        </CardHeader>
         <CardContent>
           <Grid
             container
@@ -110,11 +115,6 @@ export const GroupOrContainer = ({
             alignItems='flex-start'
             id={`anchor_${addAttributesToName(component, component.name)}`}
           >
-            <Attributes
-              component={component}
-              path={currentComponentNamePath}
-            />
-
             {component.components && (
               <ComponentList
                 components={component.components}
@@ -158,13 +158,27 @@ export const GroupOrContainer = ({
       <Card boxed={groupLevel !== 0}>
         {component?.showLabel &&
           (!linkedData ? (
-            <CardHeader>
-              <Typography
-                text={component?.label ?? ''}
-                sx={{ mb: groupLevel === 0 ? 2 : undefined }}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
+            <CardHeader
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '100%',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <CardTitle>
+                <Typography
+                  text={component?.label ?? ''}
+                  sx={{ mb: groupLevel === 0 ? 2 : undefined }}
+                  variant={headlineLevelToTypographyVariant(
+                    component.headlineLevel,
+                  )}
+                />
+              </CardTitle>
+              <Attributes
+                component={component}
+                path={currentComponentNamePath}
               />
             </CardHeader>
           ) : (
@@ -179,11 +193,6 @@ export const GroupOrContainer = ({
             </span>
           ))}
         <CardContent>
-          <Attributes
-            component={component}
-            path={currentComponentNamePath}
-          />
-
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {component.components && (
               <ComponentList

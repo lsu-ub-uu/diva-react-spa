@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Checkbox as MuiCheckbox, CheckboxProps, styled } from '@mui/material';
+import type { CheckboxProps} from '@mui/material';
+import { Checkbox as MuiCheckbox, styled } from '@mui/material';
 
 const StyledCheckIcon = styled('span')(() => ({
   borderRadius: 3,

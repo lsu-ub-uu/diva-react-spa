@@ -18,7 +18,8 @@
 
 import { MenuItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Account, getDevAccounts } from './devAccounts';
+import type { Account} from './devAccounts';
+import { getDevAccounts } from './devAccounts';
 
 interface DevAccountsProps {
   onSelect: (account: Account) => void;

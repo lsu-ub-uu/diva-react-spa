@@ -16,29 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { SxProps } from '@mui/material';
-import { Box } from '@mui/material';
-import type { HTMLProps, ReactNode} from 'react';
-import { useContext } from 'react';
-
 import styles from './Card.module.css';
-import { CardContext } from '@/components/Card/CardContext';
+import type { ReactNode } from 'react';
 
-interface CardHeaderProps extends HTMLProps<HTMLDivElement> {
+interface CardTitleProps {
   children: ReactNode;
-  sx?: SxProps;
 }
 
-export const CardHeader = ({ children, sx = {} }: CardHeaderProps) => {
-  const { boxed } = useContext(CardContext);
-
-  return (
-    <Box
-      className={styles.cardHeader}
-      data-boxed={boxed}
-      sx={sx}
-    >
-      {children}
-    </Box>
-  );
+export const CardTitle = ({ children }: CardTitleProps) => {
+  return <div className={styles.cardTitle}>{children}</div>;
 };

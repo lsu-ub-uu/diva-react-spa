@@ -21,7 +21,7 @@ import { Link, useFetcher } from 'react-router';
 import FeedIcon from '@mui/icons-material/Feed';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 
 interface RecordActionButtonProps {
   record: BFFDataRecord;

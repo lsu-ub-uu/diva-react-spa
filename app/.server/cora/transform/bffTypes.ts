@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ActionLink } from '@/.server/cora/cora-data/CoraData';
+import type { ActionLink } from '@/.server/cora/cora-data/CoraData';
 
 export interface BFFRecordLink {
   name: string;

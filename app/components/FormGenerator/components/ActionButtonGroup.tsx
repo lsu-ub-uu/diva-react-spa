@@ -46,7 +46,6 @@ export const ActionButtonGroup = (
     <ButtonGroup
       size='small'
       sx={{
-        ml: 'auto',
         zIndex: 1,
         borderRadius: '25px',
       }}

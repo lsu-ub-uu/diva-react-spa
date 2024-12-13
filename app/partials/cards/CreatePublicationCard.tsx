@@ -28,7 +28,7 @@ import {
 import { Await, Form, useLoaderData, useNavigation } from 'react-router';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
-import { loader } from '@/routes/home';
+import type { loader } from '@/routes/home';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 

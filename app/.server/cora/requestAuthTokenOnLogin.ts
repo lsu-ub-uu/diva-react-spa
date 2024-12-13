@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Auth } from '@/types/Auth';
+import type { Auth } from '@/types/Auth';
 import axios from 'axios';
 import { coraLoginUrl } from '@/.server/cora/helper';
-import { CoraRecord } from '@/.server/cora/cora-data/CoraData';
+import type { CoraRecord } from '@/.server/cora/cora-data/CoraData';
 import { getFirstDataAtomicValueWithNameInData } from '@/.server/cora/cora-data/CoraDataUtilsWrappers';
 import { invariant } from '@/utils/invariant';
 

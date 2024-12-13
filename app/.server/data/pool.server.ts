@@ -17,11 +17,11 @@
  */
 
 import 'dotenv/config';
-import { DataListWrapper } from '@/.server/cora/cora-data/CoraData';
+import type { DataListWrapper } from '@/.server/cora/cora-data/CoraData';
 import { transformCoraTexts } from '@/.server/cora/transform/transformTexts';
 import { transformMetadata } from '@/.server/cora/transform/transformMetadata';
 import { listToPool } from '@/utils/structs/listToPool';
-import {
+import type {
   BFFGuiElement,
   BFFLoginPassword,
   BFFLoginUnit,
@@ -38,7 +38,7 @@ import {
 import { transformCoraPresentations } from '@/.server/cora/transform/transformPresentations';
 import { transformCoraValidationTypes } from '@/.server/cora/transform/transformValidationTypes';
 import { transformCoraRecordTypes } from '@/.server/cora/transform/transformRecordTypes';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { transformCoraSearch } from '@/.server/cora/transform/transformCoraSearch';
 import { transformLoginUnit } from '@/.server/cora/transform/transformLoginUnit';
 import { transformLogin } from '@/.server/cora/transform/transformLogin';

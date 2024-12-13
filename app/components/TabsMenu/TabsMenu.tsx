@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { Box, styled, Tab, Tabs } from '@mui/material';
 import { CreatePublicationCard } from '@/partials/cards/CreatePublicationCard';
 import { SearchPublicationCard } from '@/partials/cards/SearchPublicationCard';

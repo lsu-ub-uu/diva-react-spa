@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useState, useEffect, SyntheticEvent, type JSX } from 'react';
+import { useState, useEffect, type JSX, type SyntheticEvent } from 'react';
 
 import {
   Autocomplete as MuiAutocomplete,
@@ -26,7 +26,7 @@ import {
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
-import { SelectItem } from '../../index';
+import type { SelectItem } from '../../index';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 

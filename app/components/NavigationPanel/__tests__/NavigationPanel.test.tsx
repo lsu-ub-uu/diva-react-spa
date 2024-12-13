@@ -20,7 +20,7 @@
 import { render, screen } from '@testing-library/react';
 import { expect } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { NavigationPanelLink } from '@/components';
+import type { NavigationPanelLink } from '../../index';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 
 describe('NavigationPanel', () => {

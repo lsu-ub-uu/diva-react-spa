@@ -16,10 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import React from 'react';
+
 import {
   Alert,
-  BaseSelectProps,
+  type  BaseSelectProps,
   CircularProgress,
   OutlinedInput,
   Select as MuiSelect,

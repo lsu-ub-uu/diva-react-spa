@@ -17,8 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
-import {
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type {
   BFFLoginUnit,
   BFFLoginWebRedirect,
   BFFMetadata,

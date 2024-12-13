@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { SearchFormSchema } from '@/components/FormGenerator/types';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
-import {
+import type { SearchFormSchema } from '@/components/FormGenerator/types';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
 } from '@/.server/cora/transform/bffTypes';

@@ -17,17 +17,19 @@
  */
 
 import styled from '@emotion/styled';
+import type {
+  Theme,
+  TooltipProps as MuiTooltipProps} from '@mui/material';
 import {
   Box,
   ClickAwayListener,
   IconButton,
-  Theme,
   Tooltip as MuiTooltip,
   tooltipClasses,
-  TooltipProps as MuiTooltipProps,
   Typography,
 } from '@mui/material';
-import { ReactElement, useState } from 'react';
+import type { ReactElement} from 'react';
+import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 const StyledTooltip = styled(({ className, ...props }: MuiTooltipProps) => (

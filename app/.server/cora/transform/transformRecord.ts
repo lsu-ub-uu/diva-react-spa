@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   Attributes,
   DataAtomic,
   DataGroup,
@@ -35,12 +35,12 @@ import {
   getFirstDataGroupWithNameInData,
 } from '@/.server/cora/cora-data/CoraDataUtils';
 import { getFirstDataAtomicValueWithNameInData } from '@/.server/cora/cora-data/CoraDataUtilsWrappers';
-import { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { FormMetaData } from '@/.server/data/formDefinition/formDefinition';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { createFormMetaData } from '@/.server/data/formDefinition/formMetadata';
-import { BFFDataRecord, BFFUpdate, BFFUserRight } from '@/types/record';
+import type { BFFDataRecord, BFFUpdate, BFFUserRight } from '@/types/record';
 import { groupBy } from 'lodash-es';
 
 /**

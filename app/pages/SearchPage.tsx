@@ -17,11 +17,11 @@
  */
 
 import { useLoaderData } from 'react-router';
-import { FormSchema } from '@/components/FormGenerator/types';
+import type { FormSchema } from '@/components/FormGenerator/types';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { loader } from '@/routes/searchRecord';
+import type { loader } from '@/routes/searchRecord';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import { SearchPublicationCard } from '@/partials/cards/SearchPublicationCard';
 

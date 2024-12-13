@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
-import {
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type {
   BFFMetadataGroup,
   BFFMetadataRecordLink,
 } from '@/.server/cora/transform/bffTypes';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 
 export const getRecordByValidationTypeId = (
   dependencies: Dependencies,

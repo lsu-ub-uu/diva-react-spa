@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { redirect, Session } from 'react-router';
+import { redirect, type Session } from 'react-router';
 import { commitSession } from '@/.server/sessions';
 
 export const redirectAndCommitSession = async (

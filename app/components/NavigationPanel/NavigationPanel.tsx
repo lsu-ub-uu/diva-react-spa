@@ -20,7 +20,7 @@
 import { useState, useEffect } from 'react';
 import { Step, StepButton, Stepper } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { NavigationPanelLink } from '../index';
+import type { NavigationPanelLink } from '../index';
 
 export interface NavigationPanelProps {
   links: NavigationPanelLink[];
