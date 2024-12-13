@@ -92,6 +92,7 @@ export const AttributeSelect = ({
             {...register(name)}
             disabled={disabled}
             id={name}
+            aria-invalid={error ? 'true' : undefined}
           >
             {options.map((option) => (
               <option

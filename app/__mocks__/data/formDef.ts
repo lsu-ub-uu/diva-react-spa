@@ -1177,6 +1177,7 @@ export const formDefWithOneNumberVariableWithAttributeCollection: RecordFormSche
           name: 'someNameInDataNumberWithAttributeVar',
           label: 'test',
           placeholder: 'someEmptyTextId',
+          showLabel: true,
           repeat: {
             repeatMin: 1,
             repeatMax: 1,
@@ -1702,6 +1703,7 @@ export const formDefWithOneOptionalGroupWithAttributeCollection: RecordFormSchem
       repeat: {
         repeatMin: 1,
         repeatMax: 1,
+        minNumberOfRepeatingToShow: 1,
       },
       components: [
         {
@@ -1958,14 +1960,14 @@ export const formDefWithOneOptionalGroupWithAttributeCollectionAndTextVarWithAtt
               attributes: [
                 {
                   type: 'collectionVariable',
-                  name: 'eyeColor',
-                  placeholder: 'Select eye color',
+                  name: 'eyeColour',
+                  placeholder: 'Select eye colour',
                   showLabel: true,
                   tooltip: {
-                    title: 'Eye color',
-                    body: 'state the author eye color',
+                    title: 'Eye colour',
+                    body: 'state the author eye colour',
                   },
-                  label: 'Eye color',
+                  label: 'Eye colour',
                   options: [
                     { value: 'blue', label: 'exampleBlueItemText' },
                     { value: 'pink', label: 'examplePinkItemText' },

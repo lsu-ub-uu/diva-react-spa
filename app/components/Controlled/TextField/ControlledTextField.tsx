@@ -30,7 +30,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
-import styles from './TextField.module.css';
 
 interface ControlledTextFieldProps {
   name: string;
@@ -50,113 +49,106 @@ interface ControlledTextFieldProps {
   actionButtonGroup?: ReactNode;
 }
 
-export const ControlledTextField = ({
-  name,
-  control,
-  label,
-  placeholder,
-  required,
-  readOnly,
-  multiline,
-  tooltip,
-  displayMode,
-  parentPresentationStyle,
-  showLabel,
-  hasValue,
-  inputFormat,
-  attributes,
-  actionButtonGroup,
-}: ControlledTextFieldProps) => {
+export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
-  const hasDisplayMode = displayMode ?? 'input';
+  const displayMode = props.displayMode ?? 'input';
 
-  if (hasDisplayMode === 'output' && !hasValue) {
+  if (displayMode === 'output' && !props.hasValue) {
     return null;
   }
 
   return (
     <Controller
-      control={control}
-      name={name}
+      control={props.control}
+      name={props.name}
       render={({ field, fieldState: { error } }) => {
         const fieldWithoutRef = { ...field, ref: undefined };
         return (
-          <div
-            className={styles.textVarInput}
-            /* fullWidth
+          <FormControl
+            fullWidth
             sx={{
               flexDirection:
-                parentPresentationStyle === 'inline' ? 'row' : 'column',
+                props.parentPresentationStyle === 'inline' ? 'row' : 'column',
               alignItems: 'baseline',
-            }} */
+            }}
           >
-            <div
-              style={{
+            <Box
+              sx={{
                 display: 'flex',
                 width: '100%',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-end',
                 alignItems: 'center',
               }}
             >
-              <div className={styles.inputWrapper}>
-                {showLabel && <label htmlFor={name}>{t(label)}</label>}
-                {tooltip && (
-                  <Tooltip
-                    title={t(tooltip.title)}
-                    body={t(tooltip.body)}
-                  >
-                    <IconButton
-                      sx={{ m: -1 }}
-                      aria-label='Help'
-                      disableRipple
-                      color='default'
+              {props.showLabel ? (
+                <FormLabel
+                  htmlFor={field.name}
+                  aria-label={props.label}
+                  required={props.required}
+                  error={error !== undefined}
+                  sx={{
+                    p: '2px 4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    mr: 'auto',
+                  }}
+                >
+                  {t(props.label)}
+                  {props.tooltip && (
+                    <Tooltip
+                      title={t(props.tooltip.title)}
+                      body={t(props.tooltip.body)}
                     >
-                      <InfoIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                {attributes}
-              </div>
-              {actionButtonGroup}
-            </div>
+                      <IconButton
+                        edge='end'
+                        aria-label='Help'
+                        disableRipple
+                        color='default'
+                      >
+                        <InfoIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </FormLabel>
+              ) : null}
+
+              {props.attributes}
+              {props.actionButtonGroup}
+            </Box>
 
             {displayMode === 'input' ? (
-              <input
-                id={name}
+              <TextField
+                multiline={props.multiline ?? false}
+                rows={props.multiline ? 3 : 1}
+                id={field.name}
+                size='small'
+                error={error !== undefined}
+                {...fieldWithoutRef}
+                inputRef={field.ref}
+                onBlur={field.onBlur}
+                autoComplete='off'
                 placeholder={
-                  placeholder !== undefined ? (t(placeholder) as string) : ''
+                  props.placeholder !== undefined
+                    ? (t(props.placeholder) as string)
+                    : ''
                 }
+                fullWidth
+                variant='outlined'
+                helperText={error !== undefined ? error.message : ' '}
+                InputProps={{
+                  readOnly: props.readOnly,
+                  endAdornment: (
+                    <ErrorIcon
+                      sx={{
+                        color: '#ff0000',
+                        visibility: error !== undefined ? 'visible' : 'hidden',
+                      }}
+                    />
+                  ),
+                }}
+                type={props.inputFormat}
               />
             ) : (
-              /* <TextField
-                  multiline={multiline ?? false}
-                  rows={multiline ? 3 : 1}
-                  id={field.name}
-                  size='small'
-                  error={error !== undefined}
-                  {...fieldWithoutRef}
-                  inputRef={field.ref}
-                  onBlur={field.onBlur}
-                  autoComplete='off'
-                  placeholder={
-                    placeholder !== undefined ? (t(placeholder) as string) : ''
-                  }
-                  fullWidth
-                  variant='outlined'
-                  helperText={error !== undefined ? error.message : ' '}
-                  InputProps={{
-                    readOnly: readOnly,
-                    endAdornment: (
-                      <ErrorIcon
-                        sx={{
-                          color: '#ff0000',
-                          visibility: error !== undefined ? 'visible' : 'hidden',
-                        }}
-                      />
-                    ),
-                  }}
-                  type={inputFormat}
-                /> */
               <>
                 <span>{field.value}</span>
                 <input
@@ -166,7 +158,7 @@ export const ControlledTextField = ({
                 />
               </>
             )}
-          </div>
+          </FormControl>
         );
       }}
     />
