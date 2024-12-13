@@ -18,6 +18,7 @@
 
 import type { CheckboxProps} from '@mui/material';
 import { Checkbox as MuiCheckbox, styled } from '@mui/material';
+import React from 'react';
 
 const StyledCheckIcon = styled('span')(() => ({
   borderRadius: 3,
@@ -59,14 +60,17 @@ const StyledCheckedIcon = styled(StyledCheckIcon)({
     backgroundColor: '#106ba3',
   },
 });
-export const Checkbox = function Checkbox(props: CheckboxProps) {
+export const Checkbox = React.forwardRef(function Checkbox(
+  props: CheckboxProps,
+  ref: React.ForwardedRef<HTMLButtonElement>,
+) {
   return (
     <MuiCheckbox
-      ref={props.ref}
+      ref={ref}
       {...props}
       icon={<StyledCheckIcon />}
       checkedIcon={<StyledCheckedIcon />}
       disableRipple
     />
   );
-};
+});
