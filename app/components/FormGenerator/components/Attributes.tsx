@@ -22,6 +22,7 @@ import type {
   FormComponentCollVar,
   FormComponentWithData,
 } from '@/components/FormGenerator/types';
+import { useRemixFormContext } from 'remix-hook-form';
 
 interface AttributesProps {
   component: FormComponentWithData;
@@ -32,6 +33,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
   const { t } = useTranslation();
 
   const attributesToShow = getAttributesToShow(component);
+  const methods = useRemixFormContext();
 
   return attributesToShow.map((attribute, index) => {
     return (
@@ -57,6 +59,7 @@ export const Attributes = ({ component, path }: AttributesProps) => {
         tooltip={attribute.tooltip}
         readonly={attribute.finalValue !== undefined}
         displayMode={attribute.mode}
+        {...methods}
       />
     );
   });

@@ -19,7 +19,6 @@
 import type { Option } from '@/components';
 import { useTranslation } from 'react-i18next';
 import styles from './AttributeSelect.module.css';
-import { useRemixFormContext } from 'remix-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import type {
   FormComponentMode,
@@ -28,8 +27,15 @@ import type {
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { IconButton } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import { useFormState } from 'react-hook-form';
+import {
+  type FieldValues,
+  type FormState,
+  type UseFormGetValues,
+  type UseFormRegister,
+  useFormState,
+} from 'react-hook-form';
 import { get } from 'lodash-es';
+import { memo } from 'react';
 
 interface AttributeSelectProps {
   name: string;
@@ -41,92 +47,100 @@ interface AttributeSelectProps {
   disabled?: boolean;
   displayMode: FormComponentMode;
   readonly?: boolean;
+  register: UseFormRegister<FieldValues>;
+  getValues: UseFormGetValues<FieldValues>;
+  formState: FormState<FieldValues>;
 }
 
-export const AttributeSelect = ({
-  name,
-  label,
-  options = [],
-  showLabel = true,
-  tooltip,
-  disabled,
-  displayMode,
-  readonly,
-}: AttributeSelectProps) => {
-  const { t } = useTranslation();
-  const { register, getValues } = useRemixFormContext();
+export const AttributeSelect = memo(
+  function AttributeSelect({
+    name,
+    label,
+    options = [],
+    showLabel = true,
+    tooltip,
+    disabled,
+    displayMode,
+    readonly,
+    register,
+    getValues,
+  }: AttributeSelectProps) {
+    const { t } = useTranslation();
 
-  const { errors } = useFormState({ name });
-  const error = get(errors, name);
-  const value = getValues(name);
+    const { errors } = useFormState({ name });
+    const error = get(errors, name);
+    const value = getValues(name);
 
-  if (displayMode === 'output' && !value) {
-    return null;
-  }
+    if (displayMode === 'output' && !value) {
+      return null;
+    }
 
-  return (
-    <div
-      className={styles.attributeSelect}
-      data-error={error !== undefined}
-      data-readonly={readonly}
-    >
-      <div className={styles.inputWrapper}>
-        {showLabel && <label htmlFor={name}>{t(label)}</label>}
-        {tooltip && (
-          <Tooltip
-            title={t(tooltip.title)}
-            body={t(tooltip.body)}
-          >
-            <IconButton
-              sx={{ m: -1 }}
-              aria-label='Help'
-              disableRipple
-              color='default'
+    return (
+      <div
+        className={styles.attributeSelect}
+        data-error={error !== undefined}
+        data-readonly={readonly}
+      >
+        <div className={styles.inputWrapper}>
+          {showLabel && <label htmlFor={name}>{t(label)}</label>}
+          {tooltip && (
+            <Tooltip
+              title={t(tooltip.title)}
+              body={t(tooltip.body)}
             >
-              <InfoIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-        {displayMode === 'input' && (
-          <select
-            {...register(name)}
-            disabled={disabled}
-            id={name}
-            aria-invalid={error ? 'true' : undefined}
-          >
-            {options.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
+              <IconButton
+                sx={{ m: -1 }}
+                aria-label='Help'
+                disableRipple
+                color='default'
               >
-                {t(option.label)}
-              </option>
-            ))}
-          </select>
-        )}
-        {displayMode === 'output' && (
-          <>
-            <span>
-              {t(
-                options.find((option) => option.value === value)?.label ??
-                  'unknown',
-              )}
-            </span>
-            <input
-              type='hidden'
-              value={value}
-              name={name}
-            />
-          </>
-        )}
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          {displayMode === 'input' && (
+            <select
+              {...register(name)}
+              disabled={disabled}
+              id={name}
+              aria-invalid={error ? 'true' : undefined}
+            >
+              {options.map((option) => (
+                <option
+                  key={option.value}
+                  value={option.value}
+                >
+                  {t(option.label)}
+                </option>
+              ))}
+            </select>
+          )}
+          {displayMode === 'output' && (
+            <>
+              <span>
+                {t(
+                  options.find((option) => option.value === value)?.label ??
+                    'unknown',
+                )}
+              </span>
+              <input
+                type='hidden'
+                value={value}
+                name={name}
+              />
+            </>
+          )}
+        </div>
+        <ErrorMessage
+          name={name}
+          errors={errors}
+          render={({ message }) => (
+            <p className={styles.errorMessage}>{message}</p>
+          )}
+        />
       </div>
-      <ErrorMessage
-        name={name}
-        errors={errors}
-        render={({ message }) => (
-          <p className={styles.errorMessage}>{message}</p>
-        )}
-      />
-    </div>
-  );
-};
+    );
+  },
+  (prevProps, nextProps) =>
+    prevProps.formState.isDirty === nextProps.formState.isDirty,
+);
