@@ -16,25 +16,28 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { ViewRecordPage } from '@/pages';
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/.server/sessions';
+import { invariant } from '@remix-run/router/history';
 import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
+import { useLoaderData } from '@remix-run/react';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
-import { invariant } from '@/utils/invariant';
-import type { Route } from '../../.react-router/types/app/routes/+types/viewRecord';
-import { ViewRecordPage } from '@/pages/ViewRecordPage';
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export const loader = async ({
   request,
   params,
   context,
-}: Route.LoaderArgs) => {
+}: LoaderFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
 
@@ -56,15 +59,15 @@ export const loader = async ({
     'view',
   );
 
-  return { record, formDefinition, title };
+  return json({ record, formDefinition, title });
 };
 
-export const meta = ({ data }: Route.MetaArgs) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.title }];
 };
 
-export default function ViewRecord({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition } = loaderData;
+export default function ViewRecordRoute() {
+  const { record, formDefinition } = useLoaderData<typeof loader>();
   return (
     <ViewRecordPage
       record={record}

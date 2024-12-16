@@ -17,7 +17,7 @@
  */
 
 import { LinearProgress } from '@mui/material';
-import { useNavigation } from 'react-router';
+import { useNavigation } from '@remix-run/react';
 import { useEffect, useRef, useState } from 'react';
 
 const LOADER_DELAY = 500;

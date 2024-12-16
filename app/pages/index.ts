@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Uppsala University Library
+ * Copyright 2023 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -15,11 +15,8 @@
  *
  *     You should have received a copy of the GNU General Public License
  */
-import type { Config } from "@react-router/dev/config";
 
-const { BASE_PATH } = process.env;
-
-export default {
-  buildDirectory: 'dist',
-  basename: BASE_PATH,
-} satisfies Config;
+export { HomePage } from './HomePage';
+export { UpdateRecordPage } from './UpdateRecordPage';
+export { ViewRecordPage } from './ViewRecordPage';
+export { SearchPage } from './SearchPage';

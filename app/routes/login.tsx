@@ -1,7 +1,8 @@
-import { data, Form, redirect, useSubmit } from 'react-router'; // or cloudflare/deno // or cloudflare/deno
+import type { ActionFunction, LoaderFunctionArgs } from '@remix-run/node'; // or cloudflare/deno
+import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
+import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { commitSession, getSession } from '@/.server/sessions';
 import { Alert, Button, Stack } from '@mui/material';
-import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
@@ -12,8 +13,9 @@ import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/.server/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/.server/data/loginWithUsernameAndPassword';
 import type { Auth } from '@/types/Auth';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import type { Route } from '../../.react-router/types/app/routes/+types/login';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {
@@ -27,9 +29,9 @@ const parsePresentation = (searchParam: string | null) => {
   }
 };
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const returnTo = url.searchParams.get('returnTo');
   const presentation = parsePresentation(url.searchParams.get('presentation'));
@@ -37,17 +39,15 @@ export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get('Cookie'));
 
   if (session.has('auth')) {
-    throw redirect(returnTo ?? '/');
+    return redirect(returnTo ?? '/');
   }
 
-  return data(
-    { presentation, error: session.get('error'), returnTo },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
+  const data = { presentation, error: session.get('error'), returnTo };
+  return json(data, {
+    headers: {
+      'Set-Cookie': await commitSession(session),
     },
-  );
+  });
 }
 
 const authenticate = async (form: FormData) => {
@@ -70,7 +70,7 @@ const authenticate = async (form: FormData) => {
   }
 };
 
-export const action = async ({ request }: Route.ActionArgs) => {
+export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));
   const form = await request.formData();
   const returnToEncoded = form.get('returnTo');
@@ -105,8 +105,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
   });
 };
 
-export default function Login({ loaderData }: Route.ComponentProps) {
-  const { error, presentation, returnTo } = loaderData;
+export default function Login() {
+  const { error, presentation, returnTo } = useLoaderData<typeof loader>();
   const submit = useSubmit();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();

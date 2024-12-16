@@ -16,14 +16,24 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { UpdateRecordPage } from '@/pages';
+
 import {
   commitSession,
   getSessionFromCookie,
   requireAuthentication,
 } from '@/.server/sessions';
-import { data, useNavigation } from 'react-router';
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction} from '@remix-run/node';
+import {
+  json
+} from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
+import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
+import { useLoaderData, useNavigation } from '@remix-run/react';
 import { enqueueSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
@@ -33,19 +43,17 @@ import { updateRecord } from '@/.server/data/updateRecord';
 import type { BFFDataRecord } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
-import { invariant } from '@/utils/invariant';
-import type { Route } from '../../.react-router/types/app/routes/+types/updateRecord';
-import { UpdateRecordPage } from '@/pages/UpdateRecordPage';
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export const action = async ({
   request,
   params,
   context,
-}: Route.ActionArgs) => {
+}: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
   const { recordType, recordId } = params;
@@ -64,12 +72,12 @@ export const action = async ({
   const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
   const {
     errors,
-    data: validatedFormData,
+    data,
     receivedValues: defaultValues,
   } = await getValidatedFormData(formData, resolver);
 
   if (errors) {
-    return { errors, defaultValues };
+    return json({ errors, defaultValues });
   }
 
   try {
@@ -77,7 +85,7 @@ export const action = async ({
       context.dependencies,
       validationType,
       recordId,
-      validatedFormData as unknown as BFFDataRecord,
+      data as unknown as BFFDataRecord,
       auth,
     );
     session.flash('success', `Record was successfully updated`);
@@ -86,10 +94,10 @@ export const action = async ({
     session.flash('error', 'Failed to create record');
   }
 
-  return data(null, await getResponseInitWithSession(session));
+  return json(null, await getResponseInitWithSession(session));
 };
 
-export async function loader({ request, params, context }: Route.LoaderArgs) {
+export async function loader({ request, params, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
   const { t } = context.i18n;
@@ -123,7 +131,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     record,
   );
 
-  return data(
+  return json(
     { record, formDefinition, defaultValues, successMessage, title },
     {
       headers: {
@@ -133,12 +141,13 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   );
 }
 
-export const meta = ({ data }: Route.MetaArgs) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.title }];
 };
 
-export default function UpdateRecord({ loaderData }: Route.ComponentProps) {
-  const { record, formDefinition, successMessage } = loaderData;
+export default function UpdateRecordRoute() {
+  const { record, formDefinition, successMessage } =
+    useLoaderData<typeof loader>();
 
   const navigation = useNavigation();
 

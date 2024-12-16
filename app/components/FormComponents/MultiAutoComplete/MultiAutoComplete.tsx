@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { useState, useEffect, type SyntheticEvent } from 'react';
+import type { SyntheticEvent } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
   Autocomplete as MuiAutocomplete,

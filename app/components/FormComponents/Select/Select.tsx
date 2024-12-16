@@ -16,11 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import React, { type ForwardedRef } from 'react';
+import type { ForwardedRef } from 'react';
+import React from 'react';
+import type {
+  BaseSelectProps} from '@mui/material';
 import {
   CircularProgress,
   Alert,
-  type  BaseSelectProps,
   OutlinedInput,
   Select as MuiSelect,
 } from '@mui/material';

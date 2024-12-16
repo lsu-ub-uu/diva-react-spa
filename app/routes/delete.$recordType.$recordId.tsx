@@ -16,21 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data } from 'react-router';
+import type { ActionFunctionArgs} from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { deleteRecord } from '@/.server/data/deleteRecord';
 import {
   commitSession,
   getSessionFromCookie,
   requireAuthentication,
 } from '@/.server/sessions';
-import { invariant } from '@/utils/invariant';
-import type { Route } from '../../.react-router/types/app/routes/+types/deleteRecord';
+import { invariant } from '@remix-run/router/history';
 
 export const action = async ({
   request,
   params,
   context,
-}: Route.ActionArgs) => {
+}: ActionFunctionArgs) => {
   const { recordType, recordId } = params;
 
   invariant(recordType, 'Missing recordType param');
@@ -42,7 +42,7 @@ export const action = async ({
   await deleteRecord(context.dependencies, recordType, recordId, auth);
 
   session.flash('success', 'Successfully deleted record');
-  return data(
+  return json(
     {},
     {
       headers: {

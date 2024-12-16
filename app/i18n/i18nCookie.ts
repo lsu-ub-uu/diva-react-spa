@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createCookie } from 'react-router';
+import { createCookie } from '@remix-run/node';
 
 export const i18nCookie = createCookie('language', {
   sameSite: 'lax',

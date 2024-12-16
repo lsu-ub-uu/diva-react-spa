@@ -21,7 +21,7 @@ import { Stack } from '@mui/material';
 
 import { RecordForm } from '@/components/Form/RecordForm';
 import type { BFFDataRecord } from '@/types/record';
-import type{ RecordFormSchema } from '@/components/FormGenerator/types';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import {
   linksFromFormSchema,
   useSectionScroller,

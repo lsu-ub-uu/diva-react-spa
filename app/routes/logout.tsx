@@ -16,16 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { redirect } from 'react-router';
+import type { ActionFunctionArgs} from '@remix-run/node';
+import { redirect } from '@remix-run/node';
 import {
   destroySession,
   getAuthentication,
   getSession,
 } from '@/.server/sessions';
 import { deleteSession } from '@/.server/data/deleteSession';
-import type { Route } from '../../.react-router/types/app/routes/+types/logout';
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
   const auth = getAuthentication(session);
   const form = await request.formData();

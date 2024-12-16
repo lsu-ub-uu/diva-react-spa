@@ -20,11 +20,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
+import { createRemixStub } from '@remix-run/testing';
 import { formDefWithTextVar } from '@/__mocks__/data/formDef';
-import { createRoutesStub } from 'react-router';
 import { TabsMenu } from '@/components/TabsMenu/TabsMenu';
 
-const RemixStub = createRoutesStub([
+const RemixStub = createRemixStub([
   {
     path: '/',
     Component: TabsMenu,

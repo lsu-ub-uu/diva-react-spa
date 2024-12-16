@@ -17,7 +17,7 @@
  */
 
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 import { Breadcrumbs } from '../Breadcrumbs';
 
 describe('<Breadcrumbs />', () => {

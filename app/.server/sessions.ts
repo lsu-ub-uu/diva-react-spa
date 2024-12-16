@@ -17,7 +17,8 @@
  */
 
 // i18n/sessions.ts
-import { createCookieSessionStorage, data, type Session } from 'react-router';
+import type { Session } from '@remix-run/node';
+import { createCookieSessionStorage, json } from '@remix-run/node';
 import type { Auth } from '@/types/Auth';
 
 type SessionData = {
@@ -57,7 +58,7 @@ async function requireAuthentication(
   const auth = getAuthentication(session);
   if (!auth) {
     // Show error boundary
-    throw data('Unauthorized', { status: 401 });
+    throw json('Unauthorized', { status: 401 });
   }
   return auth;
 }

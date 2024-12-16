@@ -18,7 +18,7 @@
 
 import { MenuItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useLoaderData } from 'react-router';
+import { useLoaderData } from '@remix-run/react';
 import type { loader } from '@/root';
 
 interface WebRedirectLoginOptionsProps {

@@ -18,15 +18,17 @@
 
 import { getSearchForm } from '@/.server/data/getSearchForm';
 import { getValidationTypes } from '@/.server/data/getValidationTypes';
+import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import { defer } from '@remix-run/node';
 import { searchRecords } from '@/.server/data/searchRecords';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import type { Route } from '../../.react-router/types/app/routes/+types/home';
-import { HomePage } from '@/pages/HomePage';
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSessionFromCookie(request);
   const auth = getAuthentication(session);
   const { t } = context.i18n;
@@ -60,10 +62,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     auth,
   );
 
-  return { validationTypes, searchForm, recordList, title };
+  return defer({ validationTypes, searchForm, recordList, title });
 }
 
-export const meta = ({ data }: Route.MetaArgs) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.title }];
 };
 

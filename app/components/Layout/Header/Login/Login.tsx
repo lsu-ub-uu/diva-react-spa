@@ -22,7 +22,7 @@ import {
   useLocation,
   useNavigation,
   useSubmit,
-} from 'react-router';
+} from '@remix-run/react';
 import {
   Box,
   Button,

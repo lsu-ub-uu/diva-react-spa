@@ -19,20 +19,22 @@
 import { getSearchForm } from '@/.server/data/getSearchForm';
 import { searchRecords } from '@/.server/data/searchRecords';
 import type { BFFSearchResult } from '@/types/record';
+import { SearchPage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
-import type { Route } from '../../.react-router/types/app/routes/+types/searchRecord';
-import { SearchPage } from '@/pages/SearchPage';
+import type { LoaderFunctionArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { invariant } from '@remix-run/router/history';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import { invariant } from '@/utils/invariant';
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
 export const loader = async ({
   request,
   params,
   context,
-}: Route.LoaderArgs) => {
+}: LoaderFunctionArgs) => {
   const { searchType } = params;
   invariant(searchType, 'Missing searchType param');
   const session = await getSessionFromCookie(request);
@@ -57,7 +59,7 @@ export const loader = async ({
     console.error(e);
   }
 
-  return { searchForm, searchResults };
+  return json({ searchForm, searchResults });
 };
 
 export default function SearchRoute() {

@@ -30,17 +30,18 @@
       ]
     },
     "types": [
-      "@react-router/node",
       "vite/client",
       "vitest/globals",
       "@testing-library/jest-dom"
-    ],
-    "rootDirs": [".", "./.react-router/types"]
+    ]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".react-router/types/**/*"
+    "**/.server/**/*.ts",
+    "**/.server/**/*.tsx",
+    "**/.client/**/*.ts",
+    "**/.client/**/*.tsx"
   ],
 
 }

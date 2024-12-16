@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
+import { useRouteError } from '@remix-run/react';
 import { ErrorAlert } from '@/components/DefaultErrorBoundary/ErrorAlert';
-import { useRouteError } from 'react-router';
 
 export const RouteErrorBoundary = () => {
   const error = useRouteError();

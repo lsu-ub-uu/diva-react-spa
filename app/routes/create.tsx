@@ -16,7 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { data } from 'react-router';
+import { invariant } from '@remix-run/router/history';
+import { type ActionFunctionArgs, json } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/pages/CreateRecordPage';
 import { getRecordByValidationTypeId } from '@/.server/data/getRecordByValidationTypeId';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,14 +36,13 @@ import {
   getResponseInitWithSession,
   redirectAndCommitSession,
 } from '@/utils/redirectAndCommitSession';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import { invariant } from '@/utils/invariant';
-import type { Route } from '../../.react-router/types/app/routes/+types/createRecord';
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
 
-export const ErrorBoundary = RouteErrorBoundary;
+export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
-export const action = async ({ context, request }: Route.ActionArgs) => {
+export const action = async ({ context, request }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
 
@@ -64,7 +65,7 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   } = await getValidatedFormData(request, resolver);
   console.log({ data, errors });
   if (errors) {
-    return { errors, defaultValues };
+    return json({ errors, defaultValues });
   }
   try {
     const { recordType, id } = await createRecord(
@@ -78,11 +79,11 @@ export const action = async ({ context, request }: Route.ActionArgs) => {
   } catch (error) {
     console.error(error);
     session.flash('error', 'Failed to create record');
-    return data(null, await getResponseInitWithSession(session));
+    return json(null, await getResponseInitWithSession(session));
   }
 };
 
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
+export const loader = async ({ request, context }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const errorMessage = session.get('error');
 
@@ -98,16 +99,15 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     validationTypeId,
     'create',
   );
-  return data(
+  return json(
     { record, formDefinition, errorMessage },
     await getResponseInitWithSession(session),
   );
 };
 
-export default function CreateRecordRoute({
-  loaderData,
-}: Route.ComponentProps) {
-  const { record, formDefinition, errorMessage } = loaderData;
+export default function CreateRecordRoute() {
+  const { record, formDefinition, errorMessage } =
+    useLoaderData<typeof loader>();
 
   useEffect(() => {
     if (errorMessage) {

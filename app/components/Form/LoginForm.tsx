@@ -28,8 +28,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type {
-  RecordData,
-} from '../FormGenerator/defaultValues/defaultValues';import {
+  RecordData} from '../FormGenerator/defaultValues/defaultValues';
+import {
   createDefaultValuesFromFormSchema
 } from '../FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';

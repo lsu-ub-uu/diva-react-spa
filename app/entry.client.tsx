@@ -1,4 +1,4 @@
-import { HydratedRouter } from 'react-router/dom';
+import { RemixBrowser } from '@remix-run/react';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import i18next from 'i18next';
@@ -15,7 +15,7 @@ async function hydrate() {
       <I18nextProvider i18n={i18next}>
         <StrictMode>
           <MuiProvider>
-            <HydratedRouter />
+            <RemixBrowser />
           </MuiProvider>
         </StrictMode>
       </I18nextProvider>,

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { isRouteErrorResponse } from 'react-router';
+import { isRouteErrorResponse } from '@remix-run/react';
 import { Alert, AlertTitle } from '@mui/material';
 
 interface ErrorAlertProps {

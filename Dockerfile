@@ -7,7 +7,7 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 COPY app ./app
-COPY vite.config.ts react-router.config.ts tsconfig.json server.ts ./
+COPY vite.config.ts tsconfig.json server.ts ./
 
 ARG BASE_PATH
 
