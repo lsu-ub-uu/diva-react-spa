@@ -168,5 +168,5 @@ export const ListPublicationsCard = () => {
 };
 
 export const getCorrectTitle = (record: BFFDataRecord) => {
-  return record.data.output.titleInfo.title.value;
+  return record.data.report.titleInfo.title.value;
 };

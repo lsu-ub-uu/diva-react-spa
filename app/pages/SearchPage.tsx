@@ -22,8 +22,8 @@ import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { loader } from '@/routes/search.$searchType';
-import { SearchPublicationCard } from '@/partials';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
+import { SearchPublicationCard } from '@/partials/cards/SearchPublicationCard';
 
 const SearchResultList = styled('ol')`
   list-style: none;
