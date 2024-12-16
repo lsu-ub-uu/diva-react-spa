@@ -29,7 +29,8 @@ import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefin
 import { useLoaderData } from '@remix-run/react';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
+
+import { getRecordTitle } from '@/utils/getRecordTitle';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -50,7 +51,7 @@ export const loader = async ({
     recordId,
     auth.data.token,
   );
-  const title = `${getCorrectTitle(record)} | DiVA`;
+  const title = `${getRecordTitle(record)} | DiVA`;
 
   invariant(record.validationType, 'Record has no validation type');
   const formDefinition = await getFormDefinitionByValidationTypeId(

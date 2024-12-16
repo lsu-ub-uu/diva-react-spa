@@ -36,6 +36,7 @@ import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
+import { getRecordTitle } from '@/utils/getRecordTitle';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
@@ -57,7 +58,7 @@ export const ListPublicationsCard = () => {
       field: 'title',
       headerName: `${t('divaClient_listPublicationsHeaderTitleText')}`, // Title
       width: 200,
-      valueGetter: (_, row) => getCorrectTitle(row),
+      valueGetter: (_, row) => getRecordTitle(row),
     },
     {
       field: 'createdAt',
@@ -165,8 +166,4 @@ export const ListPublicationsCard = () => {
       </div>
     </LegacyCard>
   );
-};
-
-export const getCorrectTitle = (record: BFFDataRecord) => {
-  return record.data.report.titleInfo.title.value;
 };
