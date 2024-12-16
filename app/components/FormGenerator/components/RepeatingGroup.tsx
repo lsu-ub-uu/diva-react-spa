@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponentGroup } from '@/components/FormGenerator/types';
+import type { FormComponentGroup } from '@/components/FormGenerator/types';
 import { FieldArrayComponent } from '@/components/FormGenerator/components/FieldArrayComponent';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
-import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useRemixFormContext } from 'remix-hook-form';
+import { Stack } from '@mui/material';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -46,11 +46,7 @@ export const RepeatingGroup = ({
       name={currentComponentNamePath}
       renderCallback={(arrayPath: string) => {
         return (
-          <>
-            <Attributes
-              component={component}
-              path={arrayPath}
-            />
+          <Stack spacing={2}>
             <ComponentList
               components={component.components ?? []}
               childWithNameInDataArray={childWithNameInDataArray}
@@ -59,7 +55,7 @@ export const RepeatingGroup = ({
               }
               path={arrayPath}
             />
-          </>
+          </Stack>
         );
       }}
     />

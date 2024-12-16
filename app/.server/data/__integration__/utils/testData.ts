@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { DataAtomic, DataGroup } from '@/.server/cora/cora-data/CoraData';
-import { CreatedRecord } from './dataUtil';
-import { BFFDataRecord } from '@/types/record';
+import type { DataAtomic, DataGroup } from '@/.server/cora/cora-data/CoraData';
+import type { CreatedRecord } from './dataUtil';
+import type { BFFDataRecord } from '@/types/record';
 
 export const createExampleDivaOuput = (title: string): DataGroup => ({
   name: 'output',

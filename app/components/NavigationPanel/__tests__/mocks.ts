@@ -17,8 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BFFDataRecord } from '@/types/record';
-import { RecordFormSchema } from '@/components/FormGenerator/types';
+import type { BFFDataRecord } from '@/types/record';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
 
 export const coraRecord: BFFDataRecord = {
   id: 'divaOutput:519333261463755',

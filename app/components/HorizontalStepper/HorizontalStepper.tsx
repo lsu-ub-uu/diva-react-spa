@@ -17,14 +17,16 @@
  */
 
 import { styled } from '@mui/material/styles';
+import type {
+  StepIconProps} from '@mui/material';
 import {
   Stepper,
   StepConnector,
   stepConnectorClasses,
-  Typography,
-  StepIconProps,
+  Typography
 } from '@mui/material';
-import { ReactNode, useState, useEffect } from 'react';
+import type { ReactNode} from 'react';
+import { useState, useEffect } from 'react';
 import Check from '@mui/icons-material/Check';
 
 const StyledStepConnector = styled(StepConnector)(() => ({

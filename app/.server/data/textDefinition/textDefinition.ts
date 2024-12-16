@@ -17,8 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
-import { BFFText } from '@/.server/cora/transform/bffTypes';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { BFFText } from '@/.server/cora/transform/bffTypes';
 
 export const createTextDefinition = (
   dependencies: Dependencies,

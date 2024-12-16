@@ -17,15 +17,16 @@
  */
 
 import { FormProvider, useForm } from 'react-hook-form';
+import type {
+  RecordData} from '@/components/FormGenerator/defaultValues/defaultValues';
 import {
-  createDefaultValuesFromFormSchema,
-  RecordData,
+  createDefaultValuesFromFormSchema
 } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import { FormGenerator } from '@/components';
-import { FormSchema } from '@/components/FormGenerator/types';
-import { BFFDataRecord } from '@/types/record';
+import type { FormSchema } from '@/components/FormGenerator/types';
+import type { BFFDataRecord } from '@/types/record';
+import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
 interface LinkedRecordFormProps {
   record: BFFDataRecord;

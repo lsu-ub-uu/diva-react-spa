@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
+import type {
   FormComponentNumVar,
-  FormComponentVar,
+  FormComponentTextVar,
 } from '@/components/FormGenerator/types';
 import {
   checkIfComponentHasValue,
@@ -28,15 +28,17 @@ import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledTextField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
-import { useContext } from 'react';
+import  { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
-  component: FormComponentVar | FormComponentNumVar;
+  component: FormComponentTextVar | FormComponentNumVar;
   name: string;
   parentPresentationStyle: string | undefined;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const TextOrNumberVariable = ({
@@ -45,6 +47,8 @@ export const TextOrNumberVariable = ({
   component,
   name,
   parentPresentationStyle,
+  attributes,
+  actionButtonGroup,
 }: TextOrNumberVariableProps) => {
   const { getValues, control } = useRemixFormContext();
   const { linkedData } = useContext(FormGeneratorContext);
@@ -84,6 +88,8 @@ export const TextOrNumberVariable = ({
         inputFormat={
           'inputFormat' in component ? component.inputFormat : undefined
         }
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
       />
     </Grid>
   );

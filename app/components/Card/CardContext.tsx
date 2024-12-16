@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of DiVA Client.
  *
@@ -14,9 +14,12 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export { CreatePublicationCard } from './cards/CreatePublicationCard';
-export { ListPublicationsCard } from './cards/ListPublicationsCard';
-export { SearchPublicationCard } from './cards/SearchPublicationCard';
+import { createContext } from 'react';
+
+interface CardContextType {
+  boxed: boolean;
+}
+
+export const CardContext = createContext<CardContextType>({ boxed: true });

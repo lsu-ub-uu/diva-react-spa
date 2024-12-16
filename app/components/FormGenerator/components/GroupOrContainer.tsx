@@ -16,17 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
+import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
 import { Box, Grid2 as Grid, IconButton } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { Tooltip, Typography } from '@/components';
 import InfoIcon from '@mui/icons-material/Info';
 import {
   checkIfPresentationStyleIsInline,
   checkIfPresentationStyleOrParentIsInline,
+  getGroupLevel,
   headlineLevelToTypographyVariant,
   isFirstLevelGroup,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
@@ -35,7 +35,13 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
+import { Card } from '@/components/Card/Card';
+import { CardHeader } from '@/components/Card/CardHeader';
+import { CardContent } from '@/components/Card/CardContent';
+import { Typography } from '@/components/Typography/Typography';
+import { Tooltip } from '@/components/Tooltip/Tooltip';
+import { CardTitle } from '@/components/Card/CardTitle';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
@@ -54,6 +60,8 @@ export const GroupOrContainer = ({
 }: GroupOrContainerProps) => {
   const { t } = useTranslation();
   const { linkedData } = useContext(FormGeneratorContext);
+  const groupLevel = getGroupLevel(currentComponentNamePath);
+
   return isComponentFirstLevelAndNOTLinkedData(
     currentComponentNamePath,
     linkedData,
@@ -64,16 +72,18 @@ export const GroupOrContainer = ({
       className='anchorLink'
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <Box sx={{ mb: 2 }}>
-        <Box
+      <Card boxed>
+        <CardHeader
           sx={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            width: '100%',
+            justifyContent: 'flex-end',
           }}
         >
-          {component.showLabel === true ? (
-            <>
+          {component.showLabel ? (
+            <CardTitle>
               <Typography
                 text={component?.label ?? ''}
                 variant={headlineLevelToTypographyVariant(
@@ -92,33 +102,33 @@ export const GroupOrContainer = ({
                   <InfoIcon />
                 </IconButton>
               </Tooltip>
-            </>
+            </CardTitle>
           ) : null}
-        </Box>
-        <Grid
-          container
-          spacing={2}
-          justifyContent='space-between'
-          alignItems='flex-start'
-          id={`anchor_${addAttributesToName(component, component.name)}`}
-        >
           <Attributes
             component={component}
             path={currentComponentNamePath}
           />
-
-          {component.components && (
-            <ComponentList
-              components={component.components}
-              childWithNameInDataArray={childWithNameInDataArray}
-              parentPresentationStyle={
-                component.presentationStyle ?? parentPresentationStyle
-              }
-              path={currentComponentNamePath}
-            />
-          )}
-        </Grid>
-      </Box>
+        </CardHeader>
+        <CardContent>
+          <Grid
+            container
+            justifyContent='space-between'
+            alignItems='flex-start'
+            id={`anchor_${addAttributesToName(component, component.name)}`}
+          >
+            {component.components && (
+              <ComponentList
+                components={component.components}
+                childWithNameInDataArray={childWithNameInDataArray}
+                parentPresentationStyle={
+                  component.presentationStyle ?? parentPresentationStyle
+                }
+                path={currentComponentNamePath}
+              />
+            )}
+          </Grid>
+        </CardContent>
+      </Card>
     </Grid>
   ) : (
     <Grid
@@ -146,46 +156,67 @@ export const GroupOrContainer = ({
           : null,
       }}
     >
-      {component?.showLabel &&
-        (!linkedData ? (
-          <Typography
-            text={component?.label ?? ''}
-            variant={headlineLevelToTypographyVariant(component.headlineLevel)}
-          />
-        ) : (
-          <span style={{ width: '100%' }}>
-            <Typography
-              text={component?.label ?? ''}
-              variant={headlineLevelToTypographyVariant(
-                component.headlineLevel,
-              )}
-            />
-          </span>
-        ))}
-
-      <Attributes
-        component={component}
-        path={currentComponentNamePath}
-      />
-      {component.components && (
-        <ComponentList
-          components={component.components}
-          childWithNameInDataArray={childWithNameInDataArray}
-          parentPresentationStyle={
-            checkIfPresentationStyleIsUndefinedOrEmpty(component)
-              ? parentPresentationStyle
-              : component.presentationStyle
-          }
-          path={currentComponentNamePath}
-        />
-      )}
+      <Card boxed={groupLevel !== 0}>
+        {component?.showLabel &&
+          (!linkedData ? (
+            <CardHeader
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '100%',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <CardTitle>
+                <Typography
+                  text={component?.label ?? ''}
+                  sx={{ mb: groupLevel === 0 ? 2 : undefined }}
+                  variant={headlineLevelToTypographyVariant(
+                    component.headlineLevel,
+                  )}
+                />
+              </CardTitle>
+              <Attributes
+                component={component}
+                path={currentComponentNamePath}
+              />
+            </CardHeader>
+          ) : (
+            <span style={{ width: '100%' }}>
+              <Typography
+                text={component?.label ?? ''}
+                sx={{ mb: 2 }}
+                variant={headlineLevelToTypographyVariant(
+                  component.headlineLevel,
+                )}
+              />
+            </span>
+          ))}
+        <CardContent>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {component.components && (
+              <ComponentList
+                components={component.components}
+                childWithNameInDataArray={childWithNameInDataArray}
+                parentPresentationStyle={
+                  checkIfPresentationStyleIsUndefinedOrEmpty(component)
+                    ? parentPresentationStyle
+                    : component.presentationStyle
+                }
+                path={currentComponentNamePath}
+              />
+            )}
+          </Box>
+        </CardContent>
+      </Card>
     </Grid>
   );
 };
 
 const isComponentFirstLevelAndNOTLinkedData = (
   currentComponentNamePath: string,
-  linkedData: BFFDataRecord | undefined,
+  linkedData: BFFDataRecord['data'] | undefined,
 ) => {
   return isFirstLevelGroup(currentComponentNamePath) && !linkedData;
 };

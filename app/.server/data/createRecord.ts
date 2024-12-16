@@ -16,17 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 
-import { RecordFormSchema } from '@/components/FormGenerator/types';
-import { Auth } from '@/types/Auth';
+import type { RecordFormSchema } from '@/components/FormGenerator/types';
+import type { Auth } from '@/types/Auth';
 import { createFormMetaData } from '@/.server/data/formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/.server/cora/transform/transformToCora';
 import { transformRecord } from '@/.server/cora/transform/transformRecord';
-import { DataGroup, RecordWrapper } from '@/.server/cora/cora-data/CoraData';
+import type { DataGroup, RecordWrapper } from '@/.server/cora/cora-data/CoraData';
 import { postRecordData } from '@/.server/cora/postRecordData';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 
 export const createRecord = async (
   dependencies: Dependencies,

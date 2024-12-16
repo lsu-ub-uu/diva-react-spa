@@ -16,17 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponentRecordLink } from '@/components/FormGenerator/types';
+import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { Grid2 as Grid } from '@mui/material';
-import { ControlledAutocomplete } from '@/components';
 import { useRemixFormContext } from 'remix-hook-form';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
+import { ControlledAutocomplete } from '@/components/Controlled/Autocomplete/ControlledAutocomplete';
+import type { ReactNode } from 'react';
 
 interface RecordLinkWithSearchProps {
   reactKey: string;
   renderElementGridWrapper: boolean;
   component: FormComponentRecordLink;
   name: string;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const RecordLinkWithSearch = ({
@@ -34,6 +37,8 @@ export const RecordLinkWithSearch = ({
   renderElementGridWrapper,
   component,
   name,
+  attributes,
+  actionButtonGroup,
 }: RecordLinkWithSearchProps) => {
   const { control } = useRemixFormContext();
   return (
@@ -57,6 +62,8 @@ export const RecordLinkWithSearch = ({
         searchLink={component.search}
         presentationRecordLinkId={component.presentationRecordLinkId ?? ''}
         recordType={component.recordLinkType ?? ''}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
       />
     </Grid>
   );

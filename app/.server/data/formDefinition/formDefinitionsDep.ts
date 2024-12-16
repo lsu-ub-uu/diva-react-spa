@@ -1,5 +1,5 @@
-import { Lookup } from '@/utils/structs/lookup';
-import {
+import type { Lookup } from '@/utils/structs/lookup';
+import type {
   BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,

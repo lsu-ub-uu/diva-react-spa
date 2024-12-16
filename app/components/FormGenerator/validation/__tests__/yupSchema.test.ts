@@ -17,8 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import type { AnyObject, ArraySchema, ObjectSchema, StringSchema } from 'yup';
 import * as yup from 'yup';
-import { AnyObject, ArraySchema, ObjectSchema, StringSchema } from 'yup';
 import {
   createValidationForAttributesFromComponent,
   createValidationFromComponentType,
@@ -27,7 +27,6 @@ import {
   generateYupSchemaFromFormSchema,
 } from '../yupSchema';
 import {
-  formDefWithTextVar,
   formDefWithNestedSurroundingContainers,
   formDefWithOneGroupHavingTextVariableAsChild,
   formDefWithRepeatingCollectionVar,
@@ -35,9 +34,14 @@ import {
   formDefWithRepeatingGroupWithRepeatingChildGroup,
   formDefWithRepeatingGroupWithRepeatingChildGroupWithAttributes,
   formDefWithSurroundingContainerAroundTextVariable,
+  formDefWithTextVar,
   formDefWithTwoRepeatingVarsAndCollectionVar,
 } from '../../../../__mocks__/data/formDef';
-import { FormComponent, FormSchema } from '../../types';
+import type {
+  FormComponent,
+  FormComponentNumVar,
+  FormSchema,
+} from '../../types';
 import { cleanFormData } from '../../../../utils/cleanFormData';
 
 const numberValidationTests = (
@@ -999,9 +1003,11 @@ describe('util functions', () => {
           repeatMin: 1,
           repeatMax: 1,
         },
+        showLabel: true,
         attributes: [
           {
             type: 'collectionVariable',
+            showLabel: true,
             name: 'colourAttribute',
             placeholder: 'emptyTextId',
             tooltip: {
@@ -1057,7 +1063,7 @@ describe('util functions', () => {
       };
       createValidationFromComponentType(component);
       const mock = vi.fn();
-      createYupNumberSchema(component as FormComponent);
+      createYupNumberSchema(component as FormComponentNumVar);
       expect(mock).toHaveBeenCalledTimes(1);
     });
   });

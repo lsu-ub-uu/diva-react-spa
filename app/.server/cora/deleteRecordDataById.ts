@@ -16,7 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import axios, { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { coraApiUrl, createHeaders } from '@/.server/cora/helper';
 
 export async function deleteRecordDataById<T>(

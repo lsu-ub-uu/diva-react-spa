@@ -16,14 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { BFFSearchResult } from '@/types/record';
-import { Auth } from '@/types/Auth';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { BFFSearchResult } from '@/types/record';
+import type { Auth } from '@/types/Auth';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type {
+  FormMetaData} from '@/.server/data/formDefinition/formDefinition';
 import {
-  createLinkedRecordDefinition,
-  FormMetaData,
+  createLinkedRecordDefinition
 } from '@/.server/data/formDefinition/formDefinition';
-import {
+import type {
   BFFMetadataGroup,
   BFFPresentationGroup,
 } from '@/.server/cora/transform/bffTypes';
@@ -34,7 +35,7 @@ import {
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/.server/cora/transform/transformToCora';
 import { getSearchResultDataListBySearchType } from '@/.server/cora/getSearchResultDataListBySearchType';
-import { DataGroup, DataListWrapper } from '@/.server/cora/cora-data/CoraData';
+import type { DataGroup, DataListWrapper } from '@/.server/cora/cora-data/CoraData';
 import { transformRecords } from '@/.server/cora/transform/transformRecord';
 
 export const searchRecords = async (

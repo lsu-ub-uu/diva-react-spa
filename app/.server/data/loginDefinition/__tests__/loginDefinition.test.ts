@@ -17,9 +17,9 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { listToPool } from '@/utils/structs/listToPool';
-import {
+import type {
   BFFLoginPassword,
   BFFLoginUnit,
   BFFLoginWebRedirect,

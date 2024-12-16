@@ -1,4 +1,4 @@
-import {
+import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/.server/cora/cora-data/CoraData';

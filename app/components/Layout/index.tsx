@@ -21,7 +21,7 @@ import { MemberBar } from '@/components/Layout/MemberBar/MemberBar';
 import { Header } from '@/components/Layout/Header';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationLoader } from '@/components/NavigationLoader/NavigationLoader';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface PageLayoutProps {
   children: ReactNode;

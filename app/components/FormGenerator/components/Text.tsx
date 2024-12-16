@@ -16,12 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponentText } from '@/components/FormGenerator/types';
+import type { FormComponentText } from '@/components/FormGenerator/types';
 import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { Typography } from '@/components';
 
 import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { Typography } from '@/components/Typography/Typography';
 
 interface TextProps {
   reactKey: string;

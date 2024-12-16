@@ -16,12 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import {
-  createTheme,
+import type {
   PaletteColorOptions,
-  Shadows,
+  Shadows} from '@mui/material/styles';
+import {
+  createTheme
 } from '@mui/material/styles';
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
+import type { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -47,11 +49,11 @@ declare module '@mui/material/styles' {
   }
 
   interface Palette {
-    blue: PaletteColorOptions;
-    purple: PaletteColorOptions;
-    green: PaletteColorOptions;
-    red: PaletteColorOptions;
-    yellow: PaletteColorOptions;
+    blue: SimplePaletteColorOptions;
+    purple: SimplePaletteColorOptions;
+    green: SimplePaletteColorOptions;
+    red: SimplePaletteColorOptions;
+    yellow: SimplePaletteColorOptions;
     gray: PaletteColorOptions;
   }
   interface PaletteOptions {
@@ -90,14 +92,14 @@ export const divaTheme = createTheme({
     },
     h1TextStyle: {
       fontSize: '2rem',
-      fontWeight: '600',
+      fontWeight: '400',
     },
     h2TextStyle: {
-      fontSize: '1.5rem',
+      fontSize: '1.3rem',
       fontWeight: '400',
     },
     h3TextStyle: {
-      fontSize: '1.4rem',
+      fontSize: '2rem',
       fontWeight: '400',
     },
     h4TextStyle: {

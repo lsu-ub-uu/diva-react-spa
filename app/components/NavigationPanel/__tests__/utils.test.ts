@@ -48,6 +48,7 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
           repeatMin: 1,
           repeatMax: 1,
         },
+        showLabel: true,
         tooltip: {
           title: 'textId345',
           body: 'defTextId678',
@@ -93,6 +94,7 @@ describe('removeComponentsWithoutValuesFromSchema', () => {
           repeatMin: 1,
           repeatMax: 1,
         },
+        showLabel: true,
         tooltip: {
           title: 'textId345',
           body: 'defTextId678',

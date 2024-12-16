@@ -17,10 +17,11 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useEffect, useState } from 'react';
+import type { FC} from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 import { LinkedRecordForm } from '@/components/Form/LinkedRecordForm';
 
 interface LinkedRecordProps {

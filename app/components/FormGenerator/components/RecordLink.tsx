@@ -19,14 +19,14 @@
 import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
-import { FormComponent } from '@/components/FormGenerator/types';
+import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
 
 interface RecordLinkProps {
-  component: FormComponent;
+  component: FormComponentRecordLink;
   reactKey: string;
   name: string;
   renderElementGridWrapper: boolean;
@@ -86,6 +86,8 @@ export const RecordLink = ({
   );
 };
 
-const checkIfComponentContainsSearchId = (component: FormComponent) => {
+const checkIfComponentContainsSearchId = (
+  component: FormComponentRecordLink,
+) => {
   return 'search' in component ? component.search !== undefined : undefined;
 };

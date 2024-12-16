@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
+import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { coraApiUrl, RECORD_CONTENT_TYPE } from '@/.server/cora/helper';
 import { postRecordData } from '@/.server/cora/postRecordData';

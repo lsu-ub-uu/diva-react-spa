@@ -16,8 +16,8 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { FormComponentGuiElement } from '@/components/FormGenerator/types';
-import { LinkButton } from '@/components';
+import type { FormComponentGuiElement } from '@/components/FormGenerator/types';
+import { LinkButton } from '@/components/LinkButton/LinkButton';
 
 interface GuiElementLinkProps {
   reactKey: string;

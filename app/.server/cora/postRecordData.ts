@@ -16,8 +16,9 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { DataGroup } from '@/.server/cora/cora-data/CoraData';
-import axios, { AxiosResponse } from 'axios';
+import type { DataGroup } from '@/.server/cora/cora-data/CoraData';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
 import {
   coraApiUrl,
   createHeaders,

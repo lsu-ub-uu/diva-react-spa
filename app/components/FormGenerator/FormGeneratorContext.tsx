@@ -17,7 +17,7 @@
  */
 
 import { createContext } from 'react';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];

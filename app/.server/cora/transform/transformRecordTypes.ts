@@ -1,4 +1,4 @@
-import {
+import type {
   DataListWrapper,
   RecordWrapper,
 } from '@/.server/cora/cora-data/CoraData';
@@ -6,7 +6,7 @@ import {
   extractIdFromRecordInfo,
   extractLinkedRecordIdFromNamedRecordLink,
 } from '@/.server/cora/cora-data/CoraDataTransforms';
-import { BFFRecordType } from './bffTypes';
+import type { BFFRecordType } from './bffTypes';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
 import { containsChildWithNameInData } from '@/.server/cora/cora-data/CoraDataUtils';
 

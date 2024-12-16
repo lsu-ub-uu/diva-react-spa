@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Attributes, DataGroup } from './CoraData';
+import type { Attributes, DataGroup } from './CoraData';
 import {
   getAllDataAtomicsWithNameInData,
   getFirstDataAtomicWithNameInData,

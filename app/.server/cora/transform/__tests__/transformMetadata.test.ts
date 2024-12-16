@@ -16,7 +16,7 @@ import testCollectionWithTwoAttributes from '@/__mocks__/bff/coraMetadataCollect
 import testMetadataGroupWithAttribute from '@/__mocks__/bff/coraMetadataGroupWithAttribute.json';
 import testMetadataRecordLink from '@/__mocks__/bff/coraMetadataRecordLink.json';
 import testMetadataRecordLinkWithFinalValue from '@/__mocks__/bff/coraMetadataRecordLinkWithFinalValue.json';
-import { DataListWrapper } from '@/.server/cora/cora-data/CoraData';
+import type { DataListWrapper } from '@/.server/cora/cora-data/CoraData';
 
 describe('transformMetadata', () => {
   it('Empty list should return empty', () => {

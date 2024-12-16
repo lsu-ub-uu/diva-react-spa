@@ -18,14 +18,14 @@
  */
 
 import { isEqual as _isEqual } from 'lodash-es';
-import {
+import type {
   Attributes,
   DataAtomic,
   DataElement,
   DataGroup,
   RecordLink,
 } from './CoraData';
-import { BFFRecordLink } from '../transform/bffTypes';
+import type { BFFRecordLink } from '../transform/bffTypes';
 
 export function getAllRecordLinksWithNameInData(
   dataGroup: DataGroup,

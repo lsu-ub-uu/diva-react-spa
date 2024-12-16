@@ -16,22 +16,22 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as yup from 'yup';
-import {
+import type {
   AnyObject,
   ObjectSchema,
   ObjectShape,
   TestConfig,
   TestContext,
 } from 'yup';
-import {
+import * as yup from 'yup';
+import type {
   FormAttributeCollection,
   FormComponent,
   FormComponentContainer,
   FormComponentGroup,
   FormComponentNumVar,
   FormComponentRepeat,
-  FormComponentVar,
+  FormComponentTextVar,
   FormComponentWithData,
   FormNumberValidation,
   FormRegexValidation,
@@ -39,14 +39,14 @@ import {
 } from '../types';
 import {
   checkForExistingSiblings,
+  getNameInData,
   isComponentContainer,
   isComponentGroup,
+  isComponentGroupAndOptional,
   isComponentRepeating,
   isComponentRequired,
   isComponentSingularAndOptional,
   isComponentValidForDataCarrying,
-  isComponentGroupAndOptional,
-  getNameInData,
 } from '../formGeneratorUtils/formGeneratorUtils';
 
 import {
@@ -82,7 +82,7 @@ export const createYupValidationsFromComponent = (
       );
     } else {
       validationRule[currentNameInData] = createSchemaForRepeatingVariable(
-        component,
+        component as FormComponentWithData,
         parentGroupOptional,
       );
     }
@@ -95,7 +95,7 @@ export const createYupValidationsFromComponent = (
       );
     } else {
       validationRule[currentNameInData] = createSchemaForNonRepeatingVariable(
-        component,
+        component as FormComponentWithData,
         parentGroupOptional,
       );
     }
@@ -139,7 +139,7 @@ function createSchemaForRepeatingGroup(
 }
 
 function createSchemaForRepeatingVariable(
-  component: FormComponent,
+  component: FormComponentWithData,
   parentGroupOptional: boolean,
 ) {
   const attributesValidationRules = createValidationForAttributesFromComponent(
@@ -183,7 +183,7 @@ function createSchemaForNonRepeatingGroup(
 }
 
 function createSchemaForNonRepeatingVariable(
-  component: FormComponent,
+  component: FormComponentWithData,
   parentGroupOptional: boolean,
 ) {
   return yup.object().shape({
@@ -270,13 +270,13 @@ export const createValidationFromComponentType = (
   switch (component.type) {
     case 'textVariable':
       return createYupStringRegexpSchema(
-        component as FormComponent,
+        component as FormComponentTextVar,
         parentGroupOptional,
         siblingRequired,
       );
     case 'numberVariable':
       return createYupNumberSchema(
-        component as FormComponent,
+        component as FormComponentNumVar,
         parentGroupOptional,
         siblingRequired,
       );
@@ -296,7 +296,7 @@ export const createValidationFromComponentType = (
  * The purpose of the transform method is to allow you to modify the value after it has passed validation but before it is returned
  */
 const createYupStringRegexpSchema = (
-  component: FormComponentVar,
+  component: FormComponentTextVar,
   isParentGroupOptional: boolean = false,
   isSiblingRequired: boolean = false,
 ) => {

@@ -17,7 +17,7 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BFFDataRecord, RecordInfo } from '@/types/record';
+import type { BFFDataRecord, RecordInfo } from '@/types/record';
 
 export const getRecordInfo = (response: BFFDataRecord): RecordInfo => {
   const temp = Object.entries(response.data).map(([, value]) => {

@@ -18,8 +18,9 @@
  */
 
 import { useTranslation } from 'react-i18next';
+import type { SxProps} from '@mui/material';
 import { Typography as MuiTypography } from '@mui/material';
-import { ElementType } from 'react';
+import type { ElementType } from 'react';
 
 export interface DivaTypographyVariants {
   variant:
@@ -35,6 +36,7 @@ export interface DivaTypographyVariants {
 
 interface TypographyProps extends DivaTypographyVariants {
   text: string;
+  sx?: SxProps;
 }
 
 const mapHeaderStyleToComponent = (headerStyle: string): ElementType => {
@@ -52,10 +54,8 @@ export const Typography = (props: TypographyProps) => {
           ? 'p'
           : mapHeaderStyleToComponent(props.variant)
       }
-      mt={2}
-      mb={2}
       variant={props.variant}
-      gutterBottom
+      sx={props.sx}
     >
       {t(props.text)}
     </MuiTypography>

@@ -23,12 +23,12 @@ import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/.server/sessions';
-import {
+import type {
   ActionFunctionArgs,
-  json,
   LoaderFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
@@ -39,12 +39,13 @@ import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateRecord } from '@/.server/data/updateRecord';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
+import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
+
+import { getRecordTitle } from '@/utils/getRecordTitle';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -114,7 +115,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     authToken: auth.data.token,
   });
 
-  const title = `${t('divaClient_UpdatingPageTitleText')} ${getCorrectTitle(record)} | DiVA`;
+  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
 
   if (record?.validationType == null) {
     throw new Error();

@@ -19,7 +19,8 @@
 
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import type { GridColDef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -30,11 +31,12 @@ import {
   useFetcher,
   useLoaderData,
 } from '@remix-run/react';
-import { Card } from '@/components';
-import { loader } from '@/routes/_index';
-import { BFFDataRecord, BFFSearchResult } from '@/types/record';
+import type { loader } from '@/routes/_index';
+import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
+import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
+import { getRecordTitle } from '@/utils/getRecordTitle';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
@@ -56,7 +58,7 @@ export const ListPublicationsCard = () => {
       field: 'title',
       headerName: `${t('divaClient_listPublicationsHeaderTitleText')}`, // Title
       width: 200,
-      valueGetter: (_, row) => getCorrectTitle(row),
+      valueGetter: (_, row) => getRecordTitle(row),
     },
     {
       field: 'createdAt',
@@ -122,7 +124,7 @@ export const ListPublicationsCard = () => {
   ];
 
   return (
-    <Card
+    <LegacyCard
       title={t('divaClient_listPublicationsText') as string}
       variant='variant5'
       tooltipTitle={t('divaClient_listPublicationsTooltipTitleText') as string}
@@ -162,10 +164,6 @@ export const ListPublicationsCard = () => {
           </Await>
         </Suspense>
       </div>
-    </Card>
+    </LegacyCard>
   );
-};
-
-export const getCorrectTitle = (record: BFFDataRecord) => {
-  return record.data.output.titleInfo.title.value;
 };

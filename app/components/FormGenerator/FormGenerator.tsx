@@ -17,10 +17,10 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FormSchema } from './types';
+import type { FormSchema } from './types';
 import { Component } from '@/components/FormGenerator/Component';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
-import { BFFDataRecord } from '@/types/record';
+import type { BFFDataRecord } from '@/types/record';
 
 interface FormGeneratorProps {
   formSchema: FormSchema;

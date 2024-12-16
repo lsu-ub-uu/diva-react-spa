@@ -1,6 +1,6 @@
 import '@remix-run/server-runtime';
-import { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
-import { i18n } from 'i18next';
+import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
+import type { i18n } from 'i18next';
 
 declare module '@remix-run/server-runtime' {
   export interface AppLoadContext {

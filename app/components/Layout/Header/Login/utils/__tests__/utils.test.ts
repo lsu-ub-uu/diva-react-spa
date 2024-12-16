@@ -25,7 +25,7 @@ import {
   messageIsFromWindowOpenedFromHere,
   printUserNameOnPage,
 } from '../utils';
-import { Auth } from '@/types/Auth';
+import type { Auth } from '@/types/Auth';
 
 describe('Login validation', () => {
   it('messageIsFromWindowOpenedFromHere return false on different event url', () => {

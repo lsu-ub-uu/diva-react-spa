@@ -44,13 +44,8 @@ export const ActionButtonGroup = (
     <ButtonGroup
       size='small'
       sx={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
         zIndex: 1,
-        border: ' solid 1px',
         borderRadius: '25px',
-        backgroundColor: '#00000',
       }}
       orientation='horizontal'
       variant='text'
@@ -59,12 +54,9 @@ export const ActionButtonGroup = (
         <IconButton
           size='small'
           sx={{
+            transition: 'background-color .25s',
             '&:hover': {
-              backgroundColor: '#000000',
-              '& .MuiSvgIcon-root': {
-                color: '#ffffff',
-                backgroundColor: '#000000',
-              },
+              backgroundColor: 'rgb(0 0 0 / 12%)',
             },
           }}
           aria-label='up'
@@ -85,12 +77,9 @@ export const ActionButtonGroup = (
           <IconButton
             size='small'
             sx={{
+              transition: 'background-color .25s',
               '&:hover': {
-                backgroundColor: '#000000',
-                '& .MuiSvgIcon-root': {
-                  color: '#ffffff',
-                  backgroundColor: '#000000',
-                },
+                backgroundColor: 'rgb(0 0 0 / 12%)',
               },
             }}
             aria-label='delete'
@@ -107,12 +96,9 @@ export const ActionButtonGroup = (
         <IconButton
           size='small'
           sx={{
+            transition: 'background-color .25s',
             '&:hover': {
-              backgroundColor: '#000000',
-              '& .MuiSvgIcon-root': {
-                color: '#ffffff',
-                backgroundColor: '#000000',
-              },
+              backgroundColor: 'rgb(0 0 0 / 12%)',
             },
           }}
           aria-label='down'

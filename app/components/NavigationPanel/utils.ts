@@ -18,9 +18,9 @@
  */
 
 import { useEffect, useState } from 'react';
-import { RecordFormSchema } from '../FormGenerator/types';
-import { NavigationPanelLink } from '../index';
-import { BFFDataRecord } from '@/types/record';
+import type { RecordFormSchema } from '../FormGenerator/types';
+import type { NavigationPanelLink } from '../index';
+import type { BFFDataRecord } from '@/types/record';
 import {
   addAttributesToName,
   hasCurrentComponentSameNameInData,
@@ -41,6 +41,11 @@ export const linksFromFormSchema = (
         childrenWithSameNameInData,
         c.name,
       );
+
+      if (!('label' in c)) {
+        return undefined;
+      }
+
       if (currentComponentSameNameInData) {
         return {
           name: `${addAttributesToName(c, c.name)}`,
@@ -48,7 +53,8 @@ export const linksFromFormSchema = (
         } as NavigationPanelLink;
       }
       return { name: `${c.name}`, label: c.label } as NavigationPanelLink;
-    });
+    })
+    .filter((c) => c !== undefined);
 };
 
 export const removeComponentsWithoutValuesFromSchema = (
