@@ -257,6 +257,7 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
     dependencies,
     [formRootReference],
     formRootPresentationReference,
+    metadataGroup.id,
   );
 };
 
@@ -672,7 +673,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   if (presentation.type !== 'container') {
     metadataId = metadataOverrideId ?? presentation.presentationOf;
     const metadataFormPresentation = metadataPool.get(
-      presentation.presentationOf,
+      metadataOverrideId ?? presentation.presentationOf,
     );
     metaDataChildRef = findMetadataChildReferenceByNameInDataAndAttributes(
       metadataPool,
