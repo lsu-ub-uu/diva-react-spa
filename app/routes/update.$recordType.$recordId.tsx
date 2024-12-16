@@ -26,10 +26,9 @@ import {
 import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
-  MetaFunction} from '@remix-run/node';
-import {
-  json
+  MetaFunction,
 } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
@@ -45,7 +44,8 @@ import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
-import { getCorrectTitle } from '@/partials/cards/ListPublicationsCard';
+
+import { getRecordTitle } from '@/utils/getRecordTitle';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -115,7 +115,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     auth.data.token,
   );
 
-  const title = `${t('divaClient_UpdatingPageTitleText')} ${getCorrectTitle(record)} | DiVA`;
+  const title = `${t('divaClient_UpdatingPageTitleText')} ${getRecordTitle(record)} | DiVA`;
 
   if (record?.validationType == null) {
     throw new Error();
