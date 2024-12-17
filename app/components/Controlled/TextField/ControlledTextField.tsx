@@ -150,7 +150,12 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               />
             ) : (
               <>
-                <span>{field.value}</span>
+                <Box
+                  component='span'
+                  sx={{ pl: 2 }}
+                >
+                  {field.value}
+                </Box>
                 <input
                   type='hidden'
                   value={field.value}
