@@ -72,7 +72,6 @@ export const AttributeSelect = ({
       data-error={error !== undefined}
     >
       <div className={styles.inputWrapper}>
-        {showLabel && <label htmlFor={name}>{t(label)}</label>}
         {tooltip && (
           <Tooltip
             title={t(tooltip.title)}
@@ -88,6 +87,7 @@ export const AttributeSelect = ({
             </IconButton>
           </Tooltip>
         )}
+        {showLabel && <label htmlFor={name}>{t(label)}: </label>}
         {showAsInput && (
           <select
             {...register(name)}
