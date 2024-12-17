@@ -39,23 +39,11 @@ export const Attributes = ({ component, path }: AttributesProps) => {
         key={`${attribute.name}_${index}`}
         name={`${path}._${attribute.name}`}
         label={attribute.label ?? ''}
-        options={
-          attribute.finalValue
-            ? attribute.options
-            : [
-                {
-                  value: '',
-                  label: t(
-                    attribute.placeholder ?? 'divaClient_optionNoneText',
-                  ),
-                },
-                ...(attribute.options ?? []),
-              ]
-        }
+        options={attribute.options}
         showLabel={attribute.showLabel}
         placeholder={attribute.placeholder}
         tooltip={attribute.tooltip}
-        readonly={attribute.finalValue !== undefined}
+        finalValue={attribute.finalValue}
         displayMode={attribute.mode}
       />
     );
