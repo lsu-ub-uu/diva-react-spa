@@ -40,8 +40,9 @@ import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { Typography } from '@/components/Typography/Typography';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { CardTitle } from '@/components/Card/CardTitle';
-import type { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -117,46 +118,53 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
               sx={{ position: 'relative' }}
             >
               {isComponentGroup(props.component) && (
-                <CardHeader
-                  key={`${field.id}_${index}_b`}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  {props.component.showLabel && (
-                    <CardTitle>
-                      <Typography
-                        variant={
-                          headlineLevelToTypographyVariant(
-                            props.component.headlineLevel,
-                          ) ?? 'bodyTextStyle'
-                        }
-                        text={props.component.label!}
-                      />
-                      <Tooltip
-                        title={t(props.component.tooltip?.title as string)}
-                        body={t(props.component.tooltip?.body as string)}
-                      >
-                        <IconButton
-                          disableRipple
-                          color='info'
-                          aria-label='info'
-                        >
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </CardTitle>
-                  )}
-
-                  <Attributes
+                <>
+                  <DevInfo
+                    label='FieldArray group'
                     component={props.component}
-                    path={`${props.name}[${index}]`}
                   />
 
-                  {actionButtonGroup}
-                </CardHeader>
+                  <CardHeader
+                    key={`${field.id}_${index}_b`}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    {props.component.showLabel && (
+                      <CardTitle>
+                        <Typography
+                          variant={
+                            headlineLevelToTypographyVariant(
+                              props.component.headlineLevel,
+                            ) ?? 'bodyTextStyle'
+                          }
+                          text={props.component.label!}
+                        />
+                        <Tooltip
+                          title={t(props.component.tooltip?.title as string)}
+                          body={t(props.component.tooltip?.body as string)}
+                        >
+                          <IconButton
+                            disableRipple
+                            color='info'
+                            aria-label='info'
+                          >
+                            <InfoIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </CardTitle>
+                    )}
+
+                    <Attributes
+                      component={props.component}
+                      path={`${props.name}[${index}]`}
+                    />
+
+                    {actionButtonGroup}
+                  </CardHeader>
+                </>
               )}
               <CardContent sx={{ p: isBoxed ? 2 : undefined }}>
                 {props.renderCallback(

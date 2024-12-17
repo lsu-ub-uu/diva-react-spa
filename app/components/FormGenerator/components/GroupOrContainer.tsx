@@ -41,6 +41,7 @@ import { CardContent } from '@/components/Card/CardContent';
 import { Typography } from '@/components/Typography/Typography';
 import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { CardTitle } from '@/components/Card/CardTitle';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
@@ -72,6 +73,11 @@ export const GroupOrContainer = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <Card boxed>
+        <DevInfo
+          label='GroupOrContainer (first level)'
+          component={component}
+        />
+
         <CardHeader
           sx={{
             display: 'flex',
@@ -156,6 +162,11 @@ export const GroupOrContainer = ({
       }}
     >
       <Card boxed={groupLevel !== 0}>
+        <DevInfo
+          label='GroupOrContainer'
+          component={component}
+        />
+
         {component?.showLabel &&
           (!linkedData ? (
             <CardHeader

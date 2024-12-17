@@ -51,6 +51,7 @@ export const loader = async ({
     recordId,
     auth.data.token,
   );
+  console.log(record);
   const title = `${getRecordTitle(record)} | DiVA`;
 
   invariant(record.validationType, 'Record has no validation type');

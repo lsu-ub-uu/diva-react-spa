@@ -29,6 +29,7 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import { ControlledTextField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
 import type { ReactNode } from 'react';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -67,6 +68,11 @@ export const TextOrNumberVariable = ({
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
+      <DevInfo
+        label='TextOrNumberVariable'
+        component={component}
+      />
+
       <ControlledTextField
         multiline={
           'inputType' in component
