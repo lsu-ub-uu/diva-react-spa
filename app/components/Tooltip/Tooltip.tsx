@@ -17,9 +17,7 @@
  */
 
 import styled from '@emotion/styled';
-import type {
-  Theme,
-  TooltipProps as MuiTooltipProps} from '@mui/material';
+import type { Theme, TooltipProps as MuiTooltipProps } from '@mui/material';
 import {
   Box,
   ClickAwayListener,
@@ -28,7 +26,7 @@ import {
   tooltipClasses,
   Typography,
 } from '@mui/material';
-import type { ReactElement} from 'react';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -114,7 +112,7 @@ export const Tooltip = (props: TooltipProps) => {
 
   return (
     <ClickAwayListener onClickAway={handleTooltipClose}>
-      <div>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <StyledTooltip
           placement='top'
           PopperProps={{
@@ -135,7 +133,7 @@ export const Tooltip = (props: TooltipProps) => {
         >
           {props.children}
         </StyledTooltip>
-      </div>
+      </Box>
     </ClickAwayListener>
   );
 };
