@@ -30,8 +30,6 @@ import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/.server/sessions';
-import { useEffect } from 'react';
-import { enqueueSnackbar } from 'notistack';
 import {
   getResponseInitWithSession,
   redirectAndCommitSession,
@@ -39,6 +37,9 @@ import {
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
+import { Alert, AlertTitle } from '@mui/material';
+import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -73,18 +74,23 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
       data as unknown as BFFDataRecord,
       auth,
     );
-    session.flash('success', `Record was successfully created ${id}`);
+    session.flash('notification', {
+      severity: 'success',
+      summary: `Record was successfully created ${id}`,
+    });
     return redirectAndCommitSession(`/update/${recordType}/${id}`, session);
   } catch (error) {
     console.error(error);
-    session.flash('error', 'Failed to create record');
+
+    session.flash('notification', createNotificationFromAxiosError(error));
+
     return json(null, await getResponseInitWithSession(session));
   }
 };
 
 export const loader = async ({ request, context }: ActionFunctionArgs) => {
   const session = await getSessionFromCookie(request);
-  const errorMessage = session.get('error');
+  const notification = session.get('notification');
 
   const url = new URL(request.url);
   const validationTypeId = url.searchParams.get('validationType');
@@ -99,29 +105,29 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
     'create',
   );
   return json(
-    { record, formDefinition, errorMessage },
+    { record, formDefinition, notification },
     await getResponseInitWithSession(session),
   );
 };
 
 export default function CreateRecordRoute() {
-  const { record, formDefinition, errorMessage } =
+  const { record, formDefinition, notification } =
     useLoaderData<typeof loader>();
 
-  useEffect(() => {
-    if (errorMessage) {
-      enqueueSnackbar(errorMessage, {
-        variant: 'error',
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        preventDuplicate: true,
-      });
-    }
-  }, [errorMessage]);
+  useNotificationSnackbar(notification);
 
   return (
-    <CreateRecordPage
-      record={record}
-      formDefinition={formDefinition}
-    />
+    <>
+      {notification && notification.severity === 'error' && (
+        <Alert severity={notification.severity}>
+          <AlertTitle>{notification.summary}</AlertTitle>
+          {notification.details}
+        </Alert>
+      )}
+      <CreateRecordPage
+        record={record}
+        formDefinition={formDefinition}
+      />
+    </>
   );
 }

@@ -32,9 +32,7 @@ import { json } from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
-import { useLoaderData, useNavigation } from '@remix-run/react';
-import { enqueueSnackbar } from 'notistack';
-import { useEffect } from 'react';
+import { useLoaderData } from '@remix-run/react';
 import { getValidatedFormData, parseFormData } from 'remix-hook-form';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -46,6 +44,9 @@ import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules'
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 
 import { getRecordTitle } from '@/utils/getRecordTitle';
+import { createNotificationFromAxiosError } from '@/utils/createNotificationFromAxiosError';
+import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { Alert, AlertTitle } from '@mui/material';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -88,10 +89,13 @@ export const action = async ({
       data as unknown as BFFDataRecord,
       auth,
     );
-    session.flash('success', `Record was successfully updated`);
+    session.flash('notification', {
+      severity: 'success',
+      summary: `Record was successfully updated`,
+    });
   } catch (error) {
     console.error(error);
-    session.flash('error', 'Failed to create record');
+    session.flash('notification', createNotificationFromAxiosError(error));
   }
 
   return json(null, await getResponseInitWithSession(session));
@@ -102,7 +106,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   const auth = await requireAuthentication(session);
   const { t } = context.i18n;
 
-  const successMessage = session.get('success');
+  const notification = session.get('notification');
 
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
@@ -132,7 +136,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   );
 
   return json(
-    { record, formDefinition, defaultValues, successMessage, title },
+    { record, formDefinition, defaultValues, notification, title },
     {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -146,25 +150,23 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function UpdateRecordRoute() {
-  const { record, formDefinition, successMessage } =
+  const { record, formDefinition, notification } =
     useLoaderData<typeof loader>();
 
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    if (successMessage && navigation.state === 'idle') {
-      enqueueSnackbar(successMessage, {
-        variant: 'success',
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        preventDuplicate: true,
-      });
-    }
-  }, [successMessage, navigation.state]);
+  useNotificationSnackbar(notification);
 
   return (
-    <UpdateRecordPage
-      record={record}
-      formDefinition={formDefinition}
-    />
+    <>
+      {notification && notification.severity === 'error' && (
+        <Alert severity={notification.severity}>
+          <AlertTitle>{notification.summary}</AlertTitle>
+          {notification.details}
+        </Alert>
+      )}
+      <UpdateRecordPage
+        record={record}
+        formDefinition={formDefinition}
+      />
+    </>
   );
 }
