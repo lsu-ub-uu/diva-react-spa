@@ -61,7 +61,7 @@ export interface RecordInfo {
   [key: string]: any;
   createdBy?: Value[];
   dataDivider: Value;
-  id?: Value[];
+  id: Value;
   tsCreated?: Value[];
   type?: Value[];
   updated?: UpdatedGroup[];
@@ -73,7 +73,7 @@ interface UpdatedGroup {
   updatedBy: Value;
 }
 
-interface Value {
+export interface Value {
   value: string;
   [key: string]: any;
 }

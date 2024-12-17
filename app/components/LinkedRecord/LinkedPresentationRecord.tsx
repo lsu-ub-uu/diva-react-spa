@@ -78,6 +78,5 @@ export const LinkedRecord: FC<LinkedRecordProps> = (
   if (error) {
     return <div>{error}</div>;
   }
-
   return <>{record && <LinkedRecordForm record={record} />}</>;
 };

@@ -44,13 +44,30 @@ export const RecordLink = ({
 
   const hasValue = checkIfComponentHasValue(getValues, name);
   const { linkedData } = useContext(FormGeneratorContext);
-
+  //
+  // if (
+  //   !('linkedRecordPresentation' in component &&
+  //     component.linkedRecordPresentation !== undefined) && hasValue
+  // ) {
+  //   console.log({ component }, hasValue, { linkedData });
+  //   return (
+  //     <TextOrNumberVariable
+  //       reactKey={reactKey}
+  //       renderElementGridWrapper={renderElementGridWrapper}
+  //       component={component}
+  //       name={name}
+  //       parentPresentationStyle={parentPresentationStyle}
+  //     />
+  //   )
+  // }
+  console.log('1')
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&
     !hasValue &&
     !linkedData
   ) {
+  console.log('2')
     return (
       <RecordLinkWithSearch
         reactKey={reactKey}
@@ -61,10 +78,12 @@ export const RecordLink = ({
     );
   }
 
+  console.log('3')
   if (
     'linkedRecordPresentation' in component &&
     component.linkedRecordPresentation !== undefined
   ) {
+  console.log('4')
     return (
       <RecordLinkWithLinkedPresentation
         reactKey={reactKey}
@@ -75,14 +94,15 @@ export const RecordLink = ({
     );
   }
 
+  console.log('5')
   return (
-    <TextOrNumberVariable
-      reactKey={reactKey}
-      renderElementGridWrapper={renderElementGridWrapper}
-      component={component}
-      name={name}
-      parentPresentationStyle={parentPresentationStyle}
-    />
+      <TextOrNumberVariable
+        reactKey={reactKey}
+        renderElementGridWrapper={renderElementGridWrapper}
+        component={component}
+        name={name}
+        parentPresentationStyle={parentPresentationStyle}
+      />
   );
 };
 

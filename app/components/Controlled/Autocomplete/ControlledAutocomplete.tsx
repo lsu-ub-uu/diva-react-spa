@@ -30,7 +30,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import axios from 'axios';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import InfoIcon from '@mui/icons-material/Info';
 import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -141,7 +141,7 @@ export const ControlledAutocomplete = (
                       disableRipple
                       color='default'
                     >
-                      <HelpOutlineIcon />
+                      <InfoIcon />
                     </IconButton>
                   </Tooltip>
                 )}

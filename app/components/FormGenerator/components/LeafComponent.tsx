@@ -53,6 +53,7 @@ export const LeafComponent = ({
   actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
   if (isComponentTextVariable(component) || isComponentNumVar(component)) {
+
     return (
       <TextOrNumberVariable
         reactKey={reactKey}

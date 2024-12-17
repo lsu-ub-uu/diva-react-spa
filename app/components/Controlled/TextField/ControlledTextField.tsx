@@ -47,6 +47,7 @@ interface ControlledTextFieldProps {
   inputFormat?: 'password';
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
+  linkedDataToShow?: string;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
@@ -56,7 +57,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
   if (displayMode === 'output' && !props.hasValue) {
     return null;
   }
-
+  console.log('8', props.linkedDataToShow);
   return (
     <Controller
       control={props.control}
@@ -115,7 +116,6 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               {props.attributes}
               {props.actionButtonGroup}
             </Box>
-
             {displayMode === 'input' ? (
               <TextField
                 multiline={props.multiline ?? false}
@@ -127,6 +127,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 inputRef={field.ref}
                 onBlur={field.onBlur}
                 autoComplete='off'
+                value={props.linkedDataToShow}
                 placeholder={
                   props.placeholder !== undefined
                     ? (t(props.placeholder) as string)
@@ -150,7 +151,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               />
             ) : (
               <>
-                <span>{field.value}</span>
+                <span>{field.value || props.linkedDataToShow}</span>
                 <input
                   type='hidden'
                   value={field.value}
