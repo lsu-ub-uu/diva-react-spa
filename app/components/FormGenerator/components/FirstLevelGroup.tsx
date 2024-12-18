@@ -34,6 +34,8 @@ import type {
 } from '@/components/FormGenerator/types';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '@mui/icons-material/Info';
+import { useContext } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface FirstLevelGroupProps {
   currentComponentNamePath: string;
@@ -51,6 +53,7 @@ export const FirstLevelGroup = ({
   parentPresentationStyle,
 }: FirstLevelGroupProps) => {
   const { t } = useTranslation();
+  const { boxGroups } = useContext(FormGeneratorContext);
 
   return (
     <Grid
@@ -60,7 +63,7 @@ export const FirstLevelGroup = ({
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
       <DevInfo component={component} />
-      <Card boxed>
+      <Card boxed={boxGroups}>
         <CardHeader>
           {component.showLabel ? (
             <CardTitle>

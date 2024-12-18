@@ -28,14 +28,21 @@ import type { BFFDataRecord } from '@/types/record';
 interface FormGeneratorProps {
   formSchema: FormSchema;
   linkedData?: BFFDataRecord['data'];
+  boxGroups?: boolean;
 }
 
-export const FormGenerator = ({ linkedData, ...props }: FormGeneratorProps) => {
+export const FormGenerator = ({
+  linkedData,
+  boxGroups = false,
+  ...props
+}: FormGeneratorProps) => {
   const [showDevInfo, setShowDevInfo] = useState(false);
   return (
     <Box sx={{ position: 'relative' }}>
       <DevInfoButton onClick={() => setShowDevInfo(!showDevInfo)} />
-      <FormGeneratorContext.Provider value={{ linkedData, showDevInfo }}>
+      <FormGeneratorContext.Provider
+        value={{ linkedData, boxGroups, showDevInfo }}
+      >
         <Component
           component={props.formSchema.form}
           idx={0}

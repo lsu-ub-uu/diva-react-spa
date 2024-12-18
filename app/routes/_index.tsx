@@ -20,14 +20,19 @@ import { getSearchForm } from '@/.server/data/getSearchForm';
 import { getValidationTypes } from '@/.server/data/getValidationTypes';
 import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { defer } from '@remix-run/node';
-import { searchRecords } from '@/.server/data/searchRecords';
+import {
+  data,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from '@remix-run/node';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { useLoaderData } from '@remix-run/react';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { searchRecords } from '@/.server/data/searchRecords';
+import { isEmpty } from 'lodash-es';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -47,31 +52,23 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     'diva-outputSimpleSearch',
   );
 
-  const query = {
-    search: {
-      include: {
-        includePart: {
-          genericSearchTerm: [
-            {
-              value: '**',
-            },
-          ],
-        },
-      },
-    },
-  };
-  const recordList = searchRecords(
-    context.dependencies,
-    'diva-outputSearch',
-    query,
-    auth,
-  );
+  const query = parseFormDataFromSearchParams(request);
 
-  return defer(
+  const searchResults = !isEmpty(query)
+    ? await searchRecords(
+        context.dependencies,
+        'diva-outputSimpleSearch',
+        query,
+        auth,
+      )
+    : null;
+
+  return data(
     {
       validationTypes,
+      query,
       searchForm,
-      recordList,
+      searchResults,
       title,
       notification,
     },

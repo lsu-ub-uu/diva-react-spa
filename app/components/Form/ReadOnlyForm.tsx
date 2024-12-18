@@ -47,7 +47,10 @@ export const ReadOnlyForm = ({ record, formSchema }: RecordFormProps) => {
       }}
     >
       <RemixFormProvider {...methods}>
-        <FormGenerator formSchema={formSchema} />
+        <FormGenerator
+          formSchema={formSchema}
+          boxGroups
+        />
       </RemixFormProvider>
     </Box>
   );

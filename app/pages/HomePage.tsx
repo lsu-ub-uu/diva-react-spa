@@ -16,34 +16,68 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Alert, Stack } from '@mui/material';
+import { Alert, Box, Button, Skeleton, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import { AsidePortal } from '@/components/AsidePortal/AsidePortal';
-import { TabsMenu } from '@/components/TabsMenu/TabsMenu';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout';
+import { Suspense } from 'react';
+import { Await, useLoaderData } from '@remix-run/react';
+import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
+import type { loader } from '@/routes/_index';
+import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
+import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
+
+const searchType = 'diva-outputSimpleSearch';
 
 export const HomePage = () => {
   const { t } = useTranslation();
+  const { searchForm, validationTypes, searchResults, query } =
+    useLoaderData<typeof loader>();
 
   return (
-    <div>
-      <AsidePortal>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac
-          mattis metus. Quisque condimentum cursus egestas. Suspendisse tellus
-          dolor, euismod at dui a, ultrices tempor erat.
-        </p>
-      </AsidePortal>
+    <SidebarLayout sidebarContent={<p>Meddelanden kommer synas här</p>}>
       <Stack spacing={2}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Suspense
+            fallback={
+              <Skeleton>
+                <Button>Skapa</Button>
+              </Skeleton>
+            }
+          >
+            <Await
+              resolve={validationTypes}
+              errorElement={<AsyncErrorBoundary />}
+            >
+              {(validationTypes) => (
+                <CreateRecordMenu validationTypes={validationTypes} />
+              )}
+            </Await>
+          </Suspense>
+        </Box>
         <Alert
           icon={<PriorityHighIcon fontSize='inherit' />}
           severity='warning'
         >
           {t('divaClient_metadataWarningText')}
         </Alert>
-        <TabsMenu />
+        <Suspense fallback={<Skeleton height={296} />}>
+          <Await
+            resolve={searchForm}
+            errorElement={<AsyncErrorBoundary />}
+          >
+            {(searchForm) => (
+              <RecordSearch
+                searchForm={searchForm}
+                searchType={searchType}
+                query={query}
+                searchResults={searchResults}
+              />
+            )}
+          </Await>
+        </Suspense>
       </Stack>
-    </div>
+    </SidebarLayout>
   );
 };

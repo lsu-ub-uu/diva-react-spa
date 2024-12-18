@@ -71,7 +71,10 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
       onSubmit={handleSubmit}
     >
       <RemixFormProvider {...methods}>
-        <FormGenerator formSchema={formSchema} />
+        <FormGenerator
+          formSchema={formSchema}
+          boxGroups
+        />
       </RemixFormProvider>
 
       <AppBar

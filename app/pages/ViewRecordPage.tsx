@@ -26,9 +26,9 @@ import {
 } from '@/components/NavigationPanel/utils';
 import type { BFFDataRecord } from '@/types/record';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
-import { AsidePortal } from '@/components/AsidePortal/AsidePortal';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { ReadOnlyForm } from '@/components/Form/ReadOnlyForm';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout';
 
 interface ViewRecordPageProps {
   record: BFFDataRecord;
@@ -42,8 +42,8 @@ export const ViewRecordPage = ({
   const activeSection = useSectionScroller();
 
   return (
-    <>
-      <AsidePortal>
+    <SidebarLayout
+      sidebarContent={
         <NavigationPanel
           links={
             formDefinition
@@ -57,15 +57,14 @@ export const ViewRecordPage = ({
           }
           activeLinkName={activeSection}
         />
-      </AsidePortal>
-      <div>
-        <Stack spacing={2}>
-          <ReadOnlyForm
-            record={record}
-            formSchema={formDefinition}
-          />
-        </Stack>
-      </div>
-    </>
+      }
+    >
+      <Stack spacing={2}>
+        <ReadOnlyForm
+          record={record}
+          formSchema={formDefinition}
+        />
+      </Stack>
+    </SidebarLayout>
   );
 };

@@ -58,7 +58,7 @@ export const loader = async ({
     console.error(e);
   }
 
-  return { searchForm, searchResults };
+  return { searchForm, query, searchResults };
 };
 
 export default function SearchRoute() {

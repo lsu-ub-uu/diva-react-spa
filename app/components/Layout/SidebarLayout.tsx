@@ -16,40 +16,35 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-:root {
-  --border-radius: 8px;
+import { Grid2 as Grid } from '@mui/material';
+import type { ReactNode } from 'react';
 
-  --background-color: 255 255 255;
-
-  --primaryMain: 51 51 51;
-  --secondaryMain: 1 1 1;
-  --errorMain: 255 23 68;
-
-  --purpleLight: 117 89 142;
-  --purpleMain: 97 57 133;
-
-  --blueLight: 214 231 243;
-  --blueMain: 13 110 253;
-  --blueDark: 5 85 164;
-
-  --redLight: 238 220 219;
-  --redMain: 153 0 0;
-  --redDark: 115 0 0;
-
-  --greenLight: 217 234 219;
-  --greenMain: 0 112 15;
-
-  --grayLight: 250 249 248;
-  --grayMain: 231 227 222;
-  --grayDark: 155 138 122;
-
-  --yellowLight: 253 243 209;
-  --yellowMain: 246 194 68;
-
-  --beigeLight: 252, 248, 248;
-  --beigeMain: 238, 220, 219;
-
-  --labelColor: 0 0 0 / 60%;
-
-  --gap: 0.5rem;
+interface SidebarLayoutProps {
+  children?: ReactNode;
+  sidebarContent?: ReactNode;
 }
+
+export const SidebarLayout = ({
+  sidebarContent,
+  children,
+}: SidebarLayoutProps) => {
+  return (
+    <Grid
+      container
+      columnSpacing={{ md: 4 }}
+    >
+      <Grid
+        size={3}
+        display={{ xs: 'none', sm: 'none', md: 'block' }}
+      >
+        <aside>{sidebarContent}</aside>
+      </Grid>
+      <Grid
+        sx={{ paddingBottom: '64px' }}
+        size={9}
+      >
+        <main>{children}</main>
+      </Grid>
+    </Grid>
+  );
+};

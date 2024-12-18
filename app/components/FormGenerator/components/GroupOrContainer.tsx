@@ -57,7 +57,7 @@ export const GroupOrContainer = ({
   parentPresentationStyle,
   childWithNameInDataArray,
 }: GroupOrContainerProps) => {
-  const { linkedData } = useContext(FormGeneratorContext);
+  const { linkedData, boxGroups } = useContext(FormGeneratorContext);
   const groupLevel = getGroupLevel(currentComponentNamePath);
 
   if (
@@ -81,10 +81,9 @@ export const GroupOrContainer = ({
       size={12}
       sx={{
         display: 'flex',
-        flexDirection:
-          checkIfPresentationStyleIsInline(component) || linkedData
-            ? 'row'
-            : 'column',
+        flexDirection: checkIfPresentationStyleIsInline(component)
+          ? 'row'
+          : 'column',
         flexWrap: 'wrap',
         alignItems: checkIfPresentationStyleOrParentIsInline(
           component,
@@ -101,7 +100,7 @@ export const GroupOrContainer = ({
       }}
     >
       <DevInfo component={component} />
-      <Card boxed={groupLevel !== 0}>
+      <Card boxed={boxGroups && groupLevel !== 0}>
         {component?.showLabel &&
           (!linkedData ? (
             <CardHeader>

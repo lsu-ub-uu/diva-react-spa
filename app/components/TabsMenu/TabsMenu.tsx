@@ -21,7 +21,6 @@ import { useState } from 'react';
 import { Box, styled, Tab, Tabs } from '@mui/material';
 import { CreatePublicationCard } from '@/partials/cards/CreatePublicationCard';
 import { SearchPublicationCard } from '@/partials/cards/SearchPublicationCard';
-import { ListPublicationsCard } from '@/partials/cards/ListPublicationsCard';
 
 interface TabsMenuProps {
   children: React.ReactNode;
@@ -109,7 +108,7 @@ export const TabsMenu = () => {
         value={value}
         index={1}
       >
-        <ListPublicationsCard />
+        someOtherTab
       </TabPanel>
       <TabPanel
         value={value}

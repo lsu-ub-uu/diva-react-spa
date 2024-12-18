@@ -52,23 +52,8 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
             <Breadcrumbs />
           </Grid>
         </Grid>
-        <Grid
-          container
-          columnSpacing={{ md: 4 }}
-        >
-          <Grid
-            size={3}
-            display={{ xs: 'none', sm: 'none', md: 'block' }}
-          >
-            <aside id='sidebar-content' />
-          </Grid>
-          <Grid
-            sx={{ paddingBottom: '64px' }}
-            size={9}
-          >
-            <main>{children}</main>
-          </Grid>
-        </Grid>
+
+        {children}
       </Container>
     </>
   );
