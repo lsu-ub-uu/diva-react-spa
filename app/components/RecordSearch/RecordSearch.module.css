@@ -1,0 +1,12 @@
+.resultList {
+  list-style: none;
+  padding: 0;
+}
+.resultListItem {
+  position: relative;
+  display: block;
+  border-radius: var(--border-radius);
+  border: 2px solid rgb(var(--beigeMain));
+  background-color: rgb(var(--beigeLight));
+  margin-bottom: calc(var(--gap) * 2);
+}

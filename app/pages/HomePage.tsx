@@ -26,7 +26,7 @@ import { Await, useLoaderData } from '@remix-run/react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
 import type { loader } from '@/routes/_index';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
-import { RecordSearch } from '@/components/RecordSearch';
+import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 
 const SearchResultList = styled('ol')`
   list-style: none;

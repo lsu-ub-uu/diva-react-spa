@@ -19,10 +19,11 @@
 import type { SearchFormSchema } from '@/components/FormGenerator/types';
 import { SearchForm } from '@/components/Form/SearchForm';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
-import { Box, styled } from '@mui/material';
+import { Box } from '@mui/material';
 import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
 import type { BFFSearchResult } from '@/types/record';
 import { useTranslation } from 'react-i18next';
+import styles from './RecordSearch.module.css';
 
 interface RecordSearchProps {
   searchForm: SearchFormSchema;
@@ -30,21 +31,6 @@ interface RecordSearchProps {
   query: any;
   searchResults: BFFSearchResult | null;
 }
-
-const SearchResultList = styled('ol')`
-  list-style: none;
-  padding: 0;
-`;
-
-const SearchResultListItem = styled('li')(({ theme }) => ({
-  position: 'relative',
-  display: 'block',
-  borderRadius: 8,
-  border: '2px solid #eedcdb',
-  backgroundColor: '#fcf8f8',
-  boxShadow: theme.shadows[1],
-  marginBottom: theme.spacing(2),
-}));
 
 export const RecordSearch = ({
   searchForm,
@@ -55,6 +41,7 @@ export const RecordSearch = ({
   const { t } = useTranslation();
   return (
     <div>
+      <h2>{t('divaClient_searchRecordText')}</h2>
       <SearchForm
         formSchema={searchForm}
         searchType={searchType}
@@ -62,14 +49,17 @@ export const RecordSearch = ({
       />
       {searchResults && (
         <>
-          <h2>
+          <h3>
             {t('divaClient_searchPageResultText', {
               numberOfResults: searchResults?.totalNo,
             })}
-          </h2>
-          <SearchResultList>
+          </h3>
+          <ol className={styles.resultList}>
             {searchResults.data.map((record) => (
-              <SearchResultListItem key={record.id}>
+              <li
+                key={record.id}
+                className={styles.resultListItem}
+              >
                 <AutocompleteForm
                   record={record}
                   formSchema={record.presentation!}
@@ -84,9 +74,9 @@ export const RecordSearch = ({
                 >
                   <RecordActionButtons record={record} />
                 </Box>
-              </SearchResultListItem>
+              </li>
             ))}
-          </SearchResultList>
+          </ol>
         </>
       )}
     </div>

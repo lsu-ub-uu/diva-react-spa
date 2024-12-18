@@ -19,7 +19,7 @@
 import { useLoaderData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import type { loader } from '@/routes/search.$searchType';
-import { RecordSearch } from '@/components/RecordSearch';
+import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
 
 export const SearchPage = () => {
   const { searchForm, query, searchResults } = useLoaderData<typeof loader>();

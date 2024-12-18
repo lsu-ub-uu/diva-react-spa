@@ -47,7 +47,7 @@ export const CreateRecordMenu = ({
         ref={addButtonRef}
         onClick={() => setMenuOpen(true)}
       >
-        Skapa post
+        {t('divaClient_createRecordText')}
       </Button>
       <Menu
         open={menuOpen}

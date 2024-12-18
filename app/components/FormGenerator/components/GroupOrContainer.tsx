@@ -57,7 +57,7 @@ export const GroupOrContainer = ({
   parentPresentationStyle,
   childWithNameInDataArray,
 }: GroupOrContainerProps) => {
-  const { linkedData } = useContext(FormGeneratorContext);
+  const { linkedData, boxGroups } = useContext(FormGeneratorContext);
   const groupLevel = getGroupLevel(currentComponentNamePath);
 
   if (
@@ -100,7 +100,7 @@ export const GroupOrContainer = ({
       }}
     >
       <DevInfo component={component} />
-      <Card boxed={groupLevel !== 0}>
+      <Card boxed={boxGroups && groupLevel !== 0}>
         {component?.showLabel &&
           (!linkedData ? (
             <CardHeader>

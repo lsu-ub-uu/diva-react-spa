@@ -33,6 +33,8 @@ import { CardContent } from '@/components/Card/CardContent';
 import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
 import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
+import { useContext } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -51,6 +53,7 @@ export const RepeatingGroup = ({
 }: RepeatingGroupProps) => {
   const { control, getValues } = useRemixFormContext();
   const { t } = useTranslation();
+  const { boxGroups } = useContext(FormGeneratorContext);
 
   return (
     <FieldArrayComponent
@@ -70,7 +73,7 @@ export const RepeatingGroup = ({
         return (
           <Grid size={12}>
             <DevInfo component={component} />
-            <Card boxed>
+            <Card boxed={boxGroups}>
               <CardHeader>
                 {component.showLabel && (
                   <CardTitle>
