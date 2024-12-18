@@ -25,13 +25,7 @@ import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import {
-  Await,
-  Link as RouterLink,
-  useFetcher,
-  useLoaderData,
-} from '@remix-run/react';
-import type { loader } from '@/routes/_index';
+import { Await, Link as RouterLink, useFetcher } from '@remix-run/react';
 import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
 import { Suspense } from 'react';
 import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
@@ -40,7 +34,6 @@ import { getRecordTitle } from '@/utils/getRecordTitle';
 
 export const ListPublicationsCard = () => {
   const { t } = useTranslation();
-  const { recordList } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
 
   const columns: GridColDef<BFFDataRecord>[] = [
@@ -130,40 +123,7 @@ export const ListPublicationsCard = () => {
       tooltipTitle={t('divaClient_listPublicationsTooltipTitleText') as string}
       tooltipBody={t('divaClient_listPublicationsTooltipBodyText') as string}
     >
-      <div style={{ height: 600, width: '100%' }}>
-        <Suspense fallback={<Skeleton height={500} />}>
-          <Await
-            resolve={recordList}
-            errorElement={<AsyncErrorBoundary />}
-          >
-            {(recordList) => (
-              <DataGrid<BFFDataRecord>
-                sx={{
-                  '& .MuiDataGrid-cell:focus': {
-                    outline: 'none',
-                  },
-                  '& .MuiDataGrid-columnHeader:focus': {
-                    outline: 'none',
-                  },
-                  '& .MuiDataGrid-columnHeader:focus-within': {
-                    outline: 'none',
-                  },
-                }}
-                autoHeight
-                disableColumnMenu
-                disableColumnSelector
-                disableRowSelectionOnClick
-                rows={(recordList as BFFSearchResult).data}
-                columns={columns}
-                /* components={{
-                  NoRowsOverlay: () => <p>TODO: better no data message</p>,
-                }} */
-                hideFooter
-              />
-            )}
-          </Await>
-        </Suspense>
-      </div>
+      <div style={{ height: 600, width: '100%' }}></div>
     </LegacyCard>
   );
 };
