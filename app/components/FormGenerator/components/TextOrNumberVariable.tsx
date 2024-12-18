@@ -51,8 +51,12 @@ export const TextOrNumberVariable = ({
   actionButtonGroup,
 }: TextOrNumberVariableProps) => {
   const { getValues, control } = useRemixFormContext();
-
   const hasValue = checkIfComponentHasValue(getValues, name);
+
+  if (component.mode === 'output' && !hasValue) {
+    return null;
+  }
+
   return (
     <Grid
       key={reactKey}

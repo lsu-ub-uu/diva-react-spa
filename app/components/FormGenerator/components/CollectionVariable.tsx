@@ -22,7 +22,7 @@ import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledSelectField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface CollectionVariableProps {
@@ -44,7 +44,9 @@ export const CollectionVariable = ({
 }: CollectionVariableProps) => {
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
-
+  if (component.mode === 'output' && !hasValue) {
+    return null;
+  }
   return (
     <Grid
       key={reactKey}
