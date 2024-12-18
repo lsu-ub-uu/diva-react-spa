@@ -56,10 +56,7 @@ export const CollectionVariable = ({
         sm: renderElementGridWrapper ? component.gridColSpan : 12,
       }}
     >
-      <DevInfo
-        label='CollectionVariable'
-        component={component}
-      />
+      <DevInfo component={component} />
 
       <ControlledSelectField
         name={name}

@@ -49,10 +49,7 @@ export const RecordLinkWithLinkedPresentation = ({
             sm: renderElementGridWrapper ? component.gridColSpan : 12,
           }}
         >
-          <DevInfo
-            label='RecordLinkWithLinkedPresentation'
-            component={component}
-          />
+          <DevInfo component={component} />
 
           <ControlledLinkedRecord
             control={control}

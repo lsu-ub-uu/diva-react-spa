@@ -22,7 +22,6 @@ import { useContext, useEffect, useState } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 
 interface DevInfoProps {
-  label: string;
   component: FormComponent;
 }
 

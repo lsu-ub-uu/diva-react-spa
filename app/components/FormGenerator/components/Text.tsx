@@ -51,10 +51,7 @@ export const Text = ({
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo
-        label='Text'
-        component={component}
-      />
+      <DevInfo component={component} />
 
       <Typography
         variant={component.textStyle ?? 'bodyTextStyle'}

@@ -169,7 +169,7 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
                 <>
                   <Box
                     component='span'
-                    sx={{ pl: 2 }}
+                    sx={{ pl: 2, mb: 1 }}
                   >
                     {t(findOptionLabelByValue(props.options, value))}
                   </Box>

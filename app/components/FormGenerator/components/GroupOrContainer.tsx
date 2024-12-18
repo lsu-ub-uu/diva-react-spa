@@ -99,12 +99,8 @@ export const GroupOrContainer = ({
           : null,
       }}
     >
+      <DevInfo component={component} />
       <Card boxed={groupLevel !== 0}>
-        <DevInfo
-          label='GroupOrContainer'
-          component={component}
-        />
-
         {component?.showLabel &&
           (!linkedData ? (
             <CardHeader>

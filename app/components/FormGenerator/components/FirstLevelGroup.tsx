@@ -59,12 +59,8 @@ export const FirstLevelGroup = ({
       className='anchorLink'
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
+      <DevInfo component={component} />
       <Card boxed>
-        <DevInfo
-          label='GroupOrContainer (first level)'
-          component={component}
-        />
-
         <CardHeader>
           {component.showLabel ? (
             <CardTitle>

@@ -26,10 +26,10 @@ import {
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ControlledTextField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
 import type { ReactNode } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { ControlledTextField } from '@/components/Controlled';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -72,10 +72,7 @@ export const TextOrNumberVariable = ({
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
-      <DevInfo
-        label='TextOrNumberVariable'
-        component={component}
-      />
+      <DevInfo component={component} />
 
       <ControlledTextField
         multiline={

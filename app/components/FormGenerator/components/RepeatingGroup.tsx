@@ -32,6 +32,7 @@ import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { CardContent } from '@/components/Card/CardContent';
 import InfoIcon from '@mui/icons-material/Info';
 import { useTranslation } from 'react-i18next';
+import { cleanFormData, hasOnlyAttributes } from '@/utils/cleanFormData';
 
 interface RepeatingGroupProps {
   currentComponentNamePath: string;
@@ -58,14 +59,18 @@ export const RepeatingGroup = ({
       component={component}
       name={currentComponentNamePath}
       renderCallback={(arrayPath, actionButtonGroup) => {
+        const hasNoValues = hasOnlyAttributes(
+          cleanFormData(getValues(arrayPath)),
+        );
+
+        if (component.mode === 'output' && hasNoValues) {
+          return null;
+        }
+
         return (
           <Grid size={12}>
+            <DevInfo component={component} />
             <Card boxed>
-              <DevInfo
-                label='FieldArray group'
-                component={component}
-              />
-
               <CardHeader>
                 {component.showLabel && (
                   <CardTitle>
