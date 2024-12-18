@@ -23,7 +23,6 @@ import { SearchPage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
 import { invariant } from '@remix-run/router/history';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
@@ -59,7 +58,7 @@ export const loader = async ({
     console.error(e);
   }
 
-  return json({ searchForm, searchResults });
+  return { searchForm, searchResults };
 };
 
 export default function SearchRoute() {

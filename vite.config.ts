@@ -2,6 +2,13 @@ import { defineConfig } from 'vite';
 import { vitePlugin as remix } from '@remix-run/dev';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+declare module '@remix-run/server-runtime' {
+  // or cloudflare, deno, etc.
+  interface Future {
+    v3_singleFetch: true;
+  }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const { BASE_PATH } = process.env;
@@ -17,7 +24,7 @@ export default defineConfig(({ mode }) => {
             v3_fetcherPersist: true,
             v3_relativeSplatPath: true,
             v3_throwAbortReason: true,
-            // v3_singleFetch: true,
+            v3_singleFetch: true,
             v3_lazyRouteDiscovery: true,
           },
         }),
