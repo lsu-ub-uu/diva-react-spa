@@ -17,11 +17,9 @@
  */
 
 import { FormProvider, useForm } from 'react-hook-form';
-import type { RecordData } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
-import type { FormSchema } from '@/components/FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
 
@@ -36,20 +34,15 @@ export const LinkedRecordForm = ({ record }: LinkedRecordFormProps) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues: createDefaultValuesFromFormSchema(
-      formSchema as FormSchema,
-      record.data as RecordData,
-    ),
-    resolver: yupResolver(
-      generateYupSchemaFromFormSchema(formSchema as FormSchema),
-    ),
+    defaultValues: createDefaultValuesFromFormSchema(formSchema, record.data),
+    resolver: yupResolver(generateYupSchemaFromFormSchema(formSchema)),
   });
 
   return (
     formSchema?.form && (
       <FormProvider {...methods}>
         <FormGenerator
-          formSchema={record.presentation!}
+          formSchema={formSchema}
           linkedData={record.data}
         />
       </FormProvider>
