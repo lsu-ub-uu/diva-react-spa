@@ -165,10 +165,10 @@ export const isComponentGroupAndOptional = (component: FormComponent) => {
 
 export const checkIfComponentHasValue = (
   getValues: UseFormGetValues<FieldValues>,
-  componentValue: string,
+  componentName: string,
 ) => {
   return (
-    getValues(componentValue) !== '' && getValues(componentValue) !== undefined
+    getValues(componentName) !== '' && getValues(componentName) !== undefined
   );
 };
 

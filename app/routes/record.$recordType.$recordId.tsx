@@ -16,42 +16,40 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { ActionFunctionArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { deleteRecord } from '@/.server/data/deleteRecord';
+import { type LoaderFunctionArgs } from '@remix-run/node';
+import { invariant } from '@remix-run/router/history';
+import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
 import {
-  commitSession,
   getSessionFromCookie,
   requireAuthentication,
 } from '@/.server/sessions';
-import { invariant } from '@remix-run/router/history';
 
-export const action = async ({
+export const loader = async ({
   request,
   params,
   context,
-}: ActionFunctionArgs) => {
-  const { recordType, recordId } = params;
-
-  invariant(recordType, 'Missing recordType param');
-  invariant(recordId, 'Missing recordId param');
-
+}: LoaderFunctionArgs) => {
   const session = await getSessionFromCookie(request);
   const auth = await requireAuthentication(session);
 
-  await deleteRecord(context.dependencies, recordType, recordId, auth);
+  const { recordType, recordId } = params;
+  invariant(recordType, 'Missing recordType param');
+  invariant(recordId, 'Missing recordId param');
 
-  session.flash('notification', {
-    severity: 'success',
-    summary: 'Successfully deleted record',
+  const url = new URL(request.url);
+
+  const presentationRecordLinkId = url.searchParams.get(
+    'presentationRecordLinkId',
+  );
+  invariant(presentationRecordLinkId, 'Missing presentationRecordLinkId param');
+
+  const record = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
+    recordType,
+    recordId,
+    authToken: auth.data.token,
+    presentationRecordLinkId,
   });
 
-  return json(
-    {},
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
-  );
+  return Response.json(record);
 };

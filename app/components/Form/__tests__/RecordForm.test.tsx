@@ -151,11 +151,9 @@ describe('<Form />', () => {
             data: {
               nationalSubjectCategory: {
                 recordInfo: {
-                  id: [
-                    {
-                      value: '12345',
-                    },
-                  ],
+                  id: {
+                    value: '12345',
+                  },
                   validationType: {
                     value: 'record',
                   },
@@ -419,11 +417,9 @@ describe('<Form />', () => {
             data: {
               nationalSubjectCategory: {
                 recordInfo: {
-                  id: [
-                    {
-                      value: '12345',
-                    },
-                  ],
+                  id: {
+                    value: '12345',
+                  },
                   validationType: {
                     value: 'record',
                   },
@@ -621,11 +617,9 @@ describe('<Form />', () => {
             data: {
               someRootNameInData: {
                 recordInfo: {
-                  id: [
-                    {
-                      value: '12345',
-                    },
-                  ],
+                  id: {
+                    value: '12345',
+                  },
                   validationType: {
                     value: 'record',
                   },
@@ -1006,11 +1000,10 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
+
               validationType: {
                 value: 'record',
               },
@@ -1071,11 +1064,9 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
               validationType: {
                 value: 'record',
               },
@@ -1236,11 +1227,9 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
               validationType: {
                 value: 'record',
               },
@@ -1301,11 +1290,9 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
               validationType: {
                 value: 'record',
               },
@@ -1660,11 +1647,9 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
               validationType: {
                 value: 'record',
               },
@@ -1725,11 +1710,10 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
+
               validationType: {
                 value: 'record',
               },
@@ -2573,11 +2557,9 @@ describe('<Form />', () => {
         data: {
           divaOutput: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
               validationType: {
                 value: 'record',
               },
@@ -2786,11 +2768,10 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
+
               validationType: {
                 value: 'record',
               },
@@ -2853,11 +2834,10 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
+
               validationType: {
                 value: 'record',
               },
@@ -2920,11 +2900,9 @@ describe('<Form />', () => {
         data: {
           someRootNameInData: {
             recordInfo: {
-              id: [
-                {
-                  value: '12345',
-                },
-              ],
+              id: {
+                value: '12345',
+              },
               validationType: {
                 value: 'record',
               },

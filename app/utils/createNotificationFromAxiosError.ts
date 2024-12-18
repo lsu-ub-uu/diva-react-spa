@@ -16,15 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createContext } from 'react';
-import type { BFFDataRecord } from '@/types/record';
+import { isAxiosError } from 'axios';
+import type { Notification } from '@/.server/sessions';
 
-export interface FormGeneratorContextType {
-  linkedData?: BFFDataRecord['data'];
-  showDevInfo: boolean;
-}
+export const createNotificationFromAxiosError = (
+  error: unknown,
+): Notification => {
+  console.error(error);
+  const errorMessage = isAxiosError(error)
+    ? `${error.message}`
+    : error instanceof Error
+      ? error.message
+      : '';
 
-export const FormGeneratorContext = createContext<FormGeneratorContextType>({
-  linkedData: undefined,
-  showDevInfo: false,
-});
+  const errorDetails = isAxiosError(error) ? `${error.response?.data}` : '';
+  return {
+    severity: 'error',
+    summary: errorMessage,
+    details: errorDetails,
+  };
+};

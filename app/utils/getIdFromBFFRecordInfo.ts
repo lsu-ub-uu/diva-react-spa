@@ -14,17 +14,21 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
+ *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { createContext } from 'react';
-import type { BFFDataRecord } from '@/types/record';
+import type { Metadata } from '@/types/record';
 
-export interface FormGeneratorContextType {
-  linkedData?: BFFDataRecord['data'];
-  showDevInfo: boolean;
+interface GetIdFromBFFRecordInfoProps {
+  [key: string]: Metadata;
 }
 
-export const FormGeneratorContext = createContext<FormGeneratorContextType>({
-  linkedData: undefined,
-  showDevInfo: false,
-});
+export const getIdFromBFFRecordInfo = (
+  record: GetIdFromBFFRecordInfoProps | undefined,
+): string | undefined => {
+  if (record === undefined) {
+    return undefined;
+  }
+  const root = record[Object.keys(record)[0]];
+  return root?.recordInfo?.id?.value;
+};

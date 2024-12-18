@@ -17,8 +17,8 @@
  */
 
 import type { FormComponent } from '@/components/FormGenerator/types';
+
 import {
-  checkIfComponentHasValue,
   isComponentCollVar,
   isComponentGuiElement,
   isComponentNumVar,
@@ -27,12 +27,10 @@ import {
   isComponentTextVariable,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
-import { RecordLinkWithSearch } from '@/components/FormGenerator/components/RecordLinkWithSearch';
-import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { CollectionVariable } from '@/components/FormGenerator/components/CollectionVariable';
 import { Text } from '@/components/FormGenerator/components/Text';
 import { GuiElementLink } from '@/components/FormGenerator/components/GuiElementLink';
-import { useRemixFormContext } from 'remix-hook-form';
+import { RecordLink } from '@/components/FormGenerator/components/RecordLink';
 import type { ReactNode } from 'react';
 
 interface LeafComponentProps {
@@ -54,7 +52,6 @@ export const LeafComponent = ({
   attributes,
   actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
-  const { getValues } = useRemixFormContext();
 
   if (isComponentTextVariable(component) || isComponentNumVar(component)) {
     return (
@@ -71,46 +68,12 @@ export const LeafComponent = ({
   }
 
   if (isComponentRecordLink(component)) {
-    const hasValue = checkIfComponentHasValue(getValues, name);
-
-    if (
-      checkIfComponentContainsSearchId(component) &&
-      component.mode === 'input' &&
-      !hasValue
-    ) {
-      return (
-        <RecordLinkWithSearch
-          reactKey={reactKey}
-          renderElementGridWrapper={renderElementGridWrapper}
-          component={component}
-          name={name}
-          attributes={attributes}
-          actionButtonGroup={actionButtonGroup}
-        />
-      );
-    }
-
-    if (
-      'linkedRecordPresentation' in component &&
-      component.linkedRecordPresentation !== undefined
-    ) {
-      return (
-        <RecordLinkWithLinkedPresentation
-          reactKey={reactKey}
-          renderElementGridWrapper={renderElementGridWrapper}
-          component={component}
-          name={name}
-        />
-      );
-    }
-
     return (
-      <TextOrNumberVariable
+      <RecordLink
+        name={name}
+        component={component}
         reactKey={reactKey}
         renderElementGridWrapper={renderElementGridWrapper}
-        component={component}
-        name={name}
-        parentPresentationStyle={parentPresentationStyle}
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
       />
@@ -150,8 +113,4 @@ export const LeafComponent = ({
   }
 
   return null;
-};
-
-const checkIfComponentContainsSearchId = (component: FormComponent) => {
-  return 'search' in component ? component.search !== undefined : undefined;
 };

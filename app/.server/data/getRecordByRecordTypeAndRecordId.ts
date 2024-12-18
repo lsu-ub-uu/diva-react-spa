@@ -24,13 +24,21 @@ import { getRecordDataById } from '@/.server/cora/getRecordDataById';
 import type * as TYPES from '@/.server/cora/transform/bffTypes';
 import type { BFFPresentationGroup } from '@/.server/cora/transform/bffTypes';
 
-export const getRecordByRecordTypeAndRecordId = async (
-  dependencies: Dependencies,
-  recordType: string,
-  recordId: string,
-  authToken: string,
-  presentationRecordLinkId?: string,
-) => {
+interface GetRecordByRecordTypeAndRecordIdArgs {
+  dependencies: Dependencies;
+  recordType: string;
+  recordId: string;
+  authToken: string;
+  presentationRecordLinkId?: string;
+}
+
+export const getRecordByRecordTypeAndRecordId = async ({
+  dependencies,
+  recordType,
+  recordId,
+  authToken,
+  presentationRecordLinkId,
+}: GetRecordByRecordTypeAndRecordIdArgs) => {
   const response = await getRecordDataById<RecordWrapper>(
     recordType,
     recordId,
@@ -39,9 +47,12 @@ export const getRecordByRecordTypeAndRecordId = async (
   const recordWrapper = response.data;
   const record = transformRecord(dependencies, recordWrapper);
 
+  // Vi vill visa förlag X, men baka också in en formDefinition för publisherPLink
+
   if (presentationRecordLinkId !== undefined) {
     const { presentationGroup, metadataGroup } =
       getGroupsFromPresentationLinkId(dependencies, presentationRecordLinkId);
+
     record.presentation = createLinkedRecordDefinition(
       dependencies,
       metadataGroup,
@@ -50,11 +61,18 @@ export const getRecordByRecordTypeAndRecordId = async (
     const listPresentationGroup = dependencies.presentationPool.get(
       dependencies.recordTypePool.get(recordType).listPresentationViewId,
     ) as BFFPresentationGroup;
-    record.listPresentation = createLinkedRecordDefinition(
-      dependencies,
-      metadataGroup,
-      listPresentationGroup as BFFPresentationGroup,
-    );
+    try {
+      record.listPresentation = createLinkedRecordDefinition(
+        dependencies,
+        metadataGroup,
+        listPresentationGroup as BFFPresentationGroup,
+      );
+    } catch (error) {
+      console.error(
+        `Failed to create list presentation for presentationRecordLinkId ${presentationRecordLinkId}`,
+        error,
+      );
+    }
   }
 
   return record;

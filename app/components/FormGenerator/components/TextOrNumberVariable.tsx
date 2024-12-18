@@ -27,9 +27,11 @@ import {
 import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { useRemixFormContext } from 'remix-hook-form';
-import type { ReactNode } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { ControlledTextField } from '@/components/Controlled';
+import { type ReactNode, useContext } from 'react';
+import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import { getIdFromBFFRecordInfo } from '@/utils/getIdFromBFFRecordInfo';
 
 interface TextOrNumberVariableProps {
   reactKey: string;
@@ -51,11 +53,14 @@ export const TextOrNumberVariable = ({
   actionButtonGroup,
 }: TextOrNumberVariableProps) => {
   const { getValues, control } = useRemixFormContext();
+  const { linkedData } = useContext(FormGeneratorContext);
   const hasValue = checkIfComponentHasValue(getValues, name);
 
   if (component.mode === 'output' && !hasValue) {
     return null;
   }
+
+  const linkedDataToShow = getIdFromBFFRecordInfo(linkedData);
 
   return (
     <Grid
@@ -95,6 +100,7 @@ export const TextOrNumberVariable = ({
         }
         attributes={attributes}
         actionButtonGroup={actionButtonGroup}
+        linkedDataToShow={linkedDataToShow ?? undefined}
       />
     </Grid>
   );

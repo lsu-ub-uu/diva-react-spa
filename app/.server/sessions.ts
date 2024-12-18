@@ -25,9 +25,14 @@ type SessionData = {
   auth: Auth;
 };
 
+export type Notification = {
+  severity: 'success' | 'error';
+  summary: string;
+  details?: string;
+};
+
 type SessionFlashData = {
-  success: string;
-  error: string;
+  notification: Notification;
 };
 
 const { getSession, commitSession, destroySession } =

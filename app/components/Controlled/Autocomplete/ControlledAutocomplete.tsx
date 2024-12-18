@@ -21,8 +21,7 @@ import { type ReactNode, useEffect, useState } from 'react';
 
 import {
   Autocomplete as MuiAutocomplete,
-  Box,
-  FormControl,
+ Box, FormControl,
   FormLabel,
   IconButton,
   TextField,
@@ -31,7 +30,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import axios from 'axios';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import InfoIcon from '@mui/icons-material/Info';
 import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -73,14 +72,14 @@ export const ControlledAutocomplete = (
 
     const fetchData = async () => {
       try {
-        if (inputValue === '') {
+        if (inputValue === '' || inputValue.length < 2) {
           return undefined;
         }
         if (inputValue === presentationValue?.id) {
           return undefined;
         }
         const response = await axios.get(
-          `/autocompleteSearch?searchType=${props.searchLink}&searchTermValue=${inputValue}`,
+          `${import.meta.env.BASE_URL}autocompleteSearch?searchType=${props.searchLink}&searchTermValue=${inputValue}`,
         );
 
         if (isMounted) {
@@ -142,7 +141,7 @@ export const ControlledAutocomplete = (
                       disableRipple
                       color='default'
                     >
-                      <HelpOutlineIcon />
+                      <InfoIcon />
                     </IconButton>
                   </Tooltip>
                 )}

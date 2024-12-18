@@ -7,8 +7,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
-import type { VariantType } from 'notistack';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { loginWithAppToken } from '@/.server/data/loginWithAppToken';
 import { loginWithUsernameAndPassword } from '@/.server/data/loginWithUsernameAndPassword';
@@ -16,6 +14,7 @@ import type { Auth } from '@/types/Auth';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import { useSnackbar } from 'notistack';
 
 const parsePresentation = (searchParam: string | null) => {
   if (searchParam === null) {
@@ -42,7 +41,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return redirect(returnTo ?? '/');
   }
 
-  const data = { presentation, error: session.get('error'), returnTo };
+  const data = {
+    presentation,
+    notification: session.get('notification'),
+    returnTo,
+  };
   return json(data, {
     headers: {
       'Set-Cookie': await commitSession(session),
@@ -82,7 +85,10 @@ export const action: ActionFunction = async ({ request }) => {
   const auth = await authenticate(form);
 
   if (auth === null) {
-    session.flash('error', 'Invalid credentials');
+    session.flash('notification', {
+      severity: 'error',
+      summary: 'Invalid credentials',
+    });
 
     // Redirect back to the login page with errors.
     return redirect(
@@ -106,16 +112,12 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Login() {
-  const { error, presentation, returnTo } = useLoaderData<typeof loader>();
+  const { notification, presentation, returnTo } =
+    useLoaderData<typeof loader>();
   const submit = useSubmit();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
-  const notification = (message: string, variant: VariantType) => {
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    });
-  };
+
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -127,14 +129,20 @@ export default function Login() {
 
   return (
     <div>
-      {error ? <Alert severity='error'>{error}</Alert> : null}
+      {notification && notification.severity === 'error' ? (
+        <Alert severity='error'>{notification.summary}</Alert>
+      ) : null}
       <Form
         method='POST'
         onSubmit={handleSubmit(
           (_values, event) => {
             submit(event!.target);
           },
-          () => notification(t('divaClient_validationErrorsText'), 'error'),
+          () =>
+            enqueueSnackbar(t('divaClient_validationErrorsText'), {
+              variant: 'error',
+              anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            }),
         )}
       >
         <input

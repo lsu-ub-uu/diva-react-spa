@@ -16,15 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { createContext } from 'react';
-import type { BFFDataRecord } from '@/types/record';
+import { useEffect } from 'react';
+import { enqueueSnackbar } from 'notistack';
+import { useNavigation } from '@remix-run/react';
+import type { Notification } from '@/.server/sessions';
 
-export interface FormGeneratorContextType {
-  linkedData?: BFFDataRecord['data'];
-  showDevInfo: boolean;
-}
+export const useNotificationSnackbar = (
+  notification: Notification | undefined,
+) => {
+  const navigation = useNavigation();
 
-export const FormGeneratorContext = createContext<FormGeneratorContextType>({
-  linkedData: undefined,
-  showDevInfo: false,
-});
+  useEffect(() => {
+    if (notification && navigation.state === 'idle') {
+      enqueueSnackbar(notification.summary, {
+        variant: notification.severity,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        preventDuplicate: true,
+      });
+    }
+  }, [notification, navigation.state]);
+};

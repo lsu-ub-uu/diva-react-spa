@@ -31,11 +31,9 @@ export const coraRecord: BFFDataRecord = {
   data: {
     someRootNameInData: {
       recordInfo: {
-        id: [
-          {
-            value: '12345',
-          },
-        ],
+        id: {
+          value: '12345',
+        },
         validationType: {
           value: 'record',
         },
@@ -269,11 +267,9 @@ export const authorRecord: BFFDataRecord = {
   data: {
     divaOutput: {
       recordInfo: {
-        id: [
-          {
-            value: '12345',
-          },
-        ],
+        id: {
+          value: '12345',
+        },
         validationType: {
           value: 'author',
         },

@@ -53,7 +53,7 @@ export const LinkedRecordForm = ({ record }: LinkedRecordFormProps) => {
       <FormProvider {...methods}>
         <FormGenerator
           formSchema={record.presentation as FormSchema}
-          linkedData
+          linkedData={record.data}
         />
       </FormProvider>
     )

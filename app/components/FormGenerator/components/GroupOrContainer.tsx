@@ -33,6 +33,7 @@ import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
+import type { BFFDataRecord } from '@/types/record';
 import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
@@ -152,7 +153,7 @@ export const GroupOrContainer = ({
 
 const isComponentFirstLevelAndNOTLinkedData = (
   currentComponentNamePath: string,
-  linkedData: boolean | undefined,
+  linkedData: BFFDataRecord['data'] | undefined,
 ) => {
   return isFirstLevelGroup(currentComponentNamePath) && !linkedData;
 };

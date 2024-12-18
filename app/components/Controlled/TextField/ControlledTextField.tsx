@@ -47,16 +47,17 @@ interface ControlledTextFieldProps {
   inputFormat?: 'password';
   attributes?: ReactNode;
   actionButtonGroup?: ReactNode;
+  linkedDataToShow?: string;
 }
 
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode = props.displayMode ?? 'input';
+  const showLabel = !props.linkedDataToShow && props.showLabel;
 
   if (displayMode === 'output' && !props.hasValue) {
     return null;
   }
-
   return (
     <Controller
       control={props.control}
@@ -80,7 +81,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 alignItems: 'center',
               }}
             >
-              {props.showLabel ? (
+              {showLabel ? (
                 <FormLabel
                   htmlFor={field.name}
                   aria-label={props.label}
@@ -115,7 +116,6 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               {props.attributes}
               {props.actionButtonGroup}
             </Box>
-
             {displayMode === 'input' ? (
               <TextField
                 multiline={props.multiline ?? false}
@@ -132,6 +132,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                     ? (t(props.placeholder) as string)
                     : ''
                 }
+                value={props.linkedDataToShow ?? fieldWithoutRef.value}
                 fullWidth
                 variant='outlined'
                 helperText={error !== undefined ? error.message : ' '}
@@ -154,7 +155,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                   component='span'
                   sx={{ pl: 2, mb: 1 }}
                 >
-                  {field.value}
+                  {field.value || props.linkedDataToShow}
                 </Box>
                 <input
                   type='hidden'

@@ -45,12 +45,12 @@ export const loader = async ({
   const { recordType, recordId } = params;
   invariant(recordType, 'Missing recordType param');
   invariant(recordId, 'Missing recordId param');
-  const record = await getRecordByRecordTypeAndRecordId(
-    context.dependencies,
+  const record = await getRecordByRecordTypeAndRecordId({
+    dependencies: context.dependencies,
     recordType,
     recordId,
-    auth.data.token,
-  );
+    authToken: auth.data.token,
+  });
   const title = `${getRecordTitle(record)} | DiVA`;
 
   invariant(record.validationType, 'Record has no validation type');
