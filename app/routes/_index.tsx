@@ -25,6 +25,9 @@ import { defer } from '@remix-run/node';
 import { searchRecords } from '@/.server/data/searchRecords';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
+import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
+import { useLoaderData } from '@remix-run/react';
+import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -36,6 +39,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const validationTypes = auth
     ? getValidationTypes(auth.data.token)
     : Promise.resolve(null);
+
+  const notification = session.get('notification');
 
   const searchForm = getSearchForm(
     context.dependencies,
@@ -62,7 +67,16 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     auth,
   );
 
-  return defer({ validationTypes, searchForm, recordList, title });
+  return defer(
+    {
+      validationTypes,
+      searchForm,
+      recordList,
+      title,
+      notification,
+    },
+    await getResponseInitWithSession(session),
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -70,5 +84,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function IndexRoute() {
+  const { notification } = useLoaderData<typeof loader>();
+  useNotificationSnackbar(notification);
   return <HomePage />;
 }

@@ -47,11 +47,9 @@ const mockOptions: BFFDataRecord[] = [
     data: {
       nationalSubjectCategory: {
         recordInfo: {
-          id: [
-            {
-              value: '12345',
-            },
-          ],
+          id: {
+            value: '12345',
+          },
           validationType: {
             value: 'nationalSubjectCategory',
           },
@@ -369,11 +367,9 @@ const mockOptions: BFFDataRecord[] = [
     data: {
       nationalSubjectCategory: {
         recordInfo: {
-          id: [
-            {
-              value: '12345',
-            },
-          ],
+          id: {
+            value: '12345',
+          },
           validationType: {
             value: 'nationalSubjectCategory',
           },

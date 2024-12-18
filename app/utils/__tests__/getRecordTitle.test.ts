@@ -120,11 +120,9 @@ const recordInfo: RecordInfo = {
   dataDivider: {
     value: 'divaData',
   },
-  id: [
-    {
-      value: 'diva-output:10211259349608221',
-    },
-  ],
+  id: {
+    value: 'diva-output:10211259349608221',
+  },
   type: [
     {
       value: 'diva-output',

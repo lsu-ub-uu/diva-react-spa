@@ -120,6 +120,7 @@ export const createBFFDivaOutput: BFFDataRecord = {
         _type: 'outputType',
       },
       recordInfo: {
+        id: { value: '123' },
         validationType: { value: 'diva-output' },
         dataDivider: { value: 'divaData' },
       },
