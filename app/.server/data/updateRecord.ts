@@ -21,7 +21,10 @@ import type { Auth } from '@/types/Auth';
 import { createFormMetaData } from '@/.server/data/formDefinition/formMetadata';
 import { createFormMetaDataPathLookup } from '@/utils/structs/metadataPathLookup';
 import { transformToCoraData } from '@/.server/cora/transform/transformToCora';
-import type { DataGroup, RecordWrapper } from '@/.server/cora/cora-data/CoraData';
+import type {
+  DataGroup,
+  RecordWrapper,
+} from '@/.server/cora/cora-data/CoraData';
 import { transformRecord } from '@/.server/cora/transform/transformRecord';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 import { updateRecordDataById } from '@/.server/cora/updateRecordDataById';
@@ -58,7 +61,5 @@ export const updateRecord = async (
     auth.data.token,
   );
 
-  const record = transformRecord(dependencies, response.data);
-
-  return record as BFFDataRecord;
+  return transformRecord(dependencies, response.data);
 };

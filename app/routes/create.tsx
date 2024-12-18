@@ -17,7 +17,7 @@
  */
 
 import { invariant } from '@remix-run/router/history';
-import { type ActionFunctionArgs, json } from '@remix-run/node';
+import { type ActionFunctionArgs, data } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import CreateRecordPage from '@/pages/CreateRecordPage';
 import { getRecordByValidationTypeId } from '@/.server/data/getRecordByValidationTypeId';
@@ -61,17 +61,17 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   const resolver = yupResolver(yupSchema);
   const {
     errors,
-    data,
+    data: validatedFormData,
     receivedValues: defaultValues,
   } = await getValidatedFormData(request, resolver);
   if (errors) {
-    return json({ errors, defaultValues });
+    return { errors, defaultValues };
   }
   try {
     const { recordType, id } = await createRecord(
       context.dependencies,
       formDefinition,
-      data as unknown as BFFDataRecord,
+      validatedFormData as unknown as BFFDataRecord,
       auth,
     );
     session.flash('notification', {
@@ -84,7 +84,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
 
     session.flash('notification', createNotificationFromAxiosError(error));
 
-    return json(null, await getResponseInitWithSession(session));
+    return data({}, await getResponseInitWithSession(session));
   }
 };
 
@@ -104,7 +104,7 @@ export const loader = async ({ request, context }: ActionFunctionArgs) => {
     validationTypeId,
     'create',
   );
-  return json(
+  return data(
     { record, formDefinition, notification },
     await getResponseInitWithSession(session),
   );

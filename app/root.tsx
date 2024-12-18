@@ -24,14 +24,13 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from '@remix-run/react';
-import type {
-  ActionFunctionArgs,
-  LinksFunction,
-  LoaderFunctionArgs} from '@remix-run/node';
 import {
-  json
+  type ActionFunctionArgs,
+  data,
+  type LinksFunction,
+  type LoaderFunctionArgs,
 } from '@remix-run/node';
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { divaTheme } from '@/mui/theme';
@@ -66,14 +65,14 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   const loginUnits = getLoginUnits(context.dependencies);
   const locale = context.i18n.language;
-  return json({ auth, locale, loginUnits });
+  return { auth, locale, loginUnits };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const language = formData.get('language');
   if (typeof language === 'string') {
-    return json(
+    return data(
       {},
       {
         headers: {

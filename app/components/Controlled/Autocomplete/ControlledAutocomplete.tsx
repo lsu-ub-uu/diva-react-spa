@@ -21,7 +21,8 @@ import { type ReactNode, useEffect, useState } from 'react';
 
 import {
   Autocomplete as MuiAutocomplete,
- Box, FormControl,
+  Box,
+  FormControl,
   FormLabel,
   IconButton,
   TextField,
@@ -34,7 +35,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import type { Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import type { FormSchema } from '../../FormGenerator/types';
 import type { BFFDataRecord } from '@/types/record';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { LinkedRecord } from '@/components/LinkedRecord/LinkedPresentationRecord';
@@ -201,7 +201,7 @@ export const ControlledAutocomplete = (
                   >
                     <AutocompleteForm
                       record={option}
-                      formSchema={option.presentation as FormSchema}
+                      formSchema={option.presentation!}
                     />
                   </li>
                 );

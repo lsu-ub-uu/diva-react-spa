@@ -17,7 +17,6 @@
  */
 
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
 import { createTextDefinition } from '@/.server/data/textDefinition/textDefinition';
 import { invariant } from '@remix-run/router/history';
 
@@ -25,5 +24,5 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   const { lang } = params;
   invariant(lang, 'Missing param lang');
 
-  return json(createTextDefinition(context.dependencies, lang));
+  return Response.json(createTextDefinition(context.dependencies, lang));
 };
