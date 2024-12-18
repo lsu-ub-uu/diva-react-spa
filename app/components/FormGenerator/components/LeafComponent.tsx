@@ -55,6 +55,7 @@ export const LeafComponent = ({
   actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
   const { getValues } = useRemixFormContext();
+
   if (isComponentTextVariable(component) || isComponentNumVar(component)) {
     return (
       <TextOrNumberVariable

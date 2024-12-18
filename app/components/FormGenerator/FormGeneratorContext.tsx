@@ -20,8 +20,10 @@ import { createContext } from 'react';
 
 export interface FormGeneratorContextType {
   linkedData: boolean;
+  showDevInfo: boolean;
 }
 
 export const FormGeneratorContext = createContext<FormGeneratorContextType>({
   linkedData: false,
+  showDevInfo: false,
 });

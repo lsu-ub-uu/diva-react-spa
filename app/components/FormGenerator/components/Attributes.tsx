@@ -17,7 +17,6 @@
  */
 
 import { AttributeSelect } from '@/components/Controlled/AttributeSelect/AttributeSelect';
-import { useTranslation } from 'react-i18next';
 import type {
   FormComponentCollVar,
   FormComponentWithData,
@@ -29,8 +28,6 @@ interface AttributesProps {
 }
 
 export const Attributes = ({ component, path }: AttributesProps) => {
-  const { t } = useTranslation();
-
   const attributesToShow = getAttributesToShow(component);
 
   return attributesToShow.map((attribute, index) => {
@@ -39,23 +36,11 @@ export const Attributes = ({ component, path }: AttributesProps) => {
         key={`${attribute.name}_${index}`}
         name={`${path}._${attribute.name}`}
         label={attribute.label ?? ''}
-        options={
-          attribute.finalValue
-            ? attribute.options
-            : [
-                {
-                  value: '',
-                  label: t(
-                    attribute.placeholder ?? 'divaClient_optionNoneText',
-                  ),
-                },
-                ...(attribute.options ?? []),
-              ]
-        }
+        options={attribute.options}
         showLabel={attribute.showLabel}
         placeholder={attribute.placeholder}
         tooltip={attribute.tooltip}
-        readonly={attribute.finalValue !== undefined}
+        finalValue={attribute.finalValue}
         displayMode={attribute.mode}
       />
     );

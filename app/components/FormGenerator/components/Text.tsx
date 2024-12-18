@@ -22,6 +22,7 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 
 import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Typography } from '@/components/Typography/Typography';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface TextProps {
   reactKey: string;
@@ -49,6 +50,8 @@ export const Text = ({
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
+      <DevInfo component={component} />
+
       <Typography
         variant={component.textStyle ?? 'bodyTextStyle'}
         text={component.name}

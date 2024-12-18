@@ -66,6 +66,7 @@ export const RecordForm = ({ record, formSchema }: RecordFormProps) => {
         width: '100%',
         opacity: submitting ? 0.5 : 1,
         pointerEvents: submitting ? 'none' : 'all',
+        pb: 4,
       }}
       onSubmit={handleSubmit}
     >

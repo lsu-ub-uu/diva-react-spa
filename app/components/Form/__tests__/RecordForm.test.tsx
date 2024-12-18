@@ -581,8 +581,8 @@ describe('<Form />', () => {
       });
 
       const collections = screen.getAllByRole('combobox');
-      expect(collections).toHaveLength(4);
-      const firstCollection = collections[3];
+      expect(collections).toHaveLength(2);
+      const firstCollection = collections[0];
       await user.click(firstCollection);
       const firstItems = screen.getByRole('listbox');
       expect(firstItems.children).toHaveLength(3);
@@ -1791,7 +1791,7 @@ describe('<Form />', () => {
       const numberInput = screen.getByPlaceholderText('someEmptyTextId');
 
       const attributeSelect = screen.getByRole('combobox', {
-        name: 'attribute colour',
+        name: 'attribute colour:',
       });
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
 
@@ -1820,7 +1820,7 @@ describe('<Form />', () => {
       expect(numberInput).toBeInTheDocument();
 
       const attributeSelect = screen.getByRole('combobox', {
-        name: 'attribute colour',
+        name: 'attribute colour:',
       });
       expect(attributeSelect).toBeInTheDocument();
 
@@ -1853,7 +1853,7 @@ describe('<Form />', () => {
       );
       expect(numberInput).toBeInTheDocument();
       const attributeSelect = screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel',
+        name: 'someNumberVar2AttributeLabel:',
       });
 
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
@@ -1882,7 +1882,7 @@ describe('<Form />', () => {
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
 
       const attributeSelect = screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel',
+        name: 'someNumberVar2AttributeLabel:',
       });
 
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(4);
@@ -1912,7 +1912,7 @@ describe('<Form />', () => {
         'someNumberVar2IdPlaceholder',
       );
 
-      screen.getByRole('combobox', { name: 'someNumberVar2AttributeLabel' });
+      screen.getByRole('combobox', { name: 'someNumberVar2AttributeLabel:' });
 
       await user.type(numberInput, '12');
 
@@ -1939,7 +1939,7 @@ describe('<Form />', () => {
       );
       screen.getByPlaceholderText('someNumberVar2IdPlaceholder');
       screen.getByRole('combobox', {
-        name: 'someNumberVar2AttributeLabel',
+        name: 'someNumberVar2AttributeLabel:',
       });
 
       await user.type(numberInput, '2');
@@ -1963,7 +1963,7 @@ describe('<Form />', () => {
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
 
       screen.getByRole('combobox', {
-        name: 'languageCollectionVarText',
+        name: 'languageCollectionVarText:',
       });
 
       const submitButton = screen.getByRole('button', {
@@ -1987,7 +1987,7 @@ describe('<Form />', () => {
       );
 
       const attributeSelect = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText',
+        name: 'languageCollectionVarText:',
       });
 
       expect(within(attributeSelect).getAllByRole('option')).toHaveLength(2); // includes None option
@@ -2051,7 +2051,7 @@ describe('<Form />', () => {
       await user.click(submitButton);
 
       const attributeSelect = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText',
+        name: 'languageCollectionVarText:',
       });
       expect(attributeSelect).toBeInvalid();
       expect(actionSpy).toHaveBeenCalledTimes(0);
@@ -2067,11 +2067,11 @@ describe('<Form />', () => {
         />,
       );
       screen.getByRole('combobox', {
-        name: 'someTitleGroupText',
+        name: 'someTitleGroupText:',
       });
 
       screen.getByRole('combobox', {
-        name: 'Eye colour',
+        name: 'Eye colour:',
       });
 
       screen.getByPlaceholderText('mainTitleTextVarPlaceholderText');
@@ -2096,19 +2096,19 @@ describe('<Form />', () => {
       );
 
       screen.getByRole('combobox', {
-        name: 'languageCollectionVarText',
+        name: 'languageCollectionVarText:',
       });
 
       screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText',
+        name: 'titleTypeCollectionVarText:',
       });
 
       const textInput = screen.getByPlaceholderText('givenNameTextVarText');
       const languageAttribute = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText',
+        name: 'languageCollectionVarText:',
       });
       const titleTypeAttribute = screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText',
+        name: 'titleTypeCollectionVarText:',
       });
 
       await user.click(textInput);
@@ -2137,10 +2137,10 @@ describe('<Form />', () => {
         />,
       );
       const languageAttribute = screen.getByRole('combobox', {
-        name: 'languageCollectionVarText',
+        name: 'languageCollectionVarText:',
       });
       const titleTypeAttribute = screen.getByRole('combobox', {
-        name: 'titleTypeCollectionVarText',
+        name: 'titleTypeCollectionVarText:',
       });
 
       const textInput = screen.getByPlaceholderText(
