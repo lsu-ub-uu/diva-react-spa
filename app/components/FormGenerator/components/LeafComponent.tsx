@@ -53,7 +53,6 @@ export const LeafComponent = ({
   actionButtonGroup,
 }: LeafComponentProps): JSX.Element | null => {
   if (isComponentTextVariable(component) || isComponentNumVar(component)) {
-
     return (
       <TextOrNumberVariable
         reactKey={reactKey}
@@ -74,6 +73,8 @@ export const LeafComponent = ({
         component={component}
         reactKey={reactKey}
         renderElementGridWrapper={renderElementGridWrapper}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
       />
     );
   }

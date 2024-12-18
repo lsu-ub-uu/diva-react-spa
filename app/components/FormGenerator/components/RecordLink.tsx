@@ -20,7 +20,7 @@ import { RecordLinkWithSearch } from '@/components/FormGenerator/components/Reco
 import { RecordLinkWithLinkedPresentation } from '@/components/FormGenerator/components/RecordLinkWithLinkedPresentation';
 import { TextOrNumberVariable } from '@/components/FormGenerator/components/TextOrNumberVariable';
 import { type FormComponentRecordLink } from '@/components/FormGenerator/types';
-import { useContext } from 'react';
+import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { useRemixFormContext } from 'remix-hook-form';
@@ -31,6 +31,8 @@ interface RecordLinkProps {
   name: string;
   renderElementGridWrapper: boolean;
   parentPresentationStyle?: string;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const RecordLink = ({
@@ -39,70 +41,58 @@ export const RecordLink = ({
   reactKey,
   renderElementGridWrapper,
   parentPresentationStyle,
+  attributes,
+  actionButtonGroup,
 }: RecordLinkProps) => {
   const { getValues } = useRemixFormContext();
 
   const hasValue = checkIfComponentHasValue(getValues, name);
   const { linkedData } = useContext(FormGeneratorContext);
-  //
-  // if (
-  //   !('linkedRecordPresentation' in component &&
-  //     component.linkedRecordPresentation !== undefined) && hasValue
-  // ) {
-  //   console.log({ component }, hasValue, { linkedData });
-  //   return (
-  //     <TextOrNumberVariable
-  //       reactKey={reactKey}
-  //       renderElementGridWrapper={renderElementGridWrapper}
-  //       component={component}
-  //       name={name}
-  //       parentPresentationStyle={parentPresentationStyle}
-  //     />
-  //   )
-  // }
-  console.log('1')
+
   if (
     checkIfComponentContainsSearchId(component) &&
     component.mode === 'input' &&
     !hasValue &&
     !linkedData
   ) {
-  console.log('2')
     return (
       <RecordLinkWithSearch
         reactKey={reactKey}
         renderElementGridWrapper={renderElementGridWrapper}
         component={component}
         name={name}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
       />
     );
   }
 
-  console.log('3')
   if (
     'linkedRecordPresentation' in component &&
     component.linkedRecordPresentation !== undefined
   ) {
-  console.log('4')
     return (
       <RecordLinkWithLinkedPresentation
         reactKey={reactKey}
         renderElementGridWrapper={renderElementGridWrapper}
         component={component}
         name={name}
+        attributes={attributes}
+        actionButtonGroup={actionButtonGroup}
       />
     );
   }
 
-  console.log('5')
   return (
-      <TextOrNumberVariable
-        reactKey={reactKey}
-        renderElementGridWrapper={renderElementGridWrapper}
-        component={component}
-        name={name}
-        parentPresentationStyle={parentPresentationStyle}
-      />
+    <TextOrNumberVariable
+      reactKey={reactKey}
+      renderElementGridWrapper={renderElementGridWrapper}
+      component={component}
+      name={name}
+      parentPresentationStyle={parentPresentationStyle}
+      attributes={attributes}
+      actionButtonGroup={actionButtonGroup}
+    />
   );
 };
 

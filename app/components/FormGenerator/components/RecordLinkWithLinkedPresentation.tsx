@@ -18,8 +18,8 @@
 
 import type { FormComponentRecordLink } from '@/components/FormGenerator/types';
 import { checkIfComponentHasValue } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import React from 'react';
-import { Grid2 as Grid } from '@mui/material';
+import React, { type ReactNode } from 'react';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { ControlledLinkedRecord } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
 
@@ -28,6 +28,8 @@ interface RecordLinkWithLinkedPresentationProps {
   renderElementGridWrapper: boolean;
   component: FormComponentRecordLink;
   name: string;
+  attributes?: ReactNode;
+  actionButtonGroup?: ReactNode;
 }
 
 export const RecordLinkWithLinkedPresentation = ({
@@ -35,6 +37,8 @@ export const RecordLinkWithLinkedPresentation = ({
   renderElementGridWrapper,
   component,
   name,
+  attributes,
+  actionButtonGroup,
 }: RecordLinkWithLinkedPresentationProps) => {
   const { getValues, control } = useRemixFormContext();
   const hasValue = checkIfComponentHasValue(getValues, name);
@@ -48,6 +52,15 @@ export const RecordLinkWithLinkedPresentation = ({
             sm: renderElementGridWrapper ? component.gridColSpan : 12,
           }}
         >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}
+          >
+            {attributes} {actionButtonGroup}
+          </Box>
           <ControlledLinkedRecord
             control={control}
             name={name}
