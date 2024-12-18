@@ -22,7 +22,6 @@ import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { defer } from '@remix-run/node';
-import { searchRecords } from '@/.server/data/searchRecords';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
@@ -47,31 +46,10 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     'diva-outputSimpleSearch',
   );
 
-  const query = {
-    search: {
-      include: {
-        includePart: {
-          genericSearchTerm: [
-            {
-              value: '**',
-            },
-          ],
-        },
-      },
-    },
-  };
-  const recordList = searchRecords(
-    context.dependencies,
-    'diva-outputSearch',
-    query,
-    auth,
-  );
-
   return defer(
     {
       validationTypes,
       searchForm,
-      recordList,
       title,
       notification,
     },

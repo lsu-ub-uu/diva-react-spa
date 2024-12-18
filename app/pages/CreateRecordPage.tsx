@@ -21,12 +21,12 @@ import { Stack } from '@mui/material';
 import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { RecordForm } from '@/components/Form/RecordForm';
 import type { BFFDataRecord } from '@/types/record';
-import { AsidePortal } from '@/components/AsidePortal/AsidePortal';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import {
   linksFromFormSchema,
   useSectionScroller,
 } from '@/components/NavigationPanel/utils';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout';
 
 interface CreateRecordPageProps {
   record: BFFDataRecord;
@@ -40,23 +40,22 @@ export default function CreateRecordPage({
   const activeSection = useSectionScroller();
 
   return (
-    <>
-      <AsidePortal>
+    <SidebarLayout
+      sidebarContent={
         <NavigationPanel
           links={
             formDefinition ? linksFromFormSchema(formDefinition) || [] : []
           }
           activeLinkName={activeSection}
         />
-      </AsidePortal>
-      <div>
-        <Stack spacing={2}>
-          <RecordForm
-            record={record}
-            formSchema={formDefinition}
-          />
-        </Stack>
-      </div>
-    </>
+      }
+    >
+      <Stack spacing={2}>
+        <RecordForm
+          record={record}
+          formSchema={formDefinition}
+        />
+      </Stack>
+    </SidebarLayout>
   );
 }

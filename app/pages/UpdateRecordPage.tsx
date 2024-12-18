@@ -26,8 +26,8 @@ import {
   linksFromFormSchema,
   useSectionScroller,
 } from '@/components/NavigationPanel/utils';
-import { AsidePortal } from '@/components/AsidePortal/AsidePortal';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
+import { SidebarLayout } from '@/components/Layout/SidebarLayout';
 
 interface UpdateRecordPageProps {
   record: BFFDataRecord;
@@ -43,24 +43,23 @@ export const UpdateRecordPage = ({
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
 
   return (
-    <>
-      <AsidePortal>
+    <SidebarLayout
+      sidebarContent={
         <NavigationPanel
           links={
             formDefinition ? linksFromFormSchema(formDefinition) || [] : []
           }
           activeLinkName={activeSection}
         />
-      </AsidePortal>
-      <div>
-        <Stack spacing={2}>
-          <RecordForm
-            key={lastUpdate}
-            record={record}
-            formSchema={formDefinition}
-          />
-        </Stack>
-      </div>
-    </>
+      }
+    >
+      <Stack spacing={2}>
+        <RecordForm
+          key={lastUpdate}
+          record={record}
+          formSchema={formDefinition}
+        />
+      </Stack>
+    </SidebarLayout>
   );
 };

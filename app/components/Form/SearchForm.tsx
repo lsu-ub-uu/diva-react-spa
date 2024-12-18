@@ -25,13 +25,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Form } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { RemixFormProvider, useRemixForm } from 'remix-hook-form';
-import type {
-  RecordData} from '../FormGenerator/defaultValues/defaultValues';
-import {
-  createDefaultValuesFromFormSchema
-} from '../FormGenerator/defaultValues/defaultValues';
+import type { RecordData } from '../FormGenerator/defaultValues/defaultValues';
+import { createDefaultValuesFromFormSchema } from '../FormGenerator/defaultValues/defaultValues';
 import type { SearchFormSchema } from '../FormGenerator/types';
 import { FormGenerator } from '@/components/FormGenerator/FormGenerator';
+import styles from './SearchForm.module.css';
 
 interface SearchFormProps {
   searchType: string;
@@ -61,18 +59,20 @@ export const SearchForm = ({
       method='GET'
       action={`/search/${searchType}`}
     >
-      <RemixFormProvider {...methods}>
-        <FormGenerator formSchema={formSchema} />
-      </RemixFormProvider>
-      <Button
-        type='submit'
-        disableRipple
-        variant='contained'
-        color='secondary'
-        sx={{ height: 40 }}
-      >
-        {t('divaClient_SearchButtonText')}
-      </Button>
+      <div className={styles.searchForm}>
+        <RemixFormProvider {...methods}>
+          <FormGenerator formSchema={formSchema} />
+        </RemixFormProvider>
+        <Button
+          type='submit'
+          disableRipple
+          variant='contained'
+          color='secondary'
+          sx={{ height: 40 }}
+        >
+          {t('divaClient_SearchButtonText')}
+        </Button>
+      </div>
     </Form>
   );
 };
