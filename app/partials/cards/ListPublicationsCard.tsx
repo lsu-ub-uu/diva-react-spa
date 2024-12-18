@@ -20,15 +20,14 @@
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import type { GridColDef } from '@mui/x-data-grid';
-import { DataGrid } from '@mui/x-data-grid';
-import { IconButton, Skeleton, Stack, Tooltip } from '@mui/material';
+
+import { IconButton, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import FeedIcon from '@mui/icons-material/Feed';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Await, Link as RouterLink, useFetcher } from '@remix-run/react';
-import type { BFFDataRecord, BFFSearchResult } from '@/types/record';
-import { Suspense } from 'react';
-import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncErrorBoundary';
+import { Link as RouterLink, useFetcher } from '@remix-run/react';
+import type { BFFDataRecord } from '@/types/record';
+
 import { LegacyCard } from '@/components/LegacyCard/LegacyCard';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 

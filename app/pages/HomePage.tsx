@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Alert, Box, Button, Skeleton, Stack, styled } from '@mui/material';
+import { Alert, Box, Button, Skeleton, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
@@ -27,21 +27,6 @@ import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncError
 import type { loader } from '@/routes/_index';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
 import { RecordSearch } from '@/components/RecordSearch/RecordSearch';
-
-const SearchResultList = styled('ol')`
-  list-style: none;
-  padding: 0;
-`;
-
-const SearchResultListItem = styled('li')(({ theme }) => ({
-  position: 'relative',
-  display: 'block',
-  borderRadius: 8,
-  border: '2px solid #eedcdb',
-  backgroundColor: '#fcf8f8',
-  boxShadow: theme.shadows[1],
-  marginBottom: theme.spacing(2),
-}));
 
 const searchType = 'diva-outputSimpleSearch';
 
