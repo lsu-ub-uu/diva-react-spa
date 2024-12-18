@@ -52,6 +52,11 @@ import {
   createNumberVariableValidation,
   createTextVariableValidation,
 } from './formValidation';
+import type {
+  FormComponentGroup,
+  FormSchema,
+  RecordFormSchema,
+} from '@/components/FormGenerator/types';
 
 type BFFMetadataTypes =
   | BFFMetadataCollectionVariable
@@ -93,7 +98,7 @@ export const createLinkedRecordDefinition = (
   dependencies: Dependencies,
   metadataGroup: BFFMetadataGroup,
   presentationGroup: BFFPresentationGroup,
-) => {
+): FormSchema => {
   const form = createDefinitionFromMetadataGroupAndPresentationGroup(
     dependencies,
     metadataGroup,
@@ -115,7 +120,7 @@ export const createFormDefinition = (
   dependencies: Dependencies,
   validationTypeId: string,
   mode: 'create' | 'update' | 'view' | 'list',
-) => {
+): RecordFormSchema => {
   switch (mode) {
     case 'create':
       return {
@@ -248,17 +253,24 @@ const createDefinitionFromMetadataGroupAndPresentationGroup = (
   dependencies: Dependencies,
   metadataGroup: BFFMetadataGroup,
   presentationGroup: BFFPresentationGroup,
-) => {
+): FormComponentGroup => {
   const formRootReference = createBFFMetadataReference(metadataGroup.id);
   const formRootPresentationReference = createBFFPresentationReference(
     presentationGroup.id,
   );
-  return createDetailedPresentationBasedOnPresentationType(
+
+  const form = createDetailedPresentationBasedOnPresentationType(
     dependencies,
     [formRootReference],
     formRootPresentationReference,
     metadataGroup.id,
   );
+
+  if (!form) {
+    throw new Error('Failed to create form definition');
+  }
+
+  return form;
 };
 
 const createComponentsFromChildReferences = (
@@ -639,7 +651,7 @@ const createDetailedPresentationBasedOnPresentationType = (
   metadataChildReferences: BFFMetadataChildReference[],
   presentationChildReference: BFFPresentationChildReference,
   metadataOverrideId?: string,
-) => {
+): FormComponentGroup | undefined => {
   const { metadataPool, presentationPool } = dependencies;
 
   let validation;
@@ -831,7 +843,7 @@ const createDetailedPresentationBasedOnPresentationType = (
     search,
     linkedRecordPresentation,
     inputFormat,
-  });
+  }) as FormComponentGroup;
 };
 const findMetadataChildReferenceById = (
   childId: string,

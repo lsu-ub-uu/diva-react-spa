@@ -16,7 +16,6 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import type { RecordFormSchema } from '@/components/FormGenerator/types';
 import { createFormDefinition } from '@/.server/data/formDefinition/formDefinition';
 import type { Dependencies } from '@/.server/data/formDefinition/formDefinitionsDep';
 
@@ -29,9 +28,5 @@ export const getFormDefinitionByValidationTypeId = async (
     throw new Error(`Validation type [${validationTypeId}] does not exist`);
   }
 
-  return createFormDefinition(
-    dependencies,
-    validationTypeId,
-    mode,
-  ) as unknown as RecordFormSchema;
+  return createFormDefinition(dependencies, validationTypeId, mode);
 };

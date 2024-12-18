@@ -47,8 +47,6 @@ export const getRecordByRecordTypeAndRecordId = async ({
   const recordWrapper = response.data;
   const record = transformRecord(dependencies, recordWrapper);
 
-  // Vi vill visa förlag X, men baka också in en formDefinition för publisherPLink
-
   if (presentationRecordLinkId !== undefined) {
     const { presentationGroup, metadataGroup } =
       getGroupsFromPresentationLinkId(dependencies, presentationRecordLinkId);

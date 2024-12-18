@@ -17,6 +17,8 @@
  *     along with DiVA Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import type { FormSchema } from '@/components/FormGenerator/types';
+
 export interface BFFDataRecord {
   id?: string;
   recordType?: string;
@@ -28,10 +30,11 @@ export interface BFFDataRecord {
   data: {
     [key: string]: Metadata;
   };
-  presentation?: unknown;
-  listPresentation?: unknown;
+  presentation?: FormSchema;
+  listPresentation?: FormSchema;
   autoCompletePresentation?: unknown;
 }
+
 export type BFFUserRight =
   | 'read'
   | 'read_incoming_links'

@@ -17,7 +17,6 @@
  */
 
 import { useLoaderData } from '@remix-run/react';
-import type { FormSchema } from '@/components/FormGenerator/types';
 import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
 import { Box, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -62,7 +61,7 @@ export const SearchPage = () => {
               <SearchResultListItem key={record.id}>
                 <AutocompleteForm
                   record={record}
-                  formSchema={record.presentation as FormSchema}
+                  formSchema={record.presentation!}
                 />
                 <Box
                   sx={(theme) => ({
