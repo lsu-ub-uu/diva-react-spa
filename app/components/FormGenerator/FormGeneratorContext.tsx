@@ -21,8 +21,10 @@ import type { BFFDataRecord } from '@/types/record';
 
 export interface FormGeneratorContextType {
   linkedData?: BFFDataRecord['data'];
+  showDevInfo: boolean;
 }
 
 export const FormGeneratorContext = createContext<FormGeneratorContextType>({
   linkedData: undefined,
+  showDevInfo: false,
 });

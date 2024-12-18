@@ -27,7 +27,7 @@ export const cleanFormData = (obj: any): any => {
   }, {});
 };
 
-const hasOnlyAttributes = (obj: any) => {
+export const hasOnlyAttributes = (obj: any) => {
   return isEmpty(omitBy(obj, (_, key) => isAttribute(key)));
 };
 

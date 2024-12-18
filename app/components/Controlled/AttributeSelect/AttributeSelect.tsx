@@ -40,7 +40,7 @@ interface AttributeSelectProps {
   tooltip: FormComponentTooltip | undefined;
   disabled?: boolean;
   displayMode: FormComponentMode;
-  readonly?: boolean;
+  finalValue: string | undefined;
 }
 
 export const AttributeSelect = ({
@@ -50,15 +50,17 @@ export const AttributeSelect = ({
   showLabel = true,
   tooltip,
   disabled,
+  placeholder,
   displayMode,
-  readonly,
+  finalValue,
 }: AttributeSelectProps) => {
   const { t } = useTranslation();
   const { register, getValues } = useRemixFormContext();
 
   const { errors } = useFormState({ name });
   const error = get(errors, name);
-  const value = getValues(name);
+  const value = finalValue ?? getValues(name);
+  const showAsInput = !finalValue && displayMode === 'input';
 
   if (displayMode === 'output' && !value) {
     return null;
@@ -68,10 +70,8 @@ export const AttributeSelect = ({
     <div
       className={styles.attributeSelect}
       data-error={error !== undefined}
-      data-readonly={readonly}
     >
       <div className={styles.inputWrapper}>
-        {showLabel && <label htmlFor={name}>{t(label)}</label>}
         {tooltip && (
           <Tooltip
             title={t(tooltip.title)}
@@ -87,13 +87,17 @@ export const AttributeSelect = ({
             </IconButton>
           </Tooltip>
         )}
-        {displayMode === 'input' && (
+        {showLabel && <label htmlFor={name}>{t(label)}: </label>}
+        {showAsInput && (
           <select
             {...register(name)}
             disabled={disabled}
             id={name}
             aria-invalid={error ? 'true' : undefined}
           >
+            <option value=''>
+              {t(placeholder ?? 'divaClient_optionNoneText')}
+            </option>
             {options.map((option) => (
               <option
                 key={option.value}
@@ -104,7 +108,7 @@ export const AttributeSelect = ({
             ))}
           </select>
         )}
-        {displayMode === 'output' && (
+        {!showAsInput && (
           <>
             <span>
               {t(
@@ -114,8 +118,8 @@ export const AttributeSelect = ({
             </span>
             <input
               type='hidden'
-              value={value}
-              name={name}
+              defaultValue={value}
+              {...register(name)}
             />
           </>
         )}

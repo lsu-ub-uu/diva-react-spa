@@ -167,7 +167,12 @@ export const ControlledSelectField = (props: ControlledSelectFieldProps) => {
             <>
               {props.hasValue === true ? (
                 <>
-                  <span>{t(findOptionLabelByValue(props.options, value))}</span>
+                  <Box
+                    component='span'
+                    sx={{ pl: 2, mb: 1 }}
+                  >
+                    {t(findOptionLabelByValue(props.options, value))}
+                  </Box>
                   <input
                     type='hidden'
                     value={value}

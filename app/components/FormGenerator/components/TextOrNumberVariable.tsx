@@ -26,8 +26,9 @@ import {
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import { ControlledTextField } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { ControlledTextField } from '@/components/Controlled';
 import { type ReactNode, useContext } from 'react';
 import { FormGeneratorContext } from '@/components/FormGenerator/FormGeneratorContext';
 import { getIdFromBFFRecordInfo } from '@/utils/getIdFromBFFRecordInfo';
@@ -54,8 +55,13 @@ export const TextOrNumberVariable = ({
   const { getValues, control } = useRemixFormContext();
   const { linkedData } = useContext(FormGeneratorContext);
   const hasValue = checkIfComponentHasValue(getValues, name);
-  console.log('7', { linkedData });
+
+  if (component.mode === 'output' && !hasValue) {
+    return null;
+  }
+
   const linkedDataToShow = getIdFromBFFRecordInfo(linkedData);
+
   return (
     <Grid
       key={reactKey}
@@ -71,6 +77,8 @@ export const TextOrNumberVariable = ({
       }}
       id={`anchor_${addAttributesToName(component, component.name)}`}
     >
+      <DevInfo component={component} />
+
       <ControlledTextField
         multiline={
           'inputType' in component

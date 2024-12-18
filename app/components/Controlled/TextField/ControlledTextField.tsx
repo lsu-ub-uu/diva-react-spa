@@ -151,7 +151,12 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
               />
             ) : (
               <>
-                <span>{field.value || props.linkedDataToShow}</span>
+                <Box
+                  component='span'
+                  sx={{ pl: 2, mb: 1 }}
+                >
+                  {field.value || props.linkedDataToShow}
+                </Box>
                 <input
                   type='hidden'
                   value={field.value}

@@ -22,6 +22,7 @@ import React, { type ReactNode } from 'react';
 import { Box, Grid2 as Grid } from '@mui/material';
 import { ControlledLinkedRecord } from '@/components/Controlled';
 import { useRemixFormContext } from 'remix-hook-form';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface RecordLinkWithLinkedPresentationProps {
   reactKey: string;
@@ -52,6 +53,8 @@ export const RecordLinkWithLinkedPresentation = ({
             sm: renderElementGridWrapper ? component.gridColSpan : 12,
           }}
         >
+          <DevInfo component={component} />
+
           <Box
             sx={{
               display: 'flex',

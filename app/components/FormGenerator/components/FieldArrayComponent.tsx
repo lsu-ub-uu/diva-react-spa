@@ -19,28 +19,16 @@
 
 import type { Control } from 'react-hook-form';
 import { Controller, useFieldArray } from 'react-hook-form';
-import { Button, Grid2 as Grid, IconButton } from '@mui/material';
+import { Button, Grid2 as Grid } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useTranslation } from 'react-i18next';
-import InfoIcon from '@mui/icons-material/Info';
 import { ActionButtonGroup } from './ActionButtonGroup';
 import {
   addAttributesToName,
   createDefaultValuesFromComponent,
 } from '../defaultValues/defaultValues';
-import {
-  headlineLevelToTypographyVariant,
-  isComponentGroup,
-  isComponentSingularAndOptional,
-} from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { Card } from '@/components/Card/Card';
-import { CardHeader } from '@/components/Card/CardHeader';
-import { CardContent } from '@/components/Card/CardContent';
-import { Attributes } from '@/components/FormGenerator/components/Attributes';
-import { Typography } from '@/components/Typography/Typography';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
-import { CardTitle } from '@/components/Card/CardTitle';
-import type { ReactNode } from 'react';
+import { isComponentSingularAndOptional } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
+import { Fragment, type ReactNode } from 'react';
 import type { FormComponentWithData } from '@/components/FormGenerator/types';
 
 interface FieldArrayComponentProps {
@@ -68,7 +56,6 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
   const handleRemove = async (index: number) => {
     remove(index);
   };
-  const isBoxed = isComponentGroup(props.component);
 
   return (
     <Grid
@@ -108,64 +95,12 @@ export const FieldArrayComponent = (props: FieldArrayComponentProps) => {
         );
 
         return (
-          <Grid
-            size={12}
-            key={`${field.id}_${index}_a`}
-          >
-            <Card
-              boxed={isBoxed}
-              sx={{ position: 'relative' }}
-            >
-              {isComponentGroup(props.component) && (
-                <CardHeader
-                  key={`${field.id}_${index}_b`}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  {props.component.showLabel && (
-                    <CardTitle>
-                      <Typography
-                        variant={
-                          headlineLevelToTypographyVariant(
-                            props.component.headlineLevel,
-                          ) ?? 'bodyTextStyle'
-                        }
-                        text={props.component.label!}
-                      />
-                      <Tooltip
-                        title={t(props.component.tooltip?.title as string)}
-                        body={t(props.component.tooltip?.body as string)}
-                      >
-                        <IconButton
-                          disableRipple
-                          color='info'
-                          aria-label='info'
-                        >
-                          <InfoIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </CardTitle>
-                  )}
-
-                  <Attributes
-                    component={props.component}
-                    path={`${props.name}[${index}]`}
-                  />
-
-                  {actionButtonGroup}
-                </CardHeader>
-              )}
-              <CardContent sx={{ p: isBoxed ? 2 : undefined }}>
-                {props.renderCallback(
-                  `${props.name}[${index}]` as const,
-                  actionButtonGroup,
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
+          <Fragment key={`${field.id}_${index}_a`}>
+            {props.renderCallback(
+              `${props.name}[${index}]` as const,
+              actionButtonGroup,
+            )}
+          </Fragment>
         );
       })}
 

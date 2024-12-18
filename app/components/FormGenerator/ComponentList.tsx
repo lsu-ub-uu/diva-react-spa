@@ -32,7 +32,7 @@ export const ComponentList = ({
   childWithNameInDataArray,
   parentPresentationStyle,
   path = '',
-}: FormComponentListGeneratorProps): (JSX.Element | null)[] => {
+}: FormComponentListGeneratorProps) => {
   return components.map((c, i) => (
     <Component
       key={addAttributesToName(c, c.name)}

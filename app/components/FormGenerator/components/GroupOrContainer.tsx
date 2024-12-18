@@ -20,9 +20,8 @@ import type {
   FormComponentContainer,
   FormComponentGroup,
 } from '@/components/FormGenerator/types';
-import { Box, Grid2 as Grid, IconButton } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
-import InfoIcon from '@mui/icons-material/Info';
 import {
   checkIfPresentationStyleIsInline,
   checkIfPresentationStyleOrParentIsInline,
@@ -30,7 +29,6 @@ import {
   headlineLevelToTypographyVariant,
   isFirstLevelGroup,
 } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
-import { useTranslation } from 'react-i18next';
 import { ComponentList } from '@/components/FormGenerator/ComponentList';
 import { Attributes } from '@/components/FormGenerator/components/Attributes';
 import { useContext } from 'react';
@@ -40,8 +38,9 @@ import { Card } from '@/components/Card/Card';
 import { CardHeader } from '@/components/Card/CardHeader';
 import { CardContent } from '@/components/Card/CardContent';
 import { Typography } from '@/components/Typography/Typography';
-import { Tooltip } from '@/components/Tooltip/Tooltip';
 import { CardTitle } from '@/components/Card/CardTitle';
+import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
+import { FirstLevelGroup } from '@/components/FormGenerator/components/FirstLevelGroup';
 
 interface GroupOrContainerProps {
   currentComponentNamePath: string;
@@ -58,79 +57,24 @@ export const GroupOrContainer = ({
   parentPresentationStyle,
   childWithNameInDataArray,
 }: GroupOrContainerProps) => {
-  const { t } = useTranslation();
   const { linkedData } = useContext(FormGeneratorContext);
   const groupLevel = getGroupLevel(currentComponentNamePath);
 
-  return isComponentFirstLevelAndNOTLinkedData(
-    currentComponentNamePath,
-    linkedData,
-  ) ? (
-    <Grid
-      size={12}
-      key={reactKey}
-      className='anchorLink'
-      id={`anchor_${addAttributesToName(component, component.name)}`}
-    >
-      <Card boxed>
-        <CardHeader
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: '100%',
-            justifyContent: 'flex-end',
-          }}
-        >
-          {component.showLabel ? (
-            <CardTitle>
-              <Typography
-                text={component?.label ?? ''}
-                variant={headlineLevelToTypographyVariant(
-                  component.headlineLevel,
-                )}
-              />
-              <Tooltip
-                title={t(component.tooltip?.title as string)}
-                body={t(component.tooltip?.body as string)}
-              >
-                <IconButton
-                  disableRipple
-                  color='info'
-                  aria-label='info'
-                >
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
-            </CardTitle>
-          ) : null}
-          <Attributes
-            component={component}
-            path={currentComponentNamePath}
-          />
-        </CardHeader>
-        <CardContent>
-          <Grid
-            container
-            justifyContent='space-between'
-            alignItems='flex-start'
-            id={`anchor_${addAttributesToName(component, component.name)}`}
-          >
-            {component.components && (
-              <ComponentList
-                components={component.components}
-                childWithNameInDataArray={childWithNameInDataArray}
-                parentPresentationStyle={
-                  component.presentationStyle ?? parentPresentationStyle
-                }
-                path={currentComponentNamePath}
-              />
-            )}
-          </Grid>
-        </CardContent>
-      </Card>
-    </Grid>
-  ) : (
+  if (
+    isComponentFirstLevelAndNOTLinkedData(currentComponentNamePath, linkedData)
+  ) {
+    return (
+      <FirstLevelGroup
+        reactKey={reactKey}
+        component={component}
+        currentComponentNamePath={currentComponentNamePath}
+        parentPresentationStyle={parentPresentationStyle}
+        childWithNameInDataArray={childWithNameInDataArray}
+      />
+    );
+  }
+
+  return (
     <Grid
       key={reactKey}
       id={`anchor_${addAttributesToName(component, component.name)}`}
@@ -156,18 +100,11 @@ export const GroupOrContainer = ({
           : null,
       }}
     >
+      <DevInfo component={component} />
       <Card boxed={groupLevel !== 0}>
         {component?.showLabel &&
           (!linkedData ? (
-            <CardHeader
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                width: '100%',
-                justifyContent: 'flex-end',
-              }}
-            >
+            <CardHeader>
               <CardTitle>
                 <Typography
                   text={component?.label ?? ''}
