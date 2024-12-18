@@ -23,12 +23,12 @@ import {
   getSessionFromCookie,
   requireAuthentication,
 } from '@/.server/sessions';
-import type {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  MetaFunction,
+import {
+  type ActionFunctionArgs,
+  data,
+  type LoaderFunctionArgs,
+  type MetaFunction,
 } from '@remix-run/node';
-import { json } from '@remix-run/node';
 import { getRecordByRecordTypeAndRecordId } from '@/.server/data/getRecordByRecordTypeAndRecordId';
 import { invariant } from '@remix-run/router/history';
 import { getFormDefinitionByValidationTypeId } from '@/.server/data/getFormDefinitionByValidationTypeId';
@@ -73,12 +73,12 @@ export const action = async ({
   const resolver = yupResolver(generateYupSchemaFromFormSchema(formDefinition));
   const {
     errors,
-    data,
+    data: validatedFormData,
     receivedValues: defaultValues,
   } = await getValidatedFormData(formData, resolver);
 
   if (errors) {
-    return json({ errors, defaultValues });
+    return { errors, defaultValues };
   }
 
   try {
@@ -86,7 +86,7 @@ export const action = async ({
       context.dependencies,
       validationType,
       recordId,
-      data as unknown as BFFDataRecord,
+      validatedFormData as unknown as BFFDataRecord,
       auth,
     );
     session.flash('notification', {
@@ -98,7 +98,7 @@ export const action = async ({
     session.flash('notification', createNotificationFromAxiosError(error));
   }
 
-  return json(null, await getResponseInitWithSession(session));
+  return data({}, await getResponseInitWithSession(session));
 };
 
 export async function loader({ request, params, context }: LoaderFunctionArgs) {
@@ -135,7 +135,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     record,
   );
 
-  return json(
+  return data(
     { record, formDefinition, defaultValues, notification, title },
     {
       headers: {

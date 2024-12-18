@@ -18,7 +18,6 @@
 
 import { ViewRecordPage } from '@/pages';
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
 import {
   getSessionFromCookie,
   requireAuthentication,
@@ -60,7 +59,7 @@ export const loader = async ({
     'view',
   );
 
-  return json({ record, formDefinition, title });
+  return { record, formDefinition, title };
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

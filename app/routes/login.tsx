@@ -1,5 +1,9 @@
-import type { ActionFunction, LoaderFunctionArgs } from '@remix-run/node'; // or cloudflare/deno
-import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
+import {
+  type ActionFunction,
+  data,
+  type LoaderFunctionArgs,
+  redirect,
+} from '@remix-run/node'; // or cloudflare/deno // or cloudflare/deno
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { commitSession, getSession } from '@/.server/sessions';
 import { Alert, Button, Stack } from '@mui/material';
@@ -41,16 +45,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return redirect(returnTo ?? '/');
   }
 
-  const data = {
-    presentation,
-    notification: session.get('notification'),
-    returnTo,
-  };
-  return json(data, {
-    headers: {
-      'Set-Cookie': await commitSession(session),
+  return data(
+    {
+      presentation,
+      notification: session.get('notification'),
+      returnTo,
     },
-  });
+    {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    },
+  );
 }
 
 const authenticate = async (form: FormData) => {
