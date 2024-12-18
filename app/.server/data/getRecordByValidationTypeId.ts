@@ -26,7 +26,7 @@ import type { BFFDataRecord } from '@/types/record';
 export const getRecordByValidationTypeId = (
   dependencies: Dependencies,
   validationTypeId: string,
-) => {
+): BFFDataRecord => {
   const validationType = dependencies.validationTypePool.get(validationTypeId); // manuscript
   const metadataGroup = dependencies.metadataPool.get(
     validationType.newMetadataGroupId,
