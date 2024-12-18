@@ -254,7 +254,7 @@ describe('flattenObj', () => {
     expect(actual).toStrictEqual({
       'someRootNameInData.recordInfo.createdBy.0.value': '161616',
       'someRootNameInData.recordInfo.dataDivider.value': 'divaData',
-      'someRootNameInData.recordInfo.id.0.value': '12345',
+      'someRootNameInData.recordInfo.id.value': '12345',
       'someRootNameInData.recordInfo.tsCreated.0.value':
         '2024-10-16T12:36:04.249992Z',
       'someRootNameInData.recordInfo.type.0.value': 'record',

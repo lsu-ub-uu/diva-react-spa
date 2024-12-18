@@ -902,7 +902,7 @@ describe('<Autocomplete/>', () => {
 
   beforeEach(() => {
     mockAxios = new MockAdapter(axios);
-    const listUrl: string = `/autocompleteSearch?searchType=nationalSubjectCategory&searchTermValue=*`;
+    const listUrl: string = `/autocompleteSearch?searchType=nationalSubjectCategory&searchTermValue=**`;
     mockAxios.onGet(listUrl).reply(200, mockOptions);
     const optionUrl =
       '/record/nationalSubjectCategory/nationalSubjectCategory:6325356888554468?presentationRecordLinkId=nationalSubjectCategoryPLink';
@@ -939,7 +939,7 @@ describe('<Autocomplete/>', () => {
     const inputElement = screen.getByRole('combobox');
     expect(inputElement).toBeVisible();
     await user.click(inputElement);
-    await user.type(inputElement, '*');
+    await user.type(inputElement, '**');
 
     const listbox = screen.getByRole('listbox');
     expect(listbox).toBeInTheDocument();
@@ -952,7 +952,7 @@ describe('<Autocomplete/>', () => {
     expect(inputElement).toBeVisible();
 
     await user.click(inputElement);
-    await user.type(inputElement, '*');
+    await user.type(inputElement, '**');
 
     const listbox = screen.getByRole('listbox');
     expect(listbox).toBeInTheDocument();

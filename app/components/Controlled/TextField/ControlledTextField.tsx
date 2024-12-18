@@ -53,6 +53,7 @@ interface ControlledTextFieldProps {
 export const ControlledTextField = (props: ControlledTextFieldProps) => {
   const { t } = useTranslation();
   const displayMode = props.displayMode ?? 'input';
+  const showLabel = !props.linkedDataToShow && props.showLabel;
 
   if (displayMode === 'output' && !props.hasValue) {
     return null;
@@ -80,7 +81,7 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 alignItems: 'center',
               }}
             >
-              {props.showLabel ? (
+              {showLabel ? (
                 <FormLabel
                   htmlFor={field.name}
                   aria-label={props.label}
@@ -126,12 +127,12 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
                 inputRef={field.ref}
                 onBlur={field.onBlur}
                 autoComplete='off'
-                value={props.linkedDataToShow}
                 placeholder={
                   props.placeholder !== undefined
                     ? (t(props.placeholder) as string)
                     : ''
                 }
+                value={props.linkedDataToShow ?? fieldWithoutRef.value}
                 fullWidth
                 variant='outlined'
                 helperText={error !== undefined ? error.message : ' '}

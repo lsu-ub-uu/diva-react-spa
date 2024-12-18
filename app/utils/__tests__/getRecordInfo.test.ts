@@ -80,11 +80,9 @@ describe('recordInfoHelpers', () => {
         dataDivider: {
           value: 'divaData',
         },
-        id: [
-          {
-            value: 'divaOutputSwepub:4930578532044260',
-          },
-        ],
+        id: {
+          value: 'divaOutputSwepub:4930578532044260',
+        },
         tsCreated: [
           {
             value: '2024-10-16T09:36:03.023342Z',
@@ -152,11 +150,9 @@ describe('recordInfoHelpers', () => {
         },
         'id',
       );
-      expect(actual).toEqual([
-        {
-          value: 'divaOutputSwepub:4930578532044260',
-        },
-      ]);
+      expect(actual).toEqual({
+        value: 'divaOutputSwepub:4930578532044260',
+      });
     });
 
     it('return a value from recordInfo as an array with attribute', () => {
