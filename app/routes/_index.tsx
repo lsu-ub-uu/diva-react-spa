@@ -66,6 +66,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return data(
     {
       validationTypes,
+      query,
       searchForm,
       searchResults,
       title,

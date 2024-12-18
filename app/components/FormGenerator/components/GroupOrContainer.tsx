@@ -81,10 +81,9 @@ export const GroupOrContainer = ({
       size={12}
       sx={{
         display: 'flex',
-        flexDirection:
-          checkIfPresentationStyleIsInline(component) || linkedData
-            ? 'row'
-            : 'column',
+        flexDirection: checkIfPresentationStyleIsInline(component)
+          ? 'row'
+          : 'column',
         flexWrap: 'wrap',
         alignItems: checkIfPresentationStyleOrParentIsInline(
           component,

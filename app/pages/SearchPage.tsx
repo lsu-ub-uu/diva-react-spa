@@ -17,67 +17,23 @@
  */
 
 import { useLoaderData } from '@remix-run/react';
-import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
-import { Box, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { loader } from '@/routes/search.$searchType';
-import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
-import { SearchPublicationCard } from '@/partials/cards/SearchPublicationCard';
-
-const SearchResultList = styled('ol')`
-  list-style: none;
-  padding: 0;
-`;
-
-const SearchResultListItem = styled('li')(({ theme }) => ({
-  position: 'relative',
-  display: 'block',
-  borderRadius: 8,
-  border: '2px solid #eedcdb',
-  backgroundColor: '#fcf8f8',
-  boxShadow: theme.shadows[1],
-  marginBottom: theme.spacing(2),
-  paddingLeft: theme.spacing(2),
-}));
+import { RecordSearch } from '@/components/RecordSearch';
 
 export const SearchPage = () => {
-  const { searchResults } = useLoaderData<typeof loader>();
+  const { searchForm, query, searchResults } = useLoaderData<typeof loader>();
 
   const { t } = useTranslation();
   return (
     <div>
       <h1>{t('divaClient_searchPageHeaderText')}</h1>
-      <SearchPublicationCard />
-
-      {searchResults && (
-        <>
-          <h2>
-            {t('divaClient_searchPageResultText', {
-              numberOfResults: searchResults?.totalNo,
-            })}
-          </h2>
-          <SearchResultList>
-            {searchResults.data.map((record) => (
-              <SearchResultListItem key={record.id}>
-                <AutocompleteForm
-                  record={record}
-                  formSchema={record.presentation!}
-                />
-                <Box
-                  sx={(theme) => ({
-                    position: 'absolute',
-                    display: 'flex',
-                    top: theme.spacing(1),
-                    right: theme.spacing(1),
-                  })}
-                >
-                  <RecordActionButtons record={record} />
-                </Box>
-              </SearchResultListItem>
-            ))}
-          </SearchResultList>
-        </>
-      )}
+      <RecordSearch
+        searchForm={searchForm}
+        searchType={'diva-outputSimpleSearch'}
+        query={query}
+        searchResults={searchResults}
+      />
     </div>
   );
 };

@@ -37,11 +37,7 @@ interface SearchFormProps {
   formSchema: SearchFormSchema;
 }
 
-export const SearchForm = ({
-  searchType,
-  record,
-  formSchema,
-}: SearchFormProps) => {
+export const SearchForm = ({ record, formSchema }: SearchFormProps) => {
   const { t } = useTranslation();
   const methods = useRemixForm({
     mode: 'onChange',
@@ -57,7 +53,7 @@ export const SearchForm = ({
   return (
     <Form
       method='GET'
-      action={`/search/${searchType}`}
+      action={`/`}
     >
       <div className={styles.searchForm}>
         <RemixFormProvider {...methods}>
