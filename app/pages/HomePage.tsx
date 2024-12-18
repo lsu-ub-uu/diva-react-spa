@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { Alert, Box, Button, Skeleton, Stack } from '@mui/material';
+import { Alert, Box, Button, Skeleton, Stack, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
@@ -27,12 +27,31 @@ import { AsyncErrorBoundary } from '@/components/DefaultErrorBoundary/AsyncError
 import { SearchForm } from '@/components/Form/SearchForm';
 import type { loader } from '@/routes/_index';
 import { CreateRecordMenu } from '@/components/CreateRecordMenu/CreateRecordMenu';
+import { AutocompleteForm } from '@/components/Form/AutocompleteForm';
+import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
+
+const SearchResultList = styled('ol')`
+  list-style: none;
+  padding: 0;
+`;
+
+const SearchResultListItem = styled('li')(({ theme }) => ({
+  position: 'relative',
+  display: 'block',
+  borderRadius: 8,
+  border: '2px solid #eedcdb',
+  backgroundColor: '#fcf8f8',
+  boxShadow: theme.shadows[1],
+  marginBottom: theme.spacing(2),
+  paddingLeft: theme.spacing(2),
+}));
 
 const searchType = 'diva-outputSimpleSearch';
 
 export const HomePage = () => {
   const { t } = useTranslation();
-  const { searchForm, validationTypes } = useLoaderData<typeof loader>();
+  const { searchForm, validationTypes, searchResults } =
+    useLoaderData<typeof loader>();
 
   return (
     <SidebarLayout sidebarContent={<p>Meddelanden kommer synas här</p>}>
@@ -67,10 +86,41 @@ export const HomePage = () => {
             errorElement={<AsyncErrorBoundary />}
           >
             {(searchForm) => (
-              <SearchForm
-                formSchema={searchForm}
-                searchType={searchType}
-              />
+              <div>
+                <SearchForm
+                  formSchema={searchForm}
+                  searchType={searchType}
+                />
+                {searchResults && (
+                  <>
+                    <h2>
+                      {t('divaClient_searchPageResultText', {
+                        numberOfResults: searchResults?.totalNo,
+                      })}
+                    </h2>
+                    <SearchResultList>
+                      {searchResults.data.map((record) => (
+                        <SearchResultListItem key={record.id}>
+                          <AutocompleteForm
+                            record={record}
+                            formSchema={record.presentation!}
+                          />
+                          <Box
+                            sx={(theme) => ({
+                              position: 'absolute',
+                              display: 'flex',
+                              top: theme.spacing(1),
+                              right: theme.spacing(1),
+                            })}
+                          >
+                            <RecordActionButtons record={record} />
+                          </Box>
+                        </SearchResultListItem>
+                      ))}
+                    </SearchResultList>
+                  </>
+                )}
+              </div>
             )}
           </Await>
         </Suspense>

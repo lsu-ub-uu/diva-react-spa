@@ -20,13 +20,19 @@ import { getSearchForm } from '@/.server/data/getSearchForm';
 import { getValidationTypes } from '@/.server/data/getValidationTypes';
 import { HomePage } from '@/pages';
 import { getAuthentication, getSessionFromCookie } from '@/.server/sessions';
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { defer } from '@remix-run/node';
+import {
+  data,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from '@remix-run/node';
 import type { ErrorBoundaryComponent } from '@remix-run/react/dist/routeModules';
 import { RouteErrorBoundary } from '@/components/DefaultErrorBoundary/RouteErrorBoundary';
 import { getResponseInitWithSession } from '@/utils/redirectAndCommitSession';
 import { useLoaderData } from '@remix-run/react';
 import { useNotificationSnackbar } from '@/utils/useNotificationSnackbar';
+import { parseFormDataFromSearchParams } from '@/utils/parseFormDataFromSearchParams';
+import { searchRecords } from '@/.server/data/searchRecords';
+import { isEmpty } from 'lodash-es';
 
 export const ErrorBoundary: ErrorBoundaryComponent = RouteErrorBoundary;
 
@@ -46,10 +52,22 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     'diva-outputSimpleSearch',
   );
 
-  return defer(
+  const query = parseFormDataFromSearchParams(request);
+
+  const searchResults = !isEmpty(query)
+    ? await searchRecords(
+        context.dependencies,
+        'diva-outputSimpleSearch',
+        query,
+        auth,
+      )
+    : null;
+
+  return data(
     {
       validationTypes,
       searchForm,
+      searchResults,
       title,
       notification,
     },
