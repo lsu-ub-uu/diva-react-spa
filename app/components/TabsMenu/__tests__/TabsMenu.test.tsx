@@ -90,8 +90,6 @@ describe('TabsMenu', () => {
     });
 
     await user.click(administrera);
-    expect(
-      await screen.findByText('divaClient_listPublicationsText'),
-    ).toBeInTheDocument();
+    expect(await screen.findByText('someOtherTab')).toBeInTheDocument();
   });
 });
