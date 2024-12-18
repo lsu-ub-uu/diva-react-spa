@@ -17,7 +17,6 @@
  */
 
 import { AttributeSelect } from '@/components/Controlled/AttributeSelect/AttributeSelect';
-import { useTranslation } from 'react-i18next';
 import type {
   FormComponentCollVar,
   FormComponentWithData,
@@ -29,8 +28,6 @@ interface AttributesProps {
 }
 
 export const Attributes = ({ component, path }: AttributesProps) => {
-  const { t } = useTranslation();
-
   const attributesToShow = getAttributesToShow(component);
 
   return attributesToShow.map((attribute, index) => {

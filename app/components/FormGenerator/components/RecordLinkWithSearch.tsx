@@ -21,7 +21,7 @@ import { Grid2 as Grid } from '@mui/material';
 import { useRemixFormContext } from 'remix-hook-form';
 import { addAttributesToName } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { ControlledAutocomplete } from '@/components/Controlled/Autocomplete/ControlledAutocomplete';
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 
 interface RecordLinkWithSearchProps {

@@ -23,7 +23,6 @@ import { addAttributesToName } from '@/components/FormGenerator/defaultValues/de
 import { convertChildStyleToString } from '@/components/FormGenerator/formGeneratorUtils/formGeneratorUtils';
 import { Typography } from '@/components/Typography/Typography';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
-import React from 'react';
 
 interface TextProps {
   reactKey: string;
