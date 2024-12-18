@@ -69,7 +69,7 @@ export default function User() {
       window.open(MODE === 'development' ? '/devLogin' : url);
       window.addEventListener('message', receiveMessage, { once: true });
     } catch (e: any) {
-      console.log(e.message());
+      console.error(e.message());
     }
     setMenuOpen(false);
   };

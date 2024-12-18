@@ -31,6 +31,12 @@ export default [
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 0,
+      'no-console': [
+        'error',
+        {
+          allow: ['error', 'warn', 'info', 'trace'],
+        },
+      ],
     },
   },
 ];

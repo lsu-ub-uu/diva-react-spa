@@ -57,7 +57,6 @@ export const ControlledTextField = (props: ControlledTextFieldProps) => {
   if (displayMode === 'output' && !props.hasValue) {
     return null;
   }
-  console.log('8', props.linkedDataToShow);
   return (
     <Controller
       control={props.control}
