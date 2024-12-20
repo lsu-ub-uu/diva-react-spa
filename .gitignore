@@ -42,3 +42,7 @@ target
 vite.config.ts.timestamp-*
 
 .react-router
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
